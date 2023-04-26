@@ -8,17 +8,14 @@ from astropy.cosmology import Planck18
 import astropy.units as u
 from astropy import constants as const
 # the following .py file will be called if they are not given in the class initialization 
-from source_population import CompactBinaryPopulation
-from helperroutines import add_dictionaries_together, trim_dictionary
+from ler.source_population import CompactBinaryPopulation
+from ler.helperroutines import add_dictionaries_together, trim_dictionary
 # for multiprocessing 
 from multiprocessing import Pool
 from tqdm import tqdm
 
 # multiprocessing routines
-import solve_lens_equation
-
-min_images = 2
-max_images = 5 
+import ler.multiprocessing_routine as mp
 
 class LensGalaxyPopulation():
     def __init__(self, CompactBinaryPopulation_=False):
@@ -36,7 +33,7 @@ class LensGalaxyPopulation():
         if CompactBinaryPopulation_==False:
             # initialization of clasess
             # CompactBinaryPopulation already inherits from Source_Galaxy_Population_Model class form source_population.py
-            self.CompactBinaryPopulation = CompactBinaryPopulation(z_min=0.0001, z_max=10., m_min=4.59, m_max=86.22, event_type = "StellarBBH")
+            self.CompactBinaryPopulation = CompactBinaryPopulation(z_min=0., z_max=10., m_min=4.59, m_max=86.22, event_type = "StellarBBH")
         else:
             # if the classes are already initialized, then just use them
             self.CompactBinaryPopulation = CompactBinaryPopulation_
@@ -101,7 +98,7 @@ class LensGalaxyPopulation():
         # Create a lookup table for the differential comoving volume
         self.differential_comoving_volume = self.CompactBinaryPopulation.differential_comoving_volume
         return None
-
+    
     def sample_lens_parameters(self, size=1000, lens_parameters_input={}):
         '''
         Function to sample galaxy lens parameters
@@ -115,29 +112,52 @@ class LensGalaxyPopulation():
                             source related=>['mass_1': mass in detector frame (mass1>mass2), 'mass_2': mass in detector frame, 'mass_1_source':mass in source frame, 'mass_2_source':mass source frame, 'luminosity_distance': luminosity distance, 'iota': inclination angle, 'psi': polarization angle, 'phase': coalesence phase, 'geocent_time': coalensence GPS time at geocenter, 'ra': right ascension, 'dec': declination,]
                                     
         '''
+        print('sampling PEMD lens galaxy (with external shear) parameters...')
+        return self.sample_lens_parameters_routine(size=size, lens_parameters_input=lens_parameters_input)
+        
+    def sample_lens_parameters_routine(self, size=1000, lens_parameters_input={}):
+        '''
+        Function to sample galaxy lens parameters
+        Input parameters:
+            size : number of lens parameters to sample
+            lens_parameters_input : dictionary of lens parameters to sample
+        Output parameters:
+            lens_parameters : dictionary of lens parameters and source parameters (lens conditions applied)
+                            e.g. dictionary keys: 
+                            lensing related=>['zl':redshift of lens, 'zs': redshift of source, 'sigma':velocity dispersion, 'q':axis ratios, 'e1':ellipticity, 'e2':ellipticity, 'gamma1':external-shear, 'gamma2':external-shear, 'Dl':angular diameter distance of lens, 'Ds':angular diameter distance of source, 'Dls':angular diameter distance between lens and source, 'theta_E': einstein radius in radian, 'gamma':spectral index of mass density distribution]
+                            source related=>['mass_1': mass in detector frame (mass1>mass2), 'mass_2': mass in detector frame, 'mass_1_source':mass in source frame, 'mass_2_source':mass source frame, 'luminosity_distance': luminosity distance, 'iota': inclination angle, 'psi': polarization angle, 'phase': coalesence phase, 'geocent_time': coalensence GPS time at geocenter, 'ra': right ascension, 'dec': declination,]
+                                    
+        '''
+        
         # Sample source redshifts from the source population
         # rejection sampled with optical depth
+        #print('sampling source parameters...')
         source_params_strongly_lensed = self.sample_strongly_lensed_source_parameters(size=size)
         zs = source_params_strongly_lensed['zs']
 
         # Sample lens redshifts
+        #print("sampling lens's redshifts...")
         zl = self.sample_lens_redshifts(zs)
         # Sample velocity dispersions and axis ratios (note: these should be sampled together because the lensing probability depends on the combination of these two parameters)
         sigma, q = self.sample_velocity_dispersion_axis_ratio(zs)
 
         # Compute the Einstein radii
+        # print("sampling einstein radius...")
         theta_E = self.compute_einstein_radii(sigma, zl, zs)
 
         # Sample the axis ratio angle
+        # print("sampling axis ratio and angle...")
         axis_ratio_angle_phi = self.sample_axis_ratio_angle_phi(size=size)
 
         # Transform the axis ratio and the angle, to ellipticities e1, e2, using lenstronomy
         e1, e2 = phi_q2_ellipticity(axis_ratio_angle_phi, q)
 
         # Sample shears
+        # print("sampling external shears...")
         gamma1, gamma2 = self.sample_galaxy_shear(size=size)
 
         # Sample the spectral index of the mass density distribution
+        # print("sampling spectral index...")
         gamma = self.sample_gamma(size=size)
 
         # Compute the angular diameter distances
@@ -168,7 +188,8 @@ class LensGalaxyPopulation():
             return lens_parameters
         else:
             # Run iteratively until we have the right number of lensing parmaeters
-            return self.sample_lens_parameters(size=size, lens_parameters_input=lens_parameters)
+            #print("current sampled size", len(lens_parameters['zl']))
+            return self.sample_lens_parameters_routine(size=size, lens_parameters_input=lens_parameters)
         
     
     def sample_strongly_lensed_source_parameters(self, size=1000):
@@ -319,7 +340,7 @@ class LensGalaxyPopulation():
         '''
         self.gamma_mean = 2
         self.gamma_std = 0.2
-        return np.random.normal(loc = self.gamma_mean, scale = self.gamma_std, size = size) 
+        return np.random.normal(loc = self.gamma_mean, scale = self.gamma_std, size = size)
     
     def rejection_sample_lensing_probability(self, theta_E):
         '''
@@ -347,32 +368,8 @@ class LensGalaxyPopulation():
         # z to luminosity_distance (luminosity_distance) conversion
         Dc = self.z_to_Dc(zs)*1e-3  # 1e-3 converts Mpc to Gpc
         return( (Dc/62.2)**3 )
-
-    def get_caustics(self, theta_E, gamma, gamma1, gamma2, e1, e2):
-        '''
-        function to get the caustics of the lens
-        Input parameters:
-            theta_E : Einstein radius
-            gamma : spectral index of the density profile
-            gamma1 : shear component in the x-direction
-            gamma2 : shear component in the y-direction
-            e1 : ellipticity component in the x-direction
-            e2 : ellipticity component in the y-direction
-        Output parameters:
-            caustic_double : double caustic
-            caustic_diamond : diamond caustic
-        '''
-        # set up the lens model
-        kwargs_lens = [{'theta_E': theta_E, 'e1': e1, 'e2': e2, 'gamma': gamma, 'center_x': 0.0, 'center_y': 0.0}, 
-                       {'gamma1': gamma1, 'gamma2': gamma2, 'ra_0': 0, 'dec_0':0}]
-        # Get the lensing diamond and double caustics
-        caustic_double_points = caustics_epl_shear(kwargs_lens, return_which='double', maginf=-100)
-        caustic_diamond_points = caustics_epl_shear(kwargs_lens, return_which='caustic', maginf=-100)
-        caustic_double = Polygon(caustic_double_points.T)
-        caustic_diamond = Polygon(caustic_diamond_points.T)
-        return caustic_diamond, caustic_double
     
-    def get_image_properties(self, lens_parameters, lensModelList=['EPL_NUMBA', 'SHEAR'], npool=4):
+    def get_image_properties(self, lens_parameters, n_min_images=int(2), n_max_images=int(4), lensModelList=['EPL_NUMBA', 'SHEAR'], npool=4):
         '''
         Function to get the image properties
         Input parameters:
@@ -386,7 +383,6 @@ class LensGalaxyPopulation():
             lens_parameters : dictionary of lens parameters and image properties
                             e.g. lens_parameters.keys() = ['zs', 'zl', 'gamma1', 'gamma2', 'e1', 'e2', 'gamma', 'theta_E', 'x_image', 'y_image', 'theta_E_image', 'gamma_image', 'e1_image', 'e2_image', 'phi_image', 'caustic_diamond', 'caustic_double']
         '''
-        n_max_images     = max_images
         zs               = lens_parameters['zs']
         size             = len(zs)
         zl               = lens_parameters['zl']
@@ -398,10 +394,11 @@ class LensGalaxyPopulation():
         einstein_radius  = lens_parameters['theta_E']
         # Create the lens model list (note: can be a different lens model for different samples)
         lensModelList    = np.array(lensModelList)*np.ones((size,len(lensModelList)),dtype=object) 
-        
+        min_img_arr     = n_min_images*np.ones((size), dtype=int)
+
         # get image properties (with Multiprocessing)
         iterations = np.arange(size)
-        input_arguments = np.array([e1,e2,gamma,gamma1,gamma2,zl,zs,einstein_radius,iterations], dtype=object).T
+        input_arguments = np.array([min_img_arr,e1,e2,gamma,gamma1,gamma2,zl,zs,einstein_radius,iterations], dtype=object).T
         input_arguments = np.concatenate((input_arguments,lensModelList),axis=1)
         # Initialize the image positions and lens argument list here.
         x0_image_positions = np.ones((size, n_max_images))*np.nan
@@ -417,11 +414,17 @@ class LensGalaxyPopulation():
         weights = np.ones(size)*np.nan
         
         # Solve the lens equation
-        print('solving lens equations, started...')
+        print('solving lens equations...')
+        if n_min_images==2:
+            solve_lens_equation = mp.solve_lens_equation1
+        elif n_min_images>2:
+            solve_lens_equation = mp.solve_lens_equation2
+        else:
+            raise ValueError('n_min_images should be greater than 1')
         with Pool(processes=npool) as pool:
             # call the same function with different data in parallel
             # imap->retain order in the list, while map->doesn't
-            for result in tqdm(pool.imap(solve_lens_equation.solve_lens_equation,input_arguments), total=len(input_arguments), ncols= 100, disable=False): 
+            for result in tqdm(pool.imap(solve_lens_equation,input_arguments), total=len(input_arguments), ncols= 100, disable=False): 
                 #print(result)
                 '''
                 for i in tqdm(range(size)):
@@ -456,7 +459,6 @@ class LensGalaxyPopulation():
                 eta[iter_i]                     = eta_i
                 phi[iter_i]                     = phi_i
                 weights[iter_i]                  = weights_i
-        print('solving lens equations, ended...')   
         
         # time-delays: convert to positive values
         # time-delays will be relative to the first arrived signal of an lensed event
@@ -473,12 +475,12 @@ class LensGalaxyPopulation():
         image_type[determinants < 0] = 2
         
         # Return a dictionary with all of the lens information but also the BBH parameters from gw_param
-        image_parameters = {'n_images':n_images, 'x0_image_positions':x0_image_positions, 'x1_image_positions':x1_image_positions, 'magnifications':magnifications, 'time_delays':time_delays, 'traces':traces, 'determinants':determinants, 'image_type':image_type}
+        image_parameters = {'n_images':n_images, 'x0_image_positions':x0_image_positions, 'x1_image_positions':x1_image_positions, 'magnifications':magnifications, 'time_delays':time_delays, 'traces':traces, 'determinants':determinants, 'image_type':image_type, 'weights': weights}
         lens_parameters.update(image_parameters)
         
         return lens_parameters
 
-    def get_lensed_snrs(self, snr_calculator, lensed_param):
+    def get_lensed_snrs(self, snr_calculator, lensed_param, n_max_images=4):
         ''' 
         Function to calculate the signal to noise ratio for each image in each event.
         Input parameters:
@@ -502,7 +504,6 @@ class LensGalaxyPopulation():
         magnifications = lensed_param['magnifications']
         time_delays    = lensed_param['time_delays']
 
-        n_max_images   = max_images
         # Get the binary parameters
         number_of_lensed_events = len(magnifications)
         mass_1, mass_2, luminosity_distance, iota, psi, ra, dec, geocent_time, phase = \

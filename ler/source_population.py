@@ -12,10 +12,10 @@ from astropy import constants as const
 from gwcosmo import priors as p
 # for multiprocessing 
 # Import helper routines
-from helperroutines import rejection_sample
+from ler.helperroutines import rejection_sample
 
 class SourceGalaxyPopulationModel():
-    def __init__(self, z_min=0.0001, z_max=10):
+    def __init__(self, z_min=0., z_max=10.):
         '''
         Functions to create lookup tables for redshifts and distances
         1. Redshift to co-moving distance
@@ -60,7 +60,7 @@ class SourceGalaxyPopulationModel():
         self.differential_comoving_volume = interp1d(z, dVcdz, kind='linear', fill_value='extrapolate')
         return None
 
-    def sample_source_redshifts(self, size=1000, z_min=0, z_max=12):
+    def sample_source_redshifts(self, size=1000, z_min=0., z_max=12.):
         '''
         Function to sample source redshifts from the source galaxy population model
         Input parameters:
