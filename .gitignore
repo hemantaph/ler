@@ -1,9 +1,0 @@
-.ipynb_checkpoints
-*/.ipynb_checkpoints/*
-
-# ignore json
-*.json
-.json
-**.json
-
-.DS_Store
