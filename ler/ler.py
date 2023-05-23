@@ -223,8 +223,8 @@ class LeR():
         else:
             num_batches = int(nsamples/batch_size)+1
 
-        print("chosen batch size = {batch_size}. If you want to change batch size, self.batch_size = new_size")
-        print("There will be {num_batches} batche(s)")
+        print(f"chosen batch size = {batch_size}. If you want to change batch size, self.batch_size = new_size")
+        print(f"There will be {num_batches} batche(s)")
         num_batches = num_batches-1  # consideing couting from 0
         if nsamples > batch_size:
             frac_batches = nsamples-num_batches*batch_size
@@ -232,7 +232,7 @@ class LeR():
             frac_batches = nsamples
         track_batches = 0
         # ---------------------------------------------------#
-        print("Batch no. {track_batches}")
+        print(f"Batch no. {track_batches}")
         # get gw params
         print('sampling gw params...')
         gw_param = self.compact_binary_pop.sample_gw_parameters(
@@ -246,7 +246,7 @@ class LeR():
         gw_param_ = None
         for i in range(num_batches):
             track_batches += 1
-            print("Batch no. {}".format(track_batches))
+            print(f"Batch no. {track_batches}")
             print('sampling gw params...')
             gw_param_ = self.compact_binary_pop.sample_gw_parameters(
                 nsamples=batch_size)
@@ -313,11 +313,11 @@ class LeR():
         # Thus R = C0 <Theta(rho-rhoc)>
         c0 = self.compact_binary_pop.normalization_pdf_z
         total_rate_step = c0 * np.mean(idx_detectable)
-        print("total unlensed rate with step function: {total_rate_step}")
+        print(f"total unlensed rate with step function: {total_rate_step}")
 
         # with pdet
         total_rate_pdet = c0 * np.mean(pdet)
-        print("total unlensed rate with pdet function: {total_rate_pdet}")
+        print(f"total unlensed rate with pdet function: {total_rate_pdet}")
 
         return (total_rate_step, total_rate_pdet)
 
@@ -354,8 +354,8 @@ class LeR():
         else:
             num_batches = int(nsamples/batch_size)+1
 
-        print("chosen batch size = {batch_size}. If you want to change batch size, self.batch_size = new_size")
-        print("There will be {num_batches} batche(s)")
+        print(f"chosen batch size = {batch_size}. If you want to change batch size, self.batch_size = new_size")
+        print(f"There will be {num_batches} batche(s)")
         num_batches = num_batches-1  # consideing couting from 0
         if nsamples > batch_size:
             frac_batches = nsamples-num_batches*batch_size
@@ -364,7 +364,7 @@ class LeR():
 
         track_batches = 0
         # ---------------------------------------------------#
-        print("Batch no. {track_batches}")
+        print(f"Batch no. {track_batches}")
         lensed_param = self.lens_galaxy_pop.sample_lens_parameters(
             size=frac_batches)
         # now get (strongly lensed) image paramters along with lens parameters
@@ -382,7 +382,7 @@ class LeR():
         lensed_param_ = None
         for i in range(num_batches):
             track_batches += 1
-            print("Batch no. {track_batches}")
+            print(f"Batch no. {track_batches}")
             # try:
             lensed_param_ = self.lens_galaxy_pop.sample_lens_parameters(
                 size=batch_size)
@@ -486,11 +486,11 @@ class LeR():
         # Thus R = C0 <Theta(rho-rhoc)>
         c0 = self.lens_galaxy_pop.normalization_pdf_z
         total_rate_step = c0 * np.mean(snr_hit*weights)
-        print("total unlensed rate with step function: {total_rate_step}")
+        print(f"total unlensed rate with step function: {total_rate_step}")
 
         # with pdet
         total_rate_pdet = c0 * np.mean(pdet_combined*weights)
-        print("total unlensed rate with pdet function: {total_rate_pdet}")
+        print(f"total unlensed rate with pdet function: {total_rate_pdet}")
 
         return (total_rate_step, total_rate_pdet)
 
