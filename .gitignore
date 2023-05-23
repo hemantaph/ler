@@ -7,3 +7,6 @@
 **.json
 
 .DS_Store
+
+examples/interpolator_pickle/
+examples/interpolator_pickle/*

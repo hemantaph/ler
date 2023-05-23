@@ -54,7 +54,8 @@ def add_dictionaries_together(dictionary1, dictionary2):
 
 # Helper function for rejection sampling
 def rejection_sample(pdf, xmin, xmax, size=100):
-    ''' Helper function for rejection sampling from a pdf with maximum and minimum arguments.
+    '''
+    Helper function for rejection sampling from a pdf with maximum and minimum arguments.
     Input parameters:
         pdf: the pdf to sample from
         xmin: the minimum argument of the pdf
@@ -78,7 +79,6 @@ def rejection_sample(pdf, xmin, xmax, size=100):
     x_sample = np.array(x_sample).flatten()
     # Return the correct number of samples
     return x_sample[:size]
-
 
 # Helpelr function
 def combine_lens_parameter_dictionaries(lensed_parameters, lensed_parameters_draw, idx, n_images):
