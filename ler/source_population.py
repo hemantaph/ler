@@ -15,7 +15,7 @@ from gwcosmo import priors as p
 from ler.helperroutines import rejection_sample
 
 class SourceGalaxyPopulationModel():
-    def __init__(self, z_min=0., z_max=10.):
+    def __init__(self, z_min=0., z_max=10., event_type='popI_II'):
         '''
         Functions to create lookup tables for redshifts and distances
         1. Redshift to co-moving distance
@@ -24,6 +24,7 @@ class SourceGalaxyPopulationModel():
         Input parameters:
             z_min (float): minimum redshift of the source population
             z_max (float): maximum redshift of the source population
+            event_type (string): popI_II,BNS,popIII,primordialBBH
         Output parameters:
             None
         '''
@@ -33,6 +34,8 @@ class SourceGalaxyPopulationModel():
 
         # To find the normalization constant of the pdf p(z)
         # Define the merger-rate density function
+        self.merger_rate_density = getattr(self, 'merger_rate_density_'+event_type)
+        
         merger_rate_density_detector_frame = lambda z: self.merger_rate_density(z)/(1+z) 
         # Define the pdf p(z)
         pdf_unnormalized = lambda z: merger_rate_density_detector_frame(z) * self.differential_comoving_volume(z)
@@ -81,7 +84,7 @@ class SourceGalaxyPopulationModel():
         zs = rejection_sample(pdf, z_min, z_max, size=size)
         return zs
     
-    def merger_rate_density(self, zs, R0=23.9*1e-9, b2=1.6, b3=2.0, b4=30):
+    def merger_rate_density_popI_II(self, zs, R0=23.9*1e-9, b2=1.6, b3=2.0, b4=30):
         '''
         Function to compute the merger rate density
         Input parameters:
@@ -91,13 +94,28 @@ class SourceGalaxyPopulationModel():
             b3 (float)      : fitting paramters [default: 2.0]
             b4 (float)      : fitting paramters [default: 30]
         Output parameters:
-            rate_density (float/array): merger rate density
+            rate_density (float/array): merger rate density (Mpc^-3 yr^-1)
         '''
         rate_density = R0*(b4+1)*np.exp(b2*zs)/(b4+np.exp(b3*zs))
         return rate_density 
-
+    
+    def merger_rate_density_popIII(self, zs, a1=6.6*1e3*1e-9, a2=1.6, a3=2.0, a4=30):
+        '''
+        Function to compute the merger rate density
+        '''
+        rate_density = R0*(b4+1)*np.exp(b2*zs)/(b4+np.exp(b3*zs))
+        return rate_density
+    
+    def merger_rate_density_popIII(self, zs, a1=6.6*1e3*1e-9, a2=1.6, a3=2.0, a4=30):
+        '''
+        Function to compute the merger rate density
+        '''
+        rate_density = a1*np.exp(a2*zs)/(a4+np.exp(a3*zs))
+        return rate_density
+    
+    
 class CompactBinaryPopulation(SourceGalaxyPopulationModel):
-    def __init__(self, z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "StellarBBH"):
+    def __init__(self, z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II"):
         '''
         Daughter Class to generate a population of compact binaries
         Input parameters:
@@ -122,17 +140,17 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
                 print('WARNING: m_min is too low for neutron stars')
             if m_max>3.0:
                 print('WARNING: m_max is too high for neutron stars')
-        if event_type=="StellarBBH":
+        if event_type=="popI_II":
             # check the mass is for neutron stars
             if m_min<4.59:
-                print('WARNING: m_min is too low for stellar Black Holes')
+                print('WARNING: m_min is too low for popI/II BBHs')
             if m_max>86.22:
-                print('WARNING: m_max is too high for stellar Black Holes')
+                print('WARNING: m_max is too high for popI/II BBHs')
         
         # select which function to use according to event type
-        self.sample_gw_parameters = getattr(self, 'sample_'+event_type)
+        #self.sample_gw_parameters = getattr(self, 'sample_'+event_type)
 
-    def sample_StellarBBH(self, nsamples=1000, **kwargs):
+    def sample_gw_parameters(self, nsamples=1000, **kwargs):
         '''
         Function to sample BBH parameters from the source galaxy population model
         Input parameters:
