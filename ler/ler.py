@@ -13,8 +13,6 @@ from ler.source_population import CompactBinaryPopulation
 # Conversions from SI units to CGS units
 C = 299792458.
 G = 6.67408*1e-11
-Mo = 1.989*1e30
-Mpc = 3.086*1e22
 # Define the maximum number of images
 # ------------------------------------------------------------#
 
@@ -22,26 +20,50 @@ Mpc = 3.086*1e22
 
 
 class LeR():
-    '''Class to calculate both the rates of lensed and unlensed events'''
+    '''
+    Class to calculate both the rates of lensed and unlensed events
+    Example usage: 
+            # Ler initialization
+            ler = LeR(nsamples=100000, npool=int(4), z_min=0., z_max=10., batch_size=25000,
+                        snr_finder='gwsnr', m_min=4.59, m_max=86.22, 
+                        waveform_approximant='IMRPhenomD', 'min_lensed_images': 2)
+            Note: m_min, m_max are used for initializing the CompactBinaryPopulation class
+                  waveform_approximant is used for initializing the snr_calculator (gwsnr) class
+                  min_lensed_images is used for initializing the LensGalaxyPopulation class
+            # sampling unlensed parameters and rate calculation
+            unlensed_params = ler.unlensed_cbc_statistics()
+            unlensed_rate = ler.unlensed_rate()
+            # sampling lensed parameters
+            lensed_params = ler.lensed_cbc_statistics()
+            # sampling lensed parameters and rate calculation
+            lensed_params = ler.lensed_cbc_statistics()
+            # rate comparison
+            rate_comparison = ler.rate_comparison()
+    '''
 
-    def __init__(self, nsamples=1000, npool=int(4), z_min=0., z_max=10., batch_size=50000,
+    def __init__(self, nsamples=100000, npool=int(4), z_min=0., z_max=10., batch_size=25000,
                  snr_finder='gwsnr', **kwargs):
         '''
         class for rate calculation
         class initialization
         Input parameters:
-            npool: number of cores to use
-            z_min: minimum redshift
-            z_max: maximum redshift
-            m_min: minimum mass of the binary binary black hole
-            m_max: maximum mass of the binary binary black hole
-            event_type: type of event, either "BBH" or "BNS"
-            equal_mass: if True, the binary black holes will have equal masses
+            nsamples (int): number of samples for sampling
+            npool (int): number of cores to use
+            z_min (float): minimum redshift
+            z_max (float): maximum redshift
+            batch_size (int): batch size for SNR calculation
             snr_finder: if 'gwsnr', the SNR will be calculated using the gwsnr package
                         if 'custom', the SNR will be calculated using a custom function
             kwargs: keyword arguments
+                    Note: kwargs takes input for initializing the CompactBinaryPopulation class, 
+                        LensGalaxyPopulation class, snr_calculator (gwsnr) class
         Output parameters:
             None
+        Example usage: 
+            # Ler initialization
+            ler = LeR(nsamples=100000, npool=int(4), z_min=0., z_max=10., batch_size=25000,
+                        snr_finder='gwsnr', m_min=4.59, m_max=86.22, 
+                        waveform_approximant='IMRPhenomD', 'min_lensed_images': 2)
         '''
         self.z_min = z_min
         self.z_max = z_max
@@ -167,20 +189,21 @@ class LeR():
         '''
         function for creating lookup tables for fast calculation
         Intput Parameters:
-            z_min: minimum redshift
-            z_max: maximum redshift
+            z_min (float): minimum redshift
+            z_max (float): maximum redshift
         Output Parameters:
             None
         '''
         self.z_min = z_min
         self.z_max = z_max
-        self.gw_param = False          # this needed not repeat sampling
+        self.gw_param = False # this needed not repeat sampling
 
         # initialing cosmological functions for fast calculation through interpolation
         z = np.linspace(0, z_max, 500)  # red-shift
-        Dc = Planck18.comoving_distance(z).value  # co-moving distance in Mpc
-        luminosity_distance = Planck18.luminosity_distance(
-            z).value  # luminosity distance in Mpc
+        # co-moving distance in Mpc
+        Dc = Planck18.comoving_distance(z).value
+        # luminosity distance in Mpc
+        luminosity_distance = Planck18.luminosity_distance(z).value
         self.z_to_Dc = interp1d(z, Dc, kind='cubic')
         self.Dc_to_z = interp1d(Dc, z, kind='cubic')
         self.z_to_luminosity_distance = interp1d(
