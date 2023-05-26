@@ -8,8 +8,9 @@
 
 import os
 import sys
+import ler
 
-sys.path.insert(0, os.path.abspath("..")) 
+sys.path.insert(0, os.path.abspath("../ler/")) 
 
 project = 'ler'
 copyright = '2023, Phurailatpam Hemantakumar'
@@ -41,7 +42,7 @@ numpydoc_show_class_members = False
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
+html_static_path = []
 
 html_theme = "sphinx_rtd_theme"
 
@@ -50,3 +51,4 @@ autoapi_type = "python"
 autoapi_dirs = ["../ler/"]
 autoapi_add_toctree_entry = False
 autoapi_options = ["members", "show-inheritance", "show-module-summary"]
+#autoclass_content = 'both'

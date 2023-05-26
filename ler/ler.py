@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+"""
+Functions and objects related to the main ler .
+"""
 import json
 import contextlib
 import numpy as np
@@ -20,51 +24,119 @@ G = 6.67408*1e-11
 
 
 class LeR():
-    '''
-    Class to calculate both the rates of lensed and unlensed events
-    Example usage: 
-            # Ler initialization
-            ler = LeR(nsamples=100000, npool=int(4), z_min=0., z_max=10., batch_size=25000,
-                        snr_finder='gwsnr', m_min=4.59, m_max=86.22, 
-                        waveform_approximant='IMRPhenomD', 'min_lensed_images': 2)
-            Note: m_min, m_max are used for initializing the CompactBinaryPopulation class
-                  waveform_approximant is used for initializing the snr_calculator (gwsnr) class
-                  min_lensed_images is used for initializing the LensGalaxyPopulation class
-            # sampling unlensed parameters and rate calculation
-            unlensed_params = ler.unlensed_cbc_statistics()
-            unlensed_rate = ler.unlensed_rate()
-            # sampling lensed parameters
-            lensed_params = ler.lensed_cbc_statistics()
-            # sampling lensed parameters and rate calculation
-            lensed_params = ler.lensed_cbc_statistics()
-            # rate comparison
-            rate_comparison = ler.rate_comparison()
-    '''
+    """
+    Class to calculate both the rates of lensed and unlensed events. For input description, see the __init__ function.
+
+    
+    Attributes
+    ----------
+    z_min : float
+        minimum redshift
+    z_max : float
+        maximum redshift
+    gw_param : bool, dict
+        if False, the unlensed parameters will be sampled when unlened_rate() is called
+        if dict, gw_param will be used when unlened_rate() is called
+        gw_param is a dictionary of unlensed parameters
+        it will be populated when unlened_cbc_statistics() is called
+        gw_param.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time']
+    gw_param_detectable : bool, dict
+        if False, the detectable unlensed parameters will be sampled when rate_comparison() is called
+        if dict, gw_param_detectable will be used when rate_comparison() is called
+        gw_param_detectable is a dictionary of detectable unlensed parameters
+        it will be populated when unlensed_rate() is called
+        gw_param_detectable.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time']
+    lensed_param : bool, dict
+        if False, the lensed parameters will be sampled when lensed_rate() is called
+        if dict, lensed_param will be used when lensed_rate() is called
+        lensed_param is a dictionary of lensed parameters
+        it will be populated when lensed_cbc_statistics() is called
+        lensed_param.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time', 'lensed_images']
+    lensed_param_detectable : bool, dict
+        if False, the detectable lensed parameters will be sampled when rate_comparison() is called
+        if dict, lensed_param_detectable will be used when rate_comparison() is called
+        lensed_param_detectable is a dictionary of detectable lensed parameters
+        it will be populated when lensed_rate() is called
+        lensed_param_detectable.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time', 'lensed_images']
+    npool : int
+        number of cores to use
+    batch_size : int
+        batch size for SNR calculation
+    gw_param_sampler_dict : dict
+        dictionary of parameters for initializing the CompactBinaryPopulation class
+        CompactBinaryPopulation class is used for sampling unlensed parameters
+    lensed_param_sampler_dict : dict
+        dictionary of parameters for initializing the LensGalaxyPopulation class
+        LensGalaxyPopulation class is used for sampling lensed parameters
+    snr_finder: str
+        dictionary of parameters for initializing the snr_calculator (gwsnr) class
+        snr_calculator (gwsnr) class is used for SNR calculation with given parameters
+
+    Methods
+    ----------
+    unlensed_cbc_statistics()
+        returns unlensed parameters
+    unlensed_rate()
+        returns unlensed rate
+    lensed_cbc_statistics()
+        returns lensed parameters
+    lensed_rate()
+        returns lensed rate
+    rate_comparison()
+        returns rate comparison
+    """
 
     def __init__(self, nsamples=100000, npool=int(4), z_min=0., z_max=10., batch_size=25000,
                  snr_finder='gwsnr', **kwargs):
-        '''
-        class for rate calculation
-        class initialization
-        Input parameters:
-            nsamples (int): number of samples for sampling
-            npool (int): number of cores to use
-            z_min (float): minimum redshift
-            z_max (float): maximum redshift
-            batch_size (int): batch size for SNR calculation
-            snr_finder: if 'gwsnr', the SNR will be calculated using the gwsnr package
-                        if 'custom', the SNR will be calculated using a custom function
-            kwargs: keyword arguments
-                    Note: kwargs takes input for initializing the CompactBinaryPopulation class, 
-                        LensGalaxyPopulation class, snr_calculator (gwsnr) class
-        Output parameters:
-            None
-        Example usage: 
-            # Ler initialization
-            ler = LeR(nsamples=100000, npool=int(4), z_min=0., z_max=10., batch_size=25000,
-                        snr_finder='gwsnr', m_min=4.59, m_max=86.22, 
-                        waveform_approximant='IMRPhenomD', 'min_lensed_images': 2)
-        '''
+        """
+        class initialization for rate calculation.
+
+        Parameters
+        ----------
+        nsamples : int 
+            number of samples for sampling
+        npool : int 
+            number of cores to use
+        z_min : float
+            minimum redshift
+        z_max : float 
+            maximum redshift
+        batch_size : int 
+            batch size for SNR calculation
+        snr_finder : str 
+            if 'gwsnr', the SNR will be calculated using the gwsnr package
+            if 'custom', the SNR will be calculated using a custom function
+        kwargs : keyword arguments
+            Note : kwargs takes input for initializing the CompactBinaryPopulation class, LensGalaxyPopulation class, snr_calculator (gwsnr) class
+
+        Examples
+        ----------
+        - class initialization 
+        >>> from ler import LeR
+        >>> ler = LeR(nsamples=100000, npool=int(4), z_min=0., z_max=10., batch_size=25000, snr_finder='gwsnr', m_min=4.59, m_max=86.22, waveform_approximant='IMRPhenomD', min_lensed_images=2)
+        
+        Note: 
+            m_min, m_max are used for initializing the CompactBinaryPopulation class
+            waveform_approximant is used for initializing the snr_calculator (gwsnr) class
+            min_lensed_images is used for initializing the LensGalaxyPopulation class
+
+        - sampling unlensed parameters and rate calculation
+
+        >>> unlensed_params = ler_.unlensed_cbc_statistics()
+        >>> unlensed_rate = ler.unlensed_rate()
+
+        - sampling lensed parameters
+
+        >>> lensed_params = ler.lensed_cbc_statistics()
+
+        - sampling lensed parameters and rate calculation
+
+        >>> lensed_params = ler.lensed_cbc_statistics()
+
+        - rate comparison
+
+        >>> rate_comparison = ler.rate_comparison()
+        """
         self.z_min = z_min
         self.z_max = z_max
         self.gw_param = False          # this needed not to repeat sampling
@@ -133,11 +205,7 @@ class LeR():
 
     def store_ler_params(self):
         '''
-        function to store the parameters of the LER model
-        Input parameters:
-            None
-        Output parameters:
-            None
+        Function to store the parameters of the LER model.
         '''
         # store gw_param_sampler_dict, lensed_param_sampler_dict and snr_calculator_dict
         parameters_dict = {}
@@ -154,19 +222,24 @@ class LeR():
 
         return None
 
-    def gwsnr_intialization(self, kwargs_snr_function):
+    def gwsnr_intialization(self, kwargs_dict):
         '''
-        function for initializing the gwsnr package
-        Input parameters:
-            kwargs_snr_function: keyword arguments for the SNR function
-        Output Parameters:
+        Function for initializing the gwsnr package.
+
+        Parameters
+        ----------
+        kwargs_dict : 
+            keyword arguments for the SNR function
+
+        Returns
+        ----------
             snr_: the gwsnr object
-                    gwsnr object is used to calculate the SNR and pdet (probability of detection)
+                gwsnr object is used to calculate the SNR and pdet (probability of detection)
         '''
         gwsnr_param_dict = self.snr_calculator_dict
 
         keys_ = gwsnr_param_dict.keys()
-        for key, value in kwargs_snr_function.items():
+        for key, value in kwargs_dict.items():
             if key in keys_:
                 gwsnr_param_dict[key] = value
 
@@ -188,11 +261,11 @@ class LeR():
     def create_lookup_tables(self, z_min, z_max):
         '''
         function for creating lookup tables for fast calculation
-        Intput Parameters:
-            z_min (float): minimum redshift
-            z_max (float): maximum redshift
-        Output Parameters:
-            None
+
+        Parameters
+        ==========
+        z_min (float): minimum redshift
+        :param z_max: (float) maximum redshift
         '''
         self.z_min = z_min
         self.z_max = z_max
