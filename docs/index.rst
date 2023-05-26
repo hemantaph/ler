@@ -18,6 +18,5 @@ The code is available at: https://github.com/hemantaph/ler
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
-   installation
-   ler
+   
+   modules
