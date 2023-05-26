@@ -10,7 +10,7 @@ Welcome to ler's documentation!
    :maxdepth: 2
    :caption: Contents:
     
-    modules
+    ler
 
 
 Indices and tables
