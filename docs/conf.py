@@ -9,7 +9,8 @@
 import os
 import sys
 #sys.path.append("../ler/")
-#import ler
+sys.path.append("https://github.com/hemantaph/ler/tree/main/ler")
+import ler
 
 sys.path.insert(0, os.path.abspath("../ler/")) 
 
