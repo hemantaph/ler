@@ -5,3 +5,4 @@ ler
    :maxdepth: 4
 
    ler
+   setup

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -8,10 +10,6 @@
 
 import os
 import sys
-#sys.path.append("../ler/")
-#sys.path.append("https://github.com/hemantaph/ler/tree/main/ler")
-#import ler
-
 sys.path.insert(0, os.path.abspath("..")) 
 
 project = 'ler'
