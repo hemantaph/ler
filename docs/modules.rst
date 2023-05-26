@@ -1,4 +1,4 @@
-ler
+module
 ===
 
 .. toctree::

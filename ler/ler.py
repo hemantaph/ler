@@ -17,75 +17,66 @@ from ler.source_population import CompactBinaryPopulation
 # Conversions from SI units to CGS units
 C = 299792458.
 G = 6.67408*1e-11
-# Define the maximum number of images
-# ------------------------------------------------------------#
-
-# ------------------------------------------------------------#
 
 
 class LeR():
-    """
-    Class to calculate both the rates of lensed and unlensed events. For input description, see the __init__ function.
-
+    """Class to calculate both the rates of lensed and unlensed events. For initialization parameters, see :func:`~ler.ler.LeR.__init__` method.
     
     Attributes
     ----------
-    z_min : float
+    z_min : `float`
         minimum redshift
-    z_max : float
+    z_max : `float`
         maximum redshift
-    gw_param : bool, dict
+    gw_param : `bool`, `dict`
         if False, the unlensed parameters will be sampled when unlened_rate() is called
         if dict, gw_param will be used when unlened_rate() is called
         gw_param is a dictionary of unlensed parameters
         it will be populated when unlened_cbc_statistics() is called
         gw_param.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time']
-    gw_param_detectable : bool, dict
+    gw_param_detectable : `bool`, `dict`
         if False, the detectable unlensed parameters will be sampled when rate_comparison() is called
         if dict, gw_param_detectable will be used when rate_comparison() is called
         gw_param_detectable is a dictionary of detectable unlensed parameters
         it will be populated when unlensed_rate() is called
         gw_param_detectable.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time']
-    lensed_param : bool, dict
+    lensed_param : `bool`, `dict`
         if False, the lensed parameters will be sampled when lensed_rate() is called
         if dict, lensed_param will be used when lensed_rate() is called
         lensed_param is a dictionary of lensed parameters
         it will be populated when lensed_cbc_statistics() is called
         lensed_param.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time', 'lensed_images']
-    lensed_param_detectable : bool, dict
+    lensed_param_detectable : `bool`, `dict`
         if False, the detectable lensed parameters will be sampled when rate_comparison() is called
         if dict, lensed_param_detectable will be used when rate_comparison() is called
         lensed_param_detectable is a dictionary of detectable lensed parameters
         it will be populated when lensed_rate() is called
         lensed_param_detectable.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time', 'lensed_images']
-    npool : int
+    npool : `int`
         number of cores to use
-    batch_size : int
+    batch_size : `int`
         batch size for SNR calculation
-    gw_param_sampler_dict : dict
+    gw_param_sampler_dict : `dict`
         dictionary of parameters for initializing the CompactBinaryPopulation class
         CompactBinaryPopulation class is used for sampling unlensed parameters
-    lensed_param_sampler_dict : dict
+        For details see :func:`~ler.ler.LeR.unlensed_cbc_statistics` method.
+    lensed_param_sampler_dict : `dict`
         dictionary of parameters for initializing the LensGalaxyPopulation class
         LensGalaxyPopulation class is used for sampling lensed parameters
-    snr_finder: str
-        dictionary of parameters for initializing the snr_calculator (gwsnr) class
+        For details see :func:`~ler.ler.LeR.lensed_cbc_statistics` method.
+    snr_calculator_dict : `str`
+        dictionary of parameters for initializing the snr_calculator (`gwsnr <https://github.com/hemantaph/gwsnr/>`_) class
         snr_calculator (gwsnr) class is used for SNR calculation with given parameters
+        For details see :func:`~ler.ler.LeR.gwsnr_intialization` method.
 
     Methods
     ----------
-    unlensed_cbc_statistics()
-        returns unlensed parameters
-    unlensed_rate()
-        returns unlensed rate
-    lensed_cbc_statistics()
-        returns lensed parameters
-    lensed_rate()
-        returns lensed rate
-    rate_comparison()
-        returns rate comparison
-    """
+    unlensed_cbc_statistics(nsamples,jsonfile,**kwargs)
+        returns unlensed parameters.
 
+
+    """
+    
     def __init__(self, nsamples=100000, npool=int(4), z_min=0., z_max=10., batch_size=25000,
                  snr_finder='gwsnr', **kwargs):
         """
@@ -93,50 +84,120 @@ class LeR():
 
         Parameters
         ----------
-        nsamples : int 
-            number of samples for sampling
-        npool : int 
-            number of cores to use
-        z_min : float
-            minimum redshift
-        z_max : float 
-            maximum redshift
-        batch_size : int 
-            batch size for SNR calculation
-        snr_finder : str 
-            if 'gwsnr', the SNR will be calculated using the gwsnr package
-            if 'custom', the SNR will be calculated using a custom function
-        kwargs : keyword arguments
-            Note : kwargs takes input for initializing the CompactBinaryPopulation class, LensGalaxyPopulation class, snr_calculator (gwsnr) class
+        nsamples : `int` 
+            number of samples for sampling.
+        npool : `int` 
+            number of cores to use.
+        z_min : `float`
+            minimum redshift.
+        z_max : `float` 
+            maximum redshift.
+        batch_size : `int` 
+            batch size for SNR calculation.
+        snr_finder : `str` 
+            if 'gwsnr', the SNR will be calculated using the gwsnr package.
+            if 'custom', the SNR will be calculated using a custom function.
+        kwargs : `keyword arguments`
+            Note : kwargs takes input for initializing the ``CompactBinaryPopulation`` class, ``LensGalaxyPopulation`` class, ``snr_calculator`` (``gwsnr``) class.
+            
+        See also
+        --------
+        unlensed_cbc_statistics
+        unlensed_rate
+        lensed_cbc_statistics
+        lensed_rate
+        rate_comparison
 
         Examples
-        ----------
+        --------
         - class initialization 
-        >>> from ler import LeR
-        >>> ler = LeR(nsamples=100000, npool=int(4), z_min=0., z_max=10., batch_size=25000, snr_finder='gwsnr', m_min=4.59, m_max=86.22, waveform_approximant='IMRPhenomD', min_lensed_images=2)
+        - ``ler`` needs `gwsnr <https://github.com/hemantaph/gwsnr/>`_.
+        - generation of ``gwsnr`` snr interpolator will take time at the first initialization. The interpolator will be stored in the working dir:
         
-        Note: 
-            m_min, m_max are used for initializing the CompactBinaryPopulation class
-            waveform_approximant is used for initializing the snr_calculator (gwsnr) class
-            min_lensed_images is used for initializing the LensGalaxyPopulation class
+        >>> from ler import LeR
+        
+        
+        >>> ler_ = LeR(nsamples=100000, npool=int(4), z_min=0., z_max=10., batch_size=25000, snr_finder='gwsnr', m_min=4.59, m_max=86.22, waveform_approximant='IMRPhenomD', min_lensed_images=2)
+        Given: IMR waveform
+        psds not given. Choosing bilby's default psds
+        getting stored interpolator...
+        In case if you need regeneration of interpolator of the given gwsnr param, please delete this file, ./interpolator_pickle/halfSNR_dict_0.pickle
+        
+        Notes
+            ``m_min``, ``m_max`` were used for initializing the ``CompactBinaryPopulation`` class
+            ``waveform_approximant`` was used for initializing the ``snr_calculator`` (``gwsnr``) class
+            ``min_lensed_images`` was used for initializing the ``LensGalaxyPopulation`` class
 
         - sampling unlensed parameters and rate calculation
 
         >>> unlensed_params = ler_.unlensed_cbc_statistics()
-        >>> unlensed_rate = ler.unlensed_rate()
-
-        - sampling lensed parameters
-
-        >>> lensed_params = ler.lensed_cbc_statistics()
+        chosen batch size = 25000. If you want to change batch size, self.batch_size = new_size
+        There will be 4 batche(s)
+        Batch no. 0
+        sampling gw params...
+        calculating snrs...
+        Batch no. 1
+        sampling gw params...
+        calculating snrs...
+        Batch no. 2
+        sampling gw params...
+        calculating snrs...
+        Batch no. 3
+        sampling gw params...
+        calculating snrs...
+        
+        >>> unlensed_rate = ler_.unlensed_rate()
+        sample size will be taken as that gw_param, size= 100000
+        total unlensed rate with step function: 691.7466536616631
+        total unlensed rate with pdet function: 758.4552399902464
 
         - sampling lensed parameters and rate calculation
 
-        >>> lensed_params = ler.lensed_cbc_statistics()
+        >>> lensed_params = ler_.lensed_cbc_statistics()
+        chosen batch size = 25000. If you want to change batch size, self.batch_size = new_size
+        There will be 4 batche(s)
+        Batch no. 0
+        sampling PEMD lens galaxy (with external shear) parameters...
+        solving lens equations...
+        100%|████████████████████████████████████████████████████████| 25000/25000 [01:17<00:00, 322.29it/s]
+        calculating snrs...
+        Batch no. 1
+        sampling PEMD lens galaxy (with external shear) parameters...
+        solving lens equations...
+        100%|███████████████████████████████████████████████████████| 25000/25000 [00:19<00:00, 1263.95it/s]
+        calculating snrs...
+        Batch no. 2
+        sampling PEMD lens galaxy (with external shear) parameters...
+        solving lens equations...
+        100%|███████████████████████████████████████████████████████| 25000/25000 [00:19<00:00, 1291.94it/s]
+        calculating snrs...
+        Batch no. 3
+        sampling PEMD lens galaxy (with external shear) parameters...
+        solving lens equations...
+        100%|███████████████████████████████████████████████████████| 25000/25000 [00:19<00:00, 1284.07it/s]
+        calculating snrs...
+
+        >>> lensed_params = ler_.lensed_rate()
+        already sampled lensed_param found.
+        sample size will be taken as that lensed_param, size= 100000
+        total unlensed rate with step function: 0.5272539292788521
+        total unlensed rate with pdet function: 0.515808608540372
 
         - rate comparison
 
-        >>> rate_comparison = ler.rate_comparison()
+        >>> rate_comparison = ler_.rate_comparison()
+        already sampled gw_param found.
+        sample size will be taken as that gw_param, size= 100000
+        total unlensed rate with step function: 691.7466536616631
+        total unlensed rate with pdet function: 758.4552399902464
+        already sampled lensed_param found.
+        sample size will be taken as that lensed_param, size= 100000
+        total unlensed rate with step function: 0.5272539292788521
+        total unlensed rate with pdet function: 0.515808608540372
+        unlensed/lensed rate ratio =  (1311.9800825530021, 1470.4198949616455)
+        
         """
+
         self.z_min = z_min
         self.z_max = z_max
         self.gw_param = False          # this needed not to repeat sampling
@@ -205,7 +266,7 @@ class LeR():
 
     def store_ler_params(self):
         '''
-        Function to store the parameters of the LER model.
+        Function to store the parameters of the LER model. This is useful for reproducing the results.
         '''
         # store gw_param_sampler_dict, lensed_param_sampler_dict and snr_calculator_dict
         parameters_dict = {}
@@ -223,19 +284,42 @@ class LeR():
         return None
 
     def gwsnr_intialization(self, kwargs_dict):
-        '''
-        Function for initializing the gwsnr package.
-
+        """
+        Function for initializing the `gwsnr <https://github.com/hemantaph/gwsnr/>`_ package.
+        
         Parameters
         ----------
-        kwargs_dict : 
+        kwargs_dict : 'dict'
             keyword arguments for the SNR function
+            kwargs_dict.keys() \n
+            ``nsamples_mtot`` : `int`
+                nsamples_mtot = 200 (recommended for accurate results)
+            ``nsamples_mass_ratio`` : `int`
+                nsamples_mass_ratio = 500 (recommended for accurate results)
+            ``sampling_frequency`` : `float`
+                sampling_frequency = 4096. (recommended for accurate results)
+            ``waveform_approximant`` : `str`
+                waveform_approximant = "IMRPhenomD" (for BBH) or "TaylorF2" (for BNS)
+                if you want to use other approximants, please set ``snr_type`` = 'inner_product'
+            ``minimum_frequency`` : `float`
+                minimum_frequency = 20. (for O3 and O4 runs) or 10. (for 3G detectors)
+            ``snr_type`` : `str`
+                snr_type = 'interpolation' (for fast results) or 'inner_product' (for bilby like results)
+            ``waveform_inspiral_must_be_above_fmin`` : `bool`
+                False if dont want minimum frequency cut-off as higher mass BBH can merger below that frequency.
+            ``psds`` : `bool` or `dict` or `str` (txt file)
+                e.g. For O4 design sensitivity \n
+                    psds = {'L1':'aLIGOaLIGODesignSensitivityT1800044',\n
+                    'H1':'aLIGOaLIGODesignSensitivityT1800044',\n
+                    'V1':'AdvVirgo'}
+            ``psd_file`` : `bool`
+                psd_file = False (if ASD) or True (if PSD file)
 
         Returns
         ----------
-            snr_: the gwsnr object
-                gwsnr object is used to calculate the SNR and pdet (probability of detection)
-        '''
+        snr_ : `the gwsnr object`
+            gwsnr object is used to calculate the SNR and pdet (probability of detection)
+        """
         gwsnr_param_dict = self.snr_calculator_dict
 
         keys_ = gwsnr_param_dict.keys()
@@ -259,14 +343,20 @@ class LeR():
         return snr_
 
     def create_lookup_tables(self, z_min, z_max):
-        '''
-        function for creating lookup tables for fast calculation
+        """
+        To creating lookup tables for fast calculation for the following conversion operations, 
+
+        #. redshift to co-moving distance.
+        #. co-moving distance to redshift.
+        #. redshift to luminosity distance.
 
         Parameters
-        ==========
-        z_min (float): minimum redshift
-        :param z_max: (float) maximum redshift
-        '''
+        ----------
+        z_min : `float` 
+            minimum redshift.
+        z_max : `float`
+            maximum redshift.
+        """
         self.z_min = z_min
         self.z_max = z_max
         self.gw_param = False # this needed not repeat sampling
@@ -295,17 +385,37 @@ class LeR():
             z, differential_comoving_volume, kind='cubic')
 
     def unlensed_cbc_statistics(self, nsamples=False, jsonfile=True, **kwargs):
-        '''
-        function to generate unlensed GW source parameters
-        Intput Parameters:
-            nsamples: number of samples
-            snr_threshold: snr threshold of detection
-            jsonfile: if True, store all gravitational waves source parameters in json file 
-                        (for all sources, detected and undetected)
-            kwargs: if new paramteres are provided, it will be used for sampling source parameters
-        Output Parameters:
-            unlensed_gw_params: dictionary of unlensed GW source parameters
-        '''
+        """
+        Function to generate unlensed GW source parameters.
+
+        Parameters
+        ----------
+        nsamples : `int`
+            number of samples.
+        jsonfile : `bool`
+            if True, store all gravitational waves source parameters in json file \n
+            (for all sources, detected and undetected).
+        kwargs : `dict`
+            if new paramteres are provided, it will be used for sampling source parameters.
+            Following parameters can be provided, \n
+            ``m_min`` : `float`
+                minimum mass of the compact binary (single).
+            ``m_max`` : `float`
+                maximum mass of the compact binary (single).
+            ``event_type`` : `str`
+                event_type = 'popI_II' etc.
+            ``model_pars_gwcosmo`` : `dict`
+                model_pars_gwcosmo = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82,\n
+                'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08,\n
+                'mu_g': 33.07, 'sigma_g': 5.69}}
+        
+        Returns
+        ----------
+        unlensed_gw_params : `dict`
+            dictionary of unlensed GW source parameters.
+            unlensed_gw_params.keys() = ['m1', 'm2', 'z', 'Dc', 'Dl', 'Dl_obs', 'snr', 'pdet', 'event_type']
+
+        """
         batch_size = self.batch_size
         # gw parameter sampling
         if nsamples == False:
@@ -366,16 +476,31 @@ class LeR():
         return gw_param
 
     def unlensed_rate(self, size=False, snr_threshold=8., jsonfile=True):
-        '''
-        function to calculate unlensed merger rate
-        Intput Parameters:
-            size: number of samples
-            snr_threshold: threshold for detection signal to noise ratio
-            jsonfile: if True, store all gravitational waves source parameters in json file 
-                        (for detected sources)
-        Output Parameters:
-            unlensed_rate: unlensed merger rate in yr^-1
-        '''
+        """
+        Function to calculate unlensed merger rate. 
+
+        .. math::
+            R_U = \\mathcal{N}^U\\int dz_s R_o^U(z_s)\\bigg\\{\\Theta[\\rho(z_s,\\theta)-\\rho_{th}] P(\\theta) d\\theta \\bigg\\}
+
+        - where :math:`\\mathcal{N}^U` is the normalization factor of the unlensed merger rate distribution wrt redshift.
+
+        Parameters
+        ----------
+        size : `int`
+            number of samples.
+        snr_threshold : `float`
+            threshold for detection signal to noise ratio.
+            e.g. snr_threshold = 8.
+        jsonfile : `bool`
+            if True, store all gravitational waves source parameters in json file \n
+            (for detected sources).
+
+        Returns
+        ----------
+        unlensed_rate : `float`
+            unlensed merger rate in a year.
+        """
+
         if self.gw_param == False:
             # sample the source parameters
             print('gw_param not sampled beforehand. Sampling now...')
@@ -427,7 +552,7 @@ class LeR():
                         (both for detected and undetected sources)
             **kwargs: if new parameters are provided, it will be used for sampling
         Output Parameters:
-            lensed_param: dictionary of lensed GW source parameters, lens parameters and image parameters
+            lensed_param: `dict`ionary of lensed GW source parameters, lens parameters and image parameters
         '''
 
         lens_sampler_dict = self.lensed_param_sampler_dict
@@ -603,7 +728,7 @@ class LeR():
                                 if False, no value is kept as 0.
             lenstype (str): lens type, 'I' or 'II'  
         Output Parameters:
-            lensed_param (dict): dictionary of lensed parameters
+            lensed_param (dict): `dict`ionary of lensed parameters
         '''
         try:
             size = len(self.lensed_param['zs'])

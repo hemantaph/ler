@@ -1,18 +1,24 @@
-ler package
+ler
 ===========
 
-Submodules
-----------
+ler.ler
+--------------
 
-ler.helperroutines module
--------------------------
+.. automodule:: ler.ler
+   :members:
+   :special-members: __init__
+   :undoc-members:
+   :show-inheritance:
+   
+ler.source\_population
+-----------------------------
 
-.. automodule:: ler.helperroutines
+.. automodule:: ler.source_population
    :members:
    :undoc-members:
    :show-inheritance:
-
-ler.lens\_galaxy\_population module
+   
+ler.lens\_galaxy\_population
 -----------------------------------
 
 .. automodule:: ler.lens_galaxy_population
@@ -20,34 +26,27 @@ ler.lens\_galaxy\_population module
    :undoc-members:
    :show-inheritance:
 
-ler.ler module
---------------
-
-.. automodule:: ler.ler
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-ler.multiprocessing\_routine module
+ler.multiprocessing\_routine
 -----------------------------------
 
 .. automodule:: ler.multiprocessing_routine
    :members:
    :undoc-members:
    :show-inheritance:
+   
+ler.helperroutines
+-------------------------
 
-ler.source\_population module
------------------------------
-
-.. automodule:: ler.source_population
+.. automodule:: ler.helperroutines
    :members:
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
+   
+ler.docstringtest
+--------------
 
-.. automodule:: ler
+.. automodule:: ler.docstringtest
    :members:
    :undoc-members:
    :show-inheritance:
