@@ -43,3 +43,11 @@ ler.helperroutines module
    :members:
    :undoc-members:
    :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: ler
+   :members:
+   :undoc-members:
+   :show-inheritance:
