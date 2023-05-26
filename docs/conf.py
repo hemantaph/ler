@@ -37,7 +37,7 @@ extensions = [
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.ipynb_checkpoints','.ipynb']
 numpydoc_show_class_members = False
-
+autodoc_member_order = 'bysource'
 
 
 # -- Options for HTML output -------------------------------------------------
