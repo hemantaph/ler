@@ -6,6 +6,10 @@
 Welcome to ler's documentation!
 ===============================
 
+.. autoclass:: ler.LeR
+   :members:
+   :special-members: __init__
+   
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
