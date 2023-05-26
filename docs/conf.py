@@ -12,7 +12,7 @@ import sys
 #sys.path.append("https://github.com/hemantaph/ler/tree/main/ler")
 #import ler
 
-sys.path.insert(0, os.path.abspath("../ler/")) 
+sys.path.insert(0, os.path.abspath("..")) 
 
 project = 'ler'
 copyright = '2023, Phurailatpam Hemantakumar'
