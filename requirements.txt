@@ -5,3 +5,5 @@ numpydoc>=1.5
 sphinx-tabs>=3.4
 autoapi>=2.0
 sphinx-autoapi>=2.1
+ler>=0.1.4
+numpy>=1.23.5
