@@ -4,6 +4,14 @@ ler package
 Submodules
 ----------
 
+ler.docstringtest module
+------------------------
+
+.. automodule:: ler.docstringtest
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 ler.helperroutines module
 -------------------------
 
