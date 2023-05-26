@@ -5,10 +5,6 @@
 Welcome to ler's documentation!
 ===============================
 
-======
-ler
-======
-
 ``ler`` (/ˈɛlɚ/): Lensed (or unlesed) Event (compact-binaries) Rate calculator
 
 ``ler`` is gravitational waves from lensed/unlensed events rate calculator 
