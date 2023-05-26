@@ -6,14 +6,3 @@ sphinx-tabs>=3.4
 autoapi>=2.0
 sphinx-autoapi>=2.1
 setuptools>=61.1.0
-numpy>=1.18
-numba==0.56.4
-bilby>=1.0.2  
-pycbc>=2.0.6
-gwsnr>=0.1
-scipy>=1.10
-lenstronomy>=1.10.4
-astropy>=5.1
-tqdm>=4.64.1
-pointpats>=2.3
-shapely>=2.0.1
