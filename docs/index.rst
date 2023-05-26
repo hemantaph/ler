@@ -20,7 +20,7 @@ The code is available at: https://github.com/hemantaph/ler
    :caption: Contents:
 
    installation
-   ler
+   modules
 
 .. toctree::
    :maxdepth: 2
