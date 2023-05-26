@@ -32,3 +32,10 @@ The code is available at: https://github.com/hemantaph/ler
    resources/rate_comparision
    resources/event_selection
    resources/third_gen_detector
+   
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
