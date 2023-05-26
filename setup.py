@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
 setup(name='ler',
-      version='0.1.4',
+      version='0.1.5',
       description='Lensing Rates',
       author='Hemantakumar',
       license="MIT",
