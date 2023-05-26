@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 .. ler documentation master file, created by
-   sphinx-quickstart on Sat May 27 05:37:34 2023.
+   sphinx-quickstart on Sat May 27 06:22:33 2023.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
@@ -11,7 +10,7 @@ Welcome to ler's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-    modules
+
 
 Indices and tables
 ==================

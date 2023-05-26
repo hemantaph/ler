@@ -8,9 +8,9 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath("..")) 
+sys.path.insert(0, os.path.abspath("../..")) 
 
-import ler
+import ler.ler
 
 project = 'ler'
 copyright = '2023, hemanta'
@@ -46,4 +46,3 @@ html_static_path = []
 
 html_theme = "sphinx_rtd_theme"
 html_static_path = ['_static']
-
