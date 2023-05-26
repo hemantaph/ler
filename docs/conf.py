@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -12,10 +10,12 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath("..")) 
 
+import ler
+
 project = 'ler'
-copyright = '2023, Phurailatpam Hemantakumar'
-author = 'Phurailatpam Hemantakumar'
-release = '0.1.3'
+copyright = '2023, hemanta'
+author = 'hemanta'
+release = '1.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -29,7 +29,6 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.inheritance_diagram",
     "sphinx_tabs.tabs",
-    "autoapi.extension",
 ]
 
 templates_path = ['_templates']
@@ -46,10 +45,5 @@ html_theme = 'sphinx_rtd_theme'
 html_static_path = []
 
 html_theme = "sphinx_rtd_theme"
+html_static_path = ['_static']
 
-# -- Configure autoapi -------------------------------------------------------
-autoapi_type = "python"
-autoapi_dirs = ["../ler/"]
-autoapi_add_toctree_entry = False
-autoapi_options = ["members", "show-inheritance", "show-module-summary"]
-#autoclass_content = 'both'
