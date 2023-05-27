@@ -49,3 +49,4 @@ autoapi_dirs = [".."]
 autoapi_add_toctree_entry = False
 autoapi_options = ["members", "show-inheritance", "show-module-summary"]
 
+print(sys.executable)
