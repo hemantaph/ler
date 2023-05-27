@@ -5,10 +5,9 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-
 import os
 import sys
-sys.path.insert(0, os.path.abspath(".")) 
+sys.path.insert(0, os.path.abspath("..")) 
 
 project = 'ler'
 copyright = '2023, Phurailatpam Hemantakumar'
@@ -32,15 +31,15 @@ extensions = [
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.ipynb_checkpoints','.ipynb']
-numpydoc_show_class_members = False
-#autodoc_member_order = 'bysource'
+
+autodoc_member_order = 'bysource'
 
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
+html_static_path = []
 
 html_theme = "sphinx_rtd_theme"
 
