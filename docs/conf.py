@@ -32,7 +32,7 @@ extensions = [
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.ipynb_checkpoints','.ipynb']
 numpydoc_show_class_members = False
-#autodoc_member_order = 'bysource'
+autodoc_member_order = 'bysource'
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -48,3 +48,4 @@ autoapi_type = "python"
 autoapi_dirs = ["../ler/"]
 autoapi_add_toctree_entry = False
 autoapi_options = ["members", "show-inheritance", "show-module-summary"]
+
