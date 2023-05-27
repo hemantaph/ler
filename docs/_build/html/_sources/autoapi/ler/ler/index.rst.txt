@@ -1,0 +1,628 @@
+:py:mod:`ler.ler`
+=================
+
+.. py:module:: ler.ler
+
+.. autoapi-nested-parse::
+
+   Functions and objects related to the main ler .
+
+   ..
+       !! processed by numpydoc !!
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   ler.ler.LeR
+   ler.ler.NumpyEncoder
+
+
+
+
+.. py:class:: LeR(nsamples=100000, npool=int(4), z_min=0.0, z_max=10.0, batch_size=25000, snr_finder='gwsnr', **kwargs)
+
+   
+   Class to calculate both the rates of lensed and unlensed events. For initialization parameters, see :func:`~ler.ler.LeR.__init__` method.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   :Attributes:
+
+       **z_min** : `float`
+           minimum redshift
+
+       **z_max** : `float`
+           maximum redshift
+
+       **gw_param** : `bool`, `dict`
+           if False, the unlensed parameters will be sampled when unlened_rate() is called
+           if dict, gw_param will be used when unlened_rate() is called
+           gw_param is a dictionary of unlensed parameters
+           it will be populated when unlened_cbc_statistics() is called
+           gw_param.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time']
+
+       **gw_param_detectable** : `bool`, `dict`
+           if False, the detectable unlensed parameters will be sampled when rate_comparison() is called
+           if dict, gw_param_detectable will be used when rate_comparison() is called
+           gw_param_detectable is a dictionary of detectable unlensed parameters
+           it will be populated when unlensed_rate() is called
+           gw_param_detectable.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time']
+
+       **lensed_param** : `bool`, `dict`
+           if False, the lensed parameters will be sampled when lensed_rate() is called
+           if dict, lensed_param will be used when lensed_rate() is called
+           lensed_param is a dictionary of lensed parameters
+           it will be populated when lensed_cbc_statistics() is called
+           lensed_param.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time', 'lensed_images']
+
+       **lensed_param_detectable** : `bool`, `dict`
+           if False, the detectable lensed parameters will be sampled when rate_comparison() is called
+           if dict, lensed_param_detectable will be used when rate_comparison() is called
+           lensed_param_detectable is a dictionary of detectable lensed parameters
+           it will be populated when lensed_rate() is called
+           lensed_param_detectable.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time', 'lensed_images']
+
+       **npool** : `int`
+           number of cores to use
+
+       **batch_size** : `int`
+           batch size for SNR calculation
+
+       **gw_param_sampler_dict** : `dict`
+           dictionary of parameters for initializing the CompactBinaryPopulation class
+           CompactBinaryPopulation class is used for sampling unlensed parameters
+           For details see :func:`~ler.ler.LeR.unlensed_cbc_statistics` method.
+
+       **lensed_param_sampler_dict** : `dict`
+           dictionary of parameters for initializing the LensGalaxyPopulation class
+           LensGalaxyPopulation class is used for sampling lensed parameters
+           For details see :func:`~ler.ler.LeR.lensed_cbc_statistics` method.
+
+       **snr_calculator_dict** : `str`
+           dictionary of parameters for initializing the snr_calculator (`gwsnr <https://github.com/hemantaph/gwsnr/>`_) class
+           snr_calculator (gwsnr) class is used for SNR calculation with given parameters
+           For details see :func:`~ler.ler.LeR.gwsnr_intialization` method.
+
+   .. rubric:: Methods
+
+
+
+   =======================================================  ==========
+   **unlensed_cbc_statistics(nsamples,jsonfile,**kwargs)**  returns unlensed parameters.  
+   =======================================================  ==========
+
+   ..
+       !! processed by numpydoc !!
+   .. py:method:: store_ler_params()
+
+      
+      Function to store the parameters of the LER model. This is useful for reproducing the results.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: gwsnr_intialization(kwargs_dict)
+
+      
+      Function for initializing the `gwsnr <https://github.com/hemantaph/gwsnr/>`_ package.
+
+
+      :Parameters:
+
+          **kwargs_dict** : 'dict'
+              keyword arguments for the SNR function
+              kwargs_dict.keys() 
+              
+              ``nsamples_mtot`` : `int`
+                  nsamples_mtot = 200 (recommended for accurate results)
+              ``nsamples_mass_ratio`` : `int`
+                  nsamples_mass_ratio = 500 (recommended for accurate results)
+              ``sampling_frequency`` : `float`
+                  sampling_frequency = 4096. (recommended for accurate results)
+              ``waveform_approximant`` : `str`
+                  waveform_approximant = "IMRPhenomD" (for BBH) or "TaylorF2" (for BNS)
+                  if you want to use other approximants, please set ``snr_type`` = 'inner_product'
+              ``minimum_frequency`` : `float`
+                  minimum_frequency = 20. (for O3 and O4 runs) or 10. (for 3G detectors)
+              ``snr_type`` : `str`
+                  snr_type = 'interpolation' (for fast results) or 'inner_product' (for bilby like results)
+              ``waveform_inspiral_must_be_above_fmin`` : `bool`
+                  False if dont want minimum frequency cut-off as higher mass BBH can merger below that frequency.
+              ``psds`` : `bool` or `dict` or `str` (txt file)
+                  e.g. For O4 design sensitivity 
+              
+                      psds = {'L1':'aLIGOaLIGODesignSensitivityT1800044',
+              
+                      'H1':'aLIGOaLIGODesignSensitivityT1800044',
+              
+                      'V1':'AdvVirgo'}
+              ``psd_file`` : `bool`
+                  psd_file = False (if ASD) or True (if PSD file)
+
+      :Returns:
+
+          **snr_** : `the gwsnr object`
+              gwsnr object is used to calculate the SNR and pdet (probability of detection)
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: create_lookup_tables(z_min, z_max)
+
+      
+      To creating lookup tables for fast calculation for the following conversion operations, 
+
+      #. redshift to co-moving distance.
+      #. co-moving distance to redshift.
+      #. redshift to luminosity distance.
+
+      :Parameters:
+
+          **z_min** : `float`
+              minimum redshift.
+
+          **z_max** : `float`
+              maximum redshift.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: unlensed_cbc_statistics(nsamples=False, jsonfile=True, **kwargs)
+
+      
+      Function to generate unlensed GW source parameters.
+
+
+      :Parameters:
+
+          **nsamples** : `int`
+              number of samples.
+
+          **jsonfile** : `bool`
+              if True, store all gravitational waves source parameters in json file 
+              
+              (for all sources, detected and undetected).
+
+          **kwargs** : `dict`
+              if new paramteres are provided, it will be used for sampling source parameters.
+              Following parameters can be provided, 
+              
+              ``m_min`` : `float`
+                  minimum mass of the compact binary (single).
+              ``m_max`` : `float`
+                  maximum mass of the compact binary (single).
+              ``event_type`` : `str`
+                  event_type = 'popI_II' etc.
+              ``model_pars_gwcosmo`` : `dict`
+                  model_pars_gwcosmo = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82,
+              
+                  'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08,
+              
+                  'mu_g': 33.07, 'sigma_g': 5.69}}
+
+      :Returns:
+
+          **unlensed_gw_params** : `dict`
+              dictionary of unlensed GW source parameters.
+              unlensed_gw_params.keys() = ['m1', 'm2', 'z', 'Dc', 'Dl', 'Dl_obs', 'snr', 'pdet', 'event_type']
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: unlensed_rate(size=False, snr_threshold=8.0, jsonfile=True)
+
+      
+      Function to calculate unlensed merger rate. 
+
+      .. math::
+          R_U = \mathcal{N}^U\int dz_s R_o^U(z_s)\bigg\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \bigg\}
+
+      - where :math:`\mathcal{N}^U` is the normalization factor of the unlensed merger rate distribution wrt redshift.
+
+      :Parameters:
+
+          **size** : `int`
+              number of samples.
+
+          **snr_threshold** : `float`
+              threshold for detection signal to noise ratio.
+              e.g. snr_threshold = 8.
+
+          **jsonfile** : `bool`
+              if True, store all gravitational waves source parameters in json file 
+              
+              (for detected sources).
+
+      :Returns:
+
+          **unlensed_rate** : `float`
+              unlensed merger rate in a year.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: lensed_cbc_statistics(nsamples=False, jsonfile=True, **kwargs)
+
+      
+      function to generate lensed GW source parameters, lens parameters and image parameters
+      Intput Parameters:
+          nsamples: number of samples
+          snr_threshold: threshold for detection signal to noise ratio
+          jsonfile: if True, store lensed GW source parameters, lens parameters and image parameters in json file
+                      (both for detected and undetected sources)
+          **kwargs: if new parameters are provided, it will be used for sampling
+      Output Parameters:
+          lensed_param: `dict`ionary of lensed GW source parameters, lens parameters and image parameters
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: lensed_rate(size=False, snr_threshold=8.0, num_img=2, jsonfile=True, none_as_nan=True)
+
+      
+      Function to calculate detectable lensed merger rate
+      Intput Parameters:
+          size (int): number of samples
+          snr_threshold (float/array): threshold for detection signal to noise ratio
+          num_img (int/array): number of images
+                              e.g. For Sub-thershold events, snr_threshold=[8.,6.], num_img=[1,1]
+                              The event will contain 1 image with snr>8 and 1 image with snr>6
+          jsonfile (bool): if True, store all gravitational waves source parameters in json file
+          none_as_nan (bool): if True,  no value is kept as np.nan
+                              if False, no value is kept as 0.
+      Output Parameters:
+          lensed_rate (float): lensed merger rate in yr^-1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: selecting_n_lensed_detectable_events_from_dict(snr_threshold=8.0, num_img=2, none_as_nan=True, lenstype='I')
+
+      
+      Function to select n lensed detectable events from self.lensed_param
+      Input Parameters:
+          snr_threshold (float/array): threshold for detection signal to noise ratio
+          num_img (int/array): number of images
+                              e.g. For Sub-thershold events, snr_threshold=[8.,6.], num_img=[1,1]
+                              The event will contain 1 image with snr>8 and 1 image with snr>6
+          none_as_nan (bool): if True,  no value is kept as np.nan
+                              if False, no value is kept as 0.
+          lenstype (str): lens type, 'I' or 'II'  
+      Output Parameters:
+          lensed_param (dict): `dict`ionary of lensed parameters
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: selecting_n_lensed_detectable_events_with_sampling(snr_threshold=8.0, num_img=2, none_as_nan=True, size=100, lenstype='I', min_img=2, max_img=4)
+
+      
+      Function to select n lensed detectable events with sampling
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: selecting_n_unlensed_detectable_events_from_dict(snr_threshold=8.0)
+
+      
+      Function to select n lensed detectable events from self.gw_param
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: selecting_n_unlensed_detectable_events_with_sampling(snr_threshold=8.0, size=100)
+
+      
+      Function to select n lensed detectable events with sampling
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: selecting_n_detectable_events(snr_threshold=8.0, num_img=2, none_as_nan=True, lensed=True, jsonfile=True, lenstype='I', new=False, size=100, min_img=2, max_img=4, batch_size=10000, **kwargs)
+
+      
+      Function to select n detectable events
+      Input parameters:
+          snr_threshold (float): the threshold for the SNR
+          num_img (int): the number of images
+          none_as_nan (bool): if True, then replace None with np.nan
+          lensed (bool): if True, then select lensed events
+          jsonfile (bool): if True, then save the dictionary as a json file
+          lenstype (str): the lens type
+                          e.g. 'I' for image type I, 'II' for image type II, 'III' for image type III, 'any' for any type
+          new (bool): if True, then sample new events
+          size (int): the number of events to be sampled
+          min_img (int): the minimum number of images
+          max_img (int): the maximum number of images
+          batch_size (int): the number of events to be sampled in each iteration
+      Output parameters:
+          param (dict): the dictionary containing the parameters of the selected events
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: rate_comparision(size=False, snr_threshold=8.0, num_img=2, jsonfile=True, none_as_nan=True)
+
+      
+      Function to compare the detectable lensed merger rate with the unlensed merger rate
+      Intput Parameters:
+          size (int): number of samples
+          snr_threshold (float/array): threshold for detection signal to noise ratio
+          num_img (int/array): number of images
+                              e.g. For Sub-thershold events, snr_threshold=[8.,6.], num_img=[1,1]
+                              The event will contain 1 image with snr>8 and 1 image with snr>6
+          jsonfile (bool): if True, store all gravitational waves source parameters in json file
+          none_as_nan (bool): if True,  no value is kept as np.nan
+                              if False, no value is kept as 0.
+      Output Parameters:
+          unlened_rate (float): unlensed merger rate in yr^-1
+          lensed_rate (float): lensed merger rate in yr^-1
+          rate_ratio (float): lensed/unlensed merger rate ratio
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+.. py:class:: NumpyEncoder(*, skipkeys=False, ensure_ascii=True, check_circular=True, allow_nan=True, sort_keys=False, indent=None, separators=None, default=None)
+
+   Bases: :py:obj:`json.JSONEncoder`
+
+   
+   class for storing a numpy.ndarray or any nested-list composition as JSON file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+   .. py:method:: default(obj)
+
+      
+      Implement this method in a subclass such that it returns
+      a serializable object for ``o``, or calls the base implementation
+      (to raise a ``TypeError``).
+
+      For example, to support arbitrary iterators, you could
+      implement default like this::
+
+          def default(self, o):
+              try:
+                  iterable = iter(o)
+              except TypeError:
+                  pass
+              else:
+                  return list(iterable)
+              # Let the base class default method raise the TypeError
+              return JSONEncoder.default(self, o)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
