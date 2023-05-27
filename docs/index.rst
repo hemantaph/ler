@@ -7,10 +7,11 @@ Welcome to ler's documentation!
 ===============================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
    :caption: Contents:
 
    modules
+   setup
 
 Indices and tables
 ==================
