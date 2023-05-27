@@ -45,7 +45,7 @@ html_theme = "sphinx_rtd_theme"
 
 # -- Configure autoapi -------------------------------------------------------
 autoapi_type = "python"
-autoapi_dirs = ["../ler/"]
+autoapi_dirs = [".."]
 autoapi_add_toctree_entry = False
 autoapi_options = ["members", "show-inheritance", "show-module-summary"]
 
