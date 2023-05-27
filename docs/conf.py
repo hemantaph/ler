@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 import os
 import sys
-sys.path.insert(0, os.path.abspath("..")) 
+sys.path.insert(0, os.path.abspath("../../ler")) 
 
 project = 'ler'
 copyright = '2023, Phurailatpam Hemantakumar'
@@ -45,7 +45,7 @@ html_theme = "sphinx_rtd_theme"
 
 # -- Configure autoapi -------------------------------------------------------
 autoapi_type = "python"
-autoapi_dirs = [".."]
+autoapi_dirs = ["../../ler"]
 autoapi_add_toctree_entry = False
 autoapi_options = ["members", "show-inheritance", "show-module-summary"]
 
