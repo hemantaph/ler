@@ -220,11 +220,11 @@ class LeR():
                                           'lensModelList': ['EPL_NUMBA', 'SHEAR']}
 
         # for snr_calculator
-        self.snr_calculator_dict = {'nsamples_mtot': 100, 'nsamples_mass_ratio': 50,
+        self.snr_calculator_dict = {'mtot_min':2., 'mtot_max':439.6, 'nsamples_mtot': 100, 'nsamples_mass_ratio': 50,
                                     'sampling_frequency': 4096.,
                                     'waveform_approximant': "IMRPhenomD", 'minimum_frequency': 20.,
-                                    'snr_type': 'interpolation', 'waveform_inspiral_must_be_above_fmin': True,
-                                    'psds': False, 'psd_file': False}
+                                    'snr_type': 'interpolation', 'waveform_inspiral_must_be_above_fmin': False,
+                                    'psds': False, 'psd_file': False, 'ifos': False}
 
         # update dict from kwargs
         keys1 = self.gw_param_sampler_dict.keys()
@@ -274,8 +274,13 @@ class LeR():
             {'gw_param_sampler_dict': self.gw_param_sampler_dict})
         parameters_dict.update(
             {'lensed_param_sampler_dict': self.lensed_param_sampler_dict})
+        '''
+        snr_calculator_dict = self.snr_calculator_dict.copy()
+        del snr_calculator_dict['ifos']
+        del snr_calculator_dict['psd_file']
         parameters_dict.update(
             {'snr_calculator_dict': self.snr_calculator_dict})
+        '''
         file_name = './LeR_params.json'
         json_dump = json.dumps(parameters_dict, cls=NumpyEncoder)
         with open(file_name, "w", encoding='utf-8') as write_file:
@@ -327,8 +332,9 @@ class LeR():
             if key in keys_:
                 gwsnr_param_dict[key] = value
 
-        snr_ = GWSNR(npool=self.npool, mtot_min=self.gw_param_sampler_dict['m_min']*2,
-                     mtot_max=self.gw_param_sampler_dict['m_max']*2,
+        snr_ = GWSNR(npool=self.npool, 
+                     mtot_min=gwsnr_param_dict['mtot_min'],
+                     mtot_max=gwsnr_param_dict['mtot_max'],
                      nsamples_mtot=gwsnr_param_dict['nsamples_mtot'],
                      nsamples_mass_ratio=gwsnr_param_dict['nsamples_mass_ratio'],
                      sampling_frequency=gwsnr_param_dict['sampling_frequency'],
@@ -338,7 +344,8 @@ class LeR():
                      waveform_inspiral_must_be_above_fmin=gwsnr_param_dict[
                          'waveform_inspiral_must_be_above_fmin'],
                      psds=gwsnr_param_dict['psds'],
-                     psd_file=gwsnr_param_dict['psd_file'])
+                     psd_file=gwsnr_param_dict['psd_file'],
+                     ifos=gwsnr_param_dict['ifos'])
 
         return snr_
 
@@ -416,13 +423,20 @@ class LeR():
             unlensed_gw_params.keys() = ['m1', 'm2', 'z', 'Dc', 'Dl', 'Dl_obs', 'snr', 'pdet', 'event_type']
 
         """
+        
+        gw_sampler_dict = self.gw_param_sampler_dict
         batch_size = self.batch_size
         # gw parameter sampling
         if nsamples == False:
-            nsamples = self.gw_param_sampler_dict['nsamples']
+            nsamples = gw_sampler_dict['nsamples']
         else:
-            self.gw_param_sampler_dict['nsamples'] = nsamples
-
+            gw_sampler_dict['nsamples'] = nsamples
+        for key, value in kwargs.items():
+            if key in gw_sampler_dict:
+                gw_sampler_dict[key] = value
+                
+        self.compact_binary_pop.model_pars_gwcosmo = gw_sampler_dict['model_pars_gwcosmo']
+                
         # sampling in batches
         if nsamples % batch_size == 0:
             num_batches = int(nsamples/batch_size)

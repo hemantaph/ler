@@ -1,6 +1,7 @@
 README.md
 setup.py
 ler/__init__.py
+ler/docstringtest.py
 ler/helperroutines.py
 ler/lens_galaxy_population.py
 ler/ler.py

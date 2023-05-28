@@ -133,6 +133,9 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         # self.z_max already defined in SourceGalaxyPopulationModel
         self.m_min      = m_min
         self.m_max      = m_max
+        self.model_pars_gwcosmo = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, \
+                                   'mmin': m_min, 'mmax': m_max, 'lambda_peak': 0.08, \
+                                   'mu_g': 33.07, 'sigma_g': 5.69}
 
         if event_type=="BNS":
             # check the mass is for neutron stars
@@ -187,9 +190,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         try: kwargs['model_pars_gwcosmo']
         except:
             # default model parameters
-            model_pars_gwcosmo = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, \
-                                   'mmin': m_min, 'mmax': m_max, 'lambda_peak': 0.08, \
-                                   'mu_g': 33.07, 'sigma_g': 5.69}
+            model_pars_gwcosmo = self.model_pars_gwcosmo
         else:
             model_pars_gwcosmo = kwargs['model_pars_gwcosmo']
 

@@ -9,17 +9,16 @@ setup(name='ler',
       url='https://github.com/hemantaph/ler',
       packages=find_packages(),
       install_requires=[
-        "setuptools>=61.1.0",
+        "setuptools>=67.8.0",
         "numpy>=1.18",
         "numba==0.56.4",
         "bilby>=1.0.2",  
-        "pycbc>=2.0.6",
+        "pycbc<=2.0.6",
         "gwsnr>=0.1",
         "scipy>=1.9.0",
         "lenstronomy>=1.10.4",
         "astropy>=5.1",
         "tqdm>=4.64.1",
         "pointpats>=2.3",
-        "shapely>=2.0.1",
-      ]
+        "shapely>=2.0.1",]
      )
