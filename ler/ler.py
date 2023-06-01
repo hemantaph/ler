@@ -212,7 +212,7 @@ class LeR():
         # this will be used for kde generation
         # for unlened case
         self.gw_param_sampler_dict = {'nsamples': nsamples, 'm_min': 4.59, 'm_max': 86.22, 'z_min': z_min, 'z_max': z_max,
-                                      'event_type': 'popI_II', 'model_pars_gwcosmo': {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82,
+                                      'event_type': 'popI_II', 'model_pars': {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82,
                                                                                       'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08,
                                                                                       'mu_g': 33.07, 'sigma_g': 5.69}}
         # for lensed case
@@ -243,7 +243,8 @@ class LeR():
         self.compact_binary_pop = CompactBinaryPopulation(z_min=z_min, z_max=z_max,
                                                           m_min=self.gw_param_sampler_dict['m_min'],
                                                           m_max=self.gw_param_sampler_dict['m_max'],
-                                                          event_type=self.gw_param_sampler_dict['event_type'])
+                                                          event_type=self.gw_param_sampler_dict['event_type'],
+                                                          model_pars=self.gw_param_sampler_dict['model_pars'])
         # LensGalaxyPopulation already inherits from Lens_Galaxy_Population_Model class form lens_galaxy_population.py
         self.lens_galaxy_pop = LensGalaxyPopulation(self.compact_binary_pop)
 
@@ -364,12 +365,10 @@ class LeR():
         z_max : `float`
             maximum redshift.
         """
-        self.z_min = z_min
-        self.z_max = z_max
         self.gw_param = False # this needed not repeat sampling
 
         # initialing cosmological functions for fast calculation through interpolation
-        z = np.linspace(0, z_max, 500)  # red-shift
+        z = np.linspace(z_min, z_max, 500)  # red-shift
         # co-moving distance in Mpc
         Dc = Planck18.comoving_distance(z).value
         # luminosity distance in Mpc
@@ -411,8 +410,8 @@ class LeR():
                 maximum mass of the compact binary (single).
             ``event_type`` : `str`
                 event_type = 'popI_II' etc.
-            ``model_pars_gwcosmo`` : `dict`
-                model_pars_gwcosmo = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82,\n
+            ``model_pars`` : `dict`
+                model_pars = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82,\n
                 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08,\n
                 'mu_g': 33.07, 'sigma_g': 5.69}}
         
@@ -435,7 +434,7 @@ class LeR():
             if key in gw_sampler_dict:
                 gw_sampler_dict[key] = value
                 
-        self.compact_binary_pop.model_pars_gwcosmo = gw_sampler_dict['model_pars_gwcosmo']
+        self.compact_binary_pop.model_pars = gw_sampler_dict['model_pars']
                 
         # sampling in batches
         if nsamples % batch_size == 0:
@@ -699,6 +698,11 @@ class LeR():
                 num2 += 1
         lensed_param['pdet_net'] = pdet
 
+        weights = lensed_param['weights']
+        # rejection sample wrt to weights
+        not_rejected = np.random.uniform(0,1,size)<weights
+        snr_hit = snr_hit&not_rejected
+        
         # store all params in json file
         weights = lensed_param['weights']
         if none_as_nan == True:
@@ -720,14 +724,14 @@ class LeR():
         # R = C0 int Theta(rho-rhoc) p(z) p(theta) dtheta dz_s, where C0 = int R(zs)/(1+zs) dVc/dzs tau(zs) dzs is the normalization constant for p(z)
         # Thus R = C0 <Theta(rho-rhoc)>
         c0 = self.lens_galaxy_pop.normalization_pdf_z
-        total_rate_step = c0 * np.mean(snr_hit*weights)
-        print(f"total unlensed rate with step function: {total_rate_step}")
+        total_rate_step = c0 * np.mean(snr_hit)
+        print("total lensed rate with step function: {}".format(total_rate_step))
 
-        # with pdet
+        # with pdet 
         total_rate_pdet = c0 * np.mean(pdet_combined*weights)
-        print(f"total unlensed rate with pdet function: {total_rate_pdet}")
+        print("total lensed rate with pdet function: {}".format(total_rate_pdet))
 
-        return (total_rate_step, total_rate_pdet)
+        return(total_rate_step,total_rate_pdet)
 
     def selecting_n_lensed_detectable_events_from_dict(self, snr_threshold=8., num_img=2, none_as_nan=True,
                                                        lenstype='I'):
