@@ -162,34 +162,51 @@ def solve_lens_equation2(lens_parameters):
         kwargs_lens = [{'theta_E': factor, 'e1': lens_parameters[1], 'e2': lens_parameters[2], 'gamma': lens_parameters[3], \
                       'center_x': 0.0, 'center_y': 0.0}, {'gamma1': lens_parameters[4], 'gamma2': lens_parameters[5], 'ra_0': 0, 'dec_0':0}]
         caustic_double_points = caustics_epl_shear(kwargs_lens, return_which='double', maginf=-100)
-        caustic_diamond_points = caustics_epl_shear(kwargs_lens, return_which='caustic', maginf=-100)
+        caustic_quad_points = caustics_epl_shear(kwargs_lens, return_which='caustic', maginf=-100)
         caustic = not(np.isnan(caustic_double_points).any()) 
-        caustic &= not(np.isnan(caustic_diamond_points).any())
+        caustic &= not(np.isnan(caustic_quad_points).any())
         # If there is a nan, caustic=False, draw a new gamma
         if caustic:
             break
         else:
-            #print('\n ERROR \n')
-            #print(lens_parameters[1],lens_parameters[2],lens_parameters[3],lens_parameters[4],lens_parameters[5])
+            #print('\n ERROR1 \n')
             lens_parameters[3] = np.random.normal(loc = 2., scale = 0.2, size = 1)[0]
-            #print(lens_parameters[1],lens_parameters[2],lens_parameters[3],lens_parameters[4],lens_parameters[5])
+
     caustic_double = Polygon(caustic_double_points.T)
-    caustic_diamond = Polygon(caustic_diamond_points.T)
+    caustic_quad = Polygon(caustic_quad_points.T)
     # check for strong lensed condition
     strongly_lensed = False
     while strongly_lensed == False:
         # Draw random points within the caustic
-        x_source, y_source = pointpats.random.poisson(caustic_diamond, size=1)
-        # Transform to polar coordinates
-        eta, phi = cart2pol(x_source, y_source)
-        # Solve the lens equation
-        x0_image_position,x1_image_position = \
-        lens_eq_solver.image_position_from_source( sourcePos_x = x_source, sourcePos_y = y_source, kwargs_lens = kwargs_lens, \
-                                                  solver='analytical', magnification_limit = 1./100.)
-        nImages = len(x0_image_position) # shows how many images
-        if nImages >= n_min_images:
-            strongly_lensed = True
+        try:
+            x_source, y_source = pointpats.random.poisson(caustic_quad, size=1)
+            # Solve the lens equation
+            x0_image_position,x1_image_position = \
+            lens_eq_solver.image_position_from_source( sourcePos_x = x_source, sourcePos_y = y_source, kwargs_lens = kwargs_lens, \
+                                                      solver='analytical', magnification_limit = 1./100.)
+            nImages = len(x0_image_position) # shows how many images
+            if nImages >= n_min_images:
+                strongly_lensed = True
+        except:
+            #print(lens_parameters[1], lens_parameters[2], lens_parameters[3], lens_parameters[4], lens_parameters[5], lens_parameters[5], lens_parameters[6])
+            # print(x_source,y_source)
+            x_source, y_source = pointpats.random.poisson(caustic_quad, size=1)
+            # Solve the lens equation
+            
+            try:
+                x0_image_position,x1_image_position = \
+                lens_eq_solver.image_position_from_source( sourcePos_x = x_source, sourcePos_y = y_source, kwargs_lens = kwargs_lens, \
+                                                          solver='analytical', magnification_limit = 1./100.)
+                nImages = len(x0_image_position) # shows how many images
+                if nImages >= n_min_images:
+                    strongly_lensed = True
+            except:
+                print('\n ERROR in sampling from caustic \n')
+                pass
 
+    
+    # Transform to polar coordinates
+    eta, phi = cart2pol(x_source, y_source)
     #---------------------------------------------------#
     #          magnification and time-delay
     #---------------------------------------------------#
@@ -209,42 +226,7 @@ def solve_lens_equation2(lens_parameters):
     hessian = lensModel.hessian(x0_image_position, x1_image_position, kwargs_lens)
     determinant = np.array( (1 - hessian[0])*(1 - hessian[3]) - hessian[1]*hessian[2] )
     trace = np.array(2 - hessian[0] - hessian[3])
-    weights = caustic_diamond.area/caustic_double.area
+    weights = caustic_quad.area/caustic_double.area
 
     return(x_source, y_source, eta, phi, x0_image_position, x1_image_position, magnifications,time_delays, nImages , \
            determinant, trace, iteration, weights)
-
-def caustic_condition(input_):
-    '''
-    Function to compute the caustic condition
-    Input parameters:
-        e1, e2 : ellipticity components
-        gamma : spectral index of the density profile
-        gamma1, gamma2 : shear components
-    Output parameters:
-        iter_   : keeps track of the index
-    Output parameters:
-        caustic : boolean array of size len(e1) indicating whether the caustic condition is satisfied or not
-        iter_   : keeps track of the index
-    '''
-    e1, e2, gamma, gamma1, gamma2 = input_[0],input_[1],input_[2],input_[3],input_[4]
-    
-    kwargs_lens = [{'theta_E': 1.0, 'e1': e1, 'e2': e2, 'gamma': gamma, \
-            'center_x': 0.0, 'center_y': 0.0}, {'gamma1': gamma1, 'gamma2': gamma2, 'ra_0': 0, 'dec_0':0}]
-    
-    caustic_double_points = caustics_epl_shear(kwargs_lens, return_which='double', maginf=-100)
-    caustic_diamond_points = caustics_epl_shear(kwargs_lens, return_which='caustic', maginf=-100)
-    # caustic = False: means not satisfied 
-    caustic = not(np.isnan(caustic_double_points).any()) 
-    caustic &= not(np.isnan(caustic_diamond_points).any())
-    return caustic,input_[5]
-
-
-def task(arg):
-    '''
-    Function to be executed by each process
-    Input parameters:
-        arg : a list of parameters
-    '''
-    sleep(1)
-    return arg

@@ -73,7 +73,7 @@ class LensGalaxyPopulation():
             None
         '''
         # initialing cosmological functions for fast calculation through interpolation
-        z               = np.linspace(z_min,z_max,500) # red-shift
+        z               = np.linspace(0.,z_max,500) # red-shift
         Dc              = Planck18.comoving_distance(z).value # co-moving distance in Mpc
         self.z_to_Dc    = interp1d( z, Dc, kind = 'cubic')
         self.Dc_to_z    = interp1d( Dc, z, kind = 'cubic')
@@ -131,12 +131,12 @@ class LensGalaxyPopulation():
         
         # Sample source redshifts from the source population
         # rejection sampled with optical depth
-        #print('sampling source parameters...')
+        # print('sampling source parameters...')
         source_params_strongly_lensed = self.sample_strongly_lensed_source_parameters(size=size)
         zs = source_params_strongly_lensed['zs']
 
         # Sample lens redshifts
-        #print("sampling lens's redshifts...")
+        # print("sampling lens's redshifts...")
         zl = self.sample_lens_redshifts(zs)
         # Sample velocity dispersions and axis ratios (note: these should be sampled together because the lensing probability depends on the combination of these two parameters)
         sigma, q = self.sample_velocity_dispersion_axis_ratio(zs)
@@ -182,6 +182,8 @@ class LensGalaxyPopulation():
         lens_parameters = add_dictionaries_together(lens_parameters, lens_parameters_input)
         
         # Check if the lens are larger than requested size
+        # len_ = len(lens_parameters['zl'])
+        # print(f'len(zs) = {len_}')
         if len(lens_parameters['zl']) >= size:
             # Trim dicitionary to right size
             lens_parameters = trim_dictionary(lens_parameters, size)
@@ -207,11 +209,10 @@ class LensGalaxyPopulation():
         '''
         z_max = self.z_max
         z_min = self.z_min
-        zs_strongly_lensed = []
-        size_ = size
-        while size_!=0:
+        
+        def zs_strongly_lensed_function(zs_strongly_lensed):
             # get zs
-            zs = self.CompactBinaryPopulation.sample_source_redshifts(size=size_, z_min=z_min, z_max=z_max)
+            zs = self.CompactBinaryPopulation.sample_source_redshifts(size=size, z_min=z_min, z_max=z_max)
 
             # put strong lensing condition with optical depth
             tau = self.strong_lensing_optical_depth(zs)
@@ -221,11 +222,21 @@ class LensGalaxyPopulation():
             # Add the strongly lensed source redshifts to the list
             zs_strongly_lensed += list(zs[pick_strongly_lensed]) # list concatenation
             
-            size_ = abs(size-len(zs_strongly_lensed)) # loop until we have the right number of samples
-                
+            # Check if the zs_strongly_lensed are larger than requested size
+            if len(zs_strongly_lensed) >= size:
+                # Trim dicitionary to right size
+                zs_strongly_lensed = zs_strongly_lensed[:size]
+                return zs_strongly_lensed
+            else:
+                # Run iteratively until we have the right number of lensing parmaeters
+                #print("current sampled size", len(lens_parameters['zl']))
+                return zs_strongly_lensed_function(zs_strongly_lensed)
+        
+        zs_strongly_lensed = []
+        zs_ = zs_strongly_lensed_function(zs_strongly_lensed)
         # gravitional waves source parameter sampling
         gw_param_strongly_lensed = \
-        self.CompactBinaryPopulation.sample_gw_parameters(zs=np.array(zs_strongly_lensed), nsamples=size)
+        self.CompactBinaryPopulation.sample_gw_parameters(zs=np.array(zs_), nsamples=size)
         
         return gw_param_strongly_lensed
 
