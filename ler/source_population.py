@@ -15,6 +15,8 @@ from gwcosmo import priors as p
 from ler.helperroutines import rejection_sample
 
 class SourceGalaxyPopulationModel():
+    """Class to create lookup tables for redshifts and distances, see :func:`~ler.ler.SourceGalaxyPopulationModel.__init__` method.
+    """
     def __init__(self, z_min=0., z_max=10., event_type='popI_II'):
         '''
         Functions to create lookup tables for redshifts and distances
