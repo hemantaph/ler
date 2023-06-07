@@ -1,6 +1,7 @@
 sphinx>=1.4
 ipykernel
 nbsphinx
+myst-parser
 numpydoc>=1.5
 sphinx-tabs>=3.4
 autoapi>=2.0
