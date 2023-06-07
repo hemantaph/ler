@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.abspath("../ler"))
 project = 'ler'
 copyright = '2023, Phurailatpam Hemantakumar'
 author = 'Phurailatpam Hemantakumar'
-release = '0.1.3'
+release = '0.1.5'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -40,6 +40,7 @@ numpydoc_show_class_members = False
 autoapi_add_toctree_entry = False
 # -- Napoleon options
 napoleon_include_special_with_doc = True
+pygments_style = 'sphinx'
 
 # Don't mess with double-dash used in CLI options
 smartquotes_action = "qe"
