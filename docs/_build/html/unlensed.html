@@ -10,6 +10,7 @@
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="_static/nbsphinx-code-cells.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -102,11 +103,10 @@
 <h1>Unlensed events<a class="headerlink" href="#Unlensed-events" title="Permalink to this heading"></a></h1>
 <section id="BBH/BNS-merger-rate-density">
 <h2>BBH/BNS merger rate density<a class="headerlink" href="#BBH/BNS-merger-rate-density" title="Permalink to this heading"></a></h2>
-<ul>
-<li><p>merger rate as given in <a class="reference external" href="https://arxiv.org/pdf/2106.06303.pdf">https://arxiv.org/pdf/2106.06303.pdf</a>:</p>
-<div class="math notranslate nohighlight">
-\[\mathcal{R}_m(z_s) = \frac{\mathcal{R}_O(b_4+1)e^{b_2 z_s}}{b_4+e^{b_3 z_s}} \text{Gpc}^{-3}\text{yr}^{-1}\]</div>
-</li>
+<ul class="simple">
+<li><p>merger rate as given in <a class="reference external" href="https://arxiv.org/pdf/2106.06303.pdf">https://arxiv.org/pdf/2106.06303.pdf</a>: <span class="math">\begin{equation}
+\mathcal{R}_m(z_s) = \frac{\mathcal{R}_O(b_4+1)e^{b_2 z_s}}{b_4+e^{b_3 z_s}} \text{Gpc}^{-3}\text{yr}^{-1} \tag{1}
+\end{equation}</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(z_s\)</span>: redshift of source</p></li>
 <li><p><span class="math notranslate nohighlight">\(\mathcal{R}\)</span>: local mergerrate. <span class="math notranslate nohighlight">\(\mathcal{R}=23.9^{+14.3}_{-8.6}\text{Gpc}^{-3}\text{yr}^{-1}==23.9^{+14.3}_{-8.6} \times 10^{-9}\text{Mpc}^{-3}\text{yr}^{-1}\)</span></p></li>
 <li><p>fitting parameters: <span class="math notranslate nohighlight">\(b_2=1.6\)</span>, <span class="math notranslate nohighlight">\(b_3=2.1\)</span>, <span class="math notranslate nohighlight">\(b_4=30\)</span></p></li>
@@ -114,26 +114,26 @@
 </section>
 <section id="BBH/BNS-merger-rate-at-source-redshift-z_s-(in-small-dz)">
 <h2>BBH/BNS merger rate at source redshift <span class="math notranslate nohighlight">\(z_s\)</span> (in small dz)<a class="headerlink" href="#BBH/BNS-merger-rate-at-source-redshift-z_s-(in-small-dz)" title="Permalink to this heading"></a></h2>
-<div class="math notranslate nohighlight">
-\[R(z_s) = \frac{\mathcal{R}_m(z_s)}{1+z_s} \frac{dV_c}{dz_s}\]</div>
-<p>* co-moving volume : <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}\)</span></p>
+<p><span class="math">\begin{equation}
+R(z_s) = \frac{\mathcal{R}_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tag{2}
+\end{equation}</span></p>
 <ul class="simple">
-<li><p>sampling of <span class="math notranslate nohighlight">\(z_s\)</span> is done through rejection sampling with the merger rate formula given above</p></li>
+<li><p>co-moving volume : <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}\)</span>.</p></li>
+<li><p>sampling of <span class="math notranslate nohighlight">\(z_s\)</span> is done through rejection sampling with the merger rate formula given above.</p></li>
 </ul>
 <section id="Detectable-Unlensed-events'-rate-in-a-year">
 <h3>Detectable Unlensed events’ rate in a year<a class="headerlink" href="#Detectable-Unlensed-events'-rate-in-a-year" title="Permalink to this heading"></a></h3>
-<div class="math notranslate nohighlight">
-\[R_U = \mathcal{N}^U\int dz_s R_o^U(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\}\]</div>
-<ul>
+<p><span class="math">\begin{equation}
+R_U = \mathcal{N}^U\int dz_s R_o^U(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\} \tag{3}
+\end{equation}</span></p>
+<ul class="simple">
 <li><p>SNR operator <span class="math notranslate nohighlight">\(\Theta[\rho(z_s,\theta)-\rho_{th}]\)</span> is a step function</p></li>
-<li><p><span class="math notranslate nohighlight">\(\mathcal{N}^U\)</span> is the normalizing factor of merger rate distribution wrt <span class="math notranslate nohighlight">\(z_s\)</span></p>
-<div class="math notranslate nohighlight">
-\[\mathcal{N}^U = \int_{z_min}^{z_max} dz_s \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s}\]</div>
-</li>
-<li><p><span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span> is the normalized merger-rate distribution</p>
-<div class="math notranslate nohighlight">
-\[R_o^U(z_s)= \frac{1}{\mathcal{N}^U}\frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s}\]</div>
-</li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{N}^U\)</span> is the normalizing factor of merger rate distribution wrt <span class="math notranslate nohighlight">\(z_s\)</span> <span class="math">\begin{equation}
+\mathcal{N}^U = \int_{z_min}^{z_max} dz_s \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tag{4}
+\end{equation}</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span> is the normalized merger-rate distribution <span class="math">\begin{equation}
+R_o^U(z_s)= \frac{1}{\mathcal{N}^U}\frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tag{5}
+\end{equation}</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\theta \in\)</span> {<span class="math notranslate nohighlight">\(m_1\)</span>:mass1, <span class="math notranslate nohighlight">\(m_2\)</span>:mass2, <span class="math notranslate nohighlight">\(D_l\)</span>:luminosity-distance, <span class="math notranslate nohighlight">\(\iota\)</span>:inclination-angle, <span class="math notranslate nohighlight">\(\psi\)</span>:polarization, <span class="math notranslate nohighlight">\(ra\)</span>:right-ascension,<span class="math notranslate nohighlight">\(dec\)</span>:declination,<span class="math notranslate nohighlight">\(\phi_c\)</span>:phase-of-coalescene,<span class="math notranslate nohighlight">\(t_c\)</span>:time-of-coalescene}</p></li>
 <li><p><span class="math notranslate nohighlight">\(D_l\)</span> is derived from <span class="math notranslate nohighlight">\(z_s\)</span></p></li>
 </ul>
@@ -195,12 +195,23 @@
 </section>
 <section id="montecarlo-integration">
 <h2>montecarlo integration<a class="headerlink" href="#montecarlo-integration" title="Permalink to this heading"></a></h2>
-<div class="math notranslate nohighlight">
-\[R_U = \mathcal{N}^U \left&lt; \Theta[\rho(z_s,\theta)-\rho_{th}]\right&gt;_{z_s,\theta \in Sampled[z_s,\theta]}\]</div>
-<div class="math notranslate nohighlight">
-\[R_U = \mathcal{N}^U \left&lt;  P_{det}(z_s,\theta)\right&gt;_{z_s,\theta \in Sampled[z_s,\theta]}\]</div>
-<div class="math notranslate nohighlight">
-\[R_U = \frac{\mathcal{N}^U}{N} \sum_i P_{det}(z_s^i,\theta_i)\]</div>
+<p><span class="math">\begin{equation}
+R_U = \mathcal{N}^U \left< \Theta[\rho(z_s,\theta)-\rho_{th}]\right>_{z_s,\theta \in Sampled[z_s,\theta]} \tag{6}
+\end{equation}</span></p>
+<p><span class="math">\begin{equation}
+R_U = \mathcal{N}^U \left<  P_{det}(z_s,\theta)\right>_{z_s,\theta \in Sampled[z_s,\theta]} \tag{7}
+\end{equation}</span></p>
+<p><span class="math">\begin{equation}
+R_U = \frac{\mathcal{N}^U}{N} \sum_i P_{det}(z_s^i,\theta_i)  \tag{8}
+\end{equation}</span></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
 </section>
 </section>
 
