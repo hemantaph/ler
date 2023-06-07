@@ -19,7 +19,7 @@ This will install the dependencies needed but the version of gwsnr will not nece
 ler for development
 ======================
 
-To install ``ler`` for development purposes use <https://github.com/hemantaph/ler/>`_.
+To install ``ler`` for development purposes use `github.ler <https://github.com/hemantaph/ler/>`_.
 
 .. code-block:: console
 
