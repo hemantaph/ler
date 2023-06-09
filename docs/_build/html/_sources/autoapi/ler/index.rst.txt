@@ -52,20 +52,29 @@ Functions
 
        **nsamples** : `int`
            number of samples for sampling.
+           default nsamples = 100000.
 
        **npool** : `int`
            number of cores to use.
+           default npool = 4.
 
        **z_min** : `float`
            minimum redshift.
+           default z_min = 0.
+           for popI_II, popIII, primordial, BNS z_min = 0., 5., 5., 0. respectively.
 
        **z_max** : `float`
            maximum redshift.
+           default z_max = 10.
+           for popI_II, popIII, primordial, BNS z_max = 10., 40., 40., 2. respectively.
 
        **batch_size** : `int`
            batch size for SNR calculation.
+           default batch_size = 25000.
+           reduce the batch size if you are getting memory error.
 
        **snr_finder** : `str`
+           default snr_finder = 'gwsnr'.
            if 'gwsnr', the SNR will be calculated using the gwsnr package.
            if 'custom', the SNR will be calculated using a custom function.
 
@@ -103,11 +112,11 @@ Functions
        +---------------------------------------+--------------------------------------------------+
        | Atrributes                            | Type                                             |
        +=======================================+==================================================+
-       | :attr:`~gw_param`                     | ``bool``, ``dict``                               |
+       | :attr:`~gw_param`                     | ``dict``                                         |
        +---------------------------------------+--------------------------------------------------+
        | :attr:`~gw_param_detectable`          | ``dict``                                         |
        +---------------------------------------+--------------------------------------------------+
-       | :attr:`~lensed_param`                 | ``bool``, ``dict``                               |
+       | :attr:`~lensed_param`                 | ``dict``                                         |
        +---------------------------------------+--------------------------------------------------+
        | :attr:`~lensed_param_detectable`      | ``dict``                                         |
        +---------------------------------------+--------------------------------------------------+
@@ -162,20 +171,15 @@ Functions
 
    ..
        !! processed by numpydoc !!
-   .. py:attribute:: gw_param
+   .. py:property:: gw_param
 
       
       ``bool``, ``dict``
-
-      if False, the unlensed parameters will be sampled when unlened_rate() is called
-
-      if dict, gw_param will be used when unlened_rate() is called
-
-      gw_param is a dictionary of unlensed parameters
-
+      gw_param is a dictionary of unlensed parameters (source parameters)
       it will be populated when unlened_cbc_statistics() is called
-
+      if unavailable, the unlensed parameters will be sampled when unlensed_rate() is called
       gw_param.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time']
+
 
 
 
@@ -223,18 +227,15 @@ Functions
           !! processed by numpydoc !!
 
    .. py:attribute:: lensed_param
-      :value: False
 
       
       ``bool``, ``dict``
 
-      if False, the lensed parameters will be sampled when lensed_rate() is called
-
-      if dict, lensed_param will be used when lensed_rate() is called
-
-      lensed_param is a dictionary of lensed parameters
+      lensed_param is a dictionary of lensed parameters (for lens galaxy, source properties and image properties)
 
       it will be populated when lensed_cbc_statistics() is called
+
+      if unavailable, then lensed parameters will be sampled when lensed_rate() is called
 
       lensed_param.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl', 'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images', 'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces', 'determinants', 'image_type', 'weights', 'opt_snr_net', 'L1', 'H1', 'V1', 'pdet_net']
 
@@ -538,7 +539,7 @@ Functions
    .. py:method:: store_ler_params()
 
       
-      Function to store the parameters of the LER model. This is useful for reproducing the results.
+      Fuction to store the parameters of the LER model. This is useful for reproducing the results.
 
 
 
@@ -567,7 +568,7 @@ Functions
       :Parameters:
 
           **kwargs_dict** : 'dict'
-              keyword arguments for the SNR function
+              keyword arguments for the initialization of the `gwsnr` package.
               kwargs_dict.keys()
 
               ``nsamples_mtot`` : `int`
@@ -593,8 +594,12 @@ Functions
                       'H1':'aLIGOaLIGODesignSensitivityT1800044',
 
                       'V1':'AdvVirgo'}
-              ``psd_file`` : `bool`
+              ``psd_file`` : `bool`, `list`
                   psd_file = False (if ASD) or True (if PSD file)
+                  psd_file = [False,True] if psds[0] is a asd and psds[1] is a psd
+              ``ifos`` : `list`
+                  interferometer object name list
+                  ifos = ['L1', 'H1', 'V1'] (for O4 design sensitivity)
 
       :Returns:
 
@@ -629,9 +634,11 @@ Functions
 
           **z_min** : `float`
               minimum redshift.
+              for popI_II, popIII, primordial, BNS z_min = 0., 5., 5., 0. respectively.
 
           **z_max** : `float`
               maximum redshift.
+              for popI_II, popIII, primordial, BNS z_max = 10., 40., 40., 2. respectively.
 
 
 
@@ -644,12 +651,25 @@ Functions
 
 
 
+      :Attributes:
+
+          **z_to_Dc** : `scipy.interpolate.interp1d`
+              redshift to co-moving distance.
+
+          **Dc_to_z** : `scipy.interpolate.interp1d`
+              co-moving distance to redshift.
+
+          **z_to_luminosity_distance** : `scipy.interpolate.interp1d`
+              redshift to luminosity distance.
+
+          **differential_comoving_volume** : `scipy.interpolate.interp1d`
+              differential comoving volume.
 
 
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: unlensed_cbc_statistics(nsamples=False, jsonfile=True, **kwargs)
+   .. py:method:: unlensed_cbc_statistics(nsamples=False, jsonfile=False, **kwargs)
 
       
       Function to generate unlensed GW source parameters.
@@ -660,8 +680,8 @@ Functions
           **nsamples** : `int`
               number of samples.
 
-          **jsonfile** : `bool`
-              if True, store all gravitational waves source parameters in json file
+          **jsonfile** : `bool`, `str`
+              if `str`, store all gravitational waves source parameters in jsonfile
 
               (for all sources, detected and undetected).
 

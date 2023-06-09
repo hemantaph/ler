@@ -155,17 +155,26 @@
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>nsamples</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of samples for sampling.</p>
+<dt><strong>nsamples</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of samples for sampling.
+default nsamples = 100000.</p>
 </dd>
-<dt><strong>npool</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of cores to use.</p>
+<dt><strong>npool</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of cores to use.
+default npool = 4.</p>
 </dd>
-<dt><strong>z_min</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>minimum redshift.</p>
+<dt><strong>z_min</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>minimum redshift.
+default z_min = 0.
+for popI_II, popIII, primordial, BNS z_min = 0., 5., 5., 0. respectively.</p>
 </dd>
-<dt><strong>z_max</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>maximum redshift.</p>
+<dt><strong>z_max</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>maximum redshift.
+default z_max = 10.
+for popI_II, popIII, primordial, BNS z_max = 10., 40., 40., 2. respectively.</p>
 </dd>
-<dt><strong>batch_size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>batch size for SNR calculation.</p>
+<dt><strong>batch_size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>batch size for SNR calculation.
+default batch_size = 25000.
+reduce the batch size if you are getting memory error.</p>
 </dd>
-<dt><strong>snr_finder</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>if ‘gwsnr’, the SNR will be calculated using the gwsnr package.
+<dt><strong>snr_finder</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>default snr_finder = ‘gwsnr’.
+if ‘gwsnr’, the SNR will be calculated using the gwsnr package.
 if ‘custom’, the SNR will be calculated using a custom function.</p>
 </dd>
 <dt><strong>kwargs</strong><span class="classifier"><cite>keyword arguments</cite></span></dt><dd><p>Note : kwargs takes input for initializing the <a class="reference internal" href="#ler.CompactBinaryPopulation" title="ler.CompactBinaryPopulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompactBinaryPopulation</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyPopulation</span></code>, <a class="reference internal" href="#ler.LeR.gwsnr_intialization" title="ler.LeR.gwsnr_intialization"><code class="xref py py-meth docutils literal notranslate"><span class="pre">gwsnr_intialization()</span></code></a>.</p>
@@ -198,13 +207,13 @@ if ‘custom’, the SNR will be calculated using a custom function.</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.LeR.gw_param" title="ler.LeR.gw_param"><code class="xref py py-attr docutils literal notranslate"><span class="pre">gw_param</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.LeR.gw_param_detectable" title="ler.LeR.gw_param_detectable"><code class="xref py py-attr docutils literal notranslate"><span class="pre">gw_param_detectable</span></code></a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.LeR.lensed_param" title="ler.LeR.lensed_param"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lensed_param</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.LeR.lensed_param_detectable" title="ler.LeR.lensed_param_detectable"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lensed_param_detectable</span></code></a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
@@ -278,15 +287,14 @@ parameters.</p></td>
 </tbody>
 </table>
 </div></blockquote>
-<dl class="py attribute">
+<dl class="py property">
 <dt class="sig sig-object py" id="ler.LeR.gw_param">
-<span class="sig-name descname"><span class="pre">gw_param</span></span><a class="headerlink" href="#ler.LeR.gw_param" title="Permalink to this definition"></a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>if False, the unlensed parameters will be sampled when unlened_rate() is called</p>
-<p>if dict, gw_param will be used when unlened_rate() is called</p>
-<p>gw_param is a dictionary of unlensed parameters</p>
-<p>it will be populated when unlened_cbc_statistics() is called</p>
-<p>gw_param.keys() = [‘m1’, ‘m2’, ‘z’, ‘snr’, ‘theta_jn’, ‘ra’, ‘dec’, ‘psi’, ‘phase’, ‘geocent_time’]</p>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gw_param</span></span><a class="headerlink" href="#ler.LeR.gw_param" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">dict</span></code>
+gw_param is a dictionary of unlensed parameters (source parameters)
+it will be populated when unlened_cbc_statistics() is called
+if unavailable, the unlensed parameters will be sampled when unlensed_rate() is called
+gw_param.keys() = [‘m1’, ‘m2’, ‘z’, ‘snr’, ‘theta_jn’, ‘ra’, ‘dec’, ‘psi’, ‘phase’, ‘geocent_time’]</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -300,12 +308,11 @@ parameters.</p></td>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ler.LeR.lensed_param">
-<span class="sig-name descname"><span class="pre">lensed_param</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#ler.LeR.lensed_param" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">lensed_param</span></span><a class="headerlink" href="#ler.LeR.lensed_param" title="Permalink to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>if False, the lensed parameters will be sampled when lensed_rate() is called</p>
-<p>if dict, lensed_param will be used when lensed_rate() is called</p>
-<p>lensed_param is a dictionary of lensed parameters</p>
+<p>lensed_param is a dictionary of lensed parameters (for lens galaxy, source properties and image properties)</p>
 <p>it will be populated when lensed_cbc_statistics() is called</p>
+<p>if unavailable, then lensed parameters will be sampled when lensed_rate() is called</p>
 <p>lensed_param.keys() = [‘zl’, ‘zs’, ‘sigma’, ‘q’, ‘e1’, ‘e2’, ‘gamma1’, ‘gamma2’, ‘Dl’, ‘Ds’, ‘Dls’, ‘theta_E’, ‘gamma’, ‘mass_1’, ‘mass_2’, ‘mass_1_source’, ‘mass_2_source’, ‘luminosity_distance’, ‘iota’, ‘psi’, ‘phase’, ‘geocent_time’, ‘ra’, ‘dec’, ‘n_images’, ‘x0_image_positions’, ‘x1_image_positions’, ‘magnifications’, ‘time_delays’, ‘traces’, ‘determinants’, ‘image_type’, ‘weights’, ‘opt_snr_net’, ‘L1’, ‘H1’, ‘V1’, ‘pdet_net’]</p>
 </dd></dl>
 
@@ -397,7 +404,7 @@ parameters.</p></td>
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.LeR.store_ler_params">
 <span class="sig-name descname"><span class="pre">store_ler_params</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ler.LeR.store_ler_params" title="Permalink to this definition"></a></dt>
-<dd><p>Function to store the parameters of the LER model. This is useful for reproducing the results.</p>
+<dd><p>Fuction to store the parameters of the LER model. This is useful for reproducing the results.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -407,7 +414,7 @@ parameters.</p></td>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>kwargs_dict</strong><span class="classifier">‘dict’</span></dt><dd><p>keyword arguments for the SNR function
+<dt><strong>kwargs_dict</strong><span class="classifier">‘dict’</span></dt><dd><p>keyword arguments for the initialization of the <cite>gwsnr</cite> package.
 kwargs_dict.keys()</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">nsamples_mtot</span></code><span class="classifier"><cite>int</cite></span></dt><dd><p>nsamples_mtot = 200 (recommended for accurate results)</p>
@@ -432,7 +439,11 @@ if you want to use other approximants, please set <code class="docutils literal 
 <p>‘V1’:’AdvVirgo’}</p>
 </div></blockquote>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">psd_file</span></code><span class="classifier"><cite>bool</cite></span></dt><dd><p>psd_file = False (if ASD) or True (if PSD file)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">psd_file</span></code><span class="classifier"><cite>bool</cite>, <cite>list</cite></span></dt><dd><p>psd_file = False (if ASD) or True (if PSD file)
+psd_file = [False,True] if psds[0] is a asd and psds[1] is a psd</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ifos</span></code><span class="classifier"><cite>list</cite></span></dt><dd><p>interferometer object name list
+ifos = [‘L1’, ‘H1’, ‘V1’] (for O4 design sensitivity)</p>
 </dd>
 </dl>
 </dd>
@@ -459,9 +470,23 @@ if you want to use other approximants, please set <code class="docutils literal 
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>z_min</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>minimum redshift.</p>
+<dt><strong>z_min</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>minimum redshift.
+for popI_II, popIII, primordial, BNS z_min = 0., 5., 5., 0. respectively.</p>
 </dd>
-<dt><strong>z_max</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>maximum redshift.</p>
+<dt><strong>z_max</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>maximum redshift.
+for popI_II, popIII, primordial, BNS z_max = 10., 40., 40., 2. respectively.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>z_to_Dc</strong><span class="classifier"><cite>scipy.interpolate.interp1d</cite></span></dt><dd><p>redshift to co-moving distance.</p>
+</dd>
+<dt><strong>Dc_to_z</strong><span class="classifier"><cite>scipy.interpolate.interp1d</cite></span></dt><dd><p>co-moving distance to redshift.</p>
+</dd>
+<dt><strong>z_to_luminosity_distance</strong><span class="classifier"><cite>scipy.interpolate.interp1d</cite></span></dt><dd><p>redshift to luminosity distance.</p>
+</dd>
+<dt><strong>differential_comoving_volume</strong><span class="classifier"><cite>scipy.interpolate.interp1d</cite></span></dt><dd><p>differential comoving volume.</p>
 </dd>
 </dl>
 </dd>
@@ -470,14 +495,14 @@ if you want to use other approximants, please set <code class="docutils literal 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.LeR.unlensed_cbc_statistics">
-<span class="sig-name descname"><span class="pre">unlensed_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.LeR.unlensed_cbc_statistics" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">unlensed_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.LeR.unlensed_cbc_statistics" title="Permalink to this definition"></a></dt>
 <dd><p>Function to generate unlensed GW source parameters.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>nsamples</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of samples.</p>
 </dd>
-<dt><strong>jsonfile</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if True, store all gravitational waves source parameters in json file</p>
+<dt><strong>jsonfile</strong><span class="classifier"><cite>bool</cite>, <cite>str</cite></span></dt><dd><p>if <cite>str</cite>, store all gravitational waves source parameters in jsonfile</p>
 <p>(for all sources, detected and undetected).</p>
 </dd>
 <dt><strong>kwargs</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>if new paramteres are provided, it will be used for sampling source parameters.
