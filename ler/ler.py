@@ -2,6 +2,7 @@
 """
 Functions and objects related to the main ler .
 """
+import os
 import json
 import contextlib
 import numpy as np
@@ -12,6 +13,8 @@ from scipy.integrate import quad
 from astropy.cosmology import Planck18
 from ler.lens_galaxy_population import LensGalaxyPopulation
 from ler.source_population import CompactBinaryPopulation
+from ler.helperroutines import NumpyEncoder
+from ler.helperroutines import append_json, dict_list_to_ndarray, trim_dictionary
 
 # Conversions from SI units to CGS units
 C = 299792458.  # m/s
@@ -25,15 +28,24 @@ class LeR():
     ----------
     nsamples : `int` 
         number of samples for sampling.
+        default nsamples = 100000.
     npool : `int` 
         number of cores to use.
-    z_min : `float`
+        default npool = 4.
+    z_min : `float` 
         minimum redshift.
-    z_max : `float` 
+        default z_min = 0.
+        for popI_II, popIII, primordial, BNS z_min = 0., 5., 5., 0. respectively. 
+    z_max : `float`
         maximum redshift.
+        default z_max = 10.
+        for popI_II, popIII, primordial, BNS z_max = 10., 40., 40., 2. respectively.
     batch_size : `int` 
         batch size for SNR calculation.
+        default batch_size = 25000.
+        reduce the batch size if you are getting memory error.
     snr_finder : `str` 
+        default snr_finder = 'gwsnr'.
         if 'gwsnr', the SNR will be calculated using the gwsnr package.
         if 'custom', the SNR will be calculated using a custom function.
     kwargs : `keyword arguments`
@@ -59,11 +71,11 @@ class LeR():
         +---------------------------------------+--------------------------------------------------+
         | Atrributes                            | Type                                             |
         +=======================================+==================================================+
-        | :attr:`~gw_param`                     | ``bool``, ``dict``                               |
+        | :attr:`~gw_param`                     | ``dict``                                         |
         +---------------------------------------+--------------------------------------------------+
         | :attr:`~gw_param_detectable`          | ``dict``                                         |
         +---------------------------------------+--------------------------------------------------+
-        | :attr:`~lensed_param`                 | ``bool``, ``dict``                               |
+        | :attr:`~lensed_param`                 | ``dict``                                         |
         +---------------------------------------+--------------------------------------------------+
         | :attr:`~lensed_param_detectable`      | ``dict``                                         |
         +---------------------------------------+--------------------------------------------------+
@@ -113,37 +125,6 @@ class LeR():
         | :meth:`~lensed_rate`                  | Function to calculate lensed merger rate.        |
         +---------------------------------------+--------------------------------------------------+
     
-    """
-    gw_param = None
-    """``bool``, ``dict`` \n
-    if False, the unlensed parameters will be sampled when unlened_rate() is called \n
-    if dict, gw_param will be used when unlened_rate() is called \n
-    gw_param is a dictionary of unlensed parameters \n
-    it will be populated when unlened_cbc_statistics() is called \n
-    gw_param.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time']
-    """
-
-    gw_param_detectable = None
-    """``dict`` \n
-    gw_param_detectable is a dictionary of unlensed parameters for detectable sources \n
-    it will be populated when unlensed_rate() is called \n
-    gw_param_detectable.keys() = ['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'opt_snr_net', 'L1', 'H1', 'V1', 'pdet_net']
-    """
-
-    lensed_param = False 
-    """``bool``, ``dict`` \n
-    if False, the lensed parameters will be sampled when lensed_rate() is called \n
-    if dict, lensed_param will be used when lensed_rate() is called \n
-    lensed_param is a dictionary of lensed parameters \n
-    it will be populated when lensed_cbc_statistics() is called \n
-    lensed_param.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl', 'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images', 'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces', 'determinants', 'image_type', 'weights', 'opt_snr_net', 'L1', 'H1', 'V1', 'pdet_net']
-    """
-
-    lensed_param_detectable = None
-    """``dict`` \n
-    lensed_param_detectable is a dictionary of lensed parameters for detectable sources \n
-    it will be populated when lensed_rate() is called \n
-    lensed_param_detectable.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl', 'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images', 'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces', 'determinants', 'image_type', 'weights', 'opt_snr_net', 'L1', 'H1', 'V1', 'pdet_net']
     """
 
     gw_param_sampler_dict = None
@@ -207,28 +188,34 @@ class LeR():
 
         self.z_min = z_min
         self.z_max = z_max
-        self.gw_param = False          # this needed not to repeat sampling
-        self.gw_param_detectable = False          # this needed not to repeat sampling
-        self.lensed_param = False          # this needed not to repeat sampling
-        self.lensed_param_detectable = False          # this needed not to repeat sampling
         self.npool = npool
-        # initializing function for fast SNR calculation
+        # batch size for parameters sampling and snr calculation
+        # try keeping it below 50000 
+        # reduce the batch size if you are getting memory error
         self.batch_size = batch_size
+        self.gw_param = None
+        self.gw_param_detectable = None
+        self.lensed_param = None
+        self.lensed_param_detectable = None
 
         # dictionary of params for sampler
-        # this will be used for kde generation
-        # for unlened case
+        # for unlened case (source params)
+        # defualt for 'model_pars' is set for popI_II PowerLaw+PEAK model
+        # for other models, please change the 'model_pars' accordingly
         self.gw_param_sampler_dict = {'nsamples': nsamples, 'm_min': 4.59, 'm_max': 86.22, 'z_min': z_min, 'z_max': z_max,
                                       'event_type': 'popI_II', 'model_pars': {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82,
                                                                                       'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08,
                                                                                       'mu_g': 33.07, 'sigma_g': 5.69}}
         # for lensed case
+        # set 'min_lensed_images' = 2 for double image lensed case
         self.lensed_param_sampler_dict = {'nsamples': nsamples, 'min_lensed_images': 2, 'max_lensed_images': 4,
                                           'lensModelList': ['EPL_NUMBA', 'SHEAR']}
 
         # for snr_calculator
+        # for 'waveform_approximant' other than IMRPhenomD or TaylorF2, please set 'snr_type' = 'inner_product'
+        # you will get accurate results if you set 'nsamples_mtot': 200, 'nsamples_mass_ratio': 500., 'sampling_frequency': 4096.
         self.snr_calculator_dict = {'mtot_min':2., 'mtot_max':439.6, 'nsamples_mtot': 100, 'nsamples_mass_ratio': 50,
-                                    'sampling_frequency': 4096.,
+                                    'sampling_frequency': 2048.,
                                     'waveform_approximant': "IMRPhenomD", 'minimum_frequency': 20.,
                                     'snr_type': 'interpolation', 'waveform_inspiral_must_be_above_fmin': False,
                                     'psds': False, 'psd_file': False, 'ifos': False}
@@ -245,16 +232,11 @@ class LeR():
             if key in keys3:
                 self.snr_calculator_dict[key] = value
 
-        # initialization of clasess
+        # initialization of clasess, for both  CompactBinaryPopulation and LensGalaxyPopulation
         # CompactBinaryPopulation already inherits from Source_Galaxy_Population_Model class form source_population.py
-        self.compact_binary_pop = CompactBinaryPopulation(z_min=z_min, z_max=z_max,
-                                                          m_min=self.gw_param_sampler_dict['m_min'],
-                                                          m_max=self.gw_param_sampler_dict['m_max'],
-                                                          event_type=self.gw_param_sampler_dict['event_type'],
-                                                          model_pars=self.gw_param_sampler_dict['model_pars'])
         # LensGalaxyPopulation already inherits from Lens_Galaxy_Population_Model class form lens_galaxy_population.py
-        self.lens_galaxy_pop = LensGalaxyPopulation(self.compact_binary_pop)
-
+        self.class_initialization()
+        
         # initializing function for fast SNR calculation (in case of gwsnr)
         if snr_finder == 'gwsnr':
             # default
@@ -263,7 +245,7 @@ class LeR():
             # custom SNR function
             self.snr = None
         # extra note on how to change snr finder function
-        # self.snr_ = custom_snr_finder_function()
+        # self.snr = custom_snr_finder_function()
 
         # Create lookup tables
         self.create_lookup_tables(z_min, z_max)
@@ -272,27 +254,107 @@ class LeR():
 
         return None
     
+    # Attributes
+    @property
+    def gw_param(self):
+        """``bool``, ``dict`` \n
+        gw_param is a dictionary of unlensed parameters (source parameters) \n
+        it will be populated when unlened_cbc_statistics() is called \n
+        if unavailable, the unlensed parameters will be sampled when unlensed_rate() is called \n
+        gw_param.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time'] \n
+        """
+        if self._gw_param=='default':
+            f = open ('gw_params.json', "r", encoding='utf-8')
+            self._gw_param = json.loads(f.read())
+        return self._gw_param
+    
+    @gw_param.setter
+    def gw_param(self, value):
+        self._gw_param = value
+
+    @property
+    def gw_param_detectable(self):
+        """``bool``, ``dict`` \n
+        gw_param_detectable is a dictionary of unlensed parameters (source parameters) \n
+        it will be populated when unlened_cbc_statistics() is called \n
+        if unavailable, the unlensed parameters will be sampled when unlensed_rate() is called \n
+        gw_param_detectable.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time'] \n
+        """
+        if self._gw_param_detectable=='default':
+            f = open ('gw_params_detectable.json', "r", encoding='utf-8')
+            self._gw_param_detectable = json.loads(f.read())
+        return self._gw_param_detectable
+    
+    @gw_param_detectable.setter
+    def gw_param_detectable(self, value):
+        self._gw_param_detectable = value
+
+    @property
+    def lensed_param(self):
+        """``bool``, ``dict`` \n
+        lensed_param is a dictionary of lensed parameters \n
+        it will be populated when lensed_cbc_statistics() is called \n
+        if unavailable, the lensed parameters will be sampled when lensed_rate() is called \n
+        lensed_param.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time', 'lensed_images'] \n
+        """
+        if self._lensed_param=='default':
+            f = open ('lensed_params.json', "r", encoding='utf-8')
+            self._lensed_param = json.loads(f.read())
+        return self._lensed_param
+    
+    @lensed_param.setter
+    def lensed_param(self, value):
+        self._lensed_param = value
+
+    @property
+    def lensed_param_detectable(self):
+        """``bool``, ``dict`` \n
+        lensed_param_detectable is a dictionary of lensed parameters \n
+        it will be populated when lensed_cbc_statistics() is called \n
+        if unavailable, the lensed parameters will be sampled when lensed_rate() is called \n
+        lensed_param_detectable.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time', 'lensed_images'] \n
+        """
+        if self._lensed_param_detectable=='default':
+            f = open ('lensed_params_detectable.json', "r", encoding='utf-8')
+            self._lensed_param_detectable = json.loads(f.read())
+        return self._lensed_param_detectable
+    
+    @lensed_param_detectable.setter
+    def lensed_param_detectable(self, value):
+        self._lensed_param_detectable = value
+
+    # CompactBinaryPopulation class and LensGalaxyPopulation class initialization
+    def class_initialization(self):
+        """
+        Function for initializing the ``CompactBinaryPopulation`` and ``LensGalaxyPopulation`` classes.
+        """
+        self.compact_binary_pop = CompactBinaryPopulation(z_min=self.z_min, z_max=self.z_max,
+                                                          m_min=self.gw_param_sampler_dict['m_min'],
+                                                          m_max=self.gw_param_sampler_dict['m_max'],
+                                                          event_type=self.gw_param_sampler_dict['event_type'],
+                                                          model_pars=self.gw_param_sampler_dict['model_pars'])
+        self.lens_galaxy_pop = LensGalaxyPopulation(self.compact_binary_pop)
+
+        return None
+
     def store_ler_params(self):
-        '''
-        Function to store the parameters of the LER model. This is useful for reproducing the results.
-        '''
+        """
+        Fuction to store the parameters of the LER model. This is useful for reproducing the results.
+        """
         # store gw_param_sampler_dict, lensed_param_sampler_dict and snr_calculator_dict
         parameters_dict = {}
         parameters_dict.update(
             {'gw_param_sampler_dict': self.gw_param_sampler_dict})
         parameters_dict.update(
             {'lensed_param_sampler_dict': self.lensed_param_sampler_dict})
-        '''
+        
         snr_calculator_dict = self.snr_calculator_dict.copy()
         del snr_calculator_dict['ifos']
-        del snr_calculator_dict['psd_file']
         parameters_dict.update(
-            {'snr_calculator_dict': self.snr_calculator_dict})
-        '''
+            {'snr_calculator_dict': snr_calculator_dict})
+        
         file_name = './LeR_params.json'
-        json_dump = json.dumps(parameters_dict, cls=NumpyEncoder)
-        with open(file_name, "w", encoding='utf-8') as write_file:
-            json.dump(json.loads(json_dump), write_file, indent=4)
+        append_json(file_name, parameters_dict, replace=True)
 
         return None
 
@@ -303,7 +365,7 @@ class LeR():
         Parameters
         ----------
         kwargs_dict : 'dict'
-            keyword arguments for the SNR function
+            keyword arguments for the initialization of the `gwsnr` package.
             kwargs_dict.keys() \n
             ``nsamples_mtot`` : `int`
                 nsamples_mtot = 200 (recommended for accurate results)
@@ -325,8 +387,12 @@ class LeR():
                     psds = {'L1':'aLIGOaLIGODesignSensitivityT1800044',\n
                     'H1':'aLIGOaLIGODesignSensitivityT1800044',\n
                     'V1':'AdvVirgo'}
-            ``psd_file`` : `bool`
+            ``psd_file`` : `bool`, `list`
                 psd_file = False (if ASD) or True (if PSD file)
+                psd_file = [False,True] if psds[0] is a asd and psds[1] is a psd 
+            ``ifos`` : `list`
+                interferometer object name list
+                ifos = ['L1', 'H1', 'V1'] (for O4 design sensitivity)
 
         Returns
         ----------
@@ -335,6 +401,7 @@ class LeR():
         """
         gwsnr_param_dict = self.snr_calculator_dict
 
+        # update initialization dict from kwargs
         keys_ = gwsnr_param_dict.keys()
         for key, value in kwargs_dict.items():
             if key in keys_:
@@ -369,35 +436,106 @@ class LeR():
         ----------
         z_min : `float` 
             minimum redshift.
+            for popI_II, popIII, primordial, BNS z_min = 0., 5., 5., 0. respectively. 
         z_max : `float`
             maximum redshift.
+            for popI_II, popIII, primordial, BNS z_max = 10., 40., 40., 2. respectively.
+
+        Attributes
+        ----------
+        z_to_Dc : `scipy.interpolate.interp1d`
+            redshift to co-moving distance.
+        Dc_to_z : `scipy.interpolate.interp1d`
+            co-moving distance to redshift.
+        z_to_luminosity_distance : `scipy.interpolate.interp1d`
+            redshift to luminosity distance.
+        differential_comoving_volume : `scipy.interpolate.interp1d`
+            differential comoving volume.
         """
-        self.gw_param = False # this needed not repeat sampling
 
         # initialing cosmological functions for fast calculation through interpolation
-        z = np.linspace(z_min, z_max, 500)  # red-shift
+        z = np.linspace(z_min, z_max, 500)  # red-shifts
         # co-moving distance in Mpc
         Dc = Planck18.comoving_distance(z).value
         # luminosity distance in Mpc
         luminosity_distance = Planck18.luminosity_distance(z).value
+
+        # generating interpolators
         self.z_to_Dc = interp1d(z, Dc, kind='cubic')
         self.Dc_to_z = interp1d(Dc, z, kind='cubic')
-        self.z_to_luminosity_distance = interp1d(
-            z, luminosity_distance, kind='cubic')
-        # for angular diameter distance
-        quad_ = []  # refer to quad integradtion from scipy
-        for ii in range(len(z)):
-            quad_.append(quad(Planck18._inv_efunc_scalar, 0.,
-                         z[ii], args=Planck18._inv_efunc_scalar_args)[0])
-        quad_ = np.array(quad_)
-        self.quad_int = interp1d(z, np.array(quad_), kind='cubic')
+        self.z_to_luminosity_distance = interp1d(z, luminosity_distance, kind='cubic')
+
         # Lookup table for differential comoving distance
         differential_comoving_volume = Planck18.differential_comoving_volume(
             z).value*4*np.pi  # differential comoving volume in Mpc^3
         self.differential_comoving_volume = interp1d(
             z, differential_comoving_volume, kind='cubic')
+        
+        return None
+    
+    def batch_handler(self,nsamples,sampling_routine,json_file,resume=False):
+        """
+        Function to handle the batch size.
 
-    def unlensed_cbc_statistics(self, nsamples=False, jsonfile=True, **kwargs):
+        Parameters
+        ----------
+        nsamples : `int`
+            number of samples.
+        sampling_routine : `function`
+            function to sample the parameters.
+            e.g. unlensed_sampling_routine() or lensed_sampling_routine()
+        json_file : `str`
+            name of the json file to store the parameters.
+        resume : `bool`
+            if True, it will resume the sampling from the last batch.
+            default resume = False.
+        """
+        batch_size = self.batch_size
+        # if nsamples is multiple of batch_size
+        if nsamples%batch_size == 0:  
+            num_batches = nsamples//batch_size
+        # if nsamples is not multiple of batch_size
+        else:
+            num_batches = nsamples//batch_size +1
+
+        print(f"chosen batch size = {batch_size}. If you want to change batch size, self.batch_size = new_size")
+        print(f"There will be {num_batches} batche(s)")
+
+        # note frac_batches+(num_batches-1)*batch_size = nsamples
+        if nsamples > batch_size:
+            frac_batches = nsamples-(num_batches-1)*batch_size
+        # if nsamples is less than batch_size
+        else:
+            frac_batches = nsamples
+        track_batches = 0
+
+        if not resume:
+            track_batches = track_batches+1
+            print(f"Batch no. {track_batches}")
+            # new first batch with the frac_batches
+            sampling_routine(nsamples=frac_batches,file_name=json_file)
+        else:
+            # check where to resume from
+            try:
+                print(f"resuming from {json_file}")
+                with open(json_file, "r", encoding='utf-8') as f:
+                    data = json.load(f)
+                    track_batches = (len(data['zs'])-frac_batches)//batch_size + 1
+            except:
+                print(f"no json file found with name {json_file}. Set resume=False")
+                return None
+            
+        # ---------------------------------------------------#
+        min_, max_ = track_batches, num_batches
+        for i in range(min_,max_):
+            track_batches = track_batches+1
+            print(f"Batch no. {track_batches}")
+            sampling_routine(nsamples=batch_size,file_name=json_file,resume=True)     
+        # ---------------------------------------------------#
+
+        return None
+
+    def unlensed_sampling_routine(self, nsamples,file_name,resume=False):
         """
         Function to generate unlensed GW source parameters.
 
@@ -405,18 +543,51 @@ class LeR():
         ----------
         nsamples : `int`
             number of samples.
-        jsonfile : `bool`
-            if True, store all gravitational waves source parameters in json file \n
-            (for all sources, detected and undetected).
+            default nsamples = 100000.
+        file_name : `str`
+            name of the json file to store the parameters.
+        resume : `bool`
+            if True, it will resume the sampling from the last batch.
+            default resume = False.
+        """
+        # get gw params
+        print('sampling gw source params...')
+        gw_param = self.compact_binary_pop.sample_gw_parameters(
+            nsamples=nsamples)
+        # Get all of the signal to noise ratios
+        print('calculating snrs...')
+        snrs = self.snr.snr(GWparam_dict=gw_param)
+        gw_param.update(snrs)
+
+        # store all params in json file
+        append_json(file_name=file_name, dictionary=gw_param, replace=not(resume))
+        gw_param = None # to free memory
+
+    def unlensed_cbc_statistics(self, nsamples=None, resume=False, json_file='./gw_params.json', **kwargs):
+        """
+        Function to generate unlensed GW source parameters.
+
+        Parameters
+        ----------
+        nsamples : `int`
+            number of samples.
+            default nsamples = 100000.
+        resume : `bool`
+            resume = False (default) or True.
+            if True, the function will resume from the last batch.
+        json_file : `str`
+            json file name for storing the parameters.
+            default json_file = './gw_params.json'.
         kwargs : `dict`
-            if new paramteres are provided, it will be used for sampling source parameters.
+            key word arguments for initializing the ``CompactBinaryPopulation`` class. \n
+            This initialization is either done at the time of class initialization or at the time of calling this function. \n 
             Following parameters can be provided, \n
             ``m_min`` : `float`
                 minimum mass of the compact binary (single).
             ``m_max`` : `float`
                 maximum mass of the compact binary (single).
             ``event_type`` : `str`
-                event_type = 'popI_II' etc.
+                event_type = 'popI_II' or `popIII` or `primordial`.
             ``model_pars`` : `dict`
                 model_pars = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82,\n
                 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08,\n
@@ -431,71 +602,35 @@ class LeR():
         """
         
         gw_sampler_dict = self.gw_param_sampler_dict
-        batch_size = self.batch_size
+
         # gw parameter sampling
-        if nsamples == False:
-            nsamples = gw_sampler_dict['nsamples']
-        else:
+        if nsamples:
             gw_sampler_dict['nsamples'] = nsamples
-        for key, value in kwargs.items():
-            if key in gw_sampler_dict:
-                gw_sampler_dict[key] = value
-                
-        self.compact_binary_pop.model_pars = gw_sampler_dict['model_pars']
+        else:
+            nsamples = gw_sampler_dict['nsamples']
+
+        try:
+            # check if kwargs is empty
+            if kwargs:
+                for key, value in kwargs.items():
+                    if key in gw_sampler_dict:
+                        gw_sampler_dict[key] = value
+                # re-initializing classes with new params
+                self.class_initialization()
+        except:
+            pass
                 
         # sampling in batches
-        if nsamples % batch_size == 0:
-            num_batches = int(nsamples/batch_size)
-        else:
-            num_batches = int(nsamples/batch_size)+1
-
-        print(f"chosen batch size = {batch_size}. If you want to change batch size, self.batch_size = new_size")
-        print(f"There will be {num_batches} batche(s)")
-        num_batches = num_batches-1  # consideing couting from 0
-        if nsamples > batch_size:
-            frac_batches = nsamples-num_batches*batch_size
-        else:
-            frac_batches = nsamples
-        track_batches = 0
-        # ---------------------------------------------------#
-        print(f"Batch no. {track_batches}")
-        # get gw params
-        print('sampling gw params...')
-        gw_param = self.compact_binary_pop.sample_gw_parameters(
-            nsamples=frac_batches)
-        # Get all of the signal to noise ratios
-        print('calculating snrs...')
-        snrs = self.snr_.snr(GWparam_dict=gw_param)
-        gw_param.update(snrs)
-        # ---------------------------------------------------#
-        # ---------------------------------------------------#
-        gw_param_ = None
-        for i in range(num_batches):
-            track_batches += 1
-            print(f"Batch no. {track_batches}")
-            print('sampling gw params...')
-            gw_param_ = self.compact_binary_pop.sample_gw_parameters(
-                nsamples=batch_size)
-            print('calculating snrs...')
-            snrs = self.snr_.snr(GWparam_dict=gw_param_)
-            gw_param_.update(snrs)
-            for key in gw_param.keys():
-                gw_param[key] = np.append(
-                    gw_param[key], gw_param_[key], axis=0)
-        del gw_param_, snrs
-        # ---------------------------------------------------#
-
-        self.gw_param = gw_param
-        # store all params in json file
-        if jsonfile:
-            file_name = './gw_params.json'
-            json_dump = json.dumps(gw_param, cls=NumpyEncoder)
-            with open(file_name, "w", encoding='utf-8') as write_file:
-                json.dump(json.loads(json_dump), write_file, indent=4)
+        self.batch_handler(nsamples=nsamples,sampling_routine=self.unlensed_sampling_routine,
+                           json_file=json_file,resume=resume)
+        
+        self.gw_param = 'default'
+        gw_param = self.gw_param.copy()
+        self.gw_param = None  # to free up memory 
 
         return gw_param
-
-    def unlensed_rate(self, size=False, snr_threshold=8., jsonfile=True):
+                           
+    def unlensed_rate(self, gw_param='default', snr_threshold=8., jsonfile='./gw_params_detectable.json'):
         """
         Function to calculate unlensed merger rate. 
 
@@ -520,34 +655,28 @@ class LeR():
         unlensed_rate : `float`
             unlensed merger rate in a year.
         """
+        # get gw params from json file if not provided
+        if gw_param == 'default':
+            print('getting gw_params from json file...')
+            self.gw_param = 'default'
+            gw_param = self.gw_param.copy()
+            self.gw_param = None  # to free up memory
 
-        if self.gw_param == False:
-            # sample the source parameters
-            print('gw_param not sampled beforehand. Sampling now...')
-            self.unlensed_cbc_statistics(
-                nsamples=False, snr_threshold=snr_threshold, jsonfile=jsonfile)
-        else:
-            print('already sampled gw_param found.')
-            size = len(self.gw_param['zs'])
-            print('sample size will be taken as that gw_param, size=', size)
-
-        gw_param = self.gw_param.copy()
+        gw_param = dict_list_to_ndarray(gw_param)
+        # get snr
         snr = gw_param['opt_snr_net']
         pdet = 1 - norm.cdf(snr_threshold - snr)
         gw_param['pdet_net'] = pdet
 
         # selecting only detectable
         idx_detectable = snr > snr_threshold
-
         # store all detectable params in json file
         for key, value in gw_param.items():
             gw_param[key] = value[idx_detectable]
-        if jsonfile:
-            file_name = './gw_params_detectable.json'
-            json_dump = json.dumps(gw_param, cls=NumpyEncoder)
-            with open(file_name, "w", encoding='utf-8') as write_file:
-                json.dump(json.loads(json_dump), write_file, indent=4)
-        self.gw_param_detectable = gw_param
+
+        # store all detectable params in json file
+        append_json(jsonfile, gw_param, replace=True)
+
         # montecarlo integration
         # The total rate is Eq. A4 of https://arxiv.org/pdf/2106.06303.pdf
         # R = C0 int Theta(rho-rhoc) p(z) p(theta) dtheta dz_s, where C0 = int R(zs)/(1+zs) dVc/dzs dzs is the normalization constant for p(z)
@@ -555,132 +684,181 @@ class LeR():
         c0 = self.compact_binary_pop.normalization_pdf_z
         total_rate_step = c0 * np.mean(idx_detectable)
         print(f"total unlensed rate with step function: {total_rate_step}")
-
         # with pdet
         total_rate_pdet = c0 * np.mean(pdet)
         print(f"total unlensed rate with pdet function: {total_rate_pdet}")
 
-        return (total_rate_step, total_rate_pdet)
+        self.gw_param_detectable = 'default'
+        gw_param_detectable = self.gw_param_detectable.copy()
+        self.gw_param_detectable = None  # to free up memory
 
-    def lensed_cbc_statistics(self, nsamples=False, jsonfile=True, **kwargs):
-        '''
-        function to generate lensed GW source parameters, lens parameters and image parameters
-        Intput Parameters:
-            nsamples: number of samples
-            snr_threshold: threshold for detection signal to noise ratio
-            jsonfile: if True, store lensed GW source parameters, lens parameters and image parameters in json file
-                        (both for detected and undetected sources)
-            **kwargs: if new parameters are provided, it will be used for sampling
-        Output Parameters:
-            lensed_param: `dict`ionary of lensed GW source parameters, lens parameters and image parameters
-        '''
+        return([total_rate_step,total_rate_pdet], gw_param_detectable)
 
-        lens_sampler_dict = self.lensed_param_sampler_dict
-        batch_size = self.batch_size
-        # if new paramteres are provided
-        if nsamples == False:
-            nsamples = lens_sampler_dict['nsamples']
-        else:
-            lens_sampler_dict['nsamples'] = nsamples
-        for key, value in kwargs.items():
-            if key in lens_sampler_dict:
-                lens_sampler_dict[key] = value
-        min_img = int(lens_sampler_dict['min_lensed_images'])
-        max_img = int(lens_sampler_dict['max_lensed_images'])
+    def lensed_sampling_routine(self, nsamples, file_name, resume=False):
+        """
+        Function to generate lensed GW source parameters, lens galaxy parameters and image paramters.
 
-        # gw_param will not be kept same as that of unlensed case. So, it is sampled newly
-        # sampling in batches
-        if nsamples % batch_size == 0:
-            num_batches = int(nsamples/batch_size)
-        else:
-            num_batches = int(nsamples/batch_size)+1
+        Parameters
+        ----------
+        nsamples : `int`
+            number of samples.
+        file_name : `str`
+            name of the json file to store the parameters.
+        resume : `bool`
+            if True, it will resume the sampling from the last batch.
+            default resume = False.
+        """
 
-        print(f"chosen batch size = {batch_size}. If you want to change batch size, self.batch_size = new_size")
-        print(f"There will be {num_batches} batche(s)")
-        num_batches = num_batches-1  # consideing couting from 0
-        if nsamples > batch_size:
-            frac_batches = nsamples-num_batches*batch_size
-        else:
-            frac_batches = nsamples
-
-        track_batches = 0
-        # ---------------------------------------------------#
-        print(f"Batch no. {track_batches}")
+        # get lensed params
+        print('sampling lensed params...')
         lensed_param = self.lens_galaxy_pop.sample_lens_parameters(
-            size=frac_batches)
+            size=nsamples)
         # now get (strongly lensed) image paramters along with lens parameters
         lensed_param = \
-            self.lens_galaxy_pop.get_image_properties(n_min_images=min_img, n_max_images=max_img,
-                                                      lens_parameters=lensed_param,
-                                                      lensModelList=lens_sampler_dict['lensModelList'], npool=self.npool)
+            self.lens_galaxy_pop.get_image_properties(n_min_images=self.lensed_param_sampler_dict['min_lensed_images'], 
+                                                      n_max_images=self.lensed_param_sampler_dict['max_lensed_images'], 
+                                                      lens_parameters=lensed_param, 
+                                                      lensModelList=self.lensed_param_sampler_dict['lensModelList'], 
+                                                      npool=self.npool)
         # Get all of the signal to noise ratios
         print('calculating snrs...')
         snrs = self.lens_galaxy_pop.get_lensed_snrs(
-            snr_calculator=self.snr_, lensed_param=lensed_param, n_max_images=max_img)
+            snr_calculator=self.snr, lensed_param=lensed_param, 
+            n_max_images=self.lensed_param_sampler_dict['max_lensed_images'])
         lensed_param.update(snrs)
-        # ---------------------------------------------------#
-        # ---------------------------------------------------#
-        lensed_param_ = None
-        for i in range(num_batches):
-            track_batches += 1
-            print(f"Batch no. {track_batches}")
-            # try:
-            lensed_param_ = self.lens_galaxy_pop.sample_lens_parameters(
-                size=batch_size)
-            # now get (strongly lensed) image paramters along with lens parameters
-            lensed_param_ = \
-                self.lens_galaxy_pop.get_image_properties(n_min_images=min_img, n_max_images=max_img,
-                                                          lens_parameters=lensed_param_,
-                                                          lensModelList=lens_sampler_dict['lensModelList'], npool=self.npool)
-            print('calculating snrs...')
-            snrs = self.lens_galaxy_pop.get_lensed_snrs(
-                snr_calculator=self.snr_, lensed_param=lensed_param_, n_max_images=max_img)
-            lensed_param_.update(snrs)
-            for key in lensed_param.keys():
-                lensed_param[key] = np.append(
-                    lensed_param[key], lensed_param_[key], axis=0)
-        del lensed_param_, snrs
-        # ---------------------------------------------------#
 
-        self.lensed_param = lensed_param
         # store all params in json file
-        if jsonfile:
-            file_name = './lensed_params.json'
-            json_dump = json.dumps(lensed_param, cls=NumpyEncoder)
-            with open(file_name, "w", encoding='utf-8') as write_file:
-                json.dump(json.loads(json_dump), write_file, indent=4)
+        append_json(file_name=file_name, dictionary=lensed_param, replace=not(resume))
+        lensed_param = None  # to free up memory
 
-        return (lensed_param)
 
-    def lensed_rate(self, size=False, snr_threshold=8., num_img=2, jsonfile=True, none_as_nan=True):
-        '''
-        Function to calculate detectable lensed merger rate
-        Intput Parameters:
-            size (int): number of samples
-            snr_threshold (float/array): threshold for detection signal to noise ratio
-            num_img (int/array): number of images
-                                e.g. For Sub-thershold events, snr_threshold=[8.,6.], num_img=[1,1]
-                                The event will contain 1 image with snr>8 and 1 image with snr>6
-            jsonfile (bool): if True, store all gravitational waves source parameters in json file
-            none_as_nan (bool): if True,  no value is kept as np.nan
-                                if False, no value is kept as 0.
-        Output Parameters:
-            lensed_rate (float): lensed merger rate in yr^-1
-        '''
-        if self.lensed_param == False:
-            # sample the source parameters
-            print('lensed_param not sampled beforehand. Sampling now...')
-            self.lensed_cbc_statistics(nsamples=size, jsonfile=jsonfile)
+    def lensed_cbc_statistics(self, nsamples=None, resume=False, json_file='./lensed_params.json', **kwargs):
+        """
+        Function to generate lensed GW source parameters, lens galaxy parameters and image paramters.
+
+        Parameters
+        ----------
+        nsamples : `int`
+            number of samples.
+            default nsamples = 100000.
+        resume : `bool`
+            resume = False (default) or True.
+            if True, the function will resume from the last batch.
+        json_file : `str`
+            json file name for storing the parameters.
+            default json_file = './lensed_params.json'.
+        kwargs : `dict`
+            key word arguments for initializing the ``LensGalaxyPopulation`` class. \n
+            This initialization is either done at the time of class initialization or at the time of calling this function. \n
+            Following parameters can be provided, \n
+            ``min_lensed_images`` : `int`
+                minimum number of lensed images.
+            ``max_lensed_images`` : `int`
+                maximum number of lensed images.
+            ``lensModelList`` : `list`
+                list of lens models.
+                e.g. lensModelList = ['EPL_NUMBA', 'SHEAR'].
+
+        Returns
+        ----------
+        lensed_param : `dict`
+            dictionary of lensed GW source parameters, lens galaxy parameters and image paramters.
+            lensed_param.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl', 
+            'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 
+            'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images', 
+            'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces', 
+            'determinants', 'image_type', 'weights', 'opt_snr_net', 'L1', 'H1', 'V1']
+        """
+
+        lens_sampler_dict = self.lensed_param_sampler_dict
+
+        # if new paramteres are provided
+        if nsamples:
+            lens_sampler_dict['nsamples'] = nsamples
         else:
-            print('already sampled lensed_param found.')
-            size = len(self.lensed_param['zs'])
-            print('sample size will be taken as that lensed_param, size=', size)
+            nsamples = lens_sampler_dict['nsamples']
 
+        try:
+            # check if kwargs is empty
+            if kwargs:
+                for key, value in kwargs.items():
+                    if key in lens_sampler_dict:
+                        lens_sampler_dict[key] = value
+
+                # re-initializing classes with new params
+                self.class_initialization()
+        except:
+            pass
+
+        # gw_param will not be kept same as that of unlensed case. So, it is sampled newly
+        # sampling in batches
+        self.batch_handler(nsamples=nsamples,sampling_routine=self.lensed_sampling_routine,
+                            json_file=json_file,resume=resume)
+        
+        self.lensed_param = 'default'
         lensed_param = self.lensed_param.copy()
+        self.lensed_param = None  # to free up memory
+
+        return lensed_param
+
+    def lensed_rate(self, lensed_param='default', snr_threshold=8., num_img=2, 
+                    jsonfile='./lensed_params_detectable.json', none_as_nan=True):
+        """
+        Function to calculate lensed merger rate.
+
+        .. math::
+            R_L = \\mathcal{N}^L\\int dz_s R_o^L(z_s)\\bigg\\{\\Theta[\\rho(z_s,\\theta)-\\rho_{th}] P(\\theta) d\\theta \\bigg\\}
+
+        - where :math:`\\mathcal{N}^L` is the normalization factor of the lensed merger rate distribution wrt redshift.
+
+        Parameters
+        ----------
+        lensed_param : `dict`
+            dictionary of lensed GW source parameters, lens galaxy parameters and image paramters.
+            lensed_param.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl', 
+            'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 
+            'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images', 
+            'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces', 
+            'determinants', 'image_type', 'weights', 'opt_snr_net', 'L1', 'H1', 'V1']
+        snr_threshold : `float`
+            threshold for detection signal to noise ratio.
+            e.g. snr_threshold = 8.
+        num_img : `int`
+            number of images.
+            e.g. num_img = 2.
+        jsonfile : `str`
+            json file name for storing the parameters.
+            default jsonfile = './lensed_params_detectable.json'.
+        none_as_nan : `bool`
+            if True, replace None with np.nan in the lensed_param dictionary.
+            default none_as_nan = True.
+
+        Returns
+        ----------
+        lensed_rate : `float`  
+            lensed merger rate in a year.
+            with step function and pdet function.
+        detectable_lensed_param : `dict`
+            dictionary of detectable lensed GW source parameters, lens galaxy parameters and image paramters.
+            detectable_lensed_param.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 
+            'Dl', 'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 
+            'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images', 
+            'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces', 
+            'determinants', 'image_type', 'weights', 'opt_snr_net', 'L1', 'H1', 'V1']
+        """
+
+        # get lensed params from json file if not provided
+        if lensed_param == 'default':
+            print('getting lensed_params from json file...')
+            self.lensed_param = 'default'
+            lensed_param = self.lensed_param.copy()
+            self.lensed_param = None
+
+        lensed_param = dict_list_to_ndarray(lensed_param)
 
         # Dimensions are (nsamples, n_max_images)
-        snr = lensed_param['opt_snr_net']
-
+        snr = np.array(lensed_param['opt_snr_net'])
+        size = len(snr)
         snr_threshold, num_img = np.array(
             [snr_threshold]).reshape(-1), np.array([num_img]).reshape(-1)  # convert to array
         # sort in descending order of each row
@@ -711,21 +889,16 @@ class LeR():
         snr_hit = snr_hit&not_rejected
         
         # store all params in json file
-        weights = lensed_param['weights']
         if none_as_nan == True:
             for key, value in lensed_param.items():
                 lensed_param[key] = value[snr_hit]
         else:
             for key, value in lensed_param.items():
-                lensed_param[key] = np.nan_to_num(value[snr_hit])
+                lensed_param[key] = np.nan_to_num(np.array(value[snr_hit]))
 
-        # store all params in json file
-        if jsonfile:
-            file_name = './lensed_params_detectable.json'
-            json_dump = json.dumps(lensed_param, cls=NumpyEncoder)
-            with open(file_name, "w", encoding='utf-8') as write_file:
-                json.dump(json.loads(json_dump), write_file, indent=4)
-        self.lensed_param_detectable = lensed_param
+        # store all detectable params in json file
+        append_json(jsonfile, lensed_param, replace=True)
+
         # montecarlo integration
         # The total rate is Eq. A4 of https://arxiv.org/pdf/2106.06303.pdf
         # R = C0 int Theta(rho-rhoc) p(z) p(theta) dtheta dz_s, where C0 = int R(zs)/(1+zs) dVc/dzs tau(zs) dzs is the normalization constant for p(z)
@@ -738,82 +911,73 @@ class LeR():
         total_rate_pdet = c0 * np.mean(pdet_combined*weights)
         print("total lensed rate with pdet function: {}".format(total_rate_pdet))
 
-        return(total_rate_step,total_rate_pdet)
+        self.lensed_param_detectable = 'default'
+        lensed_param_detectable = self.lensed_param_detectable.copy()
+        self.lensed_param_detectable = None  # to free up memory
 
-    def selecting_n_lensed_detectable_events_from_dict(self, snr_threshold=8., num_img=2, none_as_nan=True,
-                                                       lenstype='I'):
-        '''
-        Function to select n lensed detectable events from self.lensed_param
-        Input Parameters:
-            snr_threshold (float/array): threshold for detection signal to noise ratio
-            num_img (int/array): number of images
-                                e.g. For Sub-thershold events, snr_threshold=[8.,6.], num_img=[1,1]
-                                The event will contain 1 image with snr>8 and 1 image with snr>6
-            none_as_nan (bool): if True,  no value is kept as np.nan
-                                if False, no value is kept as 0.
-            lenstype (str): lens type, 'I' or 'II'  
-        Output Parameters:
-            lensed_param (dict): `dict`ionary of lensed parameters
-        '''
-        try:
-            size = len(self.lensed_param['zs'])
-        except:
-            print('lensed_param not sampled beforehand.')
-            return None
-        param = self.lensed_param.copy()
-        snr = param['opt_snr_net']  # Dimensions are (nsamples, n_max_images)
+        return([total_rate_step,total_rate_pdet], lensed_param_detectable)
+    
 
-        # lens type selection dictionary
-        lens_type_dict = {'I': [0, 1], 'II': [2, 3]}
-        if lenstype == 'I':
-            snr = snr[:, lens_type_dict[lenstype]
-                      [0]:lens_type_dict[lenstype][1]+1]
-        elif lenstype == 'II':
-            snr = snr[:, lens_type_dict[lenstype]
-                      [0]:lens_type_dict[lenstype][1]+1]
-        else:
-            print('lens type not found. Please choose from', lens_type_dict.keys())
-            return None
+    # ---------------------------------------------------#
+    # functions for selecting n lensed detectable events #
+    # ---------------------------------------------------#
 
-        # dealing with snr_threshold and num_img
-        snr_threshold, num_img = np.array(
-            [snr_threshold]).reshape(-1), np.array([num_img]).reshape(-1)  # convert to array
-        # sort in descending order of each row
-        arg_th = (-snr_threshold).argsort()
-        sorted_snr = -np.sort(-snr, axis=1)
-        num1 = 0  # tracks the number of images for the current threshold
-        num2 = 0  # tracks the column number of the already sorted snr 2D array
-        # boolean array to store the result of the threshold condition
-        snr_hit = np.full(len(snr), True)
-        for i in arg_th:
-            num1 = num_img[i]
-            for j in range(num1):
-                # snr_hit step function case
-                snr_hit = snr_hit & (sorted_snr[:, num2] > snr_threshold[i])
-                num2 += 1
+    def selecting_n_lensed_detectable_events(self, size=100, snr_threshold=8., num_img=2, 
+                                             none_as_nan=False, lenstype='any',
+                                             resume=False, json_file='./lensed_params_detectable.json'):
+        """
+        Function to select n lensed detectable events.
 
-        if none_as_nan == True:
-            for key, value in param.items():
-                param[key] = value[snr_hit]
-        else:
-            for key, value in param.items():
-                param[key] = np.nan_to_num(value[snr_hit])
-        return param
+        Parameters
+        ----------
+        size : `int`
+            number of samples to be selected.
+            default size = 100.
+        snr_threshold : `float`
+            threshold for detection signal to noise ratio.
+            e.g. snr_threshold = 8. or [8.,6.]
+        num_img : `int`
+            number of images crossing the threshold.
+            e.g. num_img = 2 or [1,1]
+        none_as_nan : `bool`
+            if True, replace None with np.nan in the lensed_param dictionary.
+            default none_as_nan = True.
+        lenstype : `str`
+            lens type.
+            e.g. lenstype = 'I' or 'II' or 'any'.
+        resume : `bool`
+            if True, it will resume the sampling from the last batch.
+            default resume = False.
+        json_file : `str`
+            json file name for storing the parameters.
+            default json_file = './lensed_params_detectable.json'.
 
-    def selecting_n_lensed_detectable_events_with_sampling(self, snr_threshold=8., num_img=2, none_as_nan=True,
-                                                           size=100, lenstype='I', min_img=2, max_img=4):
-        '''
-        Function to select n lensed detectable events with sampling
-        '''
+        Returns
+        ----------
+        param_final : `dict`
+            dictionary of lensed GW source parameters, lens galaxy parameters and image paramters.
+            param_final.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2',
+            'Dl', 'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source',
+            'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
+            'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'image_type', 
+            'weights', 'opt_snr_net', 'L1', 'H1', 'V1']
+
+        """
+
+        if not resume:
+            os.remove(json_file) 
+
         n = 0
-        param_final = {}
         while (n < size):
             # disable print statements
             with contextlib.redirect_stdout(None):
-                param = self.lensed_cbc_statistics(nsamples=self.batch_size, jsonfile=False, min_lensed_images=min_img,
-                                                 max_lensed_images=max_img)
+                self.sampling_routine(nsamples=self.batch_size,file_name=json_file,resume=False)
+                self.lensed_param = 'default'
+
+                lensed_param = dict_list_to_ndarray(self.lensed_param.copy())
                 # Dimensions are (nsamples, n_max_images)
-                snr = param['opt_snr_net']
+                snr = np.array(lensed_param['opt_snr_net'])
+                size = len(snr)
 
                 # lens type selection dictionary
                 lens_type_dict = {'I': [0, 1], 'II': [2, 3]}
@@ -829,7 +993,7 @@ class LeR():
                     print('lens type not found. Please choose from',
                           lens_type_dict.keys())
                     return None
-
+                
                 # dealing with snr_threshold and num_img
                 snr_threshold, num_img = np.array(
                     [snr_threshold]).reshape(-1), np.array([num_img]).reshape(-1)  # convert to array
@@ -844,149 +1008,35 @@ class LeR():
                     num1 = num_img[i]
                     for j in range(num1):
                         # snr_hit step function case
-                        snr_hit = snr_hit & (
-                            sorted_snr[:, num2] > snr_threshold[i])
+                        snr_hit = snr_hit & (sorted_snr[:, num2] > snr_threshold[i])
                         num2 += 1
-                # update the final param dictionary
+
+                weights = lensed_param['weights']
+                # rejection sample wrt to weights
+                not_rejected = np.random.uniform(0,1,size)<weights
+                snr_hit = snr_hit&not_rejected
+                
+                # store all params in json file
                 if none_as_nan == True:
-                    for key, value in param.items():
-                        # if param_final[key] is empty
-                        if n == 0:
-                            param_final[key] = value[snr_hit]
-                        else:
-                            # concatenate the values of the current param dictionary with the final param dictionary
-                            param_final[key] = np.concatenate(
-                                (param_final[key], value[snr_hit]), axis=0)
+                    for key, value in lensed_param.items():
+                        lensed_param[key] = value[snr_hit]
                 else:
-                    for key, value in param.items():
-                        # if param_final[key] is empty
-                        if n == 0:
-                            param_final[key] = value[snr_hit]
-                        else:
-                            param_final[key] = np.concatenate(
-                                (param_final[key], np.nan_to_num(value[snr_hit])), axis=0)
-                n = len(param_final['opt_snr_net'])
+                    for key, value in lensed_param.items():
+                        lensed_param[key] = np.nan_to_num(np.array(value[snr_hit]))
+
+                append_json(jsonfile, lensed_param, replace=False)        
+
+                n += np.sum(snr_hit) 
             print('collected number of events = ', n)
 
         # trim the final param dictionary
-        for key, value in param_final.items():
-            param_final[key] = value[:size]
-        print('After trimming, collected number of events = ',
-              len(param_final['opt_snr_net']))
+        self.lensed_param_detectable = 'default'
+        param_final = self.lensed_param_detectable.copy()
+        self.lensed_param_detectable = None  # to free up memory
+        param_final = trim_dictionary(param_final, size)
+
         return param_final
 
-    def selecting_n_unlensed_detectable_events_from_dict(self, snr_threshold=8.):
-        '''
-        Function to select n lensed detectable events from self.gw_param
-        '''
-        try:
-            size = len(self.gw_param['zs'])
-        except:
-            print('unlensed_param not sampled beforehand.')
-            return None
-        param = self.gw_param.copy()
-        snr = param['opt_snr_net']  # Dimensions are (nsamples)
-
-        # selecting only detectable
-        idx_detectable = snr > snr_threshold
-        # store all detectable params in json file
-        for key, value in param.items():
-            param[key] = value[idx_detectable]
-        return param
-
-    def selecting_n_unlensed_detectable_events_with_sampling(self, snr_threshold=8., size=100):
-        '''
-        Function to select n lensed detectable events with sampling
-        '''
-        n = 0
-        param_final = {}
-        while (n < size):
-            # disable print statements
-            with contextlib.redirect_stdout(None):
-                param = self.unlensed_cbc_statistics(
-                    nsamples=self.batch_size, jsonfile=False)
-                snr = param['opt_snr_net']
-
-                # selecting only detectable
-                idx_detectable = snr > snr_threshold
-                # update the final param dictionary
-                for key, value in param.items():
-                    # param_final is empty
-                    if n == 0:
-                        param_final[key] = value[idx_detectable]
-                    else:
-                        # concatenate the values of the current param dictionary with the final param dictionary
-                        param_final[key] = np.concatenate(
-                            (param_final[key], value[idx_detectable]), axis=0)
-                n = len(param_final['opt_snr_net'])
-            print('collected number of events = ', n)
-
-        # trim the final param dictionary
-        for key, value in param_final.items():
-            param_final[key] = value[:size]
-        print('After trimming, collected number of events = ',
-              len(param_final['opt_snr_net']))
-        return param_final
-
-    def selecting_n_detectable_events(self, snr_threshold=8., num_img=2, none_as_nan=True, lensed=True, jsonfile=True,
-                                      lenstype='I', new=False, size=100, min_img=2, max_img=4, batch_size=10000, **kwargs):
-        '''
-        Function to select n detectable events
-        Input parameters:
-            snr_threshold (float): the threshold for the SNR
-            num_img (int): the number of images
-            none_as_nan (bool): if True, then replace None with np.nan
-            lensed (bool): if True, then select lensed events
-            jsonfile (bool): if True, then save the dictionary as a json file
-            lenstype (str): the lens type
-                            e.g. 'I' for image type I, 'II' for image type II, 'III' for image type III, 'any' for any type
-            new (bool): if True, then sample new events
-            size (int): the number of events to be sampled
-            min_img (int): the minimum number of images
-            max_img (int): the maximum number of images
-            batch_size (int): the number of events to be sampled in each iteration
-        Output parameters:
-            param (dict): the dictionary containing the parameters of the selected events
-        '''
-        self.batch_size = batch_size
-        if lensed == True:
-            if new == False:
-                param = \
-                    self.selecting_n_lensed_detectable_events_from_dict(snr_threshold=snr_threshold, num_img=num_img,
-                                                                        none_as_nan=none_as_nan,
-                                                                        lenstype=lenstype)
-            else:
-                param = \
-                    self.selecting_n_lensed_detectable_events_with_sampling(snr_threshold=snr_threshold, num_img=num_img,
-                                                                            none_as_nan=none_as_nan,
-                                                                            lenstype=lenstype,
-                                                                            size=size, min_img=min_img, max_img=max_img)
-            self.lensed_param_detectable = param
-            # save the dictionary as a json file
-            if jsonfile:
-                file_name = './lensed_params_detectable.json'
-                json_dump = json.dumps(param, cls=NumpyEncoder)
-                with open(file_name, "w", encoding='utf-8') as write_file:
-                    json.dump(json.loads(json_dump), write_file, indent=4)
-
-        else:
-            if new == False:
-                param = \
-                    self.selecting_n_unlensed_detectable_events_from_dict(
-                        snr_threshold=snr_threshold)
-            else:
-                param = \
-                    self.selecting_n_unlensed_detectable_events_with_sampling(
-                        snr_threshold=snr_threshold, size=size)
-            self.lensed_param_detectable = param
-            # save the dictionary as a json file
-            if jsonfile:
-                file_name = './unlensed_params_detectable.json'
-                json_dump = json.dumps(param, cls=NumpyEncoder)
-                with open(file_name, "w", encoding='utf-8') as write_file:
-                    json.dump(json.loads(json_dump), write_file, indent=4)
-
-        return param
 
     def rate_comparision(self, size=False, snr_threshold=8., num_img=2, jsonfile=True, none_as_nan=True):
         '''
@@ -1023,19 +1073,3 @@ class LeR():
                       unlensed_rate[1]/lensed_rate[1])
         print('unlensed/lensed rate ratio = ', rate_ratio)
         return (unlensed_rate, lensed_rate, rate_ratio)
-
-# --------------------------------------------------#
-
-# --------------------------------------------------#
-
-
-class NumpyEncoder(json.JSONEncoder):
-    '''
-    class for storing a numpy.ndarray or any nested-list composition as JSON file
-    '''
-
-    def default(self, obj):
-        if isinstance(obj, np.ndarray):
-            return obj.tolist()
-        return json.JSONEncoder.default(self, obj)
-# --------------------------------------------------#

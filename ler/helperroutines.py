@@ -1,8 +1,60 @@
 ''' Helper functions for various tasks used in LER, for example combining dictionaries together. Really this is a place for routines which don't seem to fit into anywhere else. '''
 
 import numpy as np
+import json
 
 chunk_size = 10000
+
+# --------------------------------------------------#
+
+# --------------------------------------------------#
+class NumpyEncoder(json.JSONEncoder):
+    '''
+    class for storing a numpy.ndarray or any nested-list composition as JSON file
+    '''
+
+    def default(self, obj):
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return json.JSONEncoder.default(self, obj)
+# --------------------------------------------------#
+
+def dict_list_to_ndarray(dictionary):
+    ''' Converts a dictionary of lists to a dictionary of ndarrays. '''
+    for key in dictionary.keys():
+        # Check if the item is a list
+        if isinstance(dictionary[key], list):
+            dictionary[key] = np.array(dictionary[key])
+        # Check if the item is a nested dictionary
+        elif isinstance(dictionary[key], dict):
+            dictionary[key] = dict_list_to_ndarray(dictionary[key])
+        else:
+            raise ValueError("The dictionary contains an item which is neither a list nor a dictionary.")
+    return dictionary
+
+def append_json(file_name, dictionary, replace=False):
+    ''' append and update a json file with a dictionary. '''
+
+    # check if the file exists
+    try:
+        with open(file_name, "r", encoding='utf-8') as f:
+            data = json.load(f)
+    except:
+        "File does not exist. Creating a new one..."
+        replace = True
+
+    if replace:
+        data = dictionary
+    else:
+        data_key = data.keys()
+        for key, value in dictionary.items():
+            if key in data_key:
+                data[key] = np.concatenate((data[key], value))
+    
+    json_dump = json.dumps(data, cls=NumpyEncoder)
+    with open(file_name, "w", encoding='utf-8') as write_file:
+        json.dump(json.loads(json_dump), write_file, indent=4)
+
 
 def trim_dictionary(dictionary, size):
     ''' Filters an event dictionary to only contain the size. '''

@@ -486,7 +486,7 @@ class LensGalaxyPopulation():
         image_type[determinants < 0] = 2
         
         # Return a dictionary with all of the lens information but also the BBH parameters from gw_param
-        image_parameters = {'n_images':n_images, 'x0_image_positions':x0_image_positions, 'x1_image_positions':x1_image_positions, 'magnifications':magnifications, 'time_delays':time_delays, 'traces':traces, 'determinants':determinants, 'image_type':image_type, 'weights': weights}
+        image_parameters = {'n_images':n_images, 'x0_image_positions':x0_image_positions, 'x1_image_positions':x1_image_positions, 'magnifications':magnifications, 'time_delays':time_delays, 'image_type':image_type, 'weights': weights}
         lens_parameters.update(image_parameters)
         
         return lens_parameters
