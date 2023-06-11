@@ -19,6 +19,26 @@ class NumpyEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 # --------------------------------------------------#
 
+def get_param_from_json(json_file):
+        """
+        Function to get the parameters from json file.
+        
+        Parameters
+        ----------
+        json_file : `str`
+            json file name for storing the parameters.
+
+        Returns
+        ----------
+        param : `dict`
+        """
+        with open(json_file, "r", encoding='utf-8') as f:
+            param = json.load(f)
+
+        for key, value in param.items():
+            param[key] = np.array(value)
+        return param
+
 def dict_list_to_ndarray(dictionary):
     ''' Converts a dictionary of lists to a dictionary of ndarrays. '''
     for key in dictionary.keys():
@@ -73,6 +93,8 @@ def trim_dictionary_by_indices(dictionary, indices):
     ''' Filters an event dictionary to only contain the indices. '''
     for key in dictionary.keys():
         # Check if the item is an ndarray
+        if isinstance(dictionary[key], list):
+            dictionary[key] = np.array(dictionary[key])[indices] # Trim the array
         if isinstance(dictionary[key], np.ndarray):
             dictionary[key] = dictionary[key][indices] # Trim the array
         # Check if the item is a nested dictionary
