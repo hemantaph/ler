@@ -218,7 +218,7 @@ class LeR():
                                     'sampling_frequency': 2048.,
                                     'waveform_approximant': "IMRPhenomD", 'minimum_frequency': 20.,
                                     'snr_type': 'interpolation', 'waveform_inspiral_must_be_above_fmin': False,
-                                    'psds': False, 'psd_file': False, 'ifos': False, 'interpolator_dir':'./interpolator_pickle'}
+                                    'psds': None, 'psd_file': False, 'ifos': None, 'interpolator_dir':'./interpolator_pickle'}
 
         # update dict from kwargs
         keys1 = self.gw_param_sampler_dict.keys()
@@ -349,7 +349,7 @@ class LeR():
             {'lensed_param_sampler_dict': self.lensed_param_sampler_dict})
         
         snr_calculator_dict = self.snr_calculator_dict.copy()
-        del snr_calculator_dict['ifos']
+        snr_calculator_dict['ifos'] = str(snr_calculator_dict['ifos'])
         parameters_dict.update(
             {'snr_calculator_dict': snr_calculator_dict})
         
@@ -662,7 +662,7 @@ class LeR():
         
         """
         # get gw params from json file if not provided
-        if type(gw_param) == 'str':
+        if type(gw_param) == str:
             print(f'getting gw_params from json file {gw_param}...')
             gw_param = get_param_from_json(gw_param)
 
@@ -849,7 +849,7 @@ class LeR():
         """
         
         # get lensed params from json file if not provided
-        if type(lensed_param) == 'str':
+        if type(lensed_param) == str:
             print(f'getting lensed_param from json file {lensed_param}...')
             lensed_param = get_param_from_json(lensed_param)
 
@@ -909,7 +909,7 @@ class LeR():
         total_rate_pdet = c0 * np.mean(pdet_combined*weights)
         print("total lensed rate with pdet function: {}".format(total_rate_pdet))
 
-        lensed_param_detectable = get_param_from_json(json_file)
+        lensed_param_detectable = get_param_from_json(jsonfile)
 
         return([total_rate_step,total_rate_pdet], lensed_param_detectable)
     
@@ -965,13 +965,13 @@ class LeR():
         """
 
         # calculate unlensed rate
-        print(f'getting unlened_param from json file {unlened_param}...')
+        # print(f'getting unlened_param from json file {unlened_param}...')
         unlensed_rate = self.unlensed_rate(gw_param=unlened_param,
                                            snr_threshold=snr_threshold_unlensed,
                                            jsonfile=jsonfile_unlensed)[0]
         
         # calculate lensed rate
-        print(f'getting lensed_param from json file {lensed_param}...')
+        # print(f'getting lensed_param from json file {lensed_param}...')
         lensed_rate = self.lensed_rate(lensed_param=lensed_param,
                                        snr_threshold=snr_threshold_lensed,
                                        num_img=num_img,
