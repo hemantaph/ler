@@ -14,12 +14,23 @@
 Module Contents
 ---------------
 
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   ler.helperroutines.NumpyEncoder
+
+
 
 Functions
 ~~~~~~~~~
 
 .. autoapisummary::
 
+   ler.helperroutines.get_param_from_json
+   ler.helperroutines.dict_list_to_ndarray
+   ler.helperroutines.append_json
    ler.helperroutines.trim_dictionary
    ler.helperroutines.trim_dictionary_by_indices
    ler.helperroutines.add_dictionaries_together
@@ -28,6 +39,145 @@ Functions
    ler.helperroutines.save_dictionary_to_numpy_txt_file
 
 
+
+.. py:class:: NumpyEncoder(*, skipkeys=False, ensure_ascii=True, check_circular=True, allow_nan=True, sort_keys=False, indent=None, separators=None, default=None)
+
+   Bases: :py:obj:`json.JSONEncoder`
+
+   
+   class for storing a numpy.ndarray or any nested-list composition as JSON file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+   .. py:method:: default(obj)
+
+      
+      Implement this method in a subclass such that it returns
+      a serializable object for ``o``, or calls the base implementation
+      (to raise a ``TypeError``).
+
+      For example, to support arbitrary iterators, you could
+      implement default like this::
+
+          def default(self, o):
+              try:
+                  iterable = iter(o)
+              except TypeError:
+                  pass
+              else:
+                  return list(iterable)
+              # Let the base class default method raise the TypeError
+              return JSONEncoder.default(self, o)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+.. py:function:: get_param_from_json(json_file)
+
+   
+   Function to get the parameters from json file.
+
+
+   :Parameters:
+
+       **json_file** : `str`
+           json file name for storing the parameters.
+
+   :Returns:
+
+       **param** : `dict`
+           ..
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: dict_list_to_ndarray(dictionary)
+
+   
+   Converts a dictionary of lists to a dictionary of ndarrays.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: append_json(file_name, dictionary, replace=False)
+
+   
+   append and update a json file with a dictionary.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:function:: trim_dictionary(dictionary, size)
 

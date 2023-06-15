@@ -15,11 +15,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script src="_static/clipboard.min.js"></script>
         <script src="_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -105,8 +105,8 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import numpy as np
-from ler import LeR
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
 </pre></div>
 </div>
 </div>
@@ -114,9 +114,9 @@ from ler import LeR
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># check the input and output
-# check of examples
-LeR?
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># check the input and output</span>
+<span class="c1"># check of examples</span>
+LeR<span class="o">?</span>
 </pre></div>
 </div>
 </div>
@@ -161,9 +161,9 @@ Output parameters:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># initialization
-# this also initializes the gwsnr (SNR calculator method)
-ler = LeR()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># initialization</span>
+<span class="c1"># this also initializes the gwsnr (SNR calculator method)</span>
+<span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -182,7 +182,7 @@ In case if you need regeneration of interpolator of the given gwsnr param, pleas
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ler.unlensed_cbc_statistics?
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ler.unlensed_cbc_statistics<span class="o">?</span>
 </pre></div>
 </div>
 </div>
@@ -210,8 +210,8 @@ Output Parameters:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># sampling unlensed events
-ler.unlensed_cbc_statistics(nsamples=100000);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sampling unlensed events</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">(</span><span class="n">nsamples</span><span class="o">=</span><span class="mi">100000</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -234,8 +234,8 @@ calculating snrs...
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># rates
-ler.unlensed_rate();
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># rates</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">unlensed_rate</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
@@ -258,8 +258,8 @@ total unlensed rate with pdet function: 762.0631437293046
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># looking at the detectable events
-ler.gw_param_detectable.keys()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># looking at the detectable events</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">gw_param_detectable</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -282,7 +282,7 @@ dict_keys([&#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mas
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ler.lensed_cbc_statistics?
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ler.lensed_cbc_statistics<span class="o">?</span>
 </pre></div>
 </div>
 </div>
@@ -310,9 +310,9 @@ Output Parameters:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># sampling lens parameters and image(s) parameters
-ler.batch_size = 25000
-ler.lensed_cbc_statistics(nsamples=100000);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sampling lens parameters and image(s) parameters</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">25000</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">lensed_cbc_statistics</span><span class="p">(</span><span class="n">nsamples</span><span class="o">=</span><span class="mi">100000</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -405,8 +405,8 @@ calculating snrs...
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># lensed rates
-ler.lensed_rate();
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># lensed rates</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">lensed_rate</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
@@ -425,8 +425,8 @@ total unlensed rate with pdet function: 0.5295777885233685
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># looking at the detectable events
-ler.lensed_param_detectable.keys()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># looking at the detectable events</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">lensed_param_detectable</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -448,7 +448,7 @@ dict_keys([&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;e1&#39
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ler.rate_comparision();
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span><span class="o">.</span><span class="n">rate_comparision</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
@@ -476,10 +476,10 @@ unlensed/lensed rate ratio =  (1300.7567430146416, 1439.0013332209028)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import json
-import numpy as np
-import matplotlib.pyplot as plt
-%matplotlib inline
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
 </div>
@@ -487,11 +487,11 @@ import matplotlib.pyplot as plt
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># detectable unlensed events
-f = open (&#39;gw_params_detectable.json&#39;, &quot;r&quot;)
-data = json.loads(f.read())
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># detectable unlensed events</span>
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span> <span class="p">(</span><span class="s1">&#39;gw_params_detectable.json&#39;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 
-data.keys()
+<span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -508,10 +508,10 @@ dict_keys([&#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mas
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.hist(data[&#39;mass_1_source&#39;], histtype=&#39;step&#39;, density=True, bins=20)
-plt.xlabel(r&#39;$m_1^{src}$&#39;)
-plt.ylabel(&#39;PDF&#39;)
-plt.show()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mass_1_source&#39;</span><span class="p">],</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$m_1^</span><span class="si">{src}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;PDF&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -526,11 +526,11 @@ plt.show()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># detectable lensed events
-f = open (&#39;lensed_params_detectable.json&#39;, &quot;r&quot;)
-data = json.loads(f.read())
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># detectable lensed events</span>
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span> <span class="p">(</span><span class="s1">&#39;lensed_params_detectable.json&#39;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 
-data.keys()
+<span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -547,10 +547,10 @@ dict_keys([&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;e1&#39
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.hist(np.log10(np.array(data[&#39;magnifications&#39;]).flatten()), histtype=&#39;step&#39;, density=True, bins=20)
-plt.xlabel(r&#39;$m_1^{src}$&#39;)
-plt.ylabel(&#39;PDF&#39;)
-plt.show()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;magnifications&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$m_1^</span><span class="si">{src}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;PDF&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>

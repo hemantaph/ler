@@ -109,63 +109,72 @@ Functions
    ----------
    LeR class has the following attributes,
 
-       +---------------------------------------+--------------------------------------------------+
-       | Atrributes                            | Type                                             |
-       +=======================================+==================================================+
-       | :attr:`~gw_param`                     | ``dict``                                         |
-       +---------------------------------------+--------------------------------------------------+
-       | :attr:`~gw_param_detectable`          | ``dict``                                         |
-       +---------------------------------------+--------------------------------------------------+
-       | :attr:`~lensed_param`                 | ``dict``                                         |
-       +---------------------------------------+--------------------------------------------------+
-       | :attr:`~lensed_param_detectable`      | ``dict``                                         |
-       +---------------------------------------+--------------------------------------------------+
-       | :attr:`~gw_param_sampler_dict`        | ``dict``                                         |
-       +---------------------------------------+--------------------------------------------------+
-       | :attr:`~lensed_param_sampler_dict`    | ``dict``                                         |
-       +---------------------------------------+--------------------------------------------------+
-       | :attr:`~snr_calculator_dict`          | ``dict``                                         |
-       +---------------------------------------+--------------------------------------------------+
-       | :attr:`~z_to_Dc`                      | ``scipy.interpolate.interp1d``                   |
-       +---------------------------------------+--------------------------------------------------+
-       | :attr:`~Dc_to_z`                      | ``scipy.interpolate.interp1d``                   |
-       +---------------------------------------+--------------------------------------------------+
-       | :attr:`~z_to_luminosity_distance`     | ``scipy.interpolate.interp1d``                   |
-       +---------------------------------------+--------------------------------------------------+
-       | :attr:`~differential_comoving_volume` | ``scipy.interpolate.interp1d``                   |
-       +---------------------------------------+--------------------------------------------------+
-       | :attr:`~compact_binary_pop`           | ``CompactBinaryPopulation class``                |
-       +---------------------------------------+--------------------------------------------------+
-       | :attr:`~lens_galaxy_pop`              | ``LensGalaxyPopulation class``                   |
-       +---------------------------------------+--------------------------------------------------+
-       | :attr:`~snr`                          | ``gwsnr package``                                |
-       +---------------------------------------+--------------------------------------------------+
+   +-------------------------------------+----------------------------------+
+   | Atrributes                          | Type                             |
+   +=====================================+==================================+
+   |:attr:`~gw_param`                    |`dict`                            |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~gw_param_detectable`         |`dict`                            |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~lensed_param`                |`dict`                            |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~lensed_param_detectable`     |`dict`                            |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~gw_param_sampler_dict`       |`dict`                            |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~lensed_param_sampler_dict`   |`dict`                            |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~snr_calculator_dict`         |`dict`                            |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~z_to_Dc`                     |`scipy.interpolate.interp1d`      |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~Dc_to_z`                     |`scipy.interpolate.interp1d`      |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~z_to_luminosity_distance`    |`scipy.interpolate.interp1d`      |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~differential_comoving_volume`|`scipy.interpolate.interp1d`      |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~compact_binary_pop`          |`CompactBinaryPopulation class`   |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~lens_galaxy_pop`             |`LensGalaxyPopulation class`      |
+   +-------------------------------------+----------------------------------+
+   | :attr:`~snr`                        |``gwsnr`` `package`               |
+   +-------------------------------------+----------------------------------+
 
    Instance Methods
    ----------
    LeR class has the following method(s),
 
-       +---------------------------------------+--------------------------------------------------+
-       | Method(s)                             | Description                                      |
-       +=======================================+==================================================+
-       | :meth:`~gwsnr_intialization`          | Function for initializing the ``gwsnr`` package. |
-       +---------------------------------------+--------------------------------------------------+
-       | :meth:`~create_lookup_tables`         | To creating lookup tables for fast calculation   |
-       |                                       | for the following conversion operations,         |
-       |                                       | redshift to co-moving distance.                  |
-       |                                       | co-moving distance to redshift.                  |
-       |                                       | redshift to luminosity distance.                 |
-       +---------------------------------------+--------------------------------------------------+
-       | :meth:`~unlensed_cbc_statistics`      | Function to generate unlensed GW source          |
-       |                                       | parameters.                                      |
-       +---------------------------------------+--------------------------------------------------+
-       | :meth:`~unlensed_rate`                | Function to calculate unlensed merger rate.      |
-       +---------------------------------------+--------------------------------------------------+
-       | :meth:`~lensed_cbc_statistics`        | Function to generate lensed GW source            |
-       |                                       | parameters.                                      |
-       +---------------------------------------+--------------------------------------------------+
-       | :meth:`~lensed_rate`                  | Function to calculate lensed merger rate.        |
-       +---------------------------------------+--------------------------------------------------+
+   +------------------------------------+-------------------------------------+
+   | Method(s)                          | Description                         |
+   +====================================+=====================================+
+   |:meth:`~gwsnr_intialization`        |Function for initializing the        |
+   |                                    |``gwsnr`` package.                   |
+   +------------------------------------+-------------------------------------+
+   |:meth:`~create_lookup_tables`       |To creating lookup tables for fast   |
+   |                                    |calculation for the following        |
+   |                                    |conversion operations,               |
+   |                                    |redshift to co-moving distance.      |
+   |                                    |co-moving distance to redshift.      |
+   |                                    |redshift to luminosity distance.     |
+   +------------------------------------+-------------------------------------+
+   |:meth:`~unlensed_cbc_statistics`    |Function to generate unlensed GW     |
+   |                                    |source parameters.                   |
+   +------------------------------------+-------------------------------------+
+   |:meth:`~unlensed_rate`              |Function to calculate unlensed       |
+   |                                    |merger rate.                         |
+   +------------------------------------+-------------------------------------+
+   |:meth:`~lensed_cbc_statistics`      |Function to generate lensed GW       |
+   |                                    |source parameters.                   |
+   +------------------------------------+-------------------------------------+
+   |:meth:`~lensed_rate`                |Function to calculate lensed         |
+   |                                    |merger rate.                         |
+   +------------------------------------+-------------------------------------+
+   |:meth:`~batch_handler`              |Function to handle the batch size.   |
+   +------------------------------------+-------------------------------------+
+   |:meth:`~store_ler_params`           |Fuction to store the parameters of   |
+   |                                    |the LER model.                       |
+   +------------------------------------+-------------------------------------+
 
 
 
@@ -175,9 +184,13 @@ Functions
 
       
       ``bool``, ``dict``
+
       gw_param is a dictionary of unlensed parameters (source parameters)
+
       it will be populated when unlened_cbc_statistics() is called
+
       if unavailable, the unlensed parameters will be sampled when unlensed_rate() is called
+
       gw_param.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time']
 
 
@@ -194,50 +207,21 @@ Functions
 
 
 
-
       ..
           !! processed by numpydoc !!
 
-   .. py:attribute:: gw_param_detectable
-
-      
-      ``dict``
-
-      gw_param_detectable is a dictionary of unlensed parameters for detectable sources
-
-      it will be populated when unlensed_rate() is called
-
-      gw_param_detectable.keys() = ['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'opt_snr_net', 'L1', 'H1', 'V1', 'pdet_net']
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:attribute:: lensed_param
+   .. py:property:: gw_param_detectable
 
       
       ``bool``, ``dict``
 
-      lensed_param is a dictionary of lensed parameters (for lens galaxy, source properties and image properties)
+      gw_param_detectable is a dictionary of unlensed parameters (source parameters)
 
-      it will be populated when lensed_cbc_statistics() is called
+      it will be populated when unlened_cbc_statistics() is called
 
-      if unavailable, then lensed parameters will be sampled when lensed_rate() is called
+      if unavailable, the unlensed parameters will be sampled when unlensed_rate() is called
 
-      lensed_param.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl', 'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images', 'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces', 'determinants', 'image_type', 'weights', 'opt_snr_net', 'L1', 'H1', 'V1', 'pdet_net']
+      gw_param_detectable.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time']
 
 
 
@@ -256,16 +240,48 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:attribute:: lensed_param_detectable
+   .. py:property:: lensed_param
 
       
-      ``dict``
+      ``bool``, ``dict``
 
-      lensed_param_detectable is a dictionary of lensed parameters for detectable sources
+      lensed_param is a dictionary of lensed parameters
 
-      it will be populated when lensed_rate() is called
+      it will be populated when lensed_cbc_statistics() is called
 
-      lensed_param_detectable.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl', 'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images', 'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces', 'determinants', 'image_type', 'weights', 'opt_snr_net', 'L1', 'H1', 'V1', 'pdet_net']
+      if unavailable, the lensed parameters will be sampled when lensed_rate() is called
+
+      lensed_param.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time', 'lensed_images']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: lensed_param_detectable
+
+      
+      ``bool``, ``dict``
+
+      lensed_param_detectable is a dictionary of lensed parameters
+
+      it will be populated when lensed_cbc_statistics() is called
+
+      if unavailable, the lensed parameters will be sampled when lensed_rate() is called
+
+      lensed_param_detectable.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time', 'lensed_images']
 
 
 
@@ -536,6 +552,29 @@ Functions
       ..
           !! processed by numpydoc !!
 
+   .. py:method:: class_initialization()
+
+      
+      Function for initializing the ``CompactBinaryPopulation`` and ``LensGalaxyPopulation`` classes.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
    .. py:method:: store_ler_params()
 
       
@@ -669,7 +708,45 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: unlensed_cbc_statistics(nsamples=False, jsonfile=False, **kwargs)
+   .. py:method:: batch_handler(nsamples, sampling_routine, json_file, resume=False)
+
+      
+      Function to handle the batch size.
+
+
+      :Parameters:
+
+          **nsamples** : `int`
+              number of samples.
+
+          **sampling_routine** : `function`
+              function to sample the parameters.
+              e.g. unlensed_sampling_routine() or lensed_sampling_routine()
+
+          **json_file** : `str`
+              name of the json file to store the parameters.
+
+          **resume** : `bool`
+              if True, it will resume the sampling from the last batch.
+              default resume = False.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: unlensed_sampling_routine(nsamples, file_name, resume=False)
 
       
       Function to generate unlensed GW source parameters.
@@ -679,14 +756,56 @@ Functions
 
           **nsamples** : `int`
               number of samples.
+              default nsamples = 100000.
 
-          **jsonfile** : `bool`, `str`
-              if `str`, store all gravitational waves source parameters in jsonfile
+          **file_name** : `str`
+              name of the json file to store the parameters.
 
-              (for all sources, detected and undetected).
+          **resume** : `bool`
+              if True, it will resume the sampling from the last batch.
+              default resume = False.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: unlensed_cbc_statistics(nsamples=None, resume=False, json_file='./gw_params.json', **kwargs)
+
+      
+      Function to generate unlensed GW source parameters.
+
+
+      :Parameters:
+
+          **nsamples** : `int`
+              number of samples.
+              default nsamples = 100000.
+
+          **resume** : `bool`
+              resume = False (default) or True.
+              if True, the function will resume from the last batch.
+
+          **json_file** : `str`
+              json file name for storing the parameters.
+              default json_file = './gw_params.json'.
 
           **kwargs** : `dict`
-              if new paramteres are provided, it will be used for sampling source parameters.
+              key word arguments for initializing the ``CompactBinaryPopulation`` class.
+
+              This initialization is either done at the time of class initialization or at the time of calling this function.
+
               Following parameters can be provided,
 
               ``m_min`` : `float`
@@ -694,7 +813,7 @@ Functions
               ``m_max`` : `float`
                   maximum mass of the compact binary (single).
               ``event_type`` : `str`
-                  event_type = 'popI_II' etc.
+                  event_type = 'popI_II' or `popIII` or `primordial`.
               ``model_pars`` : `dict`
                   model_pars = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82,
 
@@ -706,7 +825,7 @@ Functions
 
           **unlensed_gw_params** : `dict`
               dictionary of unlensed GW source parameters.
-              unlensed_gw_params.keys() = ['m1', 'm2', 'z', 'Dc', 'Dl', 'Dl_obs', 'snr', 'pdet', 'event_type']
+              unlensed_gw_params.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time']
 
 
 
@@ -723,7 +842,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: unlensed_rate(size=False, snr_threshold=8.0, jsonfile=True)
+   .. py:method:: unlensed_rate(gw_param='./gw_params.json', snr_threshold=8.0, jsonfile='./gw_params_detectable.json')
 
       
       Function to calculate unlensed merger rate.
@@ -735,22 +854,188 @@ Functions
 
       :Parameters:
 
-          **size** : `int`
+          **gw_param** : `dict` or `str` for json file name.
+              dictionary of unlensed GW source parameters.
+              default gw_param = './gw_params.json'.
+
+          **snr_threshold** : `float`
+              SNR threshold for detection.
+              default snr_threshold = 8.
+
+          **jsonfile** : `str`
+              json file name for storing the detectable parameters.
+              default jsonfile = './gw_params_detectable.json'.
+
+      :Returns:
+
+          **unlensed_rate** : (`float`,`float`)
+              unlensed merger rate in a year
+              unlensed_rate[0] = total unlensed rate with step function
+              unlensed_rate[1] = total unlensed rate with pdet function
+
+          **gw_param_detectable** : `dict`
+              dictionary of detectable unlensed GW source parameters.
+              gw_param_detectable.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time']
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: lensed_sampling_routine(nsamples, file_name, resume=False)
+
+      
+      Function to generate lensed GW source parameters, lens galaxy parameters and image paramters.
+
+
+      :Parameters:
+
+          **nsamples** : `int`
               number of samples.
+
+          **file_name** : `str`
+              name of the json file to store the parameters.
+
+          **resume** : `bool`
+              if True, it will resume the sampling from the last batch.
+              default resume = False.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: lensed_cbc_statistics(nsamples=None, resume=False, json_file='./lensed_params.json', **kwargs)
+
+      
+      Function to generate lensed GW source parameters, lens galaxy parameters and image paramters.
+
+
+      :Parameters:
+
+          **nsamples** : `int`
+              number of samples.
+              default nsamples = 100000.
+
+          **resume** : `bool`
+              resume = False (default) or True.
+              if True, the function will resume from the last batch.
+
+          **json_file** : `str`
+              json file name for storing the parameters.
+              default json_file = './lensed_params.json'.
+
+          **kwargs** : `dict`
+              key word arguments for initializing the ``LensGalaxyPopulation`` class.
+
+              This initialization is either done at the time of class initialization or at the time of calling this function.
+
+              Following parameters can be provided,
+
+              ``min_lensed_images`` : `int`
+                  minimum number of lensed images.
+              ``max_lensed_images`` : `int`
+                  maximum number of lensed images.
+              ``lensModelList`` : `list`
+                  list of lens models.
+                  e.g. lensModelList = ['EPL_NUMBA', 'SHEAR'].
+
+      :Returns:
+
+          **lensed_param** : `dict`
+              dictionary of lensed GW source parameters, lens galaxy parameters and image paramters.
+              lensed_param.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl',
+              'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source',
+              'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
+              'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces',
+              'determinants', 'image_type', 'weights', 'opt_snr_net', 'L1', 'H1', 'V1']
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: lensed_rate(lensed_param='./lensed_params.json', snr_threshold=8.0, num_img=2, jsonfile='./lensed_params_detectable.json', none_as_nan=True)
+
+      
+      Function to calculate lensed merger rate.
+
+      .. math::
+          R_L = \mathcal{N}^L\int dz_s R_o^L(z_s)\bigg\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \bigg\}
+
+      - where :math:`\mathcal{N}^L` is the normalization factor of the lensed merger rate distribution wrt redshift.
+
+      :Parameters:
+
+          **lensed_param** : `dict` or `str` for the json file name.
+              dictionary of lensed GW source parameters, lens galaxy parameters and image paramters.
+              lensed_param.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl',
+              'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source',
+              'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
+              'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces',
+              'determinants', 'image_type', 'weights', 'opt_snr_net', 'L1', 'H1', 'V1']
 
           **snr_threshold** : `float`
               threshold for detection signal to noise ratio.
               e.g. snr_threshold = 8.
 
-          **jsonfile** : `bool`
-              if True, store all gravitational waves source parameters in json file
+          **num_img** : `int`
+              number of images.
+              e.g. num_img = 2.
 
-              (for detected sources).
+          **jsonfile** : `str`
+              json file name for storing the parameters.
+              default jsonfile = './lensed_params_detectable.json'.
+
+          **none_as_nan** : `bool`
+              if True, replace None with np.nan in the lensed_param dictionary.
+              default none_as_nan = True.
 
       :Returns:
 
-          **unlensed_rate** : `float`
-              unlensed merger rate in a year.
+          **lensed_rate** : `float`
+              lensed merger rate in a year.
+              lensed_rate[0] = total lensed rate with step function
+              lensed_rate[1] = total lensed rate with pdet function
+
+          **detectable_lensed_param** : `dict`
+              dictionary of detectable lensed GW source parameters, lens galaxy parameters and image paramters.
+              detectable_lensed_param.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2',
+              'Dl', 'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source',
+              'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
+              'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces',
+              'determinants', 'image_type', 'weights', 'opt_snr_net', 'L1', 'H1', 'V1']
 
 
 
@@ -767,21 +1052,62 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lensed_cbc_statistics(nsamples=False, jsonfile=True, **kwargs)
+   .. py:method:: rate_comparision(snr_threshold_unlensed=8.0, unlened_param='./gw_params.json', snr_threshold_lensed=8.0, num_img=2, lensed_param='./lensed_params.json', jsonfile_unlensed='./gw_params_detectable.json', jsonfile_lensed='./lensed_params_detectable.json')
 
       
-      function to generate lensed GW source parameters, lens parameters and image parameters
-      Intput Parameters:
-          nsamples: number of samples
-          snr_threshold: threshold for detection signal to noise ratio
-          jsonfile: if True, store lensed GW source parameters, lens parameters and image parameters in json file
-                      (both for detected and undetected sources)
-          **kwargs: if new parameters are provided, it will be used for sampling
-      Output Parameters:
-          lensed_param: `dict`ionary of lensed GW source parameters, lens parameters and image parameters
+      Function to calculate unlensed and lensed merger rate and their ratio.
 
 
+      :Parameters:
 
+          **snr_threshold_unlensed** : `float`
+              threshold for detection signal to noise ratio for unlensed case.
+              e.g. snr_threshold_unlensed = 8.
+
+          **unlened_param** : `dict`
+              dictionary of unlensed GW source parameters.
+              unlened_param.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time']
+
+          **snr_threshold_lensed** : `float`
+              threshold for detection signal to noise ratio for lensed case.
+              e.g. snr_threshold_lensed = 8.
+
+          **num_img** : `int`
+              number of images crossing the threshold.
+              e.g. num_img = 2.
+
+          **lensed_param** : `dict`
+              dictionary of lensed GW source parameters, lens galaxy parameters and image paramters.
+              lensed_param.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl',
+              'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source',
+              'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
+              'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces',
+              'determinants', 'image_type', 'weights', 'opt_snr_net', 'L1', 'H1', 'V1']
+
+          **jsonfile_unlensed** : `str`
+              json file name for storing the parameters for unlensed detectable case.
+              default jsonfile_unlensed = './gw_params_detectable.json'.
+
+          **jsonfile_lensed** : `str`
+              json file name for storing the parameters for lensed detectable case.
+              default jsonfile_lensed = './lensed_params_detectable.json'.
+
+      :Returns:
+
+          **unlensed_rate** : (`float`,`float`)
+              unlensed merger rate in a year
+              unlensed_rate[0] = total unlensed rate with step function
+              unlensed_rate[1] = total unlensed rate with pdet function
+
+          **lensed_rate** : (`float`,`float`)
+              lensed merger rate in a year
+              lensed_rate[0] = total lensed rate with step function
+              lensed_rate[1] = total lensed rate with pdet function
+
+          **rate_ratio** : (`float`,`float`)
+              unlensed/lensed rate ratio
+              rate_ratio[0] = total unlensed/lensed rate ratio with step function
+              rate_ratio[1] = total unlensed/lensed rate ratio with pdet function
 
 
 
@@ -798,24 +1124,43 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lensed_rate(size=False, snr_threshold=8.0, num_img=2, jsonfile=True, none_as_nan=True)
+   .. py:method:: selecting_n_lensed_detectable_events(nsamples=100, snr_threshold=8.0, num_img=2, resume=False, json_file='./lensed_params_detectable.json')
 
       
-      Function to calculate detectable lensed merger rate
-      Intput Parameters:
-          size (int): number of samples
-          snr_threshold (float/array): threshold for detection signal to noise ratio
-          num_img (int/array): number of images
-                              e.g. For Sub-thershold events, snr_threshold=[8.,6.], num_img=[1,1]
-                              The event will contain 1 image with snr>8 and 1 image with snr>6
-          jsonfile (bool): if True, store all gravitational waves source parameters in json file
-          none_as_nan (bool): if True,  no value is kept as np.nan
-                              if False, no value is kept as 0.
-      Output Parameters:
-          lensed_rate (float): lensed merger rate in yr^-1
+      Function to select n lensed detectable events.
 
 
+      :Parameters:
 
+          **nsamples** : `int`
+              number of samples to be selected.
+              default size = 100.
+
+          **snr_threshold** : `float`
+              threshold for detection signal to noise ratio.
+              e.g. snr_threshold = 8. or [8.,6.]
+
+          **num_img** : `int`
+              number of images crossing the threshold.
+              e.g. num_img = 2 or [1,1]
+
+          **resume** : `bool`
+              if True, it will resume the sampling from the last batch.
+              default resume = False.
+
+          **json_file** : `str`
+              json file name for storing the parameters.
+              default json_file = './lensed_params_detectable.json'.
+
+      :Returns:
+
+          **param_final** : `dict`
+              dictionary of lensed GW source parameters, lens galaxy parameters and image paramters.
+              param_final.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2',
+              'Dl', 'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source',
+              'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
+              'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'image_type',
+              'weights', 'opt_snr_net', 'L1', 'H1', 'V1']
 
 
 
@@ -832,23 +1177,39 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_lensed_detectable_events_from_dict(snr_threshold=8.0, num_img=2, none_as_nan=True, lenstype='I')
+   .. py:method:: relative_mu_dt_lensed(lensed_param, snr_threshold=[8.0, 8.0])
 
       
-      Function to select n lensed detectable events from self.lensed_param
-      Input Parameters:
-          snr_threshold (float/array): threshold for detection signal to noise ratio
-          num_img (int/array): number of images
-                              e.g. For Sub-thershold events, snr_threshold=[8.,6.], num_img=[1,1]
-                              The event will contain 1 image with snr>8 and 1 image with snr>6
-          none_as_nan (bool): if True,  no value is kept as np.nan
-                              if False, no value is kept as 0.
-          lenstype (str): lens type, 'I' or 'II'
-      Output Parameters:
-          lensed_param (dict): `dict`ionary of lensed parameters
+      Function to classify the lensed images wrt to the morse phase difference.
 
 
+      :Parameters:
 
+          **lensed_param** : `dict`
+              dictionary of lensed GW source parameters, lens galaxy parameters and image paramters.
+              lensed_param.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl',
+              'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source',
+              'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
+              'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces',
+              'determinants', 'image_type', 'weights', 'opt_snr_net', 'L1', 'H1', 'V1']
+
+          **snr_threshold** : `float`
+              threshold for detection signal to noise ratio.
+              e.g. snr_threshold = [8.,8.] or [8.,6.] for subthreshold
+
+      :Returns:
+
+          **mu_rel0** : `float.array`
+              relative magnification for 0 degree phase difference.
+
+          **dt_rel0** : `float.array`
+              relative time delay for 0 degree phase difference.
+
+          **mu_rel90** : `float.array`
+              relative magnification for 90 degree phase difference.
+
+          **dt_rel90** : `float.array`
+              relative time delay for 90 degree phase difference.
 
 
 
@@ -865,13 +1226,65 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_lensed_detectable_events_with_sampling(snr_threshold=8.0, num_img=2, none_as_nan=True, size=100, lenstype='I', min_img=2, max_img=4)
+   .. py:method:: mu_vs_dt_plot(x_array, y_array, savefig=False, ax=None, colors='blue', linestyles='-', origin='upper', alpha=0.6, extent=[0.01, 500.0, 0.01, 100.0], contour_levels=[0.1, 0.4, 0.68, 0.95])
 
       
-      Function to select n lensed detectable events with sampling
+      Function to generate 2D KDE and plot the relative magnification vs time delay difference for lensed samples.
 
 
+      :Parameters:
 
+          **x_array** : `float.array`
+              x array.
+
+          **y_array** : `float.array`
+              y array.
+
+          **xlabel** : `str`
+              x label.
+
+          **ylabel** : `str`
+              y label.
+
+          **title** : `str`
+              title.
+
+          **savefig** : `bool`
+              if True, it will save the figure.
+              default savefig = False.
+
+          **ax** : `matplotlib.axes`
+              matplotlib axes.
+              default ax = None.
+
+          **colors** : `str`
+              color of the plot.
+              default colors = 'blue'.
+
+          **linestyles** : `str`
+              linestyle of the plot.
+              default linestyles = '-'.
+
+          **origin** : `str`
+              origin of the plot.
+              default origin = 'upper'.
+
+          **alpha** : `float`
+              alpha of the plot.
+              default alpha = 0.6.
+
+          **extent** : `list`
+              extent of the plot.
+              default extent = [1e-2,5e2,1e-2,1e2].
+
+          **contour_levels** : `list`
+              contour levels of the plot.
+              default contour_levels = [0.10,0.40,0.68,0.95] which corresponds to 1,2,3,4 sigma.
+
+      :Returns:
+
+          None
+              ..
 
 
 
@@ -888,13 +1301,35 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_unlensed_detectable_events_from_dict(snr_threshold=8.0)
+   .. py:method:: selecting_n_unlensed_detectable_events(nsamples=100, snr_threshold=8.0, resume=False, json_file='./gw_params_detectable.json')
 
       
-      Function to select n lensed detectable events from self.gw_param
+      Function to select n unlensed detectable events.
 
 
+      :Parameters:
 
+          **nsamples** : `int`
+              number of samples to be selected.
+              default size = 100.
+
+          **snr_threshold** : `float`
+              threshold for detection signal to noise ratio.
+              e.g. snr_threshold = 8.
+
+          **resume** : `bool`
+              if True, it will resume the sampling from the last batch.
+              default resume = False.
+
+          **json_file** : `str`
+              json file name for storing the parameters.
+              default json_file = './gw_params_detectable.json'.
+
+      :Returns:
+
+          **param_final** : `dict`
+              dictionary of unlensed GW source parameters.
+              param_final.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time']
 
 
 
@@ -911,87 +1346,25 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_unlensed_detectable_events_with_sampling(snr_threshold=8.0, size=100)
+   .. py:method:: relative_mu_dt_unlensed(param, size=100)
 
       
-      Function to select n lensed detectable events with sampling
+      Function to generate relative magnification vs time delay difference for unlensed samples.
 
 
+      :Parameters:
 
+          **param** : `dict`
+              dictionary of unlensed GW source parameters.
+              unlensed_param.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time']
 
+      :Returns:
 
+          **dmu** : `float.array`
+              relative magnification.
 
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: selecting_n_detectable_events(snr_threshold=8.0, num_img=2, none_as_nan=True, lensed=True, jsonfile=True, lenstype='I', new=False, size=100, min_img=2, max_img=4, batch_size=10000, **kwargs)
-
-      
-      Function to select n detectable events
-      Input parameters:
-          snr_threshold (float): the threshold for the SNR
-          num_img (int): the number of images
-          none_as_nan (bool): if True, then replace None with np.nan
-          lensed (bool): if True, then select lensed events
-          jsonfile (bool): if True, then save the dictionary as a json file
-          lenstype (str): the lens type
-                          e.g. 'I' for image type I, 'II' for image type II, 'III' for image type III, 'any' for any type
-          new (bool): if True, then sample new events
-          size (int): the number of events to be sampled
-          min_img (int): the minimum number of images
-          max_img (int): the maximum number of images
-          batch_size (int): the number of events to be sampled in each iteration
-      Output parameters:
-          param (dict): the dictionary containing the parameters of the selected events
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: rate_comparision(size=False, snr_threshold=8.0, num_img=2, jsonfile=True, none_as_nan=True)
-
-      
-      Function to compare the detectable lensed merger rate with the unlensed merger rate
-      Intput Parameters:
-          size (int): number of samples
-          snr_threshold (float/array): threshold for detection signal to noise ratio
-          num_img (int/array): number of images
-                              e.g. For Sub-thershold events, snr_threshold=[8.,6.], num_img=[1,1]
-                              The event will contain 1 image with snr>8 and 1 image with snr>6
-          jsonfile (bool): if True, store all gravitational waves source parameters in json file
-          none_as_nan (bool): if True,  no value is kept as np.nan
-                              if False, no value is kept as 0.
-      Output Parameters:
-          unlened_rate (float): unlensed merger rate in yr^-1
-          lensed_rate (float): lensed merger rate in yr^-1
-          rate_ratio (float): lensed/unlensed merger rate ratio
-
-
-
+          **dt** : `float.array`
+              relative time delay.
 
 
 
@@ -1012,7 +1385,24 @@ Functions
 .. py:class:: SourceGalaxyPopulationModel(z_min=0.0, z_max=10.0, event_type='popI_II')
 
    
-   Class to create lookup tables for redshifts and distances, see :func:`~ler.ler.SourceGalaxyPopulationModel.__init__` method.
+   Class to generate a population of source galaxies.
+   This class is inherited by :class:`~ler.ler.CompactBinaryPopulation` class.
+
+
+   :Parameters:
+
+       **z_min** : `float`
+           Minimum redshift of the source population
+           default: 0.
+
+       **z_max** : `float`
+           Maximum redshift of the source population
+           default: 10.
+
+       **event_type** : `str`
+           Type of event to generate
+           e.g. 'popI_II', 'BNS', 'popIII', 'primordial', 'popI_II_Madau_Dickinson'
+           default: 'popI_II'
 
 
 
@@ -1024,23 +1414,76 @@ Functions
 
 
 
+   .. rubric:: Examples
 
+   >>> from ler import SourceGalaxyPopulationModel
+   >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popI_II")
+   >>> zs = pop.sample_source_redshifts(size=1000)
+   >>> zs
+   array([0.0001, 0.0001, 0.0001, ..., 9.9999, 9.9999, 9.9999])
 
+   Instance Attributes
+   ----------
+   SourceGalaxyPopulationModel has the following instance attributes:
+
+   +-------------------------------------+----------------------------------+
+   | Atrributes                          | Type                             |
+   +=====================================+==================================+
+   |:attr:`~z_min`                       | `float`                          |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~z_max`                       | `float`                          |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~normalization_pdf_z`         | `float`                          |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~z_to_luminosity_distance`    | `scipy.interpolate.interpolate`  |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~differential_comoving_volume`| `scipy.interpolate.interpolate`  |
+   +-------------------------------------+----------------------------------+
+
+   Instance Methods
+   ----------
+   SourceGalaxyPopulationModel has the following instance methods:
+
+   +-------------------------------------+----------------------------------+
+   | Methods                             | Type                             |
+   +=====================================+==================================+
+   |:meth:`~create_lookup_table`         | Function to create a lookup      |
+   |                                     | table for the differential       |
+   |                                     | comoving volume and luminosity   |
+   |                                     | distance wrt redshift            |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~sample_source_redshifts`     | Function to sample source        |
+   |                                     | redshifts from the source        |
+   |                                     | galaxy population model          |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~merger_rate_density_popI_II` | Function to compute the merger   |
+   |                                     | rate density (PopI/PopII)        |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~merger_rate_density_popI_II_Madau_Dickinson`                    |
+   +-------------------------------------+----------------------------------+
+   |                                     | Function to compute the          |
+   |                                     | merger rate density (PopI/PopII) |
+   |                                     | from Madau & Dickinson (2014)    |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~merger_rate_density_popIII`  | Function to compute the merger   |
+   |                                     | rate density (PopIII)            |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~merger_rate_density_primordial`                                 |
+   +-------------------------------------+----------------------------------+
+   |                                     | Function to compute the merger   |
+   |                                     | rate density (Primordial)        |
+   +-------------------------------------+----------------------------------+
 
 
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: create_lookup_table(z_min, z_max)
+   .. py:attribute:: z_min
 
       
-      Functions to create lookup tables for redshifts and comoving volume
-      Input parameters:
-          z_min (float): minimum redshift of the source population
-          z_max (float): maximum redshift of the source population
-      Output parameters:
-          None
+      ``float``
 
+      Minimum redshift of the source population
 
 
 
@@ -1059,19 +1502,162 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: sample_source_redshifts(size=1000, z_min=0.0, z_max=12.0)
+   .. py:attribute:: z_max
 
       
-      Function to sample source redshifts from the source galaxy population model
-      Input parameters:
-          size (int): number of source redshifts to sample
-          z_min (float): minimum redshift of the source population
-          z_max (float): maximum redshift of the source population
-      Output parameters:
-          zs (array): array of source redshifts
+      ``float``
+
+      Maximum redshift of the source population
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: normalization_pdf_z
+
+      
+      ``float``
+
+      Normalization constant of the pdf p(z)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: z_to_luminosity_distance
+
+      
+      ``scipy.interpolate.interpolate``
+
+      Function to convert redshift to luminosity distance
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: differential_comoving_volume
+
+      
+      ``scipy.interpolate.interpolate``
+
+      Function to calculate the differential comoving volume
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: create_lookup_table(z_min, z_max)
+
+      
+      Function to create a lookup table for the differential comoving volume
+      and luminosity distance wrt redshift.
+
+
+      :Parameters:
+
+          **z_min** : `float`
+              Minimum redshift of the source population
+
+          **z_max** : `float`
+              Maximum redshift of the source population
+
+
+
+
+
+
+
+
+
+
+
+
+      :Attributes:
+
+          **z_to_luminosity_distance** : `scipy.interpolate.interpolate`
+              Function to convert redshift to luminosity distance
+
+          **differential_comoving_volume** : `scipy.interpolate.interpolate`
+              Function to calculate the differential comoving volume
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: sample_source_redshifts(size=1000, z_min=0.0, z_max=10.0)
+
+      
+      Function to sample source redshifts from the source galaxy population
+      model
+
+
+      :Parameters:
+
+          **size** : `int`
+              Number of samples to draw
+
+          **z_min** : `float`
+              Minimum redshift of the source population
+
+          **z_max** : `float`
+              Maximum redshift of the source population
+
+      :Returns:
+
+          **zs** : `array`
+              Array of sampled redshifts
 
 
 
@@ -1092,16 +1678,28 @@ Functions
 
       
       Function to compute the merger rate density (PopI/PopII)
-      Input parameters:
-          zs (float/array): source redshifts
-          R0 (float)      : normalization constant [default: 23.9*1e-9 Mpc^-3 yr^-1]
-          b2 (float)      : fitting paramters [default: 1.6]
-          b3 (float)      : fitting paramters [default: 2.0]
-          b4 (float)      : fitting paramters [default: 30]
-      Output parameters:
-          rate_density (float/array): merger rate density (Mpc^-3 yr^-1)
 
 
+      :Parameters:
+
+          **zs** : `float`
+              Source redshifts
+
+          **R0** : `float`
+              Normalization constant
+              default: 23.9*1e-9 Mpc^-3 yr^-1
+
+          **b2** : `float`
+              Fitting paramters
+              default: 1.6
+
+          **b3** : `float`
+              Fitting paramters
+              default: 2.0
+
+          **b4** : `float`
+              Fitting paramters
+              default: 30
 
 
 
@@ -1122,9 +1720,25 @@ Functions
    .. py:method:: merger_rate_density_popI_II_Madau_Dickinson(zs, af=2.7, bf=5.6, cf=1.9)
 
       
-      Function to compute the merger rate density (PopI/PopII)
-      :param zs:
-      :type zs: `float`
+      Function to compute the merger rate density (PopI/PopII) from Madau & Dickinson (2014)
+
+
+      :Parameters:
+
+          **zs** : `float`
+              Source redshifts
+
+          **af** : `float`
+              Fitting paramters
+              default: 2.7
+
+          **bf** : `float`
+              Fitting paramters
+              default: 5.6
+
+          **cf** : `float`
+              Fitting paramters
+              default: 1.9
 
       :Returns:
 
@@ -1150,8 +1764,24 @@ Functions
 
       
       Function to compute the merger rate density (PopIII)
-      :param zs:
-      :type zs: `float`
+
+
+      :Parameters:
+
+          **zs** : `float`
+              Source redshifts
+
+          **aIII** : `float`
+              Fitting paramters
+              default: 0.66
+
+          **bIII** : `float`
+              Fitting paramters
+              default: 0.3
+
+          **zIII** : `float`
+              Fitting paramters
+              default: 11.6
 
       :Returns:
 
@@ -1176,8 +1806,146 @@ Functions
    .. py:method:: merger_rate_density_primordial(zs, t0=13.786885302009708)
 
       
-      Function to compute the merger rate density
+      Function to compute the merger rate density (Primordial)
 
+
+      :Parameters:
+
+          **zs** : `float`
+              Source redshifts
+
+          **t0** : `float`
+              Present ge of the Universe in Gyr
+              default: 13.786885302009708
+
+      :Returns:
+
+          **rate_density** : `float`
+              ..
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+.. py:class:: CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type='popI_II', model_pars={'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69})
+
+   Bases: :py:obj:`SourceGalaxyPopulationModel`
+
+   
+   Class to generate a population of compact binaries. Inherits from :class:`~ler.ler.SourceGalaxyPopulationModel` class.
+
+
+   :Parameters:
+
+       **z_min** : `float`
+           Minimum redshift of the source population
+
+       **z_max** : `float`
+           Maximum redshift of the source population
+
+       **m_min** : `float`
+           Minimum mass of the BBHs
+
+       **m_max** : `float`
+           Maximum mass of the BBHs
+
+       **event_type** : `str`
+           Type of event to generate.
+           e.g. 'popI_II', 'BNS', 'popIII', 'primordial', 'popI_II_Madau_Dickinson'
+
+       **model_pars** : `dict`
+           Dictionary of model parameters.
+           e.g. for popI_II: {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
+
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   >>> from ler import CompactBinaryPopulation
+   >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
+   >>> gw_parameters = pop.sample_gw_parameters(nsamples=1000)
+   >>> gw_parameters.keys()
+   dict_keys(['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a1', 'a2', 'tilt1', 'tilt2', 'phi12', 'phi_jl'])
+
+   Instance Attributes
+   ----------
+   CompactBinaryPopulation has the following instance attributes:
+
+   +-------------------------------------+----------------------------------+
+   | Atrributes                          | Type                             |
+   +=====================================+==================================+
+   |:attr:`~z_min`                       | `float`                          |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~z_max`                       | `float`                          |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~m_min`                       | `float`                          |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~m_max`                       | `float`                          |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~event_type`                  | `str`                            |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~model_pars`                  | `dict`                           |
+   +-------------------------------------+----------------------------------+
+
+   Instance Methods
+   ----------
+   CompactBinaryPopulation has the following instance methods:
+
+   +-------------------------------------+----------------------------------+
+   | Methods                             | Type                             |
+   +=====================================+==================================+
+   |:meth:`~sample_gw_parameters`        | Function for sampling GW         |
+   |                                     | parameters from the source       |
+   |                                     | galaxy population model          |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~binary_masses_popI_II`       | Function to calculate source     |
+   |                                     | mass1 and mass2 with             |
+   |                                     | PowerLaw+PEAK model              |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~binary_masses_popIII`        | Function to calculate source     |
+   |                                     | mass1 and mass2 with pop III     |
+   |                                     | origin                           |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~binary_masses_primordial`    | Function to calculate source     |
+   |                                     | mass1 and mass2 for primordial   |
+   |                                     | BBHs                             |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~binary_masses_BNS`           | Function to calculate source     |
+   |                                     | mass1 and mass2 of BNS           |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~mass_ratio`                  | Function to calculate mass ratio |
+   +-------------------------------------+----------------------------------+
+
+
+
+   ..
+       !! processed by numpydoc !!
+   .. py:attribute:: z_min
+
+      
+      ``float``
+
+      Minimum redshift of the source population
 
 
 
@@ -1196,14 +1964,12 @@ Functions
       ..
           !! processed by numpydoc !!
 
+   .. py:attribute:: z_max
 
-.. py:class:: CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type='popI_II', model_pars=False)
+      
+      ``float``
 
-   Bases: :py:obj:`SourceGalaxyPopulationModel`
-
-   
-   Class to create lookup tables for redshifts and distances, see :func:`~ler.ler.SourceGalaxyPopulationModel.__init__` method.
-
+      Maximum redshift of the source population
 
 
 
@@ -1219,23 +1985,138 @@ Functions
 
 
 
-   ..
-       !! processed by numpydoc !!
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: m_min
+
+      
+      ``float``
+
+      Minimum mass of the BBHs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: m_max
+
+      
+      ``float``
+
+      Maximum mass of the BBHs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: event_type
+
+      
+      ``str``
+
+      Type of event to generate.
+
+      e.g. 'popI_II', 'BNS', 'popIII', 'primordial', 'popI_II_Madau_Dickinson'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: model_pars
+
+      
+      ``dict``
+
+      Dictionary of model parameters.
+
+      e.g. for popI_II: {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
+
+      for popI_II_Madau_Dickinson: {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
+
+      for popIII: None
+
+      for primordial: {'Mc':30.,'sigma':0.3,'beta':1.1}
+
+      for BNS: None
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
    .. py:method:: sample_gw_parameters(nsamples=1000, **kwargs)
 
       
-      Function to sample BBH parameters from the source galaxy population model
-      Input parameters:
-          nsamples (int)  : number of BBHs to sample
-          **kwargs        : keyword arguments
-                          e.g. zs = np.array([0.1,0.2,0.3])
-                              model_pars = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82,                                    'mmin': m_min, 'mmax': m_max, 'lambda_peak': 0.08,                                    'mu_g': 33.07, 'sigma_g': 5.69}
-      Output parameters:
-          gw_parameters (dict): dictionary of GW parameters
-                              e.g. gw_parameters.keys() = ['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source',                                     'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec']
+      Function to sample BBH parameters from the source galaxy population
+      model
 
 
+      :Parameters:
 
+          **nsamples** : `int`
+              Number of samples to draw
+
+          **kwargs** : `dict`
+              Keyword arguments to pass in parameter values
+              e.g. zs = np.array([0.1,0.2,0.3])
+
+      :Returns:
+
+          **gw_parameters** : `dict`
+              Dictionary of sampled parameters
+              gw_parameters.keys() = ['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a1', 'a2', 'tilt1', 'tilt2', 'phi12', 'phi_jl']
 
 
 
@@ -1258,7 +2139,22 @@ Functions
       Function to calculate source mass1 and mass2 with PowerLaw+PEAK model
 
 
+      :Parameters:
 
+          **size** : `int`
+              Number of samples to draw
+
+          **model_pars** : `dict`
+              Dictionary of model parameters
+              e.g. {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
+
+      :Returns:
+
+          **mass_1_source** : `array`
+              Array of mass1 in source frame
+
+          **mass_2_source** : `array`
+              Array of mass2 in source frame
 
 
 
@@ -1281,7 +2177,21 @@ Functions
       Function to calculate source mass1 and mass2 with pop III origin
 
 
+      :Parameters:
 
+          **size** : `int`
+              Number of samples to draw
+
+          **model_pars** : `dict`
+              Dictionary of model parameters
+
+      :Returns:
+
+          **mass_1_source** : `array`
+              Array of mass1 in source frame
+
+          **mass_2_source** : `array`
+              Array of mass2 in source frame
 
 
 
@@ -1301,10 +2211,25 @@ Functions
    .. py:method:: binary_masses_primordial(size, model_pars={'Mc': 30.0, 'sigma': 0.3, 'beta': 1.1})
 
       
-      Function to calculate source mass1 and mass2 with PowerLaw+PEAK model
+      Function to calculate source mass1 and mass2 for primordial BBHs
 
 
+      :Parameters:
 
+          **size** : `int`
+              Number of samples to draw
+
+          **model_pars** : `dict`
+              Dictionary of model parameters
+              e.g. {'Mc':30.,'sigma':0.3,'beta':1.1}
+
+      :Returns:
+
+          **mass_1_source** : `array`
+              Array of mass1 in source frame
+
+          **mass_2_source** : `array`
+              Array of mass2 in source frame
 
 
 
@@ -1324,10 +2249,58 @@ Functions
    .. py:method:: binary_masses_BNS(size, model_pars)
 
       
-      Function to calculate source mass1 and mass2 with pop III origin
+      Function to calculate source mass1 and mass2 of BNS
+
+
+      :Parameters:
+
+          **size** : `int`
+              Number of samples to draw
+
+          **model_pars** : `dict`
+              Dictionary of model parameters
+
+      :Returns:
+
+          **mass_1_source** : `array`
+              Array of mass1 in source frame
+
+          **mass_2_source** : `array`
+              Array of mass2 in source frame
 
 
 
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: mass_ratio(size, beta=1.1)
+
+      
+      Function to calculate mass ratio with power law distribution
+
+
+      :Parameters:
+
+          **size** : `int`
+              Number of samples
+
+          **beta** : `float`
+              Power law index
+
+      :Returns:
+
+          **q** : `array`
+              Array of mass ratio
 
 
 
