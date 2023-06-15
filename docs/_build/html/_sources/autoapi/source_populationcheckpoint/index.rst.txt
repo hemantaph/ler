@@ -1,0 +1,358 @@
+:orphan:
+
+:py:mod:`source_population-checkpoint`
+======================================
+
+.. py:module:: source_population-checkpoint
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   source_population-checkpoint.SourceGalaxyPopulationModel
+   source_population-checkpoint.CompactBinaryPopulation
+
+
+
+
+.. py:class:: SourceGalaxyPopulationModel(z_min=0.0, z_max=10.0, event_type='popI_II')
+
+   
+   Class to create lookup tables for redshifts and distances, see :func:`~ler.ler.SourceGalaxyPopulationModel.__init__` method.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+   .. py:method:: create_lookup_table(z_min, z_max)
+
+      
+      Functions to create lookup tables for redshifts and comoving volume
+      Input parameters:
+          z_min (float): minimum redshift of the source population
+          z_max (float): maximum redshift of the source population
+      Output parameters:
+          None
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: sample_source_redshifts(size=1000, z_min=0.0, z_max=12.0)
+
+      
+      Function to sample source redshifts from the source galaxy population model
+      Input parameters:
+          size (int): number of source redshifts to sample
+          z_min (float): minimum redshift of the source population
+          z_max (float): maximum redshift of the source population
+      Output parameters:
+          zs (array): array of source redshifts
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: merger_rate_density_popI_II(zs, R0=23.9 * 1e-09, b2=1.6, b3=2.0, b4=30)
+
+      
+      Function to compute the merger rate density (PopI/PopII)
+      Input parameters:
+          zs (float/array): source redshifts
+          R0 (float)      : normalization constant [default: 23.9*1e-9 Mpc^-3 yr^-1]
+          b2 (float)      : fitting paramters [default: 1.6]
+          b3 (float)      : fitting paramters [default: 2.0]
+          b4 (float)      : fitting paramters [default: 30]
+      Output parameters:
+          rate_density (float/array): merger rate density (Mpc^-3 yr^-1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: merger_rate_density_popI_II_Madau_Dickinson(zs, af=2.7, bf=5.6, cf=1.9)
+
+      
+      Function to compute the merger rate density (PopI/PopII)
+      :param zs:
+      :type zs: `float`
+
+      :Returns:
+
+          **rate_density** : `float`
+              ..
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: merger_rate_density_popIII(zs, aIII=0.66, bIII=0.3, zIII=11.6)
+
+      
+      Function to compute the merger rate density (PopIII)
+      :param zs:
+      :type zs: `float`
+
+      :Returns:
+
+          **rate_density** : `float`
+              ..
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: merger_rate_density_primordial(zs, t0=13.786885302009708)
+
+      
+      Function to compute the merger rate density
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+.. py:class:: CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type='popI_II', model_pars=False)
+
+   Bases: :py:obj:`SourceGalaxyPopulationModel`
+
+   
+   Class to create lookup tables for redshifts and distances, see :func:`~ler.ler.SourceGalaxyPopulationModel.__init__` method.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+   .. py:method:: sample_gw_parameters(nsamples=1000, **kwargs)
+
+      
+      Function to sample BBH parameters from the source galaxy population model
+      Input parameters:
+          nsamples (int)  : number of BBHs to sample
+          **kwargs        : keyword arguments
+                          e.g. zs = np.array([0.1,0.2,0.3])
+                              model_pars = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82,                                    'mmin': m_min, 'mmax': m_max, 'lambda_peak': 0.08,                                    'mu_g': 33.07, 'sigma_g': 5.69}
+      Output parameters:
+          gw_parameters (dict): dictionary of GW parameters
+                              e.g. gw_parameters.keys() = ['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source',                                     'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: binary_masses_popI_II(size, model_pars)
+
+      
+      Function to calculate source mass1 and mass2 with PowerLaw+PEAK model
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: binary_masses_popIII(size, model_pars)
+
+      
+      Function to calculate source mass1 and mass2 with pop III origin
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: binary_masses_primordial(size, model_pars={'Mc': 30.0, 'sigma': 0.3, 'beta': 1.1})
+
+      
+      Function to calculate source mass1 and mass2 with PowerLaw+PEAK model
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: binary_masses_BNS(size, model_pars)
+
+      
+      Function to calculate source mass1 and mass2 with pop III origin
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
