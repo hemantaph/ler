@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Functions and objects related to the main ler .
+This module contains the main class for calculating the rates of lensed and unlensed events.
 """
+
 import os
 import json
 import random

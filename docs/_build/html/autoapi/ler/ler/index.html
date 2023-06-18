@@ -14,11 +14,11 @@
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
         <script src="../../../_static/clipboard.min.js"></script>
         <script src="../../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -27,8 +27,8 @@
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Calculation of unlensed and lensed rate of detectable events" href="../../../rate_comparision.html" />
-    <link rel="prev" title="ler.helperroutines" href="../helperroutines/index.html" /> 
+    <link rel="next" title="ler.multiprocessing_routine" href="../multiprocessing_routine/index.html" />
+    <link rel="prev" title="ler.lens_galaxy_population" href="../lens_galaxy_population/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -61,10 +61,13 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler</span></code></a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../helperroutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.helperroutines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.ler</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../multiprocessing_routine/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.multiprocessing_routine</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.source_population</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
@@ -103,7 +106,7 @@
              
   <section id="module-ler.ler">
 <span id="ler-ler"></span><h1><a class="reference internal" href="#module-ler.ler" title="ler.ler"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.ler</span></code></a><a class="headerlink" href="#module-ler.ler" title="Permalink to this heading"></a></h1>
-<p>Functions and objects related to the main ler .</p>
+<p>This module contains the main class for calculating the rates of lensed and unlensed events.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
 <section id="classes">
@@ -164,8 +167,6 @@ if ‘custom’, the SNR will be calculated using a custom function.</p>
 <span class="go">In case if you need regeneration of interpolator of the given gwsnr param, please delete this file, ./interpolator_pickle/halfSNR_dict_0.pickle</span>
 </pre></div>
 </div>
-<section id="instance-attributes">
-<h4>Instance Attributes<a class="headerlink" href="#instance-attributes" title="Permalink to this heading"></a></h4>
 <p>LeR class has the following attributes,</p>
 <table class="docutils align-default">
 <thead>
@@ -218,9 +219,6 @@ if ‘custom’, the SNR will be calculated using a custom function.</p>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="instance-methods">
-<h4>Instance Methods<a class="headerlink" href="#instance-methods" title="Permalink to this heading"></a></h4>
 <p>LeR class has the following method(s),</p>
 <table class="docutils align-default">
 <thead>
@@ -948,7 +946,6 @@ unlensed_param.keys() = [‘m1’, ‘m2’, ‘z’, ‘snr’, ‘theta_jn’,
 </dl>
 </dd></dl>
 
-</section>
 </dd></dl>
 
 </section>
@@ -959,8 +956,8 @@ unlensed_param.keys() = [‘m1’, ‘m2’, ‘z’, ‘snr’, ‘theta_jn’,
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../helperroutines/index.html" class="btn btn-neutral float-left" title="ler.helperroutines" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../../../rate_comparision.html" class="btn btn-neutral float-right" title="Calculation of unlensed and lensed rate of detectable events" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../lens_galaxy_population/index.html" class="btn btn-neutral float-left" title="ler.lens_galaxy_population" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../multiprocessing_routine/index.html" class="btn btn-neutral float-right" title="ler.multiprocessing_routine" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -29,7 +29,7 @@ The code is available at: https://github.com/hemantaph/ler
    :caption: API:
    
    autoapi/ler/index.rst
-
+   
 .. toctree::
    :maxdepth: 2
    :caption: Examples:

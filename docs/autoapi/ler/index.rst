@@ -13,7 +13,10 @@ Submodules
    :maxdepth: 1
 
    helperroutines/index.rst
+   lens_galaxy_population/index.rst
    ler/index.rst
+   multiprocessing_routine/index.rst
+   source_population/index.rst
 
 
 Package Contents
@@ -25,6 +28,7 @@ Classes
 .. autoapisummary::
 
    ler.LeR
+   ler.LensGalaxyPopulation
    ler.SourceGalaxyPopulationModel
    ler.CompactBinaryPopulation
 
@@ -1382,6 +1386,795 @@ Functions
           !! processed by numpydoc !!
 
 
+.. py:class:: LensGalaxyPopulation(CompactBinaryPopulation_=False)
+
+   
+   Class to sample lens galaxy parameters
+
+
+   :Parameters:
+
+       **CompactBinaryPopulation_** : CompactBinaryPopulation class
+           This is an already initialized class that contains a function (CompactBinaryPopulation.sample_gw_parameters) that actually samples the source parameters.
+
+           :class:`~ler.source_population.CompactBinaryPopulation`
+
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   >>> from ler.lens_galaxy_population import LensGalaxyPopulation
+   >>> lens_pop = LensGalaxyPopulation()
+   >>> # list all the methods of the class
+   >>> print([method for method in dir(lens_pop) if method.startswith('__') is False])
+   ['Dc_to_z', 'angular_diameter_distance', 'angular_diameter_distance_z1z2', 'cbc_pop', 'compute_einstein_radii', 'create_lookup_table', 'differential_comoving_volume', 'get_image_properties', 'get_lensed_snrs', 'lens_redshift_sampler_helper_function', 'm_max', 'm_min', 'normalization_pdf_z', 'rejection_sample_lensing_probability', 'sample_axis_ratio_angle_phi', 'sample_galaxy_shear', 'sample_gamma', 'sample_lens_parameters', 'sample_lens_parameters_routine', 'sample_lens_redshifts', 'sample_strongly_lensed_source_parameters', 'sample_velocity_dispersion_axis_ratio', 'strong_lensing_optical_depth', 'z_max', 'z_min', 'z_to_Dc', 'z_to_luminosity_distance']
+   >>> # sample lens parameters
+   >>> lens_parameters = lens_pop.sample_lens_parameters(size=1000)
+   >>> lens_parameters.keys()
+   dict_keys(['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl', 'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a1', 'a2', 'tilt1', 'tilt2', 'phi12', 'phi_jl'])
+   >>> # get image properties
+   >>> lens_parameters = lens_pop.get_image_properties(lens_parameters, n_min_images=2, n_max_images=4, lensModelList=['EPL_NUMBA', 'SHEAR'], npool=4)
+   solving lens equations...
+   100%|█████████████████████████████████████████████████████████| 1000/1000 [00:00<00:00, 1258.38it/s]
+   >>> lens_parameters.keys()
+   dict_keys(['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl', 'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a1', 'a2', 'tilt1', 'tilt2', 'phi12', 'phi_jl', 'n_images', 'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'image_type', 'weights'])
+   >>> # get lensed SNRs
+   >>> from gwsnr import GWSNR
+   >>> snr = GWSNR()
+   Given: IMR waveform
+   psds not given. Choosing bilby's default psds
+   given psds:  {'L1': 'aLIGO_O4_high_asd.txt', 'H1': 'aLIGO_O4_high_asd.txt', 'V1': 'AdV_asd.txt'}
+   Interpolator will be generated for L1 detector at ./interpolator_pickle/L1/halfSNR_dict_0.pickle
+   Interpolator will be generated for H1 detector at ./interpolator_pickle/H1/halfSNR_dict_0.pickle
+   Interpolator will be generated for V1 detector at ./interpolator_pickle/V1/halfSNR_dict_0.pickle
+   Generating interpolator for ['L1', 'H1', 'V1'] detectors
+   interpolation for each mass_ratios: 100%|███████████████████████████| 50/50 [00:23<00:00,  2.10it/s]
+   interpolator generated
+   >>> lens_snrs = lens_pop.get_lensed_snrs(snr, lens_parameters, n_max_images=4)
+   >>> lens_snrs.keys()
+   dict_keys(['opt_snr_net', 'L1', 'H1', 'V1'])
+
+   Instance Attributes
+   ----------
+   LensGalaxyPopulation class has the following instance attributes:
+
+   +-------------------------------------+----------------------------------+
+   | Atrributes                          | Type                             |
+   +=====================================+==================================+
+   |:attr:`~cbc_pop`                     | CompactBinaryPopulation class    |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~z_min`                       | float                            |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~z_max`                       | float                            |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~m_min`                       | float                            |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~m_max`                       | float                            |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~normalization_pdf_z`         | float                            |
+   +-------------------------------------+----------------------------------+
+
+   Instance Methods
+   ----------
+   LensGalaxyPopulation class has the following instance methods:
+
+   +-------------------------------------+----------------------------------+
+   | Methods                             | Type                             |
+   +=====================================+==================================+
+   |:meth:`~create_lookup_table`         | Function to create a lookup      |
+   |                                     | table for the differential       |
+   |                                     | comoving volume and luminosity   |
+   |                                     | distance wrt redshift            |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~sample_lens_parameters`      | Function to sample lens galaxy   |
+   |                                     | parameters                       |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~sample_lens_parameters_routine`                                 |
+   +-------------------------------------+----------------------------------+
+   |                                     | Function to sample lens galaxy   |
+   |                                     | parameters                       |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~sample_strongly_lensed_source_parameters`                       |
+   +-------------------------------------+----------------------------------+
+   |                                     | Function to sample source        |
+   |                                     | parameters conditioned on the    |
+   |                                     | source being strongly lensed     |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~sample_lens_redshifts`       | Function to sample lens redshifts|
+   +-------------------------------------+----------------------------------+
+   |:meth:`~sample_velocity_dispersion_axis_ratio`                          |
+   +-------------------------------------+----------------------------------+
+   |                                     | Function to sample velocity      |
+   |                                     | dispersion and axis ratio of the |
+   |                                     | lens galaxy                      |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~compute_einstein_radii`      | Function to compute the Einstein |
+   |                                     | radii of the lens galaxies       |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~sample_axis_ratio_angle_phi` | Function to sample the axis      |
+   |                                     | rotation angle of the elliptical |
+   |                                     | lens galaxy                      |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~sample_galaxy_shear`         | Function to sample the lens      |
+   |                                     | galaxy shear                     |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~sample_gamma`                | Function to sample the lens      |
+   |                                     | galaxy spectral index of the     |
+   |                                     | density profile                  |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~rejection_sample_lensing_probability`                           |
+   +-------------------------------------+----------------------------------+
+   |                                     | Function to conduct rejection    |
+   |                                     | sampling wrt einstein radius     |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~strong_lensing_optical_depth`| Function to compute the strong   |
+   |                                     | lensing optical depth            |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~get_image_properties`        | Function to get the image        |
+   |                                     | properties e.g. image positions, |
+   |                                     | magnifications, time delays, etc.|
+   +-------------------------------------+----------------------------------+
+   |:meth:`~get_lensed_snrs`             | Function to get the lensed SNRs  |
+   +-------------------------------------+----------------------------------+
+
+
+
+   ..
+       !! processed by numpydoc !!
+   .. py:attribute:: cbc_pop
+
+      
+      :class:`~CompactBinaryPopulation` class
+
+      This is an already initialized class that contains a function (CompactBinaryPopulation.sample_gw_parameters) that actually samples the source parameters.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: z_min
+
+      
+      `float`
+
+      minimum redshift
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: z_max
+
+      
+      `float`
+
+      maximum redshift
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: m_min
+
+      
+      `float`
+
+      minimum mass in detector frame
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: m_max
+
+      
+      `float`
+
+      maximum mass in detector frame
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: normalization_pdf_z
+
+      
+      `float`
+
+      normalization constant of the pdf p(z)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: create_lookup_table(z_min, z_max)
+
+      
+      Functions to create lookup tables
+      1. Redshift to co-moving distance.
+      2. Co-moving distance to redshift.
+      3. Redshift to luminosity distance
+      4. Redshift to angular diameter distance.
+      5. Lens redshift sampler helper function.
+      6. Redshift to differential comoving volume.
+
+
+      :Parameters:
+
+          **z_min** : `float`
+              minimum redshift
+
+          **z_max** : `float`
+              maximum redshift
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: sample_lens_parameters(size=1000, lens_parameters_input={}, verbose=False)
+
+      
+      Function to sample galaxy lens parameters
+
+
+      :Parameters:
+
+          **size** : `int`
+              number of lens parameters to sample
+
+          **lens_parameters_input** : `dict`
+              dictionary of lens parameters to sample
+
+      :Returns:
+
+          **lens_parameters** : `dict`
+              dictionary of lens parameters and source parameters (lens conditions applied)
+              e.g. dictionary keys:
+
+              lensing related=>['zl':redshift of lens, 'zs': redshift of source, 'sigma':velocity dispersion, 'q':axis ratios, 'e1':ellipticity, 'e2':ellipticity, 'gamma1':external-shear, 'gamma2':external-shear, 'Dl':angular diameter distance of lens, 'Ds':angular diameter distance of source, 'Dls':angular diameter distance between lens and source, 'theta_E': einstein radius in radian, 'gamma':spectral index of mass density distribution]
+
+              source related=>['mass_1': mass in detector frame (mass1>mass2), 'mass_2': mass in detector frame, 'mass_1_source':mass in source frame, 'mass_2_source':mass source frame, 'luminosity_distance': luminosity distance, 'iota': inclination angle, 'psi': polarization angle, 'phase': coalesence phase, 'geocent_time': coalensence GPS time at geocenter, 'ra': right ascension, 'dec': declination, 'a1': spin magnitude of the more massive black hole, 'a2': spin magnitude of the less massive black hole, 'tilt_1': tilt angle of the more massive black hole, 'tilt_2': tilt angle of the less massive black hole, 'phi_12': azimuthal angle between the two spins, 'phi_jl': azimuthal angle between the total angular momentum and the orbital angular momentum]
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: sample_lens_parameters_routine(size=1000, lens_parameters_input={})
+
+      
+      Function to sample galaxy lens parameters
+
+
+      :Parameters:
+
+          **size** : `int`
+              number of lens parameters to sample
+
+          **lens_parameters_input** : `dict`
+              dictionary of lens parameters to sample
+
+      :Returns:
+
+          **lens_parameters** : `dict`
+              dictionary of lens parameters and source parameters (lens conditions applied)
+              e.g. dictionary keys:
+
+              lensing related=>['zl':redshift of lens, 'zs': redshift of source, 'sigma':velocity dispersion, 'q':axis ratios, 'e1':ellipticity, 'e2':ellipticity, 'gamma1':external-shear, 'gamma2':external-shear, 'Dl':angular diameter distance of lens, 'Ds':angular diameter distance of source, 'Dls':angular diameter distance between lens and source, 'theta_E': einstein radius in radian, 'gamma':spectral index of mass density distribution]
+
+              source related=>['mass_1': mass in detector frame (mass1>mass2), 'mass_2': mass in detector frame, 'mass_1_source':mass in source frame, 'mass_2_source':mass source frame, 'luminosity_distance': luminosity distance, 'iota': inclination angle, 'psi': polarization angle, 'phase': coalesence phase, 'geocent_time': coalensence GPS time at geocenter, 'ra': right ascension, 'dec': declination, 'a1': spin magnitude of the more massive black hole, 'a2': spin magnitude of the less massive black hole, 'tilt_1': tilt angle of the more massive black hole, 'tilt_2': tilt angle of the less massive black hole, 'phi_12': azimuthal angle between the two spins, 'phi_jl': azimuthal angle between the total angular momentum and the orbital angular momentum]
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: sample_strongly_lensed_source_parameters(size=1000)
+
+      
+      Function to sample source redshifts and other parameters, conditioned on the source being strongly lensed.
+
+
+      :Parameters:
+
+          **size** : `int`
+              number of lens parameters to sample
+
+      :Returns:
+
+          **gw_param_strongly_lensed** : `dict`
+              dictionary of source parameters. `zs` is sampled considering the merger rate density at source frame, comoving volume and strong lensing optical depth.
+
+              e.g. gw_param_strongly_lensed.keys() = ['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a1', 'a2', 'tilt1', 'tilt2', 'phi12', 'phi_jl']
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: sample_lens_redshifts(zs)
+
+      
+      Function to sample lens redshifts, conditioned on the lens being strongly lensed
+      Input parameters:
+          zs : source redshifts
+      Output parameters:
+          zl : lens redshifts
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: sample_velocity_dispersion_axis_ratio(zs)
+
+      
+      Function to sample velocity dispersion and axis ratio of the lens galaxy
+
+
+      :Parameters:
+
+          **zs** : `float`
+              source redshifts
+
+      :Returns:
+
+          **sigma** : `float`
+              velocity dispersion of the lens galaxy
+
+          **q** : `float`
+              axis ratio of the lens galaxy
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: compute_einstein_radii(sigma, zl, zs)
+
+      
+      Function to compute the Einstein radii of the lens galaxies
+
+
+      :Parameters:
+
+          **sigma** : `float`
+              velocity dispersion of the lens galaxy
+
+          **zl** : `float`
+              lens redshifts
+
+          **zs** : `float`
+              source redshifts
+
+      :Returns:
+
+          **theta_E** : `float`
+              Einstein radii of the lens galaxies
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: sample_axis_ratio_angle_phi(size=1000)
+
+      
+      Function to sample the axis rotation angle of the elliptical lens galaxy
+
+
+      :Parameters:
+
+          **size** : `int`
+              number of lens parameters to sample
+
+      :Returns:
+
+          **phi** : `float`
+              axis rotation angle of the elliptical lens galaxy
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: sample_galaxy_shear(size)
+
+      
+      Function to sample the lens galaxy shear
+
+
+      :Parameters:
+
+          **size** : `int`
+              number of lens parameters to sample
+
+      :Returns:
+
+          **gamma_1** : `float`
+              shear component in the x-direction
+
+          **gamma_2** : `float`
+              shear component in the y-direction
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: sample_gamma(size=1000)
+
+      
+      Function to sample the lens galaxy spectral index of the density profile
+
+
+      :Parameters:
+
+          **size** : `int`
+              number of lens parameters to sample
+
+      :Returns:
+
+          **gamma** : `float`
+              spectral index of the density profile
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: rejection_sample_lensing_probability(theta_E)
+
+      
+      Function to conduct rejection sampling wrt einstein radius
+
+
+      :Parameters:
+
+          **theta_E** : `float`
+              Einstein radii of the lens galaxies
+
+      :Returns:
+
+          **idx** : `bool`
+              boolean array of size len(theta_E) indicating whether the sample is accepted or not
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: strong_lensing_optical_depth(zs)
+
+      
+      Function to compute the strong lensing optical depth
+
+
+      :Parameters:
+
+          **zs** : `float`
+              source redshifts
+
+      :Returns:
+
+          **tau** : `float`
+              strong lensing optical depth
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: get_image_properties(lens_parameters, n_min_images=int(2), n_max_images=int(4), lensModelList=['EPL_NUMBA', 'SHEAR'], npool=4)
+
+      
+      Function to get the image properties e.g. image positions, magnifications, time delays, etc.
+
+
+      :Parameters:
+
+          **lens_parameters** : `dict`
+              dictionary of lens parameters
+              e.g. lens_parameters.keys() = ['zs', 'zl', 'gamma1', 'gamma2', 'e1', 'e2', 'gamma', 'theta_E']
+
+          **n_min_images** : `int`
+              minimum number of images to consider
+              default: 2
+
+          **n_max_images** : `int`
+              maximum number of images to consider
+              default: 4
+
+          **lensModelList** : `list`
+              list of lens models
+              default: ['EPL_NUMBA', 'SHEAR']
+
+          **npool** : `int`
+              number of processes to use
+              default: 4
+
+      :Returns:
+
+          **lens_parameters** : `dict`
+              dictionary of lens parameters and image properties
+              e.g. lens_parameters contains the following keys:
+
+              lens related=>['zs': source redshift, 'zl': lens redshift, 'gamma1': shear component in the x-direction, 'gamma2': shear component in the y-direction, 'e1': ellipticity component in the x-direction, 'e2': ellipticity component in the y-direction, 'gamma': spectral index of the mass density distribution, 'theta_E': einstein radius in radian]
+
+              source related=>['mass_1': mass in detector frame (mass1>mass2), 'mass_2': mass in detector frame, 'mass_1_source':mass in source frame, 'mass_2_source':mass source frame, 'luminosity_distance': luminosity distance, 'iota': inclination angle, 'psi': polarization angle, 'phase': coalesence phase, 'geocent_time': coalensence GPS time at geocenter, 'ra': right ascension, 'dec': declination, 'a1': spin magnitude of the more massive black hole, 'a2': spin magnitude of the less massive black hole, 'tilt_1': tilt angle of the more massive black hole, 'tilt_2': tilt angle of the less massive black hole, 'phi_12': azimuthal angle between the two spins, 'phi_jl': azimuthal angle between the total angular momentum and the orbital angular momentum]
+
+              image related=>['x_source': source position in the x-direction, 'y_source': source position in the y-direction, 'x0_image_position': image position in the x-direction, 'x1_image_position': image position in the y-direction, 'magnifications': magnifications, 'time_delays': time delays, 'n_images': number of images formed, 'determinant': determinants, 'trace': traces, 'iteration': to keep track of the iteration number, 'weights': weights for the caustic considered]
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: get_lensed_snrs(snr_calculator, lensed_param, n_max_images=4)
+
+      
+      Function to calculate the signal to noise ratio for each image in each event.
+
+
+      :Parameters:
+
+          **snr_calculator** : `class`
+              snr_calculator class
+              this is an already initialized class that contains a function (snr_calculator.snr) that actually calculates snr with the given gw_params.
+
+              Luminosity distance and time delay are modified to be effective luminosity distance and effective time delay, respectively, for each image using the magnifications and time delays.
+
+          **lensed_param** : `dict`
+              dictionary containing the both already lensed source paramters and image parameters.
+              e.g. lensed_param.keys() = ['mass_1', 'mass_2', 'zs', 'luminosity_distance', 'iota', 'psi', 'phi', 'ra', 'dec', 'geocent_time', 'phase', 'a1', 'a2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl', 'magnifications', 'time_delays']
+
+          **n_max_images** : `int`
+              maximum number of images to consider
+              default: 4
+
+      :Returns:
+
+          **snrs** : `dict`
+              signal to noise ratio for each image in each event.
+              (dictionary containing 'H1', 'L1', ..., and 'opt_snr_net', which is the network snr, for each image as an array with dimensions (number_of_lensed_events,n_max_images) )
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
 .. py:class:: SourceGalaxyPopulationModel(z_min=0.0, z_max=10.0, event_type='popI_II')
 
    
@@ -1668,6 +2461,13 @@ Functions
 
 
 
+      .. rubric:: Examples
+
+      >>> from ler import SourceGalaxyPopulationModel
+      >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popI_II")
+      >>> zs = pop.sample_source_redshifts(size=1000)
+      >>> zs
+      array([0.0001, 0.0001, 0.0001, ..., 9.9999, 9.9999, 9.9999])
 
 
 
@@ -1701,6 +2501,10 @@ Functions
               Fitting paramters
               default: 30
 
+      :Returns:
+
+          **rate_density** : `float`
+              merger rate density
 
 
 
@@ -1711,6 +2515,13 @@ Functions
 
 
 
+      .. rubric:: Examples
+
+      >>> from ler import SourceGalaxyPopulationModel
+      >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popI_II")
+      >>> rate_density = pop.merger_rate_density_popI_II(zs=0.1)
+      >>> rate_density
+      2.7848018586883885e-08
 
 
 
@@ -1720,7 +2531,7 @@ Functions
    .. py:method:: merger_rate_density_popI_II_Madau_Dickinson(zs, af=2.7, bf=5.6, cf=1.9)
 
       
-      Function to compute the merger rate density (PopI/PopII) from Madau & Dickinson (2014)
+      Function to compute the unormalized merger rate density (PopI/PopII) from Madau & Dickinson (2014)
 
 
       :Parameters:
@@ -1743,7 +2554,7 @@ Functions
       :Returns:
 
           **rate_density** : `float`
-              ..
+              merger rate density
 
 
 
@@ -1754,6 +2565,13 @@ Functions
 
 
 
+      .. rubric:: Examples
+
+      >>> from ler import SourceGalaxyPopulationModel
+      >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popI_II_Madau_Dickinson")
+      >>> rate_density = pop.merger_rate_density_popI_II_Madau_Dickinson(zs=0.1)
+      >>> rate_density
+      1.2355851838964846
 
 
 
@@ -1763,7 +2581,7 @@ Functions
    .. py:method:: merger_rate_density_popIII(zs, aIII=0.66, bIII=0.3, zIII=11.6)
 
       
-      Function to compute the merger rate density (PopIII)
+      Function to compute the unnormalized merger rate density (PopIII)
 
 
       :Parameters:
@@ -1786,7 +2604,7 @@ Functions
       :Returns:
 
           **rate_density** : `float`
-              ..
+              merger rate density
 
 
 
@@ -1797,6 +2615,13 @@ Functions
 
 
 
+      .. rubric:: Examples
+
+      >>> from ler import SourceGalaxyPopulationModel
+      >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popIII")
+      >>> rate_density = pop.merger_rate_density_popIII(zs=0.1)
+      >>> rate_density
+      0.00010000000000000002
 
 
 
@@ -1821,7 +2646,7 @@ Functions
       :Returns:
 
           **rate_density** : `float`
-              ..
+              merger rate density
 
 
 
@@ -1832,6 +2657,13 @@ Functions
 
 
 
+      .. rubric:: Examples
+
+      >>> from ler import SourceGalaxyPopulationModel
+      >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "primordial")
+      >>> rate_density = pop.merger_rate_density_primordial(zs=0.1)
+      >>> rate_density
+      0.00010000000000000002
 
 
 
@@ -2090,13 +2922,20 @@ Functions
 
 
 
+      .. rubric:: Examples
+
+      >>> from ler import CompactBinaryPopulation
+      >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
+      >>> method_list = [method for method in dir(pop) if method.startswith('__') is False]
+      >>> print(method_list)
+      ['create_lookup_table', 'differential_comoving_volume', 'merger_rate_density', 'merger_rate_density_popIII', 'merger_rate_density_popI_II', 'merger_rate_density_popI_II_Madau_Dickinson', 'merger_rate_density_primordial', 'normalization_pdf_z', 'sample_source_redshifts', 'z_max', 'z_min', 'z_to_luminosity_distance']
 
 
 
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: sample_gw_parameters(nsamples=1000, **kwargs)
+   .. py:method:: sample_gw_parameters(nsamples=1000, verbose=False, **kwargs)
 
       
       Function to sample BBH parameters from the source galaxy population
@@ -2127,6 +2966,13 @@ Functions
 
 
 
+      .. rubric:: Examples
+
+      >>> from ler import CompactBinaryPopulation
+      >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
+      >>> gw_parameters = pop.sample_gw_parameters(nsamples=1000)
+      >>> gw_parameters.keys()
+      dict_keys(['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a1', 'a2', 'tilt1', 'tilt2', 'phi12', 'phi_jl'])
 
 
 
@@ -2165,6 +3011,12 @@ Functions
 
 
 
+      .. rubric:: Examples
+
+      >>> from ler import CompactBinaryPopulation
+      >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
+      >>> model_pars = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
+      >>> mass_1_source, mass_2_source = pop.binary_masses_popI_II(size=1000, model_pars=model_pars)
 
 
 
@@ -2202,6 +3054,11 @@ Functions
 
 
 
+      .. rubric:: Examples
+
+      >>> from ler import CompactBinaryPopulation
+      >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popIII")
+      >>> mass_1_source, mass_2_source = pop.binary_masses_popIII(size=1000, model_pars=None)
 
 
 
@@ -2240,6 +3097,12 @@ Functions
 
 
 
+      .. rubric:: Examples
+
+      >>> from ler import CompactBinaryPopulation
+      >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "primordial")
+      >>> model_pars = {'Mc':30.,'sigma':0.3,'beta':1.1}
+      >>> mass_1_source, mass_2_source = pop.binary_masses_primordial(size=1000, model_pars=model_pars)
 
 
 
@@ -2277,6 +3140,11 @@ Functions
 
 
 
+      .. rubric:: Examples
+
+      >>> from ler import CompactBinaryPopulation
+      >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=1.0, m_max=3.0, event_type = "BNS")
+      >>> mass_1_source, mass_2_source = pop.binary_masses_BNS(size=1000, model_pars=None)
 
 
 
@@ -2311,6 +3179,11 @@ Functions
 
 
 
+      .. rubric:: Examples
+
+      >>> from ler import CompactBinaryPopulation
+      >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=1.0, m_max=3.0, event_type = "BNS")
+      >>> q = pop.mass_ratio(size=1000, beta=1.1)
 
 
 
@@ -2322,32 +3195,58 @@ Functions
 
    
    Function to solve the lens equation (min_image = 2)
-   Input parameters:
-       lens_parameters : a list of parameters
-                       lens_parameters[0] = e1 : ellipticity
-                       lens_parameters[1] = e2 : ellipticity
-                       lens_parameters[2] = gamma : power-law index
-                       lens_parameters[3] = gamma1 : shear
-                       lens_parameters[4] = gamma2 : shear
-                       lens_parameters[5] = zl : redshift of the lens
-                       lens_parameters[6] = zs : redshift of the source
-                       lens_parameters[7] = einstein_radius : Einstein radius
-                       lens_parameters[8] = iteration : iteration number
-                       lens_parameters[9:] = lens_model_list : list of lens models
-   Output parameters:
-       x_source : x position of the source in the source plane
-       y_source : y position of the source in the source plane
-       eta : polar coordinate of the source in the source plane
-       phi : polar coordinate of the source in the source plane
-       x0_image_position : x position of the images in the source plane
-       x1_image_position : y position of the images in the source plane
-       magnifications : magnification of the images
-       time_delays : time-delay of the images
-       nImages : number of images
-       determinant : determinant of the hessian matrix
-       trace : trace of the hessian matrix
-       iteration : iteration number
-       weights : weights for the caustic
+
+
+   :Parameters:
+
+       **lens_parameters** : `list`
+           a list of parameters
+           lens_parameters[0] = min_images : minimum number of images
+           lens_parameters[1] = e1 : ellipticity
+           lens_parameters[2] = e2 : ellipticity
+           lens_parameters[3] = gamma : power-law index
+           lens_parameters[4] = gamma1 : shear
+           lens_parameters[5] = gamma2 : shear
+           lens_parameters[6] = zl : redshift of the lens
+           lens_parameters[7] = zs : redshift of the source
+           lens_parameters[8] = einstein_radius : Einstein radius
+           lens_parameters[9] = iteration : iteration number
+           lens_parameters[10:] = lens_model_list : numpy array of lens models
+
+   :Returns:
+
+       **x_source** : `float`
+           x position of the source in the source plane
+
+       **y_source** : `float`
+           y position of the source in the source plane
+
+       **x0_image_position** : `float`
+           x position of the images in the source plane
+
+       **x1_image_position** : `float`
+           y position of the images in the source plane
+
+       **magnifications** : `float`
+           magnification of the images
+
+       **time_delays** : `float`
+           time-delay of the images
+
+       **nImages** : `int`
+           number of images
+
+       **determinant** : `float`
+           determinant of the hessian matrix
+
+       **trace** : `float`
+           trace of the hessian matrix
+
+       **iteration** : `int`
+           iteration number
+
+       **weights** : `float`
+           weights for the caustic
 
 
 
@@ -2358,9 +3257,23 @@ Functions
 
 
 
+   .. rubric:: Examples
 
-
-
+   >>> from ler.multiprocessing_routine import solve_lens_equation1
+   >>> import numpy as np
+   >>> from multiprocessing import Pool
+   >>> # lens parameters input contains 12 parameters [e1, e2, gamma, gamma1, gamma2, zl, zs, einstein_radius, iteration, lens_model_list]
+   >>> lens_parameters1 = np.array([2, 0.024069457093642648, -0.016002190961948142, 1.8945414936459974, 0.10117465203892329, 0.09600089396968613, 0.2503743800068136, 0.9418211055453296, 2.5055790287104725e-06, 0, 'EPL_NUMBA', 'SHEAR'], dtype=object)
+   >>> lens_parameters2 = np.array([2, -0.04030088581646998, -0.01419438113690042, 2.0068239327017, 0.08482718989370612, -0.015393332086560785, 1.0952303138971118, 2.5534097159384417, 1.0125570159563301e-06, 1, 'EPL_NUMBA', 'SHEAR'], dtype=object)
+   >>> input_arguments = np.vstack((lens_parameters1, lens_parameters2))
+   >>> # solve the lens equation for each set of lens parameters
+   >>> with Pool(2) as p:
+   ...     result = p.map(solve_lens_equation1, input_arguments)
+   >>> # result is a list of tuples
+   >>> # each tuple contains the output parameters of the function
+   >>> # each output parameter contains x_source, y_source, x0_image_position, x1_image_position, magnifications, time_delays, nImages, determinant, trace, iteration, weights
+   >>> print(f"magnification of images with lens parameters 'lens_parameters1' is {result[0][6]}")
+   magnification of images with lens parameters 'lens_parameters1' is [ 2.18973765 -1.27542831]
 
 
 
@@ -2371,32 +3284,58 @@ Functions
 
    
    Function to solve the lens equation (min_image > 2)
-   Input parameters:
-       lens_parameters : a list of parameters
-                       lens_parameters[0] = e1 : ellipticity
-                       lens_parameters[1] = e2 : ellipticity
-                       lens_parameters[2] = gamma : power-law index
-                       lens_parameters[3] = gamma1 : shear
-                       lens_parameters[4] = gamma2 : shear
-                       lens_parameters[5] = zl : redshift of the lens
-                       lens_parameters[6] = zs : redshift of the source
-                       lens_parameters[7] = einstein_radius : Einstein radius
-                       lens_parameters[8] = iteration : iteration number
-                       lens_parameters[9:] = lens_model_list : list of lens models
-   Output parameters:
-       x_source : x position of the source in the source plane
-       y_source : y position of the source in the source plane
-       eta : polar coordinate of the source in the source plane
-       phi : polar coordinate of the source in the source plane
-       x0_image_position : x position of the images in the source plane
-       x1_image_position : y position of the images in the source plane
-       magnifications : magnification of the images
-       time_delays : time-delay of the images
-       nImages : number of images
-       determinant : determinant of the hessian matrix
-       trace : trace of the hessian matrix
-       iteration : iteration number
-       weights : weights for the caustic
+
+
+   :Parameters:
+
+       **lens_parameters** : `list`
+           a list of parameters
+           lens_parameters[0] = min_images : minimum number of images
+           lens_parameters[1] = e1 : ellipticity
+           lens_parameters[2] = e2 : ellipticity
+           lens_parameters[3] = gamma : power-law index
+           lens_parameters[4] = gamma1 : shear
+           lens_parameters[5] = gamma2 : shear
+           lens_parameters[6] = zl : redshift of the lens
+           lens_parameters[7] = zs : redshift of the source
+           lens_parameters[8] = einstein_radius : Einstein radius
+           lens_parameters[9] = iteration : iteration number
+           lens_parameters[10:] = lens_model_list : numpy array of lens models
+
+   :Returns:
+
+       **x_source** : `float`
+           x position of the source in the source plane
+
+       **y_source** : `float`
+           y position of the source in the source plane
+
+       **x0_image_position** : `float`
+           x position of the images in the source plane
+
+       **x1_image_position** : `float`
+           y position of the images in the source plane
+
+       **magnifications** : `float`
+           magnification of the images
+
+       **time_delays** : `float`
+           time-delay of the images
+
+       **nImages** : `int`
+           number of images
+
+       **determinant** : `float`
+           determinant of the hessian matrix
+
+       **trace** : `float`
+           trace of the hessian matrix
+
+       **iteration** : `int`
+           iteration number
+
+       **weights** : `float`
+           weights for the caustic
 
 
 
@@ -2407,9 +3346,23 @@ Functions
 
 
 
+   .. rubric:: Examples
 
-
-
+   >>> from ler.multiprocessing_routine import solve_lens_equation2
+   >>> import numpy as np
+   >>> from multiprocessing import Pool
+   >>> # lens parameters input contains 12 parameters [e1, e2, gamma, gamma1, gamma2, zl, zs, einstein_radius, iteration, lens_model_list]
+   >>> lens_parameters1 = np.array([3, 0.024069457093642648, -0.016002190961948142, 1.8945414936459974, 0.10117465203892329, 0.09600089396968613, 0.2503743800068136, 0.9418211055453296, 2.5055790287104725e-06, 0, 'EPL_NUMBA', 'SHEAR'], dtype=object)
+   >>> lens_parameters2 = np.array([3, -0.04030088581646998, -0.01419438113690042, 2.0068239327017, 0.08482718989370612, -0.015393332086560785, 1.0952303138971118, 2.5534097159384417, 1.0125570159563301e-06, 1, 'EPL_NUMBA', 'SHEAR'], dtype=object)
+   >>> input_arguments = np.vstack((lens_parameters1, lens_parameters2))
+   >>> # solve the lens equation for each set of lens parameters
+   >>> with Pool(2) as p:
+   ...     result = p.map(solve_lens_equation2, input_arguments)
+   >>> # result is a list of tuples
+   >>> # each tuple contains the output parameters of the function
+   >>> # each output parameter contains x_source, y_source, x0_image_position, x1_image_position, magnifications, time_delays, nImages, determinant, trace, iteration, weights
+   >>> print(f"magnification of images with lens parameters 'lens_parameters1' is {result[0][6]}")
+   magnification of images with lens parameters 'lens_parameters1' is [ 2.18973765 -1.27542831]
 
 
 
