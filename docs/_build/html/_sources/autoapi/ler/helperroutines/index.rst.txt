@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   Helper functions for various tasks used in LER, for example combining dictionaries together. Really this is a place for routines which don't seem to fit into anywhere else.
+   This module contains helper routines for other modules in the ler package.
 
    ..
        !! processed by numpydoc !!
@@ -28,15 +28,11 @@ Functions
 
 .. autoapisummary::
 
-   ler.helperroutines.get_param_from_json
-   ler.helperroutines.dict_list_to_ndarray
    ler.helperroutines.append_json
-   ler.helperroutines.trim_dictionary
-   ler.helperroutines.trim_dictionary_by_indices
-   ler.helperroutines.add_dictionaries_together
+   ler.helperroutines.get_param_from_json
    ler.helperroutines.rejection_sample
-   ler.helperroutines.combine_lens_parameter_dictionaries
-   ler.helperroutines.save_dictionary_to_numpy_txt_file
+   ler.helperroutines.add_dictionaries_together
+   ler.helperroutines.trim_dictionary
 
 
 
@@ -48,7 +44,15 @@ Functions
    class for storing a numpy.ndarray or any nested-list composition as JSON file
 
 
+   :Parameters:
 
+       **json.JSONEncoder** : `class`
+           class for encoding JSON file
+
+   :Returns:
+
+       **json.JSONEncoder.default** : `function`
+           function for encoding JSON file
 
 
 
@@ -102,6 +106,39 @@ Functions
           !! processed by numpydoc !!
 
 
+.. py:function:: append_json(file_name, dictionary, replace=False)
+
+   
+   Append and update a json file with a dictionary.
+
+
+   :Parameters:
+
+       **file_name** : `str`
+           json file name for storing the parameters.
+
+       **dictionary** : `dict`
+           dictionary to be appended to the json file.
+
+       **replace** : `bool`, optional
+           If True, replace the json file with the dictionary. Default is False.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:function:: get_param_from_json(json_file)
 
    
@@ -117,121 +154,6 @@ Functions
 
        **param** : `dict`
            ..
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: dict_list_to_ndarray(dictionary)
-
-   
-   Converts a dictionary of lists to a dictionary of ndarrays.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: append_json(file_name, dictionary, replace=False)
-
-   
-   append and update a json file with a dictionary.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: trim_dictionary(dictionary, size)
-
-   
-   Filters an event dictionary to only contain the size.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: trim_dictionary_by_indices(dictionary, indices)
-
-   
-   Filters an event dictionary to only contain the indices.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: add_dictionaries_together(dictionary1, dictionary2)
-
-   
-   Adds two dictionaries with the same keys together.
-
-
-
 
 
 
@@ -278,19 +200,11 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: combine_lens_parameter_dictionaries(lensed_parameters, lensed_parameters_draw, idx, n_images)
+.. py:function:: add_dictionaries_together(dictionary1, dictionary2)
 
    
-   Adds lensed_parameters_draw to lensed_parameters dictionary for selected events idx and for n_images.
+   Adds two dictionaries with the same keys together.
 
-   Input parameters:
-   lensed_parameters (dict): Dictionary of lensed parameters
-   lensed_parameters_draw (dict): Dictionary of lensed parameters to be added to lensed_parameters
-   idx (int): Index of the events to be added to lensed_parameters
-   n_images (int): Number of images
-
-   Output parameters:
-   lensed_parameters (dict): Dictionary of lensed parameters
 
 
 
@@ -309,23 +223,11 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: save_dictionary_to_numpy_txt_file(detectable_lensed_event_parameters, fname='detectable_lensed_event_parameters.txt')
+.. py:function:: trim_dictionary(dictionary, size)
 
    
-   Saves a dictionary to a numpy txt file.
+   Filters an event dictionary to only contain the size.
 
-   :param detectable_lensed_event_parameters: Dictionary to be saved
-   :type detectable_lensed_event_parameters: dict
-   :param fname: Name of the file to be saved
-   :type fname: str
-
-   Example:
-   from ler import helperroutines as hr
-   # Save the detectable lensed event parameters dictionary as numpy txt file
-   hr.save_dictionary_to_numpy_txt_file(detectable_lensed_event_parameters, fname= 'detectable_lensed_event_parameters.txt' )
-   # Load the detectable lensed event parameters dictionary
-   data = np.genfromtxt('detectable_lensed_4_image_event_parameters.txt', names=True)
-   names = data.dtype.names
 
 
 
