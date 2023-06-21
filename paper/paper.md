@@ -30,14 +30,15 @@ Gravitational waves (GWs) are ripples in the fabric of space and time caused by 
 # Statement of need
 
 `LeR` is a statistical based python package whose core function is to calculate detectable rates of both lensing and unlensed GW events. This calculation very much dependent on the other functionality of the package, which can be subdivided into three parts; 1. Sampling of compact binary source properties, 2. Sampling of lens galaxy characteristics and 3. Solving the lens equation to get image properties of the source. The package as a whole relies on `numpy` array operation, `scipy` interpolation and `multiprocessing` functionality of python to incraese speed and fuctionality without compromising on the ease-of-use. The API of `LeR` is structure such that each functionality mentioned stands on this own right for scientific reseach but also can also be used together as needed. Keys features of `LeR` and its dependencies can be summerized as follows,
+
 - Detectable merger rates: 
     * Calculation not only relies on the properties of simulated events but also on detectability provided by the condition of the GW detectors. For this, `LeR` relies on `gwsnr` for the calculation of optimal signl-to-noise ratio (SNR). Due to prowess of gwsnr`, rate calulation can be done both for present and future detectors with customizable sensitivities. 
     * Merger rates of both the simulated unlensed and lensed events can be calculated and compared. 
 - Sampling GW sources:
-    * Distribution source's redshift is based on the merger rate density of compact binaries, which can be BBH [cite1](), BNS [cite2](), primodial black holes (PBHs) [cite3]() etc. The code is designed to accomodate easy updates or additions of such distribution by the users in the future. 
+    * Distribution source's redshift is based on the merger rate density of compact binaries, which can be BBH [cite](https://arxiv.org/abs/2306.03827), BNS [cite](https://arxiv.org/abs/2306.03827), primodial black holes (PBHs) [cite](https://arxiv.org/abs/2306.03827) etc. The code is designed to accomodate easy updates or additions of such distribution by the users in the future. 
     * Sampling of BBH masses is done using `gwcosmo` follwing the powerlaw+peak model. Other related properties are sampled form available priors from `bilby`. Each of them can me manually replaced by the user to before feeding in for rate computation.
 - Sampling of lens galaxies:
-    * Distribution of follows [cite](). It depends on the sampled source redshifts and also on the optical depth [cite]().
+    * Distribution of follows [cite](https://arxiv.org/abs/2306.03827). It depends on the sampled source redshifts and also on the optical depth [cite](https://arxiv.org/abs/2306.03827).
     * `LeR` employs Elliptical Power Law model which external shear (EPL+Shear) model for sampling other features of the galaxy, which is available in the `Lenstronomy` package.
     * Rejection sampling is applied on the above samples on condition that whether event is strongly lensed or not.
 - Generation of image properties:
