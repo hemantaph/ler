@@ -130,10 +130,13 @@ class SourceGalaxyPopulationModel:
     Function to calculate the differential comoving volume
     """
 
-    def __init__(self, z_min=0.0, z_max=10.0, event_type="popI_II"):
+    def __init__(self, z_min=0.0, z_max=10.0, event_type="popI_II", merger_rate_density_param=None):
+
+        # set attributes
         self.z_min = z_min
         self.z_max = z_max
         self.create_lookup_table(z_min, z_max)
+        self.merger_rate_density_param = merger_rate_density_param
 
         # To find the normalization constant of the pdf p(z)
         # Define the merger-rate density function
@@ -270,7 +273,20 @@ class SourceGalaxyPopulationModel:
         2.7848018586883885e-08
 
         """
-        rate_density = R0 * (b4 + 1) * np.exp(b2 * zs) / (b4 + np.exp(b3 * zs))
+        # replace values with self.merger_rate_density_param, if given
+        param = dict(R0=R0, b2=b2, b3=b3, b4=b4)
+        if self.merger_rate_density_param is not None:
+            keys_ = param.keys()
+            for key, value in self.merger_rate_density_param.items():
+                if key in keys_:
+                    param[key] = value
+                
+        # rate_density = R0 * (b4 + 1) * np.exp(b2 * zs) / (b4 + np.exp(b3 * zs))
+        rate_density = param["R0"] * (param["b4"] + 1) * np.exp(
+            param["b2"] * zs
+        ) / (param["b4"] + np.exp(param["b3"] * zs))
+
+
         return rate_density
 
     def merger_rate_density_popI_II_Madau_Dickinson(self, zs, af=2.7, bf=5.6, cf=1.9):
@@ -305,7 +321,16 @@ class SourceGalaxyPopulationModel:
         1.2355851838964846
 
         """
-        rate_density = (1 + zs) ** af / (1 + ((1 + zs) / cf) ** bf)
+        # replace values with self.merger_rate_density_param, if given
+        param = dict(af=af, bf=bf, cf=cf)
+        if self.merger_rate_density_param is not None:
+            keys_ = param.keys()
+            for key, value in self.merger_rate_density_param.items():
+                if key in keys_:
+                    param[key] = value
+
+        rate_density = (1 + zs) ** param["af"] / (1 + ((1 + zs) / param["cf"]) ** param["bf"])
+
         return rate_density
 
     def merger_rate_density_popIII(self, zs, aIII=0.66, bIII=0.3, zIII=11.6):
@@ -339,9 +364,17 @@ class SourceGalaxyPopulationModel:
         >>> rate_density
         0.00010000000000000002
         """
-        rate_density = np.exp(aIII * (zs - zIII)) / (
-            bIII + aIII * np.exp((aIII + bIII) * (zs - zIII))
-        )
+        # replace values with self.merger_rate_density_param, if given
+        param = dict(aIII=aIII, bIII=bIII, zIII=zIII)
+        if self.merger_rate_density_param is not None:
+            keys_ = param.keys()
+            for key, value in self.merger_rate_density_param.items():
+                if key in keys_:
+                    param[key] = value
+
+        rate_density = np.exp(param["aIII"] * (zs - param["zIII"])) / (
+            param["bIII"] + param["aIII"] * np.exp((param["aIII"] + param["bIII"]) * (zs - param["zIII"]))
+
         return rate_density
 
     def merger_rate_density_primordial(self, zs, t0=13.786885302009708):
@@ -369,7 +402,16 @@ class SourceGalaxyPopulationModel:
         >>> rate_density
         0.00010000000000000002
         """
+        # replace values with self.merger_rate_density_param, if given
+        param = dict(t0=t0)
+        if self.merger_rate_density_param is not None:
+            keys_ = param.keys()
+            for key, value in self.merger_rate_density_param.items():
+                if key in keys_:
+                    param[key] = value
+
         rate_density = (Planck18.age(z=zs).value / t0) ** (-34 / 37)
+
         return rate_density
 
 
@@ -389,7 +431,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
     event_type : `str`
         Type of event to generate.
         e.g. 'popI_II', 'BNS', 'popIII', 'primordial', 'popI_II_Madau_Dickinson'
-    model_pars : `dict`
+    src_model_params : `dict`
         Dictionary of model parameters.
         e.g. for popI_II: {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
 
@@ -417,7 +459,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
     +-------------------------------------+----------------------------------+
     |:attr:`~event_type`                  | `str`                            |
     +-------------------------------------+----------------------------------+
-    |:attr:`~model_pars`                  | `dict`                           |
+    |:attr:`~src_model_params`                  | `dict`                           |
     +-------------------------------------+----------------------------------+
 
     Instance Methods
@@ -477,7 +519,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
     e.g. 'popI_II', 'BNS', 'popIII', 'primordial', 'popI_II_Madau_Dickinson'
     """
 
-    model_pars = None
+    src_model_params = None
     """``dict`` \n
     Dictionary of model parameters. \n
     e.g. for popI_II: {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69} \n
@@ -503,19 +545,11 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         m_min=4.59,
         m_max=86.22,
         event_type="popI_II",
-        model_pars={
-            "alpha": 3.63,
-            "beta": 1.26,
-            "delta_m": 4.82,
-            "mmin": 4.59,
-            "mmax": 86.22,
-            "lambda_peak": 0.08,
-            "mu_g": 33.07,
-            "sigma_g": 5.69,
-        },
+        merger_rate_density_param=None,
+        src_model_params=None,
     ):
         # initialized SourceGalaxyPopulationModel mother class
-        super().__init__(z_min=z_min, z_max=z_max, event_type=event_type)
+        super().__init__(z_min=z_min, z_max=z_max, event_type=event_type, merger_rate_density_param=merger_rate_density_param)
 
         # self.z_min already defined in SourceGalaxyPopulationModel
         # self.z_max already defined in SourceGalaxyPopulationModel
@@ -526,37 +560,23 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         except:
             pass
 
-        # check the model_pars have required keys
+        # check the src_model_params have required keys
         # check mass range
         if event_type == "popI_II":
-            model_pars_ = {
-                "alpha": 3.63,
-                "beta": 1.26,
-                "delta_m": 4.82,
-                "mmin": 4.59,
-                "mmax": 86.22,
-                "lambda_peak": 0.08,
-                "mu_g": 33.07,
-                "sigma_g": 5.69,
-            }
-            for key in model_pars_.keys():
-                if key not in model_pars.keys():
-                    print(f"WARNING: {key} is not in model_pars")
-
             if m_min < 4.59:
                 print("WARNING: m_min is too low for popI/II BBHs")
             if m_max > 86.22:
                 print("WARNING: m_max is too high for popI/II BBHs")
 
         elif event_type == "popIII":
-            model_pars_ = None
+            src_model_params_ = None
             if m_min < 4.59:
                 print("WARNING: m_min is too low for popI/II BBHs")
             if m_max > 86.22:
                 print("WARNING: m_max is too high for popI/II BBHs")
 
         elif event_type == "BNS":
-            model_pars_ = None
+            src_model_params_ = None
             # check the mass is for neutron stars
             if m_min < 1.4:
                 print("WARNING: m_min is too low for neutron stars")
@@ -564,33 +584,16 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
                 print("WARNING: m_max is too high for neutron stars")
 
         elif event_type == "popI_II_Madau_Dickinson":
-            model_pars_ = {
-                "alpha": 3.63,
-                "beta": 1.26,
-                "delta_m": 4.82,
-                "mmin": 4.59,
-                "mmax": 86.22,
-                "lambda_peak": 0.08,
-                "mu_g": 33.07,
-                "sigma_g": 5.69,
-            }
-            for key in model_pars_.keys():
-                if key not in model_pars.keys():
-                    print(f"WARNING: {key} is not in model_pars")
-
             self.source_binary_masses = getattr(self, "binary_masses_" + "popI_II")
 
         elif event_type == "primordial":
-            model_pars_ = {"Mc": 30.0, "sigma": 0.3, "beta": 1.1}
-            for key in model_pars_.keys():
-                if key not in model_pars.keys():
-                    print(f"WARNING: {key} is not in model_pars")
+            pass
 
         else:
             print(f"Event Type: {event_type} is not recognised")
 
         # set attribute
-        self.model_pars = model_pars
+        self.src_model_params = src_model_params
 
         return None
 
@@ -653,16 +656,14 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
             kwargs["mass_2"]
         except:
             mass_1_source, mass_2_source = self.source_binary_masses(
-                size=nsamples, model_pars=self.model_pars
-            )
+                size=nsamples)
         else:
             mass_1 = kwargs["mass_1"]
             warning(mass_1)
             mass_2 = kwargs["mass_2"]
             warning(mass_1)
             mass_1_source, mass_2_source = self.source_binary_masses(
-                size=nsamples, model_pars=kwargs["model_pars"]
-            )
+                size=nsamples)
 
         # Sample all other parameters
         # use bilby priors
@@ -708,7 +709,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
 
         return gw_parameters
 
-    def binary_masses_popI_II(self, size, model_pars):
+    def binary_masses_popI_II(self, size, alpha=3.63, beta=1.26, delta_m=4.82, mmin=4.59, mmax=86.22, lambda_peak=0.08, mu_g=33.07, sigma_g=5.69):
         """
         Function to calculate source mass1 and mass2 with PowerLaw+PEAK model
 
@@ -716,7 +717,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         ----------
         size : `int`
             Number of samples to draw
-        model_pars : `dict`
+        src_model_params : `dict`
             Dictionary of model parameters
             e.g. {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
 
@@ -731,18 +732,26 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         ----------
         >>> from ler import CompactBinaryPopulation
         >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
-        >>> model_pars = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
-        >>> mass_1_source, mass_2_source = pop.binary_masses_popI_II(size=1000, model_pars=model_pars)
+        >>> src_model_params = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
+        >>> mass_1_source, mass_2_source = pop.binary_masses_popI_II(size=1000, src_model_params=src_model_params)
 
         """
-        model = p.mass_prior("BBH-powerlaw-gaussian", model_pars)
+        # replace values with self.src_model_params, if given
+        param = dict(alpha=alpha, beta=beta, delta_m=delta_m, mmin=mmin, mmax=mmax, lambda_peak=lambda_peak, mu_g=mu_g, sigma_g=sigma_g)
+        if self.src_model_params is not None:
+            keys_ = param.keys()
+            for key, value in self.src_model_params.items():
+                if key in keys_:
+                    param[key] = value
+
+        model = p.mass_prior("BBH-powerlaw-peak", param)
         mass_1_source, mass_2_source = model.sample(Nsample=size)
         while np.any(mass_2_source > mass_1_source):
             mass_1_source, mass_2_source = model.sample(Nsample=size)
 
         return (mass_1_source, mass_2_source)
 
-    def binary_masses_popIII(self, size, model_pars):
+    def binary_masses_popIII(self, size):
         """
         Function to calculate source mass1 and mass2 with pop III origin
 
@@ -750,7 +759,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         ----------
         size : `int`
             Number of samples to draw
-        model_pars : `dict`
+        src_model_params : `dict`
             Dictionary of model parameters
 
         Returns
@@ -764,7 +773,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         ----------
         >>> from ler import CompactBinaryPopulation
         >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popIII")
-        >>> mass_1_source, mass_2_source = pop.binary_masses_popIII(size=1000, model_pars=None)
+        >>> mass_1_source, mass_2_source = pop.binary_masses_popIII(size=1000, src_model_params=None)
 
         """
         q = 0.9
@@ -773,9 +782,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
 
         return (mass_1_source, mass_2_source)
 
-    def binary_masses_primordial(
-        self, size, model_pars={"Mc": 30.0, "sigma": 0.3, "beta": 1.1}
-    ):
+    def binary_masses_primordial(self, size, Mc=30.0, sigma=0.3, beta=1.1):
         """
         Function to calculate source mass1 and mass2 for primordial BBHs
 
@@ -783,7 +790,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         ----------
         size : `int`
             Number of samples to draw
-        model_pars : `dict`
+        src_model_params : `dict`
             Dictionary of model parameters
             e.g. {'Mc':30.,'sigma':0.3,'beta':1.1}
 
@@ -798,23 +805,28 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         ----------
         >>> from ler import CompactBinaryPopulation
         >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "primordial")
-        >>> model_pars = {'Mc':30.,'sigma':0.3,'beta':1.1}
-        >>> mass_1_source, mass_2_source = pop.binary_masses_primordial(size=1000, model_pars=model_pars)
+        >>> src_model_params = {'Mc':30.,'sigma':0.3,'beta':1.1}
+        >>> mass_1_source, mass_2_source = pop.binary_masses_primordial(size=1000, src_model_params=src_model_params)
 
         """
-        Mc = model_pars["Mc"]
-        sigma = model_pars["sigma"]
-        beta = model_pars["beta"]
+        # replace values with self.src_model_params, if given
+        param = dict(Mc=Mc, sigma=sigma, beta=beta)
+        if self.src_model_params is not None:
+            keys_ = param.keys()
+            for key, value in self.src_model_params.items():
+                if key in keys_:
+                    param[key] = value
+
         q = self.mass_ratio(size, beta)
-        pdf = lambda m: np.exp(-np.log(m / Mc) ** 2 / (2 * sigma**2)) / (
-            np.sqrt(2 * np.pi) * sigma * m
+        pdf = lambda m: np.exp(-np.log(m / param["Mc"]) ** 2 / (2 * param["sigma"]**2)) / (
+            np.sqrt(2 * np.pi) * param["sigma"] * m
         )
         mass_1_source = rejection_sample(pdf, self.m_min, self.m_max, size=size)
         mass_2_source = q * mass_1_source
 
         return (mass_1_source, mass_2_source)
 
-    def binary_masses_BNS(self, size, model_pars):
+    def binary_masses_BNS(self, size):
         """
         Function to calculate source mass1 and mass2 of BNS
 
@@ -822,7 +834,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         ----------
         size : `int`
             Number of samples to draw
-        model_pars : `dict`
+        src_model_params : `dict`
             Dictionary of model parameters
 
         Returns
@@ -836,7 +848,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         ----------
         >>> from ler import CompactBinaryPopulation
         >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=1.0, m_max=3.0, event_type = "BNS")
-        >>> mass_1_source, mass_2_source = pop.binary_masses_BNS(size=1000, model_pars=None)
+        >>> mass_1_source, mass_2_source = pop.binary_masses_BNS(size=1000, src_model_params=None)
 
         """
         q = self.mass_ratio(size=size)

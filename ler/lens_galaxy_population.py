@@ -193,16 +193,8 @@ class LensGalaxyPopulation:
                 m_min=4.59,
                 m_max=86.22,
                 event_type="popI_II",
-                model_pars={
-                    "alpha": 3.63,
-                    "beta": 1.26,
-                    "delta_m": 4.82,
-                    "mmin": 4.59,
-                    "mmax": 86.22,
-                    "lambda_peak": 0.08,
-                    "mu_g": 33.07,
-                    "sigma_g": 5.69,
-                },
+                merger_rate_density_param=None,
+                src_model_params=None,
             )
         else:
             # if the classes are already initialized, then just use them
