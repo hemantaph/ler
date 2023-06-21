@@ -48,7 +48,6 @@ Gravitational waves (GWs) are ripples in the fabric of space and time caused by 
     * `LeR` can handle both super-therhold and sub-threshold events in picking detectable events and rate computation.
 
 `LeR` was written to used by both LIGO scientific collaboration and research students for related works in astrophysics. It is currently use in generating detectable lensing events and GW lensing rates with the available information on current and future detectors. The results will predicts the feasibility of various detectors on the detection of such lensing events. Statistics generated from `LeR` will be use in event validation of the ongoing effort to detected lensed gravitational waves. Lastly, `LeR` was design with upgradability in mind to include additional statistics as required by the related research. 
-\end{markdown}
 
 $\textbf{Detectable Unlensed rates:}$
 
@@ -71,7 +70,6 @@ R_L = \int & dz_s R_m^L(z_s) \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i,
 
 * $R_m^L(z_s)$: strongly lensed (optical depth applied) source frame merger rate density in the co-moving volume at $z_s$, $\theta_L$: lens parameters, $\beta$: image properties, $\mu$: image magnification, $\Delta t$: image time delay, $\mathcal{O}$: function to select detectable lensed events, $\text{SL}$: strong lensing condition.
 
-\begin{markdown}
 # Acknowledgements
 
 We acknowledge NG Chung Yin (Leo) for bug reports.
