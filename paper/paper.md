@@ -9,10 +9,10 @@ tags:
 authors:
   - name: Phurailatpam Hemantakumar
     orcid: 0000-0000-0000-0000
-    equal-contrib: true
+    # equal-contrib: true
     affiliation: "1 , 2"
   - name: Otto A. HANNUKSELA 
-    equal-contrib: true # (This is how you can denote equal contributions between multiple authors)
+    # equal-contrib: true 
     affiliation: "1 , 2"
 affiliations:
  - name: The Chinese University of Hong Kong, Hong Kong
@@ -22,8 +22,6 @@ affiliations:
 date: 21 June 2023
 bibliography: paper.bib
 ---
-
-# Summary
 
 # Summary
 
@@ -71,20 +69,6 @@ R_L = \int & dz_s R_m^L(z_s) \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i,
 \end{equation*}
 
 * $R_m^L(z_s)$: strongly lensed (optical depth applied) source frame merger rate density in the comoving volume at $z_s$, $\theta_L$: lens parameters, $\beta$: image properties, $\mu$: image magnification, $\Delta t$: image time delay, $\mathcal{O}$: function to select detectable lensed events, $\text{SL}$: strong lensing condition.
-
-# Citations
-
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
-
-If you want to cite a software repository URL (e.g. something on GitHub without a preferred
-citation) then you can do it with the example BibTeX entry below for @fidgit.
-
-For a quick reference, the following citation commands can be used:
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
 
 # Acknowledgements
 
