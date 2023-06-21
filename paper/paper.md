@@ -1,88 +1,76 @@
 ---
-title: 'LeR: A Python package for galactic dynamics'
+title: 'LeR: A Python package for generating gravitational waves' lensing statistics'
 tags:
   - Python
-  - astronomy
-  - dynamics
-  - galactic dynamics
-  - milky way
+  - astrophysics
+  - statistics
+  - gravitational waves
+  - LIGO
 authors:
-  - name: Adrian M. Price-Whelan
+  - name: Phurailatpam Hemantakumar
     orcid: 0000-0000-0000-0000
     equal-contrib: true
-    affiliation: "1, 2" # (Multiple affiliations must be quoted)
-  - name: Author Without ORCID
+    affiliation: "1 , 2"
+  - name: Otto A. HANNUKSELA 
     equal-contrib: true # (This is how you can denote equal contributions between multiple authors)
-    affiliation: 2
-  - name: Author with no affiliation
-    corresponding: true # (This is how to denote the corresponding author)
-    affiliation: 3
+    affiliation: "1 , 2"
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University, USA
+ - name: The Chinese University of Hong Kong, Hong Kong
    index: 1
- - name: Institution Name, Country
+ - name: LIGO scientific collaboration
    index: 2
- - name: Independent Researcher, Country
-   index: 3
-date: 13 August 2017
+date: 21 June 2023
 bibliography: paper.bib
-
-# Optional fields if submitting to a AAS journal too, see this blog post:
-# https://blog.joss.theoj.org/2018/12/a-new-collaboration-with-aas-publishing
-aas-doi: 10.3847/xxxxx <- update this with the DOI from AAS once you know it.
-aas-journal: Astrophysical Journal <- The name of the AAS journal.
 ---
 
 # Summary
 
-The forces on stars, galaxies, and dark matter under external gravitational
-fields lead to the dynamical evolution of structures in the universe. The orbits
-of these bodies are therefore key to understanding the formation, history, and
-future state of galaxies. The field of "galactic dynamics," which aims to model
-the gravitating components of galaxies to study their structure and evolution,
-is now well-established, commonly taught, and frequently used in astronomy.
-Aside from toy problems and demonstrations, the majority of problems require
-efficient numerical tools, many of which require the same base code (e.g., for
-performing numerical orbit integration).
+# Summary
+
+Gravitational waves (GWs) are ripples in the fabric of space and time caused by acceleration of unsymmetrically distributed mass/masses. Observable GWs are created especially during the violent events of merging compact binaries, such as 'binary black-holes' (BBH), 'binary neutron stars' (BNS). The gravitational waves emitted by these events are often distorted or magnified by the gravitational fields of massive objects such as galaxies or galaxy clusters, a phenomenon known as gravitational lensing. Understanding the effects of gravitational lensing on GW signals is crucial for accurately interpreting these signals and extracting astrophysical information from them. In this field of physics, statistical modeling of GWs lensing can provide valuable insights into the properties of the lensing objects and the sources of gravitational waves. Such statistics requires accurate and efficient means to calculate the detectable lensing rates which in turn depends on upto-date modeling and implementation of lens and source properties and its distribution. These computational results will not only help in producing reliable predictions but helps in event validation of future lensing events [cite](https://arxiv.org/abs/2306.03827).
 
 # Statement of need
 
-`Gala` is an Astropy-affiliated Python package for galactic dynamics. Python
-enables wrapping low-level languages (e.g., C) for speed without losing
-flexibility or ease-of-use in the user-interface. The API for `Gala` was
-designed to provide a class-based and user-friendly interface to fast (C or
-Cython-optimized) implementations of common operations such as gravitational
-potential and force evaluation, orbit integration, dynamical transformations,
-and chaos indicators for nonlinear dynamics. `Gala` also relies heavily on and
-interfaces well with the implementations of physical units and astronomical
-coordinate systems in the `Astropy` package [@astropy] (`astropy.units` and
-`astropy.coordinates`).
+`LeR` is a statistical based python package whose core function is to calculate detectable rates of both lensing and unlensed GW events. This calculation very much dependent on the other functionality of the package, which can be subdivided into three parts; 1. Sampling of compact binary source properties, 2. Sampling of lens galaxy characteristics and 3. Solving the lens equation to get image properties of the source. The package as a whole relies on `numpy` array operation, `scipy` interpolation and `multiprocessing` functionality of python to incraese speed and fuctionality without compromising on the ease-of-use. The API of `LeR` is structure such that each functionality mentioned stands on this own right for scientific reseach but also can also be used together as needed. Keys features of `LeR` and its dependencies can be summerized as follows,
+- Detectable merger rates: 
+    * Calculation not only relies on the properties of simulated events but also on detectability provided by the condition of the GW detectors. For this, `LeR` relies on `gwsnr` for the calculation of optimal signl-to-noise ratio (SNR). Due to prowess of gwsnr`, rate calulation can be done both for present and future detectors with customizable sensitivities. 
+    * Merger rates of both the simulated unlensed and lensed events can be calculated and compared. 
+- Sampling GW sources:
+    * Distribution source's redshift is based on the merger rate density of compact binaries, which can be BBH [cite1](), BNS [cite2](), primodial black holes (PBHs) [cite3]() etc. The code is designed to accomodate easy updates or additions of such distribution by the users in the future. 
+    * Sampling of BBH masses is done using `gwcosmo` follwing the powerlaw+peak model. Other related properties are sampled form available priors from `bilby`. Each of them can me manually replaced by the user to before feeding in for rate computation.
+- Sampling of lens galaxies:
+    * Distribution of follows [cite](). It depends on the sampled source redshifts and also on the optical depth [cite]().
+    * `LeR` employs Elliptical Power Law model which external shear (EPL+Shear) model for sampling other features of the galaxy, which is available in the `Lenstronomy` package.
+    * Rejection sampling is applied on the above samples on condition that whether event is strongly lensed or not.
+- Generation of image properties:
+    * Source position is sampled from the caustic in the source plane.
+    * Sampled lens' properties and source position is fed in `Lenstronomy` to generate properties of the images.
+    * Properties like magnification and timedelay is important as it modifies the source signal strength which in turns changes the SNR and detectability.
+    * `LeR` can handle both super-therhold and sub-threshold events in picking detectable events and rate computation.
 
-`Gala` was designed to be used by both astronomical researchers and by
-students in courses on gravitational dynamics or astronomy. It has already been
-used in a number of scientific publications [@Pearson:2017] and has also been
-used in graduate courses on Galactic dynamics to, e.g., provide interactive
-visualizations of textbook material [@Binney:2008]. The combination of speed,
-design, and support for Astropy functionality in `Gala` will enable exciting
-scientific explorations of forthcoming data releases from the *Gaia* mission
-[@gaia] by students and experts alike.
+`LeR` was written to used by both LIGO scientific collaboration and research students for related works in astrophysics. It is currently use in gernerating detectable lensing events and GW lensing rates with the available information on current and future detectors. The results will predicts the feasiblity of various detectors on the detection of such lensing events. Statistics generated from `LeR` will be use in event validation of the ongoing effort to detected lensed gravitational waves. Lastly, `LeR` was design with upgradibility in mind to include additional statistics as required by the related research. 
 
-# Mathematics
 
-Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$
+$\textbf{Detectable Unlensed rates:}$
 
-Double dollars make self-standing equations:
+\begin{equation*}
+\begin{split}
+R_U = \int & dz_s R_m^U(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\}
+\end{split}
+\end{equation*}
 
-$$\Theta(x) = \left\{\begin{array}{l}
-0\textrm{ if } x < 0\cr
-1\textrm{ else}
-\end{array}\right.$$
+* $z_s$: source red-shift, $R_m^U(z_s)$: source frame merger rate density in the comoving volume at $z_s$, $\theta$: source parameters, $P$: probability distribution, $\rho$: SNR, $\rho_{th}$: SNR threshhold, $\Theta$: function to select detectable events.
 
-You can also use plain \LaTeX for equations
-\begin{equation}\label{eq:fourier}
-\hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx
-\end{equation}
-and refer to \autoref{eq:fourier} from text.
+$\textbf{Detectable Lensed rates:}$
+
+\begin{equation*}
+\begin{split}
+R_L = \int & dz_s R_m^L(z_s) \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \, \\ 
+& \, P(\theta) P(\theta_L, z_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta dz_L d\theta_L dz_s 
+\end{split}
+\end{equation*}
+
+* $R_m^L(z_s)$: strongly lensed (optical depth applied) source frame merger rate density in the comoving volume at $z_s$, $\theta_L$: lens parameters, $\beta$: image properties, $\mu$: image magnification, $\Delta t$: image time delay, $\mathcal{O}$: function to select detectable lensed events, $\text{SL}$: strong lensing condition.
 
 # Citations
 
@@ -98,18 +86,8 @@ For a quick reference, the following citation commands can be used:
 - `[@author:2001]` -> "(Author et al., 2001)"
 - `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
 
-# Figures
-
-Figures can be included like this:
-![Caption for example figure.\label{fig:example}](figure.png)
-and referenced from text using \autoref{fig:example}.
-
-Figure sizes can be customized by adding an optional second parameter:
-![Caption for example figure.](figure.png){ width=20% }
-
 # Acknowledgements
 
-We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
-Oh, and support from Kathryn Johnston during the genesis of this project.
+We acknowledge NG Chung Yin (Leo) for bug reports.
 
 # References

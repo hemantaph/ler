@@ -141,7 +141,7 @@ class LeR:
     """``dict`` \n
     dictionary of params for initializing ``CompactBinaryPopulation`` class \n
     this will be used for GW unlensed parameters sampling \n
-    gw_param_sampler_dict.keys() = ['nsamples', 'm_min', 'm_max', 'z_min', 'z_max', 'event_type', 'model_pars']
+    gw_param_sampler_dict.keys() = ['nsamples', 'm_min', 'm_max', 'z_min', 'z_max', 'event_type', 'src_model_params']
     """
 
     lensed_param_sampler_dict = None
@@ -217,8 +217,8 @@ class LeR:
 
         # dictionary of params for sampler
         # for unlened case (source params)
-        # defualt for 'model_pars' is set for popI_II PowerLaw+PEAK model
-        # for other models, please change the 'model_pars' accordingly
+        # defualt for 'src_model_params' is set for popI_II PowerLaw+PEAK model
+        # for other models, please change the 'src_model_params' accordingly
         self.gw_param_sampler_dict = {
             "nsamples": nsamples,
             "m_min": 4.59,
@@ -226,16 +226,8 @@ class LeR:
             "z_min": z_min,
             "z_max": z_max,
             "event_type": "popI_II",
-            "model_pars": {
-                "alpha": 3.63,
-                "beta": 1.26,
-                "delta_m": 4.82,
-                "mmin": 4.59,
-                "mmax": 86.22,
-                "lambda_peak": 0.08,
-                "mu_g": 33.07,
-                "sigma_g": 5.69,
-            },
+            "merger_rate_density_param": None,
+            "src_model_params": None,
         }
         # for lensed case
         # set 'min_lensed_images' = 2 for double image lensed case
@@ -379,7 +371,9 @@ class LeR:
             m_min=self.gw_param_sampler_dict["m_min"],
             m_max=self.gw_param_sampler_dict["m_max"],
             event_type=self.gw_param_sampler_dict["event_type"],
-            model_pars=self.gw_param_sampler_dict["model_pars"],
+            merger_rate_density_param=self.gw_param_sampler_dict[
+                "merger_rate_density_param"],
+            src_model_params=self.gw_param_sampler_dict["src_model_params"],
         )
         self.lens_galaxy_pop = LensGalaxyPopulation(self.compact_binary_pop)
 
@@ -644,8 +638,8 @@ class LeR:
                 maximum mass of the compact binary (single).
             ``event_type`` : `str`
                 event_type = 'popI_II' or `popIII` or `primordial`.
-            ``model_pars`` : `dict`
-                model_pars = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82,\n
+            ``src_model_params`` : `dict`
+                src_model_params = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82,\n
                 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08,\n
                 'mu_g': 33.07, 'sigma_g': 5.69}}
 
