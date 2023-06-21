@@ -1,25 +1,19 @@
 ---
-title: 'LeR: A Python package for generating gravitational waves' lensing statistics'
+title: 'Gala: A Python package for galactic dynamics'
 tags:
   - Python
-  - astrophysics
-  - statistics
-  - gravitational waves
-  - LIGO
+  - astronomy
+  - dynamics
+  - galactic dynamics
+  - milky way
 authors:
-  - name: Phurailatpam Hemantakumar
-    orcid: 0000-0000-0000-0000
-    # equal-contrib: true
-    affiliation: "1 , 2"
-  - name: Otto A. HANNUKSELA 
-    # equal-contrib: true 
-    affiliation: "1 , 2"
+  - name: Adrian M. Price-Whelan
+    orcid: 0000-0003-0872-7098
+    affiliation: 1
 affiliations:
- - name: The Chinese University of Hong Kong, Hong Kong
+ - name: Lyman Spitzer, Jr. Fellow, Princeton University
    index: 1
- - name: LIGO scientific collaboration
-   index: 2
-date: 21 June 2023
+date: 13 August 2017
 bibliography: paper.bib
 ---
 
