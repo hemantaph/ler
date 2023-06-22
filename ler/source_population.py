@@ -372,8 +372,8 @@ class SourceGalaxyPopulationModel:
                 if key in keys_:
                     param[key] = value
 
-        rate_density = np.exp(param["aIII"] * (zs - param["zIII"])) / (
-            param["bIII"] + param["aIII"] * np.exp((param["aIII"] + param["bIII"]) * (zs - param["zIII"]))
+        rate_density = np.exp(param["aIII"] * (zs - param["zIII"])) / ( param["bIII"] + param["aIII"] * np.exp((param["aIII"] + param["bIII"]) * (zs - param["zIII"]))
+        )
 
         return rate_density
 
@@ -441,7 +441,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
     >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
     >>> gw_parameters = pop.sample_gw_parameters(nsamples=1000)
     >>> gw_parameters.keys()
-    dict_keys(['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a1', 'a2', 'tilt1', 'tilt2', 'phi12', 'phi_jl'])
+    dict_keys(['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl'])
 
     Instance Attributes
     ----------
@@ -614,7 +614,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         ----------
         gw_parameters : `dict`
             Dictionary of sampled parameters
-            gw_parameters.keys() = ['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a1', 'a2', 'tilt1', 'tilt2', 'phi12', 'phi_jl']
+            gw_parameters.keys() = ['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl']
 
         Examples
         ----------
@@ -622,7 +622,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
         >>> gw_parameters = pop.sample_gw_parameters(nsamples=1000)
         >>> gw_parameters.keys()
-        dict_keys(['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a1', 'a2', 'tilt1', 'tilt2', 'phi12', 'phi_jl'])
+        dict_keys(['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl'])
 
         """
         if verbose:
@@ -699,11 +699,11 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
             "geocent_time": geocent_time,
             "ra": ra,
             "dec": dec,
-            "a1": a_1,
-            "a2": a_2,
-            "tilt1": tilt_1,
-            "tilt2": tilt_2,
-            "phi12": phi_12,
+            "a_1": a_1,
+            "a_2": a_2,
+            "tilt_1": tilt_1,
+            "tilt_2": tilt_2,
+            "phi_12": phi_12,
             "phi_jl": phi_jl,
         }
 
@@ -744,7 +744,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
                 if key in keys_:
                     param[key] = value
 
-        model = p.mass_prior("BBH-powerlaw-peak", param)
+        model = p.mass_prior("BBH-powerlaw-gaussian", param)
         mass_1_source, mass_2_source = model.sample(Nsample=size)
         while np.any(mass_2_source > mass_1_source):
             mass_1_source, mass_2_source = model.sample(Nsample=size)
