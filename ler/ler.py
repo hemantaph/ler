@@ -201,6 +201,7 @@ class LeR:
         z_max=10.0,
         batch_size=25000,
         snr_finder="gwsnr",
+        json_file_ler_param="./LeR_params.json",
         **kwargs,
     ):
         self.z_min = z_min
@@ -287,7 +288,7 @@ class LeR:
         # Create lookup tables
         self.create_lookup_tables(z_min, z_max)
 
-        self.store_ler_params()
+        self.store_ler_params(json_file=json_file_ler_param)
 
         return None
 
@@ -379,7 +380,7 @@ class LeR:
 
         return None
 
-    def store_ler_params(self):
+    def store_ler_params(self, json_file="./LeR_params.json"):
         """
         Fuction to store the parameters of the LER model. This is useful for reproducing the results.
         """
@@ -394,7 +395,7 @@ class LeR:
         snr_calculator_dict["ifos"] = str(snr_calculator_dict["ifos"])
         parameters_dict.update({"snr_calculator_dict": snr_calculator_dict})
 
-        file_name = "./LeR_params.json"
+        file_name = json_file
         append_json(file_name, parameters_dict, replace=True)
 
         return None
