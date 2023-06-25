@@ -20,27 +20,6 @@
 
 `LeR` was written to used by both LIGO scientific collaboration and research students for related works in astrophysics. It is currently use in generating detectable lensing events and GW lensing rates with the available information on current and future detectors. The results will predicts the feasibility of various detectors on the detection of such lensing events. Statistics generated from `LeR` will be use in event validation of the ongoing effort to detected lensed gravitational waves. Lastly, `LeR` was design with upgradability in mind to include additional statistics as required by the related research. 
 
-$\textbf{Detectable Unlensed rates:}$
-
-\begin{equation*}
-\begin{split}
-R_U = \int & dz_s R_m^U(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\}
-\end{split}
-\end{equation*}
-
-* $z_s$: source red-shift, $R_m^U(z_s)$: source frame merger rate density in the co-moving volume at $z_s$, $\theta$: source parameters, $P$: probability distribution, $\rho$: SNR, $\rho_{th}$: SNR threshold, $\Theta$: function to select detectable events.
-
-$\textbf{Detectable Lensed rates:}$
-
-\begin{equation*}
-\begin{split}
-R_L = \int & dz_s R_m^L(z_s) \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \, \\ 
-& \, P(\theta) P(\theta_L, z_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta dz_L d\theta_L dz_s 
-\end{split}
-\end{equation*}
-
-* $R_m^L(z_s)$: strongly lensed (optical depth applied) source frame merger rate density in the co-moving volume at $z_s$, $\theta_L$: lens parameters, $\beta$: image properties, $\mu$: image magnification, $\Delta t$: image time delay, $\mathcal{O}$: function to select detectable lensed events, $\text{SL}$: strong lensing condition.
-
 # Installation
 
 Follow the installation instruction at [ler.readthedoc](https://ler.readthedocs.io/en/latest/installation.html)
