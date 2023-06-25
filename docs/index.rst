@@ -12,9 +12,9 @@ ler
 
 ``ler`` (/ˈɛlɚ/): Lensed (or unlesed) Event (compact-binaries) Rate calculator
 
-``ler`` is gravitational waves from lensed/unlensed events rate calculator 
+``ler`` is a statistical based python package whose core function is to calculate detectable rates of both lensing and unlensed GW events. Description available in `README.md <https://github.com/hemantaph/ler>`_
 
-The code is available at: https://github.com/hemantaph/ler
+The code is available at `github <https://github.com/hemantaph/ler>`_
 
 .. toctree::
    :maxdepth: 2
