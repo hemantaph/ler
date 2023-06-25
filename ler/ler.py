@@ -285,10 +285,6 @@ class LeR:
         # extra note on how to change snr finder function
         # self.snr = custom_snr_finder_function()
 
-        if snr_finder=="custom":
-            print("custom snr finder function is used. Please make sure that you have the right inputs and outputs.\n
-                  ")
-
         # Create lookup tables
         self.create_lookup_tables(z_min, z_max)
 

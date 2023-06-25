@@ -14,11 +14,11 @@
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
         <script src="../../../_static/clipboard.min.js"></script>
         <script src="../../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -125,7 +125,7 @@ population model is used to generate the compact binary population model.</p>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ler.source_population.SourceGalaxyPopulationModel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.source_population.</span></span><span class="sig-name descname"><span class="pre">SourceGalaxyPopulationModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'popI_II'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.source_population.SourceGalaxyPopulationModel" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.source_population.</span></span><span class="sig-name descname"><span class="pre">SourceGalaxyPopulationModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'popI_II'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.source_population.SourceGalaxyPopulationModel" title="Permalink to this definition"></a></dt>
 <dd><p>Class to generate a population of source galaxies.
 This class is inherited by <code class="xref py py-class docutils literal notranslate"><span class="pre">CompactBinaryPopulation</span></code> class.</p>
 <dl class="field-list">
@@ -152,6 +152,8 @@ default: ‘popI_II’</p>
 <span class="go">array([0.0001, 0.0001, 0.0001, ..., 9.9999, 9.9999, 9.9999])</span>
 </pre></div>
 </div>
+<section id="instance-attributes">
+<h4>Instance Attributes<a class="headerlink" href="#instance-attributes" title="Permalink to this heading"></a></h4>
 <p>SourceGalaxyPopulationModel has the following instance attributes:</p>
 <table class="docutils align-default">
 <thead>
@@ -177,6 +179,9 @@ default: ‘popI_II’</p>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="instance-methods">
+<h4>Instance Methods<a class="headerlink" href="#instance-methods" title="Permalink to this heading"></a></h4>
 <p>SourceGalaxyPopulationModel has the following instance methods:</p>
 <table class="docutils align-default">
 <thead>
@@ -457,11 +462,12 @@ default: 13.786885302009708</p>
 </div>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ler.source_population.CompactBinaryPopulation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.source_population.</span></span><span class="sig-name descname"><span class="pre">CompactBinaryPopulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.59</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">86.22</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'popI_II'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_pars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'alpha':</span> <span class="pre">3.63,</span> <span class="pre">'beta':</span> <span class="pre">1.26,</span> <span class="pre">'delta_m':</span> <span class="pre">4.82,</span> <span class="pre">'mmin':</span> <span class="pre">4.59,</span> <span class="pre">'mmax':</span> <span class="pre">86.22,</span> <span class="pre">'lambda_peak':</span> <span class="pre">0.08,</span> <span class="pre">'mu_g':</span> <span class="pre">33.07,</span> <span class="pre">'sigma_g':</span> <span class="pre">5.69}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.source_population.CompactBinaryPopulation" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.source_population.</span></span><span class="sig-name descname"><span class="pre">CompactBinaryPopulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.59</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">86.22</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'popI_II'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_model_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.source_population.CompactBinaryPopulation" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ler.source_population.SourceGalaxyPopulationModel" title="ler.source_population.SourceGalaxyPopulationModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel</span></code></a></p>
 <p>Class to generate a population of compact binaries. Inherits from <code class="xref py py-class docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel</span></code> class.</p>
 <dl class="field-list">
@@ -478,7 +484,7 @@ default: 13.786885302009708</p>
 <dt><strong>event_type</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>Type of event to generate.
 e.g. ‘popI_II’, ‘BNS’, ‘popIII’, ‘primordial’, ‘popI_II_Madau_Dickinson’</p>
 </dd>
-<dt><strong>model_pars</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Dictionary of model parameters.
+<dt><strong>src_model_params</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Dictionary of model parameters.
 e.g. for popI_II: {‘alpha’: 3.63, ‘beta’: 1.26, ‘delta_m’: 4.82, ‘mmin’: 4.59, ‘mmax’: 86.22, ‘lambda_peak’: 0.08, ‘mu_g’: 33.07, ‘sigma_g’: 5.69}</p>
 </dd>
 </dl>
@@ -489,37 +495,15 @@ e.g. for popI_II: {‘alpha’: 3.63, ‘beta’: 1.26, ‘delta_m’: 4.82, ‘
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pop</span> <span class="o">=</span> <span class="n">CompactBinaryPopulation</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">m_min</span><span class="o">=</span><span class="mf">4.59</span><span class="p">,</span> <span class="n">m_max</span><span class="o">=</span><span class="mf">86.22</span><span class="p">,</span> <span class="n">event_type</span> <span class="o">=</span> <span class="s2">&quot;popI_II&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gw_parameters</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">sample_gw_parameters</span><span class="p">(</span><span class="n">nsamples</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gw_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-<span class="go">dict_keys([&#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;zs&#39;, &#39;luminosity_distance&#39;, &#39;iota&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;a1&#39;, &#39;a2&#39;, &#39;tilt1&#39;, &#39;tilt2&#39;, &#39;phi12&#39;, &#39;phi_jl&#39;])</span>
+<span class="go">dict_keys([&#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;zs&#39;, &#39;luminosity_distance&#39;, &#39;iota&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;tilt_1&#39;, &#39;tilt_2&#39;, &#39;phi_12&#39;, &#39;phi_jl&#39;])</span>
 </pre></div>
 </div>
+<section id="id1">
+<h4>Instance Attributes<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h4>
 <p>CompactBinaryPopulation has the following instance attributes:</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Atrributes</p></th>
-<th class="head"><p>Type</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.z_min" title="ler.source_population.CompactBinaryPopulation.z_min"><code class="xref py py-attr docutils literal notranslate"><span class="pre">z_min</span></code></a></p></td>
-<td><p><cite>float</cite></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.z_max" title="ler.source_population.CompactBinaryPopulation.z_max"><code class="xref py py-attr docutils literal notranslate"><span class="pre">z_max</span></code></a></p></td>
-<td><p><cite>float</cite></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.m_min" title="ler.source_population.CompactBinaryPopulation.m_min"><code class="xref py py-attr docutils literal notranslate"><span class="pre">m_min</span></code></a></p></td>
-<td><p><cite>float</cite></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.m_max" title="ler.source_population.CompactBinaryPopulation.m_max"><code class="xref py py-attr docutils literal notranslate"><span class="pre">m_max</span></code></a></p></td>
-<td><p><cite>float</cite></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.event_type" title="ler.source_population.CompactBinaryPopulation.event_type"><code class="xref py py-attr docutils literal notranslate"><span class="pre">event_type</span></code></a></p></td>
-<td><p><cite>str</cite></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.model_pars" title="ler.source_population.CompactBinaryPopulation.model_pars"><code class="xref py py-attr docutils literal notranslate"><span class="pre">model_pars</span></code></a></p></td>
-<td><p><cite>dict</cite></p></td>
-</tr>
-</tbody>
-</table>
+</section>
+<section id="id2">
+<h4>Instance Methods<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h4>
 <p>CompactBinaryPopulation has the following instance methods:</p>
 <table class="docutils align-default">
 <thead>
@@ -594,8 +578,8 @@ mass1 and mass2 of BNS</p></td>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="ler.source_population.CompactBinaryPopulation.model_pars">
-<span class="sig-name descname"><span class="pre">model_pars</span></span><a class="headerlink" href="#ler.source_population.CompactBinaryPopulation.model_pars" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="ler.source_population.CompactBinaryPopulation.src_model_params">
+<span class="sig-name descname"><span class="pre">src_model_params</span></span><a class="headerlink" href="#ler.source_population.CompactBinaryPopulation.src_model_params" title="Permalink to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>Dictionary of model parameters.</p>
 <p>e.g. for popI_II: {‘alpha’: 3.63, ‘beta’: 1.26, ‘delta_m’: 4.82, ‘mmin’: 4.59, ‘mmax’: 86.22, ‘lambda_peak’: 0.08, ‘mu_g’: 33.07, ‘sigma_g’: 5.69}</p>
@@ -631,7 +615,7 @@ e.g. zs = np.array([0.1,0.2,0.3])</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
 <dt><strong>gw_parameters</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Dictionary of sampled parameters
-gw_parameters.keys() = [‘mass_1’, ‘mass_2’, ‘mass_1_source’, ‘mass_2_source’, ‘zs’, ‘luminosity_distance’, ‘iota’, ‘psi’, ‘phase’, ‘geocent_time’, ‘ra’, ‘dec’, ‘a1’, ‘a2’, ‘tilt1’, ‘tilt2’, ‘phi12’, ‘phi_jl’]</p>
+gw_parameters.keys() = [‘mass_1’, ‘mass_2’, ‘mass_1_source’, ‘mass_2_source’, ‘zs’, ‘luminosity_distance’, ‘iota’, ‘psi’, ‘phase’, ‘geocent_time’, ‘ra’, ‘dec’, ‘a_1’, ‘a_2’, ‘tilt_1’, ‘tilt_2’, ‘phi_12’, ‘phi_jl’]</p>
 </dd>
 </dl>
 </dd>
@@ -641,21 +625,21 @@ gw_parameters.keys() = [‘mass_1’, ‘mass_2’, ‘mass_1_source’, ‘mass
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pop</span> <span class="o">=</span> <span class="n">CompactBinaryPopulation</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">m_min</span><span class="o">=</span><span class="mf">4.59</span><span class="p">,</span> <span class="n">m_max</span><span class="o">=</span><span class="mf">86.22</span><span class="p">,</span> <span class="n">event_type</span> <span class="o">=</span> <span class="s2">&quot;popI_II&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gw_parameters</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">sample_gw_parameters</span><span class="p">(</span><span class="n">nsamples</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gw_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-<span class="go">dict_keys([&#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;zs&#39;, &#39;luminosity_distance&#39;, &#39;iota&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;a1&#39;, &#39;a2&#39;, &#39;tilt1&#39;, &#39;tilt2&#39;, &#39;phi12&#39;, &#39;phi_jl&#39;])</span>
+<span class="go">dict_keys([&#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;zs&#39;, &#39;luminosity_distance&#39;, &#39;iota&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;tilt_1&#39;, &#39;tilt_2&#39;, &#39;phi_12&#39;, &#39;phi_jl&#39;])</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.source_population.CompactBinaryPopulation.binary_masses_popI_II">
-<span class="sig-name descname"><span class="pre">binary_masses_popI_II</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_pars</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.source_population.CompactBinaryPopulation.binary_masses_popI_II" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">binary_masses_popI_II</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.63</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.26</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.82</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.59</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">86.22</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_peak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_g</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">33.07</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_g</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.69</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.source_population.CompactBinaryPopulation.binary_masses_popI_II" title="Permalink to this definition"></a></dt>
 <dd><p>Function to calculate source mass1 and mass2 with PowerLaw+PEAK model</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Number of samples to draw</p>
 </dd>
-<dt><strong>model_pars</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Dictionary of model parameters
+<dt><strong>src_model_params</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Dictionary of model parameters
 e.g. {‘alpha’: 3.63, ‘beta’: 1.26, ‘delta_m’: 4.82, ‘mmin’: 4.59, ‘mmax’: 86.22, ‘lambda_peak’: 0.08, ‘mu_g’: 33.07, ‘sigma_g’: 5.69}</p>
 </dd>
 </dl>
@@ -672,22 +656,22 @@ e.g. {‘alpha’: 3.63, ‘beta’: 1.26, ‘delta_m’: 4.82, ‘mmin’: 4.59
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">CompactBinaryPopulation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pop</span> <span class="o">=</span> <span class="n">CompactBinaryPopulation</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">m_min</span><span class="o">=</span><span class="mf">4.59</span><span class="p">,</span> <span class="n">m_max</span><span class="o">=</span><span class="mf">86.22</span><span class="p">,</span> <span class="n">event_type</span> <span class="o">=</span> <span class="s2">&quot;popI_II&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">model_pars</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">3.63</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">:</span> <span class="mf">1.26</span><span class="p">,</span> <span class="s1">&#39;delta_m&#39;</span><span class="p">:</span> <span class="mf">4.82</span><span class="p">,</span> <span class="s1">&#39;mmin&#39;</span><span class="p">:</span> <span class="mf">4.59</span><span class="p">,</span> <span class="s1">&#39;mmax&#39;</span><span class="p">:</span> <span class="mf">86.22</span><span class="p">,</span> <span class="s1">&#39;lambda_peak&#39;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span> <span class="s1">&#39;mu_g&#39;</span><span class="p">:</span> <span class="mf">33.07</span><span class="p">,</span> <span class="s1">&#39;sigma_g&#39;</span><span class="p">:</span> <span class="mf">5.69</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">binary_masses_popI_II</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">model_pars</span><span class="o">=</span><span class="n">model_pars</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">src_model_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">3.63</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">:</span> <span class="mf">1.26</span><span class="p">,</span> <span class="s1">&#39;delta_m&#39;</span><span class="p">:</span> <span class="mf">4.82</span><span class="p">,</span> <span class="s1">&#39;mmin&#39;</span><span class="p">:</span> <span class="mf">4.59</span><span class="p">,</span> <span class="s1">&#39;mmax&#39;</span><span class="p">:</span> <span class="mf">86.22</span><span class="p">,</span> <span class="s1">&#39;lambda_peak&#39;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span> <span class="s1">&#39;mu_g&#39;</span><span class="p">:</span> <span class="mf">33.07</span><span class="p">,</span> <span class="s1">&#39;sigma_g&#39;</span><span class="p">:</span> <span class="mf">5.69</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">binary_masses_popI_II</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">src_model_params</span><span class="o">=</span><span class="n">src_model_params</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.source_population.CompactBinaryPopulation.binary_masses_popIII">
-<span class="sig-name descname"><span class="pre">binary_masses_popIII</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_pars</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.source_population.CompactBinaryPopulation.binary_masses_popIII" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">binary_masses_popIII</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.source_population.CompactBinaryPopulation.binary_masses_popIII" title="Permalink to this definition"></a></dt>
 <dd><p>Function to calculate source mass1 and mass2 with pop III origin</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Number of samples to draw</p>
 </dd>
-<dt><strong>model_pars</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Dictionary of model parameters</p>
+<dt><strong>src_model_params</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Dictionary of model parameters</p>
 </dd>
 </dl>
 </dd>
@@ -703,21 +687,21 @@ e.g. {‘alpha’: 3.63, ‘beta’: 1.26, ‘delta_m’: 4.82, ‘mmin’: 4.59
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">CompactBinaryPopulation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pop</span> <span class="o">=</span> <span class="n">CompactBinaryPopulation</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">m_min</span><span class="o">=</span><span class="mf">4.59</span><span class="p">,</span> <span class="n">m_max</span><span class="o">=</span><span class="mf">86.22</span><span class="p">,</span> <span class="n">event_type</span> <span class="o">=</span> <span class="s2">&quot;popIII&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">binary_masses_popIII</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">model_pars</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">binary_masses_popIII</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">src_model_params</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.source_population.CompactBinaryPopulation.binary_masses_primordial">
-<span class="sig-name descname"><span class="pre">binary_masses_primordial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_pars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Mc':</span> <span class="pre">30.0,</span> <span class="pre">'sigma':</span> <span class="pre">0.3,</span> <span class="pre">'beta':</span> <span class="pre">1.1}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.source_population.CompactBinaryPopulation.binary_masses_primordial" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">binary_masses_primordial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.source_population.CompactBinaryPopulation.binary_masses_primordial" title="Permalink to this definition"></a></dt>
 <dd><p>Function to calculate source mass1 and mass2 for primordial BBHs</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Number of samples to draw</p>
 </dd>
-<dt><strong>model_pars</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Dictionary of model parameters
+<dt><strong>src_model_params</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Dictionary of model parameters
 e.g. {‘Mc’:30.,’sigma’:0.3,’beta’:1.1}</p>
 </dd>
 </dl>
@@ -734,22 +718,22 @@ e.g. {‘Mc’:30.,’sigma’:0.3,’beta’:1.1}</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">CompactBinaryPopulation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pop</span> <span class="o">=</span> <span class="n">CompactBinaryPopulation</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">m_min</span><span class="o">=</span><span class="mf">4.59</span><span class="p">,</span> <span class="n">m_max</span><span class="o">=</span><span class="mf">86.22</span><span class="p">,</span> <span class="n">event_type</span> <span class="o">=</span> <span class="s2">&quot;primordial&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">model_pars</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Mc&#39;</span><span class="p">:</span><span class="mf">30.</span><span class="p">,</span><span class="s1">&#39;sigma&#39;</span><span class="p">:</span><span class="mf">0.3</span><span class="p">,</span><span class="s1">&#39;beta&#39;</span><span class="p">:</span><span class="mf">1.1</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">binary_masses_primordial</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">model_pars</span><span class="o">=</span><span class="n">model_pars</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">src_model_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Mc&#39;</span><span class="p">:</span><span class="mf">30.</span><span class="p">,</span><span class="s1">&#39;sigma&#39;</span><span class="p">:</span><span class="mf">0.3</span><span class="p">,</span><span class="s1">&#39;beta&#39;</span><span class="p">:</span><span class="mf">1.1</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">binary_masses_primordial</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">src_model_params</span><span class="o">=</span><span class="n">src_model_params</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.source_population.CompactBinaryPopulation.binary_masses_BNS">
-<span class="sig-name descname"><span class="pre">binary_masses_BNS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_pars</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.source_population.CompactBinaryPopulation.binary_masses_BNS" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">binary_masses_BNS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.source_population.CompactBinaryPopulation.binary_masses_BNS" title="Permalink to this definition"></a></dt>
 <dd><p>Function to calculate source mass1 and mass2 of BNS</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Number of samples to draw</p>
 </dd>
-<dt><strong>model_pars</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Dictionary of model parameters</p>
+<dt><strong>src_model_params</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Dictionary of model parameters</p>
 </dd>
 </dl>
 </dd>
@@ -765,7 +749,7 @@ e.g. {‘Mc’:30.,’sigma’:0.3,’beta’:1.1}</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">CompactBinaryPopulation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pop</span> <span class="o">=</span> <span class="n">CompactBinaryPopulation</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">m_min</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">m_max</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">event_type</span> <span class="o">=</span> <span class="s2">&quot;BNS&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">binary_masses_BNS</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">model_pars</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">binary_masses_BNS</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">src_model_params</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -798,6 +782,7 @@ e.g. {‘Mc’:30.,’sigma’:0.3,’beta’:1.1}</p>
 </div>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 </section>

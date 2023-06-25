@@ -24,7 +24,7 @@ Classes
 
 
 
-.. py:class:: LeR(nsamples=100000, npool=int(4), z_min=0.0, z_max=10.0, batch_size=25000, snr_finder='gwsnr', **kwargs)
+.. py:class:: LeR(nsamples=100000, npool=int(4), z_min=0.0, z_max=10.0, batch_size=25000, snr_finder='gwsnr', json_file_ler_param='./LeR_params.json', **kwargs)
 
    
    Class to calculate both the rates of lensed and unlensed events.
@@ -291,7 +291,7 @@ Classes
 
       this will be used for GW unlensed parameters sampling
 
-      gw_param_sampler_dict.keys() = ['nsamples', 'm_min', 'm_max', 'z_min', 'z_max', 'event_type', 'model_pars']
+      gw_param_sampler_dict.keys() = ['nsamples', 'm_min', 'm_max', 'z_min', 'z_max', 'event_type', 'src_model_params']
 
 
 
@@ -557,7 +557,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: store_ler_params()
+   .. py:method:: store_ler_params(json_file='./LeR_params.json')
 
       
       Fuction to store the parameters of the LER model. This is useful for reproducing the results.
@@ -796,8 +796,8 @@ Classes
                   maximum mass of the compact binary (single).
               ``event_type`` : `str`
                   event_type = 'popI_II' or `popIII` or `primordial`.
-              ``model_pars`` : `dict`
-                  model_pars = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82,
+              ``src_model_params`` : `dict`
+                  src_model_params = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82,
 
                   'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08,
 
