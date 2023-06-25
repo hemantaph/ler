@@ -29,7 +29,7 @@ Classes
 
 
 
-.. py:class:: SourceGalaxyPopulationModel(z_min=0.0, z_max=10.0, event_type='popI_II')
+.. py:class:: SourceGalaxyPopulationModel(z_min=0.0, z_max=10.0, event_type='popI_II', merger_rate_density_param=None)
 
    
    Class to generate a population of source galaxies.
@@ -525,7 +525,7 @@ Classes
           !! processed by numpydoc !!
 
 
-.. py:class:: CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type='popI_II', model_pars={'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69})
+.. py:class:: CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type='popI_II', merger_rate_density_param=None, src_model_params=None)
 
    Bases: :py:obj:`SourceGalaxyPopulationModel`
 
@@ -551,7 +551,7 @@ Classes
            Type of event to generate.
            e.g. 'popI_II', 'BNS', 'popIII', 'primordial', 'popI_II_Madau_Dickinson'
 
-       **model_pars** : `dict`
+       **src_model_params** : `dict`
            Dictionary of model parameters.
            e.g. for popI_II: {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
 
@@ -571,7 +571,7 @@ Classes
    >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
    >>> gw_parameters = pop.sample_gw_parameters(nsamples=1000)
    >>> gw_parameters.keys()
-   dict_keys(['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a1', 'a2', 'tilt1', 'tilt2', 'phi12', 'phi_jl'])
+   dict_keys(['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl'])
 
    Instance Attributes
    ----------
@@ -590,7 +590,7 @@ Classes
    +-------------------------------------+----------------------------------+
    |:attr:`~event_type`                  | `str`                            |
    +-------------------------------------+----------------------------------+
-   |:attr:`~model_pars`                  | `dict`                           |
+   |:attr:`~src_model_params`                  | `dict`                           |
    +-------------------------------------+----------------------------------+
 
    Instance Methods
@@ -748,7 +748,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:attribute:: model_pars
+   .. py:attribute:: src_model_params
 
       
       ``dict``
@@ -809,7 +809,7 @@ Classes
 
           **gw_parameters** : `dict`
               Dictionary of sampled parameters
-              gw_parameters.keys() = ['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a1', 'a2', 'tilt1', 'tilt2', 'phi12', 'phi_jl']
+              gw_parameters.keys() = ['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl']
 
 
 
@@ -826,14 +826,14 @@ Classes
       >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
       >>> gw_parameters = pop.sample_gw_parameters(nsamples=1000)
       >>> gw_parameters.keys()
-      dict_keys(['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a1', 'a2', 'tilt1', 'tilt2', 'phi12', 'phi_jl'])
+      dict_keys(['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl'])
 
 
 
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_popI_II(size, model_pars)
+   .. py:method:: binary_masses_popI_II(size, alpha=3.63, beta=1.26, delta_m=4.82, mmin=4.59, mmax=86.22, lambda_peak=0.08, mu_g=33.07, sigma_g=5.69)
 
       
       Function to calculate source mass1 and mass2 with PowerLaw+PEAK model
@@ -844,7 +844,7 @@ Classes
           **size** : `int`
               Number of samples to draw
 
-          **model_pars** : `dict`
+          **src_model_params** : `dict`
               Dictionary of model parameters
               e.g. {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
 
@@ -869,15 +869,15 @@ Classes
 
       >>> from ler import CompactBinaryPopulation
       >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
-      >>> model_pars = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
-      >>> mass_1_source, mass_2_source = pop.binary_masses_popI_II(size=1000, model_pars=model_pars)
+      >>> src_model_params = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
+      >>> mass_1_source, mass_2_source = pop.binary_masses_popI_II(size=1000, src_model_params=src_model_params)
 
 
 
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_popIII(size, model_pars)
+   .. py:method:: binary_masses_popIII(size)
 
       
       Function to calculate source mass1 and mass2 with pop III origin
@@ -888,7 +888,7 @@ Classes
           **size** : `int`
               Number of samples to draw
 
-          **model_pars** : `dict`
+          **src_model_params** : `dict`
               Dictionary of model parameters
 
       :Returns:
@@ -912,14 +912,14 @@ Classes
 
       >>> from ler import CompactBinaryPopulation
       >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popIII")
-      >>> mass_1_source, mass_2_source = pop.binary_masses_popIII(size=1000, model_pars=None)
+      >>> mass_1_source, mass_2_source = pop.binary_masses_popIII(size=1000, src_model_params=None)
 
 
 
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_primordial(size, model_pars={'Mc': 30.0, 'sigma': 0.3, 'beta': 1.1})
+   .. py:method:: binary_masses_primordial(size, Mc=30.0, sigma=0.3, beta=1.1)
 
       
       Function to calculate source mass1 and mass2 for primordial BBHs
@@ -930,7 +930,7 @@ Classes
           **size** : `int`
               Number of samples to draw
 
-          **model_pars** : `dict`
+          **src_model_params** : `dict`
               Dictionary of model parameters
               e.g. {'Mc':30.,'sigma':0.3,'beta':1.1}
 
@@ -955,15 +955,15 @@ Classes
 
       >>> from ler import CompactBinaryPopulation
       >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "primordial")
-      >>> model_pars = {'Mc':30.,'sigma':0.3,'beta':1.1}
-      >>> mass_1_source, mass_2_source = pop.binary_masses_primordial(size=1000, model_pars=model_pars)
+      >>> src_model_params = {'Mc':30.,'sigma':0.3,'beta':1.1}
+      >>> mass_1_source, mass_2_source = pop.binary_masses_primordial(size=1000, src_model_params=src_model_params)
 
 
 
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BNS(size, model_pars)
+   .. py:method:: binary_masses_BNS(size)
 
       
       Function to calculate source mass1 and mass2 of BNS
@@ -974,7 +974,7 @@ Classes
           **size** : `int`
               Number of samples to draw
 
-          **model_pars** : `dict`
+          **src_model_params** : `dict`
               Dictionary of model parameters
 
       :Returns:
@@ -998,7 +998,7 @@ Classes
 
       >>> from ler import CompactBinaryPopulation
       >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=1.0, m_max=3.0, event_type = "BNS")
-      >>> mass_1_source, mass_2_source = pop.binary_masses_BNS(size=1000, model_pars=None)
+      >>> mass_1_source, mass_2_source = pop.binary_masses_BNS(size=1000, src_model_params=None)
 
 
 
