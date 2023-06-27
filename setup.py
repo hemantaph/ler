@@ -1,10 +1,16 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
+# read the contents of your README file
+from pathlib import Path
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="ler",
-    version="0.1.6",
-    description="Lensing Rates",
+    version="0.1.8",
+    description="Gravitational waves Lensing Rates",
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     author="Hemantakumar",
     license="MIT",
     author_email="hemantaphurailatpam@gmail.com",

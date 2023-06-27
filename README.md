@@ -1,4 +1,5 @@
 # LeR
+[![DOI](https://zenodo.org/badge/626733473.svg)](https://zenodo.org/badge/latestdoi/626733473)
 
 `LeR` is a statistical based python package whose core function is to calculate detectable rates of both lensing and unlensed GW events. This calculation very much dependent on the other functionality of the package, which can be subdivided into three parts; 1. Sampling of compact binary source properties, 2. Sampling of lens galaxy characteristics and 3. Solving the lens equation to get image properties of the source. The package as a whole relies on `numpy` array operation, `scipy` interpolation and `multiprocessing` functionality of python to increase speed and functionality without compromising on the ease-of-use. The API of `LeR` is structure such that each functionality mentioned stands on this own right for scientific research but also can be used together as needed. Keys features of `LeR` and its dependencies can be summarized as follows,
 
