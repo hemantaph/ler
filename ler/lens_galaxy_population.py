@@ -875,7 +875,7 @@ class LensGalaxyPopulation:
 
         # Get the binary parameters
         number_of_lensed_events = len(magnifications)
-        mass_1, mass_2, luminosity_distance, iota, psi, ra, dec, geocent_time, phase = (
+        mass_1, mass_2, luminosity_distance, iota, psi, ra, dec, geocent_time, phase, a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl  = (
             lensed_param["mass_1"],
             lensed_param["mass_2"],
             lensed_param["luminosity_distance"],
@@ -885,6 +885,12 @@ class LensGalaxyPopulation:
             lensed_param["dec"],
             lensed_param["geocent_time"],
             lensed_param["phase"],
+            lensed_param["a_1"],
+            lensed_param["a_2"],
+            lensed_param["tilt_1"],
+            lensed_param["tilt_2"],
+            lensed_param["phi_12"],
+            lensed_param["phi_jl"],
         )
 
         # setting up snr dictionary
@@ -929,6 +935,12 @@ class LensGalaxyPopulation:
                     effective_geocent_time,
                     ra[idx],
                     dec[idx],
+                    a_1[idx],
+                    a_2[idx],
+                    tilt_1[idx],
+                    tilt_2[idx],
+                    phi_12[idx],
+                    phi_jl[idx],
                     jsonFile=False,
                 )
 

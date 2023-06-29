@@ -215,6 +215,7 @@ class LeR:
         self.gw_param_detectable = None
         self.lensed_param = None
         self.lensed_param_detectable = None
+        self.json_file_ler_param = json_file_ler_param
 
         # dictionary of params for sampler
         # for unlened case (source params)
@@ -227,8 +228,10 @@ class LeR:
             "z_min": z_min,
             "z_max": z_max,
             "event_type": "popI_II",
+            "merger_rate_density_fn": None,
             "merger_rate_density_param": None,
             "src_model_params": None,
+            "spin_zero": False,
         }
         # for lensed case
         # set 'min_lensed_images' = 2 for double image lensed case
@@ -373,9 +376,12 @@ class LeR:
             m_min=self.gw_param_sampler_dict["m_min"],
             m_max=self.gw_param_sampler_dict["m_max"],
             event_type=self.gw_param_sampler_dict["event_type"],
+            merger_rate_density_fn=self.gw_param_sampler_dict[
+                "merger_rate_density_fn"],
             merger_rate_density_param=self.gw_param_sampler_dict[
                 "merger_rate_density_param"],
             src_model_params=self.gw_param_sampler_dict["src_model_params"],
+            spin_zero=self.gw_param_sampler_dict["spin_zero"],
         )
         self.lens_galaxy_pop = LensGalaxyPopulation(self.compact_binary_pop)
 
@@ -387,11 +393,20 @@ class LeR:
         """
         # store gw_param_sampler_dict, lensed_param_sampler_dict and snr_calculator_dict
         parameters_dict = {}
-        parameters_dict.update({"gw_param_sampler_dict": self.gw_param_sampler_dict})
+
+        # cbc params
+        gw_param_sampler_dict = self.gw_param_sampler_dict.copy()
+        gw_param_sampler_dict["merger_rate_density_fn"] = str(
+            gw_param_sampler_dict["merger_rate_density_fn"]
+        )
+        parameters_dict.update({"gw_param_sampler_dict": gw_param_sampler_dict})
+
+        # lensed params
         parameters_dict.update(
             {"lensed_param_sampler_dict": self.lensed_param_sampler_dict}
         )
 
+        # snr calculator params
         snr_calculator_dict = self.snr_calculator_dict.copy()
         snr_calculator_dict["ifos"] = str(snr_calculator_dict["ifos"])
         parameters_dict.update({"snr_calculator_dict": snr_calculator_dict})
@@ -754,6 +769,15 @@ class LeR:
 
         gw_param_detectable = get_param_from_json(jsonfile)
 
+        # call json_file_ler_param and add the results
+        with open(self.json_file_ler_param, 'r', encoding='utf-8') as f:
+            data = json.load(f) 
+        # append the results
+        data['unlensed_rate_step'] = total_rate_step
+        data['unlensed_rate_pdet'] = total_rate_pdet
+        # write the results
+        append_json(self.json_file_ler_param, data, replace=True)
+
         return ([total_rate_step, total_rate_pdet], gw_param_detectable)
 
     def lensed_sampling_routine(self, nsamples, file_name, resume=False):
@@ -987,6 +1011,15 @@ class LeR:
 
         lensed_param_detectable = get_param_from_json(jsonfile)
 
+        # call json_file_ler_param and add the results
+        with open(self.json_file_ler_param, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        # append the results
+        data['lensed_rate_step'] = total_rate_step
+        data['lensed_rate_pdet'] = total_rate_pdet
+        # write the results
+        append_json(self.json_file_ler_param, data, replace=True)
+
         return ([total_rate_step, total_rate_pdet], lensed_param_detectable)
 
     def rate_comparision(
@@ -1069,6 +1102,15 @@ class LeR:
             unlensed_rate[1] / lensed_rate[1],
         )
         print("unlensed/lensed rate ratio = ", rate_ratio)
+        # call json_file_ler_param and add the results
+        with open(self.json_file_ler_param, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        # append the results
+        data['unlensed_rate_ratio_step'] = rate_ratio[0]
+        data['unlensed_rate_ratio_pdet'] = rate_ratio[1]
+        # write the results
+        append_json(self.json_file_ler_param, data, replace=True)
+
         return (unlensed_rate, lensed_rate, rate_ratio)
 
     # ---------------------------------------------------#
