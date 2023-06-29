@@ -131,6 +131,34 @@ def rejection_sample(pdf, xmin, xmax, size=100):
     # Return the correct number of samples
     return x_sample[:size]
 
+def rejection_sample2d(pdf, xmin, xmax, ymin, ymax, size=100):
+    
+    chunk_size = 10000
+    
+    x = np.linspace(xmin, xmax, 1000)
+    y = np.linspace(ymin, ymax, 1000)
+    z = pdf(x,y)
+    zmax = np.max(z)
+    
+    
+    # Rejection sample in chunks
+    x_sample = []
+    y_sample = []
+    while len(x_sample) < size:
+        x_try = np.random.uniform(xmin, xmax, size=chunk_size)
+        y_try = np.random.uniform(ymin, ymax, size=chunk_size)
+        
+        z_try = np.random.uniform(0, zmax, size=chunk_size)
+        zmax = max(zmax, np.max(z_try))
+
+        x_sample += list(x_try[z_try < pdf(x_try, y_try)])
+        y_sample += list(y_try[z_try < pdf(x_try, y_try)])
+        
+    # Transform the samples to a 1D numpy array
+    x_sample = np.array(x_sample).flatten()
+    y_sample = np.array(y_sample).flatten()
+    # Return the correct number of samples
+    return x_sample[:size], y_sample[:size]
 
 def add_dictionaries_together(dictionary1, dictionary2):
     """Adds two dictionaries with the same keys together."""
