@@ -27,14 +27,14 @@ authors:
     # equal-contrib: False 
     affiliation: "3 , 2, 4"
 affiliations:
- - name: The Chinese University of Hong Kong, Hong Kong
-   index: 1
- - name: LIGO scientific collaboration
-   index: 2
+  - name: The Chinese University of Hong Kong, Hong Kong
+    index: 1
+  - name: LIGO scientific collaboration
+    index: 2
   - name: Department of Physics, Utrecht University, Princetonplein 1, 3584 CC Utrecht, The Netherlands
-   index: 3
+    index: 3
   - name: Nikhef – National Institute for Subatomic Physics, Science Park, 1098 XG Amsterdam, The Netherlands
-   index: 4
+    index: 4
 date: 21 June 2023
 bibliography: paper.bib
 ---
