@@ -79,7 +79,7 @@ R_L = \int & dz_s R_m^L(z_s) \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i,
     * Distribution of the source's red-shift is based on the merger rate density of compact binaries, which can be BBH, BNS, primordial black holes (PBHs) etc. The code is designed to accommodate easy updates or additions of such distribution by the users in the future. 
     * Sampling of BBH masses is done using `gwcosmo` following the powerlaw+peak model. Other related properties are sampled from available priors of `bilby`. The user can manually replace any before feeding the parameters in for rate computation.
 - Sampling of lens galaxies:
-    * Lens distribution follows [(Oguri et al. 2018](https://arxiv.org/abs/1807.02584). It depends on the sampled source red-shifts and also on the optical depth [cite](https://arxiv.org/abs/2306.03827).
+    * Lens distribution follows [(Oguri et al. 2018](https://arxiv.org/abs/1807.02584). It depends on the sampled source red-shifts and also on the optical depth.
     * `LeR` employs the Elliptical Power Law model with the external shear (EPL+Shear) model for sampling other galaxy features, which is available in the `Lenstronomy` package.
     * Rejection sampling is applied on the above samples on condition that whether the event is strongly lensed or not.
 - Generation of image properties:
