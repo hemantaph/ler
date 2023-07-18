@@ -971,6 +971,7 @@ class LeR:
             num1 = num_img[i]
             for j in range(num1):
                 # snr_hit step function case
+                # checking only the second highest snr should suffice
                 snr_hit = snr_hit & (sorted_snr[:, num2] > snr_threshold[i])
                 # pdet for probability of detection
                 pdet = 1 - norm.cdf(

@@ -1,0 +1,9 @@
+name: ler
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python ==3.10
+  - pip:
+      - git+https://git.ligo.org/lscsoft/gwcosmo.git@master
+      
