@@ -60,6 +60,10 @@ Classes
            if 'gwsnr', the SNR will be calculated using the gwsnr package.
            if 'custom', the SNR will be calculated using a custom function.
 
+       **json_file_ler_param: `str`**
+           default json_file_ler_param = 'ler_param.json'.
+           json file containing the parameters for initializing the :class:`~ler.LeR` class, :class:`~ler.CompactBinaryPopulation` class, :class:`~ler.LensGalaxyPopulation` class, :class:`~gwsnr.GWSNR` class.
+
        **kwargs** : `keyword arguments`
            Note : kwargs takes input for initializing the :class:`~ler.CompactBinaryPopulation`, :class:`LensGalaxyPopulation`, :meth:`~gwsnr_intialization`.
 
@@ -824,7 +828,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: unlensed_rate(gw_param='./gw_params.json', snr_threshold=8.0, jsonfile='./gw_params_detectable.json')
+   .. py:method:: unlensed_rate(gw_param='./gw_params.json', snr_threshold=8.0, jsonfile='./gw_params_detectable.json', detectability_condition='step_function')
 
       
       Function to calculate unlensed merger rate.
@@ -968,7 +972,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lensed_rate(lensed_param='./lensed_params.json', snr_threshold=8.0, num_img=2, jsonfile='./lensed_params_detectable.json', none_as_nan=True)
+   .. py:method:: lensed_rate(lensed_param='./lensed_params.json', snr_threshold=8.0, num_img=2, jsonfile='./lensed_params_detectable.json', none_as_nan=True, detectability_condition='step_function')
 
       
       Function to calculate lensed merger rate.
@@ -1034,7 +1038,45 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: rate_comparision(snr_threshold_unlensed=8.0, unlened_param='./gw_params.json', snr_threshold_lensed=8.0, num_img=2, lensed_param='./lensed_params.json', jsonfile_unlensed='./gw_params_detectable.json', jsonfile_lensed='./lensed_params_detectable.json')
+   .. py:method:: rate_comparision(detectability_condition='step_function')
+
+      
+      Function to calculate unlensed and lensed merger rate and their ratio.
+      It will get the unlensed_rate and lensed_rate from json_file_ler_param="./LeR_params.json"
+
+
+      :Parameters:
+
+          **detectability_condition** : `str`
+              detectability condition, either "step_function" or "pdet_function"
+
+      :Returns:
+
+          **unlensed_rate** : `float`
+              unlensed merger rate
+
+          **lensed_rate** : `float`
+              lensed merger rate
+
+          **ratio** : `float`
+              ratio of lensed_rate and unlensed_rate
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: rate_comparision_with_rate_calculation(snr_threshold_unlensed=8.0, unlened_param='./gw_params.json', snr_threshold_lensed=8.0, num_img=2, lensed_param='./lensed_params.json', jsonfile_unlensed='./gw_params_detectable.json', jsonfile_lensed='./lensed_params_detectable.json', detectability_condition='step_function')
 
       
       Function to calculate unlensed and lensed merger rate and their ratio.
