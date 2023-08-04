@@ -14,13 +14,13 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
-        <script src="../../_static/clipboard.min.js"></script>
-        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=7b800ad1"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -195,6 +195,9 @@ reduce the batch size if you are getting memory error.</p>
 <dt><strong>snr_finder</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>default snr_finder = ‘gwsnr’.
 if ‘gwsnr’, the SNR will be calculated using the gwsnr package.
 if ‘custom’, the SNR will be calculated using a custom function.</p>
+</dd>
+<dt><strong>json_file_ler_param: `str`</strong></dt><dd><p>default json_file_ler_param = ‘ler_param.json’.
+json file containing the parameters for initializing the <a class="reference internal" href="#ler.LeR" title="ler.LeR"><code class="xref py py-class docutils literal notranslate"><span class="pre">LeR</span></code></a> class, <a class="reference internal" href="#ler.CompactBinaryPopulation" title="ler.CompactBinaryPopulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompactBinaryPopulation</span></code></a> class, <a class="reference internal" href="#ler.LensGalaxyPopulation" title="ler.LensGalaxyPopulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyPopulation</span></code></a> class, <code class="xref py py-class docutils literal notranslate"><span class="pre">GWSNR</span></code> class.</p>
 </dd>
 <dt><strong>kwargs</strong><span class="classifier"><cite>keyword arguments</cite></span></dt><dd><p>Note : kwargs takes input for initializing the <a class="reference internal" href="#ler.CompactBinaryPopulation" title="ler.CompactBinaryPopulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompactBinaryPopulation</span></code></a>, <a class="reference internal" href="#ler.LensGalaxyPopulation" title="ler.LensGalaxyPopulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyPopulation</span></code></a>, <a class="reference internal" href="#ler.LeR.gwsnr_intialization" title="ler.LeR.gwsnr_intialization"><code class="xref py py-meth docutils literal notranslate"><span class="pre">gwsnr_intialization()</span></code></a>.</p>
 </dd>
@@ -620,7 +623,7 @@ unlensed_gw_params.keys() = [‘m1’, ‘m2’, ‘z’, ‘snr’, ‘theta_jn
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.LeR.unlensed_rate">
-<span class="sig-name descname"><span class="pre">unlensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gw_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params_detectable.json'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.LeR.unlensed_rate" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">unlensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gw_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.LeR.unlensed_rate" title="Permalink to this definition"></a></dt>
 <dd><p>Function to calculate unlensed merger rate.</p>
 <div class="math notranslate nohighlight">
 \[R_U = \mathcal{N}^U\int dz_s R_o^U(z_s)\bigg\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \bigg\}\]</div>
@@ -721,7 +724,7 @@ lensed_param.keys() = [‘zl’, ‘zs’, ‘sigma’, ‘q’, ‘e1’, ‘e2
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.LeR.lensed_rate">
-<span class="sig-name descname"><span class="pre">lensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">none_as_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.LeR.lensed_rate" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">lensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">none_as_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.LeR.lensed_rate" title="Permalink to this definition"></a></dt>
 <dd><p>Function to calculate lensed merger rate.</p>
 <div class="math notranslate nohighlight">
 \[R_L = \mathcal{N}^L\int dz_s R_o^L(z_s)\bigg\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \bigg\}\]</div>
@@ -772,7 +775,32 @@ detectable_lensed_param.keys() = [‘zl’, ‘zs’, ‘sigma’, ‘q’, ‘e
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.LeR.rate_comparision">
-<span class="sig-name descname"><span class="pre">rate_comparision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snr_threshold_unlensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unlened_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile_unlensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params_detectable.json'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.LeR.rate_comparision" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">rate_comparision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.LeR.rate_comparision" title="Permalink to this definition"></a></dt>
+<dd><p>Function to calculate unlensed and lensed merger rate and their ratio.
+It will get the unlensed_rate and lensed_rate from json_file_ler_param=”./LeR_params.json”</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>detectability_condition</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>detectability condition, either “step_function” or “pdet_function”</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>unlensed_rate</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>unlensed merger rate</p>
+</dd>
+<dt><strong>lensed_rate</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>lensed merger rate</p>
+</dd>
+<dt><strong>ratio</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>ratio of lensed_rate and unlensed_rate</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.LeR.rate_comparision_with_rate_calculation">
+<span class="sig-name descname"><span class="pre">rate_comparision_with_rate_calculation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snr_threshold_unlensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unlened_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile_unlensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.LeR.rate_comparision_with_rate_calculation" title="Permalink to this definition"></a></dt>
 <dd><p>Function to calculate unlensed and lensed merger rate and their ratio.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1529,7 +1557,7 @@ default: 4</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ler.SourceGalaxyPopulationModel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">SourceGalaxyPopulationModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'popI_II'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.SourceGalaxyPopulationModel" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">SourceGalaxyPopulationModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'popI_II'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.SourceGalaxyPopulationModel" title="Permalink to this definition"></a></dt>
 <dd><p>Class to generate a population of source galaxies.
 This class is inherited by <code class="xref py py-class docutils literal notranslate"><span class="pre">CompactBinaryPopulation</span></code> class.</p>
 <dl class="field-list">
@@ -1871,7 +1899,7 @@ default: 13.786885302009708</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ler.CompactBinaryPopulation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">CompactBinaryPopulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.59</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">86.22</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'popI_II'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_model_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.CompactBinaryPopulation" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">CompactBinaryPopulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.59</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">86.22</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'popI_II'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_model_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.CompactBinaryPopulation" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ler.SourceGalaxyPopulationModel" title="ler.SourceGalaxyPopulationModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel</span></code></a></p>
 <p>Class to generate a population of compact binaries. Inherits from <code class="xref py py-class docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel</span></code> class.</p>
 <dl class="field-list">
@@ -2068,14 +2096,15 @@ e.g. {‘alpha’: 3.63, ‘beta’: 1.26, ‘delta_m’: 4.82, ‘mmin’: 4.59
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.CompactBinaryPopulation.binary_masses_popIII">
-<span class="sig-name descname"><span class="pre">binary_masses_popIII</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.CompactBinaryPopulation.binary_masses_popIII" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">binary_masses_popIII</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.CompactBinaryPopulation.binary_masses_popIII" title="Permalink to this definition"></a></dt>
 <dd><p>Function to calculate source mass1 and mass2 with pop III origin</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Number of samples to draw</p>
 </dd>
-<dt><strong>src_model_params</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Dictionary of model parameters</p>
+<dt><strong>Mc, sigma, beta</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Fitting parameters
+default: Mc=30.0, sigma=0.3, beta=1.1</p>
 </dd>
 </dl>
 </dd>
@@ -2091,7 +2120,7 @@ e.g. {‘alpha’: 3.63, ‘beta’: 1.26, ‘delta_m’: 4.82, ‘mmin’: 4.59
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">CompactBinaryPopulation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pop</span> <span class="o">=</span> <span class="n">CompactBinaryPopulation</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">m_min</span><span class="o">=</span><span class="mf">4.59</span><span class="p">,</span> <span class="n">m_max</span><span class="o">=</span><span class="mf">86.22</span><span class="p">,</span> <span class="n">event_type</span> <span class="o">=</span> <span class="s2">&quot;popIII&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">binary_masses_popIII</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">src_model_params</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">binary_masses_popIII</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -2105,8 +2134,8 @@ e.g. {‘alpha’: 3.63, ‘beta’: 1.26, ‘delta_m’: 4.82, ‘mmin’: 4.59
 <dd class="field-odd"><dl>
 <dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Number of samples to draw</p>
 </dd>
-<dt><strong>src_model_params</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Dictionary of model parameters
-e.g. {‘Mc’:30.,’sigma’:0.3,’beta’:1.1}</p>
+<dt><strong>Mc, sigma, beta</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Fitting parameters
+default: Mc=30.0, sigma=0.3, beta=1.1</p>
 </dd>
 </dl>
 </dd>
@@ -2122,22 +2151,22 @@ e.g. {‘Mc’:30.,’sigma’:0.3,’beta’:1.1}</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">CompactBinaryPopulation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pop</span> <span class="o">=</span> <span class="n">CompactBinaryPopulation</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">m_min</span><span class="o">=</span><span class="mf">4.59</span><span class="p">,</span> <span class="n">m_max</span><span class="o">=</span><span class="mf">86.22</span><span class="p">,</span> <span class="n">event_type</span> <span class="o">=</span> <span class="s2">&quot;primordial&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">src_model_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Mc&#39;</span><span class="p">:</span><span class="mf">30.</span><span class="p">,</span><span class="s1">&#39;sigma&#39;</span><span class="p">:</span><span class="mf">0.3</span><span class="p">,</span><span class="s1">&#39;beta&#39;</span><span class="p">:</span><span class="mf">1.1</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">binary_masses_primordial</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">src_model_params</span><span class="o">=</span><span class="n">src_model_params</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">binary_masses_primordial</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.CompactBinaryPopulation.binary_masses_BNS">
-<span class="sig-name descname"><span class="pre">binary_masses_BNS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.CompactBinaryPopulation.binary_masses_BNS" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">binary_masses_BNS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">muL</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.35</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaL</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">muR</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaR</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.CompactBinaryPopulation.binary_masses_BNS" title="Permalink to this definition"></a></dt>
 <dd><p>Function to calculate source mass1 and mass2 of BNS</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Number of samples to draw</p>
 </dd>
-<dt><strong>src_model_params</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Dictionary of model parameters</p>
+<dt><strong>muL, sigmaL, muR, sigmaR</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Fitting parameters
+default: muL=1.35, sigmaL=0.08, muR=1.8, sigmaR=0.3</p>
 </dd>
 </dl>
 </dd>
@@ -2153,7 +2182,7 @@ e.g. {‘Mc’:30.,’sigma’:0.3,’beta’:1.1}</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">CompactBinaryPopulation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pop</span> <span class="o">=</span> <span class="n">CompactBinaryPopulation</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">m_min</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">m_max</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">event_type</span> <span class="o">=</span> <span class="s2">&quot;BNS&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">binary_masses_BNS</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">src_model_params</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">binary_masses_BNS</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -2182,6 +2211,42 @@ e.g. {‘Mc’:30.,’sigma’:0.3,’beta’:1.1}</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">CompactBinaryPopulation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pop</span> <span class="o">=</span> <span class="n">CompactBinaryPopulation</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">m_min</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">m_max</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">event_type</span> <span class="o">=</span> <span class="s2">&quot;BNS&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">mass_ratio</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.CompactBinaryPopulation.binary_spin_popI_II">
+<span class="sig-name descname"><span class="pre">binary_spin_popI_II</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.CompactBinaryPopulation.binary_spin_popI_II" title="Permalink to this definition"></a></dt>
+<dd><p>Function to calculate spin parameters with PowerLaw+PEAK model</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Number of samples to draw</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>a_1</strong><span class="classifier"><cite>array</cite></span></dt><dd><p>Array of spin1</p>
+</dd>
+<dt><strong>a_2</strong><span class="classifier"><cite>array</cite></span></dt><dd><p>Array of spin2</p>
+</dd>
+<dt><strong>tilt_1</strong><span class="classifier"><cite>array</cite></span></dt><dd><p>Array of tilt1</p>
+</dd>
+<dt><strong>tilt_2</strong><span class="classifier"><cite>array</cite></span></dt><dd><p>Array of tilt2</p>
+</dd>
+<dt><strong>phi_12</strong><span class="classifier"><cite>array</cite></span></dt><dd><p>Array of phi12</p>
+</dd>
+<dt><strong>phi_jl</strong><span class="classifier"><cite>array</cite></span></dt><dd><p>Array of phi_jl</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">CompactBinaryPopulation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pop</span> <span class="o">=</span> <span class="n">CompactBinaryPopulation</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">m_min</span><span class="o">=</span><span class="mf">4.59</span><span class="p">,</span> <span class="n">m_max</span><span class="o">=</span><span class="mf">86.22</span><span class="p">,</span> <span class="n">event_type</span> <span class="o">=</span> <span class="s2">&quot;popI_II&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_1</span><span class="p">,</span> <span class="n">a_2</span><span class="p">,</span> <span class="n">tilt_1</span><span class="p">,</span> <span class="n">tilt_2</span><span class="p">,</span> <span class="n">phi_12</span><span class="p">,</span> <span class="n">phi_jl</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">binary_spin_popI_II</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

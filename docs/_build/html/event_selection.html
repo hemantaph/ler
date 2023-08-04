@@ -15,13 +15,13 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
-        <script src="_static/clipboard.min.js"></script>
-        <script src="_static/copybutton.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=7b800ad1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -94,12 +94,12 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KernelDensity</span>
-<span class="kn">import</span> <span class="nn">ler</span>
-<span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+from sklearn.neighbors import KernelDensity
+import ler
+from ler import LeR
 </pre></div>
 </div>
 </div>
@@ -107,10 +107,10 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># callin class</span>
-<span class="n">ler_</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span><span class="n">npool</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span><span class="n">snr_type</span> <span class="o">=</span> <span class="s1">&#39;interpolation&#39;</span><span class="p">,</span>\
-           <span class="n">psds</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;L1&#39;</span><span class="p">:</span><span class="s1">&#39;aLIGOaLIGODesignSensitivityT1800044&#39;</span><span class="p">,</span><span class="s1">&#39;H1&#39;</span><span class="p">:</span><span class="s1">&#39;aLIGOaLIGODesignSensitivityT1800044&#39;</span><span class="p">,</span><span class="s1">&#39;V1&#39;</span><span class="p">:</span><span class="s1">&#39;AdvVirgo&#39;</span><span class="p">},</span> \
-           <span class="n">waveform_inspiral_must_be_above_fmin</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># callin class
+ler_ = LeR(npool=6,z_min=0., z_max=10.,snr_type = &#39;interpolation&#39;,\
+           psds={&#39;L1&#39;:&#39;aLIGOaLIGODesignSensitivityT1800044&#39;,&#39;H1&#39;:&#39;aLIGOaLIGODesignSensitivityT1800044&#39;,&#39;V1&#39;:&#39;AdvVirgo&#39;}, \
+           waveform_inspiral_must_be_above_fmin=True)
 </pre></div>
 </div>
 </div>
@@ -129,7 +129,7 @@ In case if you need regeneration of interpolator of the given gwsnr param, pleas
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ler_.selecting_n_detectable_events<span class="o">?</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ler_.selecting_n_detectable_events?
 </pre></div>
 </div>
 </div>
@@ -182,8 +182,8 @@ Output parameters:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># suprathreshold case</span>
-<span class="n">param1</span> <span class="o">=</span> <span class="n">ler_</span><span class="o">.</span><span class="n">selecting_n_detectable_events</span><span class="p">(</span><span class="n">lenstype</span><span class="o">=</span><span class="s1">&#39;I&#39;</span><span class="p">,</span><span class="n">snr_threshold</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span> <span class="n">num_img</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">new</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">min_img</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># suprathreshold case
+param1 = ler_.selecting_n_detectable_events(lenstype=&#39;I&#39;,snr_threshold=8.0, num_img=2, new=True, min_img=4, size=1000, batch_size=10000)
 </pre></div>
 </div>
 </div>
@@ -371,8 +371,8 @@ After trimming, collected number of events =  1000
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># suprathreshold case</span>
-<span class="n">param2</span> <span class="o">=</span> <span class="n">ler_</span><span class="o">.</span><span class="n">selecting_n_detectable_events</span><span class="p">(</span><span class="n">lenstype</span><span class="o">=</span><span class="s1">&#39;II&#39;</span><span class="p">,</span><span class="n">snr_threshold</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span> <span class="n">num_img</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">new</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">min_img</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># suprathreshold case
+param2 = ler_.selecting_n_detectable_events(lenstype=&#39;II&#39;,snr_threshold=8.0, num_img=2, new=True, min_img=4, size=1000, batch_size=10000)
 </pre></div>
 </div>
 </div>
@@ -593,29 +593,29 @@ After trimming, collected number of events =  1000
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># magnification</span>
-<span class="c1"># type I</span>
-<span class="n">amp</span> <span class="o">=</span> <span class="n">param1</span><span class="p">[</span><span class="s1">&#39;magnifications&#39;</span><span class="p">]</span>
-<span class="n">amp1_1</span> <span class="o">=</span> <span class="n">amp</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">amp1_2</span> <span class="o">=</span> <span class="n">amp</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">dmu12</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">amp1_2</span><span class="o">-</span><span class="n">amp1_1</span><span class="p">)</span>
-<span class="c1"># type II</span>
-<span class="n">amp</span> <span class="o">=</span> <span class="n">param2</span><span class="p">[</span><span class="s1">&#39;magnifications&#39;</span><span class="p">]</span>
-<span class="n">amp2_1</span> <span class="o">=</span> <span class="n">amp</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">amp2_2</span> <span class="o">=</span> <span class="n">amp</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span>
-<span class="n">dmu23</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">amp2_2</span><span class="o">-</span><span class="n">amp1_1</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># magnification
+# type I
+amp = param1[&#39;magnifications&#39;]
+amp1_1 = amp[:,0]
+amp1_2 = amp[:,1]
+dmu12 = abs(amp1_2-amp1_1)
+# type II
+amp = param2[&#39;magnifications&#39;]
+amp2_1 = amp[:,2]
+amp2_2 = amp[:,3]
+dmu23 = abs(amp2_2-amp1_1)
 
-<span class="c1"># time delays</span>
-<span class="c1"># type I</span>
-<span class="n">dt</span> <span class="o">=</span> <span class="n">param1</span><span class="p">[</span><span class="s1">&#39;time_delays&#39;</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">24</span><span class="p">)</span> <span class="c1">#</span>
-<span class="n">delay1_1</span> <span class="o">=</span> <span class="n">dt</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">delay1_2</span> <span class="o">=</span> <span class="n">dt</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">dt12</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">delay1_2</span><span class="o">-</span><span class="n">delay1_1</span><span class="p">)</span>
-<span class="c1"># type II</span>
-<span class="n">dt</span> <span class="o">=</span> <span class="n">param2</span><span class="p">[</span><span class="s1">&#39;time_delays&#39;</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">24</span><span class="p">)</span>
-<span class="n">delay2_1</span> <span class="o">=</span> <span class="n">dt</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">delay2_2</span> <span class="o">=</span> <span class="n">dt</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span>
-<span class="n">dt23</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">delay2_2</span><span class="o">-</span><span class="n">delay2_1</span><span class="p">)</span>
+# time delays
+# type I
+dt = param1[&#39;time_delays&#39;]/(60*60*24) #
+delay1_1 = dt[:,0]
+delay1_2 = dt[:,1]
+dt12 = abs(delay1_2-delay1_1)
+# type II
+dt = param2[&#39;time_delays&#39;]/(60*60*24)
+delay2_1 = dt[:,2]
+delay2_2 = dt[:,3]
+dt23 = abs(delay2_2-delay2_1)
 </pre></div>
 </div>
 </div>
@@ -625,30 +625,30 @@ After trimming, collected number of events =  1000
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_</span> <span class="o">=</span> <span class="o">-</span><span class="mi">4</span>
-<span class="n">max_</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="c1"># type I</span>
-<span class="n">x12</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">dt12</span><span class="p">)</span>
-<span class="n">kde</span> <span class="o">=</span> <span class="n">KernelDensity</span><span class="p">(</span><span class="n">bandwidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">)</span>
-<span class="n">kde</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x12</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
-<span class="n">x_d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_</span><span class="p">,</span> <span class="n">max_</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="n">logprob</span> <span class="o">=</span> <span class="n">kde</span><span class="o">.</span><span class="n">score_samples</span><span class="p">(</span><span class="n">x_d</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">x_d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logprob</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">x_d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logprob</span><span class="p">),</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
-<span class="c1"># type II</span>
-<span class="n">x23</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">dt23</span><span class="p">)</span>
-<span class="n">kde</span> <span class="o">=</span> <span class="n">KernelDensity</span><span class="p">(</span><span class="n">bandwidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">)</span>
-<span class="n">kde</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x23</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
-<span class="n">x_d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_</span><span class="p">,</span> <span class="n">max_</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="n">logprob</span> <span class="o">=</span> <span class="n">kde</span><span class="o">.</span><span class="n">score_samples</span><span class="p">(</span><span class="n">x_d</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">x_d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logprob</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">x_d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logprob</span><span class="p">),</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>min_ = -4
+max_ = 4
+# type I
+x12 = np.log10(dt12)
+kde = KernelDensity(bandwidth=1, kernel=&#39;gaussian&#39;)
+kde.fit(x12[:, np.newaxis])
+x_d = np.linspace(min_, max_, 1000)
+logprob = kde.score_samples(x_d[:, np.newaxis])
+plt.fill_between(10**x_d, np.exp(logprob), alpha=0.5)
+plt.plot(10**x_d, np.exp(logprob), &#39;-&#39;)
+# type II
+x23 = np.log10(dt23)
+kde = KernelDensity(bandwidth=1, kernel=&#39;gaussian&#39;)
+kde.fit(x23[:, np.newaxis])
+x_d = np.linspace(min_, max_, 1000)
+logprob = kde.score_samples(x_d[:, np.newaxis])
+plt.fill_between(10**x_d, np.exp(logprob), alpha=0.5)
+plt.plot(10**x_d, np.exp(logprob), &#39;-&#39;)
 
-<span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;pdf&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;days&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Time delay between same image type in 4 image events&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+plt.xscale(&#39;log&#39;)
+plt.ylabel(&#39;pdf&#39;)
+plt.xlabel(&#39;days&#39;)
+plt.title(&#39;Time delay between same image type in 4 image events&#39;)
+plt.show()
 </pre></div>
 </div>
 </div>
@@ -663,42 +663,42 @@ After trimming, collected number of events =  1000
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dt</span>  <span class="o">=</span> <span class="n">param1</span><span class="p">[</span><span class="s1">&#39;time_delays&#39;</span><span class="p">]</span>
-<span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dt</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">dt</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span><span class="n">dt</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]])</span><span class="o">/</span><span class="p">(</span><span class="mi">24</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>dt  = param1[&#39;time_delays&#39;]
+image = np.log10(np.array([dt[:,1],dt[:,2],dt[:,3]])/(24*60*60))
 
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">image</span><span class="p">)):</span>
-    <span class="n">x_train</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="n">kde</span> <span class="o">=</span> <span class="n">KernelDensity</span><span class="p">(</span><span class="n">bandwidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">)</span>
-    <span class="n">kde</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
-    <span class="n">min_</span> <span class="o">=</span> <span class="o">-</span><span class="mi">4</span>
-    <span class="n">max_</span> <span class="o">=</span> <span class="mi">4</span>
-    <span class="n">x_d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_</span><span class="p">,</span> <span class="n">max_</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-    <span class="n">logprob</span> <span class="o">=</span> <span class="n">kde</span><span class="o">.</span><span class="n">score_samples</span><span class="p">(</span><span class="n">x_d</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+for i in range(len(image)):
+    x_train = image[i]
+    kde = KernelDensity(bandwidth=1, kernel=&#39;gaussian&#39;)
+    kde.fit(x_train[:, np.newaxis])
+    min_ = -4
+    max_ = 4
+    x_d = np.linspace(min_, max_, 1000)
+    logprob = kde.score_samples(x_d[:, np.newaxis])
 
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Image &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-    <span class="c1">#plt.fill_between(x_d, np.exp(logprob), alpha=0.3)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">x_d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logprob</span><span class="p">),</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    name = &#39;Image &#39;+ str(i+2)
+    #plt.fill_between(x_d, np.exp(logprob), alpha=0.3)
+    plt.plot(10**x_d, np.exp(logprob), &#39;-&#39;, alpha=0.4, label=name)
 
-<span class="n">x_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">dt</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">dt</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span><span class="n">dt</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]))</span><span class="o">/</span><span class="p">(</span><span class="mi">24</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">))</span>
-<span class="n">kde</span> <span class="o">=</span> <span class="n">KernelDensity</span><span class="p">(</span><span class="n">bandwidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">)</span>
-<span class="n">kde</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
-<span class="n">min_</span> <span class="o">=</span> <span class="o">-</span><span class="mi">4</span>
-<span class="n">max_</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">x_d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_</span><span class="p">,</span> <span class="n">max_</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="n">logprob</span> <span class="o">=</span> <span class="n">kde</span><span class="o">.</span><span class="n">score_samples</span><span class="p">(</span><span class="n">x_d</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+x_train = np.log10(np.concatenate((dt[:,1],dt[:,2],dt[:,3]))/(24*60*60))
+kde = KernelDensity(bandwidth=1, kernel=&#39;gaussian&#39;)
+kde.fit(x_train[:, np.newaxis])
+min_ = -4
+max_ = 4
+x_d = np.linspace(min_, max_, 1000)
+logprob = kde.score_samples(x_d[:, np.newaxis])
 
-<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Image all&#39;</span>
-<span class="c1">#plt.fill_between(x_d, np.exp(logprob), alpha=0.3)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">x_d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logprob</span><span class="p">),</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+name = &#39;Image all&#39;
+#plt.fill_between(x_d, np.exp(logprob), alpha=0.3)
+plt.plot(10**x_d, np.exp(logprob), &#39;-&#39;, alpha=0.8, label=name)
 
-<span class="c1">#plt.xlim(0.00001,5)</span>
-<span class="c1">#plt.ylim(0,0.2)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;pdf&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;days&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Time delay wrt to 1st image&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+#plt.xlim(0.00001,5)
+#plt.ylim(0,0.2)
+plt.xscale(&#39;log&#39;)
+plt.ylabel(&#39;pdf&#39;)
+plt.xlabel(&#39;days&#39;)
+plt.title(&#39;Time delay wrt to 1st image&#39;)
+plt.legend()
+plt.show()
 </pre></div>
 </div>
 </div>
@@ -716,36 +716,36 @@ After trimming, collected number of events =  1000
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">dmu23</span><span class="p">)</span>
-<span class="n">kde</span> <span class="o">=</span> <span class="n">KernelDensity</span><span class="p">(</span><span class="n">bandwidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">)</span>
-<span class="n">kde</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
-<span class="n">min_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
-<span class="n">max_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
-<span class="n">x_d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="n">logprob</span> <span class="o">=</span> <span class="n">kde</span><span class="o">.</span><span class="n">score_samples</span><span class="p">(</span><span class="n">x_d</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>x_train = np.log10(dmu23)
+kde = KernelDensity(bandwidth=1, kernel=&#39;gaussian&#39;)
+kde.fit(x_train[:, np.newaxis])
+min_ = np.min(x_train)
+max_ = np.max(x_train)
+x_d = np.linspace(-1, 3, 1000)
+logprob = kde.score_samples(x_d[:, np.newaxis])
 
-<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Image &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x_d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logprob</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$ImgType=II$&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logprob</span><span class="p">),</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+name = &#39;Image &#39;+ str(i+2)
+plt.fill_between(x_d, np.exp(logprob), alpha=0.3, label=r&#39;$ImgType=II$&#39;)
+plt.plot(x_d, np.exp(logprob), &#39;-&#39;, alpha=0.6)
 
-<span class="n">x_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">dmu12</span><span class="p">)</span>
-<span class="n">kde</span> <span class="o">=</span> <span class="n">KernelDensity</span><span class="p">(</span><span class="n">bandwidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">)</span>
-<span class="n">kde</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
-<span class="n">min_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
-<span class="n">max_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
-<span class="c1">#x_d = np.linspace(min_, max_, 1000)</span>
-<span class="n">logprob</span> <span class="o">=</span> <span class="n">kde</span><span class="o">.</span><span class="n">score_samples</span><span class="p">(</span><span class="n">x_d</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+x_train = np.log10(dmu12)
+kde = KernelDensity(bandwidth=1, kernel=&#39;gaussian&#39;)
+kde.fit(x_train[:, np.newaxis])
+min_ = np.min(x_train)
+max_ = np.max(x_train)
+#x_d = np.linspace(min_, max_, 1000)
+logprob = kde.score_samples(x_d[:, np.newaxis])
 
-<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Image &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x_d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logprob</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$ImgType=I$&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logprob</span><span class="p">),</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+name = &#39;Image &#39;+ str(i+2)
+plt.fill_between(x_d, np.exp(logprob), alpha=0.3, label=r&#39;$ImgType=I$&#39;)
+plt.plot(x_d, np.exp(logprob), &#39;-&#39;, alpha=0.6)
 
-<span class="c1">#plt.xlim(0,10)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;pdf&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;log(relative $\mu$)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;relative magnification between same </span><span class="se">\n</span><span class="s1"> image type in 4 image events&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+#plt.xlim(0,10)
+plt.ylabel(r&#39;pdf&#39;)
+plt.xlabel(r&#39;log(relative $\mu$)&#39;)
+plt.legend()
+plt.title(&#39;relative magnification between same \n image type in 4 image events&#39;)
+plt.show()
 </pre></div>
 </div>
 </div>

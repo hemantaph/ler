@@ -82,6 +82,10 @@ Functions
            if 'gwsnr', the SNR will be calculated using the gwsnr package.
            if 'custom', the SNR will be calculated using a custom function.
 
+       **json_file_ler_param: `str`**
+           default json_file_ler_param = 'ler_param.json'.
+           json file containing the parameters for initializing the :class:`~ler.LeR` class, :class:`~ler.CompactBinaryPopulation` class, :class:`~ler.LensGalaxyPopulation` class, :class:`~gwsnr.GWSNR` class.
+
        **kwargs** : `keyword arguments`
            Note : kwargs takes input for initializing the :class:`~ler.CompactBinaryPopulation`, :class:`LensGalaxyPopulation`, :meth:`~gwsnr_intialization`.
 
@@ -846,7 +850,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: unlensed_rate(gw_param='./gw_params.json', snr_threshold=8.0, jsonfile='./gw_params_detectable.json')
+   .. py:method:: unlensed_rate(gw_param='./gw_params.json', snr_threshold=8.0, jsonfile='./gw_params_detectable.json', detectability_condition='step_function')
 
       
       Function to calculate unlensed merger rate.
@@ -990,7 +994,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lensed_rate(lensed_param='./lensed_params.json', snr_threshold=8.0, num_img=2, jsonfile='./lensed_params_detectable.json', none_as_nan=True)
+   .. py:method:: lensed_rate(lensed_param='./lensed_params.json', snr_threshold=8.0, num_img=2, jsonfile='./lensed_params_detectable.json', none_as_nan=True, detectability_condition='step_function')
 
       
       Function to calculate lensed merger rate.
@@ -1056,7 +1060,45 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: rate_comparision(snr_threshold_unlensed=8.0, unlened_param='./gw_params.json', snr_threshold_lensed=8.0, num_img=2, lensed_param='./lensed_params.json', jsonfile_unlensed='./gw_params_detectable.json', jsonfile_lensed='./lensed_params_detectable.json')
+   .. py:method:: rate_comparision(detectability_condition='step_function')
+
+      
+      Function to calculate unlensed and lensed merger rate and their ratio.
+      It will get the unlensed_rate and lensed_rate from json_file_ler_param="./LeR_params.json"
+
+
+      :Parameters:
+
+          **detectability_condition** : `str`
+              detectability condition, either "step_function" or "pdet_function"
+
+      :Returns:
+
+          **unlensed_rate** : `float`
+              unlensed merger rate
+
+          **lensed_rate** : `float`
+              lensed merger rate
+
+          **ratio** : `float`
+              ratio of lensed_rate and unlensed_rate
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: rate_comparision_with_rate_calculation(snr_threshold_unlensed=8.0, unlened_param='./gw_params.json', snr_threshold_lensed=8.0, num_img=2, lensed_param='./lensed_params.json', jsonfile_unlensed='./gw_params_detectable.json', jsonfile_lensed='./lensed_params_detectable.json', detectability_condition='step_function')
 
       
       Function to calculate unlensed and lensed merger rate and their ratio.
@@ -2175,7 +2217,7 @@ Functions
           !! processed by numpydoc !!
 
 
-.. py:class:: SourceGalaxyPopulationModel(z_min=0.0, z_max=10.0, event_type='popI_II', merger_rate_density_param=None)
+.. py:class:: SourceGalaxyPopulationModel(z_min=0.0, z_max=10.0, event_type='popI_II', merger_rate_density_fn=None, merger_rate_density_param=None)
 
    
    Class to generate a population of source galaxies.
@@ -2671,7 +2713,7 @@ Functions
           !! processed by numpydoc !!
 
 
-.. py:class:: CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type='popI_II', merger_rate_density_param=None, src_model_params=None)
+.. py:class:: CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type='popI_II', merger_rate_density_fn=None, merger_rate_density_param=None, src_model_params=None, spin_zero=False)
 
    Bases: :py:obj:`SourceGalaxyPopulationModel`
 
@@ -3023,7 +3065,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_popIII(size)
+   .. py:method:: binary_masses_popIII(size, Mc=30.0, sigma=0.3, beta=1.1)
 
       
       Function to calculate source mass1 and mass2 with pop III origin
@@ -3034,8 +3076,9 @@ Functions
           **size** : `int`
               Number of samples to draw
 
-          **src_model_params** : `dict`
-              Dictionary of model parameters
+          **Mc, sigma, beta** : `float`
+              Fitting parameters
+              default: Mc=30.0, sigma=0.3, beta=1.1
 
       :Returns:
 
@@ -3058,7 +3101,7 @@ Functions
 
       >>> from ler import CompactBinaryPopulation
       >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popIII")
-      >>> mass_1_source, mass_2_source = pop.binary_masses_popIII(size=1000, src_model_params=None)
+      >>> mass_1_source, mass_2_source = pop.binary_masses_popIII(size=1000)
 
 
 
@@ -3076,9 +3119,9 @@ Functions
           **size** : `int`
               Number of samples to draw
 
-          **src_model_params** : `dict`
-              Dictionary of model parameters
-              e.g. {'Mc':30.,'sigma':0.3,'beta':1.1}
+          **Mc, sigma, beta** : `float`
+              Fitting parameters
+              default: Mc=30.0, sigma=0.3, beta=1.1
 
       :Returns:
 
@@ -3101,15 +3144,14 @@ Functions
 
       >>> from ler import CompactBinaryPopulation
       >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "primordial")
-      >>> src_model_params = {'Mc':30.,'sigma':0.3,'beta':1.1}
-      >>> mass_1_source, mass_2_source = pop.binary_masses_primordial(size=1000, src_model_params=src_model_params)
+      >>> mass_1_source, mass_2_source = pop.binary_masses_primordial(size=1000)
 
 
 
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BNS(size)
+   .. py:method:: binary_masses_BNS(size, muL=1.35, sigmaL=0.08, muR=1.8, sigmaR=0.3)
 
       
       Function to calculate source mass1 and mass2 of BNS
@@ -3120,8 +3162,9 @@ Functions
           **size** : `int`
               Number of samples to draw
 
-          **src_model_params** : `dict`
-              Dictionary of model parameters
+          **muL, sigmaL, muR, sigmaR** : `float`
+              Fitting parameters
+              default: muL=1.35, sigmaL=0.08, muR=1.8, sigmaR=0.3
 
       :Returns:
 
@@ -3144,7 +3187,7 @@ Functions
 
       >>> from ler import CompactBinaryPopulation
       >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=1.0, m_max=3.0, event_type = "BNS")
-      >>> mass_1_source, mass_2_source = pop.binary_masses_BNS(size=1000, src_model_params=None)
+      >>> mass_1_source, mass_2_source = pop.binary_masses_BNS(size=1000)
 
 
 
@@ -3184,6 +3227,57 @@ Functions
       >>> from ler import CompactBinaryPopulation
       >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=1.0, m_max=3.0, event_type = "BNS")
       >>> q = pop.mass_ratio(size=1000, beta=1.1)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: binary_spin_popI_II(size)
+
+      
+      Function to calculate spin parameters with PowerLaw+PEAK model
+
+
+      :Parameters:
+
+          **size** : `int`
+              Number of samples to draw
+
+      :Returns:
+
+          **a_1** : `array`
+              Array of spin1
+
+          **a_2** : `array`
+              Array of spin2
+
+          **tilt_1** : `array`
+              Array of tilt1
+
+          **tilt_2** : `array`
+              Array of tilt2
+
+          **phi_12** : `array`
+              Array of phi12
+
+          **phi_jl** : `array`
+              Array of phi_jl
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler import CompactBinaryPopulation
+      >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
+      >>> a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl = pop.binary_spin_popI_II(size=1000)
 
 
 

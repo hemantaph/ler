@@ -2,7 +2,6 @@ setuptools>=67.8.0
 numpy>=1.18
 numba>=0.56.4
 bilby>=1.0.2
-pycbc<=2.0.6
 gwsnr>=0.1
 scipy>=1.9.0
 lenstronomy>=1.10.4

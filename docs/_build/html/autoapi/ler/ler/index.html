@@ -14,13 +14,13 @@
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
-        <script src="../../../_static/clipboard.min.js"></script>
-        <script src="../../../_static/copybutton.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=7b800ad1"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -146,6 +146,9 @@ reduce the batch size if you are getting memory error.</p>
 <dt><strong>snr_finder</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>default snr_finder = ‘gwsnr’.
 if ‘gwsnr’, the SNR will be calculated using the gwsnr package.
 if ‘custom’, the SNR will be calculated using a custom function.</p>
+</dd>
+<dt><strong>json_file_ler_param: `str`</strong></dt><dd><p>default json_file_ler_param = ‘ler_param.json’.
+json file containing the parameters for initializing the <a class="reference internal" href="../index.html#ler.LeR" title="ler.LeR"><code class="xref py py-class docutils literal notranslate"><span class="pre">LeR</span></code></a> class, <a class="reference internal" href="../index.html#ler.CompactBinaryPopulation" title="ler.CompactBinaryPopulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompactBinaryPopulation</span></code></a> class, <a class="reference internal" href="../index.html#ler.LensGalaxyPopulation" title="ler.LensGalaxyPopulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyPopulation</span></code></a> class, <code class="xref py py-class docutils literal notranslate"><span class="pre">GWSNR</span></code> class.</p>
 </dd>
 <dt><strong>kwargs</strong><span class="classifier"><cite>keyword arguments</cite></span></dt><dd><p>Note : kwargs takes input for initializing the <a class="reference internal" href="../index.html#ler.CompactBinaryPopulation" title="ler.CompactBinaryPopulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompactBinaryPopulation</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyPopulation</span></code>, <a class="reference internal" href="#ler.ler.LeR.gwsnr_intialization" title="ler.ler.LeR.gwsnr_intialization"><code class="xref py py-meth docutils literal notranslate"><span class="pre">gwsnr_intialization()</span></code></a>.</p>
 </dd>
@@ -571,7 +574,7 @@ unlensed_gw_params.keys() = [‘m1’, ‘m2’, ‘z’, ‘snr’, ‘theta_jn
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.unlensed_rate">
-<span class="sig-name descname"><span class="pre">unlensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gw_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params_detectable.json'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.unlensed_rate" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">unlensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gw_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.unlensed_rate" title="Permalink to this definition"></a></dt>
 <dd><p>Function to calculate unlensed merger rate.</p>
 <div class="math notranslate nohighlight">
 \[R_U = \mathcal{N}^U\int dz_s R_o^U(z_s)\bigg\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \bigg\}\]</div>
@@ -672,7 +675,7 @@ lensed_param.keys() = [‘zl’, ‘zs’, ‘sigma’, ‘q’, ‘e1’, ‘e2
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.lensed_rate">
-<span class="sig-name descname"><span class="pre">lensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">none_as_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.lensed_rate" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">lensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">none_as_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.lensed_rate" title="Permalink to this definition"></a></dt>
 <dd><p>Function to calculate lensed merger rate.</p>
 <div class="math notranslate nohighlight">
 \[R_L = \mathcal{N}^L\int dz_s R_o^L(z_s)\bigg\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \bigg\}\]</div>
@@ -723,7 +726,32 @@ detectable_lensed_param.keys() = [‘zl’, ‘zs’, ‘sigma’, ‘q’, ‘e
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.rate_comparision">
-<span class="sig-name descname"><span class="pre">rate_comparision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snr_threshold_unlensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unlened_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile_unlensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params_detectable.json'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.rate_comparision" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">rate_comparision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.rate_comparision" title="Permalink to this definition"></a></dt>
+<dd><p>Function to calculate unlensed and lensed merger rate and their ratio.
+It will get the unlensed_rate and lensed_rate from json_file_ler_param=”./LeR_params.json”</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>detectability_condition</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>detectability condition, either “step_function” or “pdet_function”</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>unlensed_rate</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>unlensed merger rate</p>
+</dd>
+<dt><strong>lensed_rate</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>lensed merger rate</p>
+</dd>
+<dt><strong>ratio</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>ratio of lensed_rate and unlensed_rate</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.ler.LeR.rate_comparision_with_rate_calculation">
+<span class="sig-name descname"><span class="pre">rate_comparision_with_rate_calculation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snr_threshold_unlensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unlened_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile_unlensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.rate_comparision_with_rate_calculation" title="Permalink to this definition"></a></dt>
 <dd><p>Function to calculate unlensed and lensed merger rate and their ratio.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

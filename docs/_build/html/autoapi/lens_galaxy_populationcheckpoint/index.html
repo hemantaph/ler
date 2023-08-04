@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lens_galaxy_population-checkpoint &mdash; ler 0.1.5 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=7b800ad1"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unlensed.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lensed.html">Lensed events</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rate_comparision.html">Calculation of unlensed and lensed rate of detectable events</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lens_galaxy_population-checkpoint</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/autoapi/lens_galaxy_populationcheckpoint/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-lens_galaxy_population-checkpoint">
+<span id="lens-galaxy-population-checkpoint"></span><h1><a class="reference internal" href="#module-lens_galaxy_population-checkpoint" title="lens_galaxy_population-checkpoint"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lens_galaxy_population-checkpoint</span></code></a><a class="headerlink" href="#module-lens_galaxy_population-checkpoint" title="Permalink to this heading"></a></h1>
+<p>This module contains the LensGalaxyPopulation class, which is used to sample lens galaxy parameters, source parameters conditioned on the source being strongly lensed, image properties, and lensed SNRs.</p>
+<p>The class inherits from the CompactBinaryPopulation class, which is used to sample source parameters.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LensGalaxyPopulation</span></code></a></p></td>
+<td><p>Class to sample lens galaxy parameters</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lens_galaxy_population-checkpoint.</span></span><span class="sig-name descname"><span class="pre">LensGalaxyPopulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">CompactBinaryPopulation_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation" title="Permalink to this definition"></a></dt>
+<dd><p>Class to sample lens galaxy parameters</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>CompactBinaryPopulation_</strong><span class="classifier">CompactBinaryPopulation class</span></dt><dd><p>This is an already initialized class that contains a function (CompactBinaryPopulation.sample_gw_parameters) that actually samples the source parameters.</p>
+<p><a class="reference internal" href="../ler/source_population/index.html#ler.source_population.CompactBinaryPopulation" title="ler.source_population.CompactBinaryPopulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompactBinaryPopulation</span></code></a></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.lens_galaxy_population</span> <span class="kn">import</span> <span class="n">LensGalaxyPopulation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_pop</span> <span class="o">=</span> <span class="n">LensGalaxyPopulation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># list all the methods of the class</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">([</span><span class="n">method</span> <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">lens_pop</span><span class="p">)</span> <span class="k">if</span> <span class="n">method</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">])</span>
+<span class="go">[&#39;Dc_to_z&#39;, &#39;angular_diameter_distance&#39;, &#39;angular_diameter_distance_z1z2&#39;, &#39;cbc_pop&#39;, &#39;compute_einstein_radii&#39;, &#39;create_lookup_table&#39;, &#39;differential_comoving_volume&#39;, &#39;get_image_properties&#39;, &#39;get_lensed_snrs&#39;, &#39;lens_redshift_sampler_helper_function&#39;, &#39;m_max&#39;, &#39;m_min&#39;, &#39;normalization_pdf_z&#39;, &#39;rejection_sample_lensing_probability&#39;, &#39;sample_axis_ratio_angle_phi&#39;, &#39;sample_galaxy_shear&#39;, &#39;sample_gamma&#39;, &#39;sample_lens_parameters&#39;, &#39;sample_lens_parameters_routine&#39;, &#39;sample_lens_redshifts&#39;, &#39;sample_strongly_lensed_source_parameters&#39;, &#39;sample_velocity_dispersion_axis_ratio&#39;, &#39;strong_lensing_optical_depth&#39;, &#39;z_max&#39;, &#39;z_min&#39;, &#39;z_to_Dc&#39;, &#39;z_to_luminosity_distance&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># sample lens parameters</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters</span> <span class="o">=</span> <span class="n">lens_pop</span><span class="o">.</span><span class="n">sample_lens_parameters</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">dict_keys([&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;e1&#39;, &#39;e2&#39;, &#39;gamma1&#39;, &#39;gamma2&#39;, &#39;Dl&#39;, &#39;Ds&#39;, &#39;Dls&#39;, &#39;theta_E&#39;, &#39;gamma&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;luminosity_distance&#39;, &#39;iota&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;a_1&#39;, &#39;a2&#39;, &#39;tilt1&#39;, &#39;tilt2&#39;, &#39;phi12&#39;, &#39;phi_jl&#39;])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># get image properties</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters</span> <span class="o">=</span> <span class="n">lens_pop</span><span class="o">.</span><span class="n">get_image_properties</span><span class="p">(</span><span class="n">lens_parameters</span><span class="p">,</span> <span class="n">n_min_images</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_max_images</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">lensModelList</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span> <span class="n">npool</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">solving lens equations...</span>
+<span class="go">100%|█████████████████████████████████████████████████████████| 1000/1000 [00:00&lt;00:00, 1258.38it/s]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">dict_keys([&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;e1&#39;, &#39;e2&#39;, &#39;gamma1&#39;, &#39;gamma2&#39;, &#39;Dl&#39;, &#39;Ds&#39;, &#39;Dls&#39;, &#39;theta_E&#39;, &#39;gamma&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;luminosity_distance&#39;, &#39;iota&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;a_1&#39;, &#39;a2&#39;, &#39;tilt1&#39;, &#39;tilt2&#39;, &#39;phi12&#39;, &#39;phi_jl&#39;, &#39;n_images&#39;, &#39;x0_image_positions&#39;, &#39;x1_image_positions&#39;, &#39;magnifications&#39;, &#39;time_delays&#39;, &#39;image_type&#39;, &#39;weights&#39;])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># get lensed SNRs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gwsnr</span> <span class="kn">import</span> <span class="n">GWSNR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">snr</span> <span class="o">=</span> <span class="n">GWSNR</span><span class="p">()</span>
+<span class="go">Given: IMR waveform</span>
+<span class="go">psds not given. Choosing bilby&#39;s default psds</span>
+<span class="go">given psds:  {&#39;L1&#39;: &#39;aLIGO_O4_high_asd.txt&#39;, &#39;H1&#39;: &#39;aLIGO_O4_high_asd.txt&#39;, &#39;V1&#39;: &#39;AdV_asd.txt&#39;}</span>
+<span class="go">Interpolator will be generated for L1 detector at ./interpolator_pickle/L1/halfSNR_dict_0.pickle</span>
+<span class="go">Interpolator will be generated for H1 detector at ./interpolator_pickle/H1/halfSNR_dict_0.pickle</span>
+<span class="go">Interpolator will be generated for V1 detector at ./interpolator_pickle/V1/halfSNR_dict_0.pickle</span>
+<span class="go">Generating interpolator for [&#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;] detectors</span>
+<span class="go">interpolation for each mass_ratios: 100%|███████████████████████████| 50/50 [00:23&lt;00:00,  2.10it/s]</span>
+<span class="go">interpolator generated</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_snrs</span> <span class="o">=</span> <span class="n">lens_pop</span><span class="o">.</span><span class="n">get_lensed_snrs</span><span class="p">(</span><span class="n">snr</span><span class="p">,</span> <span class="n">lens_parameters</span><span class="p">,</span> <span class="n">n_max_images</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_snrs</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">dict_keys([&#39;opt_snr_net&#39;, &#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;])</span>
+</pre></div>
+</div>
+<section id="instance-attributes">
+<h4>Instance Attributes<a class="headerlink" href="#instance-attributes" title="Permalink to this heading"></a></h4>
+<p>LensGalaxyPopulation class has the following instance attributes:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Atrributes</p></th>
+<th class="head"><p>Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.cbc_pop" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.cbc_pop"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cbc_pop</span></code></a></p></td>
+<td><p>CompactBinaryPopulation class</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.z_min" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.z_min"><code class="xref py py-attr docutils literal notranslate"><span class="pre">z_min</span></code></a></p></td>
+<td><p>float</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.z_max" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.z_max"><code class="xref py py-attr docutils literal notranslate"><span class="pre">z_max</span></code></a></p></td>
+<td><p>float</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.m_min" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.m_min"><code class="xref py py-attr docutils literal notranslate"><span class="pre">m_min</span></code></a></p></td>
+<td><p>float</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.m_max" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.m_max"><code class="xref py py-attr docutils literal notranslate"><span class="pre">m_max</span></code></a></p></td>
+<td><p>float</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.normalization_pdf_z" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.normalization_pdf_z"><code class="xref py py-attr docutils literal notranslate"><span class="pre">normalization_pdf_z</span></code></a></p></td>
+<td><p>float</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="instance-methods">
+<h4>Instance Methods<a class="headerlink" href="#instance-methods" title="Permalink to this heading"></a></h4>
+<p>LensGalaxyPopulation class has the following instance methods:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Methods</p></th>
+<th class="head"><p>Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.create_lookup_table" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.create_lookup_table"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_lookup_table()</span></code></a></p></td>
+<td><p>Function to create a lookup
+table for the differential
+comoving volume and luminosity
+distance wrt redshift</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_lens_parameters" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_lens_parameters"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_lens_parameters()</span></code></a></p></td>
+<td><p>Function to sample lens galaxy
+parameters</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_lens_parameters_routine" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_lens_parameters_routine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_lens_parameters_routine()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>Function to sample lens galaxy
+parameters</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_strongly_lensed_source_parameters" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_strongly_lensed_source_parameters"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_strongly_lensed_source_parameters()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>Function to sample source
+parameters conditioned on the
+source being strongly lensed</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_lens_redshifts" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_lens_redshifts"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_lens_redshifts()</span></code></a></p></td>
+<td><p>Function to sample lens redshifts</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_velocity_dispersion_axis_ratio" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_velocity_dispersion_axis_ratio"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_velocity_dispersion_axis_ratio()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>Function to sample velocity
+dispersion and axis ratio of the
+lens galaxy</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.compute_einstein_radii" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.compute_einstein_radii"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compute_einstein_radii()</span></code></a></p></td>
+<td><p>Function to compute the Einstein
+radii of the lens galaxies</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_axis_ratio_angle_phi" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_axis_ratio_angle_phi"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_axis_ratio_angle_phi()</span></code></a></p></td>
+<td><p>Function to sample the axis
+rotation angle of the elliptical
+lens galaxy</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_galaxy_shear" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_galaxy_shear"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_galaxy_shear()</span></code></a></p></td>
+<td><p>Function to sample the lens
+galaxy shear</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_gamma" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_gamma"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_gamma()</span></code></a></p></td>
+<td><p>Function to sample the lens
+galaxy spectral index of the
+density profile</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.rejection_sample_lensing_probability" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.rejection_sample_lensing_probability"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rejection_sample_lensing_probability()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>Function to conduct rejection
+sampling wrt einstein radius</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.strong_lensing_optical_depth" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.strong_lensing_optical_depth"><code class="xref py py-meth docutils literal notranslate"><span class="pre">strong_lensing_optical_depth()</span></code></a></p></td>
+<td><p>Function to compute the strong
+lensing optical depth</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.get_image_properties" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.get_image_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_image_properties()</span></code></a></p></td>
+<td><p>Function to get the image
+properties e.g. image positions,
+magnifications, time delays, etc.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.get_lensed_snrs" title="lens_galaxy_population-checkpoint.LensGalaxyPopulation.get_lensed_snrs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_lensed_snrs()</span></code></a></p></td>
+<td><p>Function to get the lensed SNRs</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.cbc_pop">
+<span class="sig-name descname"><span class="pre">cbc_pop</span></span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.cbc_pop" title="Permalink to this definition"></a></dt>
+<dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">CompactBinaryPopulation</span></code> class</p>
+<p>This is an already initialized class that contains a function (CompactBinaryPopulation.sample_gw_parameters) that actually samples the source parameters.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.z_min">
+<span class="sig-name descname"><span class="pre">z_min</span></span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.z_min" title="Permalink to this definition"></a></dt>
+<dd><p><cite>float</cite></p>
+<p>minimum redshift</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.z_max">
+<span class="sig-name descname"><span class="pre">z_max</span></span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.z_max" title="Permalink to this definition"></a></dt>
+<dd><p><cite>float</cite></p>
+<p>maximum redshift</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.m_min">
+<span class="sig-name descname"><span class="pre">m_min</span></span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.m_min" title="Permalink to this definition"></a></dt>
+<dd><p><cite>float</cite></p>
+<p>minimum mass in detector frame</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.m_max">
+<span class="sig-name descname"><span class="pre">m_max</span></span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.m_max" title="Permalink to this definition"></a></dt>
+<dd><p><cite>float</cite></p>
+<p>maximum mass in detector frame</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.normalization_pdf_z">
+<span class="sig-name descname"><span class="pre">normalization_pdf_z</span></span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.normalization_pdf_z" title="Permalink to this definition"></a></dt>
+<dd><p><cite>float</cite></p>
+<p>normalization constant of the pdf p(z)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.create_lookup_table">
+<span class="sig-name descname"><span class="pre">create_lookup_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.create_lookup_table" title="Permalink to this definition"></a></dt>
+<dd><p>Functions to create lookup tables
+1. Redshift to co-moving distance.
+2. Co-moving distance to redshift.
+3. Redshift to luminosity distance
+4. Redshift to angular diameter distance.
+5. Lens redshift sampler helper function.
+6. Redshift to differential comoving volume.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>z_min</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>minimum redshift</p>
+</dd>
+<dt><strong>z_max</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>maximum redshift</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_lens_parameters">
+<span class="sig-name descname"><span class="pre">sample_lens_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens_parameters_input</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_lens_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>Function to sample galaxy lens parameters</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of lens parameters to sample</p>
+</dd>
+<dt><strong>lens_parameters_input</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of lens parameters to sample</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>lens_parameters</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of lens parameters and source parameters (lens conditions applied)
+e.g. dictionary keys:</p>
+<p>lensing related=&gt;[‘zl’:redshift of lens, ‘zs’: redshift of source, ‘sigma’:velocity dispersion, ‘q’:axis ratios, ‘e1’:ellipticity, ‘e2’:ellipticity, ‘gamma1’:external-shear, ‘gamma2’:external-shear, ‘Dl’:angular diameter distance of lens, ‘Ds’:angular diameter distance of source, ‘Dls’:angular diameter distance between lens and source, ‘theta_E’: einstein radius in radian, ‘gamma’:spectral index of mass density distribution]</p>
+<p>source related=&gt;[‘mass_1’: mass in detector frame (mass1&gt;mass2), ‘mass_2’: mass in detector frame, ‘mass_1_source’:mass in source frame, ‘mass_2_source’:mass source frame, ‘luminosity_distance’: luminosity distance, ‘iota’: inclination angle, ‘psi’: polarization angle, ‘phase’: coalesence phase, ‘geocent_time’: coalensence GPS time at geocenter, ‘ra’: right ascension, ‘dec’: declination, ‘a_1’: spin magnitude of the more massive black hole, ‘a2’: spin magnitude of the less massive black hole, ‘tilt_1’: tilt angle of the more massive black hole, ‘tilt_2’: tilt angle of the less massive black hole, ‘phi_12’: azimuthal angle between the two spins, ‘phi_jl’: azimuthal angle between the total angular momentum and the orbital angular momentum]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_lens_parameters_routine">
+<span class="sig-name descname"><span class="pre">sample_lens_parameters_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens_parameters_input</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_lens_parameters_routine" title="Permalink to this definition"></a></dt>
+<dd><p>Function to sample galaxy lens parameters</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of lens parameters to sample</p>
+</dd>
+<dt><strong>lens_parameters_input</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of lens parameters to sample</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>lens_parameters</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of lens parameters and source parameters (lens conditions applied)
+e.g. dictionary keys:</p>
+<p>lensing related=&gt;[‘zl’:redshift of lens, ‘zs’: redshift of source, ‘sigma’:velocity dispersion, ‘q’:axis ratios, ‘e1’:ellipticity, ‘e2’:ellipticity, ‘gamma1’:external-shear, ‘gamma2’:external-shear, ‘Dl’:angular diameter distance of lens, ‘Ds’:angular diameter distance of source, ‘Dls’:angular diameter distance between lens and source, ‘theta_E’: einstein radius in radian, ‘gamma’:spectral index of mass density distribution]</p>
+<p>source related=&gt;[‘mass_1’: mass in detector frame (mass1&gt;mass2), ‘mass_2’: mass in detector frame, ‘mass_1_source’:mass in source frame, ‘mass_2_source’:mass source frame, ‘luminosity_distance’: luminosity distance, ‘iota’: inclination angle, ‘psi’: polarization angle, ‘phase’: coalesence phase, ‘geocent_time’: coalensence GPS time at geocenter, ‘ra’: right ascension, ‘dec’: declination, ‘a_1’: spin magnitude of the more massive black hole, ‘a2’: spin magnitude of the less massive black hole, ‘tilt_1’: tilt angle of the more massive black hole, ‘tilt_2’: tilt angle of the less massive black hole, ‘phi_12’: azimuthal angle between the two spins, ‘phi_jl’: azimuthal angle between the total angular momentum and the orbital angular momentum]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_strongly_lensed_source_parameters">
+<span class="sig-name descname"><span class="pre">sample_strongly_lensed_source_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_strongly_lensed_source_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>Function to sample source redshifts and other parameters, conditioned on the source being strongly lensed.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of lens parameters to sample</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>gw_param_strongly_lensed</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of source parameters. <cite>zs</cite> is sampled considering the merger rate density at source frame, comoving volume and strong lensing optical depth.</p>
+<p>e.g. gw_param_strongly_lensed.keys() = [‘mass_1’, ‘mass_2’, ‘mass_1_source’, ‘mass_2_source’, ‘zs’, ‘luminosity_distance’, ‘iota’, ‘psi’, ‘phase’, ‘geocent_time’, ‘ra’, ‘dec’, ‘a_1’, ‘a2’, ‘tilt1’, ‘tilt2’, ‘phi12’, ‘phi_jl’]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_lens_redshifts">
+<span class="sig-name descname"><span class="pre">sample_lens_redshifts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_lens_redshifts" title="Permalink to this definition"></a></dt>
+<dd><p>Function to sample lens redshifts, conditioned on the lens being strongly lensed
+Input parameters:</p>
+<blockquote>
+<div><p>zs : source redshifts</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Output parameters:</dt><dd><p>zl : lens redshifts</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_velocity_dispersion_axis_ratio">
+<span class="sig-name descname"><span class="pre">sample_velocity_dispersion_axis_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_velocity_dispersion_axis_ratio" title="Permalink to this definition"></a></dt>
+<dd><p>Function to sample velocity dispersion and axis ratio of the lens galaxy</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>zs</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>source redshifts</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>sigma</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>velocity dispersion of the lens galaxy</p>
+</dd>
+<dt><strong>q</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>axis ratio of the lens galaxy</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.compute_einstein_radii">
+<span class="sig-name descname"><span class="pre">compute_einstein_radii</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.compute_einstein_radii" title="Permalink to this definition"></a></dt>
+<dd><p>Function to compute the Einstein radii of the lens galaxies</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>sigma</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>velocity dispersion of the lens galaxy</p>
+</dd>
+<dt><strong>zl</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>lens redshifts</p>
+</dd>
+<dt><strong>zs</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>source redshifts</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>theta_E</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Einstein radii of the lens galaxies</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_axis_ratio_angle_phi">
+<span class="sig-name descname"><span class="pre">sample_axis_ratio_angle_phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_axis_ratio_angle_phi" title="Permalink to this definition"></a></dt>
+<dd><p>Function to sample the axis rotation angle of the elliptical lens galaxy</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of lens parameters to sample</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>phi</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>axis rotation angle of the elliptical lens galaxy</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_galaxy_shear">
+<span class="sig-name descname"><span class="pre">sample_galaxy_shear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_galaxy_shear" title="Permalink to this definition"></a></dt>
+<dd><p>Function to sample the lens galaxy shear</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of lens parameters to sample</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>gamma_1</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>shear component in the x-direction</p>
+</dd>
+<dt><strong>gamma_2</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>shear component in the y-direction</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_gamma">
+<span class="sig-name descname"><span class="pre">sample_gamma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.sample_gamma" title="Permalink to this definition"></a></dt>
+<dd><p>Function to sample the lens galaxy spectral index of the density profile</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of lens parameters to sample</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>gamma</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>spectral index of the density profile</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.rejection_sample_lensing_probability">
+<span class="sig-name descname"><span class="pre">rejection_sample_lensing_probability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta_E</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.rejection_sample_lensing_probability" title="Permalink to this definition"></a></dt>
+<dd><p>Function to conduct rejection sampling wrt einstein radius</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>theta_E</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Einstein radii of the lens galaxies</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>idx</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>boolean array of size len(theta_E) indicating whether the sample is accepted or not</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.strong_lensing_optical_depth">
+<span class="sig-name descname"><span class="pre">strong_lensing_optical_depth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.strong_lensing_optical_depth" title="Permalink to this definition"></a></dt>
+<dd><p>Function to compute the strong lensing optical depth</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>zs</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>source redshifts</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>tau</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>strong lensing optical depth</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.get_image_properties">
+<span class="sig-name descname"><span class="pre">get_image_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lens_parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_min_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">int(2)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">int(4)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lensModelList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['EPL_NUMBA',</span> <span class="pre">'SHEAR']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.get_image_properties" title="Permalink to this definition"></a></dt>
+<dd><p>Function to get the image properties e.g. image positions, magnifications, time delays, etc.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>lens_parameters</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of lens parameters
+e.g. lens_parameters.keys() = [‘zs’, ‘zl’, ‘gamma1’, ‘gamma2’, ‘e1’, ‘e2’, ‘gamma’, ‘theta_E’]</p>
+</dd>
+<dt><strong>n_min_images</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>minimum number of images to consider
+default: 2</p>
+</dd>
+<dt><strong>n_max_images</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>maximum number of images to consider
+default: 4</p>
+</dd>
+<dt><strong>lensModelList</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>list of lens models
+default: [‘EPL_NUMBA’, ‘SHEAR’]</p>
+</dd>
+<dt><strong>npool</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of processes to use
+default: 4</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>lens_parameters</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of lens parameters and image properties
+e.g. lens_parameters contains the following keys:</p>
+<p>lens related=&gt;[‘zs’: source redshift, ‘zl’: lens redshift, ‘gamma1’: shear component in the x-direction, ‘gamma2’: shear component in the y-direction, ‘e1’: ellipticity component in the x-direction, ‘e2’: ellipticity component in the y-direction, ‘gamma’: spectral index of the mass density distribution, ‘theta_E’: einstein radius in radian]</p>
+<p>source related=&gt;[‘mass_1’: mass in detector frame (mass1&gt;mass2), ‘mass_2’: mass in detector frame, ‘mass_1_source’:mass in source frame, ‘mass_2_source’:mass source frame, ‘luminosity_distance’: luminosity distance, ‘iota’: inclination angle, ‘psi’: polarization angle, ‘phase’: coalesence phase, ‘geocent_time’: coalensence GPS time at geocenter, ‘ra’: right ascension, ‘dec’: declination, ‘a_1’: spin magnitude of the more massive black hole, ‘a2’: spin magnitude of the less massive black hole, ‘tilt_1’: tilt angle of the more massive black hole, ‘tilt_2’: tilt angle of the less massive black hole, ‘phi_12’: azimuthal angle between the two spins, ‘phi_jl’: azimuthal angle between the total angular momentum and the orbital angular momentum]</p>
+<p>image related=&gt;[‘x_source’: source position in the x-direction, ‘y_source’: source position in the y-direction, ‘x0_image_position’: image position in the x-direction, ‘x1_image_position’: image position in the y-direction, ‘magnifications’: magnifications, ‘time_delays’: time delays, ‘n_images’: number of images formed, ‘determinant’: determinants, ‘trace’: traces, ‘iteration’: to keep track of the iteration number, ‘weights’: weights for the caustic considered]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lens_galaxy_population-checkpoint.LensGalaxyPopulation.get_lensed_snrs">
+<span class="sig-name descname"><span class="pre">get_lensed_snrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snr_calculator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lens_galaxy_population-checkpoint.LensGalaxyPopulation.get_lensed_snrs" title="Permalink to this definition"></a></dt>
+<dd><p>Function to calculate the signal to noise ratio for each image in each event.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>snr_calculator</strong><span class="classifier"><cite>class</cite></span></dt><dd><p>snr_calculator class
+this is an already initialized class that contains a function (snr_calculator.snr) that actually calculates snr with the given gw_params.</p>
+<p>Luminosity distance and time delay are modified to be effective luminosity distance and effective time delay, respectively, for each image using the magnifications and time delays.</p>
+</dd>
+<dt><strong>lensed_param</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary containing the both already lensed source paramters and image parameters.
+e.g. lensed_param.keys() = [‘mass_1’, ‘mass_2’, ‘zs’, ‘luminosity_distance’, ‘iota’, ‘psi’, ‘phi’, ‘ra’, ‘dec’, ‘geocent_time’, ‘phase’, ‘a_1’, ‘a2’, ‘tilt_1’, ‘tilt_2’, ‘phi_12’, ‘phi_jl’, ‘magnifications’, ‘time_delays’]</p>
+</dd>
+<dt><strong>n_max_images</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>maximum number of images to consider
+default: 4</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>snrs</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>signal to noise ratio for each image in each event.
+(dictionary containing ‘H1’, ‘L1’, …, and ‘opt_snr_net’, which is the network snr, for each image as an array with dimensions (number_of_lensed_events,n_max_images) )</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
