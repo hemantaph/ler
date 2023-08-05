@@ -5,15 +5,15 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+
 import os
 import sys
-sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0, os.path.abspath("../ler")) 
+sys.path.insert(0, os.path.abspath("../ler/")) 
 
 project = 'ler'
 copyright = '2023, Phurailatpam Hemantakumar'
 author = 'Phurailatpam Hemantakumar'
-release = '0.1.5'
+release = '0.2.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -24,13 +24,14 @@ extensions = [
     "numpydoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.autosectionlabel",
+    "sphinx.ext.autodoc",
     "sphinx.ext.inheritance_diagram",
     "sphinx_tabs.tabs",
+    "autoapi.extension",
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
     "myst_parser",
     "sphinx_copybutton",
-    "autoapi.extension",
 ]
 
 templates_path = ['_templates']
@@ -45,8 +46,10 @@ pygments_style = 'sphinx'
 # Don't mess with double-dash used in CLI options
 smartquotes_action = "qe"
 
+
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
+
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 
@@ -88,3 +91,17 @@ def skip_member(app, what, name, obj, skip, options):
 
 def setup(sphinx):
     sphinx.connect("autoapi-skip-member", skip_member)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

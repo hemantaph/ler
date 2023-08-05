@@ -31,6 +31,7 @@ Classes
 
 .. py:class:: SourceGalaxyPopulationModel(z_min=0.0, z_max=10.0, event_type='popI_II', merger_rate_density_fn=None, merger_rate_density_param=None)
 
+
    
    Class to generate a population of source galaxies.
    This class is inherited by :class:`~ler.ler.CompactBinaryPopulation` class.
@@ -526,6 +527,7 @@ Classes
 
 
 .. py:class:: CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type='popI_II', merger_rate_density_fn=None, merger_rate_density_param=None, src_model_params=None)
+
 
    Bases: :py:obj:`SourceGalaxyPopulationModel`
 
