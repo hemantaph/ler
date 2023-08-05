@@ -8,7 +8,6 @@ import json
 import random
 import contextlib
 import numpy as np
-import pycbc
 from gwsnr import GWSNR
 from scipy.stats import norm, gaussian_kde
 from scipy.interpolate import interp1d
@@ -49,6 +48,9 @@ class LeR:
         default snr_finder = 'gwsnr'.
         if 'gwsnr', the SNR will be calculated using the gwsnr package.
         if 'custom', the SNR will be calculated using a custom function.
+    json_file_ler_param: `str`
+        default json_file_ler_param = 'ler_param.json'.
+        json file containing the parameters for initializing the :class:`~ler.LeR` class, :class:`~ler.CompactBinaryPopulation` class, :class:`~ler.LensGalaxyPopulation` class, :class:`~gwsnr.GWSNR` class.
     kwargs : `keyword arguments`
         Note : kwargs takes input for initializing the :class:`~ler.CompactBinaryPopulation`, :class:`LensGalaxyPopulation`, :meth:`~gwsnr_intialization`.
 
@@ -705,6 +707,7 @@ class LeR:
         gw_param="./gw_params.json",
         snr_threshold=8.0,
         jsonfile="./gw_params_detectable.json",
+        detectability_condition="step_function",
     ):
         """
         Function to calculate unlensed merger rate.
@@ -742,13 +745,61 @@ class LeR:
             print(f"getting gw_params from json file {gw_param}...")
             gw_param = get_param_from_json(gw_param)
 
-        # get snr
-        snr = gw_param["opt_snr_net"]
-        pdet = 1 - norm.cdf(snr_threshold - snr)
-        gw_param["pdet_net"] = pdet
+        # call json_file_ler_param and for adding the final results
+        with open(self.json_file_ler_param, 'r', encoding='utf-8') as f:
+            data = json.load(f)
 
-        # selecting only detectable
-        idx_detectable = snr > snr_threshold
+        # if detectability_condition == "step_function" or snr is not None:
+        if detectability_condition == "step_function":
+            try:
+                # get snr
+                snr = gw_param["opt_snr_net"]
+            except:
+                # snr not provided
+                print("snr not provided in gw_param dict. Exiting...")
+                return None
+            
+            # selecting only detectable
+            idx_detectable = snr > snr_threshold
+            
+            # montecarlo integration
+            # The total rate is Eq. A4 of https://arxiv.org/pdf/2106.06303.pdf
+            # R = C0 int Theta(rho-rhoc) p(z) p(theta) dtheta dz_s, where C0 = int R(zs)/(1+zs) dVc/dzs dzs is the normalization constant for p(z)
+            # Thus R = C0 <Theta(rho-rhoc)>
+            c0 = self.compact_binary_pop.normalization_pdf_z
+            total_rate = c0 * np.mean(idx_detectable)
+            print(f"total unlensed rate (yr^-1) (with step function): {total_rate}")
+            # append the results
+            data['unlensed_rate_step'] = total_rate
+
+        else:
+            # check if pdet is provided
+            try:
+                pdet = gw_param["pdet_net"]
+            except:
+                try:
+                    snr = gw_param["opt_snr_net"]
+                except:
+                    print("pdet not provided in gw_param dict. Exiting...")
+                    return None
+
+            pdet = 1 - norm.cdf(snr_threshold - snr)
+            gw_param["pdet_net"] = pdet
+
+            # selecting only detectable
+            idx_detectable = pdet > 0.5
+
+            # with pdet
+            # montecarlo integration
+            # The total rate is Eq. A4 of https://arxiv.org/pdf/2106.06303.pdf
+            # R = C0 int pdet p(z) p(theta) dtheta dz_s, where C0 = int R(zs)/(1+zs) dVc/dzs dzs is the normalization constant for p(z)
+            # Thus R = C0 <pdet>
+            c0 = self.compact_binary_pop.normalization_pdf_z
+            total_rate = c0 * np.mean(pdet)
+            print(f"total unlensed rate (yr^-1) (with pdet function): {total_rate}")
+            # append the results
+            data['unlensed_rate_pdet'] = total_rate
+
         # store all detectable params in json file
         for key, value in gw_param.items():
             gw_param[key] = value[idx_detectable]
@@ -757,29 +808,13 @@ class LeR:
         print(f"storing detectable unlensed params in {jsonfile}")
         append_json(jsonfile, gw_param, replace=True)
 
-        # montecarlo integration
-        # The total rate is Eq. A4 of https://arxiv.org/pdf/2106.06303.pdf
-        # R = C0 int Theta(rho-rhoc) p(z) p(theta) dtheta dz_s, where C0 = int R(zs)/(1+zs) dVc/dzs dzs is the normalization constant for p(z)
-        # Thus R = C0 <Theta(rho-rhoc)>
-        c0 = self.compact_binary_pop.normalization_pdf_z
-        total_rate_step = c0 * np.mean(idx_detectable)
-        print(f"total unlensed rate with step function: {total_rate_step}")
-        # with pdet
-        total_rate_pdet = c0 * np.mean(pdet)
-        print(f"total unlensed rate with pdet function: {total_rate_pdet}")
-
-        gw_param_detectable = get_param_from_json(jsonfile)
-
-        # call json_file_ler_param and add the results
-        with open(self.json_file_ler_param, 'r', encoding='utf-8') as f:
-            data = json.load(f) 
-        # append the results
-        data['unlensed_rate_step'] = total_rate_step
-        data['unlensed_rate_pdet'] = total_rate_pdet
         # write the results
         append_json(self.json_file_ler_param, data, replace=True)
 
-        return ([total_rate_step, total_rate_pdet], gw_param_detectable)
+        # get the detectable params and return
+        gw_param_detectable = get_param_from_json(jsonfile)
+
+        return (total_rate, gw_param_detectable)
 
     def lensed_sampling_routine(self, nsamples, file_name, resume=False):
         """
@@ -900,6 +935,7 @@ class LeR:
         num_img=2,
         jsonfile="./lensed_params_detectable.json",
         none_as_nan=True,
+        detectability_condition="step_function",
     ):
         """
         Function to calculate lensed merger rate.
@@ -951,41 +987,87 @@ class LeR:
             print(f"getting lensed_param from json file {lensed_param}...")
             lensed_param = get_param_from_json(lensed_param)
 
-        # Dimensions are (nsamples, n_max_images)
-        snr = lensed_param["opt_snr_net"]
-        size = len(snr)
-        snr_threshold, num_img = np.array([snr_threshold]).reshape(-1), np.array(
-            [num_img]
-        ).reshape(
-            -1
-        )  # convert to array
-        # sort in descending order of each row
-        arg_th = (-snr_threshold).argsort()
-        sorted_snr = -np.sort(-snr, axis=1)
-        num1 = 0  # tracks the number of images for the current threshold
-        num2 = 0  # tracks the column number of the already sorted snr 2D array
-        # boolean array to store the result of the threshold condition
-        snr_hit = np.full(len(snr), True)
-        # array to store the result of the pdet condition
-        pdet_combined = np.full(len(snr), 1.0)
-        for i in arg_th:
-            num1 = num_img[i]
-            for j in range(num1):
-                # snr_hit step function case
-                # checking only the second highest snr should suffice
-                snr_hit = snr_hit & (sorted_snr[:, num2] > snr_threshold[i])
-                # pdet for probability of detection
-                pdet = 1 - norm.cdf(
-                    snr_threshold[i] - np.nan_to_num(sorted_snr[:, num2])
-                )
-                pdet_combined = pdet_combined * pdet
-                num2 += 1
-        lensed_param["pdet_net"] = pdet
+        # get size of the lensed_param for a parameter
+        size = len(lensed_param["zs"])
 
+        # call json_file_ler_param and for adding the final results
+        with open(self.json_file_ler_param, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+
+        # check for images with snr above threshold
+        snr_threshold, num_img = np.array([snr_threshold]).reshape(-1), np.array(
+            [num_img]).reshape(-1)  # convert to array
+
+        # weights=1 if set minimum number of image is 2
         weights = lensed_param["weights"]
         # rejection sample wrt to weights
         not_rejected = np.random.uniform(0, 1, size) < weights
-        snr_hit = snr_hit & not_rejected
+
+        # if detectability_condition == "step_function" or snr is not None:
+        if detectability_condition == "step_function":
+            try:
+                # get snr, dimensions are (nsamples, n_max_images)
+                snr = lensed_param["opt_snr_net"]
+            except:
+                # snr not provided
+                print("snr not provided in gw_param dict. Exiting...")
+                return None
+
+            snr_hit = np.full(size, True)  # boolean array to store the result of the threshold condition
+            # Below can be just one line with 3D numpy operation
+            for i in range(len(snr_threshold)):
+                snr_hit = snr_hit & (np.sum((snr > snr_threshold[i]), axis=1) >= num_img[i])
+            snr_hit = snr_hit & not_rejected
+
+            # montecarlo integration
+            # The total rate is Eq. A4 of https://arxiv.org/pdf/2106.06303.pdf
+            # R = C0 int Theta(rho-rhoc) p(z) p(theta) dtheta dz_s, where C0 = int R(zs)/(1+zs) dVc/dzs tau(zs) dzs is the normalization constant for p(z)
+            # Thus R = C0 <Theta(rho-rhoc)>
+            total_rate = self.lens_galaxy_pop.normalization_pdf_z * np.mean(snr_hit)
+            print("total lensed rate (yr^-1) (with step function): {}".format(total_rate))
+            # append the results
+            data['lensed_rate_step'] = total_rate
+
+        else:
+            # get pdet, dimensions are (nsamples, n_max_images)
+            # check if pdet is provided
+            try:
+                pdet = lensed_param["pdet_net"]
+            except:
+                try:
+                    # dimensions are (nsamples, n_max_images)
+                    pdet = []
+                    snr = lensed_param["opt_snr_net"]
+                    for i in range(len(snr_threshold)):
+                        # store pdet for each threshold condition
+                        pdet.append(1 - norm.cdf(snr_threshold[i] - snr))
+                    pdet = np.array(pdet)
+                except:
+                    print("pdet not provided in lensed_param dict. Exiting...")
+                    return None
+                
+            # product of pdet for all images
+            # think of 3d layer. x-y correspons to snr, and z wrt snr_threshold
+            pdet_combined = np.full(size, 1.0)
+            for i in range(len(snr_threshold)):
+                # sort pdet and use only num_img images
+                pdet_combined = pdet_combined * np.prod(-np.sort(-pdet[i], axis=1)[:, :num_img[i]])
+            lensed_param["pdet_net"] = pdet_combined
+
+            # snr_hit
+            snr_hit = pdet_combined > 0.5
+            snr_hit = snr_hit & not_rejected
+
+            # with pdet
+            # montecarlo integration
+            # The total rate is Eq. A4 of https://arxiv.org/pdf/2106.06303.pdf
+            # R = C0 int Theta(rho-rhoc) p(z) p(theta) dtheta dz_s, where C0 = int R(zs)/(1+zs) dVc/dzs tau(zs) dzs is the normalization constant for p(z)
+            # Thus R = C0 <pdet>
+            c0 = self.compact_binary_pop.normalization_pdf_z
+            total_rate = c0 * np.mean(pdet_combined * weights)
+            print(f"total lensed rate (yr^-1) (with pdet function): {total_rate}")
+            # append the results
+            data['lensed_rate_pdet'] = total_rate
 
         # store all params in json file
         if none_as_nan == True:
@@ -999,32 +1081,74 @@ class LeR:
         print(f"storing detectable lensed params in {jsonfile}...")
         append_json(jsonfile, lensed_param, replace=True)
 
-        # montecarlo integration
-        # The total rate is Eq. A4 of https://arxiv.org/pdf/2106.06303.pdf
-        # R = C0 int Theta(rho-rhoc) p(z) p(theta) dtheta dz_s, where C0 = int R(zs)/(1+zs) dVc/dzs tau(zs) dzs is the normalization constant for p(z)
-        # Thus R = C0 <Theta(rho-rhoc)>
-        c0 = self.lens_galaxy_pop.normalization_pdf_z
-        total_rate_step = c0 * np.mean(snr_hit)
-        print("total lensed rate with step function: {}".format(total_rate_step))
-
-        # with pdet
-        total_rate_pdet = c0 * np.mean(pdet_combined * weights)
-        print("total lensed rate with pdet function: {}".format(total_rate_pdet))
-
+        # write the results
+        append_json(self.json_file_ler_param, data, replace=True)
+        # get the detectable params and return
         lensed_param_detectable = get_param_from_json(jsonfile)
+
+        return (total_rate, lensed_param_detectable)
+    
+    def rate_comparision(self, detectability_condition="step_function"):
+        """
+        Function to calculate unlensed and lensed merger rate and their ratio. 
+        It will get the unlensed_rate and lensed_rate from json_file_ler_param="./LeR_params.json"
+
+        Parameters
+        ----------
+        detectability_condition : `str`
+            detectability condition, either "step_function" or "pdet_function"
+
+        Returns
+        -------
+        unlensed_rate : `float`
+            unlensed merger rate
+        lensed_rate : `float`
+            lensed merger rate
+        ratio : `float`
+            ratio of lensed_rate and unlensed_rate
+
+        """
 
         # call json_file_ler_param and add the results
         with open(self.json_file_ler_param, 'r', encoding='utf-8') as f:
             data = json.load(f)
-        # append the results
-        data['lensed_rate_step'] = total_rate_step
-        data['lensed_rate_pdet'] = total_rate_pdet
+
+        if detectability_condition == "step_function":
+            try:
+                unlensed_rate = data['unlensed_rate_step']
+                lensed_rate = data['lensed_rate_step']
+            except:
+                print("unlensed_rate_step or lensed_rate_step not found in json file. Exiting...")
+                return None
+            rate_ratio = unlensed_rate / lensed_rate
+            # append the results
+            data['rate_ratio_step'] = rate_ratio
+
+        elif detectability_condition == "pdet":
+            try:
+                unlensed_rate = data['unlensed_rate_pdet']
+                lensed_rate = data['lensed_rate_pdet']
+            except:
+                print("unlensed_rate_pdet or lensed_rate_pdet not found in json file. Exiting...")
+                return None
+            rate_ratio = unlensed_rate / lensed_rate
+            # append the results
+            data['rate_ratio_pdet'] = rate_ratio
+        else:
+            print("detectability_condition should be either step_function or pdet_function")
+            return None
+        
+        
+        print(f"unlensed_rate: {unlensed_rate}")
+        print(f"lensed_rate: {lensed_rate}")
+        print(f"ratio: {rate_ratio}")
+
         # write the results
         append_json(self.json_file_ler_param, data, replace=True)
 
-        return ([total_rate_step, total_rate_pdet], lensed_param_detectable)
+        return (unlensed_rate, lensed_rate, rate_ratio)
 
-    def rate_comparision(
+    def rate_comparision_with_rate_calculation(
         self,
         snr_threshold_unlensed=8.0,
         unlened_param="./gw_params.json",
@@ -1033,6 +1157,7 @@ class LeR:
         lensed_param="./lensed_params.json",
         jsonfile_unlensed="./gw_params_detectable.json",
         jsonfile_lensed="./lensed_params_detectable.json",
+        detectability_condition="step_function",
     ):
         """
         Function to calculate unlensed and lensed merger rate and their ratio.
@@ -1087,6 +1212,7 @@ class LeR:
             gw_param=unlened_param,
             snr_threshold=snr_threshold_unlensed,
             jsonfile=jsonfile_unlensed,
+            detectability_condition=detectability_condition,
         )[0]
 
         # calculate lensed rate
@@ -1096,20 +1222,21 @@ class LeR:
             snr_threshold=snr_threshold_lensed,
             num_img=num_img,
             jsonfile=jsonfile_lensed,
+            detectability_condition=detectability_condition,
         )[0]
 
         # rate ratio
-        rate_ratio = (
-            unlensed_rate[0] / lensed_rate[0],
-            unlensed_rate[1] / lensed_rate[1],
-        )
+        rate_ratio = unlensed_rate / lensed_rate
+        
         print("unlensed/lensed rate ratio = ", rate_ratio)
         # call json_file_ler_param and add the results
         with open(self.json_file_ler_param, 'r', encoding='utf-8') as f:
             data = json.load(f)
         # append the results
-        data['unlensed_rate_ratio_step'] = rate_ratio[0]
-        data['unlensed_rate_ratio_pdet'] = rate_ratio[1]
+        if detectability_condition == "step_function":
+            data['unlensed_rate_ratio_step'] = rate_ratio
+        elif detectability_condition == "pdet":
+            data['unlensed_rate_ratio_pdet'] = rate_ratio
         # write the results
         append_json(self.json_file_ler_param, data, replace=True)
 

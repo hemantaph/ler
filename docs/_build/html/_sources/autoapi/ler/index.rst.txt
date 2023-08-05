@@ -48,6 +48,7 @@ Functions
 
 .. py:class:: LeR(nsamples=100000, npool=int(4), z_min=0.0, z_max=10.0, batch_size=25000, snr_finder='gwsnr', json_file_ler_param='./LeR_params.json', **kwargs)
 
+
    
    Class to calculate both the rates of lensed and unlensed events.
 
@@ -1430,6 +1431,7 @@ Functions
 
 .. py:class:: LensGalaxyPopulation(CompactBinaryPopulation_=False)
 
+
    
    Class to sample lens galaxy parameters
 
@@ -2219,6 +2221,7 @@ Functions
 
 .. py:class:: SourceGalaxyPopulationModel(z_min=0.0, z_max=10.0, event_type='popI_II', merger_rate_density_fn=None, merger_rate_density_param=None)
 
+
    
    Class to generate a population of source galaxies.
    This class is inherited by :class:`~ler.ler.CompactBinaryPopulation` class.
@@ -2714,6 +2717,7 @@ Functions
 
 
 .. py:class:: CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type='popI_II', merger_rate_density_fn=None, merger_rate_density_param=None, src_model_params=None, spin_zero=False)
+
 
    Bases: :py:obj:`SourceGalaxyPopulationModel`
 
