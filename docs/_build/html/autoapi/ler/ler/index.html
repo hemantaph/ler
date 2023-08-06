@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.ler &mdash; ler 0.2.0 documentation</title>
+  <title>ler.ler &mdash; ler 0.2.2 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -14,19 +14,21 @@
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=b1f64a84"></script>
-        <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
-        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/clipboard.min.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="ler.multiprocessing_routine" href="../multiprocessing_routine/index.html" />
+    <link rel="prev" title="ler.lens_galaxy_population" href="../lens_galaxy_population/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,54 +50,35 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.ler</span></code></a><ul>
-<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
-<li><a class="reference internal" href="#classes">Classes</a><ul>
-<li><a class="reference internal" href="#ler.ler.LeR"><code class="docutils literal notranslate"><span class="pre">LeR</span></code></a><ul>
-<li><a class="reference internal" href="#ler.ler.LeR.gw_param"><code class="docutils literal notranslate"><span class="pre">LeR.gw_param</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.gw_param_detectable"><code class="docutils literal notranslate"><span class="pre">LeR.gw_param_detectable</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.lensed_param"><code class="docutils literal notranslate"><span class="pre">LeR.lensed_param</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.lensed_param_detectable"><code class="docutils literal notranslate"><span class="pre">LeR.lensed_param_detectable</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.gw_param_sampler_dict"><code class="docutils literal notranslate"><span class="pre">LeR.gw_param_sampler_dict</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.lensed_param_sampler_dict"><code class="docutils literal notranslate"><span class="pre">LeR.lensed_param_sampler_dict</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.snr_calculator_dict"><code class="docutils literal notranslate"><span class="pre">LeR.snr_calculator_dict</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.z_to_Dc"><code class="docutils literal notranslate"><span class="pre">LeR.z_to_Dc</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.Dc_to_z"><code class="docutils literal notranslate"><span class="pre">LeR.Dc_to_z</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.z_to_luminosity_distance"><code class="docutils literal notranslate"><span class="pre">LeR.z_to_luminosity_distance</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.differential_comoving_volume"><code class="docutils literal notranslate"><span class="pre">LeR.differential_comoving_volume</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.compact_binary_pop"><code class="docutils literal notranslate"><span class="pre">LeR.compact_binary_pop</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.lens_galaxy_pop"><code class="docutils literal notranslate"><span class="pre">LeR.lens_galaxy_pop</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.snr"><code class="docutils literal notranslate"><span class="pre">LeR.snr</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.class_initialization"><code class="docutils literal notranslate"><span class="pre">LeR.class_initialization()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.store_ler_params"><code class="docutils literal notranslate"><span class="pre">LeR.store_ler_params()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.gwsnr_intialization"><code class="docutils literal notranslate"><span class="pre">LeR.gwsnr_intialization()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.create_lookup_tables"><code class="docutils literal notranslate"><span class="pre">LeR.create_lookup_tables()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.batch_handler"><code class="docutils literal notranslate"><span class="pre">LeR.batch_handler()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.unlensed_sampling_routine"><code class="docutils literal notranslate"><span class="pre">LeR.unlensed_sampling_routine()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.unlensed_cbc_statistics"><code class="docutils literal notranslate"><span class="pre">LeR.unlensed_cbc_statistics()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.unlensed_rate"><code class="docutils literal notranslate"><span class="pre">LeR.unlensed_rate()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.lensed_sampling_routine"><code class="docutils literal notranslate"><span class="pre">LeR.lensed_sampling_routine()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.lensed_cbc_statistics"><code class="docutils literal notranslate"><span class="pre">LeR.lensed_cbc_statistics()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.lensed_rate"><code class="docutils literal notranslate"><span class="pre">LeR.lensed_rate()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.rate_comparision"><code class="docutils literal notranslate"><span class="pre">LeR.rate_comparision()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.rate_comparision_with_rate_calculation"><code class="docutils literal notranslate"><span class="pre">LeR.rate_comparision_with_rate_calculation()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.selecting_n_lensed_detectable_events"><code class="docutils literal notranslate"><span class="pre">LeR.selecting_n_lensed_detectable_events()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.relative_mu_dt_lensed"><code class="docutils literal notranslate"><span class="pre">LeR.relative_mu_dt_lensed()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.mu_vs_dt_plot"><code class="docutils literal notranslate"><span class="pre">LeR.mu_vs_dt_plot()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.selecting_n_unlensed_detectable_events"><code class="docutils literal notranslate"><span class="pre">LeR.selecting_n_unlensed_detectable_events()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.relative_mu_dt_unlensed"><code class="docutils literal notranslate"><span class="pre">LeR.relative_mu_dt_unlensed()</span></code></a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../unlensed.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../lensed.html">Lensed events</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler</span></code></a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../helperroutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.helperroutines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.ler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../multiprocessing_routine/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.multiprocessing_routine</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.source_population</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
 </ul>
 </li>
 </ul>
-</li>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../rate_comparision.html">Calculation of unlensed and lensed rate of detectable events</a></li>
 </ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -110,6 +93,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler</span></code></a></li>
       <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.ler</span></code></li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/autoapi/ler/ler/index.rst.txt" rel="nofollow"> View page source</a>
@@ -136,7 +120,7 @@
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ler.ler.LeR">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.ler.</span></span><span class="sig-name descname"><span class="pre">LeR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">int(4)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_finder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gwsnr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file_ler_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./LeR_params.json'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.ler.</span></span><span class="sig-name descname"><span class="pre">LeR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">int(4)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_finder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gwsnr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file_ler_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./LeR_params.json'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR" title="Permalink to this definition"></a></dt>
 <dd><p>Class to calculate both the rates of lensed and unlensed events.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -186,8 +170,6 @@ json file containing the parameters for initializing the <a class="reference int
 <span class="go">In case if you need regeneration of interpolator of the given gwsnr param, please delete this file, ./interpolator_pickle/halfSNR_dict_0.pickle</span>
 </pre></div>
 </div>
-<section id="instance-attributes">
-<h4>Instance Attributes<a class="headerlink" href="#instance-attributes" title="Permalink to this heading"></a></h4>
 <p>LeR class has the following attributes,</p>
 <table class="docutils align-default">
 <thead>
@@ -240,9 +222,6 @@ json file containing the parameters for initializing the <a class="reference int
 </tr>
 </tbody>
 </table>
-</section>
-<section id="instance-methods">
-<h4>Instance Methods<a class="headerlink" href="#instance-methods" title="Permalink to this heading"></a></h4>
 <p>LeR class has the following method(s),</p>
 <table class="docutils align-default">
 <thead>
@@ -290,7 +269,7 @@ the LER model.</p></td>
 </table>
 <dl class="py property">
 <dt class="sig sig-object py" id="ler.ler.LeR.gw_param">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gw_param</span></span><a class="headerlink" href="#ler.ler.LeR.gw_param" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gw_param</span></span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.gw_param"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.gw_param" title="Permalink to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>gw_param is a dictionary of unlensed parameters (source parameters)</p>
 <p>it will be populated when unlened_cbc_statistics() is called</p>
@@ -300,7 +279,7 @@ the LER model.</p></td>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ler.ler.LeR.gw_param_detectable">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gw_param_detectable</span></span><a class="headerlink" href="#ler.ler.LeR.gw_param_detectable" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gw_param_detectable</span></span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.gw_param_detectable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.gw_param_detectable" title="Permalink to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>gw_param_detectable is a dictionary of unlensed parameters (source parameters)</p>
 <p>it will be populated when unlened_cbc_statistics() is called</p>
@@ -310,7 +289,7 @@ the LER model.</p></td>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ler.ler.LeR.lensed_param">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lensed_param</span></span><a class="headerlink" href="#ler.ler.LeR.lensed_param" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lensed_param</span></span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.lensed_param"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.lensed_param" title="Permalink to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>lensed_param is a dictionary of lensed parameters</p>
 <p>it will be populated when lensed_cbc_statistics() is called</p>
@@ -320,7 +299,7 @@ the LER model.</p></td>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ler.ler.LeR.lensed_param_detectable">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lensed_param_detectable</span></span><a class="headerlink" href="#ler.ler.LeR.lensed_param_detectable" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lensed_param_detectable</span></span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.lensed_param_detectable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.lensed_param_detectable" title="Permalink to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>lensed_param_detectable is a dictionary of lensed parameters</p>
 <p>it will be populated when lensed_cbc_statistics() is called</p>
@@ -330,7 +309,7 @@ the LER model.</p></td>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ler.ler.LeR.gw_param_sampler_dict">
-<span class="sig-name descname"><span class="pre">gw_param_sampler_dict</span></span><a class="headerlink" href="#ler.ler.LeR.gw_param_sampler_dict" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">gw_param_sampler_dict</span></span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.gw_param_sampler_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.gw_param_sampler_dict" title="Permalink to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>dictionary of params for initializing <code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation</span></code> class</p>
 <p>this will be used for GW unlensed parameters sampling</p>
@@ -339,7 +318,7 @@ the LER model.</p></td>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ler.ler.LeR.lensed_param_sampler_dict">
-<span class="sig-name descname"><span class="pre">lensed_param_sampler_dict</span></span><a class="headerlink" href="#ler.ler.LeR.lensed_param_sampler_dict" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">lensed_param_sampler_dict</span></span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.lensed_param_sampler_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.lensed_param_sampler_dict" title="Permalink to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>dictionary of params for initializing <code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation</span></code> class</p>
 <p>this will be used for GW lensed parameters sampling</p>
@@ -348,7 +327,7 @@ the LER model.</p></td>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ler.ler.LeR.snr_calculator_dict">
-<span class="sig-name descname"><span class="pre">snr_calculator_dict</span></span><a class="headerlink" href="#ler.ler.LeR.snr_calculator_dict" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">snr_calculator_dict</span></span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.snr_calculator_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.snr_calculator_dict" title="Permalink to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>dictionary of params for initializing <code class="docutils literal notranslate"><span class="pre">snr_calculator</span></code> (<code class="docutils literal notranslate"><span class="pre">gwsnr</span></code>) class</p>
 <p>this will be used for SNR calculation</p>
@@ -357,68 +336,68 @@ the LER model.</p></td>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ler.ler.LeR.z_to_Dc">
-<span class="sig-name descname"><span class="pre">z_to_Dc</span></span><a class="headerlink" href="#ler.ler.LeR.z_to_Dc" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">z_to_Dc</span></span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.z_to_Dc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.z_to_Dc" title="Permalink to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">scipy.interpolate.interp1d</span></code></p>
 <p>redshift to co-moving distance.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ler.ler.LeR.Dc_to_z">
-<span class="sig-name descname"><span class="pre">Dc_to_z</span></span><a class="headerlink" href="#ler.ler.LeR.Dc_to_z" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Dc_to_z</span></span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.Dc_to_z"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.Dc_to_z" title="Permalink to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">scipy.interpolate.interp1d</span></code></p>
 <p>co-moving distance to redshift.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ler.ler.LeR.z_to_luminosity_distance">
-<span class="sig-name descname"><span class="pre">z_to_luminosity_distance</span></span><a class="headerlink" href="#ler.ler.LeR.z_to_luminosity_distance" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">z_to_luminosity_distance</span></span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.z_to_luminosity_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.z_to_luminosity_distance" title="Permalink to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">scipy.interpolate.interp1d</span></code></p>
 <p>redshift to luminosity distance.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ler.ler.LeR.differential_comoving_volume">
-<span class="sig-name descname"><span class="pre">differential_comoving_volume</span></span><a class="headerlink" href="#ler.ler.LeR.differential_comoving_volume" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">differential_comoving_volume</span></span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.differential_comoving_volume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.differential_comoving_volume" title="Permalink to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">scipy.interpolate.interp1d</span></code></p>
 <p>differential comoving volume.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ler.ler.LeR.compact_binary_pop">
-<span class="sig-name descname"><span class="pre">compact_binary_pop</span></span><a class="headerlink" href="#ler.ler.LeR.compact_binary_pop" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">compact_binary_pop</span></span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.compact_binary_pop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.compact_binary_pop" title="Permalink to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation</span> <span class="pre">class</span></code></p>
 <p>class for sampling GW parameters.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ler.ler.LeR.lens_galaxy_pop">
-<span class="sig-name descname"><span class="pre">lens_galaxy_pop</span></span><a class="headerlink" href="#ler.ler.LeR.lens_galaxy_pop" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">lens_galaxy_pop</span></span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.lens_galaxy_pop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.lens_galaxy_pop" title="Permalink to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation</span> <span class="pre">class</span></code></p>
 <p>class for sampling lensed GW parameters.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ler.ler.LeR.snr">
-<span class="sig-name descname"><span class="pre">snr</span></span><a class="headerlink" href="#ler.ler.LeR.snr" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">snr</span></span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.snr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.snr" title="Permalink to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">gwsnr</span> <span class="pre">package</span></code></p>
 <p>class for calculating SNR.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.class_initialization">
-<span class="sig-name descname"><span class="pre">class_initialization</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.class_initialization" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">class_initialization</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.class_initialization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.class_initialization" title="Permalink to this definition"></a></dt>
 <dd><p>Function for initializing the <code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation</span></code> and <code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation</span></code> classes.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.store_ler_params">
-<span class="sig-name descname"><span class="pre">store_ler_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./LeR_params.json'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.store_ler_params" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">store_ler_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./LeR_params.json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.store_ler_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.store_ler_params" title="Permalink to this definition"></a></dt>
 <dd><p>Fuction to store the parameters of the LER model. This is useful for reproducing the results.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.gwsnr_intialization">
-<span class="sig-name descname"><span class="pre">gwsnr_intialization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kwargs_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.gwsnr_intialization" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">gwsnr_intialization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kwargs_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.gwsnr_intialization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.gwsnr_intialization" title="Permalink to this definition"></a></dt>
 <dd><p>Function for initializing the <a class="reference external" href="https://github.com/hemantaph/gwsnr/">gwsnr</a> package.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -469,7 +448,7 @@ ifos = [‘L1’, ‘H1’, ‘V1’] (for O4 design sensitivity)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.create_lookup_tables">
-<span class="sig-name descname"><span class="pre">create_lookup_tables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.create_lookup_tables" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">create_lookup_tables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.create_lookup_tables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.create_lookup_tables" title="Permalink to this definition"></a></dt>
 <dd><p>To creating lookup tables for fast calculation for the following conversion operations,</p>
 <ol class="arabic simple">
 <li><p>redshift to co-moving distance.</p></li>
@@ -504,7 +483,7 @@ for popI_II, popIII, primordial, BNS z_max = 10., 40., 40., 2. respectively.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.batch_handler">
-<span class="sig-name descname"><span class="pre">batch_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_routine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.batch_handler" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">batch_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_routine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.batch_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.batch_handler" title="Permalink to this definition"></a></dt>
 <dd><p>Function to handle the batch size.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -526,7 +505,7 @@ default resume = False.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.unlensed_sampling_routine">
-<span class="sig-name descname"><span class="pre">unlensed_sampling_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.unlensed_sampling_routine" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">unlensed_sampling_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.unlensed_sampling_routine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.unlensed_sampling_routine" title="Permalink to this definition"></a></dt>
 <dd><p>Function to generate unlensed GW source parameters.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -546,7 +525,7 @@ default resume = False.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.unlensed_cbc_statistics">
-<span class="sig-name descname"><span class="pre">unlensed_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params.json'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.unlensed_cbc_statistics" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">unlensed_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params.json'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.unlensed_cbc_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.unlensed_cbc_statistics" title="Permalink to this definition"></a></dt>
 <dd><p>Function to generate unlensed GW source parameters.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -590,7 +569,7 @@ unlensed_gw_params.keys() = [‘m1’, ‘m2’, ‘z’, ‘snr’, ‘theta_jn
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.unlensed_rate">
-<span class="sig-name descname"><span class="pre">unlensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gw_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.unlensed_rate" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">unlensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gw_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.unlensed_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.unlensed_rate" title="Permalink to this definition"></a></dt>
 <dd><p>Function to calculate unlensed merger rate.</p>
 <div class="math notranslate nohighlight">
 \[R_U = \mathcal{N}^U\int dz_s R_o^U(z_s)\bigg\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \bigg\}\]</div>
@@ -627,7 +606,7 @@ gw_param_detectable.keys() = [‘m1’, ‘m2’, ‘z’, ‘snr’, ‘theta_j
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.lensed_sampling_routine">
-<span class="sig-name descname"><span class="pre">lensed_sampling_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.lensed_sampling_routine" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">lensed_sampling_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.lensed_sampling_routine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.lensed_sampling_routine" title="Permalink to this definition"></a></dt>
 <dd><p>Function to generate lensed GW source parameters, lens galaxy parameters and image paramters.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -646,7 +625,7 @@ default resume = False.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.lensed_cbc_statistics">
-<span class="sig-name descname"><span class="pre">lensed_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params.json'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.lensed_cbc_statistics" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">lensed_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params.json'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.lensed_cbc_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.lensed_cbc_statistics" title="Permalink to this definition"></a></dt>
 <dd><p>Function to generate lensed GW source parameters, lens galaxy parameters and image paramters.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -691,7 +670,7 @@ lensed_param.keys() = [‘zl’, ‘zs’, ‘sigma’, ‘q’, ‘e1’, ‘e2
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.lensed_rate">
-<span class="sig-name descname"><span class="pre">lensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">none_as_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.lensed_rate" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">lensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">none_as_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.lensed_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.lensed_rate" title="Permalink to this definition"></a></dt>
 <dd><p>Function to calculate lensed merger rate.</p>
 <div class="math notranslate nohighlight">
 \[R_L = \mathcal{N}^L\int dz_s R_o^L(z_s)\bigg\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \bigg\}\]</div>
@@ -742,7 +721,7 @@ detectable_lensed_param.keys() = [‘zl’, ‘zs’, ‘sigma’, ‘q’, ‘e
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.rate_comparision">
-<span class="sig-name descname"><span class="pre">rate_comparision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.rate_comparision" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">rate_comparision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.rate_comparision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.rate_comparision" title="Permalink to this definition"></a></dt>
 <dd><p>Function to calculate unlensed and lensed merger rate and their ratio.
 It will get the unlensed_rate and lensed_rate from json_file_ler_param=”./LeR_params.json”</p>
 <dl class="field-list">
@@ -767,7 +746,7 @@ It will get the unlensed_rate and lensed_rate from json_file_ler_param=”./LeR_
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.rate_comparision_with_rate_calculation">
-<span class="sig-name descname"><span class="pre">rate_comparision_with_rate_calculation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snr_threshold_unlensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unlened_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile_unlensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.rate_comparision_with_rate_calculation" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">rate_comparision_with_rate_calculation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snr_threshold_unlensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unlened_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile_unlensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonfile_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.rate_comparision_with_rate_calculation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.rate_comparision_with_rate_calculation" title="Permalink to this definition"></a></dt>
 <dd><p>Function to calculate unlensed and lensed merger rate and their ratio.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -820,7 +799,7 @@ rate_ratio[1] = total unlensed/lensed rate ratio with pdet function</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.selecting_n_lensed_detectable_events">
-<span class="sig-name descname"><span class="pre">selecting_n_lensed_detectable_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params_detectable.json'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.selecting_n_lensed_detectable_events" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">selecting_n_lensed_detectable_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./lensed_params_detectable.json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.selecting_n_lensed_detectable_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.selecting_n_lensed_detectable_events" title="Permalink to this definition"></a></dt>
 <dd><p>Function to select n lensed detectable events.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -858,7 +837,7 @@ param_final.keys() = [‘zl’, ‘zs’, ‘sigma’, ‘q’, ‘e1’, ‘e2�
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.relative_mu_dt_lensed">
-<span class="sig-name descname"><span class="pre">relative_mu_dt_lensed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[8.0,</span> <span class="pre">8.0]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.relative_mu_dt_lensed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">relative_mu_dt_lensed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[8.0,</span> <span class="pre">8.0]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.relative_mu_dt_lensed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.relative_mu_dt_lensed" title="Permalink to this definition"></a></dt>
 <dd><p>Function to classify the lensed images wrt to the morse phase difference.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -892,7 +871,7 @@ e.g. snr_threshold = [8.,8.] or [8.,6.] for subthreshold</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.mu_vs_dt_plot">
-<span class="sig-name descname"><span class="pre">mu_vs_dt_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savefig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'blue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linestyles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'upper'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.01,</span> <span class="pre">500.0,</span> <span class="pre">0.01,</span> <span class="pre">100.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contour_levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.1,</span> <span class="pre">0.4,</span> <span class="pre">0.68,</span> <span class="pre">0.95]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.mu_vs_dt_plot" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">mu_vs_dt_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savefig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'blue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linestyles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'upper'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.01,</span> <span class="pre">500.0,</span> <span class="pre">0.01,</span> <span class="pre">100.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contour_levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.1,</span> <span class="pre">0.4,</span> <span class="pre">0.68,</span> <span class="pre">0.95]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.mu_vs_dt_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.mu_vs_dt_plot" title="Permalink to this definition"></a></dt>
 <dd><p>Function to generate 2D KDE and plot the relative magnification vs time delay difference for lensed samples.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -943,7 +922,7 @@ default contour_levels = [0.10,0.40,0.68,0.95] which corresponds to 1,2,3,4 sigm
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.selecting_n_unlensed_detectable_events">
-<span class="sig-name descname"><span class="pre">selecting_n_unlensed_detectable_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params_detectable.json'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.selecting_n_unlensed_detectable_events" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">selecting_n_unlensed_detectable_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params_detectable.json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.selecting_n_unlensed_detectable_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.selecting_n_unlensed_detectable_events" title="Permalink to this definition"></a></dt>
 <dd><p>Function to select n unlensed detectable events.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -974,7 +953,7 @@ param_final.keys() = [‘m1’, ‘m2’, ‘z’, ‘snr’, ‘theta_jn’, �
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.ler.LeR.relative_mu_dt_unlensed">
-<span class="sig-name descname"><span class="pre">relative_mu_dt_unlensed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.ler.LeR.relative_mu_dt_unlensed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">relative_mu_dt_unlensed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/ler.html#LeR.relative_mu_dt_unlensed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.ler.LeR.relative_mu_dt_unlensed" title="Permalink to this definition"></a></dt>
 <dd><p>Function to generate relative magnification vs time delay difference for unlensed samples.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -995,7 +974,6 @@ unlensed_param.keys() = [‘m1’, ‘m2’, ‘z’, ‘snr’, ‘theta_jn’,
 </dl>
 </dd></dl>
 
-</section>
 </dd></dl>
 
 </section>
@@ -1005,7 +983,10 @@ unlensed_param.keys() = [‘m1’, ‘m2’, ‘z’, ‘snr’, ‘theta_jn’,
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../lens_galaxy_population/index.html" class="btn btn-neutral float-left" title="ler.lens_galaxy_population" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../multiprocessing_routine/index.html" class="btn btn-neutral float-right" title="ler.multiprocessing_routine" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

@@ -28,7 +28,6 @@ Classes
 
 .. py:class:: LensGalaxyPopulation(CompactBinaryPopulation_=False)
 
-
    
    Class to sample lens galaxy parameters
 
