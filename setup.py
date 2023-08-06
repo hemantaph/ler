@@ -16,6 +16,7 @@ setup(
     author_email="hemantaphurailatpam@gmail.com",
     url="https://github.com/hemantaph/ler",
     packages=find_packages(),
+    python_requires='>=3.10',
     install_requires=[
         "setuptools>=67.8.0",
         "numpy>=1.18",
