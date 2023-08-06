@@ -6,6 +6,7 @@ Home-page: https://github.com/hemantaph/ler
 Author: Hemantakumar
 Author-email: hemantaphurailatpam@gmail.com
 License: MIT
+Requires-Python: >=3.10
 Description-Content-Type: text/markdown
 
 # LeR

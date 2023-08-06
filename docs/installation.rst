@@ -25,7 +25,7 @@ To install ``ler`` for development purposes use `github.ler <https://github.com/
 
     git clone https://github.com/hemantaph/ler.git
     cd ler
-    pip install . -e
+    pip install -e .
     
 
 Installation of numba and healpy with conda
