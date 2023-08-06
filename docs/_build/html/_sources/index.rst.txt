@@ -27,8 +27,12 @@ The code is available at `github <https://github.com/hemantaph/ler>`_
 .. toctree::
    :maxdepth: 2
    :caption: API:
-   
-   autoapi/ler/index.rst
+
+   autoapi/ler/ler/index.rst
+   autoapi/ler/source_population/index.rst
+   autoapi/ler/lens_galaxy_population/index.rst
+   autoapi/ler/multiprocessing_routine/index.rst
+   autoapi/ler/helperroutines/index.rst
    
 .. toctree::
    :maxdepth: 2

@@ -4,16 +4,16 @@ Installation
 
 .. note::
 
-    It is recommended to install ``gwcosmo`` and ``gwsnr`` before installing ``ler``. See the `gwsnr documentation <https://github.com/hemantaph/gwsnr/>`_ . You can install ``gwsnr`` with pip but ``gwcosmo`` needs custom :ref:`my-reference-label`.
+    Install numba, healpy seperately with conda if you are with ARM processor, e.g. apple silicon. 
 
 .. tabs::
 
      .. code-tab:: console pip
 
-        pip install ler gwsnr
+        pip install ler
 
 
-This will install the dependencies needed but the version of gwsnr will not necessarily be the correct version for your system.
+This will also install the dependencies needed by the lastest ``ler`` version.  
 
 
 ler for development
@@ -28,13 +28,10 @@ To install ``ler`` for development purposes use `github.ler <https://github.com/
     pip install . -e
     
 
-.. _my-reference-label:
-Installation from the source for gwcosmo
+Installation of numba and healpy with conda
 =======================
 
 .. code-block:: console
 
-    git clone https://git.ligo.org/lscsoft/gwcosmo.git
-    cd gwcosmo
-    pip install -r requirements.txt
-    pip install .
+    conda install -c conda-forge numba
+    conda install -c conda-forge healpy
