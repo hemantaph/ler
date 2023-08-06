@@ -72,9 +72,6 @@
 <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../rate_comparision.html">Calculation of unlensed and lensed rate of detectable events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../rate_comparision.html#Unlensed-events">Unlensed events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../rate_comparision.html#Detectable-lensed-events'-rate-in-a-year">Detectable lensed events’ rate in a year</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../rate_comparision.html#with-more-accurate-snr">with more accurate snr</a></li>
 </ul>
 
         </div>
@@ -141,6 +138,14 @@
 <dt class="sig sig-object py" id="ler.helperroutines.NumpyEncoder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.helperroutines.</span></span><span class="sig-name descname"><span class="pre">NumpyEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skipkeys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ensure_ascii</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_circular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/helperroutines.html#NumpyEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.helperroutines.NumpyEncoder" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">json.JSONEncoder</span></code></p>
+digraph inheritance9bba8f7999 {
+bgcolor=transparent;
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;JSONEncoder&quot; [fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,tooltip=&quot;Extensible JSON &lt;https://json.org&gt; encoder for Python data structures.&quot;];
+  &quot;NumpyEncoder&quot; [URL=&quot;#ler.helperroutines.NumpyEncoder&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;class for storing a numpy.ndarray or any nested-list composition as JSON file&quot;];
+  &quot;JSONEncoder&quot; -&gt; &quot;NumpyEncoder&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+}
 <p>class for storing a numpy.ndarray or any nested-list composition as JSON file</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

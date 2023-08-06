@@ -2717,6 +2717,9 @@ Functions
 
    Bases: :py:obj:`SourceGalaxyPopulationModel`
 
+   .. autoapi-inheritance-diagram:: ler.CompactBinaryPopulation
+      :parts: 1
+
    
    Class to generate a population of compact binaries. Inherits from :class:`~ler.ler.SourceGalaxyPopulationModel` class.
 

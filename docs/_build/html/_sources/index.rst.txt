@@ -25,7 +25,7 @@ The code is available at `github <https://github.com/hemantaph/ler>`_
    lensed
    
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: API:
 
    autoapi/ler/ler/index.rst

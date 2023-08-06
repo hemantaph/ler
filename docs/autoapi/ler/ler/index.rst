@@ -11,6 +11,9 @@
        !! processed by numpydoc !!
 
 
+Module Contents
+---------------
+
 Classes
 ~~~~~~~
 
