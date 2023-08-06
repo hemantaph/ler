@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler &mdash; ler 0.2.0 documentation</title>
+  <title>ler &mdash; ler 0.2.2 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -14,19 +14,21 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=b1f64a84"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
-        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ler.helperroutines" href="helperroutines/index.html" />
+    <link rel="prev" title="Lensed events" href="../../lensed.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,113 +50,36 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler</span></code></a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#package-contents">Package Contents</a><ul>
-<li><a class="reference internal" href="#classes">Classes</a></li>
-<li><a class="reference internal" href="#functions">Functions</a><ul>
-<li><a class="reference internal" href="#ler.LeR"><code class="docutils literal notranslate"><span class="pre">LeR</span></code></a><ul>
-<li><a class="reference internal" href="#ler.LeR.gw_param"><code class="docutils literal notranslate"><span class="pre">LeR.gw_param</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.gw_param_detectable"><code class="docutils literal notranslate"><span class="pre">LeR.gw_param_detectable</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.lensed_param"><code class="docutils literal notranslate"><span class="pre">LeR.lensed_param</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.lensed_param_detectable"><code class="docutils literal notranslate"><span class="pre">LeR.lensed_param_detectable</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.gw_param_sampler_dict"><code class="docutils literal notranslate"><span class="pre">LeR.gw_param_sampler_dict</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.lensed_param_sampler_dict"><code class="docutils literal notranslate"><span class="pre">LeR.lensed_param_sampler_dict</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.snr_calculator_dict"><code class="docutils literal notranslate"><span class="pre">LeR.snr_calculator_dict</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.z_to_Dc"><code class="docutils literal notranslate"><span class="pre">LeR.z_to_Dc</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.Dc_to_z"><code class="docutils literal notranslate"><span class="pre">LeR.Dc_to_z</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.z_to_luminosity_distance"><code class="docutils literal notranslate"><span class="pre">LeR.z_to_luminosity_distance</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.differential_comoving_volume"><code class="docutils literal notranslate"><span class="pre">LeR.differential_comoving_volume</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.compact_binary_pop"><code class="docutils literal notranslate"><span class="pre">LeR.compact_binary_pop</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.lens_galaxy_pop"><code class="docutils literal notranslate"><span class="pre">LeR.lens_galaxy_pop</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.snr"><code class="docutils literal notranslate"><span class="pre">LeR.snr</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.class_initialization"><code class="docutils literal notranslate"><span class="pre">LeR.class_initialization()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.store_ler_params"><code class="docutils literal notranslate"><span class="pre">LeR.store_ler_params()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.gwsnr_intialization"><code class="docutils literal notranslate"><span class="pre">LeR.gwsnr_intialization()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.create_lookup_tables"><code class="docutils literal notranslate"><span class="pre">LeR.create_lookup_tables()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.batch_handler"><code class="docutils literal notranslate"><span class="pre">LeR.batch_handler()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.unlensed_sampling_routine"><code class="docutils literal notranslate"><span class="pre">LeR.unlensed_sampling_routine()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.unlensed_cbc_statistics"><code class="docutils literal notranslate"><span class="pre">LeR.unlensed_cbc_statistics()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.unlensed_rate"><code class="docutils literal notranslate"><span class="pre">LeR.unlensed_rate()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.lensed_sampling_routine"><code class="docutils literal notranslate"><span class="pre">LeR.lensed_sampling_routine()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.lensed_cbc_statistics"><code class="docutils literal notranslate"><span class="pre">LeR.lensed_cbc_statistics()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.lensed_rate"><code class="docutils literal notranslate"><span class="pre">LeR.lensed_rate()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.rate_comparision"><code class="docutils literal notranslate"><span class="pre">LeR.rate_comparision()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.rate_comparision_with_rate_calculation"><code class="docutils literal notranslate"><span class="pre">LeR.rate_comparision_with_rate_calculation()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.selecting_n_lensed_detectable_events"><code class="docutils literal notranslate"><span class="pre">LeR.selecting_n_lensed_detectable_events()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.relative_mu_dt_lensed"><code class="docutils literal notranslate"><span class="pre">LeR.relative_mu_dt_lensed()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.mu_vs_dt_plot"><code class="docutils literal notranslate"><span class="pre">LeR.mu_vs_dt_plot()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.selecting_n_unlensed_detectable_events"><code class="docutils literal notranslate"><span class="pre">LeR.selecting_n_unlensed_detectable_events()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LeR.relative_mu_dt_unlensed"><code class="docutils literal notranslate"><span class="pre">LeR.relative_mu_dt_unlensed()</span></code></a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unlensed.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lensed.html">Lensed events</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="helperroutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.helperroutines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.ler</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="multiprocessing_routine/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.multiprocessing_routine</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.source_population</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation</span></code></a><ul>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.cbc_pop"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.cbc_pop</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.z_min"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.z_min</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.z_max"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.z_max</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.m_min"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.m_min</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.m_max"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.m_max</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.normalization_pdf_z"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.normalization_pdf_z</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.create_lookup_table"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.create_lookup_table()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.sample_lens_parameters"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.sample_lens_parameters()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.sample_lens_parameters_routine"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.sample_lens_parameters_routine()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.sample_strongly_lensed_source_parameters"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.sample_strongly_lensed_source_parameters()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.sample_lens_redshifts"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.sample_lens_redshifts()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.sample_velocity_dispersion_axis_ratio"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.sample_velocity_dispersion_axis_ratio()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.compute_einstein_radii"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.compute_einstein_radii()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.sample_axis_ratio_angle_phi"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.sample_axis_ratio_angle_phi()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.sample_galaxy_shear"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.sample_galaxy_shear()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.sample_gamma"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.sample_gamma()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.rejection_sample_lensing_probability"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.rejection_sample_lensing_probability()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.strong_lensing_optical_depth"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.strong_lensing_optical_depth()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.get_image_properties"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.get_image_properties()</span></code></a></li>
-<li><a class="reference internal" href="#ler.LensGalaxyPopulation.get_lensed_snrs"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.get_lensed_snrs()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#ler.SourceGalaxyPopulationModel"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel</span></code></a><ul>
-<li><a class="reference internal" href="#ler.SourceGalaxyPopulationModel.z_min"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.z_min</span></code></a></li>
-<li><a class="reference internal" href="#ler.SourceGalaxyPopulationModel.z_max"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.z_max</span></code></a></li>
-<li><a class="reference internal" href="#ler.SourceGalaxyPopulationModel.normalization_pdf_z"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.normalization_pdf_z</span></code></a></li>
-<li><a class="reference internal" href="#ler.SourceGalaxyPopulationModel.z_to_luminosity_distance"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.z_to_luminosity_distance</span></code></a></li>
-<li><a class="reference internal" href="#ler.SourceGalaxyPopulationModel.differential_comoving_volume"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.differential_comoving_volume</span></code></a></li>
-<li><a class="reference internal" href="#ler.SourceGalaxyPopulationModel.create_lookup_table"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.create_lookup_table()</span></code></a></li>
-<li><a class="reference internal" href="#ler.SourceGalaxyPopulationModel.sample_source_redshifts"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.sample_source_redshifts()</span></code></a></li>
-<li><a class="reference internal" href="#ler.SourceGalaxyPopulationModel.merger_rate_density_popI_II"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.merger_rate_density_popI_II()</span></code></a></li>
-<li><a class="reference internal" href="#ler.SourceGalaxyPopulationModel.merger_rate_density_popI_II_Madau_Dickinson"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.merger_rate_density_popI_II_Madau_Dickinson()</span></code></a></li>
-<li><a class="reference internal" href="#ler.SourceGalaxyPopulationModel.merger_rate_density_popIII"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.merger_rate_density_popIII()</span></code></a></li>
-<li><a class="reference internal" href="#ler.SourceGalaxyPopulationModel.merger_rate_density_primordial"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.merger_rate_density_primordial()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#ler.CompactBinaryPopulation"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation</span></code></a><ul>
-<li><a class="reference internal" href="#ler.CompactBinaryPopulation.z_min"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.z_min</span></code></a></li>
-<li><a class="reference internal" href="#ler.CompactBinaryPopulation.z_max"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.z_max</span></code></a></li>
-<li><a class="reference internal" href="#ler.CompactBinaryPopulation.m_min"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.m_min</span></code></a></li>
-<li><a class="reference internal" href="#ler.CompactBinaryPopulation.m_max"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.m_max</span></code></a></li>
-<li><a class="reference internal" href="#ler.CompactBinaryPopulation.event_type"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.event_type</span></code></a></li>
-<li><a class="reference internal" href="#ler.CompactBinaryPopulation.src_model_params"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.src_model_params</span></code></a></li>
-<li><a class="reference internal" href="#ler.CompactBinaryPopulation.sample_gw_parameters"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.sample_gw_parameters()</span></code></a></li>
-<li><a class="reference internal" href="#ler.CompactBinaryPopulation.binary_masses_popI_II"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.binary_masses_popI_II()</span></code></a></li>
-<li><a class="reference internal" href="#ler.CompactBinaryPopulation.binary_masses_popIII"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.binary_masses_popIII()</span></code></a></li>
-<li><a class="reference internal" href="#ler.CompactBinaryPopulation.binary_masses_primordial"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.binary_masses_primordial()</span></code></a></li>
-<li><a class="reference internal" href="#ler.CompactBinaryPopulation.binary_masses_BNS"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.binary_masses_BNS()</span></code></a></li>
-<li><a class="reference internal" href="#ler.CompactBinaryPopulation.mass_ratio"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.mass_ratio()</span></code></a></li>
-<li><a class="reference internal" href="#ler.CompactBinaryPopulation.binary_spin_popI_II"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.binary_spin_popI_II()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#ler.solve_lens_equation1"><code class="docutils literal notranslate"><span class="pre">solve_lens_equation1()</span></code></a></li>
-<li><a class="reference internal" href="#ler.solve_lens_equation2"><code class="docutils literal notranslate"><span class="pre">solve_lens_equation2()</span></code></a></li>
-<li><a class="reference internal" href="#ler.add_dictionaries_together"><code class="docutils literal notranslate"><span class="pre">add_dictionaries_together()</span></code></a></li>
-<li><a class="reference internal" href="#ler.rejection_sample"><code class="docutils literal notranslate"><span class="pre">rejection_sample()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#package-contents">Package Contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-</li>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rate_comparision.html">Calculation of unlensed and lensed rate of detectable events</a></li>
 </ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -234,7 +159,7 @@
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ler.LeR">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">LeR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">int(4)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_finder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gwsnr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file_ler_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./LeR_params.json'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.LeR" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">LeR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nsamples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">int(4)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_finder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gwsnr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file_ler_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./LeR_params.json'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/ler.html#LeR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.LeR" title="Permalink to this definition"></a></dt>
 <dd><p>Class to calculate both the rates of lensed and unlensed events.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -284,8 +209,6 @@ json file containing the parameters for initializing the <a class="reference int
 <span class="go">In case if you need regeneration of interpolator of the given gwsnr param, please delete this file, ./interpolator_pickle/halfSNR_dict_0.pickle</span>
 </pre></div>
 </div>
-<section id="instance-attributes">
-<h4>Instance Attributes<a class="headerlink" href="#instance-attributes" title="Permalink to this heading"></a></h4>
 <p>LeR class has the following attributes,</p>
 <table class="docutils align-default">
 <thead>
@@ -338,9 +261,6 @@ json file containing the parameters for initializing the <a class="reference int
 </tr>
 </tbody>
 </table>
-</section>
-<section id="instance-methods">
-<h4>Instance Methods<a class="headerlink" href="#instance-methods" title="Permalink to this heading"></a></h4>
 <p>LeR class has the following method(s),</p>
 <table class="docutils align-default">
 <thead>
@@ -1093,12 +1013,11 @@ unlensed_param.keys() = [‘m1’, ‘m2’, ‘z’, ‘snr’, ‘theta_jn’,
 </dl>
 </dd></dl>
 
-</section>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ler.LensGalaxyPopulation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">LensGalaxyPopulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">CompactBinaryPopulation_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.LensGalaxyPopulation" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">LensGalaxyPopulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">CompactBinaryPopulation_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/lens_galaxy_population.html#LensGalaxyPopulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.LensGalaxyPopulation" title="Permalink to this definition"></a></dt>
 <dd><p>Class to sample lens galaxy parameters</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1142,8 +1061,6 @@ unlensed_param.keys() = [‘m1’, ‘m2’, ‘z’, ‘snr’, ‘theta_jn’,
 <span class="go">dict_keys([&#39;opt_snr_net&#39;, &#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;])</span>
 </pre></div>
 </div>
-<section id="id2">
-<h4>Instance Attributes<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h4>
 <p>LensGalaxyPopulation class has the following instance attributes:</p>
 <table class="docutils align-default">
 <thead>
@@ -1172,9 +1089,6 @@ unlensed_param.keys() = [‘m1’, ‘m2’, ‘z’, ‘snr’, ‘theta_jn’,
 </tr>
 </tbody>
 </table>
-</section>
-<section id="id3">
-<h4>Instance Methods<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h4>
 <p>LensGalaxyPopulation class has the following instance methods:</p>
 <table class="docutils align-default">
 <thead>
@@ -1617,12 +1531,11 @@ default: 4</p>
 </dl>
 </dd></dl>
 
-</section>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ler.SourceGalaxyPopulationModel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">SourceGalaxyPopulationModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'popI_II'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.SourceGalaxyPopulationModel" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">SourceGalaxyPopulationModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'popI_II'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/source_population.html#SourceGalaxyPopulationModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.SourceGalaxyPopulationModel" title="Permalink to this definition"></a></dt>
 <dd><p>Class to generate a population of source galaxies.
 This class is inherited by <code class="xref py py-class docutils literal notranslate"><span class="pre">CompactBinaryPopulation</span></code> class.</p>
 <dl class="field-list">
@@ -1649,8 +1562,6 @@ default: ‘popI_II’</p>
 <span class="go">array([0.0001, 0.0001, 0.0001, ..., 9.9999, 9.9999, 9.9999])</span>
 </pre></div>
 </div>
-<section id="id4">
-<h4>Instance Attributes<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h4>
 <p>SourceGalaxyPopulationModel has the following instance attributes:</p>
 <table class="docutils align-default">
 <thead>
@@ -1676,9 +1587,6 @@ default: ‘popI_II’</p>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="id5">
-<h4>Instance Methods<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h4>
 <p>SourceGalaxyPopulationModel has the following instance methods:</p>
 <table class="docutils align-default">
 <thead>
@@ -1959,12 +1867,11 @@ default: 13.786885302009708</p>
 </div>
 </dd></dl>
 
-</section>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ler.CompactBinaryPopulation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">CompactBinaryPopulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.59</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">86.22</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'popI_II'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_model_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.CompactBinaryPopulation" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">CompactBinaryPopulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.59</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">86.22</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'popI_II'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_model_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/source_population.html#CompactBinaryPopulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.CompactBinaryPopulation" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ler.SourceGalaxyPopulationModel" title="ler.SourceGalaxyPopulationModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel</span></code></a></p>
 <p>Class to generate a population of compact binaries. Inherits from <code class="xref py py-class docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel</span></code> class.</p>
 <dl class="field-list">
@@ -1995,12 +1902,7 @@ e.g. for popI_II: {‘alpha’: 3.63, ‘beta’: 1.26, ‘delta_m’: 4.82, ‘
 <span class="go">dict_keys([&#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;zs&#39;, &#39;luminosity_distance&#39;, &#39;iota&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;tilt_1&#39;, &#39;tilt_2&#39;, &#39;phi_12&#39;, &#39;phi_jl&#39;])</span>
 </pre></div>
 </div>
-<section id="id6">
-<h4>Instance Attributes<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h4>
 <p>CompactBinaryPopulation has the following instance attributes:</p>
-</section>
-<section id="id7">
-<h4>Instance Methods<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h4>
 <p>CompactBinaryPopulation has the following instance methods:</p>
 <table class="docutils align-default">
 <thead>
@@ -2316,12 +2218,11 @@ default: muL=1.35, sigmaL=0.08, muR=1.8, sigmaR=0.3</p>
 </div>
 </dd></dl>
 
-</section>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.solve_lens_equation1">
-<span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">solve_lens_equation1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lens_parameters</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.solve_lens_equation1" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">solve_lens_equation1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lens_parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/multiprocessing_routine.html#solve_lens_equation1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.solve_lens_equation1" title="Permalink to this definition"></a></dt>
 <dd><p>Function to solve the lens equation (min_image = 2)</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2390,7 +2291,7 @@ lens_parameters[10:] = lens_model_list : numpy array of lens models</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.solve_lens_equation2">
-<span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">solve_lens_equation2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lens_parameters</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.solve_lens_equation2" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">solve_lens_equation2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lens_parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/multiprocessing_routine.html#solve_lens_equation2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.solve_lens_equation2" title="Permalink to this definition"></a></dt>
 <dd><p>Function to solve the lens equation (min_image &gt; 2)</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2459,13 +2360,13 @@ lens_parameters[10:] = lens_model_list : numpy array of lens models</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.add_dictionaries_together">
-<span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">add_dictionaries_together</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dictionary2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.add_dictionaries_together" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">add_dictionaries_together</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dictionary2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/helperroutines.html#add_dictionaries_together"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.add_dictionaries_together" title="Permalink to this definition"></a></dt>
 <dd><p>Adds two dictionaries with the same keys together.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.rejection_sample">
-<span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">rejection_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.rejection_sample" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">rejection_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/helperroutines.html#rejection_sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rejection_sample" title="Permalink to this definition"></a></dt>
 <dd><p>Helper function for rejection sampling from a pdf with maximum and minimum arguments.
 Input parameters:</p>
 <blockquote>
@@ -2487,7 +2388,10 @@ size: the number of samples to draw</p>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../lensed.html" class="btn btn-neutral float-left" title="Lensed events" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="helperroutines/index.html" class="btn btn-neutral float-right" title="ler.helperroutines" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

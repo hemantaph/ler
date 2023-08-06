@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.helperroutines &mdash; ler 0.2.0 documentation</title>
+  <title>ler.helperroutines &mdash; ler 0.2.2 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -14,17 +14,19 @@
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=b1f64a84"></script>
-        <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
-        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/clipboard.min.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="ler.lens_galaxy_population" href="../lens_galaxy_population/index.html" />
+    <link rel="prev" title="ler" href="../index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,29 +48,35 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.helperroutines</span></code></a><ul>
-<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
-<li><a class="reference internal" href="#classes">Classes</a></li>
-<li><a class="reference internal" href="#functions">Functions</a><ul>
-<li><a class="reference internal" href="#ler.helperroutines.NumpyEncoder"><code class="docutils literal notranslate"><span class="pre">NumpyEncoder</span></code></a><ul>
-<li><a class="reference internal" href="#ler.helperroutines.NumpyEncoder.default"><code class="docutils literal notranslate"><span class="pre">NumpyEncoder.default()</span></code></a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../unlensed.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../lensed.html">Lensed events</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler</span></code></a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.helperroutines</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ler.helperroutines.append_json"><code class="docutils literal notranslate"><span class="pre">append_json()</span></code></a></li>
-<li><a class="reference internal" href="#ler.helperroutines.get_param_from_json"><code class="docutils literal notranslate"><span class="pre">get_param_from_json()</span></code></a></li>
-<li><a class="reference internal" href="#ler.helperroutines.rejection_sample"><code class="docutils literal notranslate"><span class="pre">rejection_sample()</span></code></a></li>
-<li><a class="reference internal" href="#ler.helperroutines.add_dictionaries_together"><code class="docutils literal notranslate"><span class="pre">add_dictionaries_together()</span></code></a></li>
-<li><a class="reference internal" href="#ler.helperroutines.trim_dictionary"><code class="docutils literal notranslate"><span class="pre">trim_dictionary()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.ler</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../multiprocessing_routine/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.multiprocessing_routine</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.source_population</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
 </ul>
 </li>
 </ul>
-</li>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../rate_comparision.html">Calculation of unlensed and lensed rate of detectable events</a></li>
 </ul>
-</li>
-</ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -83,6 +91,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler</span></code></a></li>
       <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.helperroutines</span></code></li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/autoapi/ler/helperroutines/index.rst.txt" rel="nofollow"> View page source</a>
@@ -131,7 +140,7 @@
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ler.helperroutines.NumpyEncoder">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.helperroutines.</span></span><span class="sig-name descname"><span class="pre">NumpyEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skipkeys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ensure_ascii</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_circular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.helperroutines.NumpyEncoder" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.helperroutines.</span></span><span class="sig-name descname"><span class="pre">NumpyEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skipkeys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ensure_ascii</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_circular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/helperroutines.html#NumpyEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.helperroutines.NumpyEncoder" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">json.JSONEncoder</span></code></p>
 <p>class for storing a numpy.ndarray or any nested-list composition as JSON file</p>
 <dl class="field-list">
@@ -150,7 +159,7 @@
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.helperroutines.NumpyEncoder.default">
-<span class="sig-name descname"><span class="pre">default</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.helperroutines.NumpyEncoder.default" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">default</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/helperroutines.html#NumpyEncoder.default"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.helperroutines.NumpyEncoder.default" title="Permalink to this definition"></a></dt>
 <dd><p>Implement this method in a subclass such that it returns
 a serializable object for <code class="docutils literal notranslate"><span class="pre">o</span></code>, or calls the base implementation
 (to raise a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>).</p>
@@ -173,7 +182,7 @@ implement default like this:</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.helperroutines.append_json">
-<span class="sig-prename descclassname"><span class="pre">ler.helperroutines.</span></span><span class="sig-name descname"><span class="pre">append_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.helperroutines.append_json" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.helperroutines.</span></span><span class="sig-name descname"><span class="pre">append_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/helperroutines.html#append_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.helperroutines.append_json" title="Permalink to this definition"></a></dt>
 <dd><p>Append and update a json file with a dictionary.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -191,7 +200,7 @@ implement default like this:</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.helperroutines.get_param_from_json">
-<span class="sig-prename descclassname"><span class="pre">ler.helperroutines.</span></span><span class="sig-name descname"><span class="pre">get_param_from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.helperroutines.get_param_from_json" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.helperroutines.</span></span><span class="sig-name descname"><span class="pre">get_param_from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/helperroutines.html#get_param_from_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.helperroutines.get_param_from_json" title="Permalink to this definition"></a></dt>
 <dd><p>Function to get the parameters from json file.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -210,7 +219,7 @@ implement default like this:</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.helperroutines.rejection_sample">
-<span class="sig-prename descclassname"><span class="pre">ler.helperroutines.</span></span><span class="sig-name descname"><span class="pre">rejection_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.helperroutines.rejection_sample" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.helperroutines.</span></span><span class="sig-name descname"><span class="pre">rejection_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/helperroutines.html#rejection_sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.helperroutines.rejection_sample" title="Permalink to this definition"></a></dt>
 <dd><p>Helper function for rejection sampling from a pdf with maximum and minimum arguments.
 Input parameters:</p>
 <blockquote>
@@ -227,13 +236,13 @@ size: the number of samples to draw</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.helperroutines.add_dictionaries_together">
-<span class="sig-prename descclassname"><span class="pre">ler.helperroutines.</span></span><span class="sig-name descname"><span class="pre">add_dictionaries_together</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dictionary2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.helperroutines.add_dictionaries_together" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.helperroutines.</span></span><span class="sig-name descname"><span class="pre">add_dictionaries_together</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dictionary2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/helperroutines.html#add_dictionaries_together"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.helperroutines.add_dictionaries_together" title="Permalink to this definition"></a></dt>
 <dd><p>Adds two dictionaries with the same keys together.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.helperroutines.trim_dictionary">
-<span class="sig-prename descclassname"><span class="pre">ler.helperroutines.</span></span><span class="sig-name descname"><span class="pre">trim_dictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ler.helperroutines.trim_dictionary" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.helperroutines.</span></span><span class="sig-name descname"><span class="pre">trim_dictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/helperroutines.html#trim_dictionary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.helperroutines.trim_dictionary" title="Permalink to this definition"></a></dt>
 <dd><p>Filters an event dictionary to only contain the size.</p>
 </dd></dl>
 
@@ -244,7 +253,10 @@ size: the number of samples to draw</p>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="ler" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../lens_galaxy_population/index.html" class="btn btn-neutral float-right" title="ler.lens_galaxy_population" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

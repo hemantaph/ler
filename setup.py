@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="ler",
-    version="0.2.1",
+    version="0.2.2",
     description="Gravitational waves Lensing Rates",
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -19,7 +19,7 @@ setup(
     install_requires=[
         "setuptools>=67.8.0",
         "numpy>=1.18",
-        "numba>=0.56.4",
+        "numba>=0.57.1",
         "bilby>=1.0.2",
         "gwsnr>=0.1",
         "scipy>=1.9.0",
@@ -28,6 +28,6 @@ setup(
         "tqdm>=4.64.1",
         "pointpats>=2.3",
         "shapely>=2.0.1",
-        'gwcosmo @ git+https://git.ligo.org/lscsoft/gwcosmo.git@v1.0.0',
+        "gwcosmo @ git+https://git.ligo.org/lscsoft/gwcosmo.git@v1.0.0",
     ],
 )
