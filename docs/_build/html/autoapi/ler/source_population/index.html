@@ -71,9 +71,6 @@
 <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../rate_comparision.html">Calculation of unlensed and lensed rate of detectable events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../rate_comparision.html#Unlensed-events">Unlensed events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../rate_comparision.html#Detectable-lensed-events'-rate-in-a-year">Detectable lensed events’ rate in a year</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../rate_comparision.html#with-more-accurate-snr">with more accurate snr</a></li>
 </ul>
 
         </div>
@@ -461,6 +458,14 @@ default: 13.786885302009708</p>
 <dt class="sig sig-object py" id="ler.source_population.CompactBinaryPopulation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.source_population.</span></span><span class="sig-name descname"><span class="pre">CompactBinaryPopulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.59</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">86.22</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'popI_II'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_model_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/source_population.html#CompactBinaryPopulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.source_population.CompactBinaryPopulation" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ler.source_population.SourceGalaxyPopulationModel" title="ler.source_population.SourceGalaxyPopulationModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel</span></code></a></p>
+digraph inheritancec60da16ce7 {
+bgcolor=transparent;
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;CompactBinaryPopulation&quot; [URL=&quot;#ler.source_population.CompactBinaryPopulation&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;Class to generate a population of compact binaries. Inherits from :class:`~ler.ler.SourceGalaxyPopulationModel` class.&quot;];
+  &quot;SourceGalaxyPopulationModel&quot; -&gt; &quot;CompactBinaryPopulation&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;SourceGalaxyPopulationModel&quot; [URL=&quot;#ler.source_population.SourceGalaxyPopulationModel&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;Class to generate a population of source galaxies.&quot;];
+}
 <p>Class to generate a population of compact binaries. Inherits from <code class="xref py py-class docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel</span></code> class.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
