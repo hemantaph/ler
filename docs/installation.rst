@@ -4,13 +4,13 @@ Installation
 
 .. note::
 
-    If you are using pip it is recommended to install ``gwcosmo`` before installing ``ler``. ``gwcosmo`` needs installation from git source :ref:`gwcosmo`. For arm64 architecture processor (e.g. apple silicon) you might need to install some of the dependencies with conda :ref:`dependencies`. For package development and contribution refer here :ref:`development`.
+    If you are using pip it is recommended to install ``gwcosmo`` before installing ``ler`` (:ref:`gwcosmo`). For arm64 architecture processor (e.g. apple silicon) you might need to install some of the dependencies with conda (:ref:`dependencies`). For package development and contribution refer here (:ref:`development`).
 
 .. tabs::
         
      .. code-tab:: console pip
 
-        pip install ler
+        pip install ler gwcosmo@git+https://git.ligo.org/lscsoft/gwcosmo.git@v1.0.0
 
      
 
@@ -23,13 +23,6 @@ ler for development
 
 To install ``ler`` for development purposes use `github.ler <https://github.com/hemantaph/ler/>`_. Use conda environment to avoid dependency error. 
 
-.. code-block:: console
-
-    git clone https://github.com/hemantaph/ler.git
-    cd ler
-    # For new env $ conda env create -f environment.yml
-    conda env update --file environment.yml
-    pip install -e .
     
 .. tabs::
 
