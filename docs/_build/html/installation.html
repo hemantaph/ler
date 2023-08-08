@@ -101,13 +101,10 @@
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Installing <code class="docutils literal notranslate"><span class="pre">ler</span></code> with conda is recomended to avoid dependency issue. If you are using pip it is recommended to install <code class="docutils literal notranslate"><span class="pre">gwcosmo</span></code> before installing <code class="docutils literal notranslate"><span class="pre">ler</span></code>. <code class="docutils literal notranslate"><span class="pre">gwcosmo</span></code> needs installation from git source <a class="reference internal" href="#gwcosmo"><span class="std std-ref">Installation from the source for gwcosmo</span></a>. For arm64 architecture processor (e.g. apple silicon) you might need to install some of the dependencies with conda <a class="reference internal" href="#dependencies"><span class="std std-ref">Installation of numba and healpy with conda</span></a>. For package development and contribution refer here <a class="reference internal" href="#development"><span class="std std-ref">ler for development</span></a></p>
+<p>If you are using pip it is recommended to install <code class="docutils literal notranslate"><span class="pre">gwcosmo</span></code> before installing <code class="docutils literal notranslate"><span class="pre">ler</span></code> (<a class="reference internal" href="#gwcosmo"><span class="std std-ref">Installation from the source for gwcosmo</span></a>). For arm64 architecture processor (e.g. apple silicon) you might need to install some of the dependencies with conda (<a class="reference internal" href="#dependencies"><span class="std std-ref">Installation of numba and healpy with conda</span></a>). For package development and contribution refer here (<a class="reference internal" href="#development"><span class="std std-ref">ler for development</span></a>).</p>
 </div>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-Y29uZGE=" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-Y29uZGE=" name="Y29uZGE=" role="tab" tabindex="0">conda</button><button aria-controls="panel-0-cGlw" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-cGlw" name="cGlw" role="tab" tabindex="-1">pip</button></div><div aria-labelledby="tab-0-Y29uZGE=" class="sphinx-tabs-panel code-tab group-tab" id="panel-0-Y29uZGE=" name="Y29uZGE=" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda install -c conda-forge ler</span>
-</pre></div>
-</div>
-</div><div aria-labelledby="tab-0-cGlw" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-0-cGlw" name="cGlw" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install ler</span>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-cGlw" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-cGlw" name="cGlw" role="tab" tabindex="0">pip</button></div><div aria-labelledby="tab-0-cGlw" class="sphinx-tabs-panel code-tab group-tab" id="panel-0-cGlw" name="cGlw" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install ler gwcosmo@git+https://git.ligo.org/lscsoft/gwcosmo.git@v1.0.0</span>
 </pre></div>
 </div>
 </div></div>
@@ -115,13 +112,6 @@
 <section id="ler-for-development">
 <span id="development"></span><h2>ler for development<a class="headerlink" href="#ler-for-development" title="Permalink to this heading"></a></h2>
 <p>To install <code class="docutils literal notranslate"><span class="pre">ler</span></code> for development purposes use <a class="reference external" href="https://github.com/hemantaph/ler/">github.ler</a>. Use conda environment to avoid dependency error.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/hemantaph/ler.git</span>
-<span class="go">cd ler</span>
-<span class="gp"># </span>For<span class="w"> </span>new<span class="w"> </span>env<span class="w"> </span>$<span class="w"> </span>conda<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>environment.yml
-<span class="go">conda env update --file environment.yml</span>
-<span class="go">pip install -e .</span>
-</pre></div>
-</div>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-d2l0aCBuZXcgY29uZGEgZW52" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-d2l0aCBuZXcgY29uZGEgZW52" name="d2l0aCBuZXcgY29uZGEgZW52" role="tab" tabindex="0">with new conda env</button><button aria-controls="panel-1-ZXhpc3RpbmcgY29uZGEgZW52" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-ZXhpc3RpbmcgY29uZGEgZW52" name="ZXhpc3RpbmcgY29uZGEgZW52" role="tab" tabindex="-1">existing conda env</button></div><div aria-labelledby="tab-1-d2l0aCBuZXcgY29uZGEgZW52" class="sphinx-tabs-panel code-tab group-tab" id="panel-1-d2l0aCBuZXcgY29uZGEgZW52" name="d2l0aCBuZXcgY29uZGEgZW52" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/hemantaph/ler.git</span>
 <span class="go">cd ler</span>
