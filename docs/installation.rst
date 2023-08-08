@@ -4,13 +4,9 @@ Installation
 
 .. note::
 
-    Installing ``ler`` with conda is recomended to avoid dependency issue. If you are using pip it is recommended to install ``gwcosmo`` before installing ``ler``. ``gwcosmo`` needs installation from git source :ref:`gwcosmo`. For arm64 architecture processor (e.g. apple silicon) you might need to install some of the dependencies with conda :ref:`dependencies`. For package development and contribution refer here :ref:`development`.
+    If you are using pip it is recommended to install ``gwcosmo`` before installing ``ler``. ``gwcosmo`` needs installation from git source :ref:`gwcosmo`. For arm64 architecture processor (e.g. apple silicon) you might need to install some of the dependencies with conda :ref:`dependencies`. For package development and contribution refer here :ref:`development`.
 
 .. tabs::
-
-     .. code-tab:: console conda
-
-        conda install -c conda-forge ler
         
      .. code-tab:: console pip
 

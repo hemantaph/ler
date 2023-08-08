@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: ler
-Version: 0.2.3
+Version: 0.2.5
 Summary: Gravitational waves Lensing Rates
 Home-page: https://github.com/hemantaph/ler
 Author: Hemantakumar
@@ -8,6 +8,7 @@ Author-email: hemantaphurailatpam@gmail.com
 License: MIT
 Requires-Python: >=3.10
 Description-Content-Type: text/markdown
+License-File: LICENSE
 
 # LeR
 [![DOI](https://zenodo.org/badge/626733473.svg)](https://zenodo.org/badge/latestdoi/626733473)
