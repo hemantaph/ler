@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
+import sys
 # read the contents of your README file
 from pathlib import Path
 this_directory = Path(__file__).parent
@@ -12,7 +13,7 @@ if python_version < (3, 10):
 
 setup(
     name="ler",
-    version="0.2.3",
+    version="0.2.5",
     description="Gravitational waves Lensing Rates",
     long_description=long_description,
     long_description_content_type='text/markdown',

@@ -11,3 +11,4 @@ myst-parser
 sphinx-copybutton
 autoapi
 ler
+git+https://git.ligo.org/lscsoft/gwcosmo.git@v1.0.0
