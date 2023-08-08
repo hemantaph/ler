@@ -1,0 +1,13 @@
+name: ler
+channels:
+  - conda-forge
+  - defaults
+  - pip
+dependencies:
+  - python=3.10
+  - healpy
+  - numba
+  - bilby
+  - pip:
+    - git+https://git.ligo.org/lscsoft/gwcosmo.git@v1.0.0
+prefix: $HOME/anaconda3/envs/ler

@@ -1,7 +1,7 @@
-:py:mod:`ler.source_population`
-===============================
+:py:mod:`source_population-checkpoint`
+======================================
 
-.. py:module:: ler.source_population
+.. py:module:: source_population-checkpoint
 
 .. autoapi-nested-parse::
 
@@ -23,8 +23,8 @@ Classes
 
 .. autoapisummary::
 
-   ler.source_population.SourceGalaxyPopulationModel
-   ler.source_population.CompactBinaryPopulation
+   source_population-checkpoint.SourceGalaxyPopulationModel
+   source_population-checkpoint.CompactBinaryPopulation
 
 
 

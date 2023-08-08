@@ -40,9 +40,6 @@ Functions
 
    Bases: :py:obj:`json.JSONEncoder`
 
-   .. autoapi-inheritance-diagram:: ler.helperroutines.NumpyEncoder
-      :parts: 1
-
    
    class for storing a numpy.ndarray or any nested-list composition as JSON file
 
