@@ -907,20 +907,11 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
             for key, value in self.src_model_params.items():
                 if key in keys_:
                     param[key] = value
-
-        mass_1_source  = []
-        mass_2_source  = []
-        while len(mass_1_source) < size:
-            # draw from normal distribution
-            m2 = np.random.normal(muL, sigmaL, size=size)
-            m1 = np.random.normal(muR, sigmaR, size=size)
-            # check if m1>m2
-            idx = m1>m2
-            mass_1_source+=list(m1[idx])
-            mass_2_source+=list(m2[idx])
-
-        mass_1_source = np.array(mass_1_source)[:size]
-        mass_2_source = np.array(mass_2_source)[:size]
+    
+        model = p.mass_prior("BNS", None)
+        mass_1_source, mass_2_source = model.sample(Nsample=size)
+        while np.any(mass_2_source > mass_1_source):
+            mass_1_source, mass_2_source = model.sample(Nsample=size)
 
         return (mass_1_source, mass_2_source)
 
