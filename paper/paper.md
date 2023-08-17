@@ -11,9 +11,6 @@ authors:
     orcid: 0000-0000-0000-0000
     # equal-contrib: true
     affiliation: "1 , 2"
-  - name: Otto A. HANNUKSELA 
-    # equal-contrib: False 
-    affiliation: "1 , 2"
   - name: Harsh Narola
     # equal-contrib: False
     affiliation: "3 , 2"
@@ -26,6 +23,9 @@ authors:
   - name: Justin Janquart
     # equal-contrib: False 
     affiliation: "3 , 2, 4"
+  - name: Otto A. HANNUKSELA 
+    # equal-contrib: False 
+    affiliation: "1 , 2"
   - name: Chris Van Den Broeck
     # equal-contrib: False 
     affiliation: "3 , 2, 4"
