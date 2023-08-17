@@ -1,5 +1,5 @@
 ---
-title: 'LeR: A Python package for generating gravitational waves lensing statistics'
+title: 'LeR: A Python package for generating gravitational waves lensing rates and related statistics'
 tags:
   - Python
   - astrophysics
@@ -11,12 +11,15 @@ authors:
     orcid: 0000-0000-0000-0000
     # equal-contrib: true
     affiliation: "1 , 2"
-  - name: Harsh Narola
-    # equal-contrib: False
-    affiliation: "3 , 2"
   - name: Otto A. HANNUKSELA 
     # equal-contrib: False 
     affiliation: "1 , 2"
+  - name: Harsh Narola
+    # equal-contrib: False
+    affiliation: "3 , 2"
+  - name: Anupreeta More
+    # equal-contrib: False
+    affiliation: "5 , 6"
   - name: Ng Chung Yin (Leo)
     # equal-contrib: False 
     affiliation: "1 , 2"
@@ -35,7 +38,11 @@ affiliations:
     index: 3
   - name: Nikhef – National Institute for Subatomic Physics, Science Park, 1098 XG Amsterdam, The Netherlands
     index: 4
-date: 21 June 2023
+  - name:  The Inter-University Centre for Astronomy and Astrophysics (IUCAA), Post Bag 4, Ganeshkhind, Pune 411007, India
+    index: 5
+  - name: Kavli Institute for the Physics and Mathematics of the Universe (IPMU), 5-1-5 Kashiwanoha, Kashiwa-shi, Chiba 277-8583, Japan
+    index: 6
+date: 17 August 2023
 bibliography: paper.bib
 ---
 
