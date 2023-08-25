@@ -230,11 +230,17 @@ class LeR:
             "m_max": 86.22,
             "z_min": z_min,
             "z_max": z_max,
-            "event_type": "popI_II",
+            "event_type": "BBH",
+            "category": "popI_II",
+            "sub_category": "gwcosmo",
+            "redshift_event_type": None,
+            "redshift_category": None,
             "merger_rate_density_fn": None,
             "merger_rate_density_param": None,
             "src_model_params": None,
-            "spin_zero": False,
+            "mass_constant": False,
+            "redshift_constant": False,
+            "spin_constant": False,
         }
         # for lensed case
         # set 'min_lensed_images' = 2 for double image lensed case
@@ -308,8 +314,9 @@ class LeR:
         if unavailable, the unlensed parameters will be sampled when unlensed_rate() is called \n
         gw_param.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time'] \n
         """
-        if self._gw_param == "default":
-            f = open("gw_params.json", "r", encoding="utf-8")
+        # if file name
+        if isinstance(self._gw_param, str):
+            f = open(self._gw_param, "r", encoding="utf-8")
             self._gw_param = json.loads(f.read())
         return self._gw_param
 
@@ -325,8 +332,9 @@ class LeR:
         if unavailable, the unlensed parameters will be sampled when unlensed_rate() is called \n
         gw_param_detectable.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time'] \n
         """
-        if self._gw_param_detectable == "default":
-            f = open("gw_params_detectable.json", "r", encoding="utf-8")
+        # if file name
+        if isinstance(self._gw_param_detectable, str):
+            f = open(self._gw_param_detectable, "r", encoding="utf-8")
             self._gw_param_detectable = json.loads(f.read())
         return self._gw_param_detectable
 
@@ -342,8 +350,9 @@ class LeR:
         if unavailable, the lensed parameters will be sampled when lensed_rate() is called \n
         lensed_param.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time', 'lensed_images'] \n
         """
-        if self._lensed_param == "default":
-            f = open("lensed_params.json", "r", encoding="utf-8")
+        # if file name
+        if isinstance(self._lensed_param, str):
+            f = open(self._lensed_param, "r", encoding="utf-8")
             self._lensed_param = json.loads(f.read())
         return self._lensed_param
 
@@ -359,8 +368,9 @@ class LeR:
         if unavailable, the lensed parameters will be sampled when lensed_rate() is called \n
         lensed_param_detectable.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time', 'lensed_images'] \n
         """
-        if self._lensed_param_detectable == "default":
-            f = open("lensed_params_detectable.json", "r", encoding="utf-8")
+        # if file name
+        if isinstance(self._lensed_param_detectable, str):
+            f = open(self._lensed_param_detectable, "r", encoding="utf-8")
             self._lensed_param_detectable = json.loads(f.read())
         return self._lensed_param_detectable
 
@@ -379,12 +389,18 @@ class LeR:
             m_min=self.gw_param_sampler_dict["m_min"],
             m_max=self.gw_param_sampler_dict["m_max"],
             event_type=self.gw_param_sampler_dict["event_type"],
+            category=self.gw_param_sampler_dict["category"],
+            sub_category=self.gw_param_sampler_dict["sub_category"],
+            redshift_event_type=self.gw_param_sampler_dict["redshift_event_type"],
+            redshift_category=self.gw_param_sampler_dict["redshift_category"],
             merger_rate_density_fn=self.gw_param_sampler_dict[
                 "merger_rate_density_fn"],
             merger_rate_density_param=self.gw_param_sampler_dict[
                 "merger_rate_density_param"],
             src_model_params=self.gw_param_sampler_dict["src_model_params"],
-            spin_zero=self.gw_param_sampler_dict["spin_zero"],
+            mass_constant=self.gw_param_sampler_dict["mass_constant"],
+            redshift_constant=self.gw_param_sampler_dict["redshift_constant"],
+            spin_constant=self.gw_param_sampler_dict["spin_constant"],
         )
         self.lens_galaxy_pop = LensGalaxyPopulation(self.compact_binary_pop)
 
@@ -591,8 +607,10 @@ class LeR:
                     data = json.load(f)
                     track_batches = (len(data["zs"]) - frac_batches) // batch_size + 1
             except:
-                print(f"no json file found with name {json_file}. Set resume=False")
-                return None
+                track_batches = track_batches + 1
+                print(f"Batch no. {track_batches}")
+                # new first batch with the frac_batches
+                sampling_routine(nsamples=frac_batches, file_name=json_file)
 
         # ---------------------------------------------------#
         min_, max_ = track_batches, num_batches
@@ -1234,9 +1252,9 @@ class LeR:
             data = json.load(f)
         # append the results
         if detectability_condition == "step_function":
-            data['unlensed_rate_ratio_step'] = rate_ratio
+            data['rate_ratio_step'] = rate_ratio
         elif detectability_condition == "pdet":
-            data['unlensed_rate_ratio_pdet'] = rate_ratio
+            data['rate_ratio_pdet'] = rate_ratio
         # write the results
         append_json(self.json_file_ler_param, data, replace=True)
 
