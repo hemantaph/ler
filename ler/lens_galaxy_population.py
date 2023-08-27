@@ -216,7 +216,7 @@ class LensGalaxyPopulation:
         pdf_unnormalized = (
             lambda z: merger_rate_density_detector_frame(z)
             * self.differential_comoving_volume(z)
-            * self.strong_lensing_optical_depth(z)
+            * self.strong_lensing_optical_depth_SIS(z)
         )
         # Normalize the pdf
         # this normalization factor is common no matter what you choose for z_min and z_max
@@ -445,8 +445,8 @@ class LensGalaxyPopulation:
             )
 
             # put strong lensing condition with optical depth
-            tau = self.strong_lensing_optical_depth(zs)
-            tau_max = np.max(self.strong_lensing_optical_depth(z_max))
+            tau = self.strong_lensing_optical_depth_SIS(zs)
+            tau_max = np.max(self.strong_lensing_optical_depth_SIS(z_max))
             r = np.random.uniform(0, tau_max, size=len(zs))
             pick_strongly_lensed = r < tau  # pick strongly lensed sources
             # Add the strongly lensed source redshifts to the list
@@ -557,7 +557,7 @@ class LensGalaxyPopulation:
         Returns
         -------
             theta_E : `float`
-                Einstein radii of the lens galaxies
+                Einstein radii of the lens galaxies in radian
 
         """
         # Compute the angular diameter distances
@@ -650,9 +650,9 @@ class LensGalaxyPopulation:
         idx = u < theta_E**2
         return idx
 
-    def strong_lensing_optical_depth(self, zs):
+    def strong_lensing_optical_depth_SIE(self, zs):
         """
-        Function to compute the strong lensing optical depth
+        Function to compute the strong lensing optical depth SIE
 
         Parameters
         ----------
@@ -665,8 +665,41 @@ class LensGalaxyPopulation:
                 strong lensing optical depth
 
         """
+        # for SIE model
+        # dedine a function to calculate the cross section number
+        # here we already assume that we have initialized the crossection spline 
+        def getcrosssect_num(theta_E, q):
+            fid_b_I = 10.0  # constant
+            idx = q > 0.999
+            q[idx] = 0.999
+            idx = q < 0.1
+            q[idx] = 0.1
+            b_I = theta_E * np.sqrt(q)
+            return self.cross_sect_spl(q)*(b_I/fid_b_I)**2
+
+        # theta_E=bsis=einstein_radius_SIS  # refer to compute_einstein_radii
+        
+        return getcrosssect_num(theta_E, q)/(4*np.pi)
+
+    def strong_lensing_optical_depth_SIS(self, zs):
+        """
+        Function to compute the strong lensing optical depth (SIS)
+
+        Parameters
+        ----------
+            zs : `float`
+                source redshifts
+
+        Returns
+        -------
+            tau : `float`
+                strong lensing optical depth
+
+        """
+        # For SIS model
         # z to luminosity_distance (luminosity_distance) conversion
         Dc = self.z_to_Dc(zs) * 1e-3  # 1e-3 converts Mpc to Gpc
+
         return (Dc / 62.2) ** 3
 
     def get_image_properties(
