@@ -1028,11 +1028,11 @@ class LeR:
                 snr = lensed_param["opt_snr_net"]
             except:
                 # snr not provided
-                print("snr not provided in gw_param dict. Exiting...")
+                print("snr not provided in lensed_param dict. Exiting...")
                 return None
 
             snr_hit = np.full(size, True)  # boolean array to store the result of the threshold condition
-            # Below can be just one line with 3D numpy operation
+            # for each row: choose a threshold and check if the number of images above threshold. Sum over the images. If sum is greater than num_img, then snr_hit = True 
             for i in range(len(snr_threshold)):
                 snr_hit = snr_hit & (np.sum((snr > snr_threshold[i]), axis=1) >= num_img[i])
             snr_hit = snr_hit & not_rejected
