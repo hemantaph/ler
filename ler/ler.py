@@ -1591,6 +1591,11 @@ class LeR:
             extent=np.log10(extent),
         )
 
+        # labels
+        ax.xlabel(r"$log_{10}\Delta t$ (days)")
+        ax.ylabel(r"$\Delta log_{10}\mu$")
+        ax.title(r"relative magnification vs relative time delay")
+
         # save figure
         if savefig:
             ax.savefig("mu_vs_dt.png", dpi=300, bbox_inches="tight")

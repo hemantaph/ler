@@ -732,7 +732,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
             a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl = self.binary_spin(nsamples)
 
         # compute GPS time
-        geocent_time = randint.rvs(1238166018, 1238166018 + 15811200, size=nsamples)
+        geocent_time = randint.rvs(1238166018, 1238166018 + 31536000, size=nsamples)
         mass_1, mass_2 = mass_1_source * (1 + zs), mass_2_source * (1 + zs)
 
         gw_parameters = {
