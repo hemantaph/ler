@@ -23,12 +23,12 @@ authors:
   - name: Justin Janquart
     # equal-contrib: False 
     affiliation: "3 , 2, 4"
-  - name: Otto A. HANNUKSELA 
-    # equal-contrib: False 
-    affiliation: "1 , 2"
   - name: Chris Van Den Broeck
     # equal-contrib: False 
     affiliation: "3 , 2, 4"
+  - name: Otto A. HANNUKSELA 
+    # equal-contrib: False 
+    affiliation: "1 , 2"
 affiliations:
   - name: The Chinese University of Hong Kong, Hong Kong
     index: 1
