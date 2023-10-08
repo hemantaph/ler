@@ -139,6 +139,14 @@
             <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span></div></div>
 
+<div class="viewcode-block" id="update_dict"><a class="viewcode-back" href="../../autoapi/ler/helperroutines/index.html#ler.helperroutines.update_dict">[docs]</a><span class="k">def</span> <span class="nf">update_dict</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Update a dictionary with keys and values.&quot;&quot;&quot;</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">old</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">new</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">old</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">return</span> <span class="n">old</span></div>
 
 <div class="viewcode-block" id="append_json"><a class="viewcode-back" href="../../autoapi/ler/helperroutines/index.html#ler.helperroutines.append_json">[docs]</a><span class="k">def</span> <span class="nf">append_json</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Append and update a json file with a dictionary.</span>

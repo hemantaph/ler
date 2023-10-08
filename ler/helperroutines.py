@@ -47,6 +47,14 @@ class NumpyEncoder(json.JSONEncoder):
             return obj.tolist()
         return json.JSONEncoder.default(self, obj)
 
+def update_dict(old, new):
+    """Update a dictionary with keys and values."""
+    keys = old.keys()
+    for key, value in new.items():
+        if key in keys:
+            old[key] = value
+
+    return old
 
 def append_json(file_name, dictionary, replace=False):
     """Append and update a json file with a dictionary.

@@ -7,7 +7,9 @@ model is used to generate the source galaxy population model. The compact binary
 population model is used to generate the compact binary population model.
 
 """
+import warnings
 
+warnings.filterwarnings("ignore")
 import numpy as np
 import bilby
 from scipy.stats import randint
@@ -24,7 +26,7 @@ from gwcosmo import priors as p
 
 # for multiprocessing
 # Import helper routines
-from ler.helperroutines import rejection_sample, rejection_sample2d
+from ler.helperroutines import rejection_sample, rejection_sample2d, update_dict
 
 
 class SourceGalaxyPopulationModel:
@@ -41,13 +43,20 @@ class SourceGalaxyPopulationModel:
         default: 10.
     event_type : `str`
         Type of event to generate
-        e.g. 'popI_II', 'BNS', 'popIII', 'primordial', 'popI_II_Madau_Dickinson'
-        default: 'popI_II'
+        e.g. 'BBH', 'BNS', 'BBH_popIII', 'BBH_primordial', 'NSBH'
+        default: 'BBH'
+    merger_rate_density : `str`
+        Type of merger rate density function to use
+        default: None/'merger_rate_density_popI_II_Oguri'
+        for others see instance method in :class:`~ler.ler.SourceGalaxyPopulationModel`
+    merger_rate_density_param : `dict`
+        Dictionary of merger rate density function parameters
+        default: None
 
     Examples
     ----------
     >>> from ler import SourceGalaxyPopulationModel
-    >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popI_II")
+    >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "BBH")
     >>> zs = pop.sample_source_redshifts(size=1000)
     >>> zs
     array([0.0001, 0.0001, 0.0001, ..., 9.9999, 9.9999, 9.9999])
@@ -61,6 +70,8 @@ class SourceGalaxyPopulationModel:
     |:attr:`~z_min`                       | `float`                          |
     +-------------------------------------+----------------------------------+
     |:attr:`~z_max`                       | `float`                          |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~event_type`                  | `str`                            |
     +-------------------------------------+----------------------------------+
     |:attr:`~normalization_pdf_z`         | `float`                          |
     +-------------------------------------+----------------------------------+
@@ -84,16 +95,21 @@ class SourceGalaxyPopulationModel:
     |                                     | redshifts from the source        |
     |                                     | galaxy population model          |
     +-------------------------------------+----------------------------------+
-    |:meth:`~merger_rate_density_popI_II` | Function to compute the merger   |
-    |                                     | rate density (PopI/PopII)        |
+    |:meth:`~merger_rate_density_bbh_popI_II_oguri`                          |
     +-------------------------------------+----------------------------------+
-    |:meth:`~merger_rate_density_popI_II_Madau_Dickinson`                    |
+    |                                     | Function to compute the merger   |
+    |                                     | rate density (PopI/PopII)        |
+    |                                     | from Oguri et al. (2018)         |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~merger_rate_density_bbh_popI_II_madau_dickinson`                |
     +-------------------------------------+----------------------------------+
     |                                     | Function to compute the          |
     |                                     | merger rate density (PopI/PopII) |
     |                                     | from Madau & Dickinson (2014)    |
     +-------------------------------------+----------------------------------+
-    |:meth:`~merger_rate_density_popIII`  | Function to compute the merger   |
+    |:meth:`~merger_rate_density_bbh_popIII`                                 |
+    +-------------------------------------+----------------------------------+
+    |                                     | Function to compute the merger   |
     |                                     | rate density (PopIII)            |
     +-------------------------------------+----------------------------------+
     |:meth:`~merger_rate_density_primordial`                                 |
@@ -115,6 +131,12 @@ class SourceGalaxyPopulationModel:
     Maximum redshift of the source population
     """
 
+    event_type = None
+    """``str`` \n
+    Type of event to generate. \n
+    e.g. 'BBH', 'BNS', 'BBH_popIII', 'BBH_primordial', 'NSBH'
+    """
+
     normalization_pdf_z = None
     """``float`` \n
     Normalization constant of the pdf p(z)
@@ -131,40 +153,28 @@ class SourceGalaxyPopulationModel:
     """
 
     def __init__(
-            self,
-            z_min=0.0,
-            z_max=10.0,
-            event_type="popI_II",
-            category="Oguri",
-            merger_rate_density_fn=None,
-            merger_rate_density_param=None):
-
+        self,
+        z_min=0.0,
+        z_max=10.0,
+        event_type="BBH",
+        merger_rate_density="merger_rate_density_popI_II_Oguri",
+        merger_rate_density_param=None,
+    ):
         # set attributes
         self.z_min = z_min
         self.z_max = z_max
+        self.event_type = event_type
         self.create_lookup_table(z_min, z_max)
+
+        # Define the merger-rate density function/method instances
+        self.merger_rate_density = getattr(self, merger_rate_density)
         self.merger_rate_density_param = merger_rate_density_param
 
         # To find the normalization constant of the pdf p(z)
-        # Define the merger-rate density function
-        if merger_rate_density_fn is not None:
-            self.merger_rate_density = merger_rate_density_fn
-        else:
-            try:
-                if category == None:
-                    category = ""
-                else:
-                    category = "_" + category
-                self.merger_rate_density = getattr(
-                    self, "merger_rate_density_" + event_type + category
-                )
-            except:
-                self.merger_rate_density = getattr(self, "merger_rate_density_" + "popI_II_Oguri")
-
-        merger_rate_density_source_frame = lambda z: self.merger_rate_density(z) / (
-            1 + z
-        )
-
+        # from detector frame to source frame
+        merger_rate_density_source_frame = lambda z: self.merger_rate_density(
+            z, param=merger_rate_density_param
+        ) / (1 + z)
         # Define the pdf p(z)
         pdf_unnormalized = lambda z: merger_rate_density_source_frame(
             z
@@ -172,6 +182,7 @@ class SourceGalaxyPopulationModel:
         # Normalize the pdf
         # this normalization factor is common no matter what you choose for z_min and z_max
         self.normalization_pdf_z = quad(pdf_unnormalized, z_min, z_max)[0]
+
         return None
 
     def create_lookup_table(self, z_min, z_max):
@@ -209,19 +220,26 @@ class SourceGalaxyPopulationModel:
 
         return None
 
-    def sample_source_redshifts(self, size=1000, z_min=0.0, z_max=10.0):
+    def sample_source_redshifts(self, size=1000, z_min=0.0, z_max=10.0, param=None):
         """
-        Function to sample source redshifts from the source galaxy population
+        Function to sample source redshifts (source frame) from the source galaxy population
         model
 
         Parameters
         ----------
         size : `int`
             Number of samples to draw
+            default: 1000
         z_min : `float`
             Minimum redshift of the source population
+            default: 0.
         z_max : `float`
             Maximum redshift of the source population
+            default: 10.
+        param : `dict`
+            Allows to pass in above parameters as dict.
+            e.g. param = dict(z_min=0.0, z_max=10.0)
+            default: None
 
         Returns
         ----------
@@ -231,17 +249,22 @@ class SourceGalaxyPopulationModel:
         Examples
         ----------
         >>> from ler import SourceGalaxyPopulationModel
-        >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popI_II_Oguri")
+        >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "BBH")
         >>> zs = pop.sample_source_redshifts(size=1000)
         >>> zs
         array([0.0001, 0.0001, 0.0001, ..., 9.9999, 9.9999, 9.9999])
-
         """
+
+        # replace values with param, if given
+        if param:
+            z_min = param["z_min"]
+            z_max = param["z_max"]
+
         # Define the merger-rate density function
         # print(f"z_max = {z_max}")
-        merger_rate_density_source_frame = lambda z: self.merger_rate_density(z) / (
-            1 + z
-        )
+        merger_rate_density_source_frame = lambda z: self.merger_rate_density(
+            z, param=self.merger_rate_density_param
+        ) / (1 + z)
         # Define the pdf p(z)
         pdf_unnormalized = lambda z: merger_rate_density_source_frame(
             z
@@ -253,9 +276,11 @@ class SourceGalaxyPopulationModel:
         zs = rejection_sample(pdf, z_min, z_max, size=size)
         return zs
 
-    def merger_rate_density_popI_II_Oguri(self, zs, R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30):
+    def merger_rate_density_bbh_popI_II_oguri(
+        self, zs, R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30, param=None
+    ):
         """
-        Function to compute the merger rate density (PopI/PopII)
+        Function to compute the merger rate density (PopI/PopII). Reference: Oguri et al. (2018)
 
         Parameters
         ----------
@@ -273,6 +298,10 @@ class SourceGalaxyPopulationModel:
         b4 : `float`
             Fitting paramters
             default: 30
+        param : `dict`
+            Allows to pass in above parameters as dict.
+            e.g. param = dict(R0=23.9*1e-9, b2=1.6, b3=2.0, b4=30)
+            default: None
 
         Returns
         ----------
@@ -282,30 +311,26 @@ class SourceGalaxyPopulationModel:
         Examples
         ----------
         >>> from ler import SourceGalaxyPopulationModel
-        >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popI_II_Oguri")
-        >>> rate_density = pop.merger_rate_density_popI_II_Oguri(zs=0.1)
+        >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "BBH", merger_rate_density="merger_rate_density_popI_II_Oguri")
+        >>> rate_density = pop.merger_rate_density(zs=0.1)
         >>> rate_density
         2.7848018586883885e-08
-
         """
-        #print("\n merger_rate_density_popI_II_Oguri \n")
-        # replace values with self.merger_rate_density_param, if given
-        param = dict(R0=R0, b2=b2, b3=b3, b4=b4)
-        if self.merger_rate_density_param is not None:
-            keys_ = param.keys()
-            for key, value in self.merger_rate_density_param.items():
-                if key in keys_:
-                    param[key] = value
-                
-        # rate_density = R0 * (b4 + 1) * np.exp(b2 * zs) / (b4 + np.exp(b3 * zs))
-        rate_density = param["R0"] * (param["b4"] + 1) * np.exp(
-            param["b2"] * zs
-        ) / (param["b4"] + np.exp(param["b3"] * zs))
 
+        if param:
+            R0 = param["R0"]
+            b2 = param["b2"]
+            b3 = param["b3"]
+            b4 = param["b4"]
+
+        # rate_density = R0 * (b4 + 1) * np.exp(b2 * zs) / (b4 + np.exp(b3 * zs))
+        rate_density = R0 * (b4 + 1) * np.exp(b2 * zs) / (b4 + np.exp(b3 * zs))
 
         return rate_density
 
-    def merger_rate_density_popI_II_Madau_Dickinson(self, zs, af=2.7, bf=5.6, cf=1.9):
+    def merger_rate_density_bbh_popI_II_madau_dickinson(
+        self, zs, af=2.7, bf=5.6, cf=1.9, param=None
+    ):
         """
         Function to compute the unormalized merger rate density (PopI/PopII) from Madau & Dickinson (2014)
 
@@ -322,6 +347,10 @@ class SourceGalaxyPopulationModel:
         cf : `float`
             Fitting paramters
             default: 1.9
+        param : `dict`
+            Allows to pass in above parameters as dict.
+            e.g. param = dict(af=2.7, bf=5.6, cf=1.9)
+            default: None
 
         Returns
         ----------
@@ -331,28 +360,27 @@ class SourceGalaxyPopulationModel:
         Examples
         ----------
         >>> from ler import SourceGalaxyPopulationModel
-        >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popI_II_Madau_Dickinson")
-        >>> rate_density = pop.merger_rate_density_popI_II_Madau_Dickinson(zs=0.1)
+        >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "BBH", merger_rate_density="merger_rate_density_bbh_popI_II_madau_dickinson")
+        >>> rate_density = pop.merger_rate_density(zs=0.1)
         >>> rate_density
         1.2355851838964846
 
         """
-        # print("\n merger_rate_density_popI_II_Madau_Dickinson \n")
-        # replace values with self.merger_rate_density_param, if given
-        param = dict(af=af, bf=bf, cf=cf)
-        if self.merger_rate_density_param is not None:
-            keys_ = param.keys()
-            for key, value in self.merger_rate_density_param.items():
-                if key in keys_:
-                    param[key] = value
+        if param:
+            af = param["af"]
+            bf = param["bf"]
+            cf = param["cf"]
 
-        rate_density = 0.015 * (1 + zs) ** param["af"] / (1 + ((1 + zs) / param["cf"]) ** param["bf"])
+        # rate density
+        rate_density = 0.015 * (1 + zs) ** af / (1 + ((1 + zs) / cf) ** bf)
 
         return rate_density
 
-    def merger_rate_density_popIII_Ken(self, zs, aIII=0.66, bIII=0.3, zIII=11.6):
+    def merger_rate_density_popIII_ken(
+        self, zs, aIII=0.66, bIII=0.3, zIII=11.6, param=None
+    ):
         """
-        Function to compute the unnormalized merger rate density (PopIII)
+        Function to compute the unnormalized merger rate density (PopIII). Reference: Ken K. Y. Ng et al. (2022)
 
         Parameters
         ----------
@@ -367,6 +395,10 @@ class SourceGalaxyPopulationModel:
         zIII : `float`
             Fitting paramters
             default: 11.6
+        param : `dict`
+            Allows to pass in above parameters as dict.
+            e.g. param = dict(aIII=0.66, bIII=0.3, zIII=11.6)
+            default: None
 
         Returns
         ----------
@@ -376,28 +408,27 @@ class SourceGalaxyPopulationModel:
         Examples
         ----------
         >>> from ler import SourceGalaxyPopulationModel
-        >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popIII")
-        >>> rate_density = pop.merger_rate_density_popIII(zs=0.1)
+        >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "BBH", merger_rate_density="merger_rate_density_popIII_Ken")
+        >>> rate_density = pop.merger_rate_density(zs=0.1)
         >>> rate_density
         0.00010000000000000002
         """
-        #print("\n ken \n")
-        # replace values with self.merger_rate_density_param, if given
-        param = dict(aIII=aIII, bIII=bIII, zIII=zIII)
-        if self.merger_rate_density_param is not None:
-            keys_ = param.keys()
-            for key, value in self.merger_rate_density_param.items():
-                if key in keys_:
-                    param[key] = value
 
-        rate_density = np.exp(param["aIII"] * (zs - param["zIII"])) / ( param["bIII"] + param["aIII"] * np.exp((param["aIII"] + param["bIII"]) * (zs - param["zIII"]))
+        if param:
+            aIII = param["aIII"]
+            bIII = param["bIII"]
+            zIII = param["zIII"]
+
+        # rate density
+        rate_density = np.exp(aIII * (zs - zIII)) / (
+            bIII + aIII * np.exp((aIII + bIII) * (zs - zIII))
         )
 
         return rate_density
 
-    def merger_rate_density_primordial_Ken(self, zs, t0=13.786885302009708):
+    def merger_rate_density_primordial_ken(self, zs, t0=13.786885302009708, param=None):
         """
-        Function to compute the merger rate density (Primordial)
+        Function to compute the merger rate density (Primordial). Reference: Ken K. Y. Ng et al. (2022)
 
         Parameters
         ----------
@@ -420,14 +451,10 @@ class SourceGalaxyPopulationModel:
         >>> rate_density
         0.00010000000000000002
         """
-        # replace values with self.merger_rate_density_param, if given
-        param = dict(t0=t0)
-        if self.merger_rate_density_param is not None:
-            keys_ = param.keys()
-            for key, value in self.merger_rate_density_param.items():
-                if key in keys_:
-                    param[key] = value
+        if param:
+            t0 = param["t0"]
 
+        # rate density
         rate_density = (Planck18.age(z=zs).value / t0) ** (-34 / 37)
 
         return rate_density
@@ -537,15 +564,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
     e.g. 'popI_II', 'BNS', 'popIII', 'primordial', 'popI_II_Madau_Dickinson'
     """
 
-    src_model_params = None
-    """``dict`` \n
-    Dictionary of model parameters. \n
-    e.g. for popI_II: {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69} \n
-    for popI_II_Madau_Dickinson: {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69} \n
-    for popIII: None \n
-    for primordial: {'Mc':30.,'sigma':0.3,'beta':1.1} \n
-    for BNS: None
-
+    """
     Examples
     ----------
     >>> from ler import CompactBinaryPopulation
@@ -553,77 +572,123 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
     >>> method_list = [method for method in dir(pop) if method.startswith('__') is False]
     >>> print(method_list)
     ['create_lookup_table', 'differential_comoving_volume', 'merger_rate_density', 'merger_rate_density_popIII', 'merger_rate_density_popI_II', 'merger_rate_density_popI_II_Madau_Dickinson', 'merger_rate_density_primordial', 'normalization_pdf_z', 'sample_source_redshifts', 'z_max', 'z_min', 'z_to_luminosity_distance']
-
     """
 
     def __init__(
         self,
         z_min=0.0001,
         z_max=10,
-        m_min=None,
-        m_max=None,
         event_type="BBH",
-        category=None,
-        sub_category=None,
-        redshift_event_type=None,
-        redshift_category=None,
-        merger_rate_density_fn=None,
-        merger_rate_density_param=None,
-        src_model_params=None,
-        redshift_constant = False,
-        mass_constant=False,
-        spin_constant=0.,
+        event_priors=None,
+        event_priors_params=None,
     ):
-        # initialized SourceGalaxyPopulationModel mother class
-        # self.z_min and self.z_max will inherit from SourceGalaxyPopulationModel
-        if redshift_event_type is None:
-            redshift_event_type = category
+        self.z_min = z_min
+        self.z_max = z_max
+        self.event_type = event_type
 
-        super().__init__(z_min=z_min, z_max=z_max, event_type=redshift_event_type, category=redshift_category, merger_rate_density_fn=merger_rate_density_fn, merger_rate_density_param=merger_rate_density_param)
+        # dealing with prior functions and categorization
+        (
+            self.gw_param_samplers,
+            self.gw_param_samplers_params,
+        ) = self.event_priors_categorization(
+            event_type, event_priors, event_priors_params
+        )
 
-        # check redshift
-        self.redshift_constant = redshift_constant
-        if redshift_constant:
-            self.sample_source_redshifts = None
-
-        # checking for event-type, category, sub-categoru
-        # in BBH_popI_II_gwcosmo, "BBH": event type, "popI_II": category, "gwcosmo": sub-category
-        if category==None:
-            category = "_popI_II"
+        # initialize the SourceGalaxyPopulationModel mother class
+        # for redshift distribution
+        # redshift_constant is allowed if desired
+        super().__init__(
+            z_min=z_min,
+            z_max=z_max,
+            event_type=event_type,
+            merger_rate_density=self.gw_param_samplers["merger_rate_density"],
+            merger_rate_density_param=self.gw_param_samplers_params[
+                "merger_rate_density"
+            ],
+        )
+        # add redshift sampler to the sampler dictionary
+        if self.gw_param_samplers["zs"]:
+            pass
         else:
-            category = "_"+category
-        if sub_category==None:
-            sub_category = "_gwcosmo"
-        else:
-            sub_category = "_"+sub_category
+            self.gw_param_samplers["zs"] = self.sample_source_redshifts
+            self.gw_param_samplers_params["zs"] = dict(z_min=z_min, z_max=z_max)
 
-        # check mass
-        self.mass_constant = mass_constant
-        if mass_constant:
-            self.source_binary_masses = None
-        else:
-            self.m_min = m_min
-            self.m_max = m_max
-            try:
-                self.source_binary_masses = getattr(self, "binary_masses_" + event_type + category + sub_category)
-            except:
-                pass
-
-        # check spin
-        if spin_constant or spin_constant==0.:
-            self.spin_constant = spin_constant
-        else:
-            try:
-                self.binary_spin = getattr(self, "binary_spin_" + event_type)
-            except:
-                self.binary_spin = getattr(self, "binary_spin_BBH")
-
-        # set attribute
-        self.src_model_params = src_model_params
+        # initializing bilby prior
+        bilby.core.utils.logger.disabled = True
+        self.prior_bilby = bilby.gw.prior.BBHPriorDict()
 
         return None
 
-    def sample_gw_parameters(self, nsamples=1000, verbose=False, **kwargs):
+    def event_priors_categorization(self, event_type, event_priors, event_prior_params):
+        """
+        Function to sample BBH parameters from the source galaxy population
+        model
+
+        Parameters
+        ----------
+        event_type : `str`
+            Type of event to generate.
+            e.g. 'BBH', 'BNS', 'BBH_popIII', 'BBH_primordial', 'NSBH'
+        event_priors : `dict`
+            Dictionary of prior sampler functions for each parameter
+        event_prior_params : `dict`
+            Dictionary of sampler parameters for each parameter
+
+        Returns
+        ----------
+        event_priors_ : `dict`
+            Dictionary of prior sampler functions for each parameter
+        event_prior_params_ : `dict`
+            Dictionary of sampler parameters for each parameter
+        """
+        # for BBH
+        if event_type == "BBH":
+            event_priors_ = dict(
+                merger_rate_density="merger_rate_density_popI_II_Oguri",
+                mass_source_frame="binary_masses_BBH_popI_II_powerlaw_gaussian",
+                spin="constant_values_n_size",
+                zs=None,
+                geocent_time="geocent_time_uniform",
+                sky_position="sky_position_uniform_bilby",
+                phase="coalescence_phase_uniform_bilby",
+                psi="polarization_angle_uniform_bilby",
+                iota="inclination_uniform_bilby",
+            )
+            event_prior_params_ = dict(
+                merger_rate_density=dict(R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30),
+                mass_source_frame=dict(
+                    mminbh=4.98,
+                    mmaxbh=112.5,
+                    alpha=3.78,
+                    mu_g=32.27,
+                    sigma_g=3.88,
+                    lambda_peak=0.03,
+                    delta_m=4.8,
+                    beta=0.81,
+                ),
+                spin=dict(value=0.0),
+                zs=None,
+                geocent_time=dict(
+                    start_time=1238166018, end_time=1238166018 + 31536000
+                ),
+                sky_position=None,
+                phase=None,
+                psi=None,
+                iota=None,
+            )
+        # for BNS
+        if event_type == "BNS":
+            pass
+
+        # update the priors
+        if event_priors:
+            event_priors_ = update_dict(event_priors_, event_priors)
+        if event_prior_params:
+            event_prior_params_ = update_dict(event_prior_params_, event_prior_params)
+
+        return (event_priors_, event_prior_params_)
+
+    def sample_gw_parameters(self, nsamples=1000, **kwargs):
         """
         Function to sample BBH parameters from the source galaxy population
         model
@@ -651,89 +716,79 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         dict_keys(['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl'])
 
         """
-        if verbose:
-            print(
-                f"refer to https://arxiv.org/abs/1908.06068 for parameter definitions, priors and sampling methods"
-            )
-
-        def warning(param_):
-            try:
-                len(param_) == nsamples
-            except:
-                print(f"Error: len({param_}) != nsamples")
-                return 0
 
         # sampling redshifts and luminosity distances
-        if self.redshift_constant:
-            if type(self.redshift_constant)==float or type(self.redshift_constant)==int:
-                zs = self.redshift_constant*np.ones(nsamples)
-            else:
-                # warning
-                print("Error: redshift_constant should be a float or false")
-        else:
-            try:
-                zs = kwargs["zs"]
-            except:
-                zs = self.sample_source_redshifts(size=nsamples, z_min=self.z_min, z_max=self.z_max)
-        luminosity_distance = self.z_to_luminosity_distance(zs)  # Mpc
+        try:
+            zs = kwargs["zs"]
+        except:
+            zs = getattr(self, self.gw_param_samplers["zs"])(
+                size=nsamples, param=self.gw_param_samplers_params["zs"]
+            )
+            luminosity_distance = self.z_to_luminosity_distance(zs)  # Mpc
 
         # sampling mass1 and mass2
-        if self.mass_constant:
-            if type(self.mass_constant)==list:
-                mass_1_source = self.mass_constant[0]*np.ones(nsamples)
-                mass_2_source = self.mass_constant[1]*np.ones(nsamples)
-            elif type(self.mass_constant)==float or type(self.mass_constant)==int:
-                mass_1_source = self.mass_constant*np.ones(nsamples)
-                mass_2_source = self.mass_constant*np.ones(nsamples)
-            else:
-                # warning
-                print("Error: mass_constant should be a float/list or false")
-        else:
-            try:
-                kwargs["mass_1"]
-                kwargs["mass_2"]
-            except:
-                mass_1_source, mass_2_source = self.source_binary_masses(
-                    size=nsamples)
-            else:
-                mass_1 = kwargs["mass_1"]
-                warning(mass_1)
-                mass_2 = kwargs["mass_2"]
-                warning(mass_1)
-                mass_1_source, mass_2_source = self.source_binary_masses(
-                    size=nsamples)
+        try:
+            mass_1_source = kwargs["mass_1_source"]
+            mass_2_source = kwargs["mass_2_source"]
+        except:
+            mass_1_source, mass_2_source = getattr(
+                self, self.gw_param_samplers["mass_source_frame"]
+            )(size=nsamples, param=self.gw_param_samplers_params["mass_source_frame"])
+            mass_1, mass_2 = mass_1_source * (1 + zs), mass_2_source * (1 + zs)
 
-        # Sample all other parameters
-        # use bilby priors
-        bilby.core.utils.logger.disabled = True
-        prior_default = bilby.gw.prior.BBHPriorDict()
-        # draw associated angles
-        ra = prior_default["ra"].sample(nsamples)
-        dec = prior_default["dec"].sample(nsamples)
-        psi = prior_default["psi"].sample(nsamples)
-        theta_jn = prior_default["theta_jn"].sample(nsamples)
-        phase = prior_default["phase"].sample(nsamples)
         # sampling spin parameters
-        if self.spin_constant==0. or self.spin_constant==True:
-            a_1 = np.zeros(nsamples)
-            a_2 = np.zeros(nsamples)
-            tilt_1 = np.zeros(nsamples)
-            tilt_2 = np.zeros(nsamples)
-            phi_12 = np.zeros(nsamples)
-            phi_jl = np.zeros(nsamples)
-        elif type(self.spin_constant)==list:
-            a_1 = self.spin_constant[0]*np.ones(nsamples)
-            a_2 = self.spin_constant[1]*np.ones(nsamples)
-            tilt_1 = self.spin_constant[2]*np.ones(nsamples)
-            tilt_2 = self.spin_constant[3]*np.ones(nsamples)
-            phi_12 = self.spin_constant[4]*np.ones(nsamples)
-            phi_jl = self.spin_constant[5]*np.ones(nsamples)
-        else:
-            a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl = self.binary_spin(nsamples)
+        try:
+            a_1 = kwargs["a_1"]
+            a_2 = kwargs["a_2"]
+            tilt_1 = kwargs["tilt_1"]
+            tilt_2 = kwargs["tilt_2"]
+            phi_12 = kwargs["phi_12"]
+            phi_jl = kwargs["phi_jl"]
+        except:
+            a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl = getattr(
+                self, self.gw_param_samplers["spin"]
+            )(size=nsamples, param=self.gw_param_samplers_params["spin"])
 
-        # compute GPS time
-        geocent_time = randint.rvs(1238166018, 1238166018 + 31536000, size=nsamples)
-        mass_1, mass_2 = mass_1_source * (1 + zs), mass_2_source * (1 + zs)
+        # sampling geocent_time
+        try:
+            geocent_time = kwargs["geocent_time"]
+        except:
+            geocent_time = getattr(self, self.gw_param_samplers["geocent_time"])(
+                size=nsamples, param=self.gw_param_samplers_params["geocent_time"]
+            )
+
+        # sampling sky position
+        try:
+            ra = kwargs["ra"]
+            dec = kwargs["dec"]
+        except:
+            ra, dec = getattr(self, self.gw_param_samplers["sky_position"])(
+                size=nsamples, param=self.gw_param_samplers_params["sky_position"]
+            )
+
+        # sampling phase
+        try:
+            phase = kwargs["phase"]
+        except:
+            phase = getattr(self, self.gw_param_samplers["phase"])(
+                size=nsamples, param=self.gw_param_samplers_params["phase"]
+            )
+
+        # sampling psi
+        try:
+            psi = kwargs["psi"]
+        except:
+            psi = getattr(self, self.gw_param_samplers["psi"])(
+                size=nsamples, param=self.gw_param_samplers_params["psi"]
+            )
+
+        # sampling iota
+        try:
+            iota = kwargs["iota"]
+        except:
+            iota = getattr(self, self.gw_param_samplers["iota"])(
+                size=nsamples, param=self.gw_param_samplers_params["iota"]
+            )
 
         gw_parameters = {
             "mass_1": mass_1,
@@ -742,7 +797,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
             "mass_2_source": mass_2_source,
             "zs": zs,
             "luminosity_distance": luminosity_distance,
-            "iota": theta_jn,
+            "iota": iota,
             "psi": psi,
             "phase": phase,
             "geocent_time": geocent_time,
@@ -758,7 +813,19 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
 
         return gw_parameters
 
-    def binary_masses_BBH_popI_II_gwcosmo(self, size, alpha=3.63, beta=1.26, delta_m=4.82, mmin=4.59, mmax=86.22, lambda_peak=0.08, mu_g=33.07, sigma_g=5.69):
+    def binary_masses_BBH_popI_II_powerlaw_gaussian(
+        self,
+        size,
+        mminbh=4.98,
+        mmaxbh=112.5,
+        alpha=3.78,
+        mu_g=32.27,
+        sigma_g=3.88,
+        lambda_peak=0.03,
+        delta_m=4.8,
+        beta=0.81,
+        param=None,
+    ):
         """
         Function to calculate source mass1 and mass2 with PowerLaw+PEAK model
 
@@ -783,25 +850,28 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
         >>> src_model_params = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
         >>> mass_1_source, mass_2_source = pop.binary_masses_popI_II(size=1000, src_model_params=src_model_params)
-
         """
-        # replace values with self.src_model_params, if given
-        param = dict(alpha=alpha, beta=beta, delta_m=delta_m, mmin=mmin, mmax=mmax, lambda_peak=lambda_peak, mu_g=mu_g, sigma_g=sigma_g)
-        if self.src_model_params is not None:
-            keys_ = param.keys()
-            for key, value in self.src_model_params.items():
-                if key in keys_:
-                    param[key] = value
+        if param:
+            mminbh = param["mminbh"]
+            mmaxbh = param["mmaxbh"]
+            alpha = param["alpha"]
+            mu_g = param["mu_g"]
+            sigma_g = param["sigma_g"]
+            lambda_peak = param["lambda_peak"]
+            delta_m = param["delta_m"]
+            beta = param["beta"]
 
-        if self.m_min is not None:
-            param["mmin"] = self.m_min
-        if self.m_max is not None:
-            param["mmax"] = self.m_max
-
-        model = p.mass_prior("BBH-powerlaw-gaussian", param)
+        model = p.BBH_powerlaw_gaussian(
+            mminbh=mminbh,
+            mmaxbh=mmaxbh,
+            alpha=alpha,
+            mu_g=mu_g,
+            sigma_g=sigma_g,
+            lambda_peak=lambda_peak,
+            delta_m=delta_m,
+            beta=beta,
+        )
         mass_1_source, mass_2_source = model.sample(Nsample=size)
-        while np.any(mass_2_source > mass_1_source):
-            mass_1_source, mass_2_source = model.sample(Nsample=size)
 
         return (mass_1_source, mass_2_source)
 
@@ -848,21 +918,29 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
                 if key in keys_:
                     param[key] = value
 
-        
-        psi = lambda m: np.exp(-np.log(m / param["Mc"]) ** 2 / (2 * param["sigma"]**2)) / (
-            np.sqrt(2 * np.pi) * param["sigma"] * m
+        psi = lambda m: np.exp(
+            -np.log(m / param["Mc"]) ** 2 / (2 * param["sigma"] ** 2)
+        ) / (np.sqrt(2 * np.pi) * param["sigma"] * m)
+
+        pdf = (
+            lambda m1, m2: (m1 + m2) ** (36 / 37)
+            * (m1 * m2) ** (32 / 37)
+            * psi(m1)
+            * psi(m2)
         )
-    
-        pdf = lambda m1,m2: (m1+m2)**(36/37) * (m1*m2)**(32/37) * psi(m1) * psi(m2)
-        
-        mass_1_source, mass_2_source = rejection_sample2d(pdf=pdf, xmin=m_min, xmax=m_max, ymin=m_min, ymax=m_max, size=size)
-        
-        idx = mass_2_source>mass_1_source
+
+        mass_1_source, mass_2_source = rejection_sample2d(
+            pdf=pdf, xmin=m_min, xmax=m_max, ymin=m_min, ymax=m_max, size=size
+        )
+
+        idx = mass_2_source > mass_1_source
         mass_1_source[idx], mass_2_source[idx] = mass_2_source[idx], mass_1_source[idx]
-        
+
         return (mass_1_source, mass_2_source)
 
-    def binary_masses_BBH_primordial_lognormal(self, size, Mc=30.0, sigma=0.3, beta=1.1):
+    def binary_masses_BBH_primordial_lognormal(
+        self, size, Mc=30.0, sigma=0.3, beta=1.1
+    ):
         """
         Function to calculate source mass1 and mass2 for primordial BBHs
 
@@ -905,21 +983,29 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
                 if key in keys_:
                     param[key] = value
 
-        
-        psi = lambda m: np.exp(-np.log(m / param["Mc"]) ** 2 / (2 * param["sigma"]**2)) / (
-            np.sqrt(2 * np.pi) * param["sigma"] * m
+        psi = lambda m: np.exp(
+            -np.log(m / param["Mc"]) ** 2 / (2 * param["sigma"] ** 2)
+        ) / (np.sqrt(2 * np.pi) * param["sigma"] * m)
+
+        pdf = (
+            lambda m1, m2: (m1 + m2) ** (36 / 37)
+            * (m1 * m2) ** (32 / 37)
+            * psi(m1)
+            * psi(m2)
         )
-    
-        pdf = lambda m1,m2: (m1+m2)**(36/37) * (m1*m2)**(32/37) * psi(m1) * psi(m2)
-        
-        mass_1_source, mass_2_source = rejection_sample2d(pdf=pdf, xmin=m_min, xmax=m_max, ymin=m_min, ymax=m_max, size=size)
-        
-        idx = mass_2_source>mass_1_source
+
+        mass_1_source, mass_2_source = rejection_sample2d(
+            pdf=pdf, xmin=m_min, xmax=m_max, ymin=m_min, ymax=m_max, size=size
+        )
+
+        idx = mass_2_source > mass_1_source
         mass_1_source[idx], mass_2_source[idx] = mass_2_source[idx], mass_1_source[idx]
-        
+
         return (mass_1_source, mass_2_source)
 
-    def binary_masses_BNS_popI_II_gwcosmo(self, size, mminns=1.0, mmaxns=3.0, alphans=0.0):
+    def binary_masses_BNS_popI_II_gwcosmo(
+        self, size, mminns=1.0, mmaxns=3.0, alphans=0.0
+    ):
         """
         Function to calculate source mass1 and mass2 of BNS (gwcosmo)
 
@@ -964,8 +1050,14 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
             mass_1_source, mass_2_source = model.sample(Nsample=size)
 
         return (mass_1_source, mass_2_source)
-    
-    def binary_masses_BNS_popI_II_Alsing(self, size, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1., mmax=2.3):
+
+    def binary_masses_BNS_popI_II_Alsing(
+        self,
+        size,
+        param=dict(
+            w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3
+        ),
+    ):
         """
         Function to calculate source mass1 and mass2 of BNS (Alsing)
 
@@ -990,35 +1082,32 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         mass_2_source : `array`
             Array of mass2 in source frame
         """
-        # print("\n BNS alsing \n")
-        # replace values with self.src_model_params, if given
-        param = dict(w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1., mmax=2.3)
-        if self.src_model_params is not None:
-            keys_ = param.keys()
-            for key, value in self.src_model_params.items():
-                if key in keys_:
-                    param[key] = value
 
-        if self.m_min is not None:
-            param["mmin"] = self.m_min
-        if self.m_max is not None:
-            param["mmax"] = self.m_max
+        w, muL, sigmaL, muR, sigmaR, mmin, mmax = (
+            param["w"],
+            param["muL"],
+            param["sigmaL"],
+            param["muR"],
+            param["sigmaR"],
+            param["mmin"],
+            param["mmax"],
+        )
 
-        pdf_unnormL = lambda m: np.exp(-(m-muL)**2 / (2*sigmaL**2))  
+        pdf_unnormL = lambda m: np.exp(-((m - muL) ** 2) / (2 * sigmaL**2))
         normL = quad(pdf_unnormL, mmin, mmax)[0]
-        pdf_unnormR = lambda m: np.exp(-(m-muR)**2 / (2*sigmaR**2))  
+        pdf_unnormR = lambda m: np.exp(-((m - muR) ** 2) / (2 * sigmaR**2))
         normR = quad(pdf_unnormR, mmin, mmax)[0]
 
-        pdf = lambda m: w*pdf_unnormL(m) / normL + (1-w)*pdf_unnormR(m) / normR
+        pdf = lambda m: w * pdf_unnormL(m) / normL + (1 - w) * pdf_unnormR(m) / normR
 
         mass_1_source = rejection_sample(pdf, mmin, mmax, size=size)
         mass_2_source = rejection_sample(pdf, mmin, mmax, size=size)
         # swap mass_1_source and mass_2_source if mass_2_source > mass_1_source
-        idx = mass_2_source>mass_1_source
-        mass_1_source[idx], mass_2_source[idx] = mass_2_source[idx], mass_1_source[idx] 
+        idx = mass_2_source > mass_1_source
+        mass_1_source[idx], mass_2_source[idx] = mass_2_source[idx], mass_1_source[idx]
 
-        return(mass_1_source, mass_2_source)
-        
+        return (mass_1_source, mass_2_source)
+
     def mass_ratio(self, size, beta=1.1):
         """
         Function to calculate mass ratio with power law distribution
@@ -1045,7 +1134,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         pdf = lambda q: q**beta
         q = rejection_sample(pdf, 0, 1, size=size)
         return q
-    
+
     def binary_spin_BBH(self, size):
         """
         Function to calculate spin parameters with PowerLaw+PEAK model
@@ -1087,4 +1176,3 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         phi_jl = prior_default["phi_jl"].sample(size)
 
         return (a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl)
-    

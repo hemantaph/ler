@@ -28,6 +28,7 @@ Classes
 
 .. py:class:: LensGalaxyPopulation(CompactBinaryPopulation_=False)
 
+
    
    Class to sample lens galaxy parameters
 
@@ -541,7 +542,7 @@ Classes
       :Returns:
 
           **theta_E** : `float`
-              Einstein radii of the lens galaxies
+              Einstein radii of the lens galaxies in radian
 
 
 
@@ -685,10 +686,41 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: strong_lensing_optical_depth(zs)
+   .. py:method:: strong_lensing_optical_depth_SIE(zs)
 
       
-      Function to compute the strong lensing optical depth
+      Function to compute the strong lensing optical depth SIE
+
+
+      :Parameters:
+
+          **zs** : `float`
+              source redshifts
+
+      :Returns:
+
+          **tau** : `float`
+              strong lensing optical depth
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: strong_lensing_optical_depth_SIS(zs)
+
+      
+      Function to compute the strong lensing optical depth (SIS)
 
 
       :Parameters:

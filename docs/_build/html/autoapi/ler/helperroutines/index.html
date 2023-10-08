@@ -117,19 +117,22 @@
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.helperroutines.append_json" title="ler.helperroutines.append_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_json</span></code></a>(file_name, dictionary[, replace])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.helperroutines.update_dict" title="ler.helperroutines.update_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_dict</span></code></a>(old, new)</p></td>
+<td><p>Update a dictionary with keys and values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.helperroutines.append_json" title="ler.helperroutines.append_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_json</span></code></a>(file_name, dictionary[, replace])</p></td>
 <td><p>Append and update a json file with a dictionary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.helperroutines.get_param_from_json" title="ler.helperroutines.get_param_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_param_from_json</span></code></a>(json_file)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.helperroutines.get_param_from_json" title="ler.helperroutines.get_param_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_param_from_json</span></code></a>(json_file)</p></td>
 <td><p>Function to get the parameters from json file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.helperroutines.rejection_sample" title="ler.helperroutines.rejection_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rejection_sample</span></code></a>(pdf, xmin, xmax[, size])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.helperroutines.rejection_sample" title="ler.helperroutines.rejection_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rejection_sample</span></code></a>(pdf, xmin, xmax[, size])</p></td>
 <td><p>Helper function for rejection sampling from a pdf with maximum and minimum arguments.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.helperroutines.add_dictionaries_together" title="ler.helperroutines.add_dictionaries_together"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_dictionaries_together</span></code></a>(dictionary1, dictionary2)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.helperroutines.add_dictionaries_together" title="ler.helperroutines.add_dictionaries_together"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_dictionaries_together</span></code></a>(dictionary1, dictionary2)</p></td>
 <td><p>Adds two dictionaries with the same keys together.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.helperroutines.trim_dictionary" title="ler.helperroutines.trim_dictionary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim_dictionary</span></code></a>(dictionary, size)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.helperroutines.trim_dictionary" title="ler.helperroutines.trim_dictionary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim_dictionary</span></code></a>(dictionary, size)</p></td>
 <td><p>Filters an event dictionary to only contain the size.</p></td>
 </tr>
 </tbody>
@@ -174,6 +177,12 @@ implement default like this:</p>
 </div>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.helperroutines.update_dict">
+<span class="sig-prename descclassname"><span class="pre">ler.helperroutines.</span></span><span class="sig-name descname"><span class="pre">update_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">old</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/helperroutines.html#update_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.helperroutines.update_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Update a dictionary with keys and values.</p>
 </dd></dl>
 
 <dl class="py function">

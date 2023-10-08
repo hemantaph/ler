@@ -95,7 +95,8 @@
 <span class="sd">This module contains the LensGalaxyPopulation class, which is used to sample lens galaxy parameters, source parameters conditioned on the source being strongly lensed, image properties, and lensed SNRs. \n</span>
 <span class="sd">The class inherits from the CompactBinaryPopulation class, which is used to sample source parameters. \n</span>
 <span class="sd">&quot;&quot;&quot;</span>
-
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">gengamma</span><span class="p">,</span> <span class="n">rayleigh</span><span class="p">,</span> <span class="n">norm</span>
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
@@ -308,7 +309,7 @@
         <span class="n">pdf_unnormalized</span> <span class="o">=</span> <span class="p">(</span>
             <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">merger_rate_density_detector_frame</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
             <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">differential_comoving_volume</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-            <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">strong_lensing_optical_depth</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+            <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">strong_lensing_optical_depth_SIS</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="c1"># Normalize the pdf</span>
         <span class="c1"># this normalization factor is common no matter what you choose for z_min and z_max</span>
@@ -537,8 +538,8 @@
             <span class="p">)</span>
 
             <span class="c1"># put strong lensing condition with optical depth</span>
-            <span class="n">tau</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">strong_lensing_optical_depth</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span>
-            <span class="n">tau_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strong_lensing_optical_depth</span><span class="p">(</span><span class="n">z_max</span><span class="p">))</span>
+            <span class="n">tau</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">strong_lensing_optical_depth_SIS</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span>
+            <span class="n">tau_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strong_lensing_optical_depth_SIS</span><span class="p">(</span><span class="n">z_max</span><span class="p">))</span>
             <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tau_max</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">zs</span><span class="p">))</span>
             <span class="n">pick_strongly_lensed</span> <span class="o">=</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="n">tau</span>  <span class="c1"># pick strongly lensed sources</span>
             <span class="c1"># Add the strongly lensed source redshifts to the list</span>
@@ -649,7 +650,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">            theta_E : `float`</span>
-<span class="sd">                Einstein radii of the lens galaxies</span>
+<span class="sd">                Einstein radii of the lens galaxies in radian</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Compute the angular diameter distances</span>
@@ -742,9 +743,9 @@
         <span class="n">idx</span> <span class="o">=</span> <span class="n">u</span> <span class="o">&lt;</span> <span class="n">theta_E</span><span class="o">**</span><span class="mi">2</span>
         <span class="k">return</span> <span class="n">idx</span></div>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.strong_lensing_optical_depth"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.strong_lensing_optical_depth">[docs]</a>    <span class="k">def</span> <span class="nf">strong_lensing_optical_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">):</span>
+<div class="viewcode-block" id="LensGalaxyPopulation.strong_lensing_optical_depth_SIE"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.strong_lensing_optical_depth_SIE">[docs]</a>    <span class="k">def</span> <span class="nf">strong_lensing_optical_depth_SIE</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to compute the strong lensing optical depth</span>
+<span class="sd">        Function to compute the strong lensing optical depth SIE</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -757,8 +758,41 @@
 <span class="sd">                strong lensing optical depth</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># for SIE model</span>
+        <span class="c1"># dedine a function to calculate the cross section number</span>
+        <span class="c1"># here we already assume that we have initialized the crossection spline </span>
+        <span class="k">def</span> <span class="nf">getcrosssect_num</span><span class="p">(</span><span class="n">theta_E</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+            <span class="n">fid_b_I</span> <span class="o">=</span> <span class="mf">10.0</span>  <span class="c1"># constant</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">q</span> <span class="o">&gt;</span> <span class="mf">0.999</span>
+            <span class="n">q</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.999</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">q</span> <span class="o">&lt;</span> <span class="mf">0.1</span>
+            <span class="n">q</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span>
+            <span class="n">b_I</span> <span class="o">=</span> <span class="n">theta_E</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cross_sect_spl</span><span class="p">(</span><span class="n">q</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">b_I</span><span class="o">/</span><span class="n">fid_b_I</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+        <span class="c1"># theta_E=bsis=einstein_radius_SIS  # refer to compute_einstein_radii</span>
+        
+        <span class="k">return</span> <span class="n">getcrosssect_num</span><span class="p">(</span><span class="n">theta_E</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LensGalaxyPopulation.strong_lensing_optical_depth_SIS"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.strong_lensing_optical_depth_SIS">[docs]</a>    <span class="k">def</span> <span class="nf">strong_lensing_optical_depth_SIS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to compute the strong lensing optical depth (SIS)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            zs : `float`</span>
+<span class="sd">                source redshifts</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            tau : `float`</span>
+<span class="sd">                strong lensing optical depth</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># For SIS model</span>
         <span class="c1"># z to luminosity_distance (luminosity_distance) conversion</span>
         <span class="n">Dc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_to_Dc</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-3</span>  <span class="c1"># 1e-3 converts Mpc to Gpc</span>
+
         <span class="k">return</span> <span class="p">(</span><span class="n">Dc</span> <span class="o">/</span> <span class="mf">62.2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span></div>
 
 <div class="viewcode-block" id="LensGalaxyPopulation.get_image_properties"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.get_image_properties">[docs]</a>    <span class="k">def</span> <span class="nf">get_image_properties</span><span class="p">(</span>
