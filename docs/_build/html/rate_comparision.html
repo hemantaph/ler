@@ -124,9 +124,9 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import numpy as np
-from ler import LeR
-import json
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
+<span class="kn">import</span> <span class="nn">json</span>
 </pre></div>
 </div>
 </div>
@@ -144,10 +144,10 @@ PyCBC.libutils: pkg-config call failed, setting NO_PKGCONFIG=1
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># check the input and output
-# check for available attributes and methods
-# check of examples
-LeR?
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># check the input and output</span>
+<span class="c1"># check for available attributes and methods</span>
+<span class="c1"># check of examples</span>
+LeR<span class="o">?</span>
 </pre></div>
 </div>
 </div>
@@ -290,13 +290,13 @@ LeR class has the following method(s),
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Initialization of LeR class with default inputs
-# This also initializes the gwsnr (SNR calculator method),
-#  CompactBinaryPopulation (for unlensed event sampling) and
-#  LensGalaxyPopulation (for lensed event sampling)
-# By default the SNR calculator is set to be the IMRPhenomD waveforms and calcules using the interpolation method
-# for higher accracy in set nsamples_mtot=200, nsamples_mass_ratio=50. This will take longer to generate the interpolator.
-ler = LeR()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialization of LeR class with default inputs</span>
+<span class="c1"># This also initializes the gwsnr (SNR calculator method),</span>
+<span class="c1">#  CompactBinaryPopulation (for unlensed event sampling) and</span>
+<span class="c1">#  LensGalaxyPopulation (for lensed event sampling)</span>
+<span class="c1"># By default the SNR calculator is set to be the IMRPhenomD waveforms and calcules using the interpolation method</span>
+<span class="c1"># for higher accracy in set nsamples_mtot=200, nsamples_mass_ratio=50. This will take longer to generate the interpolator.</span>
+<span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -327,21 +327,21 @@ Interpolator will be loaded for V1 detector from ./interpolator_pickle/V1/halfSN
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># open json file &quot;./LeR_params.json&quot;
-with open(&#39;./LeR_params.json&#39;) as f:
-    init_params = json.load(f)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># open json file &quot;./LeR_params.json&quot;</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./LeR_params.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">init_params</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
-# categorised into 3 groups of init params
-print(&quot;init params groups: &quot;, init_params.keys())
+<span class="c1"># categorised into 3 groups of init params</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;init params groups: &quot;</span><span class="p">,</span> <span class="n">init_params</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
-# looking at first groups, &#39;gw_param_sampler_dict&#39; use for initialising the CompactBinaryPopulation as compact_binary_pop instance
-print(&quot;for the source property smapler: &quot;, init_params[&#39;gw_param_sampler_dict&#39;])
+<span class="c1"># looking at first groups, &#39;gw_param_sampler_dict&#39; use for initialising the CompactBinaryPopulation as compact_binary_pop instance</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;for the source property smapler: &quot;</span><span class="p">,</span> <span class="n">init_params</span><span class="p">[</span><span class="s1">&#39;gw_param_sampler_dict&#39;</span><span class="p">])</span>
 
-# looking at second groups, &#39;lensed_param_sampler_dict&#39; use for initialising the LensingPopulation as lens_galaxy_pop instance
-print(&quot;for the lens property smapler: &quot;, init_params[&#39;lensed_param_sampler_dict&#39;])
+<span class="c1"># looking at second groups, &#39;lensed_param_sampler_dict&#39; use for initialising the LensingPopulation as lens_galaxy_pop instance</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;for the lens property smapler: &quot;</span><span class="p">,</span> <span class="n">init_params</span><span class="p">[</span><span class="s1">&#39;lensed_param_sampler_dict&#39;</span><span class="p">])</span>
 
-# looking at third groups, &#39;snr_calculator_dict&#39; use for initialising the SNRCalculator (GWSNR) as snr instance
-print(&quot;for the snr calculator: &quot;, init_params[&#39;snr_calculator_dict&#39;])
+<span class="c1"># looking at third groups, &#39;snr_calculator_dict&#39; use for initialising the SNRCalculator (GWSNR) as snr instance</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;for the snr calculator: &quot;</span><span class="p">,</span> <span class="n">init_params</span><span class="p">[</span><span class="s1">&#39;snr_calculator_dict&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -376,8 +376,8 @@ for the snr calculator:  {&#39;mtot_min&#39;: 2.0, &#39;mtot_max&#39;: 439.6, &#
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># let&#39;s look at the input parameters
-ler.unlensed_cbc_statistics?
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># let&#39;s look at the input parameters</span>
+ler.unlensed_cbc_statistics<span class="o">?</span>
 </pre></div>
 </div>
 </div>
@@ -440,9 +440,9 @@ unlensed_gw_params : `dict`
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># sampling unlensed events (gw source parameters )
-ler.batch_size=25000 # number of samples per batch, more than 50000 might cause memory error
-ler.unlensed_cbc_statistics(nsamples=100000);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sampling unlensed events (gw source parameters )</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">25000</span> <span class="c1"># number of samples per batch, more than 50000 might cause memory error</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">(</span><span class="n">nsamples</span><span class="o">=</span><span class="mi">100000</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -479,10 +479,10 @@ calculating snrs...
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ler.gw_param=&quot;default&quot;
-print(ler.gw_param.keys())
-# to save memory, we can remove the data from ler.gw_param instance
-ler.gw_param=None
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span><span class="o">.</span><span class="n">gw_param</span><span class="o">=</span><span class="s2">&quot;default&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ler</span><span class="o">.</span><span class="n">gw_param</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="c1"># to save memory, we can remove the data from ler.gw_param instance</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">gw_param</span><span class="o">=</span><span class="kc">None</span>
 </pre></div>
 </div>
 </div>
@@ -511,8 +511,8 @@ dict_keys([&#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mas
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># rates with step function detectability condition
-ler.unlensed_rate(detectability_condition=&quot;step_function&quot;);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># rates with step function detectability condition</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">unlensed_rate</span><span class="p">(</span><span class="n">detectability_condition</span><span class="o">=</span><span class="s2">&quot;step_function&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -530,9 +530,9 @@ storing detectable unlensed params in ./gw_params_detectable.json
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># rates with pdet function detectability condition
-# pdet accounts for error snr distribution (normal with mean=net_opt_snr, std=1) due to noise for each event.
-ler.unlensed_rate(detectability_condition=&quot;pdet_function&quot;);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># rates with pdet function detectability condition</span>
+<span class="c1"># pdet accounts for error snr distribution (normal with mean=net_opt_snr, std=1) due to noise for each event.</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">unlensed_rate</span><span class="p">(</span><span class="n">detectability_condition</span><span class="o">=</span><span class="s2">&quot;pdet_function&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -554,11 +554,11 @@ storing detectable unlensed params in ./gw_params_detectable.json
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># looking at the detectable events
-ler.gw_param_detectable = &#39;default&#39;
-print(ler.gw_param_detectable.keys())
-# save memory
-ler.gw_param_detectable = None
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># looking at the detectable events</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">gw_param_detectable</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ler</span><span class="o">.</span><span class="n">gw_param_detectable</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="c1"># save memory</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">gw_param_detectable</span> <span class="o">=</span> <span class="kc">None</span>
 </pre></div>
 </div>
 </div>
@@ -587,9 +587,9 @@ dict_keys([&#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mas
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Here I have considered LeR class has already initialised as ler
-# let&#39;s look at the input parameters
-ler.lensed_cbc_statistics?
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Here I have considered LeR class has already initialised as ler</span>
+<span class="c1"># let&#39;s look at the input parameters</span>
+ler.lensed_cbc_statistics<span class="o">?</span>
 </pre></div>
 </div>
 </div>
@@ -651,11 +651,11 @@ lensed_param : `dict`
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># sampling lens parameters and image(s) parameters
-# batch_size already set to 25000
-# you can change it, e.g.
-ler.batch_size=25000
-ler.lensed_cbc_statistics(nsamples=100000);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sampling lens parameters and image(s) parameters</span>
+<span class="c1"># batch_size already set to 25000</span>
+<span class="c1"># you can change it, e.g.</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">25000</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">lensed_cbc_statistics</span><span class="p">(</span><span class="n">nsamples</span><span class="o">=</span><span class="mi">100000</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -748,9 +748,9 @@ calculating snrs...
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># lensed rates
-# default: with step function
-ler.lensed_rate();
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># lensed rates</span>
+<span class="c1"># default: with step function</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">lensed_rate</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
@@ -768,11 +768,11 @@ storing detectable lensed params in ./lensed_params_detectable.json...
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># looking at the detectable events
-ler.lensed_param_detectable = &#39;default&#39;
-print(ler.lensed_param_detectable.keys())
-# save memory
-ler.lensed_param_detectable = None
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># looking at the detectable events</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">lensed_param_detectable</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ler</span><span class="o">.</span><span class="n">lensed_param_detectable</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="c1"># save memory</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">lensed_param_detectable</span> <span class="o">=</span> <span class="kc">None</span>
 </pre></div>
 </div>
 </div>
@@ -795,7 +795,7 @@ dict_keys([&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;e1&#39
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ler.rate_comparision();
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span><span class="o">.</span><span class="n">rate_comparision</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
@@ -813,13 +813,13 @@ ratio: 829.6894169709265
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Results and input paramters stored in json file ler.json_file_ler_param=&quot;./LeR_params.json&quot;
-# looking the results
-with open(ler.json_file_ler_param, &#39;r&#39;, encoding=&#39;utf-8&#39;) as f:
-            data = json.load(f)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Results and input paramters stored in json file ler.json_file_ler_param=&quot;./LeR_params.json&quot;</span>
+<span class="c1"># looking the results</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ler</span><span class="o">.</span><span class="n">json_file_ler_param</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
-print(data.keys())
-print(f&quot;rate_ratio_step = {data[&#39;rate_ratio_step&#39;]}&quot;)
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;rate_ratio_step = </span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;rate_ratio_step&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <br/></pre></div>
 </div>
 </div>
@@ -843,10 +843,10 @@ rate_ratio_step = 829.6894169709265
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import json
-import numpy as np
-import matplotlib.pyplot as plt
-%matplotlib inline
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
 </div>
@@ -854,11 +854,11 @@ import matplotlib.pyplot as plt
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># detectable unlensed events
-f = open (&#39;gw_params_detectable.json&#39;, &quot;r&quot;)
-data = json.loads(f.read())
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># detectable unlensed events</span>
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span> <span class="p">(</span><span class="s1">&#39;gw_params_detectable.json&#39;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 
-data.keys()
+<span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -875,7 +875,7 @@ dict_keys([&#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mas
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>len(data[&#39;mass_1_source&#39;])
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mass_1_source&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -883,9 +883,9 @@ dict_keys([&#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mas
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.hist(data[&#39;mass_1_source&#39;], histtype=&#39;step&#39;, density=True, bins=20)
-plt.xlabel(r&#39;$m_1^{src}$&#39;)
-plt.show()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mass_1_source&#39;</span><span class="p">],</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$m_1^</span><span class="si">{src}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -900,11 +900,11 @@ plt.show()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># detectable lensed events
-f = open (&#39;lensed_params_detectable.json&#39;, &quot;r&quot;)
-data = json.loads(f.read())
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># detectable lensed events</span>
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span> <span class="p">(</span><span class="s1">&#39;lensed_params_detectable.json&#39;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 
-data.keys()
+<span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -921,7 +921,7 @@ dict_keys([&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;e1&#39
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>len(data[&#39;magnifications&#39;])
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;magnifications&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -938,9 +938,9 @@ dict_keys([&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;e1&#39
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.hist(np.log10(np.array(data[&#39;magnifications&#39;]).flatten()), histtype=&#39;step&#39;, density=True, bins=20)
-plt.xlabel(r&#39;$m_1^{src}$&#39;)
-plt.show()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;magnifications&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$m_1^</span><span class="si">{src}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -957,10 +957,10 @@ plt.show()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># with inner product snr
-ler_ = LeR(npool=6,z_min=0., z_max=10.,snr_type = &#39;inner_product&#39;,\
-           psds={&#39;L1&#39;:&#39;aLIGOaLIGODesignSensitivityT1800044&#39;,&#39;H1&#39;:&#39;aLIGOaLIGODesignSensitivityT1800044&#39;,&#39;V1&#39;:&#39;AdvVirgo&#39;}, \
-           waveform_inspiral_must_be_above_fmin=False)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># with inner product snr</span>
+<span class="n">ler_</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span><span class="n">npool</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span><span class="n">snr_type</span> <span class="o">=</span> <span class="s1">&#39;inner_product&#39;</span><span class="p">,</span>\
+           <span class="n">psds</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;L1&#39;</span><span class="p">:</span><span class="s1">&#39;aLIGOaLIGODesignSensitivityT1800044&#39;</span><span class="p">,</span><span class="s1">&#39;H1&#39;</span><span class="p">:</span><span class="s1">&#39;aLIGOaLIGODesignSensitivityT1800044&#39;</span><span class="p">,</span><span class="s1">&#39;V1&#39;</span><span class="p">:</span><span class="s1">&#39;AdvVirgo&#39;</span><span class="p">},</span> \
+           <span class="n">waveform_inspiral_must_be_above_fmin</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -968,10 +968,10 @@ ler_ = LeR(npool=6,z_min=0., z_max=10.,snr_type = &#39;inner_product&#39;,\
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># with interpolation snr
-ler_ = LeR(npool=6,z_min=0., z_max=10.,snr_type = &#39;interpolation&#39;,\
-           psds={&#39;L1&#39;:&#39;aLIGOaLIGODesignSensitivityT1800044&#39;,&#39;H1&#39;:&#39;aLIGOaLIGODesignSensitivityT1800044&#39;,&#39;V1&#39;:&#39;AdvVirgo&#39;}, \
-           waveform_inspiral_must_be_above_fmin=False, nsamples_mtot=200, nsamples_mass_ratio=500)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># with interpolation snr</span>
+<span class="n">ler_</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span><span class="n">npool</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span><span class="n">snr_type</span> <span class="o">=</span> <span class="s1">&#39;interpolation&#39;</span><span class="p">,</span>\
+           <span class="n">psds</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;L1&#39;</span><span class="p">:</span><span class="s1">&#39;aLIGOaLIGODesignSensitivityT1800044&#39;</span><span class="p">,</span><span class="s1">&#39;H1&#39;</span><span class="p">:</span><span class="s1">&#39;aLIGOaLIGODesignSensitivityT1800044&#39;</span><span class="p">,</span><span class="s1">&#39;V1&#39;</span><span class="p">:</span><span class="s1">&#39;AdvVirgo&#39;</span><span class="p">},</span> \
+           <span class="n">waveform_inspiral_must_be_above_fmin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nsamples_mtot</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">nsamples_mass_ratio</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
