@@ -96,6 +96,8 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
@@ -322,11 +324,17 @@
             <span class="s2">&quot;m_max&quot;</span><span class="p">:</span> <span class="mf">86.22</span><span class="p">,</span>
             <span class="s2">&quot;z_min&quot;</span><span class="p">:</span> <span class="n">z_min</span><span class="p">,</span>
             <span class="s2">&quot;z_max&quot;</span><span class="p">:</span> <span class="n">z_max</span><span class="p">,</span>
-            <span class="s2">&quot;event_type&quot;</span><span class="p">:</span> <span class="s2">&quot;popI_II&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;event_type&quot;</span><span class="p">:</span> <span class="s2">&quot;BBH&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;popI_II&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;sub_category&quot;</span><span class="p">:</span> <span class="s2">&quot;gwcosmo&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;redshift_event_type&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;redshift_category&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
             <span class="s2">&quot;merger_rate_density_fn&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
             <span class="s2">&quot;merger_rate_density_param&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
             <span class="s2">&quot;src_model_params&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;spin_zero&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;mass_constant&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;redshift_constant&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;spin_constant&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="c1"># for lensed case</span>
         <span class="c1"># set &#39;min_lensed_images&#39; = 2 for double image lensed case</span>
@@ -400,8 +408,9 @@
 <span class="sd">        if unavailable, the unlensed parameters will be sampled when unlensed_rate() is called \n</span>
 <span class="sd">        gw_param.keys() = [&#39;m1&#39;, &#39;m2&#39;, &#39;z&#39;, &#39;snr&#39;, &#39;theta_jn&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;] \n</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gw_param</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;gw_params.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="c1"># if file name</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gw_param</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gw_param</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_gw_param</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gw_param</span></div>
 
@@ -417,8 +426,9 @@
 <span class="sd">        if unavailable, the unlensed parameters will be sampled when unlensed_rate() is called \n</span>
 <span class="sd">        gw_param_detectable.keys() = [&#39;m1&#39;, &#39;m2&#39;, &#39;z&#39;, &#39;snr&#39;, &#39;theta_jn&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;] \n</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gw_param_detectable</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;gw_params_detectable.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="c1"># if file name</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gw_param_detectable</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gw_param_detectable</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_gw_param_detectable</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gw_param_detectable</span></div>
 
@@ -434,8 +444,9 @@
 <span class="sd">        if unavailable, the lensed parameters will be sampled when lensed_rate() is called \n</span>
 <span class="sd">        lensed_param.keys() = [&#39;m1&#39;, &#39;m2&#39;, &#39;z&#39;, &#39;snr&#39;, &#39;theta_jn&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;, &#39;lensed_images&#39;] \n</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;lensed_params.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="c1"># if file name</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param</span></div>
 
@@ -451,8 +462,9 @@
 <span class="sd">        if unavailable, the lensed parameters will be sampled when lensed_rate() is called \n</span>
 <span class="sd">        lensed_param_detectable.keys() = [&#39;m1&#39;, &#39;m2&#39;, &#39;z&#39;, &#39;snr&#39;, &#39;theta_jn&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;, &#39;lensed_images&#39;] \n</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param_detectable</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;lensed_params_detectable.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="c1"># if file name</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param_detectable</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param_detectable</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param_detectable</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param_detectable</span></div>
 
@@ -471,12 +483,18 @@
             <span class="n">m_min</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;m_min&quot;</span><span class="p">],</span>
             <span class="n">m_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;m_max&quot;</span><span class="p">],</span>
             <span class="n">event_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;event_type&quot;</span><span class="p">],</span>
+            <span class="n">category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">],</span>
+            <span class="n">sub_category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;sub_category&quot;</span><span class="p">],</span>
+            <span class="n">redshift_event_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;redshift_event_type&quot;</span><span class="p">],</span>
+            <span class="n">redshift_category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;redshift_category&quot;</span><span class="p">],</span>
             <span class="n">merger_rate_density_fn</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span>
                 <span class="s2">&quot;merger_rate_density_fn&quot;</span><span class="p">],</span>
             <span class="n">merger_rate_density_param</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span>
                 <span class="s2">&quot;merger_rate_density_param&quot;</span><span class="p">],</span>
             <span class="n">src_model_params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;src_model_params&quot;</span><span class="p">],</span>
-            <span class="n">spin_zero</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;spin_zero&quot;</span><span class="p">],</span>
+            <span class="n">mass_constant</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;mass_constant&quot;</span><span class="p">],</span>
+            <span class="n">redshift_constant</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;redshift_constant&quot;</span><span class="p">],</span>
+            <span class="n">spin_constant</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;spin_constant&quot;</span><span class="p">],</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lens_galaxy_pop</span> <span class="o">=</span> <span class="n">LensGalaxyPopulation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compact_binary_pop</span><span class="p">)</span>
 
@@ -683,8 +701,10 @@
                     <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
                     <span class="n">track_batches</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="n">frac_batches</span><span class="p">)</span> <span class="o">//</span> <span class="n">batch_size</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">except</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;no json file found with name </span><span class="si">{</span><span class="n">json_file</span><span class="si">}</span><span class="s2">. Set resume=False&quot;</span><span class="p">)</span>
-                <span class="k">return</span> <span class="kc">None</span>
+                <span class="n">track_batches</span> <span class="o">=</span> <span class="n">track_batches</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Batch no. </span><span class="si">{</span><span class="n">track_batches</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="c1"># new first batch with the frac_batches</span>
+                <span class="n">sampling_routine</span><span class="p">(</span><span class="n">nsamples</span><span class="o">=</span><span class="n">frac_batches</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="n">json_file</span><span class="p">)</span>
 
         <span class="c1"># ---------------------------------------------------#</span>
         <span class="n">min_</span><span class="p">,</span> <span class="n">max_</span> <span class="o">=</span> <span class="n">track_batches</span><span class="p">,</span> <span class="n">num_batches</span>
@@ -1102,11 +1122,11 @@
                 <span class="n">snr</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;opt_snr_net&quot;</span><span class="p">]</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="c1"># snr not provided</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;snr not provided in gw_param dict. Exiting...&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;snr not provided in lensed_param dict. Exiting...&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span>
 
             <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>  <span class="c1"># boolean array to store the result of the threshold condition</span>
-            <span class="c1"># Below can be just one line with 3D numpy operation</span>
+            <span class="c1"># for each row: choose a threshold and check if the number of images above threshold. Sum over the images. If sum is greater than num_img, then snr_hit = True </span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">snr_threshold</span><span class="p">)):</span>
                 <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">snr_hit</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">snr</span> <span class="o">&gt;</span> <span class="n">snr_threshold</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">num_img</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">snr_hit</span> <span class="o">&amp;</span> <span class="n">not_rejected</span>
@@ -1326,9 +1346,9 @@
             <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="c1"># append the results</span>
         <span class="k">if</span> <span class="n">detectability_condition</span> <span class="o">==</span> <span class="s2">&quot;step_function&quot;</span><span class="p">:</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;unlensed_rate_ratio_step&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rate_ratio</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;rate_ratio_step&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rate_ratio</span>
         <span class="k">elif</span> <span class="n">detectability_condition</span> <span class="o">==</span> <span class="s2">&quot;pdet&quot;</span><span class="p">:</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;unlensed_rate_ratio_pdet&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rate_ratio</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;rate_ratio_pdet&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rate_ratio</span>
         <span class="c1"># write the results</span>
         <span class="n">append_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">json_file_ler_param</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -1664,6 +1684,11 @@
             <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span>
             <span class="n">extent</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">extent</span><span class="p">),</span>
         <span class="p">)</span>
+
+        <span class="c1"># labels</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$log_</span><span class="si">{10}</span><span class="s2">\Delta t$ (days)&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\Delta log_</span><span class="si">{10}</span><span class="s2">\mu$&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;relative magnification vs relative time delay&quot;</span><span class="p">)</span>
 
         <span class="c1"># save figure</span>
         <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>

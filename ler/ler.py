@@ -4,6 +4,8 @@ This module contains the main class for calculating the rates of lensed and unle
 """
 
 import os
+import warnings
+warnings.filterwarnings("ignore")
 import json
 import random
 import contextlib
