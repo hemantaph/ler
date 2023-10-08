@@ -1,5 +1,6 @@
 html5lib==1.0b8  # Hack to ensure documentation generated
 setuptools
+pandoc
 sphinx
 sphinx-autoapi
 nbsphinx
@@ -10,6 +11,5 @@ sphinx-jupyterbook-latex
 myst-parser
 sphinx-copybutton
 autoapi
-pandoc
 ler
 git+https://git.ligo.org/lscsoft/gwcosmo.git@v1.0.0
