@@ -10,5 +10,6 @@ sphinx-jupyterbook-latex
 myst-parser
 sphinx-copybutton
 autoapi
+pandoc
 ler
 git+https://git.ligo.org/lscsoft/gwcosmo.git@v1.0.0
