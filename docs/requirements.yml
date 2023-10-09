@@ -21,5 +21,6 @@ dependencies:
   - sphinx-rtd-theme
   - pandoc
   - pip:
+    - sphinx-autoapi==2.1
     - ler
     - gwcosmo
