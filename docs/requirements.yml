@@ -13,7 +13,6 @@ dependencies:
   - sphinx
   - myst-parser
   - sphinx-jupyterbook-latex
-  - sphinx-autoapi
   - nbsphinx
   - numpydoc
   - sphinx-tabs
@@ -22,6 +21,5 @@ dependencies:
   - pandoc
   - pip:
     - sphinx-autoapi==2.1
-    - sphinx==7.2.6
     - ler
     - gwcosmo
