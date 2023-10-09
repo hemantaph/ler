@@ -278,12 +278,10 @@ channels:
   - pip
 dependencies:
   - python=3.10
-  - healpy
-  - numba
-  - bilby
   - html5lib
   - setuptools
   - sphinx
+  - myst-parser
   - sphinx-jupyterbook-latex
   - nbsphinx
   - numpydoc
@@ -293,6 +291,7 @@ dependencies:
   - pandoc
   - sphinx-autoapi
   - pip:
-    - myst-parser==2.0.0
+    - sphinx-autoapi==2.1
+    - myst-parser==1.0.0
     - ler
     - gwcosmo
