@@ -8,7 +8,7 @@ numpydoc
 sphinx-tabs
 sphinx-copybutton
 sphinx-rtd-theme
-autoapi
+# autoapi
 pandoc
 sphinx-autoapi==2.1
 ler
