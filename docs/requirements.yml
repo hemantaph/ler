@@ -280,10 +280,7 @@ dependencies:
   - python=3.10
   - html5lib
   - setuptools
-  - sphinx
-  - myst-parser
   - sphinx-jupyterbook-latex
-  - nbsphinx
   - numpydoc
   - sphinx-tabs
   - sphinx-copybutton
@@ -291,6 +288,7 @@ dependencies:
   - pandoc
   - sphinx-autoapi
   - pip:
+    - nbsphinx==0.9.3
     - sphinx-autoapi==2.1
     - myst-parser==2.0.0
     - sphinx==7.2.6
