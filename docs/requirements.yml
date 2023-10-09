@@ -19,6 +19,7 @@ dependencies:
   - sphinx-copybutton
   - sphinx-rtd-theme
   - pandoc
+  - sphinx-autoapi
   - pip:
     - ler
     - gwcosmo
