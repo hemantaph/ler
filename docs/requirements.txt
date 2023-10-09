@@ -1,6 +1,6 @@
 html5lib  # Hack to ensure documentation generated
 setuptools
-sphinx
+sphinx==7.2.6
 myst-parser
 sphinx-jupyterbook-latex
 nbsphinx
@@ -8,7 +8,7 @@ numpydoc
 sphinx-tabs
 sphinx-copybutton
 sphinx-rtd-theme
-# autoapi
+autoapi
 pandoc
 sphinx-autoapi==2.1
 ler
