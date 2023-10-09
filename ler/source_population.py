@@ -455,7 +455,7 @@ class SourceGalaxyPopulationModel:
             t0 = param["t0"]
 
         # rate density
-        rate_density = (Planck18.age(z=zs).value / t0) ** (-34 / 37)
+        rate_density = (Planck18.age(z=zs).value / t0) ** (34 / 37)
 
         return rate_density
 

@@ -2,7 +2,7 @@ html5lib  # Hack to ensure documentation generated
 setuptools
 sphinx
 myst-parser==1.0.0
-sphinx-jupyterbook-latex
+#sphinx-jupyterbook-latex
 nbsphinx
 numpydoc
 sphinx-tabs
