@@ -34,6 +34,10 @@ extensions = [
     "autoapi.extension",
 ]
 
+nbsphinx_custom_formats = {
+    ".md": ["jupytext.reads", {"fmt": "mystnb"}],
+}
+
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.ipynb_checkpoints','.ipynb', "venv", ".*"]
 autodoc_member_order = 'bysource'
