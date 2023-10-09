@@ -1,0 +1,25 @@
+name: rtd38
+channels:
+  - conda-forge
+  - defaults
+  - pip
+dependencies:
+  - python=3.10
+  - healpy
+  - numba
+  - bilby
+  - html5lib
+  - setuptools
+  - sphinx
+  - myst-parser
+  - sphinx-jupyterbook-latex
+  - sphinx-autoapi
+  - nbsphinx
+  - numpydoc
+  - sphinx-tabs
+  - sphinx-copybutton
+  - sphinx-rtd-theme
+  - pandoc
+  - pip:
+    - ler
+    - gwcosmo
