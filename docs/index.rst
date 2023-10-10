@@ -1,8 +1,3 @@
-.. ler documentation master file, created by
-   sphinx-quickstart on Thu Jun  8 02:49:42 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to ler's documentation!
 ===============================
 
@@ -21,8 +16,6 @@ The code is available at `github <https://github.com/hemantaph/ler>`_
    :caption: Contents:
 
    installation
-   unlensed
-   lensed
    
 .. toctree::
    :maxdepth: 1
@@ -37,9 +30,6 @@ The code is available at `github <https://github.com/hemantaph/ler>`_
 .. toctree::
    :maxdepth: 2
    :caption: Examples:
-   
-   rate_comparision
-   
    
 Indices and tables
 ==================

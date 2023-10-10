@@ -13,15 +13,14 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/clipboard.min.js"></script>
-        <script src="../../_static/copybutton.js"></script>
-        <script src="../../_static/tabs.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=000c92bf"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script src="../../_static/tabs.js?v=3030b3cb"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -49,8 +48,6 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../unlensed.html">Unlensed events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../lensed.html">Lensed events</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -59,10 +56,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/multiprocessing_routine/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.multiprocessing_routine</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/helperroutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.helperroutines</span></code></a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../rate_comparision.html">Calculation of unlensed and lensed rate of detectable events</a></li>
 </ul>
 
         </div>
@@ -120,7 +113,9 @@
 <span class="kn">import</span> <span class="nn">ler.multiprocessing_routine</span> <span class="k">as</span> <span class="nn">mp</span>
 
 
-<div class="viewcode-block" id="LensGalaxyPopulation"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation">[docs]</a><span class="k">class</span> <span class="nc">LensGalaxyPopulation</span><span class="p">:</span>
+<div class="viewcode-block" id="LensGalaxyPopulation">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation">[docs]</a>
+<span class="k">class</span> <span class="nc">LensGalaxyPopulation</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class to sample lens galaxy parameters</span>
 
@@ -247,31 +242,49 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Attributes</span>
-<div class="viewcode-block" id="LensGalaxyPopulation.cbc_pop"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.cbc_pop">[docs]</a>    <span class="n">cbc_pop</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="LensGalaxyPopulation.cbc_pop">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.cbc_pop">[docs]</a>
+    <span class="n">cbc_pop</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;:class:`~CompactBinaryPopulation` class\n</span>
 <span class="sd">    This is an already initialized class that contains a function (CompactBinaryPopulation.sample_gw_parameters) that actually samples the source parameters. </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.z_min"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.z_min">[docs]</a>    <span class="n">z_min</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="LensGalaxyPopulation.z_min">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.z_min">[docs]</a>
+    <span class="n">z_min</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;`float`\n</span>
 <span class="sd">    minimum redshift</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="LensGalaxyPopulation.z_max"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.z_max">[docs]</a>    <span class="n">z_max</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="LensGalaxyPopulation.z_max">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.z_max">[docs]</a>
+    <span class="n">z_max</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;`float`\n</span>
 <span class="sd">    maximum redshift</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.m_min"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.m_min">[docs]</a>    <span class="n">m_min</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="LensGalaxyPopulation.m_min">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.m_min">[docs]</a>
+    <span class="n">m_min</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;`float`\n</span>
 <span class="sd">    minimum mass in detector frame</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.m_max"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.m_max">[docs]</a>    <span class="n">m_max</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="LensGalaxyPopulation.m_max">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.m_max">[docs]</a>
+    <span class="n">m_max</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;`float`\n</span>
 <span class="sd">    maximum mass in detector frame</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.normalization_pdf_z"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.normalization_pdf_z">[docs]</a>    <span class="n">normalization_pdf_z</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="LensGalaxyPopulation.normalization_pdf_z">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.normalization_pdf_z">[docs]</a>
+    <span class="n">normalization_pdf_z</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;`float`\n</span>
 <span class="sd">    normalization constant of the pdf p(z)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -316,7 +329,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">normalization_pdf_z</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">pdf_unnormalized</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.create_lookup_table"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.create_lookup_table">[docs]</a>    <span class="k">def</span> <span class="nf">create_lookup_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">):</span>
+<div class="viewcode-block" id="LensGalaxyPopulation.create_lookup_table">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.create_lookup_table">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_lookup_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Functions to create lookup tables</span>
 <span class="sd">        1. Redshift to co-moving distance.</span>
@@ -375,7 +390,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">differential_comoving_volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cbc_pop</span><span class="o">.</span><span class="n">differential_comoving_volume</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.sample_lens_parameters"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.sample_lens_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">sample_lens_parameters</span><span class="p">(</span>
+
+<div class="viewcode-block" id="LensGalaxyPopulation.sample_lens_parameters">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.sample_lens_parameters">[docs]</a>
+    <span class="k">def</span> <span class="nf">sample_lens_parameters</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">lens_parameters_input</span><span class="o">=</span><span class="p">{},</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -406,7 +424,10 @@
             <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">lens_parameters_input</span><span class="o">=</span><span class="n">lens_parameters_input</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.sample_lens_parameters_routine"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.sample_lens_parameters_routine">[docs]</a>    <span class="k">def</span> <span class="nf">sample_lens_parameters_routine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">lens_parameters_input</span><span class="o">=</span><span class="p">{}):</span>
+
+<div class="viewcode-block" id="LensGalaxyPopulation.sample_lens_parameters_routine">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.sample_lens_parameters_routine">[docs]</a>
+    <span class="k">def</span> <span class="nf">sample_lens_parameters_routine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">lens_parameters_input</span><span class="o">=</span><span class="p">{}):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to sample galaxy lens parameters</span>
 
@@ -512,7 +533,10 @@
                 <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">lens_parameters_input</span><span class="o">=</span><span class="n">lens_parameters</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.sample_strongly_lensed_source_parameters"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.sample_strongly_lensed_source_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">sample_strongly_lensed_source_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LensGalaxyPopulation.sample_strongly_lensed_source_parameters">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.sample_strongly_lensed_source_parameters">[docs]</a>
+    <span class="k">def</span> <span class="nf">sample_strongly_lensed_source_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to sample source redshifts and other parameters, conditioned on the source being strongly lensed.</span>
 
@@ -564,7 +588,10 @@
 
         <span class="k">return</span> <span class="n">gw_param_strongly_lensed</span></div>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.sample_lens_redshifts"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.sample_lens_redshifts">[docs]</a>    <span class="k">def</span> <span class="nf">sample_lens_redshifts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LensGalaxyPopulation.sample_lens_redshifts">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.sample_lens_redshifts">[docs]</a>
+    <span class="k">def</span> <span class="nf">sample_lens_redshifts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to sample lens redshifts, conditioned on the lens being strongly lensed</span>
 <span class="sd">        Input parameters:</span>
@@ -585,7 +612,10 @@
         <span class="n">zl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Dc_to_z</span><span class="p">(</span><span class="n">lens_galaxy_Dc</span><span class="p">)</span>  <span class="c1"># 2D array</span>
         <span class="k">return</span> <span class="n">zl</span></div>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.sample_velocity_dispersion_axis_ratio"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.sample_velocity_dispersion_axis_ratio">[docs]</a>    <span class="k">def</span> <span class="nf">sample_velocity_dispersion_axis_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LensGalaxyPopulation.sample_velocity_dispersion_axis_ratio">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.sample_velocity_dispersion_axis_ratio">[docs]</a>
+    <span class="k">def</span> <span class="nf">sample_velocity_dispersion_axis_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to sample velocity dispersion and axis ratio of the lens galaxy</span>
 
@@ -634,7 +664,10 @@
         <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">q</span></div>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.compute_einstein_radii"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.compute_einstein_radii">[docs]</a>    <span class="k">def</span> <span class="nf">compute_einstein_radii</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span> <span class="n">zs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LensGalaxyPopulation.compute_einstein_radii">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.compute_einstein_radii">[docs]</a>
+    <span class="k">def</span> <span class="nf">compute_einstein_radii</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span> <span class="n">zs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to compute the Einstein radii of the lens galaxies</span>
 
@@ -662,7 +695,10 @@
         <span class="p">)</span>  <span class="c1"># Note: km/s for sigma; Dls, Ds are in Mpc</span>
         <span class="k">return</span> <span class="n">theta_E</span></div>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.sample_axis_ratio_angle_phi"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.sample_axis_ratio_angle_phi">[docs]</a>    <span class="k">def</span> <span class="nf">sample_axis_ratio_angle_phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LensGalaxyPopulation.sample_axis_ratio_angle_phi">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.sample_axis_ratio_angle_phi">[docs]</a>
+    <span class="k">def</span> <span class="nf">sample_axis_ratio_angle_phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to sample the axis rotation angle of the elliptical lens galaxy</span>
 
@@ -681,7 +717,10 @@
         <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">phi</span></div>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.sample_galaxy_shear"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.sample_galaxy_shear">[docs]</a>    <span class="k">def</span> <span class="nf">sample_galaxy_shear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LensGalaxyPopulation.sample_galaxy_shear">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.sample_galaxy_shear">[docs]</a>
+    <span class="k">def</span> <span class="nf">sample_galaxy_shear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to sample the lens galaxy shear</span>
 
@@ -703,7 +742,10 @@
         <span class="n">gamma_2</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">gamma_1</span><span class="p">,</span> <span class="n">gamma_2</span></div>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.sample_gamma"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.sample_gamma">[docs]</a>    <span class="k">def</span> <span class="nf">sample_gamma</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LensGalaxyPopulation.sample_gamma">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.sample_gamma">[docs]</a>
+    <span class="k">def</span> <span class="nf">sample_gamma</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to sample the lens galaxy spectral index of the density profile</span>
 
@@ -722,7 +764,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">gamma_std</span> <span class="o">=</span> <span class="mf">0.2</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma_mean</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma_std</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.rejection_sample_lensing_probability"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.rejection_sample_lensing_probability">[docs]</a>    <span class="k">def</span> <span class="nf">rejection_sample_lensing_probability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta_E</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LensGalaxyPopulation.rejection_sample_lensing_probability">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.rejection_sample_lensing_probability">[docs]</a>
+    <span class="k">def</span> <span class="nf">rejection_sample_lensing_probability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta_E</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to conduct rejection sampling wrt einstein radius</span>
 
@@ -743,7 +788,10 @@
         <span class="n">idx</span> <span class="o">=</span> <span class="n">u</span> <span class="o">&lt;</span> <span class="n">theta_E</span><span class="o">**</span><span class="mi">2</span>
         <span class="k">return</span> <span class="n">idx</span></div>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.strong_lensing_optical_depth_SIE"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.strong_lensing_optical_depth_SIE">[docs]</a>    <span class="k">def</span> <span class="nf">strong_lensing_optical_depth_SIE</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LensGalaxyPopulation.strong_lensing_optical_depth_SIE">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.strong_lensing_optical_depth_SIE">[docs]</a>
+    <span class="k">def</span> <span class="nf">strong_lensing_optical_depth_SIE</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to compute the strong lensing optical depth SIE</span>
 
@@ -774,7 +822,10 @@
         
         <span class="k">return</span> <span class="n">getcrosssect_num</span><span class="p">(</span><span class="n">theta_E</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.strong_lensing_optical_depth_SIS"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.strong_lensing_optical_depth_SIS">[docs]</a>    <span class="k">def</span> <span class="nf">strong_lensing_optical_depth_SIS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LensGalaxyPopulation.strong_lensing_optical_depth_SIS">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.strong_lensing_optical_depth_SIS">[docs]</a>
+    <span class="k">def</span> <span class="nf">strong_lensing_optical_depth_SIS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to compute the strong lensing optical depth (SIS)</span>
 
@@ -795,7 +846,10 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">Dc</span> <span class="o">/</span> <span class="mf">62.2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span></div>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.get_image_properties"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.get_image_properties">[docs]</a>    <span class="k">def</span> <span class="nf">get_image_properties</span><span class="p">(</span>
+
+<div class="viewcode-block" id="LensGalaxyPopulation.get_image_properties">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.get_image_properties">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_image_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">lens_parameters</span><span class="p">,</span>
         <span class="n">n_min_images</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
@@ -971,7 +1025,10 @@
 
         <span class="k">return</span> <span class="n">lens_parameters</span></div>
 
-<div class="viewcode-block" id="LensGalaxyPopulation.get_lensed_snrs"><a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.get_lensed_snrs">[docs]</a>    <span class="k">def</span> <span class="nf">get_lensed_snrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snr_calculator</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">n_max_images</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LensGalaxyPopulation.get_lensed_snrs">
+<a class="viewcode-back" href="../../autoapi/ler/lens_galaxy_population/index.html#ler.LensGalaxyPopulation.get_lensed_snrs">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_lensed_snrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snr_calculator</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">n_max_images</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to calculate the signal to noise ratio for each image in each event.</span>
 
@@ -1075,7 +1132,9 @@
                     <span class="n">optimal_snrs</span><span class="p">[</span><span class="n">detector</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimal_snr</span><span class="p">[</span><span class="n">detector</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">optimal_snrs</span> <span class="o">=</span> <span class="n">optimal_snrs</span>
-        <span class="k">return</span> <span class="n">optimal_snrs</span></div></div>
+        <span class="k">return</span> <span class="n">optimal_snrs</span></div>
+</div>
+
 </pre></div>
 
            </div>

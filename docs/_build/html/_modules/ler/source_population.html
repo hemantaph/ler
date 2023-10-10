@@ -13,15 +13,14 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/clipboard.min.js"></script>
-        <script src="../../_static/copybutton.js"></script>
-        <script src="../../_static/tabs.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=000c92bf"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script src="../../_static/tabs.js?v=3030b3cb"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -49,8 +48,6 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../unlensed.html">Unlensed events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../lensed.html">Lensed events</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -59,10 +56,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/multiprocessing_routine/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.multiprocessing_routine</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/helperroutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.helperroutines</span></code></a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../rate_comparision.html">Calculation of unlensed and lensed rate of detectable events</a></li>
 </ul>
 
         </div>
@@ -121,7 +114,9 @@
 <span class="kn">from</span> <span class="nn">ler.helperroutines</span> <span class="kn">import</span> <span class="n">rejection_sample</span><span class="p">,</span> <span class="n">rejection_sample2d</span><span class="p">,</span> <span class="n">update_dict</span>
 
 
-<div class="viewcode-block" id="SourceGalaxyPopulationModel"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel">[docs]</a><span class="k">class</span> <span class="nc">SourceGalaxyPopulationModel</span><span class="p">:</span>
+<div class="viewcode-block" id="SourceGalaxyPopulationModel">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel">[docs]</a>
+<span class="k">class</span> <span class="nc">SourceGalaxyPopulationModel</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to generate a population of source galaxies.</span>
 <span class="sd">    This class is inherited by :class:`~ler.ler.CompactBinaryPopulation` class.</span>
 
@@ -213,33 +208,51 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Attributes</span>
-<div class="viewcode-block" id="SourceGalaxyPopulationModel.z_min"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.z_min">[docs]</a>    <span class="n">z_min</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="SourceGalaxyPopulationModel.z_min">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.z_min">[docs]</a>
+    <span class="n">z_min</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``float`` \n</span>
 <span class="sd">    Minimum redshift of the source population</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="SourceGalaxyPopulationModel.z_max"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.z_max">[docs]</a>    <span class="n">z_max</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="SourceGalaxyPopulationModel.z_max">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.z_max">[docs]</a>
+    <span class="n">z_max</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``float`` \n</span>
 <span class="sd">    Maximum redshift of the source population</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="SourceGalaxyPopulationModel.event_type"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.event_type">[docs]</a>    <span class="n">event_type</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="SourceGalaxyPopulationModel.event_type">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.event_type">[docs]</a>
+    <span class="n">event_type</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``str`` \n</span>
 <span class="sd">    Type of event to generate. \n</span>
 <span class="sd">    e.g. &#39;BBH&#39;, &#39;BNS&#39;, &#39;BBH_popIII&#39;, &#39;BBH_primordial&#39;, &#39;NSBH&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="SourceGalaxyPopulationModel.normalization_pdf_z"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.normalization_pdf_z">[docs]</a>    <span class="n">normalization_pdf_z</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="SourceGalaxyPopulationModel.normalization_pdf_z">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.normalization_pdf_z">[docs]</a>
+    <span class="n">normalization_pdf_z</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``float`` \n</span>
 <span class="sd">    Normalization constant of the pdf p(z)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="SourceGalaxyPopulationModel.z_to_luminosity_distance"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.z_to_luminosity_distance">[docs]</a>    <span class="n">z_to_luminosity_distance</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="SourceGalaxyPopulationModel.z_to_luminosity_distance">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.z_to_luminosity_distance">[docs]</a>
+    <span class="n">z_to_luminosity_distance</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``scipy.interpolate.interpolate`` \n</span>
 <span class="sd">    Function to convert redshift to luminosity distance</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="SourceGalaxyPopulationModel.differential_comoving_volume"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.differential_comoving_volume">[docs]</a>    <span class="n">differential_comoving_volume</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="SourceGalaxyPopulationModel.differential_comoving_volume">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.differential_comoving_volume">[docs]</a>
+    <span class="n">differential_comoving_volume</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``scipy.interpolate.interpolate`` \n</span>
 <span class="sd">    Function to calculate the differential comoving volume</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -249,7 +262,7 @@
         <span class="n">z_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
         <span class="n">z_max</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
         <span class="n">event_type</span><span class="o">=</span><span class="s2">&quot;BBH&quot;</span><span class="p">,</span>
-        <span class="n">merger_rate_density</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_popI_II_Oguri&quot;</span><span class="p">,</span>
+        <span class="n">merger_rate_density</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_bbh_popI_II_oguri&quot;</span><span class="p">,</span>
         <span class="n">merger_rate_density_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="c1"># set attributes</span>
@@ -277,7 +290,9 @@
 
         <span class="k">return</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="SourceGalaxyPopulationModel.create_lookup_table"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.create_lookup_table">[docs]</a>    <span class="k">def</span> <span class="nf">create_lookup_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">):</span>
+<div class="viewcode-block" id="SourceGalaxyPopulationModel.create_lookup_table">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.create_lookup_table">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_lookup_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to create a lookup table for the differential comoving volume</span>
 <span class="sd">        and luminosity distance wrt redshift.</span>
@@ -312,7 +327,10 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="SourceGalaxyPopulationModel.sample_source_redshifts"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.sample_source_redshifts">[docs]</a>    <span class="k">def</span> <span class="nf">sample_source_redshifts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">z_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SourceGalaxyPopulationModel.sample_source_redshifts">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.sample_source_redshifts">[docs]</a>
+    <span class="k">def</span> <span class="nf">sample_source_redshifts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">z_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to sample source redshifts (source frame) from the source galaxy population</span>
 <span class="sd">        model</span>
@@ -368,7 +386,10 @@
         <span class="n">zs</span> <span class="o">=</span> <span class="n">rejection_sample</span><span class="p">(</span><span class="n">pdf</span><span class="p">,</span> <span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">zs</span></div>
 
-<div class="viewcode-block" id="SourceGalaxyPopulationModel.merger_rate_density_bbh_popI_II_oguri"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.merger_rate_density_bbh_popI_II_oguri">[docs]</a>    <span class="k">def</span> <span class="nf">merger_rate_density_bbh_popI_II_oguri</span><span class="p">(</span>
+
+<div class="viewcode-block" id="SourceGalaxyPopulationModel.merger_rate_density_bbh_popI_II_oguri">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.merger_rate_density_bbh_popI_II_oguri">[docs]</a>
+    <span class="k">def</span> <span class="nf">merger_rate_density_bbh_popI_II_oguri</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">R0</span><span class="o">=</span><span class="mf">23.9</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">b3</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">b4</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -420,7 +441,10 @@
 
         <span class="k">return</span> <span class="n">rate_density</span></div>
 
-<div class="viewcode-block" id="SourceGalaxyPopulationModel.merger_rate_density_bbh_popI_II_madau_dickinson"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.merger_rate_density_bbh_popI_II_madau_dickinson">[docs]</a>    <span class="k">def</span> <span class="nf">merger_rate_density_bbh_popI_II_madau_dickinson</span><span class="p">(</span>
+
+<div class="viewcode-block" id="SourceGalaxyPopulationModel.merger_rate_density_bbh_popI_II_madau_dickinson">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.merger_rate_density_bbh_popI_II_madau_dickinson">[docs]</a>
+    <span class="k">def</span> <span class="nf">merger_rate_density_bbh_popI_II_madau_dickinson</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">af</span><span class="o">=</span><span class="mf">2.7</span><span class="p">,</span> <span class="n">bf</span><span class="o">=</span><span class="mf">5.6</span><span class="p">,</span> <span class="n">cf</span><span class="o">=</span><span class="mf">1.9</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -468,7 +492,10 @@
 
         <span class="k">return</span> <span class="n">rate_density</span></div>
 
-<div class="viewcode-block" id="SourceGalaxyPopulationModel.merger_rate_density_popIII_ken"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.merger_rate_density_popIII_ken">[docs]</a>    <span class="k">def</span> <span class="nf">merger_rate_density_popIII_ken</span><span class="p">(</span>
+
+<div class="viewcode-block" id="SourceGalaxyPopulationModel.merger_rate_density_popIII_ken">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.merger_rate_density_popIII_ken">[docs]</a>
+    <span class="k">def</span> <span class="nf">merger_rate_density_popIII_ken</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">aIII</span><span class="o">=</span><span class="mf">0.66</span><span class="p">,</span> <span class="n">bIII</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">zIII</span><span class="o">=</span><span class="mf">11.6</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -518,7 +545,10 @@
 
         <span class="k">return</span> <span class="n">rate_density</span></div>
 
-<div class="viewcode-block" id="SourceGalaxyPopulationModel.merger_rate_density_primordial_ken"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.merger_rate_density_primordial_ken">[docs]</a>    <span class="k">def</span> <span class="nf">merger_rate_density_primordial_ken</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="mf">13.786885302009708</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SourceGalaxyPopulationModel.merger_rate_density_primordial_ken">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.SourceGalaxyPopulationModel.merger_rate_density_primordial_ken">[docs]</a>
+    <span class="k">def</span> <span class="nf">merger_rate_density_primordial_ken</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="mf">13.786885302009708</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to compute the merger rate density (Primordial). Reference: Ken K. Y. Ng et al. (2022)</span>
 
@@ -547,12 +577,16 @@
             <span class="n">t0</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;t0&quot;</span><span class="p">]</span>
 
         <span class="c1"># rate density</span>
-        <span class="n">rate_density</span> <span class="o">=</span> <span class="p">(</span><span class="n">Planck18</span><span class="o">.</span><span class="n">age</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">zs</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="n">t0</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">34</span> <span class="o">/</span> <span class="mi">37</span><span class="p">)</span>
+        <span class="n">rate_density</span> <span class="o">=</span> <span class="p">(</span><span class="n">Planck18</span><span class="o">.</span><span class="n">age</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">zs</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="n">t0</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">34</span> <span class="o">/</span> <span class="mi">37</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">rate_density</span></div></div>
+        <span class="k">return</span> <span class="n">rate_density</span></div>
+</div>
 
 
-<div class="viewcode-block" id="CompactBinaryPopulation"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation">[docs]</a><span class="k">class</span> <span class="nc">CompactBinaryPopulation</span><span class="p">(</span><span class="n">SourceGalaxyPopulationModel</span><span class="p">):</span>
+
+<div class="viewcode-block" id="CompactBinaryPopulation">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation">[docs]</a>
+<span class="k">class</span> <span class="nc">CompactBinaryPopulation</span><span class="p">(</span><span class="n">SourceGalaxyPopulationModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to generate a population of compact binaries. Inherits from :class:`~ler.ler.SourceGalaxyPopulationModel` class.</span>
 
 <span class="sd">    Parameters</span>
@@ -630,27 +664,42 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Attributes</span>
-<div class="viewcode-block" id="CompactBinaryPopulation.z_min"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.z_min">[docs]</a>    <span class="n">z_min</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="CompactBinaryPopulation.z_min">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.z_min">[docs]</a>
+    <span class="n">z_min</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``float`` \n</span>
 <span class="sd">    Minimum redshift of the source population</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="CompactBinaryPopulation.z_max"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.z_max">[docs]</a>    <span class="n">z_max</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="CompactBinaryPopulation.z_max">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.z_max">[docs]</a>
+    <span class="n">z_max</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``float`` \n</span>
 <span class="sd">    Maximum redshift of the source population</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="CompactBinaryPopulation.m_min"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.m_min">[docs]</a>    <span class="n">m_min</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="CompactBinaryPopulation.m_min">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.m_min">[docs]</a>
+    <span class="n">m_min</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``float`` \n</span>
 <span class="sd">    Minimum mass of the BBHs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="CompactBinaryPopulation.m_max"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.m_max">[docs]</a>    <span class="n">m_max</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="CompactBinaryPopulation.m_max">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.m_max">[docs]</a>
+    <span class="n">m_max</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``float`` \n</span>
 <span class="sd">    Maximum mass of the BBHs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="CompactBinaryPopulation.event_type"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.event_type">[docs]</a>    <span class="n">event_type</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="CompactBinaryPopulation.event_type">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.event_type">[docs]</a>
+    <span class="n">event_type</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``str`` \n</span>
 <span class="sd">    Type of event to generate. \n</span>
 <span class="sd">    e.g. &#39;popI_II&#39;, &#39;BNS&#39;, &#39;popIII&#39;, &#39;primordial&#39;, &#39;popI_II_Madau_Dickinson&#39;</span>
@@ -711,7 +760,9 @@
 
         <span class="k">return</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="CompactBinaryPopulation.event_priors_categorization"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.event_priors_categorization">[docs]</a>    <span class="k">def</span> <span class="nf">event_priors_categorization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_type</span><span class="p">,</span> <span class="n">event_priors</span><span class="p">,</span> <span class="n">event_prior_params</span><span class="p">):</span>
+<div class="viewcode-block" id="CompactBinaryPopulation.event_priors_categorization">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.event_priors_categorization">[docs]</a>
+    <span class="k">def</span> <span class="nf">event_priors_categorization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_type</span><span class="p">,</span> <span class="n">event_priors</span><span class="p">,</span> <span class="n">event_prior_params</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to sample BBH parameters from the source galaxy population</span>
 <span class="sd">        model</span>
@@ -780,7 +831,10 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">event_priors_</span><span class="p">,</span> <span class="n">event_prior_params_</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CompactBinaryPopulation.sample_gw_parameters"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.sample_gw_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">sample_gw_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nsamples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="CompactBinaryPopulation.sample_gw_parameters">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.sample_gw_parameters">[docs]</a>
+    <span class="k">def</span> <span class="nf">sample_gw_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nsamples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to sample BBH parameters from the source galaxy population</span>
 <span class="sd">        model</span>
@@ -905,7 +959,10 @@
 
         <span class="k">return</span> <span class="n">gw_parameters</span></div>
 
-<div class="viewcode-block" id="CompactBinaryPopulation.binary_masses_BBH_popI_II_powerlaw_gaussian"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.binary_masses_BBH_popI_II_powerlaw_gaussian">[docs]</a>    <span class="k">def</span> <span class="nf">binary_masses_BBH_popI_II_powerlaw_gaussian</span><span class="p">(</span>
+
+<div class="viewcode-block" id="CompactBinaryPopulation.binary_masses_BBH_popI_II_powerlaw_gaussian">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.binary_masses_BBH_popI_II_powerlaw_gaussian">[docs]</a>
+    <span class="k">def</span> <span class="nf">binary_masses_BBH_popI_II_powerlaw_gaussian</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">size</span><span class="p">,</span>
         <span class="n">mminbh</span><span class="o">=</span><span class="mf">4.98</span><span class="p">,</span>
@@ -967,7 +1024,10 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CompactBinaryPopulation.binary_masses_BBH_popIII_gwcosmo"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.binary_masses_BBH_popIII_gwcosmo">[docs]</a>    <span class="k">def</span> <span class="nf">binary_masses_BBH_popIII_gwcosmo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">Mc</span><span class="o">=</span><span class="mf">30.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.1</span><span class="p">):</span>
+
+<div class="viewcode-block" id="CompactBinaryPopulation.binary_masses_BBH_popIII_gwcosmo">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.binary_masses_BBH_popIII_gwcosmo">[docs]</a>
+    <span class="k">def</span> <span class="nf">binary_masses_BBH_popIII_gwcosmo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">Mc</span><span class="o">=</span><span class="mf">30.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to calculate source mass1 and mass2 with pop III origin</span>
 
@@ -1030,7 +1090,10 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CompactBinaryPopulation.binary_masses_BBH_primordial_lognormal"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.binary_masses_BBH_primordial_lognormal">[docs]</a>    <span class="k">def</span> <span class="nf">binary_masses_BBH_primordial_lognormal</span><span class="p">(</span>
+
+<div class="viewcode-block" id="CompactBinaryPopulation.binary_masses_BBH_primordial_lognormal">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.binary_masses_BBH_primordial_lognormal">[docs]</a>
+    <span class="k">def</span> <span class="nf">binary_masses_BBH_primordial_lognormal</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">Mc</span><span class="o">=</span><span class="mf">30.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.1</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1095,7 +1158,10 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CompactBinaryPopulation.binary_masses_BNS_popI_II_gwcosmo"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.binary_masses_BNS_popI_II_gwcosmo">[docs]</a>    <span class="k">def</span> <span class="nf">binary_masses_BNS_popI_II_gwcosmo</span><span class="p">(</span>
+
+<div class="viewcode-block" id="CompactBinaryPopulation.binary_masses_BNS_popI_II_gwcosmo">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.binary_masses_BNS_popI_II_gwcosmo">[docs]</a>
+    <span class="k">def</span> <span class="nf">binary_masses_BNS_popI_II_gwcosmo</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">mminns</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">mmaxns</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">alphans</span><span class="o">=</span><span class="mf">0.0</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1143,7 +1209,10 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CompactBinaryPopulation.binary_masses_BNS_popI_II_Alsing"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.binary_masses_BNS_popI_II_Alsing">[docs]</a>    <span class="k">def</span> <span class="nf">binary_masses_BNS_popI_II_Alsing</span><span class="p">(</span>
+
+<div class="viewcode-block" id="CompactBinaryPopulation.binary_masses_BNS_popI_II_Alsing">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.binary_masses_BNS_popI_II_Alsing">[docs]</a>
+    <span class="k">def</span> <span class="nf">binary_masses_BNS_popI_II_Alsing</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">size</span><span class="p">,</span>
         <span class="n">param</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
@@ -1200,7 +1269,10 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CompactBinaryPopulation.mass_ratio"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.mass_ratio">[docs]</a>    <span class="k">def</span> <span class="nf">mass_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.1</span><span class="p">):</span>
+
+<div class="viewcode-block" id="CompactBinaryPopulation.mass_ratio">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.mass_ratio">[docs]</a>
+    <span class="k">def</span> <span class="nf">mass_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to calculate mass ratio with power law distribution</span>
 
@@ -1227,7 +1299,10 @@
         <span class="n">q</span> <span class="o">=</span> <span class="n">rejection_sample</span><span class="p">(</span><span class="n">pdf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">q</span></div>
 
-<div class="viewcode-block" id="CompactBinaryPopulation.binary_spin_BBH"><a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.binary_spin_BBH">[docs]</a>    <span class="k">def</span> <span class="nf">binary_spin_BBH</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+
+<div class="viewcode-block" id="CompactBinaryPopulation.binary_spin_BBH">
+<a class="viewcode-back" href="../../autoapi/ler/source_population/index.html#ler.CompactBinaryPopulation.binary_spin_BBH">[docs]</a>
+    <span class="k">def</span> <span class="nf">binary_spin_BBH</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to calculate spin parameters with PowerLaw+PEAK model</span>
 
@@ -1267,7 +1342,9 @@
         <span class="n">phi_12</span> <span class="o">=</span> <span class="n">prior_default</span><span class="p">[</span><span class="s2">&quot;phi_12&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
         <span class="n">phi_jl</span> <span class="o">=</span> <span class="n">prior_default</span><span class="p">[</span><span class="s2">&quot;phi_jl&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="p">(</span><span class="n">a_1</span><span class="p">,</span> <span class="n">a_2</span><span class="p">,</span> <span class="n">tilt_1</span><span class="p">,</span> <span class="n">tilt_2</span><span class="p">,</span> <span class="n">phi_12</span><span class="p">,</span> <span class="n">phi_jl</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="p">(</span><span class="n">a_1</span><span class="p">,</span> <span class="n">a_2</span><span class="p">,</span> <span class="n">tilt_1</span><span class="p">,</span> <span class="n">tilt_2</span><span class="p">,</span> <span class="n">phi_12</span><span class="p">,</span> <span class="n">phi_jl</span><span class="p">)</span></div>
+</div>
+
 </pre></div>
 
            </div>

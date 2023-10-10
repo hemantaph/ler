@@ -29,7 +29,7 @@ Classes
 
 
 
-.. py:class:: SourceGalaxyPopulationModel(z_min=0.0, z_max=10.0, event_type='BBH', merger_rate_density='merger_rate_density_popI_II_Oguri', merger_rate_density_param=None)
+.. py:class:: SourceGalaxyPopulationModel(z_min=0.0, z_max=10.0, event_type='BBH', merger_rate_density='merger_rate_density_bbh_popI_II_oguri', merger_rate_density_param=None)
 
 
    
