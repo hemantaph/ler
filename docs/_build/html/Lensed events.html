@@ -59,8 +59,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#Detectable-lensed-events'-rate-in-a-year">Detectable lensed events’ rate in a year</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#SNR-operator">SNR operator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Lensed-BBH/BNS-merger-rate-distribution-wrt-z_s.">Lensed BBH/BNS merger rate distribution wrt <span class="math notranslate nohighlight">\(z_s\)</span>.</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#test">test</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">SNR operator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Sampling-methods-for-lens-parameters">Sampling methods for lens parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Image-parameters">Image parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Montecarlo-integration">Montecarlo integration</a></li>
@@ -139,16 +137,17 @@ R_L = \mathcal{N}^L \int & dz_s R_o^L(z_s) \,\mathcal{O}_{images}(z_s,\theta,\mu
 <li><p>SNR operator over all images follows,</p></li>
 </ul>
 <p>:nbsphinx-math:<a href="#id1"><span class="problematic" id="id2">`</span></a>begin{equation}
-mathcal{O}_{images}(z_s,theta,mu_i,Delta t_i, rho_{th}) =</p>
+mathcal{O}_{images}(z_s,theta,mu_i,Delta t_i, rho_{th}) = left{</p>
 <blockquote>
 <div><dl class="simple">
-<dt>begin{cases}</dt><dd><p>1 &amp; sum_i^{images} Theta[rho(z_s,theta,mu_i,Delta t_i)-rho_{th}]ge 2 \
+<dt>begin{array}{ c l }</dt><dd><p>1 &amp; sum_i^{images} Theta[rho(z_s,theta,mu_i,Delta t_i)-rho_{th}]ge 2 \
 0 &amp; text{otherwise}</p>
 </dd>
 </dl>
-<p>end{cases}  tag{2}</p>
+<p>end{array}</p>
 </div></blockquote>
-<p>end{equation}`</p>
+<p>right. tag{2}
+end{equation}`</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\Theta\)</span> is the Heaviside step function.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\rho(z_s,\theta,\mu_i,\Delta t_i)\)</span> is the SNR of the <span class="math notranslate nohighlight">\(i\)</span>th image.</p></li>
@@ -177,49 +176,6 @@ R_o^L(z_s)= \frac{1}{\mathcal{N}^L}\frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tau
 \end{equation}</span></p>
 <ul class="simple">
 <li><p>Sampling of <span class="math notranslate nohighlight">\(z_s\)</span> is done through rejection sampling with the merger rate formula given above (lensing condition applied).</p></li>
-</ul>
-</section>
-<section id="test">
-<h3>test<a class="headerlink" href="#test" title="Link to this heading"></a></h3>
-<p><span class="math notranslate nohighlight">\(\left\{  \begin{array}{ c l }  \frac{x^2 - x}{2} &amp; \quad \textrm{if } x \geq 1 \\  0 &amp; \quad \textrm{otherwise}  \end{array} \right.\)</span></p>
-<ul class="simple">
-<li><p>SNR operator over all images</p></li>
-</ul>
-<p>:nbsphinx-math:<a href="#id3"><span class="problematic" id="id4">`</span></a>begin{equation}
-mathcal{O}_{images}(z_s,theta,mu_i,Delta t_i, rho_{th}) =</p>
-<blockquote>
-<div><dl class="simple">
-<dt>begin{cases}</dt><dd><p>1 &amp; sum_i^{images} Theta[rho(z_s,theta,mu_i,Delta t_i)-rho_{th}]ge 2 \
-0 &amp; text{otherwise}</p>
-</dd>
-</dl>
-<p>end{cases}  tag{2}</p>
-</div></blockquote>
-<p>end{equation}`</p>
-</section>
-<section id="id5">
-<h3>SNR operator<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>SNR operator over all images</p></li>
-</ul>
-<p><span class="math">\begin{equation}
-\begin{split}
-R_L = \mathcal{N}^L \int & dz_s R_o^L(z_s) \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \, \\
-& \, P(\theta) P(\theta_L, z_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta dz_L d\theta_L dz_s
-\end{split}  \tag{1}
-\end{equation}</span></p>
-<p>:nbsphinx-math:<a href="#id6"><span class="problematic" id="id7">`</span></a>begin{equation}
-mathcal{O}_{images}(z_s,theta,mu_i,Delta t_i, rho_{th}) =</p>
-<blockquote>
-<div><dl class="simple">
-<dt>begin{cases}</dt><dd><p>1 &amp; sum_i^{images} Theta[rho(z_s,theta,mu_i,Delta t_i)-rho_{th}]ge 1\
-0 &amp; text{otherwise}</p>
-</dd>
-</dl>
-<p>end{cases} tag{6}</p>
-</div></blockquote>
-<p>end{equation}`</p>
-<ul class="simple">
 <li><p>Source param: <span class="math notranslate nohighlight">\(\theta \in \{m_1,m_2,D_l,\iota,\phi,\psi,ra,dec\}\)</span></p></li>
 <li><p>Lens param: <span class="math notranslate nohighlight">\(\theta_L \in \{\sigma \text{(velocity-dispersion)},\; q \text{(axis-ratio)},\; \psi \text{(axis-rotaion)},\; \gamma \text{(spectral-index)},\)</span><span class="math notranslate nohighlight">\(\; [\gamma_1,\gamma_2] \text{(external-shear)} \}\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(z_L\)</span> : redshift of the galaxy lens</p></li>
