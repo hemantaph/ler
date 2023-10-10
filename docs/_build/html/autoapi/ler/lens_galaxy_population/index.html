@@ -21,9 +21,12 @@
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
         <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="ler.multiprocessing_routine" href="../multiprocessing_routine/index.html" />
+    <link rel="prev" title="ler.source_population" href="../source_population/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,43 +48,28 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a><ul>
-<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
-<li><a class="reference internal" href="#classes">Classes</a><ul>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation</span></code></a><ul>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.cbc_pop"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.cbc_pop</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.z_min"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.z_min</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.z_max"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.z_max</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.m_min"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.m_min</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.m_max"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.m_max</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.normalization_pdf_z"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.normalization_pdf_z</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.create_lookup_table"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.create_lookup_table()</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.sample_lens_parameters"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.sample_lens_parameters()</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.sample_lens_parameters_routine"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.sample_lens_parameters_routine()</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.sample_strongly_lensed_source_parameters"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.sample_strongly_lensed_source_parameters()</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.sample_lens_redshifts"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.sample_lens_redshifts()</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.sample_velocity_dispersion_axis_ratio"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.sample_velocity_dispersion_axis_ratio()</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.compute_einstein_radii"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.compute_einstein_radii()</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.sample_axis_ratio_angle_phi"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.sample_axis_ratio_angle_phi()</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.sample_galaxy_shear"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.sample_galaxy_shear()</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.sample_gamma"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.sample_gamma()</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.rejection_sample_lensing_probability"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.rejection_sample_lensing_probability()</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.strong_lensing_optical_depth_SIE"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.strong_lensing_optical_depth_SIE()</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.strong_lensing_optical_depth_SIS"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.strong_lensing_optical_depth_SIS()</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.get_image_properties"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.get_image_properties()</span></code></a></li>
-<li><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation.get_lensed_snrs"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation.get_lensed_snrs()</span></code></a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.ler</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.source_population</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyPopulation"><code class="docutils literal notranslate"><span class="pre">LensGalaxyPopulation</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../multiprocessing_routine/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.multiprocessing_routine</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../helperroutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.helperroutines</span></code></a></li>
 </ul>
-</li>
-</ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -672,7 +660,10 @@ default: 4</p>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../source_population/index.html" class="btn btn-neutral float-left" title="ler.source_population" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../multiprocessing_routine/index.html" class="btn btn-neutral float-right" title="ler.multiprocessing_routine" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
