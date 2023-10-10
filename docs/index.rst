@@ -15,7 +15,9 @@ The code is available at `github <https://github.com/hemantaph/ler>`_
    :maxdepth: 2
    :caption: Contents:
 
-   installation
+   Installation
+   Unlensed events
+   Lensed events
    
 .. toctree::
    :maxdepth: 1
@@ -31,6 +33,9 @@ The code is available at `github <https://github.com/hemantaph/ler>`_
    :maxdepth: 2
    :caption: Examples:
    
+   Rate comparision
+
+
 Indices and tables
 ==================
 
