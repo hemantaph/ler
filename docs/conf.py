@@ -33,6 +33,7 @@ release = '0.2.2'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    "nbsphinx",
     "sphinx.ext.mathjax",
     "numpydoc",
     "sphinx.ext.autosummary",

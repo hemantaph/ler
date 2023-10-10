@@ -21,9 +21,12 @@
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
         <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="ler.lens_galaxy_population" href="../lens_galaxy_population/index.html" />
+    <link rel="prev" title="ler.ler" href="../ler/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,51 +48,29 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.source_population</span></code></a><ul>
-<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
-<li><a class="reference internal" href="#classes">Classes</a><ul>
-<li><a class="reference internal" href="#ler.source_population.SourceGalaxyPopulationModel"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel</span></code></a><ul>
-<li><a class="reference internal" href="#ler.source_population.SourceGalaxyPopulationModel.z_min"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.z_min</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.SourceGalaxyPopulationModel.z_max"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.z_max</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.SourceGalaxyPopulationModel.event_type"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.event_type</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.SourceGalaxyPopulationModel.normalization_pdf_z"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.normalization_pdf_z</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.SourceGalaxyPopulationModel.z_to_luminosity_distance"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.z_to_luminosity_distance</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.SourceGalaxyPopulationModel.differential_comoving_volume"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.differential_comoving_volume</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.SourceGalaxyPopulationModel.create_lookup_table"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.create_lookup_table()</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.SourceGalaxyPopulationModel.sample_source_redshifts"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.sample_source_redshifts()</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.SourceGalaxyPopulationModel.merger_rate_density_bbh_popI_II_oguri"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.merger_rate_density_bbh_popI_II_oguri()</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.SourceGalaxyPopulationModel.merger_rate_density_bbh_popI_II_madau_dickinson"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.merger_rate_density_bbh_popI_II_madau_dickinson()</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.SourceGalaxyPopulationModel.merger_rate_density_popIII_ken"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.merger_rate_density_popIII_ken()</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.SourceGalaxyPopulationModel.merger_rate_density_primordial_ken"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel.merger_rate_density_primordial_ken()</span></code></a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 </ul>
-</li>
-<li><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation</span></code></a><ul>
-<li><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.z_min"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.z_min</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.z_max"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.z_max</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.m_min"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.m_min</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.m_max"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.m_max</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.event_type"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.event_type</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.event_priors_categorization"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.event_priors_categorization()</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.sample_gw_parameters"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.sample_gw_parameters()</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.binary_masses_BBH_popI_II_powerlaw_gaussian"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.binary_masses_BBH_popI_II_powerlaw_gaussian()</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.binary_masses_BBH_popIII_gwcosmo"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.binary_masses_BBH_popIII_gwcosmo()</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.binary_masses_BBH_primordial_lognormal"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.binary_masses_BBH_primordial_lognormal()</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.binary_masses_BNS_popI_II_gwcosmo"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.binary_masses_BNS_popI_II_gwcosmo()</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.binary_masses_BNS_popI_II_Alsing"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.binary_masses_BNS_popI_II_Alsing()</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.mass_ratio"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.mass_ratio()</span></code></a></li>
-<li><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation.binary_spin_BBH"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation.binary_spin_BBH()</span></code></a></li>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.ler</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.source_population</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ler.source_population.SourceGalaxyPopulationModel"><code class="docutils literal notranslate"><span class="pre">SourceGalaxyPopulationModel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.source_population.CompactBinaryPopulation"><code class="docutils literal notranslate"><span class="pre">CompactBinaryPopulation</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multiprocessing_routine/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.multiprocessing_routine</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../helperroutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.helperroutines</span></code></a></li>
 </ul>
-</li>
-</ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -922,7 +903,10 @@ default: 3.0</p>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../ler/index.html" class="btn btn-neutral float-left" title="ler.ler" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../lens_galaxy_population/index.html" class="btn btn-neutral float-right" title="ler.lens_galaxy_population" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

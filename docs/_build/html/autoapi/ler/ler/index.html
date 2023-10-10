@@ -21,10 +21,14 @@
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
         <script src="../../../_static/copybutton.js?v=f281be69"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="ler.source_population" href="../source_population/index.html" />
+    <link rel="prev" title="Installation" href="../../../installation.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,54 +50,28 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.ler</span></code></a><ul>
-<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
-<li><a class="reference internal" href="#classes">Classes</a><ul>
-<li><a class="reference internal" href="#ler.ler.LeR"><code class="docutils literal notranslate"><span class="pre">LeR</span></code></a><ul>
-<li><a class="reference internal" href="#ler.ler.LeR.gw_param"><code class="docutils literal notranslate"><span class="pre">LeR.gw_param</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.gw_param_detectable"><code class="docutils literal notranslate"><span class="pre">LeR.gw_param_detectable</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.lensed_param"><code class="docutils literal notranslate"><span class="pre">LeR.lensed_param</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.lensed_param_detectable"><code class="docutils literal notranslate"><span class="pre">LeR.lensed_param_detectable</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.gw_param_sampler_dict"><code class="docutils literal notranslate"><span class="pre">LeR.gw_param_sampler_dict</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.lensed_param_sampler_dict"><code class="docutils literal notranslate"><span class="pre">LeR.lensed_param_sampler_dict</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.snr_calculator_dict"><code class="docutils literal notranslate"><span class="pre">LeR.snr_calculator_dict</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.z_to_Dc"><code class="docutils literal notranslate"><span class="pre">LeR.z_to_Dc</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.Dc_to_z"><code class="docutils literal notranslate"><span class="pre">LeR.Dc_to_z</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.z_to_luminosity_distance"><code class="docutils literal notranslate"><span class="pre">LeR.z_to_luminosity_distance</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.differential_comoving_volume"><code class="docutils literal notranslate"><span class="pre">LeR.differential_comoving_volume</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.compact_binary_pop"><code class="docutils literal notranslate"><span class="pre">LeR.compact_binary_pop</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.lens_galaxy_pop"><code class="docutils literal notranslate"><span class="pre">LeR.lens_galaxy_pop</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.snr"><code class="docutils literal notranslate"><span class="pre">LeR.snr</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.class_initialization"><code class="docutils literal notranslate"><span class="pre">LeR.class_initialization()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.store_ler_params"><code class="docutils literal notranslate"><span class="pre">LeR.store_ler_params()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.gwsnr_intialization"><code class="docutils literal notranslate"><span class="pre">LeR.gwsnr_intialization()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.create_lookup_tables"><code class="docutils literal notranslate"><span class="pre">LeR.create_lookup_tables()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.batch_handler"><code class="docutils literal notranslate"><span class="pre">LeR.batch_handler()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.unlensed_sampling_routine"><code class="docutils literal notranslate"><span class="pre">LeR.unlensed_sampling_routine()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.unlensed_cbc_statistics"><code class="docutils literal notranslate"><span class="pre">LeR.unlensed_cbc_statistics()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.unlensed_rate"><code class="docutils literal notranslate"><span class="pre">LeR.unlensed_rate()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.lensed_sampling_routine"><code class="docutils literal notranslate"><span class="pre">LeR.lensed_sampling_routine()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.lensed_cbc_statistics"><code class="docutils literal notranslate"><span class="pre">LeR.lensed_cbc_statistics()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.lensed_rate"><code class="docutils literal notranslate"><span class="pre">LeR.lensed_rate()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.rate_comparision"><code class="docutils literal notranslate"><span class="pre">LeR.rate_comparision()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.rate_comparision_with_rate_calculation"><code class="docutils literal notranslate"><span class="pre">LeR.rate_comparision_with_rate_calculation()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.selecting_n_lensed_detectable_events"><code class="docutils literal notranslate"><span class="pre">LeR.selecting_n_lensed_detectable_events()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.relative_mu_dt_lensed"><code class="docutils literal notranslate"><span class="pre">LeR.relative_mu_dt_lensed()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.mu_vs_dt_plot"><code class="docutils literal notranslate"><span class="pre">LeR.mu_vs_dt_plot()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.selecting_n_unlensed_detectable_events"><code class="docutils literal notranslate"><span class="pre">LeR.selecting_n_unlensed_detectable_events()</span></code></a></li>
-<li><a class="reference internal" href="#ler.ler.LeR.relative_mu_dt_unlensed"><code class="docutils literal notranslate"><span class="pre">LeR.relative_mu_dt_unlensed()</span></code></a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.ler</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ler.ler.LeR"><code class="docutils literal notranslate"><span class="pre">LeR</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multiprocessing_routine/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.multiprocessing_routine</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../helperroutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.helperroutines</span></code></a></li>
 </ul>
-</li>
-</ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -1003,7 +981,10 @@ unlensed_param.keys() = [‘m1’, ‘m2’, ‘z’, ‘snr’, ‘theta_jn’,
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../../installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../source_population/index.html" class="btn btn-neutral float-right" title="ler.source_population" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

@@ -21,9 +21,11 @@
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
         <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="prev" title="ler.multiprocessing_routine" href="../multiprocessing_routine/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,30 +47,35 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.helperroutines</span></code></a><ul>
-<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
-<li><a class="reference internal" href="#classes">Classes</a></li>
-<li><a class="reference internal" href="#functions">Functions</a><ul>
-<li><a class="reference internal" href="#ler.helperroutines.NumpyEncoder"><code class="docutils literal notranslate"><span class="pre">NumpyEncoder</span></code></a><ul>
-<li><a class="reference internal" href="#ler.helperroutines.NumpyEncoder.default"><code class="docutils literal notranslate"><span class="pre">NumpyEncoder.default()</span></code></a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.ler</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multiprocessing_routine/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.multiprocessing_routine</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.helperroutines</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ler.helperroutines.NumpyEncoder"><code class="docutils literal notranslate"><span class="pre">NumpyEncoder</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.helperroutines.update_dict"><code class="docutils literal notranslate"><span class="pre">update_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.helperroutines.append_json"><code class="docutils literal notranslate"><span class="pre">append_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.helperroutines.get_param_from_json"><code class="docutils literal notranslate"><span class="pre">get_param_from_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.helperroutines.rejection_sample"><code class="docutils literal notranslate"><span class="pre">rejection_sample()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.helperroutines.add_dictionaries_together"><code class="docutils literal notranslate"><span class="pre">add_dictionaries_together()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.helperroutines.trim_dictionary"><code class="docutils literal notranslate"><span class="pre">trim_dictionary()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ler.helperroutines.update_dict"><code class="docutils literal notranslate"><span class="pre">update_dict()</span></code></a></li>
-<li><a class="reference internal" href="#ler.helperroutines.append_json"><code class="docutils literal notranslate"><span class="pre">append_json()</span></code></a></li>
-<li><a class="reference internal" href="#ler.helperroutines.get_param_from_json"><code class="docutils literal notranslate"><span class="pre">get_param_from_json()</span></code></a></li>
-<li><a class="reference internal" href="#ler.helperroutines.rejection_sample"><code class="docutils literal notranslate"><span class="pre">rejection_sample()</span></code></a></li>
-<li><a class="reference internal" href="#ler.helperroutines.add_dictionaries_together"><code class="docutils literal notranslate"><span class="pre">add_dictionaries_together()</span></code></a></li>
-<li><a class="reference internal" href="#ler.helperroutines.trim_dictionary"><code class="docutils literal notranslate"><span class="pre">trim_dictionary()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -253,7 +260,9 @@ size: the number of samples to draw</p>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../multiprocessing_routine/index.html" class="btn btn-neutral float-left" title="ler.multiprocessing_routine" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
 
   <hr/>
 
