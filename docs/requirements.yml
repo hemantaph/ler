@@ -278,7 +278,6 @@ channels:
   - pip
 dependencies:
   - python=3.10
-  - html5lib==1.0b8  # Hack to ensure documentation generated
   - setuptools
   - sphinx
   - nbsphinx
@@ -287,8 +286,8 @@ dependencies:
   - sphinx-tabs
   - sphinx-copybutton
   - sphinx-rtd-theme
-  - autoapi
   - pandoc
   - sphinx-autoapi
   - pip:
+    - html5lib==1.0b8
     - ler@git+https://github.com/hemantaph/ler.git
