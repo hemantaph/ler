@@ -53,12 +53,14 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Unlensed%20events.html">Unlensed events</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Lensed events</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Detectable-lensed-events'-rate-in-a-year">Detectable lensed events’ rate in a year</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#SNR-operator">SNR operator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Lensed-BBH/BNS-merger-rate-distribution-wrt-z_s.">Lensed BBH/BNS merger rate distribution wrt <span class="math notranslate nohighlight">\(z_s\)</span>.</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">SNR operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test">test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">SNR operator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Sampling-methods-for-lens-parameters">Sampling methods for lens parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Image-parameters">Image parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Montecarlo-integration">Montecarlo integration</a></li>
@@ -177,12 +179,9 @@ R_o^L(z_s)= \frac{1}{\mathcal{N}^L}\frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tau
 <li><p>Sampling of <span class="math notranslate nohighlight">\(z_s\)</span> is done through rejection sampling with the merger rate formula given above (lensing condition applied).</p></li>
 </ul>
 </section>
-<section id="id3">
-<h3>SNR operator<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>SNR operator over all images</p></li>
-</ul>
-<p>:nbsphinx-math:<a href="#id4"><span class="problematic" id="id5">`</span></a>begin{equation}
+<section id="test">
+<h3>test<a class="headerlink" href="#test" title="Link to this heading"></a></h3>
+<p>:nbsphinx-math:<a href="#id3"><span class="problematic" id="id4">`</span></a>begin{equation}
 mathcal{O}_{images}(z_s,theta,mu_i,Delta t_i, rho_{th}) =</p>
 <blockquote>
 <div><dl class="simple">
@@ -190,7 +189,44 @@ mathcal{O}_{images}(z_s,theta,mu_i,Delta t_i, rho_{th}) =</p>
 0 &amp; text{otherwise}</p>
 </dd>
 </dl>
-<p>end{cases}  tag{6}</p>
+<p>end{cases}  tag{5}</p>
+</div></blockquote>
+<p>end{equation}`</p>
+<ul class="simple">
+<li><p>SNR operator over all images</p></li>
+</ul>
+<p>:nbsphinx-math:<a href="#id5"><span class="problematic" id="id6">`</span></a>begin{equation}
+mathcal{O}_{images}(z_s,theta,mu_i,Delta t_i, rho_{th}) =</p>
+<blockquote>
+<div><dl class="simple">
+<dt>begin{cases}</dt><dd><p>1 &amp; sum_i^{images} Theta[rho(z_s,theta,mu_i,Delta t_i)-rho_{th}]ge 2 \
+0 &amp; text{otherwise}</p>
+</dd>
+</dl>
+<p>end{cases}  tag{2}</p>
+</div></blockquote>
+<p>end{equation}`</p>
+</section>
+<section id="id7">
+<h3>SNR operator<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>SNR operator over all images</p></li>
+</ul>
+<p><span class="math">\begin{equation}
+\begin{split}
+R_L = \mathcal{N}^L \int & dz_s R_o^L(z_s) \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \, \\
+& \, P(\theta) P(\theta_L, z_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta dz_L d\theta_L dz_s
+\end{split}  \tag{1}
+\end{equation}</span></p>
+<p>:nbsphinx-math:<a href="#id8"><span class="problematic" id="id9">`</span></a>begin{equation}
+mathcal{O}_{images}(z_s,theta,mu_i,Delta t_i, rho_{th}) =</p>
+<blockquote>
+<div><dl class="simple">
+<dt>begin{cases}</dt><dd><p>1 &amp; sum_i^{images} Theta[rho(z_s,theta,mu_i,Delta t_i)-rho_{th}]ge 1\
+0 &amp; text{otherwise}</p>
+</dd>
+</dl>
+<p>end{cases} tag{6}</p>
 </div></blockquote>
 <p>end{equation}`</p>
 <ul class="simple">

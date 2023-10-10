@@ -25,7 +25,9 @@
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Unlensed events" href="Unlensed%20events.html" />
+    <link rel="prev" title="Welcome to ler’s documentation!" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,7 +50,13 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ler-for-development">ler for development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-of-numba-and-healpy-with-conda">Installation of numba and healpy with conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-from-the-source-for-gwcosmo">Installation from the source for gwcosmo</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="Unlensed%20events.html">Unlensed events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lensed%20events.html">Lensed events</a></li>
 </ul>
@@ -81,7 +89,7 @@
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Installation</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/Installation.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -93,10 +101,10 @@
 <h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you are using pip it is recommended to install <code class="docutils literal notranslate"><span class="pre">gwcosmo</span></code> before installing <code class="docutils literal notranslate"><span class="pre">ler</span></code> (<a class="reference internal" href="#gwcosmo"><span class="std std-ref">Installation from the source for gwcosmo</span></a>). For arm64 architecture processor (e.g. apple silicon) you might need to install some of the dependencies with conda (<a class="reference internal" href="#dependencies"><span class="std std-ref">Installation of numba and healpy with conda</span></a>). For package development and contribution refer here (<a class="reference internal" href="#development"><span class="std std-ref">ler for development</span></a>).</p>
+<p>For arm64 architecture processor (e.g. apple silicon) you might need to install some of the dependencies with conda (<a class="reference internal" href="#dependencies"><span class="std std-ref">Installation of numba and healpy with conda</span></a>). For package development and contribution refer here (<a class="reference internal" href="#development"><span class="std std-ref">ler for development</span></a>).</p>
 </div>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-cGlw" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-cGlw" name="cGlw" role="tab" tabindex="0">pip</button></div><div aria-labelledby="tab-0-cGlw" class="sphinx-tabs-panel code-tab group-tab" id="panel-0-cGlw" name="cGlw" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install ler gwcosmo@git+https://git.ligo.org/lscsoft/gwcosmo.git@v1.0.0</span>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-cGlw" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-cGlw" name="cGlw" role="tab" tabindex="0">pip</button></div><div aria-labelledby="tab-0-cGlw" class="sphinx-tabs-panel code-tab group-tab" id="panel-0-cGlw" name="cGlw" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install ler</span>
 </pre></div>
 </div>
 </div></div>
@@ -146,7 +154,10 @@ pip install -e .
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to ler’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Unlensed%20events.html" class="btn btn-neutral float-right" title="Unlensed events" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
