@@ -1,4 +1,6 @@
-setuptools>=67.8.0
+setuptools>=65.5.0
+matplotlib>=3.4.2
+pycbc>=1.18.0
 numpy>=1.18
 numba>=0.57.1
 bilby>=1.0.2
@@ -9,3 +11,4 @@ astropy>=5.1
 tqdm>=4.64.1
 pointpats>=2.3
 shapely>=2.0.1
+gwcosmo

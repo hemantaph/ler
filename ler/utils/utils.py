@@ -6,8 +6,6 @@ This module contains helper routines for other modules in the ler package.
 import numpy as np
 import json
 
-chunk_size = 10000
-
 
 class NumpyEncoder(json.JSONEncoder):
     """
@@ -39,10 +37,10 @@ class NumpyEncoder(json.JSONEncoder):
     >>> # print the dictionary
     >>> print(param)
     {'a': [1, 2, 3], 'b': [4, 5, 6]}
-
     """
 
     def default(self, obj):
+        """function for encoding JSON file"""
         if isinstance(obj, np.ndarray):
             return obj.tolist()
         return json.JSONEncoder.default(self, obj)
@@ -112,7 +110,7 @@ def get_param_from_json(json_file):
     return param
 
 
-def rejection_sample(pdf, xmin, xmax, size=100):
+def rejection_sample(pdf, xmin, xmax, size=100, chunk_size=10000):
     """
     Helper function for rejection sampling from a pdf with maximum and minimum arguments.
     Input parameters:
@@ -123,7 +121,7 @@ def rejection_sample(pdf, xmin, xmax, size=100):
     Output:
         samples: the samples drawn from the pdf
     """
-    x = np.linspace(xmin, xmax, 1000)
+    x = np.linspace(xmin, xmax, chunk_size)
     y = pdf(x)
     ymax = np.max(y)
     # Rejection sample in chunks
@@ -131,7 +129,7 @@ def rejection_sample(pdf, xmin, xmax, size=100):
     while len(x_sample) < size:
         x_try = np.random.uniform(xmin, xmax, size=chunk_size)
         y_try = np.random.uniform(0, ymax, size=chunk_size)
-        ymax = max(ymax, np.max(y_try))
+        ymax = max(ymax, np.max(y_try))  # Update the maximum value of the pdf
         # Add while retaining 1D shape of the list
         x_sample += list(x_try[y_try < pdf(x_try)])
     # Transform the samples to a 1D numpy array
@@ -139,7 +137,7 @@ def rejection_sample(pdf, xmin, xmax, size=100):
     # Return the correct number of samples
     return x_sample[:size]
 
-def rejection_sample2d(pdf, xmin, xmax, ymin, ymax, size=100):
+def rejection_sample2d(pdf, xmin, xmax, ymin, ymax, size=100, chunk_size=10000):
     
     chunk_size = 10000
     
