@@ -25,6 +25,8 @@ setup(
     python_requires='>=3.10',
     install_requires=[
         "setuptools>=65.5.0",
+        "matplotlib>=3.4.2",
+        "pycbc>=1.18.0",
         "numpy>=1.18",
         "numba>=0.57.1",
         "bilby>=1.0.2",

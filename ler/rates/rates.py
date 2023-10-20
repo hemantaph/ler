@@ -10,14 +10,13 @@ import json
 import random
 import contextlib
 import numpy as np
-import matplotlib.pyplot as plt
 from gwsnr import GWSNR
 from scipy.stats import norm, gaussian_kde
 from scipy.interpolate import interp1d
 from astropy.cosmology import Planck18
-from ler.lens_galaxy_population import LensGalaxyPopulation
-from ler.source_population import CompactBinaryPopulation
-from ler.helperroutines import append_json, get_param_from_json
+from ..lens_galaxy_population import LensGalaxyPopulation
+from ..gw_source_population import CompactBinaryPopulation
+from ..utils import append_json, get_param_from_json
 
 # Conversions from SI units to CGS units
 C = 299792458.0  # m/s

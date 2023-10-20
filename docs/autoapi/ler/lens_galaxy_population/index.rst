@@ -1,33 +1,840 @@
+:orphan:
+
 :py:mod:`ler.lens_galaxy_population`
 ====================================
 
 .. py:module:: ler.lens_galaxy_population
 
-.. autoapi-nested-parse::
 
-   This module contains the LensGalaxyPopulation class, which is used to sample lens galaxy parameters, source parameters conditioned on the source being strongly lensed, image properties, and lensed SNRs.
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
 
-   The class inherits from the CompactBinaryPopulation class, which is used to sample source parameters.
-
-   ..
-       !! processed by numpydoc !!
+   lens_galaxy_population/index.rst
 
 
-Module Contents
----------------
+Package Contents
+----------------
 
 Classes
 ~~~~~~~
 
 .. autoapisummary::
 
+   ler.lens_galaxy_population.CompactBinaryPopulation
+   ler.lens_galaxy_population.ImageProperties
    ler.lens_galaxy_population.LensGalaxyPopulation
 
 
 
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   ler.lens_galaxy_population.add_dictionaries_together
+   ler.lens_galaxy_population.trim_dictionary
+
+
+
+.. py:class:: CompactBinaryPopulation(z_min=0.0001, z_max=10, event_type='BBH', event_priors=None, event_priors_params=None, cosmology=None)
+
+
+   Bases: :py:obj:`SourceGalaxyPopulationModel`
+
+   
+   Class to generate a population of compact binaries. Inherits from :class:`~ler.ler.SourceGalaxyPopulationModel` class.
+
+
+   :Parameters:
+
+       **z_min** : `float`
+           Minimum redshift of the source population
+
+       **z_max** : `float`
+           Maximum redshift of the source population
+
+       **m_min** : `float`
+           Minimum mass of the BBHs
+
+       **m_max** : `float`
+           Maximum mass of the BBHs
+
+       **event_type** : `str`
+           Type of event to generate.
+           e.g. 'popI_II', 'BNS', 'popIII', 'primordial', 'popI_II_Madau_Dickinson'
+
+       **src_model_params** : `dict`
+           Dictionary of model parameters.
+           e.g. for popI_II: {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
+
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   >>> from ler import CompactBinaryPopulation
+   >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
+   >>> gw_parameters = pop.sample_gw_parameters(nsamples=1000)
+   >>> gw_parameters.keys()
+   dict_keys(['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl'])
+
+   Instance Attributes
+   ----------
+   CompactBinaryPopulation has the following instance attributes:
+
+   +-------------------------------------+----------------------------------+
+   | Atrributes                          | Type                             |
+   +=====================================+==================================+
+   |:attr:`~z_min`                       | `float`                          |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~z_max`                       | `float`                          |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~m_min`                       | `float`                          |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~m_max`                       | `float`                          |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~event_type`                  | `str`                            |
+   +-------------------------------------+----------------------------------+
+   |:attr:`~src_model_params`                  | `dict`                           |
+   +-------------------------------------+----------------------------------+
+
+   Instance Methods
+   ----------
+   CompactBinaryPopulation has the following instance methods:
+
+   +-------------------------------------+----------------------------------+
+   | Methods                             | Type                             |
+   +=====================================+==================================+
+   |:meth:`~sample_gw_parameters`        | Function for sampling GW         |
+   |                                     | parameters from the source       |
+   |                                     | galaxy population model          |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~binary_masses_popI_II`       | Function to calculate source     |
+   |                                     | mass1 and mass2 with             |
+   |                                     | PowerLaw+PEAK model              |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~binary_masses_popIII`        | Function to calculate source     |
+   |                                     | mass1 and mass2 with pop III     |
+   |                                     | origin                           |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~binary_masses_primordial`    | Function to calculate source     |
+   |                                     | mass1 and mass2 for primordial   |
+   |                                     | BBHs                             |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~binary_masses_BNS`           | Function to calculate source     |
+   |                                     | mass1 and mass2 of BNS           |
+   +-------------------------------------+----------------------------------+
+   |:meth:`~mass_ratio`                  | Function to calculate mass ratio |
+   +-------------------------------------+----------------------------------+
+
+
+
+   ..
+       !! processed by numpydoc !!
+   .. py:attribute:: z_min
+
+      
+      ``float``
+
+      Minimum redshift of the source population
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: z_max
+
+      
+      ``float``
+
+      Maximum redshift of the source population
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: m_min
+
+      
+      ``float``
+
+      Minimum mass of the BBHs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: m_max
+
+      
+      ``float``
+
+      Maximum mass of the BBHs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: event_type
+
+      
+      ``str``
+
+      Type of event to generate.
+
+      e.g. 'popI_II', 'BNS', 'popIII', 'primordial', 'popI_II_Madau_Dickinson'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: event_priors_categorization(event_type, event_priors, event_prior_params)
+
+      
+      Function to sample BBH parameters from the source galaxy population
+      model
+
+
+      :Parameters:
+
+          **event_type** : `str`
+              Type of event to generate.
+              e.g. 'BBH', 'BNS', 'BBH_popIII', 'BBH_primordial', 'NSBH'
+
+          **event_priors** : `dict`
+              Dictionary of prior sampler functions for each parameter
+
+          **event_prior_params** : `dict`
+              Dictionary of sampler parameters for each parameter
+
+      :Returns:
+
+          **event_priors_** : `dict`
+              Dictionary of prior sampler functions for each parameter
+
+          **event_prior_params_** : `dict`
+              Dictionary of sampler parameters for each parameter
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: sample_gw_parameters(nsamples=1000, **kwargs)
+
+      
+      Function to sample BBH parameters from the source galaxy population
+      model
+
+
+      :Parameters:
+
+          **nsamples** : `int`
+              Number of samples to draw
+
+          **kwargs** : `dict`
+              Keyword arguments to pass in parameter values
+              e.g. zs = np.array([0.1,0.2,0.3])
+
+      :Returns:
+
+          **gw_parameters** : `dict`
+              Dictionary of sampled parameters
+              gw_parameters.keys() = ['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl']
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler import CompactBinaryPopulation
+      >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
+      >>> gw_parameters = pop.sample_gw_parameters(nsamples=1000)
+      >>> gw_parameters.keys()
+      dict_keys(['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl'])
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: binary_masses_BBH_popI_II_powerlaw_gaussian(size, mminbh=4.98, mmaxbh=112.5, alpha=3.78, mu_g=32.27, sigma_g=3.88, lambda_peak=0.03, delta_m=4.8, beta=0.81, param=None)
+
+      
+      Function to calculate source mass1 and mass2 with PowerLaw+PEAK model
+
+
+      :Parameters:
+
+          **size** : `int`
+              Number of samples to draw
+
+          **src_model_params** : `dict`
+              Dictionary of model parameters
+              e.g. {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
+
+      :Returns:
+
+          **mass_1_source** : `array`
+              Array of mass1 in source frame
+
+          **mass_2_source** : `array`
+              Array of mass2 in source frame
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler import CompactBinaryPopulation
+      >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
+      >>> src_model_params = {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
+      >>> mass_1_source, mass_2_source = pop.binary_masses_popI_II(size=1000, src_model_params=src_model_params)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: binary_masses_BBH_popIII_gwcosmo(size, Mc=30.0, sigma=0.3, beta=1.1)
+
+      
+      Function to calculate source mass1 and mass2 with pop III origin
+
+
+      :Parameters:
+
+          **size** : `int`
+              Number of samples to draw
+
+          **Mc, sigma, beta** : `float`
+              Fitting parameters
+              default: Mc=30.0, sigma=0.3, beta=1.1
+
+      :Returns:
+
+          **mass_1_source** : `array`
+              Array of mass1 in source frame
+
+          **mass_2_source** : `array`
+              Array of mass2 in source frame
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler import CompactBinaryPopulation
+      >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popIII")
+      >>> mass_1_source, mass_2_source = pop.binary_masses_popIII(size=1000)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: binary_masses_BBH_primordial_lognormal(size, Mc=30.0, sigma=0.3, beta=1.1)
+
+      
+      Function to calculate source mass1 and mass2 for primordial BBHs
+
+
+      :Parameters:
+
+          **size** : `int`
+              Number of samples to draw
+
+          **Mc, sigma, beta** : `float`
+              Fitting parameters
+              default: Mc=30.0, sigma=0.3, beta=1.1
+
+      :Returns:
+
+          **mass_1_source** : `array`
+              Array of mass1 in source frame
+
+          **mass_2_source** : `array`
+              Array of mass2 in source frame
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler import CompactBinaryPopulation
+      >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "primordial")
+      >>> mass_1_source, mass_2_source = pop.binary_masses_primordial(size=1000)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: binary_masses_BNS_popI_II_gwcosmo(size, mminns=1.0, mmaxns=3.0, alphans=0.0)
+
+      
+      Function to calculate source mass1 and mass2 of BNS (gwcosmo)
+
+
+      :Parameters:
+
+          **size** : `int`
+              Number of samples to draw
+
+          **mminns** : `float`
+              Minimum mass of the BNS
+              default: 1.0
+
+          **mmaxns** : `float`
+              Maximum mass of the BNS
+              default: 3.0
+
+          **alphans** : `float`
+              Power law index
+              default: 0.0
+
+      :Returns:
+
+          **mass_1_source** : `array`
+              Array of mass1 in source frame
+
+          **mass_2_source** : `array`
+              Array of mass2 in source frame
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: binary_masses_BNS_popI_II_Alsing(size, param=dict(w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3))
+
+      
+      Function to calculate source mass1 and mass2 of BNS (Alsing)
+
+
+      :Parameters:
+
+          **size** : `int`
+              Number of samples to draw
+
+          **w, muL, sigmaL, muR, sigmaR** : `float`
+              Fitting parameters
+              default: w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3
+
+          **mmin** : `float`
+              Minimum mass of the BNS
+              default: 1.0
+
+          **mmax** : `float`
+              Maximum mass of the BNS
+              default: 3.0
+
+      :Returns:
+
+          **mass_1_source** : `array`
+              Array of mass1 in source frame
+
+          **mass_2_source** : `array`
+              Array of mass2 in source frame
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: mass_ratio(size, beta=1.1)
+
+      
+      Function to calculate mass ratio with power law distribution
+
+
+      :Parameters:
+
+          **size** : `int`
+              Number of samples
+
+          **beta** : `float`
+              Power law index
+
+      :Returns:
+
+          **q** : `array`
+              Array of mass ratio
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler import CompactBinaryPopulation
+      >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=1.0, m_max=3.0, event_type = "BNS")
+      >>> q = pop.mass_ratio(size=1000, beta=1.1)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: binary_spin_BBH(size)
+
+      
+      Function to calculate spin parameters with PowerLaw+PEAK model
+
+
+      :Parameters:
+
+          **size** : `int`
+              Number of samples to draw
+
+      :Returns:
+
+          **a_1** : `array`
+              Array of spin1
+
+          **a_2** : `array`
+              Array of spin2
+
+          **tilt_1** : `array`
+              Array of tilt1
+
+          **tilt_2** : `array`
+              Array of tilt2
+
+          **phi_12** : `array`
+              Array of phi12
+
+          **phi_jl** : `array`
+              Array of phi_jl
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler import CompactBinaryPopulation
+      >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
+      >>> a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl = pop.binary_spin_BBH(size=1000)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+.. py:class:: ImageProperties(npool=4, n_min_images=2, n_max_images=4, lens_model_list=['EPL_NUMBA', 'SHEAR'])
+
+
+   
+   Class to find the image properties of a lensed event. Image properties include image positions, magnifications, time delays, etc.
+
+
+   :Parameters:
+
+       **npool** : `int`
+           number of processes to use
+           default: 4
+
+       **n_min_images** : `int`
+           minimum number of images to consider
+           default: 2
+
+       **n_max_images** : `int`
+           maximum number of images to consider
+           default: 4
+
+       **lens_model_list** : `list`
+           list of lens models
+           default: ['EPL_NUMBA', 'SHEAR']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+   .. py:method:: image_properties(lens_parameters)
+
+      
+      Function to get the image properties e.g. image positions, magnifications, time delays, etc.
+
+
+      :Parameters:
+
+          **lens_parameters** : `dict`
+              dictionary of lens parameters
+              e.g. lens_parameters.keys() = ['zs', 'zl', 'gamma1', 'gamma2', 'e1', 'e2', 'gamma', 'theta_E']
+
+      :Returns:
+
+          **lens_parameters** : `dict`
+              dictionary of lens parameters and image properties
+              e.g. lens_parameters contains the following keys:
+
+              lens related=>['zs': source redshift, 'zl': lens redshift, 'gamma1': shear component in the x-direction, 'gamma2': shear component in the y-direction, 'e1': ellipticity component in the x-direction, 'e2': ellipticity component in the y-direction, 'gamma': spectral index of the mass density distribution, 'theta_E': einstein radius in radian]
+
+              source related=>['mass_1': mass in detector frame (mass1>mass2), 'mass_2': mass in detector frame, 'mass_1_source':mass in source frame, 'mass_2_source':mass source frame, 'luminosity_distance': luminosity distance, 'iota': inclination angle, 'psi': polarization angle, 'phase': coalesence phase, 'geocent_time': coalensence GPS time at geocenter, 'ra': right ascension, 'dec': declination, 'a_1': spin magnitude of the more massive black hole, 'a2': spin magnitude of the less massive black hole, 'tilt_1': tilt angle of the more massive black hole, 'tilt_2': tilt angle of the less massive black hole, 'phi_12': azimuthal angle between the two spins, 'phi_jl': azimuthal angle between the total angular momentum and the orbital angular momentum]
+
+              image related=>['x_source': source position in the x-direction, 'y_source': source position in the y-direction, 'x0_image_position': image position in the x-direction, 'x1_image_position': image position in the y-direction, 'magnifications': magnifications, 'time_delays': time delays, 'n_images': number of images formed, 'determinant': determinants, 'trace': traces, 'iteration': to keep track of the iteration number, 'weights': weights for the caustic considered]
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: get_lensed_snrs(snr_calculator, lensed_param, n_max_images=4)
+
+      
+      Function to calculate the signal to noise ratio for each image in each event.
+
+
+      :Parameters:
+
+          **snr_calculator** : `class`
+              snr_calculator class
+              this is an already initialized class that contains a function (snr_calculator.snr) that actually calculates snr with the given gw_params.
+
+              Luminosity distance and time delay are modified to be effective luminosity distance and effective time delay, respectively, for each image using the magnifications and time delays.
+
+          **lensed_param** : `dict`
+              dictionary containing the both already lensed source paramters and image parameters.
+              e.g. lensed_param.keys() = ['mass_1', 'mass_2', 'zs', 'luminosity_distance', 'iota', 'psi', 'phi', 'ra', 'dec', 'geocent_time', 'phase', 'a_1', 'a2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl', 'magnifications', 'time_delays']
+
+          **n_max_images** : `int`
+              maximum number of images to consider
+              default: 4
+
+      :Returns:
+
+          **snrs** : `dict`
+              signal to noise ratio for each image in each event.
+              (dictionary containing 'H1', 'L1', ..., and 'opt_snr_net', which is the network snr, for each image as an array with dimensions (number_of_lensed_events,n_max_images) )
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+.. py:function:: add_dictionaries_together(dictionary1, dictionary2)
+
+   
+   Adds two dictionaries with the same keys together.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: trim_dictionary(dictionary, size)
+
+   
+   Filters an event dictionary to only contain the size.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:class:: LensGalaxyPopulation(CompactBinaryPopulation_=False)
 
+
+   Bases: :py:obj:`ler.image_properties.ImageProperties`
 
    
    Class to sample lens galaxy parameters
@@ -732,104 +1539,6 @@ Classes
 
           **tau** : `float`
               strong lensing optical depth
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: get_image_properties(lens_parameters, n_min_images=int(2), n_max_images=int(4), lensModelList=['EPL_NUMBA', 'SHEAR'], npool=4)
-
-      
-      Function to get the image properties e.g. image positions, magnifications, time delays, etc.
-
-
-      :Parameters:
-
-          **lens_parameters** : `dict`
-              dictionary of lens parameters
-              e.g. lens_parameters.keys() = ['zs', 'zl', 'gamma1', 'gamma2', 'e1', 'e2', 'gamma', 'theta_E']
-
-          **n_min_images** : `int`
-              minimum number of images to consider
-              default: 2
-
-          **n_max_images** : `int`
-              maximum number of images to consider
-              default: 4
-
-          **lensModelList** : `list`
-              list of lens models
-              default: ['EPL_NUMBA', 'SHEAR']
-
-          **npool** : `int`
-              number of processes to use
-              default: 4
-
-      :Returns:
-
-          **lens_parameters** : `dict`
-              dictionary of lens parameters and image properties
-              e.g. lens_parameters contains the following keys:
-
-              lens related=>['zs': source redshift, 'zl': lens redshift, 'gamma1': shear component in the x-direction, 'gamma2': shear component in the y-direction, 'e1': ellipticity component in the x-direction, 'e2': ellipticity component in the y-direction, 'gamma': spectral index of the mass density distribution, 'theta_E': einstein radius in radian]
-
-              source related=>['mass_1': mass in detector frame (mass1>mass2), 'mass_2': mass in detector frame, 'mass_1_source':mass in source frame, 'mass_2_source':mass source frame, 'luminosity_distance': luminosity distance, 'iota': inclination angle, 'psi': polarization angle, 'phase': coalesence phase, 'geocent_time': coalensence GPS time at geocenter, 'ra': right ascension, 'dec': declination, 'a_1': spin magnitude of the more massive black hole, 'a2': spin magnitude of the less massive black hole, 'tilt_1': tilt angle of the more massive black hole, 'tilt_2': tilt angle of the less massive black hole, 'phi_12': azimuthal angle between the two spins, 'phi_jl': azimuthal angle between the total angular momentum and the orbital angular momentum]
-
-              image related=>['x_source': source position in the x-direction, 'y_source': source position in the y-direction, 'x0_image_position': image position in the x-direction, 'x1_image_position': image position in the y-direction, 'magnifications': magnifications, 'time_delays': time delays, 'n_images': number of images formed, 'determinant': determinants, 'trace': traces, 'iteration': to keep track of the iteration number, 'weights': weights for the caustic considered]
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: get_lensed_snrs(snr_calculator, lensed_param, n_max_images=4)
-
-      
-      Function to calculate the signal to noise ratio for each image in each event.
-
-
-      :Parameters:
-
-          **snr_calculator** : `class`
-              snr_calculator class
-              this is an already initialized class that contains a function (snr_calculator.snr) that actually calculates snr with the given gw_params.
-
-              Luminosity distance and time delay are modified to be effective luminosity distance and effective time delay, respectively, for each image using the magnifications and time delays.
-
-          **lensed_param** : `dict`
-              dictionary containing the both already lensed source paramters and image parameters.
-              e.g. lensed_param.keys() = ['mass_1', 'mass_2', 'zs', 'luminosity_distance', 'iota', 'psi', 'phi', 'ra', 'dec', 'geocent_time', 'phase', 'a_1', 'a2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl', 'magnifications', 'time_delays']
-
-          **n_max_images** : `int`
-              maximum number of images to consider
-              default: 4
-
-      :Returns:
-
-          **snrs** : `dict`
-              signal to noise ratio for each image in each event.
-              (dictionary containing 'H1', 'L1', ..., and 'opt_snr_net', which is the network snr, for each image as an array with dimensions (number_of_lensed_events,n_max_images) )
 
 
 

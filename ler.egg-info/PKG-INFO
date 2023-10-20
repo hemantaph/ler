@@ -9,6 +9,20 @@ License: MIT
 Requires-Python: >=3.10
 Description-Content-Type: text/markdown
 License-File: LICENSE
+Requires-Dist: setuptools>=65.5.0
+Requires-Dist: matplotlib>=3.4.2
+Requires-Dist: pycbc>=1.18.0
+Requires-Dist: numpy>=1.18
+Requires-Dist: numba>=0.57.1
+Requires-Dist: bilby>=1.0.2
+Requires-Dist: gwsnr>=0.1
+Requires-Dist: scipy>=1.9.0
+Requires-Dist: lenstronomy>=1.10.4
+Requires-Dist: astropy>=5.1
+Requires-Dist: tqdm>=4.64.1
+Requires-Dist: pointpats>=2.3
+Requires-Dist: shapely>=2.0.1
+Requires-Dist: gwcosmo
 
 # LeR
 [![DOI](https://zenodo.org/badge/626733473.svg)](https://zenodo.org/badge/latestdoi/626733473) [![PyPI version](https://badge.fury.io/py/ler.svg)](https://badge.fury.io/py/ler) [![DOCS](https://readthedocs.org/projects/ler/badge/?version=latest)](https://ler.readthedocs.io/en/latest/)
