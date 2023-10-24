@@ -204,19 +204,13 @@ class SourceGalaxyPopulationModel:
         self.event_type = event_type
         self.cosmo = cosmology if cosmology else Planck18
         self.create_lookup_table(z_min, z_max)
-        self.model_list = [
-            "merger_rate_density_bbh_popI_II_oguri2018",
-            "star_formation_rate_madau_dickinson2014",
-            "merger_rate_density_bbh_popIII_ken2022",
-            "merger_rate_density_primordial_ken2022",
-        ]
 
         # Define the merger-rate density function/method instances
         try:
             self.merger_rate_density = getattr(self, merger_rate_density)
             self.merger_rate_density_param = merger_rate_density_param
-        except AttributeError:
-            raise ValueError(f"merger_rate_density must be one of {self.model_list}")
+        except:
+            raise ValueError(f"merger_rate_density must be one of {self.merger_rate_density_model_list()}")
 
         # To find the normalization constant of the pdf p(z)
         # Normalize the pdf
@@ -228,6 +222,19 @@ class SourceGalaxyPopulationModel:
         )[0]
 
         return None
+    
+    def merger_rate_density_model_list(self):
+        """
+        Function to list available merger rate density functions and its parameters.
+
+        Returns
+        ----------
+        model_list : `list`
+            List of available merger rate density functions.
+        """
+        
+        return dict(
+            merger_rate_density_bbh_popI_II_oguri2018=dict(R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30), star_formation_rate_madau_dickinson2014=dict(af=2.7, bf=5.6, cf=2.9), merger_rate_density_bbh_popIII_ken2022=dict(n0=19.2*1e-9, aIII=0.66, bIII=0.3, zIII=11.6), merger_rate_density_primordial_ken2022=dict(n0=0.044*1e-9, t0=13.786885302009708))
 
     def merger_rate_density_src_frame(self, zs, param=None):
         """
@@ -459,7 +466,7 @@ class SourceGalaxyPopulationModel:
         self, zs, n0=19.2 * 1e-9, aIII=0.66, bIII=0.3, zIII=11.6, param=None
     ):
         """
-        Function to compute the unnormalized merger rate density (PopIII). Reference: Ken K. Y. Ng et al. (2022). The output is in detector frame and is unnormalized.
+        Function to compute the unnormalized merger rate density (PopIII). Reference: Ng et al. 2022. The output is in detector frame and is unnormalized.
 
         Parameters
         ----------
@@ -514,7 +521,7 @@ class SourceGalaxyPopulationModel:
         self, zs, n0=0.044 * 1e-9, t0=13.786885302009708, param=None
     ):
         """
-        Function to compute the merger rate density (Primordial). Reference: Ken K. Y. Ng et al. (2022). The output is in detector frame and is unnormalized.
+        Function to compute the merger rate density (Primordial). Reference: Ng et al. 2022. The output is in detector frame and is unnormalized.
 
         Parameters
         ----------
@@ -578,9 +585,9 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
     ----------
     >>> from ler import CompactBinaryPopulation
     >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
-    >>> gw_parameters = pop.sample_gw_parameters(nsamples=1000)
+    >>> gw_parameters = pop.sample_gw_parameters(size=1000)
     >>> gw_parameters.keys()
-    dict_keys(['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl'])
+    dict_keys(['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'inclination', 'polarization_angle', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl'])
 
     Instance Attributes
     ----------
@@ -645,20 +652,20 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         spin_zero=True,
         cosmology=None,
     ):
+        # set attributes
+        self.z_min = z_min
+        self.z_max = z_max
+        self.spin_zero = spin_zero
+
         # dealing with prior functions and categorization
         (
             self.gw_param_samplers,
-            self.gw_param_samplers_params,
+            self.gw_param_samplers_params, self.sampler_names
         ) = self.event_priors_categorization(
             event_type, event_priors, event_priors_params
         )
-        # remove spin prior if spin_zero is True
-        if spin_zero:
-            del self.gw_param_samplers["spin"]
-            del self.gw_param_samplers_params["spin"]
-        self.spin_zero = spin_zero
 
-        # initialize the SourceGalaxyPopulationModel mother class
+        # initialize the SourceGalaxyPopulationModel mother class 
         # for redshift distribution
         # redshift_constant is allowed if desired
         super().__init__(
@@ -671,15 +678,51 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
             ],
             cosmology=cosmology,
         )
-        # add redshift sampler to the sampler dictionary
-        if not self.gw_param_samplers["zs"]:
-            self.gw_param_samplers["zs"] = self.sample_source_redshifts
-            self.gw_param_samplers_params["zs"] = dict(z_min=z_min, z_max=z_max)
+
+        # initialize the spin prior
+        # remove spin prior if spin_zero is True
+        if spin_zero:
+            del self.gw_param_samplers["spin"]
+            del self.gw_param_samplers_params["spin"]
+            del self.sampler_names["sample_spin"]
+        else:
+            self.sample_spin = getattr(self, self.gw_param_samplers['spin'])
 
         # initializing bilby prior
         bilby.core.utils.logger.disabled = True
         self.prior_bilby = bilby.gw.prior.BBHPriorDict()
 
+        # defining samplers
+        # for redshift, it is already defined in the mother class SourceGalaxyPopulationModel
+        try:
+            self.sample_source_frame_masses = getattr(self, self.gw_param_samplers["source_frame_masses"])
+        except:
+            self.sample_source_frame_masses = self.gw_param_samplers["source_frame_masses"]
+        try:
+            self.sample_geocent_time = getattr(self, self.gw_param_samplers["geocent_time"])
+        except:
+            self.sample_geocent_time = self.gw_param_samplers["geocent_time"]
+        try:
+            self.sample_source_redshifts = getattr(self, self.gw_param_samplers["zs"])
+        except:
+            self.sample_source_redshifts = self.gw_param_samplers["zs"]
+        try:
+            self.sample_sky_position = getattr(self, self.gw_param_samplers["sky_position"])
+        except:
+            self.sample_sky_position = self.gw_param_samplers["sky_position"]
+        try:
+            self.sample_coalescence_phase = getattr(self, self.gw_param_samplers["phase"])
+        except:
+            self.sample_coalescence_phase = self.gw_param_samplers["phase"]
+        try:
+            self.sample_polarization_angle = getattr(self, self.gw_param_samplers["psi"])
+        except:
+            self.sample_polarization_angle = self.gw_param_samplers["psi"]
+        try:
+            self.sample_inclination = getattr(self, self.gw_param_samplers["theta_jn"])
+        except:
+            self.sample_inclination = self.gw_param_samplers["theta_jn"]
+        
         return None
 
     def event_priors_categorization(self, event_type, event_priors, event_prior_params):
@@ -708,40 +751,71 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         if event_type == "BBH":
             event_priors_ = dict(
                 merger_rate_density="merger_rate_density_bbh_popI_II_oguri2018",
-                mass_source_frame="binary_masses_BBH_popI_II_powerlaw_gaussian",
-                spin="constant_values_n_size",
-                zs=None,
+                source_frame_masses="binary_masses_BBH_popI_II_powerlaw_gaussian",
+                spin="binary_spin_BBH_bilby",
+                zs="sample_source_redshifts",
                 geocent_time="geocent_time_uniform",
                 sky_position="sky_position_uniform_bilby",
                 phase="coalescence_phase_uniform_bilby",
                 psi="polarization_angle_uniform_bilby",
-                iota="inclination_uniform_bilby",
+                theta_jn="inclination_uniform_bilby",
             )
             event_prior_params_ = dict(
                 merger_rate_density=dict(R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30),
-                mass_source_frame=dict(
+                source_frame_masses=dict(
                     mminbh=4.98,
-                    mmaxbh=112.5,
-                    alpha=3.78,
-                    mu_g=32.27,
-                    sigma_g=3.88,
-                    lambda_peak=0.03,
-                    delta_m=4.8,
-                    beta=0.81,
+                    mmaxbh=86.22,
+                    alpha=2.63,
+                    mu_g=33.07,
+                    sigma_g=5.69,
+                    lambda_peak=0.10,
+                    delta_m=4.82,
+                    beta=1.26,
                 ),
-                spin=dict(value=0.0),
-                zs=None,
+                spin=None,
+                zs=dict(z_min=self.z_min, z_max=self.z_max),
                 geocent_time=dict(
                     start_time=1238166018, end_time=1238166018 + 31536000
                 ),
                 sky_position=None,
                 phase=None,
                 psi=None,
-                iota=None,
+                theta_jn=None,
             )
         # for BNS
         if event_type == "BNS":
-            pass
+            event_priors_ = dict(
+                merger_rate_density="merger_rate_density_bbh_popI_II_oguri2018",
+                source_frame_masses="binary_masses_BNS_bimodal",
+                spin="binary_spin_aligned",
+                zs="sample_source_redshifts",
+                geocent_time="geocent_time_uniform",
+                sky_position="sky_position_uniform_bilby",
+                phase="coalescence_phase_uniform_bilby",
+                psi="polarization_angle_uniform_bilby",
+                theta_jn="inclination_uniform_bilby",
+            )
+            event_prior_params_ = dict(
+                merger_rate_density=dict(R0=170.0 * 1e-9, b2=1.6, b3=2.0, b4=30),
+                source_frame_masses=dict(
+                    w=0.643,
+                    muL=1.352,
+                    sigmaL=0.08,
+                    muR=1.88,
+                    sigmaR=0.3,
+                    mmin=1.0,
+                    mmax=2.3,
+                ),
+                spin=dict(a_min=-0.05, a_max=0.05),
+                zs=dict(z_min=self.z_min, z_max=self.z_max),
+                geocent_time=dict(
+                    start_time=1238166018, end_time=1238166018 + 31536000
+                ),
+                sky_position=None,
+                phase=None,
+                psi=None,
+                theta_jn=None,
+            )
 
         # update the priors if input is given
         if event_priors:
@@ -749,16 +823,20 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         if event_prior_params:
             event_prior_params_ = update_dict(event_prior_params_, event_prior_params)
 
-        return (event_priors_, event_prior_params_)
+        # dict of sampler names with description
+        sampler_names_ = dict(sample_source_frame_masses='samples mass1 and mass2 of the compact binaries', sample_spin='samples spin parameters of the compact binaries', sample_source_redshifts='samples source redshifts', sample_geocent_time='samples geocent_time', sample_sky_position='samples sky position', sample_coalescence_phase='samples coalescence phase', sample_polarization_angle='samples polarization angle', sample_inclination='samples inclination')
 
-    def sample_gw_parameters(self, nsamples=1000, **kwargs):
+
+        return (event_priors_, event_prior_params_, sampler_names_)
+
+    def sample_gw_parameters(self, size=1000, **kwargs):
         """
         Function to sample BBH parameters from the source galaxy population
         model
 
         Parameters
         ----------
-        nsamples : `int`
+        size : `int`
             Number of samples to draw
         kwargs : `dict`
             Keyword arguments to pass in parameter values
@@ -768,35 +846,39 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         ----------
         gw_parameters : `dict`
             Dictionary of sampled parameters
-            gw_parameters.keys() = ['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl']
+            gw_parameters.keys() = ['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'inclination', 'polarization_angle', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl']
         """
 
         # sample parameters
-        gw_param_samplers = self.gw_param_samplers.copy()
-        gw_param_samplers_params = self.gw_param_samplers_params.copy()
-        del gw_param_samplers["merger_rate_density"]
+        param_names = list(self.gw_param_samplers.keys())
+        samplers_params = list(self.gw_param_samplers_params.values())
+        del param_names[0]  # remove merger_rate_density
+        del samplers_params[0]  # remove merger_rate_density
+        # make sure the order is correct
+        sampler_names = list(self.sampler_names.keys())
+        
         gw_parameters = {}  # initialize dictionary to store parameters
-        for key, sampler_func in gw_param_samplers.items():
-            if key not in kwargs:
+        for name,sampler,param in zip(param_names,sampler_names,samplers_params):
+            if name not in kwargs:
                 # Sample the parameter using the specified sampler function
-                gw_parameters[key] = getattr(self, sampler_func)(
-                    size=nsamples, param=gw_param_samplers_params[key]
+                gw_parameters[name] = getattr(self, sampler)(
+                    size=size, param=param
                 )
             else:
                 # Use the provided value from kwargs
-                gw_parameters[key] = kwargs[key]
+                gw_parameters[name] = kwargs[name]
 
         # calculate luminosity distance
         zs = gw_parameters["zs"]
         gw_parameters["luminosity_distance"] = self.z_to_luminosity_distance(zs)  # Mpc
         # mass1 and mass2
         gw_parameters["mass_1_source"], gw_parameters["mass_2_source"] = gw_parameters[
-            "mass_source_frame"
+            "source_frame_masses"
         ]
         gw_parameters["mass_1"], gw_parameters["mass_2"] = gw_parameters[
             "mass_1_source"
         ] * (1 + zs), gw_parameters["mass_2_source"] * (1 + zs)
-        del gw_parameters["mass_source_frame"]
+        del gw_parameters["source_frame_masses"]
         # spin
         if not self.spin_zero:
             (
@@ -815,13 +897,13 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         self,
         size,
         mminbh=4.98,
-        mmaxbh=112.5,
-        alpha=3.78,
-        mu_g=32.27,
-        sigma_g=3.88,
-        lambda_peak=0.03,
-        delta_m=4.8,
-        beta=0.81,
+        mmaxbh=86.22,
+        alpha=2.63,
+        mu_g=33.07,
+        sigma_g=5.69,
+        lambda_peak=0.10,
+        delta_m=4.82,
+        beta=1.26,
         param=None,
     ):
         """
@@ -836,14 +918,27 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
             default: 4.98
         mmaxbh : `float`
             Maximum mass of the black hole
-            default: 112.5
-        alpha, mu_g, sigma_g, lambda_peak, delta_m, beta : `float`
-            Fitting parameters
-            default: alpha=3.78, mu_g=32.27, sigma_g=3.88, lambda_peak=0.03, delta_m=4.8, beta=0.81
+            default: 86.22
+        alpha : `float`
+            Spectral index for the powerlaw of the primary mass distribution
+            default: 2.63
+        mu_g : `float`
+            Mean of the Gaussian component in the primary mass distribution
+            default: 33.07
+        sigma_g : `float`
+            Width of the Gaussian component in the primary mass distribution
+            default: 5.69
+        lambda_peak : `float`
+            Fraction of the model in the Gaussian component
+            default: 0.10
+        delta_m : `float`
+            Range of mass tapering on the lower end of the mass distribution
+            default: 4.82
+        beta : `float`
+            Spectral index for the powerlaw of the mass ratio distribution
         param : `dict`
             Allows to pass in above parameters as dict.
-            e.g. param = dict(mminbh=4.98, mmaxbh=112.5, alpha=3.78, mu_g=32.27, sigma_g=3.88, lambda_peak=0.03, delta_m=4.8, beta=0.81)
-
+            e.g. param = dict(mminbh=4.98, mmaxbh=86.22, alpha=2.63, mu_g=33.07, sigma_g=5.69, lambda_peak=0.10, delta_m=4.82, beta=1.26)
         Returns
         ----------
         mass_1_source : `array`
@@ -878,11 +973,11 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
 
         return (mass_1_source, mass_2_source)
 
-    def binary_masses_BBH_popIII_gwcosmo(
+    def binary_masses_BBH_popIII_lognormal(
         self, size, m_min=5.0, m_max=150.0, Mc=30.0, sigma=0.3, param=None
     ):
         """
-        Function to sample source mass1 and mass2 with pop III origin. Refer to Eqn. 1 and 4 of Ken K. Y. Ng et al. (2022)
+        Function to sample source mass1 and mass2 with pop III origin. Refer to Eqn. 1 and 4 of Ng et al. 2022
 
         Parameters
         ----------
@@ -937,10 +1032,10 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         return (mass_1_source, mass_2_source)
 
     def binary_masses_BBH_primordial_lognormal(
-        self, size, m_min=1.0, m_max=100.0, Mc=200.0, sigma=0.3, param=None
+        self, size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, param=None
     ):
         """
-        Function to sample source mass1 and mass2 with pop III origin. Refer to Eqn. 1 and 4 of Ken K. Y. Ng et al. (2022)
+        Function to sample source mass1 and mass2 with primordial origin. Refer to Eqn. 1 and 4 of Ng et al. 2022
 
         Parameters
         ----------
@@ -973,7 +1068,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
             Mc = param["Mc"]
             sigma = param["sigma"]
 
-        # mass function for popIII
+        # mass function for primordial
         psi = lambda m: np.exp(-np.log(m / Mc) ** 2 / (2 * sigma**2)) / (
             np.sqrt(2 * np.pi) * sigma * m
         )
@@ -1034,7 +1129,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
 
         return (mass_1_source, mass_2_source)
 
-    def binary_masses_BNS_popI_II_Alsing(
+    def binary_masses_BNS_bimodal(
         self,
         size,
         w=0.643,
@@ -1107,7 +1202,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
 
         return (mass_1_source, mass_2_source)
 
-    def mass_ratio(self, size, beta=1.1):
+    def mass_ratio_powerlaw(self, size, beta=1.1):
         """
         Function to calculate mass ratio with power law distribution.
 
@@ -1129,7 +1224,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
 
         return q
 
-    def binary_spin_BBH_bilby(self, size):
+    def binary_spin_BBH_bilby(self, size, param=None):
         """
         Function to calculate spin parameters of BBH with bilby prior.
 
@@ -1165,7 +1260,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
 
         return (a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl)
 
-    def binary_spin_aligned(self, size, a_min=-0.05, a_max=0.05, param=none):
+    def binary_spin_aligned(self, size, a_min=-0.05, a_max=0.05, param=None):
         """
         Function to sample aligned/anti-aligned spin parameters a1 and a2. a1 and a2 constraint between a_min and a_max.
 
@@ -1246,6 +1341,109 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
             value = param["value"]
 
         return np.ones(size) * value
+    
+    def geocent_time_uniform(self, size, start_time=1238166018, end_time=1238166018 + 31536000, param=None):
+        """
+        Function to sample geocent_time from uniform distribution
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+        start_time : `float`
+            Start time of the uniform distribution
+            default: 1238166018
+        end_time : `float`
+            End time of the uniform distribution
+            default: 1238166018 + 31536000
+
+        Returns
+        ----------
+        geocent_time : `array`
+            Array of geocent_time or time of coalescence
+        """
+
+        if param:
+            start_time = param["start_time"]
+            end_time = param["end_time"]
+
+        geocent_time = np.random.uniform(start_time, end_time, size=size)
+
+        return geocent_time
+    
+    def sky_position_uniform_bilby(self, size, param=None):
+        """
+        Function to sample sky position from bilby prior
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+
+        Returns
+        ----------
+        ra : `array`
+            Array of right ascension
+        dec : `array`
+            Array of declination
+        """
+
+        ra = self.prior_bilby["ra"].sample(size)
+        dec = self.prior_bilby["dec"].sample(size)
+
+        return (ra, dec)
+    
+    def coalescence_phase_uniform_bilby(self, size, param=None):
+        """
+        Function to sample coalescence_phase from bilby prior
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+
+        Returns
+        ----------
+        phase : `array`
+            Array of phase of coalescence
+        """
+
+        return self.prior_bilby["phase"].sample(size)
+    
+    def polarization_angle_uniform_bilby(self, size, param=None):
+        """
+        Function to sample polarization_angle from bilby prior
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+
+        Returns
+        ----------
+        polarization_angle : `array`
+            Array of polarization angle
+        """
+
+        return self.prior_bilby["psi"].sample(size)
+    
+    def inclination_uniform_bilby(self, size, param=None):
+        """
+        Function to sample inclination from bilby prior
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+
+        Returns
+        ----------
+        inclination : `array`
+            Array of inclination angle
+        """
+
+        return self.prior_bilby["theta_jn"].sample(size)
+
 
     def available_prior_list_and_its_params(self):
         """
@@ -1256,22 +1454,23 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         event_prior_list_and_its_params_ : `dict`
             Dictionary of prior sampler functions for each parameter
             and its parameters.
+
+        Examples
+        ----------
+        >>> from ler.gw_source_population import CompactBinaryPopulation
+        >>> pop = CompactBinaryPopulation()
+        >>> priors = pop.available_prior_list_and_its_params()
+        >>> priors.keys()  # type of priors
+        dict_keys(['merger_rate_density', 'source_frame_masses', 'spin', 'geocent_time', 'sky_position', 'phase', 'polarization_angle', 'inclination'])
+        >>> priors['source_frame_masses'].keys()  # type of source_frame_masses priors
+        dict_keys(['binary_masses_BBH_popI_II_powerlaw_gaussian', 'binary_masses_BBH_popIII_lognormal', 'binary_masses_BBH_primordial_lognormal', 'binary_masses_BNS_popI_II_gwcosmo', 'binary_masses_BNS_bimodal'])
+        >>> priors['source_frame_masses']['binary_masses_BBH_popI_II_powerlaw_gaussian'].keys()  # parameters of binary_masses_BBH_popI_II_powerlaw_gaussian
+        dict_keys(['mminbh', 'mmaxbh', 'alpha', 'mu_g', 'sigma_g', 'lambda_peak', 'delta_m', 'beta'])
         """
 
         event_prior_list_and_its_params_ = dict(
-            merger_rate_density=dict(
-                merger_rate_density_bbh_popI_II_oguri2018=dict(
-                    R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30
-                ),
-                star_formation_rate_madau_dickinson2014=dict(af=2.7, bf=5.6, cf=2.9),
-                merger_rate_density_bbh_popIII_ken2022=dict(
-                    n0=19.2 * 1e-9, aIII=0.66, bIII=0.3, zIII=11.6
-                ),
-                merger_rate_density_primordial_ken2022=dict(
-                    n0=0.044 * 1e-9, t0=13.786885302009708
-                ),
-            ),
-            mass_source_frame=dict(
+            merger_rate_density=self.merger_rate_density_model_list(),
+            source_frame_masses=dict(
                 binary_masses_BBH_popI_II_powerlaw_gaussian=dict(
                     mminbh=4.98,
                     mmaxbh=112.5,
@@ -1282,14 +1481,14 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
                     delta_m=4.8,
                     beta=0.81,
                 ),
-                binary_masses_BBH_popIII_gwcosmo=dict(Mc=30.0, sigma=0.3, beta=1.1),
+                binary_masses_BBH_popIII_lognormal=dict(Mc=30.0, sigma=0.3, beta=1.1),
                 binary_masses_BBH_primordial_lognormal=dict(
                     Mc=30.0, sigma=0.3, beta=1.1
                 ),
                 binary_masses_BNS_popI_II_gwcosmo=dict(
                     mminns=1.0, mmaxns=3.0, alphans=0.0
                 ),
-                binary_masses_BNS_popI_II_Alsing=dict(
+                binary_masses_BNS_bimodal=dict(
                     w=0.643,
                     muL=1.352,
                     sigmaL=0.08,
@@ -1298,6 +1497,9 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
                     mmin=1.0,
                     mmax=2.3,
                 ),
+            ),
+            zs=dict(
+                sample_source_redshifts=dict(zs=dict(z_min=self.z_min, z_max=self.z_max)),
             ),
             spin=dict(
                 constant_values_n_size=dict(value=0.0),
@@ -1312,7 +1514,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
             sky_position=dict(sky_position_uniform_bilby=None),
             phase=dict(coalescence_phase_uniform_bilby=None),
             psi=dict(polarization_angle_uniform_bilby=None),
-            iota=dict(inclination_uniform_bilby=None),
+            theta_jn=dict(inclination_uniform_bilby=None),
         )
 
         return event_prior_list_and_its_params_
