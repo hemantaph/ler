@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-This module contains the LensGalaxyPopulation class, which is used to sample lens galaxy parameters, source parameters conditioned on the source being strongly lensed, image properties, and lensed SNRs. \n
-The class inherits from the CompactBinaryPopulation class, which is used to sample source parameters. \n
+This module contains the LensGalaxyPopulation class, which is used to sample lens galaxy parameters, source parameters conditioned on the source being strongly lensed. \n
+The class inherits from the ImageProperties class, which is used calculate image properties (magnification, timedelays, source position, image position, morse phase). \n
+The class takes in initialized CompactBinaryPopulation class as input, which is used to sample source parameters. \n
 """
 import warnings
 warnings.filterwarnings("ignore")

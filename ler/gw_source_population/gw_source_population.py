@@ -600,6 +600,10 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
     +-------------------------------------+----------------------------------+
     |:attr:`~spin_zero`                   | `bool`                           |
     +-------------------------------------+----------------------------------+
+    |:attr:`~available_prior_list_and_its_params`                            |
+    +-------------------------------------+----------------------------------+
+    |                                     | `dict`                           |
+    +-------------------------------------+----------------------------------+
     |:attr:`~gw_param_samplers`           | `dict`                           |
     +-------------------------------------+----------------------------------+
     |:attr:`~gw_param_samplers_params`    | `dict`                           |
@@ -702,12 +706,6 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
     |                                     | from uniform distribution        |
     |                                     | in radians (using bilby prior)   |
     +-------------------------------------+----------------------------------+
-    |:meth:`~available_prior_list_and_its_params                             |
-    +-------------------------------------+----------------------------------+
-    |                                     | Function to list available       |
-    |                                     | sampler function and its         |
-    |                                     | parameters                       |
-    +-------------------------------------+----------------------------------+
 
     Examples
     ----------
@@ -718,6 +716,38 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
     dict_keys(['zs', 'geocent_time', 'sky_position', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2'])
     >>> params["zs"][:5]
     array([3.7372458 , 1.27830786, 4.43500934, 2.83264988, 2.73744203])
+    """
+
+    # Attributes
+    z_min = None
+    """``float`` \n
+    Minimum redshift of the source population
+    """
+
+    z_max = None
+    """``float`` \n
+    Maximum redshift of the source population
+    """
+
+    event_type = None
+    """``str`` \n
+    Type of event to generate. \n
+    e.g. 'BBH', 'BNS', 'NSBH'
+    """
+
+    event_priors = None
+    """``dict`` \n
+    Dictionary of prior sampler functions.
+    """
+
+    event_priors_params = None
+    """``dict`` \n
+    Dictionary of prior sampler functions' input parameters.
+    """
+
+    spin_zero = None
+    """``bool`` \n
+    If True, spin prior is set to zero.
     """
 
     def __init__(
@@ -771,51 +801,115 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         bilby.core.utils.logger.disabled = True
         self.prior_bilby = bilby.gw.prior.BBHPriorDict()
 
-        # defining samplers
-        # try: gets instance method; except: if custom sampler is prvided
-        try:
-            self.sample_source_frame_masses = getattr(
-                self, self.gw_param_samplers["source_frame_masses"]
-            )
-        except:
-            self.sample_source_frame_masses = self.gw_param_samplers[
-                "source_frame_masses"
-            ]
-        try:
-            self.sample_geocent_time = getattr(
-                self, self.gw_param_samplers["geocent_time"]
-            )
-        except:
-            self.sample_geocent_time = self.gw_param_samplers["geocent_time"]
-        try:
-            self.sample_source_redshifts = getattr(self, self.gw_param_samplers["zs"])
-        except:
-            self.sample_source_redshifts = self.gw_param_samplers["zs"]
-        try:
-            self.sample_sky_position = getattr(
-                self, self.gw_param_samplers["sky_position"]
-            )
-        except:
-            self.sample_sky_position = self.gw_param_samplers["sky_position"]
-        try:
-            self.sample_coalescence_phase = getattr(
-                self, self.gw_param_samplers["phase"]
-            )
-        except:
-            self.sample_coalescence_phase = self.gw_param_samplers["phase"]
-        try:
-            self.sample_polarization_angle = getattr(
-                self, self.gw_param_samplers["psi"]
-            )
-        except:
-            self.sample_polarization_angle = self.gw_param_samplers["psi"]
-        try:
-            self.sample_inclination = getattr(self, self.gw_param_samplers["theta_jn"])
-        except:
-            self.sample_inclination = self.gw_param_samplers["theta_jn"]
+        # initializing samplers
+        self.sample_source_frame_masses = self.gw_param_samplers["source_frame_masses"]
+        self.sample_geocent_time = self.gw_param_samplers["geocent_time"]
+        self.sample_source_redshifts = self.gw_param_samplers["zs"]
+        self.sample_sky_position = self.gw_param_samplers["sky_position"]
+        self.sample_coalescence_phase = self.gw_param_samplers["phase"]
+        self.sample_polarization_angle = self.gw_param_samplers["psi"]
+        self.sample_inclination = self.gw_param_samplers["theta_jn"]
 
         return None
+    
+    @property
+    def sample_source_frame_masses(self):
+        """
+        Function to sample source frame masses (mass1_source, mass2_source) with the initialized prior.
+        """
+        return self._sample_source_frame_masses
+    
+    @sample_source_frame_masses.setter
+    def sample_source_frame_masses(self, prior):
+        try:
+            self._sample_source_frame_masses = getattr(self, prior)
+        except:
+            self._sample_source_frame_masses = prior
+    
+    @property
+    def sample_geocent_time(self):
+        """
+        Function to sample geocent time with the initialized prior.
+        """
+        return self._sample_geocent_time
+    
+    @sample_geocent_time.setter
+    def sample_geocent_time(self, prior):
+        try:
+            self._sample_geocent_time = getattr(self, prior)
+        except:
+            self._sample_geocent_time = prior
 
+    @property
+    def sample_source_redshifts(self):
+        """
+        Function to sample source redshifts with the initialized prior.
+        """
+        return self._sample_source_redshifts
+    
+    @sample_source_redshifts.setter
+    def sample_source_redshifts(self, prior):
+        try:
+            self._sample_source_redshifts = getattr(self, prior)
+        except:
+            self._sample_source_redshifts = prior
+
+    @property
+    def sample_sky_position(self):
+        """
+        Function to sample sky position with the initialized prior.
+        """
+        return self._sample_sky_position
+    
+    @sample_sky_position.setter
+    def sample_sky_position(self, prior):
+        try:
+            self._sample_sky_position = getattr(self, prior)
+        except:
+            self._sample_sky_position = prior
+
+    @property
+    def sample_coalescence_phase(self):
+        """
+        Function to sample coalescence phase with the initialized prior.
+        """
+        return self._sample_coalescence_phase
+    
+    @sample_coalescence_phase.setter
+    def sample_coalescence_phase(self, prior):
+        try:
+            self._sample_coalescence_phase = getattr(self, prior)
+        except:
+            self._sample_coalescence_phase = prior
+
+    @property
+    def sample_polarization_angle(self):
+        """
+        Function to sample polarization angle with the initialized prior.
+        """
+        return self._sample_polarization_angle
+    
+    @sample_polarization_angle.setter
+    def sample_polarization_angle(self, prior):
+        try:
+            self._sample_polarization_angle = getattr(self, prior)
+        except:
+            self._sample_polarization_angle = prior
+
+    @property
+    def sample_inclination(self):
+        """
+        Function to sample inclination with the initialized prior.
+        """
+        return self._sample_inclination
+    
+    @sample_inclination.setter
+    def sample_inclination(self, prior):
+        try:
+            self._sample_inclination = getattr(self, prior)
+        except:
+            self._sample_inclination = prior
+    
     def event_priors_categorization(self, event_type, event_priors, event_prior_params):
         """
         Function to categorize the event priors and its parameters.
@@ -1625,21 +1719,16 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
 
         return self.prior_bilby["theta_jn"].sample(size)
 
+    @property
     def available_prior_list_and_its_params(self):
         """
-        Function to list all the available priors. Prior of zs is not included as is the redshift sampler from the SourceGalaxyPopulationModel.
-
-        Returns
-        ----------
-        event_prior_list_and_its_params_ : `dict`
-            Dictionary of prior sampler functions for each parameter
-            and its parameters.
+        Dictionary with list all the available priors and it's corresponding parameters. This is an immutable instance attribute.
 
         Examples
         ----------
         >>> from ler.gw_source_population import CompactBinaryPopulation
-        >>> pop = CompactBinaryPopulation()
-        >>> priors = pop.available_prior_list_and_its_params()
+        >>> cbc = CompactBinaryPopulation()
+        >>> priors = cbc.available_prior_list_and_its_params
         >>> priors.keys()  # type of priors
         dict_keys(['merger_rate_density', 'source_frame_masses', 'spin', 'geocent_time', 'sky_position', 'phase', 'polarization_angle', 'inclination'])
         >>> priors['source_frame_masses'].keys()  # type of source_frame_masses priors
@@ -1648,7 +1737,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         dict_keys(['mminbh', 'mmaxbh', 'alpha', 'mu_g', 'sigma_g', 'lambda_peak', 'delta_m', 'beta'])
         """
 
-        event_prior_list_and_its_params_ = dict(
+        self._available_prior_list_and_its_params = dict(
             merger_rate_density=self.merger_rate_density_model_list(),
             source_frame_masses=dict(
                 binary_masses_BBH_popI_II_powerlaw_gaussian=dict(
@@ -1699,4 +1788,4 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
             theta_jn=dict(inclination_uniform_bilby=None),
         )
 
-        return event_prior_list_and_its_params_
+        return self._available_prior_list_and_its_params
