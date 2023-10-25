@@ -90,6 +90,15 @@ class SourceGalaxyPopulationModel:
     +-------------------------------------+----------------------------------+
     |:attr:`~differential_comoving_volume`| `scipy.interpolate.interpolate`  |
     +-------------------------------------+----------------------------------+
+    |:attr:`~merger_rate_density_model_list`                                |
+    +-------------------------------------+----------------------------------+
+    |                                     | Function to list available       |
+    |                                     | merger rate density functions    |
+    |                                     | and its parameters               |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~sample_source_redshifts`     | Function to sample source        |
+    |                                     | redshifts (source frame)         |
+    +-------------------------------------+----------------------------------+
 
     Instance Methods
     ----------
@@ -97,11 +106,8 @@ class SourceGalaxyPopulationModel:
     +-------------------------------------+----------------------------------+
     | Methods                             | Type                             |
     +=====================================+==================================+
-    | :meth:`~merger_rate_density_model_list`                                |
-    +-------------------------------------+----------------------------------+
-    |                                     | Function to list available       |
-    |                                     | merger rate density functions    |
-    |                                     | and its parameters               |
+    |:meth:`~pdf_z`                       | Function to compute the pdf      |
+    |                                     | p(z)                             |
     +-------------------------------------+----------------------------------+
     |:meth:`~merger_rate_density_src_frame`                                  |
     +-------------------------------------+----------------------------------+
@@ -165,6 +171,26 @@ class SourceGalaxyPopulationModel:
     e.g. Planck18, WMAP9, FlatLambdaCDM(H0=70, Om0=0.3) etc.
     """
 
+    merger_rate_density_param = None
+    """``dict`` \n
+    Dictionary of merger rate density function parameters
+    """
+
+    normalization_pdf_z = None
+    """``float`` \n
+    Normalization constant of the pdf p(z)
+    """
+
+    z_to_luminosity_distance = None
+    """``scipy.interpolate.interpolate`` \n
+    Function to convert redshift to luminosity distance
+    """
+
+    differential_comoving_volume = None
+    """``scipy.interpolate.interpolate`` \n
+    Function to calculate the differential comoving volume
+    """
+
     def __init__(
         self,
         z_min=0.0,
@@ -182,16 +208,10 @@ class SourceGalaxyPopulationModel:
         self.create_lookup_table(z_min, z_max)
 
         # Define the merger-rate density function/method instances
-        try:
-            self.merger_rate_density = getattr(self, merger_rate_density)
-            self.merger_rate_density_param = merger_rate_density_param
-        except:
-            raise ValueError(
-                f"merger_rate_density must be one of {self.merger_rate_density_model_list()}"
-            )
+        self.merger_rate_density = merger_rate_density  # function initialization
+        self.merger_rate_density_param = merger_rate_density_param  # dict of parameters corresponding to the merger_rate_density function 
 
         # To find the normalization constant of the pdf p(z)
-        # Normalize the pdf
         self.normalization_pdf_z = quad(
             self.merger_rate_density_src_frame,
             z_min,
@@ -199,19 +219,42 @@ class SourceGalaxyPopulationModel:
             args=(merger_rate_density_param,),
         )[0]
 
-        return None
+        # Inverse transform sampling
+        # create sampler using the pdf p(z)
+        # Dont be fooled by the '=' sign. self.pdf_z generates probability density function but self.sample_source_redshifts is a sampler.
+        self.sample_source_redshifts = self.pdf_z
 
+        return None
+    
+    @property
+    def merger_rate_density(self):
+        """
+        Function to get the merger rate density function wrt redshift.
+        """
+        return self._merger_rate_density
+    
+    @merger_rate_density.setter
+    def merger_rate_density(self, merger_rate_density):
+        error_msg = ValueError(f"merger_rate_density must be one of {self.merger_rate_density_model_list}")
+        # check if it is a string
+        if isinstance(merger_rate_density, str):
+            try:
+                self.merger_rate_density = getattr(self, merger_rate_density)
+            except:
+                raise error_msg
+        # check if it is a function
+        elif callable(merger_rate_density):
+            self._merger_rate_density = merger_rate_density
+        else:
+            raise error_msg
+        
+    @property
     def merger_rate_density_model_list(self):
         """
-        Function to list available merger rate density functions and its parameters.
-
-        Returns
-        ----------
-        model_list : `list`
-            List of available merger rate density functions.
+        Dictionary of available merger rate density functions and its parameters.
         """
 
-        return dict(
+        self._merger_rate_density_model_list = dict(
             merger_rate_density_bbh_popI_II_oguri2018=dict(
                 R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30
             ),
@@ -223,6 +266,54 @@ class SourceGalaxyPopulationModel:
                 n0=0.044 * 1e-9, t0=13.786885302009708
             ),
         )
+
+        return self._merger_rate_density_model_list
+    
+    @property
+    def sample_source_redshifts(self):
+        """
+        Function to sample source redshifts (source frame) between z_min and z_max from the source galaxy population
+        """
+        return self._sample_source_redshifts
+    
+    @sample_source_redshifts.setter
+    def sample_source_redshifts(self, pdf_z):
+        # Inverse transform sampling
+        if self.z_min==0.:
+            z = [0.]+np.geomspace(0.001, self.z_max, 99).tolist()
+        else:
+            z = np.geomspace(self.z_min, self.z_max, 100).tolist()
+
+        cdf_arr = []
+        for i in z:
+            cdf_arr.append(quad(pdf_z,
+                        self.z_min,
+                        i,
+                    )[0])
+            
+        inv_cdf = interp1d(cdf_arr, z, kind='cubic')
+        self._sample_source_redshifts = lambda size: inv_cdf(np.random.uniform(0, 1, size=size))
+
+    def pdf_z(self, zs, param=None):
+        """
+        Function to compute the pdf p(z). The output is in source frame and is normalized.
+
+        Parameters
+        ----------
+        zs : `float`
+            Source redshifts
+        param : `dict`
+            Allows to pass in above parameters as dict.
+            e.g. if the merger_rate_density is merger_rate_density_bbh_popI_II_oguri2018
+            param = dict(R0=23.9*1e-9, b2=1.6, b3=2.0, b4=30)
+
+        Returns
+        ----------
+        pdf : `float`
+            pdf p(z)
+        """
+
+        return self.merger_rate_density_src_frame(zs=zs,param=param)/self.normalization_pdf_z
 
     def merger_rate_density_src_frame(self, zs, param=None):
         """
@@ -286,65 +377,6 @@ class SourceGalaxyPopulationModel:
         )
 
         return None
-
-    def sample_source_redshifts(self, size=1000, z_min=0.0, z_max=10.0, param=None):
-        """
-        Function to sample source redshifts (source frame) from the source galaxy population
-        model
-
-        Parameters
-        ----------
-        size : `int`
-            Number of samples to draw
-            default: 1000
-        z_min : `float`
-            Minimum redshift of the source population
-            default: 0.
-        z_max : `float`
-            Maximum redshift of the source population
-            default: 10.
-        param : `dict`
-            Allows to pass in above parameters as dict.
-            e.g. param = dict(z_min=0.0, z_max=10.0)
-            default: None
-
-        Returns
-        ----------
-        zs : `array`
-            Array of sampled redshifts
-
-        Examples
-        ----------
-        >>> from ler.gw_source_population import SourceGalaxyPopulationModel
-        >>> cbc = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, merger_rate_density="merger_rate_density_bbh_popI_II_oguri2018")
-        >>> zs = cbc.sample_source_redshifts(size=1000)
-        >>> zs[:5]
-        array([2.9613628 , 1.18360022, 2.47637065, 2.51401502, 4.22868975])
-        """
-
-        # replace values with param, if given
-        if param:
-            z_min = param["z_min"]
-            z_max = param["z_max"]
-
-        # Define the merger-rate density function
-        # Define the pdf p(z)
-        # pdf_unnormalized = (
-        #     lambda z: self.merger_rate_density(z, param=self.merger_rate_density_param)
-        #     / (1 + z)
-        #     * self.differential_comoving_volume(z)
-        # )
-        # Normalize the pdf
-        pdf = (
-            lambda z: self.merger_rate_density_src_frame(
-                z, param=self.merger_rate_density_param
-            )
-            / self.normalization_pdf_z
-        )
-        # Sample the redshifts using rejection sampling
-        zs = rejection_sample(pdf, z_min, z_max, size=size)
-
-        return zs
 
     def merger_rate_density_bbh_popI_II_oguri2018(
         self, zs, R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30, param=None
@@ -1738,7 +1770,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         """
 
         self._available_prior_list_and_its_params = dict(
-            merger_rate_density=self.merger_rate_density_model_list(),
+            merger_rate_density=self.merger_rate_density_model_list,
             source_frame_masses=dict(
                 binary_masses_BBH_popI_II_powerlaw_gaussian=dict(
                     mminbh=4.98,
