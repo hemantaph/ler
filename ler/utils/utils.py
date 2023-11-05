@@ -5,6 +5,8 @@ This module contains helper routines for other modules in the ler package.
 
 import numpy as np
 import json
+from scipy.interpolate import interp1d
+from scipy.integrate import quad
 
 
 class NumpyEncoder(json.JSONEncoder):
@@ -141,8 +143,8 @@ def rejection_sample2d(pdf, xmin, xmax, ymin, ymax, size=100, chunk_size=10000):
     
     chunk_size = 10000
     
-    x = np.linspace(xmin, xmax, 1000)
-    y = np.linspace(ymin, ymax, 1000)
+    x = np.linspace(xmin, xmax, chunk_size)
+    y = np.linspace(ymin, ymax, chunk_size)
     z = pdf(x,y)
     zmax = np.max(z)
     
@@ -209,3 +211,32 @@ def trim_dictionary(dictionary, size):
                 "The dictionary contains an item which is neither an ndarray nor a dictionary."
             )
     return dictionary
+
+def create_inv_cdf(x,y):
+    
+    # remove idx of nan values
+    idx = np.argwhere(np.isnan(y))
+    x = np.delete(x, idx)
+    y = np.delete(y, idx)
+    # create pdf with interpolation
+    pdf_unorm = interp1d(x, y, kind='cubic', fill_value="extrapolate")
+    xlim=[x[0], x[-1]]
+    norm = quad(pdf_unorm, xlim[0], xlim[1])[0]
+    y = y/norm 
+    # normalize the pdf
+    pdf = interp1d(x, y, kind='cubic', fill_value="extrapolate")
+
+
+    # create cdf
+    # def cdf_fn():
+    #     cdf = []
+    #     for x_ in x:
+    #         cdf.append(quad(pdf, xlim[0], x_)[0])
+    #     return cdf
+    cdf = lambda x: quad(pdf, xlim[0], x)[0]
+    # get all values of cdf
+    cdf_values = np.array([cdf(x_) for x_ in x])
+
+    inv_cdf = interp1d(cdf_values, x, kind='cubic')
+
+    return pdf, cdf, inv_cdf
