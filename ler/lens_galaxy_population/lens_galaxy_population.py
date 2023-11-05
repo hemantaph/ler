@@ -2,9 +2,11 @@
 """
 This module contains the LensGalaxyPopulation class, which is used to sample lens galaxy parameters, source parameters conditioned on the source being strongly lensed. \n
 The class inherits from the ImageProperties class, which is used calculate image properties (magnification, timedelays, source position, image position, morse phase). \n
-The class takes in initialized CompactBinaryPopulation class as input, which is used to sample source parameters. \n
+Either the class takes in initialized CompactBinaryPopulation class as input or inherits the CompactBinaryPopulation class with default params (if no input) \n
 """
+
 import warnings
+
 warnings.filterwarnings("ignore")
 import numpy as np
 from scipy.stats import gengamma, rayleigh, norm
@@ -22,7 +24,7 @@ from ..image_properties import ImageProperties
 from ..utils import add_dictionaries_together, trim_dictionary
 
 
-class LensGalaxyPopulation(ImageProperties):
+class LensGalaxyPopulation(CompactBinaryPopulation, ImageProperties):
     """
     Class to sample lens galaxy parameters
 
@@ -34,36 +36,6 @@ class LensGalaxyPopulation(ImageProperties):
 
     Examples
     --------
-    >>> from ler.lens_galaxy_population import LensGalaxyPopulation
-    >>> lens_pop = LensGalaxyPopulation()
-    >>> # list all the methods of the class
-    >>> print([method for method in dir(lens_pop) if method.startswith('__') is False])
-    ['Dc_to_z', 'angular_diameter_distance', 'angular_diameter_distance_z1z2', 'cbc_pop', 'compute_einstein_radii', 'create_lookup_table', 'differential_comoving_volume', 'get_image_properties', 'get_lensed_snrs', 'lens_redshift_sampler_helper_function', 'm_max', 'm_min', 'normalization_pdf_z', 'rejection_sample_lensing_probability', 'sample_axis_ratio_angle_phi', 'sample_galaxy_shear', 'sample_gamma', 'sample_lens_parameters', 'sample_lens_parameters_routine', 'sample_lens_redshifts', 'sample_strongly_lensed_source_parameters', 'sample_velocity_dispersion_axis_ratio', 'strong_lensing_optical_depth', 'z_max', 'z_min', 'z_to_Dc', 'z_to_luminosity_distance']
-    >>> # sample lens parameters
-    >>> lens_parameters = lens_pop.sample_lens_parameters(size=1000)
-    >>> lens_parameters.keys()
-    dict_keys(['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl', 'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a2', 'tilt1', 'tilt2', 'phi12', 'phi_jl'])
-    >>> # get image properties
-    >>> lens_parameters = lens_pop.get_image_properties(lens_parameters, n_min_images=2, n_max_images=4, lensModelList=['EPL_NUMBA', 'SHEAR'], npool=4)
-    solving lens equations...
-    100%|█████████████████████████████████████████████████████████| 1000/1000 [00:00<00:00, 1258.38it/s]
-    >>> lens_parameters.keys()
-    dict_keys(['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl', 'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a2', 'tilt1', 'tilt2', 'phi12', 'phi_jl', 'n_images', 'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'image_type', 'weights'])
-    >>> # get lensed SNRs
-    >>> from gwsnr import GWSNR
-    >>> snr = GWSNR()
-    Given: IMR waveform
-    psds not given. Choosing bilby's default psds
-    given psds:  {'L1': 'aLIGO_O4_high_asd.txt', 'H1': 'aLIGO_O4_high_asd.txt', 'V1': 'AdV_asd.txt'}
-    Interpolator will be generated for L1 detector at ./interpolator_pickle/L1/halfSNR_dict_0.pickle
-    Interpolator will be generated for H1 detector at ./interpolator_pickle/H1/halfSNR_dict_0.pickle
-    Interpolator will be generated for V1 detector at ./interpolator_pickle/V1/halfSNR_dict_0.pickle
-    Generating interpolator for ['L1', 'H1', 'V1'] detectors
-    interpolation for each mass_ratios: 100%|███████████████████████████| 50/50 [00:23<00:00,  2.10it/s]
-    interpolator generated
-    >>> lens_snrs = lens_pop.get_lensed_snrs(snr, lens_parameters, n_max_images=4)
-    >>> lens_snrs.keys()
-    dict_keys(['opt_snr_net', 'L1', 'H1', 'V1'])
 
     Instance Attributes
     ----------
@@ -178,146 +150,179 @@ class LensGalaxyPopulation(ImageProperties):
     normalization constant of the pdf p(z)
     """
 
-    def __init__(self, CompactBinaryPopulation_=False):
+    def __init__(
+        self,
+        npool=4,
+        CompactBinaryPopulation_=False,
+        lens_type="epl_galaxy",
+        lens_functions=dict(
+            strong_lensing_condition="rjs_with_einstein_radius",
+            optical_depth="optical_depth_SIS",
+            param_sampler_type="sample_all_routine1",
+        ),
+        sampler_priors=None,
+        sampler_priors_params=None,
+        **kwargs
+    ):
+        self.npool = npool
+        self.sample_lens_parameters_routine = getattr(
+            self, lens_functions["param_sampler_type"]
+        )
+        self.rejection_sample_sl = getattr(
+            self, lens_functions["strong_lensing_condition"]
+        )  # SL: Strong Lensing
+        self.strong_lensing_optical_depth = getattr(
+            self, lens_functions["optical_depth"]
+        )
+        # self.rejection_sample_SL = self.rj_on_cross_section
+
         if CompactBinaryPopulation_ == False:
-            # initialization of clasess
-            # CompactBinaryPopulation already inherits from Source_Galaxy_Population_Model class form source_population.py
-            self.cbc_pop = CompactBinaryPopulation(
+            input_params = dict(
                 z_min=0.0,
                 z_max=10.0,
-                m_min=4.59,
-                m_max=86.22,
-                event_type="popI_II",
-                merger_rate_density_param=None,
-                src_model_params=None,
-                npool=4,
-                n_min_images=2,
-                n_max_images=4,
-                lensModelList=["EPL_NUMBA", "SHEAR"]
+                event_type="BBH",
+                event_priors=None,
+                event_priors_params=None,
+                spin_zero=True,
+                cosmology=None,
+            )
+            input_params.update(kwargs)
+            # initialization of clasess
+            CompactBinaryPopulation.__init__(
+                self,
+                z_min=input_params["z_min"],
+                z_max=input_params["z_max"],
+                event_type=input_params["event_type"],
+                event_priors=input_params["event_priors"],
+                event_priors_params=input_params["event_priors_params"],
+                spin_zero=input_params["spin_zero"],
+                cosmology=input_params["cosmology"],
             )
         else:
             # if the classes are already initialized, then just use them
-            self.cbc_pop = CompactBinaryPopulation_
+            self.__bases__ = (CompactBinaryPopulation_,)
 
         # initialize the image properties class
-        super().__init__(npool=4, n_min_images=2, n_max_images=4, lensModelList=["EPL_NUMBA", "SHEAR"])
-
-        self.z_min = self.cbc_pop.z_min
-        self.z_max = self.cbc_pop.z_max
-        self.m_min = self.cbc_pop.m_min
-        self.m_max = self.cbc_pop.m_max
-        self.create_lookup_table(z_min=self.z_min, z_max=self.z_max)
-
-        # To find the normalization constant of the pdf p(z)
-        # this under the assumption that the event is strongly lensed
-        # Define the merger-rate density function
-        merger_rate_density_detector_frame = lambda z: self.cbc_pop.merger_rate_density(
-            z
-        ) / (1 + z)
-        # Define the pdf p(z)
-        pdf_unnormalized = (
-            lambda z: merger_rate_density_detector_frame(z)
-            * self.differential_comoving_volume(z)
-            * self.strong_lensing_optical_depth_SIS(z)
+        input_params_image = dict(
+            npool=npool,
+            n_min_images=2,
+            n_max_images=4,
+            lens_model_list=["EPL_NUMBA", "SHEAR"],
         )
-        # Normalize the pdf
-        # this normalization factor is common no matter what you choose for z_min and z_max
-        self.normalization_pdf_z = quad(pdf_unnormalized, self.z_min, self.z_max)[0]
+        input_params_image.update(kwargs)
+        ImageProperties.__init__(
+            self,
+            npool=input_params_image["npool"],
+            n_min_images=input_params_image["n_min_images"],
+            n_max_images=input_params_image["n_max_images"],
+            lens_model_list=input_params_image["lens_model_list"],
+        )
+
+        # dict to strore lens parameters
+        self.lens_parameters = dict()
+        # dealing with prior functions and categorization
+        (
+            self.lens_param_samplers,
+            self.lens_param_samplers_params,
+            self.lens_sampler_names,
+        ) = self.lens_priors_categorization(
+            lens_type, sampler_priors, sampler_priors_params
+        )
+
+        # cosmolgy related functions, for fast calculation through interpolation
+        self.create_lookup_table_lensing(self.z_max)
+
+        # initializing samplers
+        self.sample_source_parameters = self.lens_param_samplers["source_parameters"]
+        self.sample_lens_redshift = self.lens_param_samplers["lens_redshift"]
+        self.sample_velocity_dispersion = self.lens_param_samplers[
+            "velocity_dispersion"
+        ]
+        self.sample_axis_ratio = self.lens_param_samplers["axis_ratio"]
+        self.sample_axis_rotation_angle = self.lens_param_samplers[
+            "axis_rotation_angle"
+        ]
+        self.sample_shear = self.lens_param_samplers["shear"]
+        self.sample_mass_density_spectral_index = self.lens_param_samplers[
+            "mass_density_spectral_index"
+        ]
+
         return None
 
-    def create_lookup_table(self, z_min, z_max):
-        """
-        Functions to create lookup tables
-        1. Redshift to co-moving distance.
-        2. Co-moving distance to redshift.
-        3. Redshift to luminosity distance
-        4. Redshift to angular diameter distance.
-        5. Lens redshift sampler helper function.
-        6. Redshift to differential comoving volume.
-
-        Parameters
-        ----------
-            z_min : `float`
-                minimum redshift
-            z_max : `float`
-                maximum redshift
-
-        """
-        # initialing cosmological functions for fast calculation through interpolation
-        # z_min is fixed to 0.0, as the lens redshifts are drawn between 0.0 and z_max
-        z = np.linspace(0.0, z_max, 500)  # red-shift
-        Dc = Planck18.comoving_distance(z).value  # co-moving distance in Mpc
-        self.z_to_Dc = interp1d(z, Dc, kind="cubic")
-        self.Dc_to_z = interp1d(Dc, z, kind="cubic")
-        self.z_to_luminosity_distance = self.cbc_pop.z_to_luminosity_distance
-
-        # for angular diameter distance
-        quad_ = []  # refers to integration (with quad algorithm) from scipy
-        for ii in range(len(z)):
-            quad_.append(
-                quad(
-                    Planck18._inv_efunc_scalar,
-                    0.0,
-                    z[ii],
-                    args=Planck18._inv_efunc_scalar_args,
-                )[0]
-            )
-        quad_ = np.array(quad_)
-        quad_int = interp1d(z, np.array(quad_), kind="cubic")
-
-        H0d = Planck18._hubble_distance.value
-        self.angular_diameter_distance_z1z2 = (
-            lambda zl0, zs0: H0d * (quad_int(zs0) - quad_int(zl0)) / (zs0 + 1.0)
-        )
-        self.angular_diameter_distance = lambda zs0: H0d * quad_int(zs0) / (zs0 + 1.0)
-
-        # create a lookup table for the lens redshift draws
-        r = np.linspace(0, 1, num=100)
-        u = (
-            10 * r**3 - 15 * r**4 + 6 * r**5
-        )  # See the integral of Eq. A7 of https://arxiv.org/pdf/1807.07062.pdf (cdf)
-        self.lens_redshift_sampler_helper_function = interp1d(
-            u, r, kind="cubic"
-        )  # Computes r(u)
-
-        # Create a lookup table for the differential comoving volume
-        self.differential_comoving_volume = self.cbc_pop.differential_comoving_volume
-        return None
-
-    def sample_lens_parameters(
-        self, size=1000, lens_parameters_input={}, verbose=False
+    def lens_priors_categorization(
+        self, lens_type, sampler_priors=None, sampler_priors_params=None
     ):
         """
-        Function to sample galaxy lens parameters
+        Function to categorize the lens priors/samplers
 
         Parameters
         ----------
-            size : `int`
-                number of lens parameters to sample
-            lens_parameters_input : `dict`
-                dictionary of lens parameters to sample
-
-        Returns
-        -------
-            lens_parameters : `dict`
-                dictionary of lens parameters and source parameters (lens conditions applied)
-                e.g. dictionary keys:\n
-                lensing related=>['zl':redshift of lens, 'zs': redshift of source, 'sigma':velocity dispersion, 'q':axis ratios, 'e1':ellipticity, 'e2':ellipticity, 'gamma1':external-shear, 'gamma2':external-shear, 'Dl':angular diameter distance of lens, 'Ds':angular diameter distance of source, 'Dls':angular diameter distance between lens and source, 'theta_E': einstein radius in radian, 'gamma':spectral index of mass density distribution] \n
-                source related=>['mass_1': mass in detector frame (mass1>mass2), 'mass_2': mass in detector frame, 'mass_1_source':mass in source frame, 'mass_2_source':mass source frame, 'luminosity_distance': luminosity distance, 'iota': inclination angle, 'psi': polarization angle, 'phase': coalesence phase, 'geocent_time': coalensence GPS time at geocenter, 'ra': right ascension, 'dec': declination, 'a_1': spin magnitude of the more massive black hole, 'a2': spin magnitude of the less massive black hole, 'tilt_1': tilt angle of the more massive black hole, 'tilt_2': tilt angle of the less massive black hole, 'phi_12': azimuthal angle between the two spins, 'phi_jl': azimuthal angle between the total angular momentum and the orbital angular momentum]
-
+            lens_type : `str`
+                lens type
+                e.g. 'epl_galaxy' for elliptical power-law galaxy
+            sampler_priors : `dict`
+                dictionary of priors
+            sampler_priors_params : `dict`
+                dictionary of priors parameters
         """
-        if verbose:
-            print(
-                f"refer to https://arxiv.org/abs/1908.06068 for parameter definitions, priors and sampling methods"
+
+        if lens_type == "epl_galaxy":
+            sampler_priors_ = dict(
+                source_parameters="sample_strongly_lensed_source_parameters",
+                lens_redshift="lens_redshift_SDSS_catalogue",
+                velocity_dispersion="velocity_dispersion_gengamma",
+                axis_ratio="axis_ratio_rayleigh",
+                axis_rotation_angle="axis_rotation_angle_uniform",
+                shear="shear_norm",
+                mass_density_spectral_index="mass_density_spectral_index_normal",
             )
+            sampler_priors_params_ = dict(
+                source_parameters=None,
+                lens_redshift=dict(sampled_zs=True),
+                velocity_dispersion=dict(a=2.32 / 2.67, c=2.67),
+                axis_ratio=dict(sampled_sigma=True),
+                axis_rotation_angle=dict(phi_min=0.0, phi_max=2 * np.pi),
+                shear=dict(scale=0.05),
+                mass_density_spectral_index=dict(mean=2.0, std=0.2),
+            )
+        else:
+            raise ValueError("lens_type not recognized")
+
+        # update the priors if input is given
+        if sampler_priors:
+            sampler_priors_.update(sampler_priors)
+        if sampler_priors_params:
+            sampler_priors_params_.update(sampler_priors_params)
+
+        # dict of sampler names with description
+        lens_sampler_names_ = dict(
+            sample_source_parameters="source parameters conditioned on the source being strongly lensed",
+            sample_lens_redshift="lens redshift",
+            sample_velocity_dispersion="velocity dispersion of elliptical galaxy",
+            sample_axis_ratio="axis ratio of elliptical galaxy",
+            sample_axis_rotation_angle="axis rotation angle of elliptical galaxy    ",
+            sample_shear="shear of elliptical galaxy",
+            sample_mass_density_spectral_index="mass density spectral index of elliptical power-law galaxy",
+        )
+
+        return sampler_priors_, sampler_priors_params_, lens_sampler_names_
+
+    def sample_lens_parameters(
+        self,
+        size=1000,
+        lens_parameters_input=None,
+    ):
+        """
+        Function to call the specific galaxy lens parameters sampler.
+        """
 
         return self.sample_lens_parameters_routine(
             size=size, lens_parameters_input=lens_parameters_input
         )
 
-    def sample_lens_parameters_routine(self, size=1000, lens_parameters_input={}):
+    def sample_all_routine1(self, size=1000, lens_parameters_input=None):
         """
-        Function to sample galaxy lens parameters
+        Function to sample galaxy lens parameters along with the source parameters.
 
         Parameters
         ----------
@@ -330,25 +335,24 @@ class LensGalaxyPopulation(ImageProperties):
         -------
             lens_parameters : `dict`
                 dictionary of lens parameters and source parameters (lens conditions applied)
-                e.g. dictionary keys:\n
-                lensing related=>['zl':redshift of lens, 'zs': redshift of source, 'sigma':velocity dispersion, 'q':axis ratios, 'e1':ellipticity, 'e2':ellipticity, 'gamma1':external-shear, 'gamma2':external-shear, 'Dl':angular diameter distance of lens, 'Ds':angular diameter distance of source, 'Dls':angular diameter distance between lens and source, 'theta_E': einstein radius in radian, 'gamma':spectral index of mass density distribution] \n
-                source related=>['mass_1': mass in detector frame (mass1>mass2), 'mass_2': mass in detector frame, 'mass_1_source':mass in source frame, 'mass_2_source':mass source frame, 'luminosity_distance': luminosity distance, 'iota': inclination angle, 'psi': polarization angle, 'phase': coalesence phase, 'geocent_time': coalensence GPS time at geocenter, 'ra': right ascension, 'dec': declination, 'a_1': spin magnitude of the more massive black hole, 'a2': spin magnitude of the less massive black hole, 'tilt_1': tilt angle of the more massive black hole, 'tilt_2': tilt angle of the less massive black hole, 'phi_12': azimuthal angle between the two spins, 'phi_jl': azimuthal angle between the total angular momentum and the orbital angular momentum]
-
         """
+
+        if lens_parameters_input is None:
+            lens_parameters_input = dict()
 
         # Sample source redshifts from the source population
         # rejection sampled with optical depth
-        # print('sampling source parameters...')
         source_params_strongly_lensed = self.sample_strongly_lensed_source_parameters(
             size=size
         )
         zs = source_params_strongly_lensed["zs"]
 
         # Sample lens redshifts
-        # print("sampling lens's redshifts...")
         zl = self.sample_lens_redshifts(zs)
-        # Sample velocity dispersions and axis ratios (note: these should be sampled together because the lensing probability depends on the combination of these two parameters)
-        sigma, q = self.sample_velocity_dispersion_axis_ratio(zs)
+        # Sample velocity dispersions
+        sigma = self.sample_velocity_dispersion(len(zs))
+        # Sample axis ratios
+        q = self.axis_ratio(sigma)
 
         # Compute the Einstein radii
         # print("sampling einstein radius...")
@@ -369,12 +373,6 @@ class LensGalaxyPopulation(ImageProperties):
         # print("sampling spectral index...")
         gamma = self.sample_gamma(size=size)
 
-        # Compute the angular diameter distances
-        Dl = self.angular_diameter_distance(zl)  # for the lens
-        Ds = self.angular_diameter_distance(zs)  # for the source
-        # Compute Dls also
-        Dls = self.angular_diameter_distance_z1z2(zl, zs)  # for the lens-source pair
-
         # Create a dictionary of the lens parameters
         lens_parameters = {
             "zl": zl,
@@ -385,9 +383,6 @@ class LensGalaxyPopulation(ImageProperties):
             "e2": e2,
             "gamma1": gamma1,
             "gamma2": gamma2,
-            "Dl": Dl,
-            "Ds": Ds,
-            "Dls": Dls,
             "theta_E": theta_E,
             "gamma": gamma,
         }
@@ -421,7 +416,38 @@ class LensGalaxyPopulation(ImageProperties):
                 size=size, lens_parameters_input=lens_parameters
             )
 
-    def sample_strongly_lensed_source_parameters(self, size=1000):
+    def sample_all_routine2(self, size=1000, lens_parameters_input=None, **kwargs):
+
+        param_names = list(self.lens_param_samplers.keys())
+        # short_name = ["zs", "zl", "sigma", "q", "e1", "e2", "gamma1", "gamma2", "gamma"]
+        samplers_params = list(self.lens_param_samplers_params.values())
+        # make sure the order is correct
+        sampler_names = list(self.lens_sampler_names.keys())
+        param_dict = self.lens_parameters  # initialize dictionary to store parameters
+
+        # del param_names[0], sampler_names[0]
+        #del param_names[0], sampler_names[0], samplers_params[0] # remove source parameters from the list
+
+        for name, sampler, param in zip(param_names, sampler_names, samplers_params):
+            if name not in kwargs:
+                print(f"Sampling {name}...")
+                print(f"Using {sampler}...")
+                # Sample the parameter using the specified sampler function
+                getattr(self, sampler)(size=size, param=param);
+            else:
+                # Use the provided value from kwargs
+                param_dict[name] = kwargs[name]
+
+        # add other lensing parameters
+        param_dict["theta_E"] = self.compute_einstein_radii(
+            param_dict["sigma"], param_dict["zl"], param_dict["zs"]
+        )
+        param_dict["e1"], param_dict["e2"] = phi_q2_ellipticity(
+            param_dict["axis_rotation_angle"], param_dict["q"]
+        )
+        
+
+    def sample_strongly_lensed_source_parameters(self, size=1000, param=None):
         """
         Function to sample source redshifts and other parameters, conditioned on the source being strongly lensed.
 
@@ -437,18 +463,19 @@ class LensGalaxyPopulation(ImageProperties):
                 e.g. gw_param_strongly_lensed.keys() = ['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a2', 'tilt1', 'tilt2', 'phi12', 'phi_jl']
 
         """
+
         z_max = self.z_max
-        z_min = self.z_min
 
         def zs_strongly_lensed_function(zs_strongly_lensed):
             # get zs
-            zs = self.cbc_pop.sample_source_redshifts(
-                size=size, z_min=z_min, z_max=z_max
-            )
-
+            zs = self.sample_source_redshifts(
+                size
+            )  # this function is from CompactBinaryPopulation class
             # put strong lensing condition with optical depth
-            tau = self.strong_lensing_optical_depth_SIS(zs)
-            tau_max = np.max(self.strong_lensing_optical_depth_SIS(z_max))
+            tau = self.strong_lensing_optical_depth(zs)
+            tau_max = np.max(
+                self.strong_lensing_optical_depth(z_max)
+            )  # tau increases with z
             r = np.random.uniform(0, tau_max, size=len(zs))
             pick_strongly_lensed = r < tau  # pick strongly lensed sources
             # Add the strongly lensed source redshifts to the list
@@ -456,24 +483,25 @@ class LensGalaxyPopulation(ImageProperties):
 
             # Check if the zs_strongly_lensed are larger than requested size
             if len(zs_strongly_lensed) >= size:
-                # Trim dicitionary to right size
+                # Trim list to right size
                 zs_strongly_lensed = zs_strongly_lensed[:size]
                 return zs_strongly_lensed
             else:
                 # Run iteratively until we have the right number of lensing parmaeters
-                # print("current sampled size", len(lens_parameters['zl']))
                 return zs_strongly_lensed_function(zs_strongly_lensed)
 
         zs_strongly_lensed = []
-        zs_ = zs_strongly_lensed_function(zs_strongly_lensed)
+        zs_ = np.array(zs_strongly_lensed_function(zs_strongly_lensed))
         # gravitional waves source parameter sampling
-        gw_param_strongly_lensed = self.cbc_pop.sample_gw_parameters(
-            zs=np.array(zs_), nsamples=size, verbose=False
+        gw_param_strongly_lensed = self.sample_gw_parameters(
+            size=size, zs=np.array(zs_)
         )
+
+        self.lens_parameters.update(gw_param_strongly_lensed)
 
         return gw_param_strongly_lensed
 
-    def sample_lens_redshifts(self, zs):
+    def lens_redshift_SDSS_catalogue(self, size, zs=None, sampled_zs=True, param=None):
         """
         Function to sample lens redshifts, conditioned on the lens being strongly lensed
         Input parameters:
@@ -481,67 +509,193 @@ class LensGalaxyPopulation(ImageProperties):
         Output parameters:
             zl : lens redshifts
         """
+
+        if param:
+            try:
+                zs = self.lens_parameters["zs"]
+            except:
+                raise print("zs is not yet sampled")
+        else:
+            if zs is None:
+                try:
+                    zs = self.lens_parameters["zs"]
+                    print("zs is not given, using the sampled zs from self.lens_parameters")
+                except:
+                    raise ValueError("zs is not given")
+
         # lens redshift distribution
         r = self.lens_redshift_sampler_helper_function(
             np.random.uniform(0, 1, size=len(zs))
         )
-        # comoing distance to the lens galaxy
+        # comoving distance to the lens galaxy
         # on the condition that lens lie between the source and the observer
         lens_galaxy_Dc = (
             self.z_to_Dc(zs) * r
         )  # corresponding element-wise multiplication between 2 arrays
         # lens redshift
-        zl = self.Dc_to_z(lens_galaxy_Dc)  # 2D array
+        zl = self.Dc_to_z(lens_galaxy_Dc)[:size]  # 2D array
+
+        self.lens_parameters["zl"] = zl
         return zl
 
-    def sample_velocity_dispersion_axis_ratio(self, zs):
+    def velocity_dispersion_gengamma(self, size, a=2.32 / 2.67, c=2.67, param=None):
         """
-        Function to sample velocity dispersion and axis ratio of the lens galaxy
+        Function to sample velocity dispersion from gengamma distribution
 
         Parameters
         ----------
-            zs : `float`
-                source redshifts
+        size : `int`
+            number of lens parameters to sample
+        a,c : `float`
+            parameters of gengamma distribution
+            refer to https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.gengamma.html
+        param : `dict`
+            Allows to pass in above parameters as dict.
+            e.g. param = dict(a=2.32 / 2.67, c=2.67)
 
         Returns
         -------
-            sigma : `float`
-                velocity dispersion of the lens galaxy
-            q : `float`
-                axis ratio of the lens galaxy
-
+        sigma : `array`
+            velocity dispersion of the lens galaxy
         """
-        size = len(zs)
-        sigma = []
-        q = []
 
-        # Draw the velocity dispersions and axis ratios in 'chunks'
+        if param:
+            a = param["a"]
+            c = param["c"]
+
+        sigma = gengamma.rvs(a, c, size=size)
+        self.lens_parameters["sigma"] = sigma
+        return sigma
+
+    def axis_ratio_rayleigh(self, size, sigma=None, sampled_sigma=True, param=None):
+        """
+        Function to sample axis ratio from rayleigh distribution with given velocity dispersion.
+
+        Parameters
+        ----------
+        sigma : `float: array`
+            velocity dispersion of the lens galaxy
+
+        Returns
+        -------
+        q : `float: array`
+            axis ratio of the lens galaxy
+        """
+
+        if param:
+            try:
+                sigma = self.lens_parameters["sigma"]
+            except:
+                raise print("sigma is not yet sampled")
+        else:
+            if sigma is None:
+                try:
+                    sigma = self.lens_parameters["sigma"]
+                    print("sigma is not given, using the sampled sigma from self.lens_parameters")
+                except:
+                    raise ValueError("sigma is not given")
+                
+        size = len(sigma)
+        a = sigma / 161.0
+        q = np.ones(size)
+        idx = np.arange(size)  # idx tracker
         size_ = size
-        while size_ != 0:
-            # Draw the velocity dispersion
-            a = gengamma.rvs(2.32 / 2.67, 2.67, size=size_)
-            sigma_ = 161.0 * a
 
+        while size_ != 0:
             # Draw the axis ratio see Appendix of https://arxiv.org/pdf/1807.07062.pdf
-            s = 0.38 - 0.09177 * a
+            s = 0.38 - 0.09177 * a[idx]
             b = rayleigh.rvs(scale=s, size=size_)
             q_ = 1.0 - b
 
             # Weed out sigmas and axis ratios that have axis ratio below 0.2
-            idx = q_ > 0.2
-            sigma_ = sigma_[idx]
-            q_ = q_[idx]
+            idx2 = q_ > 0.2
+            q[idx[idx2]] = q_[idx2]
 
-            # Append the velocity dispersions and axis ratios
-            sigma += list(sigma_)
-            q += list(q_)
+            # remaining idx from the original array
+            # that still not have axis ratio above 0.2
+            idx = idx[q < 0.2]
+            size_ = len(idx)
 
-            size_ = abs(size - len(sigma))
+        self.lens_parameters["q"] = q
+        return q
 
-        # Transform to an array
-        sigma = np.array(sigma)
-        q = np.array(q)
-        return sigma, q
+    def axis_rotation_angle_uniform(
+        self, size=1000, phi_min=0.0, phi_max=2 * np.pi, param=None
+    ):
+        """
+        Function to sample the axis rotation angle of the elliptical lens galaxy from a uniform distribution
+
+        Parameters
+        ----------
+            size : `int`
+                number of lens parameters to sample
+
+        Returns
+        -------
+            phi : `float`
+                axis rotation angle of the elliptical lens galaxy
+        """
+
+        if param:
+            phi_min = param["phi_min"]
+            phi_max = param["phi_max"]
+        # Draw the angles
+        phi = np.random.uniform(phi_min, phi_max, size=size)
+        self.lens_parameters["phi"] = phi
+        return phi
+
+    def shear_norm(self, size, scale=0.05, param=None):
+        """
+        Function to sample the elliptical lens galaxy shear from a normal distribution
+
+        Parameters
+        ----------
+            size : `int`
+                number of lens parameters to sample
+
+        Returns
+        -------
+            gamma_1 : `float`
+                shear component in the x-direction
+            gamma_2 : `float`
+                shear component in the y-direction
+
+        """
+
+        if param:
+            scale = param["scale"]
+
+        # Draw an external shear
+        gamma_1 = norm.rvs(size=size, scale=scale)
+        gamma_2 = norm.rvs(size=size, scale=scale)
+        self.lens_parameters["gamma_1"] = gamma_1
+        self.lens_parameters["gamma_2"] = gamma_2
+        return gamma_1, gamma_2
+
+    def mass_density_spectral_index_normal(
+        self, size=1000, mean=2.0, std=0.2, param=None
+    ):
+        """
+        Function to sample the lens galaxy spectral index of the mass density profile from a normal distribution
+
+        Parameters
+        ----------
+            size : `int`
+                number of lens parameters to sample
+
+        Returns
+        -------
+            gamma : `float`
+                spectral index of the density profile
+
+        """
+
+        if param:
+            mean = param["mean"]
+            std = param["std"]
+        gamma = np.random.normal(loc=mean, scale=std, size=size)
+        self.lens_parameters["gamma"] = gamma
+        return gamma
 
     def compute_einstein_radii(self, sigma, zl, zs):
         """
@@ -571,67 +725,7 @@ class LensGalaxyPopulation(ImageProperties):
         )  # Note: km/s for sigma; Dls, Ds are in Mpc
         return theta_E
 
-    def sample_axis_ratio_angle_phi(self, size=1000):
-        """
-        Function to sample the axis rotation angle of the elliptical lens galaxy
-
-        Parameters
-        ----------
-            size : `int`
-                number of lens parameters to sample
-
-        Returns
-        -------
-            phi : `float`
-                axis rotation angle of the elliptical lens galaxy
-
-        """
-        # Draw the angles
-        phi = np.random.uniform(0, 2 * np.pi, size=size)
-        return phi
-
-    def sample_galaxy_shear(self, size):
-        """
-        Function to sample the lens galaxy shear
-
-        Parameters
-        ----------
-            size : `int`
-                number of lens parameters to sample
-
-        Returns
-        -------
-            gamma_1 : `float`
-                shear component in the x-direction
-            gamma_2 : `float`
-                shear component in the y-direction
-
-        """
-        # Draw an external shear
-        gamma_1 = norm.rvs(size=size, scale=0.05)
-        gamma_2 = norm.rvs(size=size, scale=0.05)
-        return gamma_1, gamma_2
-
-    def sample_gamma(self, size=1000):
-        """
-        Function to sample the lens galaxy spectral index of the density profile
-
-        Parameters
-        ----------
-            size : `int`
-                number of lens parameters to sample
-
-        Returns
-        -------
-            gamma : `float`
-                spectral index of the density profile
-
-        """
-        self.gamma_mean = 2
-        self.gamma_std = 0.2
-        return np.random.normal(loc=self.gamma_mean, scale=self.gamma_std, size=size)
-
-    def rejection_sample_lensing_probability(self, theta_E):
+    def rjs_with_einstein_radius(self, theta_E):
         """
         Function to conduct rejection sampling wrt einstein radius
 
@@ -652,7 +746,7 @@ class LensGalaxyPopulation(ImageProperties):
         idx = u < theta_E**2
         return idx
 
-    def strong_lensing_optical_depth_SIE(self, zs):
+    def optical_depth_SIE(self, zs):
         """
         Function to compute the strong lensing optical depth SIE
 
@@ -667,9 +761,10 @@ class LensGalaxyPopulation(ImageProperties):
                 strong lensing optical depth
 
         """
+
         # for SIE model
         # dedine a function to calculate the cross section number
-        # here we already assume that we have initialized the crossection spline 
+        # here we already assume that we have initialized the crossection spline
         def getcrosssect_num(theta_E, q):
             fid_b_I = 10.0  # constant
             idx = q > 0.999
@@ -677,13 +772,13 @@ class LensGalaxyPopulation(ImageProperties):
             idx = q < 0.1
             q[idx] = 0.1
             b_I = theta_E * np.sqrt(q)
-            return self.cross_sect_spl(q)*(b_I/fid_b_I)**2
+            return self.cross_sect_spl(q) * (b_I / fid_b_I) ** 2
 
         # theta_E=bsis=einstein_radius_SIS  # refer to compute_einstein_radii
-        
-        return getcrosssect_num(theta_E, q)/(4*np.pi)
 
-    def strong_lensing_optical_depth_SIS(self, zs):
+        return getcrosssect_num(theta_E, q) / (4 * np.pi)
+
+    def optical_depth_SIS(self, zs):
         """
         Function to compute the strong lensing optical depth (SIS)
 
@@ -703,3 +798,167 @@ class LensGalaxyPopulation(ImageProperties):
         Dc = self.z_to_Dc(zs) * 1e-3  # 1e-3 converts Mpc to Gpc
 
         return (Dc / 62.2) ** 3
+
+    def create_lookup_table_lensing(self, z_max):
+        """
+        Functions to create lookup tables
+        1. Redshift to co-moving distance.
+        2. Co-moving distance to redshift.
+        3. Redshift to angular diameter distance.
+        4. Lens redshift sampler helper function.
+
+        Parameters
+        ----------
+        z_max : `float`
+            maximum redshift
+
+        Attributes
+        ----------
+        z_to_Dc : `scipy.interpolate.interpolate`
+            redshift to co-moving distance
+        Dc_to_z : `scipy.interpolate.interpolate`
+            co-moving distance to redshift
+        angular_diameter_distance_z1z2 : `lambda function`
+            redshift to angular diameter distance (between two redshifts)
+        angular_diameter_distance : `lambda function`
+            redshift to angular diameter distance
+        lens_redshift_sampler_helper_function : `scipy.interpolate.interpolate`
+            lens redshift sampler helper function
+        """
+
+        # initialing cosmological functions for fast calculation through interpolation
+        # z_min is fixed to 0.0, as the lens redshifts are drawn between 0.0 and z_max
+        z = np.linspace(0.0, z_max, 500)  # red-shift
+        Dc = self.cosmo.comoving_distance(z).value  # co-moving distance in Mpc
+        self.z_to_Dc = interp1d(z, Dc, kind="cubic")
+        self.Dc_to_z = interp1d(Dc, z, kind="cubic")
+
+        # for angular diameter distance
+        quad_ = []  # refers to integration (with quad algorithm) from scipy
+        for zl in z:
+            quad_.append(
+                quad(
+                    self.cosmo._inv_efunc_scalar,
+                    0.0,
+                    zl,
+                    args=self.cosmo._inv_efunc_scalar_args,
+                )[0]
+            )
+        quad_ = np.array(quad_)
+        quad_int = interp1d(z, np.array(quad_), kind="cubic")
+
+        H0d = self.cosmo._hubble_distance.value
+        self.angular_diameter_distance_z1z2 = (
+            lambda zl0, zs0: H0d * (quad_int(zs0) - quad_int(zl0)) / (zs0 + 1.0)
+        )
+        self.angular_diameter_distance = lambda zs0: H0d * quad_int(zs0) / (zs0 + 1.0)
+
+        # create a lookup table for the lens redshift draws
+        r = np.linspace(0, 1, num=100)
+        # inverse of cdf of the lens redshift distribution
+        u = (
+            10 * r**3 - 15 * r**4 + 6 * r**5
+        )  # See the integral of Eq. A7 of https://arxiv.org/pdf/1807.07062.pdf (cdf)
+        self.lens_redshift_sampler_helper_function = interp1d(
+            u, r, kind="cubic"
+        )  # Computes r(u)
+
+        return None
+
+    @property
+    def sample_source_parameters(self):
+        """
+        Function to sample source parameters conditioned on the source being strongly lensed
+        """
+        return self._sample_source_parameters
+
+    @sample_source_parameters.setter
+    def sample_source_parameters(self, prior):
+        try:
+            self._sample_source_parameters = getattr(self, prior)
+        except:
+            self._sample_source_parameters = prior
+
+    @property
+    def sample_lens_redshift(self):
+        """
+        Function to sample lens redshifts, conditioned on the lens being strongly lensed
+        """
+        return self._sample_lens_redshift
+
+    @sample_lens_redshift.setter
+    def sample_lens_redshift(self, prior):
+        try:
+            self._sample_lens_redshift = getattr(self, prior)
+        except:
+            self._sample_lens_redshift = prior
+
+    @property
+    def sample_velocity_dispersion(self):
+        """
+        Function to sample velocity dispersion from gengamma distribution
+        """
+        return self._sample_velocity_dispersion
+
+    @sample_velocity_dispersion.setter
+    def sample_velocity_dispersion(self, prior):
+        try:
+            self._sample_velocity_dispersion = getattr(self, prior)
+        except:
+            self._sample_velocity_dispersion = prior
+
+    @property
+    def sample_axis_ratio(self):
+        """
+        Function to sample axis ratio from rayleigh distribution with given velocity dispersion.
+        """
+        return self._sample_axis_ratio
+
+    @sample_axis_ratio.setter
+    def sample_axis_ratio(self, prior):
+        try:
+            self._sample_axis_ratio = getattr(self, prior)
+        except:
+            self._sample_axis_ratio = prior
+
+    @property
+    def sample_axis_rotation_angle(self):
+        """
+        Function to sample the axis rotation angle of the elliptical lens galaxy from a uniform distribution
+        """
+        return self._sample_axis_rotation_angle
+
+    @sample_axis_rotation_angle.setter
+    def sample_axis_rotation_angle(self, prior):
+        try:
+            self._sample_axis_rotation_angle = getattr(self, prior)
+        except:
+            self._sample_axis_rotation_angle = prior
+
+    @property
+    def sample_shear(self):
+        """
+        Function to sample the elliptical lens galaxy shear from a normal distribution
+        """
+        return self._sample_shear
+
+    @sample_shear.setter
+    def sample_shear(self, prior):
+        try:
+            self._sample_shear = getattr(self, prior)
+        except:
+            self._sample_shear = prior
+
+    @property
+    def sample_mass_density_spectral_index(self):
+        """
+        Function to sample the lens galaxy spectral index of the mass density profile from a normal distribution
+        """
+        return self._sample_mass_density_spectral_index
+
+    @sample_mass_density_spectral_index.setter
+    def sample_mass_density_spectral_index(self, prior):
+        try:
+            self._sample_mass_density_spectral_index = getattr(self, prior)
+        except:
+            self._sample_mass_density_spectral_index = prior

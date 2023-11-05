@@ -62,7 +62,7 @@ class SourceGalaxyPopulationModel:
     ----------
     >>> from ler.gw_source_population import SourceGalaxyPopulationModel
     >>> cbc = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, merger_rate_density="merger_rate_density_bbh_popI_II_oguri2018")
-    >>> zs = cbc.sample_source_redshifts(size=1000)
+    >>> zs = cbc.sample_redshift_of_source(size=1000)
     >>> zs[:5]
     array([2.9613628 , 1.18360022, 2.47637065, 2.51401502, 4.22868975])
 
@@ -96,7 +96,7 @@ class SourceGalaxyPopulationModel:
     |                                     | merger rate density functions    |
     |                                     | and its parameters               |
     +-------------------------------------+----------------------------------+
-    |:attr:`~sample_source_redshifts`     | Function to sample source        |
+    |:attr:`~sample_redshift_of_source`   | Function to sample source        |
     |                                     | redshifts (source frame)         |
     +-------------------------------------+----------------------------------+
 
@@ -118,10 +118,6 @@ class SourceGalaxyPopulationModel:
     |                                     | table for the differential       |
     |                                     | comoving volume and luminosity   |
     |                                     | distance wrt redshift            |
-    +-------------------------------------+----------------------------------+
-    |:meth:`~sample_source_redshifts`     | Function to sample source        |
-    |                                     | redshifts from the source        |
-    |                                     | galaxy population model          |
     +-------------------------------------+----------------------------------+
     |:meth:`~merger_rate_density_bbh_popI_II_oguri2018`                      |
     +-------------------------------------+----------------------------------+
@@ -221,8 +217,8 @@ class SourceGalaxyPopulationModel:
 
         # Inverse transform sampling
         # create sampler using the pdf p(z)
-        # Dont be fooled by the '=' sign. self.pdf_z generates probability density function but self.sample_source_redshifts is a sampler.
-        self.sample_source_redshifts = self.pdf_z
+        # Dont be fooled by the '=' sign. self.pdf_z generates probability density function but self.sample_redshift_of_source is a sampler.
+        self.sample_redshift_of_source = self.pdf_z
 
         return None
     
@@ -270,14 +266,14 @@ class SourceGalaxyPopulationModel:
         return self._merger_rate_density_model_list
     
     @property
-    def sample_source_redshifts(self):
+    def sample_redshift_of_source(self):
         """
         Function to sample source redshifts (source frame) between z_min and z_max from the source galaxy population
         """
-        return self._sample_source_redshifts
+        return self._sample_redshift_of_source
     
-    @sample_source_redshifts.setter
-    def sample_source_redshifts(self, pdf_z):
+    @sample_redshift_of_source.setter
+    def sample_redshift_of_source(self, pdf_z):
         # Inverse transform sampling
         if self.z_min==0.:
             z = [0.]+np.geomspace(0.001, self.z_max, 99).tolist()
@@ -292,7 +288,7 @@ class SourceGalaxyPopulationModel:
                     )[0])
             
         inv_cdf = interp1d(cdf_arr, z, kind='cubic')
-        self._sample_source_redshifts = lambda size: inv_cdf(np.random.uniform(0, 1, size=size))
+        self._sample_redshift_of_source = lambda size: inv_cdf(np.random.uniform(0, 1, size=size))
 
     def pdf_z(self, zs, param=None):
         """
@@ -834,6 +830,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         self.prior_bilby = bilby.gw.prior.BBHPriorDict()
 
         # initializing samplers
+        # it goes through the setter function first
         self.sample_source_frame_masses = self.gw_param_samplers["source_frame_masses"]
         self.sample_geocent_time = self.gw_param_samplers["geocent_time"]
         self.sample_source_redshifts = self.gw_param_samplers["zs"]
@@ -976,7 +973,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
                 merger_rate_density="merger_rate_density_bbh_popI_II_oguri2018",
                 source_frame_masses="binary_masses_BBH_popI_II_powerlaw_gaussian",
                 spin="binary_spin_BBH_bilby",
-                zs="sample_source_redshifts",
+                zs="sample_redshift",
                 geocent_time="geocent_time_uniform",
                 sky_position="sky_position_uniform_bilby",
                 phase="coalescence_phase_uniform_bilby",
@@ -1011,7 +1008,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
                 merger_rate_density="merger_rate_density_bbh_popI_II_oguri2018",
                 source_frame_masses="binary_masses_BNS_bimodal",
                 spin="binary_spin_aligned",
-                zs="sample_source_redshifts",
+                zs="sample_redshift",
                 geocent_time="geocent_time_uniform",
                 sky_position="sky_position_uniform_bilby",
                 phase="coalescence_phase_uniform_bilby",
@@ -1130,8 +1127,47 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
                 gw_parameters["phi_jl"],
             ) = gw_parameters["spin"]
             del gw_parameters["spin"]
+        # sky position
+        gw_parameters["ra"], gw_parameters["dec"] = gw_parameters["sky_position"]
+        del gw_parameters["sky_position"]
 
         return gw_parameters
+    
+    def sample_redshift(self, size, z_min=0., z_max=10., param=None):
+        """
+        Function to sample redshifts with the initialized prior.
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+        param : `dict`
+            Allows to pass in above parameters as dict.
+            e.g. param = dict(z_min=0.0001, z_max=10)
+
+        Returns
+        ----------
+        zs : `array`
+            Array of sampled redshifts
+
+        Examples
+        ----------
+        >>> from ler.gw_source_population import CompactBinaryPopulation
+        >>> cbc = CompactBinaryPopulation()
+        >>> zs = cbc.sample_redshift(size=1000)
+        """
+
+        if param:
+            z_min = param["z_min"]
+            z_max = param["z_max"]
+        #zs = self.sample_redshift_of_source(size)
+        size_ = 0
+        while size_ < size:
+            zs = self.sample_redshift_of_source(size)
+            zs = zs[(zs >= z_min) & (zs <= z_max)]
+            size_ = len(zs)
+
+        return zs
 
     def binary_masses_BBH_popI_II_powerlaw_gaussian(
         self,
