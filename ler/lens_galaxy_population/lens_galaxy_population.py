@@ -430,8 +430,8 @@ class LensGalaxyPopulation(CompactBinaryPopulation, ImageProperties):
 
         for name, sampler, param in zip(param_names, sampler_names, samplers_params):
             if name not in kwargs:
-                print(f"Sampling {name}...")
-                print(f"Using {sampler}...")
+                #print(f"Sampling {name}...")
+                #print(f"Using {sampler}...")
                 # Sample the parameter using the specified sampler function
                 getattr(self, sampler)(size=size, param=param);
             else:
@@ -445,7 +445,30 @@ class LensGalaxyPopulation(CompactBinaryPopulation, ImageProperties):
         param_dict["e1"], param_dict["e2"] = phi_q2_ellipticity(
             param_dict["axis_rotation_angle"], param_dict["q"]
         )
-        
+
+        # Rejection sample based on the lensing probability
+        mask = self.rejection_sample_sl(
+            param_dict["theta_E"]
+        )
+        param_dict = {key: val[mask] for key, val in param_dict.items()}
+
+        # Add the lensing parameter dictionaries together
+        # Note: This is done after rejection sampling, so that we don't have to worry about the size of the dictionary
+        lens_parameters = add_dictionaries_together(lens_parameters, param_dict)
+
+        # Check if the lens are larger than requested size
+        if len(lens_parameters["zl"]) >= size:
+            # Trim dicitionary to right size
+            lens_parameters = trim_dictionary(lens_parameters, size)
+            param_dict = lens_parameters
+            return lens_parameters
+        else:
+            # Run iteratively until we have the right number of lensing parmaeters
+            print("current sampled size", len(lens_parameters['zl']))
+            return self.sample_lens_parameters_routine(
+                size=size, lens_parameters_input=lens_parameters
+            )
+
 
     def sample_strongly_lensed_source_parameters(self, size=1000, param=None):
         """
@@ -780,7 +803,8 @@ class LensGalaxyPopulation(CompactBinaryPopulation, ImageProperties):
 
     def optical_depth_SIS(self, zs):
         """
-        Function to compute the strong lensing optical depth (SIS)
+        Function to compute the strong lensing optical depth (SIS). \n
+        LambdaCDM(H0=70, Om0=0.3, Ode0=0.7) was used to derive the following equation.
 
         Parameters
         ----------
