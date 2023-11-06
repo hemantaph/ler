@@ -29,7 +29,8 @@ Classes
 
 
 
-.. py:class:: SourceGalaxyPopulationModel(z_min=0.0, z_max=10.0, event_type='popI_II', merger_rate_density_fn=None, merger_rate_density_param=None)
+.. py:class:: SourceGalaxyPopulationModel(z_min=0.0, z_max=10.0, event_type='popI_II', category='Oguri', merger_rate_density_fn=None, merger_rate_density_param=None)
+
 
    
    Class to generate a population of source galaxies.
@@ -318,7 +319,7 @@ Classes
       .. rubric:: Examples
 
       >>> from ler import SourceGalaxyPopulationModel
-      >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popI_II")
+      >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popI_II_Oguri")
       >>> zs = pop.sample_source_redshifts(size=1000)
       >>> zs
       array([0.0001, 0.0001, 0.0001, ..., 9.9999, 9.9999, 9.9999])
@@ -328,7 +329,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: merger_rate_density_popI_II(zs, R0=23.9 * 1e-09, b2=1.6, b3=2.0, b4=30)
+   .. py:method:: merger_rate_density_popI_II_Oguri(zs, R0=23.9 * 1e-09, b2=1.6, b3=2.0, b4=30)
 
       
       Function to compute the merger rate density (PopI/PopII)
@@ -372,8 +373,8 @@ Classes
       .. rubric:: Examples
 
       >>> from ler import SourceGalaxyPopulationModel
-      >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popI_II")
-      >>> rate_density = pop.merger_rate_density_popI_II(zs=0.1)
+      >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popI_II_Oguri")
+      >>> rate_density = pop.merger_rate_density_popI_II_Oguri(zs=0.1)
       >>> rate_density
       2.7848018586883885e-08
 
@@ -432,7 +433,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: merger_rate_density_popIII(zs, aIII=0.66, bIII=0.3, zIII=11.6)
+   .. py:method:: merger_rate_density_popIII_Ken(zs, aIII=0.66, bIII=0.3, zIII=11.6)
 
       
       Function to compute the unnormalized merger rate density (PopIII)
@@ -482,7 +483,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: merger_rate_density_primordial(zs, t0=13.786885302009708)
+   .. py:method:: merger_rate_density_primordial_Ken(zs, t0=13.786885302009708)
 
       
       Function to compute the merger rate density (Primordial)
@@ -525,7 +526,8 @@ Classes
           !! processed by numpydoc !!
 
 
-.. py:class:: CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type='popI_II', merger_rate_density_fn=None, merger_rate_density_param=None, src_model_params=None, spin_zero=False)
+.. py:class:: CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=None, m_max=None, event_type='BBH', category=None, sub_category=None, redshift_event_type=None, redshift_category=None, merger_rate_density_fn=None, merger_rate_density_param=None, src_model_params=None, redshift_constant=False, mass_constant=False, spin_constant=0.0)
+
 
    Bases: :py:obj:`SourceGalaxyPopulationModel`
 
@@ -833,7 +835,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_popI_II(size, alpha=3.63, beta=1.26, delta_m=4.82, mmin=4.59, mmax=86.22, lambda_peak=0.08, mu_g=33.07, sigma_g=5.69)
+   .. py:method:: binary_masses_BBH_popI_II_gwcosmo(size, alpha=3.63, beta=1.26, delta_m=4.82, mmin=4.59, mmax=86.22, lambda_peak=0.08, mu_g=33.07, sigma_g=5.69)
 
       
       Function to calculate source mass1 and mass2 with PowerLaw+PEAK model
@@ -877,7 +879,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_popIII(size, Mc=30.0, sigma=0.3, beta=1.1)
+   .. py:method:: binary_masses_BBH_popIII_gwcosmo(size, Mc=30.0, sigma=0.3, beta=1.1)
 
       
       Function to calculate source mass1 and mass2 with pop III origin
@@ -920,7 +922,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_primordial(size, Mc=30.0, sigma=0.3, beta=1.1)
+   .. py:method:: binary_masses_BBH_primordial_lognormal(size, Mc=30.0, sigma=0.3, beta=1.1)
 
       
       Function to calculate source mass1 and mass2 for primordial BBHs
@@ -963,10 +965,10 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BNS(size, muL=1.35, sigmaL=0.08, muR=1.8, sigmaR=0.3)
+   .. py:method:: binary_masses_BNS_popI_II_gwcosmo(size, mminns=1.0, mmaxns=3.0, alphans=0.0)
 
       
-      Function to calculate source mass1 and mass2 of BNS
+      Function to calculate source mass1 and mass2 of BNS (gwcosmo)
 
 
       :Parameters:
@@ -974,9 +976,17 @@ Classes
           **size** : `int`
               Number of samples to draw
 
-          **muL, sigmaL, muR, sigmaR** : `float`
-              Fitting parameters
-              default: muL=1.35, sigmaL=0.08, muR=1.8, sigmaR=0.3
+          **mminns** : `float`
+              Minimum mass of the BNS
+              default: 1.0
+
+          **mmaxns** : `float`
+              Maximum mass of the BNS
+              default: 3.0
+
+          **alphans** : `float`
+              Power law index
+              default: 0.0
 
       :Returns:
 
@@ -995,11 +1005,52 @@ Classes
 
 
 
-      .. rubric:: Examples
 
-      >>> from ler import CompactBinaryPopulation
-      >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=1.0, m_max=3.0, event_type = "BNS")
-      >>> mass_1_source, mass_2_source = pop.binary_masses_BNS(size=1000)
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: binary_masses_BNS_popI_II_Alsing(size, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3)
+
+      
+      Function to calculate source mass1 and mass2 of BNS (Alsing)
+
+
+      :Parameters:
+
+          **size** : `int`
+              Number of samples to draw
+
+          **w, muL, sigmaL, muR, sigmaR** : `float`
+              Fitting parameters
+              default: w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3
+
+          **mmin** : `float`
+              Minimum mass of the BNS
+              default: 1.0
+
+          **mmax** : `float`
+              Maximum mass of the BNS
+              default: 3.0
+
+      :Returns:
+
+          **mass_1_source** : `array`
+              Array of mass1 in source frame
+
+          **mass_2_source** : `array`
+              Array of mass2 in source frame
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1045,7 +1096,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_spin_popI_II(size)
+   .. py:method:: binary_spin_BBH(size)
 
       
       Function to calculate spin parameters with PowerLaw+PEAK model
@@ -1089,7 +1140,7 @@ Classes
 
       >>> from ler import CompactBinaryPopulation
       >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
-      >>> a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl = pop.binary_spin_popI_II(size=1000)
+      >>> a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl = pop.binary_spin_BBH(size=1000)
 
 
 
