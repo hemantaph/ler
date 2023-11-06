@@ -28,7 +28,6 @@ Functions
 
 .. autoapisummary::
 
-   ler.helperroutines.update_dict
    ler.helperroutines.append_json
    ler.helperroutines.get_param_from_json
    ler.helperroutines.rejection_sample
@@ -107,29 +106,6 @@ Functions
       ..
           !! processed by numpydoc !!
 
-
-.. py:function:: update_dict(old, new)
-
-   
-   Update a dictionary with keys and values.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
 
 .. py:function:: append_json(file_name, dictionary, replace=False)
 

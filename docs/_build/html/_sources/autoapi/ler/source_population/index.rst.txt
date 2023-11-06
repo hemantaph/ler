@@ -29,7 +29,7 @@ Classes
 
 
 
-.. py:class:: SourceGalaxyPopulationModel(z_min=0.0, z_max=10.0, event_type='BBH', merger_rate_density='merger_rate_density_bbh_popI_II_oguri', merger_rate_density_param=None)
+.. py:class:: SourceGalaxyPopulationModel(z_min=0.0001, z_max=10.0, event_type='popI_II', category='Oguri', merger_rate_density_fn=None, merger_rate_density_param=None)
 
 
    
@@ -49,17 +49,8 @@ Classes
 
        **event_type** : `str`
            Type of event to generate
-           e.g. 'BBH', 'BNS', 'BBH_popIII', 'BBH_primordial', 'NSBH'
-           default: 'BBH'
-
-       **merger_rate_density** : `str`
-           Type of merger rate density function to use
-           default: None/'merger_rate_density_popI_II_Oguri'
-           for others see instance method in :class:`~ler.ler.SourceGalaxyPopulationModel`
-
-       **merger_rate_density_param** : `dict`
-           Dictionary of merger rate density function parameters
-           default: None
+           e.g. 'popI_II', 'BNS', 'popIII', 'primordial', 'popI_II_Madau_Dickinson'
+           default: 'popI_II'
 
 
 
@@ -74,7 +65,7 @@ Classes
    .. rubric:: Examples
 
    >>> from ler import SourceGalaxyPopulationModel
-   >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "BBH")
+   >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popI_II")
    >>> zs = pop.sample_source_redshifts(size=1000)
    >>> zs
    array([0.0001, 0.0001, 0.0001, ..., 9.9999, 9.9999, 9.9999])
@@ -89,8 +80,6 @@ Classes
    |:attr:`~z_min`                       | `float`                          |
    +-------------------------------------+----------------------------------+
    |:attr:`~z_max`                       | `float`                          |
-   +-------------------------------------+----------------------------------+
-   |:attr:`~event_type`                  | `str`                            |
    +-------------------------------------+----------------------------------+
    |:attr:`~normalization_pdf_z`         | `float`                          |
    +-------------------------------------+----------------------------------+
@@ -115,21 +104,16 @@ Classes
    |                                     | redshifts from the source        |
    |                                     | galaxy population model          |
    +-------------------------------------+----------------------------------+
-   |:meth:`~merger_rate_density_bbh_popI_II_oguri`                          |
-   +-------------------------------------+----------------------------------+
-   |                                     | Function to compute the merger   |
+   |:meth:`~merger_rate_density_popI_II` | Function to compute the merger   |
    |                                     | rate density (PopI/PopII)        |
-   |                                     | from Oguri et al. (2018)         |
    +-------------------------------------+----------------------------------+
-   |:meth:`~merger_rate_density_bbh_popI_II_madau_dickinson`                |
+   |:meth:`~merger_rate_density_popI_II_Madau_Dickinson`                    |
    +-------------------------------------+----------------------------------+
    |                                     | Function to compute the          |
    |                                     | merger rate density (PopI/PopII) |
    |                                     | from Madau & Dickinson (2014)    |
    +-------------------------------------+----------------------------------+
-   |:meth:`~merger_rate_density_bbh_popIII`                                 |
-   +-------------------------------------+----------------------------------+
-   |                                     | Function to compute the merger   |
+   |:meth:`~merger_rate_density_popIII`  | Function to compute the merger   |
    |                                     | rate density (PopIII)            |
    +-------------------------------------+----------------------------------+
    |:meth:`~merger_rate_density_primordial`                                 |
@@ -172,32 +156,6 @@ Classes
       ``float``
 
       Maximum redshift of the source population
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:attribute:: event_type
-
-      
-      ``str``
-
-      Type of event to generate.
-
-      e.g. 'BBH', 'BNS', 'BBH_popIII', 'BBH_primordial', 'NSBH'
 
 
 
@@ -326,10 +284,10 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: sample_source_redshifts(size=1000, z_min=0.0, z_max=10.0, param=None)
+   .. py:method:: sample_source_redshifts(size=1000, z_min=0.0, z_max=10.0)
 
       
-      Function to sample source redshifts (source frame) from the source galaxy population
+      Function to sample source redshifts from the source galaxy population
       model
 
 
@@ -337,20 +295,12 @@ Classes
 
           **size** : `int`
               Number of samples to draw
-              default: 1000
 
           **z_min** : `float`
               Minimum redshift of the source population
-              default: 0.
 
           **z_max** : `float`
               Maximum redshift of the source population
-              default: 10.
-
-          **param** : `dict`
-              Allows to pass in above parameters as dict.
-              e.g. param = dict(z_min=0.0, z_max=10.0)
-              default: None
 
       :Returns:
 
@@ -369,7 +319,7 @@ Classes
       .. rubric:: Examples
 
       >>> from ler import SourceGalaxyPopulationModel
-      >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "BBH")
+      >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popI_II_Oguri")
       >>> zs = pop.sample_source_redshifts(size=1000)
       >>> zs
       array([0.0001, 0.0001, 0.0001, ..., 9.9999, 9.9999, 9.9999])
@@ -379,10 +329,10 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: merger_rate_density_bbh_popI_II_oguri(zs, R0=23.9 * 1e-09, b2=1.6, b3=2.0, b4=30, param=None)
+   .. py:method:: merger_rate_density_popI_II_Oguri(zs, R0=23.9 * 1e-09, b2=1.6, b3=2.0, b4=30)
 
       
-      Function to compute the merger rate density (PopI/PopII). Reference: Oguri et al. (2018)
+      Function to compute the merger rate density (PopI/PopII)
 
 
       :Parameters:
@@ -406,11 +356,6 @@ Classes
               Fitting paramters
               default: 30
 
-          **param** : `dict`
-              Allows to pass in above parameters as dict.
-              e.g. param = dict(R0=23.9*1e-9, b2=1.6, b3=2.0, b4=30)
-              default: None
-
       :Returns:
 
           **rate_density** : `float`
@@ -428,8 +373,8 @@ Classes
       .. rubric:: Examples
 
       >>> from ler import SourceGalaxyPopulationModel
-      >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "BBH", merger_rate_density="merger_rate_density_popI_II_Oguri")
-      >>> rate_density = pop.merger_rate_density(zs=0.1)
+      >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popI_II_Oguri")
+      >>> rate_density = pop.merger_rate_density_popI_II_Oguri(zs=0.1)
       >>> rate_density
       2.7848018586883885e-08
 
@@ -438,7 +383,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: merger_rate_density_bbh_popI_II_madau_dickinson(zs, af=2.7, bf=5.6, cf=1.9, param=None)
+   .. py:method:: merger_rate_density_popI_II_Madau_Dickinson(zs, af=2.7, bf=5.6, cf=1.9)
 
       
       Function to compute the unormalized merger rate density (PopI/PopII) from Madau & Dickinson (2014)
@@ -461,11 +406,6 @@ Classes
               Fitting paramters
               default: 1.9
 
-          **param** : `dict`
-              Allows to pass in above parameters as dict.
-              e.g. param = dict(af=2.7, bf=5.6, cf=1.9)
-              default: None
-
       :Returns:
 
           **rate_density** : `float`
@@ -483,8 +423,8 @@ Classes
       .. rubric:: Examples
 
       >>> from ler import SourceGalaxyPopulationModel
-      >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "BBH", merger_rate_density="merger_rate_density_bbh_popI_II_madau_dickinson")
-      >>> rate_density = pop.merger_rate_density(zs=0.1)
+      >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popI_II_Madau_Dickinson")
+      >>> rate_density = pop.merger_rate_density_popI_II_Madau_Dickinson(zs=0.1)
       >>> rate_density
       1.2355851838964846
 
@@ -493,10 +433,10 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: merger_rate_density_popIII_ken(zs, aIII=0.66, bIII=0.3, zIII=11.6, param=None)
+   .. py:method:: merger_rate_density_popIII_Ken(zs, aIII=0.66, bIII=0.3, zIII=11.6)
 
       
-      Function to compute the unnormalized merger rate density (PopIII). Reference: Ken K. Y. Ng et al. (2022)
+      Function to compute the unnormalized merger rate density (PopIII)
 
 
       :Parameters:
@@ -516,11 +456,6 @@ Classes
               Fitting paramters
               default: 11.6
 
-          **param** : `dict`
-              Allows to pass in above parameters as dict.
-              e.g. param = dict(aIII=0.66, bIII=0.3, zIII=11.6)
-              default: None
-
       :Returns:
 
           **rate_density** : `float`
@@ -538,8 +473,8 @@ Classes
       .. rubric:: Examples
 
       >>> from ler import SourceGalaxyPopulationModel
-      >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "BBH", merger_rate_density="merger_rate_density_popIII_Ken")
-      >>> rate_density = pop.merger_rate_density(zs=0.1)
+      >>> pop = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, event_type = "popIII")
+      >>> rate_density = pop.merger_rate_density_popIII(zs=0.1)
       >>> rate_density
       0.00010000000000000002
 
@@ -548,10 +483,10 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: merger_rate_density_primordial_ken(zs, t0=13.786885302009708, param=None)
+   .. py:method:: merger_rate_density_primordial_Ken(zs, t0=13.786885302009708)
 
       
-      Function to compute the merger rate density (Primordial). Reference: Ken K. Y. Ng et al. (2022)
+      Function to compute the merger rate density (Primordial)
 
 
       :Parameters:
@@ -591,7 +526,7 @@ Classes
           !! processed by numpydoc !!
 
 
-.. py:class:: CompactBinaryPopulation(z_min=0.0001, z_max=10, event_type='BBH', event_priors=None, event_priors_params=None)
+.. py:class:: CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=None, m_max=None, event_type='BBH', category=None, sub_category=None, redshift_event_type=None, redshift_category=None, merger_rate_density_fn=None, merger_rate_density_param=None, src_model_params=None, redshift_constant=False, mass_constant=False, spin_constant=0.0)
 
 
    Bases: :py:obj:`SourceGalaxyPopulationModel`
@@ -815,32 +750,22 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: event_priors_categorization(event_type, event_priors, event_prior_params)
+   .. py:attribute:: src_model_params
 
       
-      Function to sample BBH parameters from the source galaxy population
-      model
+      ``dict``
 
+      Dictionary of model parameters.
 
-      :Parameters:
+      e.g. for popI_II: {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
 
-          **event_type** : `str`
-              Type of event to generate.
-              e.g. 'BBH', 'BNS', 'BBH_popIII', 'BBH_primordial', 'NSBH'
+      for popI_II_Madau_Dickinson: {'alpha': 3.63, 'beta': 1.26, 'delta_m': 4.82, 'mmin': 4.59, 'mmax': 86.22, 'lambda_peak': 0.08, 'mu_g': 33.07, 'sigma_g': 5.69}
 
-          **event_priors** : `dict`
-              Dictionary of prior sampler functions for each parameter
+      for popIII: None
 
-          **event_prior_params** : `dict`
-              Dictionary of sampler parameters for each parameter
+      for primordial: {'Mc':30.,'sigma':0.3,'beta':1.1}
 
-      :Returns:
-
-          **event_priors_** : `dict`
-              Dictionary of prior sampler functions for each parameter
-
-          **event_prior_params_** : `dict`
-              Dictionary of sampler parameters for each parameter
+      for BNS: None
 
 
 
@@ -851,13 +776,22 @@ Classes
 
 
 
+
+
+      .. rubric:: Examples
+
+      >>> from ler import CompactBinaryPopulation
+      >>> pop = CompactBinaryPopulation(z_min=0.0001, z_max=10, m_min=4.59, m_max=86.22, event_type = "popI_II")
+      >>> method_list = [method for method in dir(pop) if method.startswith('__') is False]
+      >>> print(method_list)
+      ['create_lookup_table', 'differential_comoving_volume', 'merger_rate_density', 'merger_rate_density_popIII', 'merger_rate_density_popI_II', 'merger_rate_density_popI_II_Madau_Dickinson', 'merger_rate_density_primordial', 'normalization_pdf_z', 'sample_source_redshifts', 'z_max', 'z_min', 'z_to_luminosity_distance']
 
 
 
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: sample_gw_parameters(nsamples=1000, **kwargs)
+   .. py:method:: sample_gw_parameters(nsamples=1000, verbose=False, **kwargs)
 
       
       Function to sample BBH parameters from the source galaxy population
@@ -901,7 +835,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BBH_popI_II_powerlaw_gaussian(size, mminbh=4.98, mmaxbh=112.5, alpha=3.78, mu_g=32.27, sigma_g=3.88, lambda_peak=0.03, delta_m=4.8, beta=0.81, param=None)
+   .. py:method:: binary_masses_BBH_popI_II_gwcosmo(size, alpha=3.63, beta=1.26, delta_m=4.82, mmin=4.59, mmax=86.22, lambda_peak=0.08, mu_g=33.07, sigma_g=5.69)
 
       
       Function to calculate source mass1 and mass2 with PowerLaw+PEAK model
@@ -1077,7 +1011,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BNS_popI_II_Alsing(size, param=dict(w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3))
+   .. py:method:: binary_masses_BNS_popI_II_Alsing(size, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3)
 
       
       Function to calculate source mass1 and mass2 of BNS (Alsing)

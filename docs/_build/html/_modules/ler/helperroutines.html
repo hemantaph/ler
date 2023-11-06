@@ -13,14 +13,14 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=000c92bf"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../_static/copybutton.js?v=f281be69"></script>
-        <script src="../../_static/tabs.js?v=3030b3cb"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/tabs.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -48,7 +48,6 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Unlensed%20events.html">Unlensed events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Lensed%20events.html">Lensed events</a></li>
 </ul>
@@ -101,9 +100,7 @@
 <span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">10000</span>
 
 
-<div class="viewcode-block" id="NumpyEncoder">
-<a class="viewcode-back" href="../../autoapi/ler/helperroutines/index.html#ler.helperroutines.NumpyEncoder">[docs]</a>
-<span class="k">class</span> <span class="nc">NumpyEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
+<div class="viewcode-block" id="NumpyEncoder"><a class="viewcode-back" href="../../autoapi/ler/helperroutines/index.html#ler.helperroutines.NumpyEncoder">[docs]</a><span class="k">class</span> <span class="nc">NumpyEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    class for storing a numpy.ndarray or any nested-list composition as JSON file</span>
 
@@ -136,30 +133,13 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="NumpyEncoder.default">
-<a class="viewcode-back" href="../../autoapi/ler/helperroutines/index.html#ler.helperroutines.NumpyEncoder.default">[docs]</a>
-    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<div class="viewcode-block" id="NumpyEncoder.default"><a class="viewcode-back" href="../../autoapi/ler/helperroutines/index.html#ler.helperroutines.NumpyEncoder.default">[docs]</a>    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span></div>
-</div>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="update_dict">
-<a class="viewcode-back" href="../../autoapi/ler/helperroutines/index.html#ler.helperroutines.update_dict">[docs]</a>
-<span class="k">def</span> <span class="nf">update_dict</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Update a dictionary with keys and values.&quot;&quot;&quot;</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="n">old</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">new</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
-            <span class="n">old</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="k">return</span> <span class="n">old</span></div>
-
-
-<div class="viewcode-block" id="append_json">
-<a class="viewcode-back" href="../../autoapi/ler/helperroutines/index.html#ler.helperroutines.append_json">[docs]</a>
-<span class="k">def</span> <span class="nf">append_json</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="append_json"><a class="viewcode-back" href="../../autoapi/ler/helperroutines/index.html#ler.helperroutines.append_json">[docs]</a><span class="k">def</span> <span class="nf">append_json</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Append and update a json file with a dictionary.</span>
 
 <span class="sd">    Parameters</span>
@@ -194,10 +174,7 @@
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_dump</span><span class="p">),</span> <span class="n">write_file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="get_param_from_json">
-<a class="viewcode-back" href="../../autoapi/ler/helperroutines/index.html#ler.helperroutines.get_param_from_json">[docs]</a>
-<span class="k">def</span> <span class="nf">get_param_from_json</span><span class="p">(</span><span class="n">json_file</span><span class="p">):</span>
+<div class="viewcode-block" id="get_param_from_json"><a class="viewcode-back" href="../../autoapi/ler/helperroutines/index.html#ler.helperroutines.get_param_from_json">[docs]</a><span class="k">def</span> <span class="nf">get_param_from_json</span><span class="p">(</span><span class="n">json_file</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to get the parameters from json file.</span>
 
@@ -218,10 +195,7 @@
     <span class="k">return</span> <span class="n">param</span></div>
 
 
-
-<div class="viewcode-block" id="rejection_sample">
-<a class="viewcode-back" href="../../autoapi/ler/index.html#ler.helperroutines.rejection_sample">[docs]</a>
-<span class="k">def</span> <span class="nf">rejection_sample</span><span class="p">(</span><span class="n">pdf</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<div class="viewcode-block" id="rejection_sample"><a class="viewcode-back" href="../../autoapi/ler/index.html#ler.helperroutines.rejection_sample">[docs]</a><span class="k">def</span> <span class="nf">rejection_sample</span><span class="p">(</span><span class="n">pdf</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper function for rejection sampling from a pdf with maximum and minimum arguments.</span>
 <span class="sd">    Input parameters:</span>
@@ -247,7 +221,6 @@
     <span class="n">x_sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x_sample</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
     <span class="c1"># Return the correct number of samples</span>
     <span class="k">return</span> <span class="n">x_sample</span><span class="p">[:</span><span class="n">size</span><span class="p">]</span></div>
-
 
 <span class="k">def</span> <span class="nf">rejection_sample2d</span><span class="p">(</span><span class="n">pdf</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
     
@@ -278,9 +251,7 @@
     <span class="c1"># Return the correct number of samples</span>
     <span class="k">return</span> <span class="n">x_sample</span><span class="p">[:</span><span class="n">size</span><span class="p">],</span> <span class="n">y_sample</span><span class="p">[:</span><span class="n">size</span><span class="p">]</span>
 
-<div class="viewcode-block" id="add_dictionaries_together">
-<a class="viewcode-back" href="../../autoapi/ler/index.html#ler.helperroutines.add_dictionaries_together">[docs]</a>
-<span class="k">def</span> <span class="nf">add_dictionaries_together</span><span class="p">(</span><span class="n">dictionary1</span><span class="p">,</span> <span class="n">dictionary2</span><span class="p">):</span>
+<div class="viewcode-block" id="add_dictionaries_together"><a class="viewcode-back" href="../../autoapi/ler/index.html#ler.helperroutines.add_dictionaries_together">[docs]</a><span class="k">def</span> <span class="nf">add_dictionaries_together</span><span class="p">(</span><span class="n">dictionary1</span><span class="p">,</span> <span class="n">dictionary2</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds two dictionaries with the same keys together.&quot;&quot;&quot;</span>
     <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="c1"># Check if either dictionary empty, in which case only return the dictionary with values</span>
@@ -307,10 +278,7 @@
     <span class="k">return</span> <span class="n">dictionary</span></div>
 
 
-
-<div class="viewcode-block" id="trim_dictionary">
-<a class="viewcode-back" href="../../autoapi/ler/helperroutines/index.html#ler.helperroutines.trim_dictionary">[docs]</a>
-<span class="k">def</span> <span class="nf">trim_dictionary</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+<div class="viewcode-block" id="trim_dictionary"><a class="viewcode-back" href="../../autoapi/ler/helperroutines/index.html#ler.helperroutines.trim_dictionary">[docs]</a><span class="k">def</span> <span class="nf">trim_dictionary</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Filters an event dictionary to only contain the size.&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="c1"># Check if the item is an ndarray</span>
@@ -326,7 +294,6 @@
                 <span class="s2">&quot;The dictionary contains an item which is neither an ndarray nor a dictionary.&quot;</span>
             <span class="p">)</span>
     <span class="k">return</span> <span class="n">dictionary</span></div>
-
 </pre></div>
 
            </div>
