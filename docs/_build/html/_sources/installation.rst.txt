@@ -10,7 +10,7 @@ Installation
         
      .. code-tab:: console pip
 
-        pip install ler
+        pip install ler gwcosmo@git+https://git.ligo.org/lscsoft/gwcosmo.git@v1.0.0
 
 
 This will also install the dependencies needed by the lastest ``ler`` version.  
