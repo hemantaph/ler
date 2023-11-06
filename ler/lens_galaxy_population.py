@@ -188,7 +188,7 @@ class LensGalaxyPopulation:
             # initialization of clasess
             # CompactBinaryPopulation already inherits from Source_Galaxy_Population_Model class form source_population.py
             self.cbc_pop = CompactBinaryPopulation(
-                z_min=0.0,
+                z_min=0.0001,
                 z_max=10.0,
                 m_min=4.59,
                 m_max=86.22,

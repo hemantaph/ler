@@ -200,7 +200,7 @@ class LeR:
         self,
         nsamples=100000,
         npool=int(4),
-        z_min=0.0,
+        z_min=0.0001,
         z_max=10.0,
         batch_size=25000,
         snr_finder="gwsnr",

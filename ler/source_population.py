@@ -132,7 +132,7 @@ class SourceGalaxyPopulationModel:
 
     def __init__(
             self,
-            z_min=0.0,
+            z_min=0.0001,
             z_max=10.0,
             event_type="popI_II",
             category="Oguri",
