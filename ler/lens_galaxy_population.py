@@ -3,7 +3,9 @@
 This module contains the LensGalaxyPopulation class, which is used to sample lens galaxy parameters, source parameters conditioned on the source being strongly lensed, image properties, and lensed SNRs. \n
 The class inherits from the CompactBinaryPopulation class, which is used to sample source parameters. \n
 """
+import warnings
 
+warnings.filterwarnings("ignore")
 import numpy as np
 from scipy.stats import gengamma, rayleigh, norm
 from scipy.interpolate import interp1d

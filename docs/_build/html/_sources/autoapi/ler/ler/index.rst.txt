@@ -24,8 +24,7 @@ Classes
 
 
 
-.. py:class:: LeR(nsamples=100000, npool=int(4), z_min=0.0001, z_max=10.0, batch_size=25000, snr_finder='gwsnr', json_file_ler_param='./LeR_params.json', **kwargs)
-
+.. py:class:: LeR(nsamples=100000, npool=int(4), z_min=0.0, z_max=10.0, batch_size=25000, snr_finder='gwsnr', json_file_ler_param='./LeR_params.json', **kwargs)
 
    
    Class to calculate both the rates of lensed and unlensed events.
