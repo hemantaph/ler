@@ -24,7 +24,7 @@ setup(
     packages=find_packages(),
     python_requires='>=3.10',
     install_requires=[
-        "setuptools>=67.8.0",
+        "setuptools>=65.5.0",
         "numpy>=1.18",
         "numba>=0.57.1",
         "bilby>=1.0.2",
