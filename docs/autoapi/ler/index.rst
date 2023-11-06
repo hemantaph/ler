@@ -1,9 +1,30 @@
-:orphan:
-
 :py:mod:`ler`
 =============
 
 .. py:module:: ler
+
+.. autoapi-nested-parse::
+
+   
+   LeR
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 
 Submodules
@@ -46,7 +67,7 @@ Functions
 
 
 
-.. py:class:: LeR(nsamples=100000, npool=int(4), z_min=0.0, z_max=10.0, batch_size=25000, snr_finder='gwsnr', json_file_ler_param='./LeR_params.json', **kwargs)
+.. py:class:: LeR(nsamples=100000, npool=int(4), z_min=0.0001, z_max=10.0, batch_size=25000, snr_finder='gwsnr', json_file_ler_param='./LeR_params.json', **kwargs)
 
 
    
@@ -2250,7 +2271,7 @@ Functions
           !! processed by numpydoc !!
 
 
-.. py:class:: SourceGalaxyPopulationModel(z_min=0.0, z_max=10.0, event_type='popI_II', category='Oguri', merger_rate_density_fn=None, merger_rate_density_param=None)
+.. py:class:: SourceGalaxyPopulationModel(z_min=0.0001, z_max=10.0, event_type='popI_II', category='Oguri', merger_rate_density_fn=None, merger_rate_density_param=None)
 
 
    
