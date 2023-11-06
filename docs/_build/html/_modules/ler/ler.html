@@ -13,14 +13,14 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/clipboard.min.js"></script>
-        <script src="../../_static/copybutton.js"></script>
-        <script src="../../_static/tabs.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=000c92bf"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script src="../../_static/tabs.js?v=3030b3cb"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -48,9 +48,9 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../unlensed.html">Unlensed events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../lensed.html">Lensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Unlensed%20events.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Lensed%20events.html">Lensed events</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -62,7 +62,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../rate_comparision.html">Calculation of unlensed and lensed rate of detectable events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Rate%20comparision.html">Calculation of unlensed and lensed rate of detectable events</a></li>
 </ul>
 
         </div>
@@ -96,6 +96,8 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
@@ -113,7 +115,9 @@
 <span class="n">G</span> <span class="o">=</span> <span class="mf">6.67408</span> <span class="o">*</span> <span class="mf">1e-11</span>  <span class="c1"># m^3/kg/s^2</span>
 
 
-<div class="viewcode-block" id="LeR"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR">[docs]</a><span class="k">class</span> <span class="nc">LeR</span><span class="p">:</span>
+<div class="viewcode-block" id="LeR">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR">[docs]</a>
+<span class="k">class</span> <span class="nc">LeR</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to calculate both the rates of lensed and unlensed events.</span>
 
 <span class="sd">    Parameters</span>
@@ -232,58 +236,88 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Attributes</span>
-<div class="viewcode-block" id="LeR.gw_param_sampler_dict"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.gw_param_sampler_dict">[docs]</a>    <span class="n">gw_param_sampler_dict</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="LeR.gw_param_sampler_dict">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.gw_param_sampler_dict">[docs]</a>
+    <span class="n">gw_param_sampler_dict</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``dict`` \n</span>
 <span class="sd">    dictionary of params for initializing ``CompactBinaryPopulation`` class \n</span>
 <span class="sd">    this will be used for GW unlensed parameters sampling \n</span>
 <span class="sd">    gw_param_sampler_dict.keys() = [&#39;nsamples&#39;, &#39;m_min&#39;, &#39;m_max&#39;, &#39;z_min&#39;, &#39;z_max&#39;, &#39;event_type&#39;, &#39;src_model_params&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="LeR.lensed_param_sampler_dict"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.lensed_param_sampler_dict">[docs]</a>    <span class="n">lensed_param_sampler_dict</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="LeR.lensed_param_sampler_dict">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.lensed_param_sampler_dict">[docs]</a>
+    <span class="n">lensed_param_sampler_dict</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``dict`` \n</span>
 <span class="sd">    dictionary of params for initializing ``LensGalaxyPopulation`` class \n</span>
 <span class="sd">    this will be used for GW lensed parameters sampling \n</span>
 <span class="sd">    lensed_param_sampler_dict.keys() = [&#39;nsamples&#39;, &#39;min_lensed_images&#39;, &#39;max_lensed_images&#39;, &#39;lensModelList&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="LeR.snr_calculator_dict"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.snr_calculator_dict">[docs]</a>    <span class="n">snr_calculator_dict</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="LeR.snr_calculator_dict">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.snr_calculator_dict">[docs]</a>
+    <span class="n">snr_calculator_dict</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``dict`` \n</span>
 <span class="sd">    dictionary of params for initializing ``snr_calculator`` (``gwsnr``) class \n</span>
 <span class="sd">    this will be used for SNR calculation \n</span>
 <span class="sd">    snr_calculator_dict.keys() = [&#39;mtot_min&#39;, &#39;mtot_max&#39;, &#39;nsamples_mtot&#39;, &#39;nsamples_mass_ratio&#39;, &#39;sampling_frequency&#39;, &#39;waveform_approximant&#39;, &#39;minimum_frequency&#39;, &#39;snr_type&#39;, &#39;waveform_inspiral_must_be_above_fmin&#39;, &#39;psds&#39;, &#39;psd_file&#39;, &#39;ifos&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="LeR.z_to_Dc"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.z_to_Dc">[docs]</a>    <span class="n">z_to_Dc</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="LeR.z_to_Dc">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.z_to_Dc">[docs]</a>
+    <span class="n">z_to_Dc</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``scipy.interpolate.interp1d`` \n</span>
 <span class="sd">    redshift to co-moving distance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="LeR.Dc_to_z"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.Dc_to_z">[docs]</a>    <span class="n">Dc_to_z</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="LeR.Dc_to_z">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.Dc_to_z">[docs]</a>
+    <span class="n">Dc_to_z</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``scipy.interpolate.interp1d`` \n</span>
 <span class="sd">    co-moving distance to redshift.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="LeR.z_to_luminosity_distance"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.z_to_luminosity_distance">[docs]</a>    <span class="n">z_to_luminosity_distance</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="LeR.z_to_luminosity_distance">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.z_to_luminosity_distance">[docs]</a>
+    <span class="n">z_to_luminosity_distance</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``scipy.interpolate.interp1d`` \n</span>
 <span class="sd">    redshift to luminosity distance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="LeR.differential_comoving_volume"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.differential_comoving_volume">[docs]</a>    <span class="n">differential_comoving_volume</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="LeR.differential_comoving_volume">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.differential_comoving_volume">[docs]</a>
+    <span class="n">differential_comoving_volume</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``scipy.interpolate.interp1d`` \n</span>
 <span class="sd">    differential comoving volume.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="LeR.compact_binary_pop"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.compact_binary_pop">[docs]</a>    <span class="n">compact_binary_pop</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="LeR.compact_binary_pop">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.compact_binary_pop">[docs]</a>
+    <span class="n">compact_binary_pop</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``CompactBinaryPopulation class`` \n</span>
 <span class="sd">    class for sampling GW parameters.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="LeR.lens_galaxy_pop"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.lens_galaxy_pop">[docs]</a>    <span class="n">lens_galaxy_pop</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="LeR.lens_galaxy_pop">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.lens_galaxy_pop">[docs]</a>
+    <span class="n">lens_galaxy_pop</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``LensGalaxyPopulation class`` \n</span>
 <span class="sd">    class for sampling lensed GW parameters.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="LeR.snr"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.snr">[docs]</a>    <span class="n">snr</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="LeR.snr">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.snr">[docs]</a>
+    <span class="n">snr</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``gwsnr package`` \n</span>
 <span class="sd">    class for calculating SNR.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -322,11 +356,17 @@
             <span class="s2">&quot;m_max&quot;</span><span class="p">:</span> <span class="mf">86.22</span><span class="p">,</span>
             <span class="s2">&quot;z_min&quot;</span><span class="p">:</span> <span class="n">z_min</span><span class="p">,</span>
             <span class="s2">&quot;z_max&quot;</span><span class="p">:</span> <span class="n">z_max</span><span class="p">,</span>
-            <span class="s2">&quot;event_type&quot;</span><span class="p">:</span> <span class="s2">&quot;popI_II&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;event_type&quot;</span><span class="p">:</span> <span class="s2">&quot;BBH&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;popI_II&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;sub_category&quot;</span><span class="p">:</span> <span class="s2">&quot;gwcosmo&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;redshift_event_type&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;redshift_category&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
             <span class="s2">&quot;merger_rate_density_fn&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
             <span class="s2">&quot;merger_rate_density_param&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
             <span class="s2">&quot;src_model_params&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;spin_zero&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;mass_constant&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;redshift_constant&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;spin_constant&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="c1"># for lensed case</span>
         <span class="c1"># set &#39;min_lensed_images&#39; = 2 for double image lensed case</span>
@@ -393,75 +433,93 @@
 
     <span class="c1"># Attributes</span>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="LeR.gw_param"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.gw_param">[docs]</a>    <span class="k">def</span> <span class="nf">gw_param</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="LeR.gw_param">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.gw_param">[docs]</a>
+    <span class="k">def</span> <span class="nf">gw_param</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;``bool``, ``dict`` \n</span>
 <span class="sd">        gw_param is a dictionary of unlensed parameters (source parameters) \n</span>
 <span class="sd">        it will be populated when unlened_cbc_statistics() is called \n</span>
 <span class="sd">        if unavailable, the unlensed parameters will be sampled when unlensed_rate() is called \n</span>
 <span class="sd">        gw_param.keys() = [&#39;m1&#39;, &#39;m2&#39;, &#39;z&#39;, &#39;snr&#39;, &#39;theta_jn&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;] \n</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gw_param</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;gw_params.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="c1"># if file name</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gw_param</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gw_param</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_gw_param</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gw_param</span></div>
+
 
     <span class="nd">@gw_param</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">gw_param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gw_param</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-<div class="viewcode-block" id="LeR.gw_param_detectable"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.gw_param_detectable">[docs]</a>    <span class="k">def</span> <span class="nf">gw_param_detectable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="LeR.gw_param_detectable">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.gw_param_detectable">[docs]</a>
+    <span class="k">def</span> <span class="nf">gw_param_detectable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;``bool``, ``dict`` \n</span>
 <span class="sd">        gw_param_detectable is a dictionary of unlensed parameters (source parameters) \n</span>
 <span class="sd">        it will be populated when unlened_cbc_statistics() is called \n</span>
 <span class="sd">        if unavailable, the unlensed parameters will be sampled when unlensed_rate() is called \n</span>
 <span class="sd">        gw_param_detectable.keys() = [&#39;m1&#39;, &#39;m2&#39;, &#39;z&#39;, &#39;snr&#39;, &#39;theta_jn&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;] \n</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gw_param_detectable</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;gw_params_detectable.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="c1"># if file name</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gw_param_detectable</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gw_param_detectable</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_gw_param_detectable</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gw_param_detectable</span></div>
+
 
     <span class="nd">@gw_param_detectable</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">gw_param_detectable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gw_param_detectable</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-<div class="viewcode-block" id="LeR.lensed_param"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.lensed_param">[docs]</a>    <span class="k">def</span> <span class="nf">lensed_param</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="LeR.lensed_param">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.lensed_param">[docs]</a>
+    <span class="k">def</span> <span class="nf">lensed_param</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;``bool``, ``dict`` \n</span>
 <span class="sd">        lensed_param is a dictionary of lensed parameters \n</span>
 <span class="sd">        it will be populated when lensed_cbc_statistics() is called \n</span>
 <span class="sd">        if unavailable, the lensed parameters will be sampled when lensed_rate() is called \n</span>
 <span class="sd">        lensed_param.keys() = [&#39;m1&#39;, &#39;m2&#39;, &#39;z&#39;, &#39;snr&#39;, &#39;theta_jn&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;, &#39;lensed_images&#39;] \n</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;lensed_params.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="c1"># if file name</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param</span></div>
+
 
     <span class="nd">@lensed_param</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">lensed_param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-<div class="viewcode-block" id="LeR.lensed_param_detectable"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.lensed_param_detectable">[docs]</a>    <span class="k">def</span> <span class="nf">lensed_param_detectable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="LeR.lensed_param_detectable">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.lensed_param_detectable">[docs]</a>
+    <span class="k">def</span> <span class="nf">lensed_param_detectable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;``bool``, ``dict`` \n</span>
 <span class="sd">        lensed_param_detectable is a dictionary of lensed parameters \n</span>
 <span class="sd">        it will be populated when lensed_cbc_statistics() is called \n</span>
 <span class="sd">        if unavailable, the lensed parameters will be sampled when lensed_rate() is called \n</span>
 <span class="sd">        lensed_param_detectable.keys() = [&#39;m1&#39;, &#39;m2&#39;, &#39;z&#39;, &#39;snr&#39;, &#39;theta_jn&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;, &#39;lensed_images&#39;] \n</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param_detectable</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;lensed_params_detectable.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="c1"># if file name</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param_detectable</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param_detectable</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param_detectable</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param_detectable</span></div>
+
 
     <span class="nd">@lensed_param_detectable</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">lensed_param_detectable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lensed_param_detectable</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="c1"># CompactBinaryPopulation class and LensGalaxyPopulation class initialization</span>
-<div class="viewcode-block" id="LeR.class_initialization"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.class_initialization">[docs]</a>    <span class="k">def</span> <span class="nf">class_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="LeR.class_initialization">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.class_initialization">[docs]</a>
+    <span class="k">def</span> <span class="nf">class_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function for initializing the ``CompactBinaryPopulation`` and ``LensGalaxyPopulation`` classes.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -471,18 +529,27 @@
             <span class="n">m_min</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;m_min&quot;</span><span class="p">],</span>
             <span class="n">m_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;m_max&quot;</span><span class="p">],</span>
             <span class="n">event_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;event_type&quot;</span><span class="p">],</span>
+            <span class="n">category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">],</span>
+            <span class="n">sub_category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;sub_category&quot;</span><span class="p">],</span>
+            <span class="n">redshift_event_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;redshift_event_type&quot;</span><span class="p">],</span>
+            <span class="n">redshift_category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;redshift_category&quot;</span><span class="p">],</span>
             <span class="n">merger_rate_density_fn</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span>
                 <span class="s2">&quot;merger_rate_density_fn&quot;</span><span class="p">],</span>
             <span class="n">merger_rate_density_param</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span>
                 <span class="s2">&quot;merger_rate_density_param&quot;</span><span class="p">],</span>
             <span class="n">src_model_params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;src_model_params&quot;</span><span class="p">],</span>
-            <span class="n">spin_zero</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;spin_zero&quot;</span><span class="p">],</span>
+            <span class="n">mass_constant</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;mass_constant&quot;</span><span class="p">],</span>
+            <span class="n">redshift_constant</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;redshift_constant&quot;</span><span class="p">],</span>
+            <span class="n">spin_constant</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;spin_constant&quot;</span><span class="p">],</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lens_galaxy_pop</span> <span class="o">=</span> <span class="n">LensGalaxyPopulation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compact_binary_pop</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="LeR.store_ler_params"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.store_ler_params">[docs]</a>    <span class="k">def</span> <span class="nf">store_ler_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file</span><span class="o">=</span><span class="s2">&quot;./LeR_params.json&quot;</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LeR.store_ler_params">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.store_ler_params">[docs]</a>
+    <span class="k">def</span> <span class="nf">store_ler_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file</span><span class="o">=</span><span class="s2">&quot;./LeR_params.json&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fuction to store the parameters of the LER model. This is useful for reproducing the results.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -511,7 +578,10 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="LeR.gwsnr_intialization"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.gwsnr_intialization">[docs]</a>    <span class="k">def</span> <span class="nf">gwsnr_intialization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kwargs_dict</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LeR.gwsnr_intialization">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.gwsnr_intialization">[docs]</a>
+    <span class="k">def</span> <span class="nf">gwsnr_intialization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kwargs_dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function for initializing the `gwsnr &lt;https://github.com/hemantaph/gwsnr/&gt;`_ package.</span>
 
@@ -581,7 +651,10 @@
 
         <span class="k">return</span> <span class="n">snr_</span></div>
 
-<div class="viewcode-block" id="LeR.create_lookup_tables"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.create_lookup_tables">[docs]</a>    <span class="k">def</span> <span class="nf">create_lookup_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LeR.create_lookup_tables">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.create_lookup_tables">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_lookup_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        To creating lookup tables for fast calculation for the following conversion operations,</span>
 
@@ -632,7 +705,10 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="LeR.batch_handler"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.batch_handler">[docs]</a>    <span class="k">def</span> <span class="nf">batch_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nsamples</span><span class="p">,</span> <span class="n">sampling_routine</span><span class="p">,</span> <span class="n">json_file</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LeR.batch_handler">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.batch_handler">[docs]</a>
+    <span class="k">def</span> <span class="nf">batch_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nsamples</span><span class="p">,</span> <span class="n">sampling_routine</span><span class="p">,</span> <span class="n">json_file</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to handle the batch size.</span>
 
@@ -683,8 +759,10 @@
                     <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
                     <span class="n">track_batches</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="n">frac_batches</span><span class="p">)</span> <span class="o">//</span> <span class="n">batch_size</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">except</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;no json file found with name </span><span class="si">{</span><span class="n">json_file</span><span class="si">}</span><span class="s2">. Set resume=False&quot;</span><span class="p">)</span>
-                <span class="k">return</span> <span class="kc">None</span>
+                <span class="n">track_batches</span> <span class="o">=</span> <span class="n">track_batches</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Batch no. </span><span class="si">{</span><span class="n">track_batches</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="c1"># new first batch with the frac_batches</span>
+                <span class="n">sampling_routine</span><span class="p">(</span><span class="n">nsamples</span><span class="o">=</span><span class="n">frac_batches</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="n">json_file</span><span class="p">)</span>
 
         <span class="c1"># ---------------------------------------------------#</span>
         <span class="n">min_</span><span class="p">,</span> <span class="n">max_</span> <span class="o">=</span> <span class="n">track_batches</span><span class="p">,</span> <span class="n">num_batches</span>
@@ -696,7 +774,10 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="LeR.unlensed_sampling_routine"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.unlensed_sampling_routine">[docs]</a>    <span class="k">def</span> <span class="nf">unlensed_sampling_routine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nsamples</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LeR.unlensed_sampling_routine">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.unlensed_sampling_routine">[docs]</a>
+    <span class="k">def</span> <span class="nf">unlensed_sampling_routine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nsamples</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to generate unlensed GW source parameters.</span>
 
@@ -723,7 +804,10 @@
         <span class="n">append_json</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="n">file_name</span><span class="p">,</span> <span class="n">dictionary</span><span class="o">=</span><span class="n">gw_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="ow">not</span> <span class="p">(</span><span class="n">resume</span><span class="p">))</span>
         <span class="n">gw_param</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># to free memory</span></div>
 
-<div class="viewcode-block" id="LeR.unlensed_cbc_statistics"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.unlensed_cbc_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">unlensed_cbc_statistics</span><span class="p">(</span>
+
+<div class="viewcode-block" id="LeR.unlensed_cbc_statistics">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.unlensed_cbc_statistics">[docs]</a>
+    <span class="k">def</span> <span class="nf">unlensed_cbc_statistics</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">nsamples</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">json_file</span><span class="o">=</span><span class="s2">&quot;./gw_params.json&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -794,7 +878,10 @@
 
         <span class="k">return</span> <span class="n">gw_param</span></div>
 
-<div class="viewcode-block" id="LeR.unlensed_rate"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.unlensed_rate">[docs]</a>    <span class="k">def</span> <span class="nf">unlensed_rate</span><span class="p">(</span>
+
+<div class="viewcode-block" id="LeR.unlensed_rate">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.unlensed_rate">[docs]</a>
+    <span class="k">def</span> <span class="nf">unlensed_rate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">gw_param</span><span class="o">=</span><span class="s2">&quot;./gw_params.json&quot;</span><span class="p">,</span>
         <span class="n">snr_threshold</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
@@ -908,7 +995,10 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">total_rate</span><span class="p">,</span> <span class="n">gw_param_detectable</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="LeR.lensed_sampling_routine"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.lensed_sampling_routine">[docs]</a>    <span class="k">def</span> <span class="nf">lensed_sampling_routine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nsamples</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LeR.lensed_sampling_routine">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.lensed_sampling_routine">[docs]</a>
+    <span class="k">def</span> <span class="nf">lensed_sampling_routine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nsamples</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to generate lensed GW source parameters, lens galaxy parameters and image paramters.</span>
 
@@ -947,7 +1037,10 @@
         <span class="n">append_json</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="n">file_name</span><span class="p">,</span> <span class="n">dictionary</span><span class="o">=</span><span class="n">lensed_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="ow">not</span> <span class="p">(</span><span class="n">resume</span><span class="p">))</span>
         <span class="n">lensed_param</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># to free up memory</span></div>
 
-<div class="viewcode-block" id="LeR.lensed_cbc_statistics"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.lensed_cbc_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">lensed_cbc_statistics</span><span class="p">(</span>
+
+<div class="viewcode-block" id="LeR.lensed_cbc_statistics">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.lensed_cbc_statistics">[docs]</a>
+    <span class="k">def</span> <span class="nf">lensed_cbc_statistics</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">nsamples</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">json_file</span><span class="o">=</span><span class="s2">&quot;./lensed_params.json&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1020,7 +1113,10 @@
 
         <span class="k">return</span> <span class="n">lensed_param</span></div>
 
-<div class="viewcode-block" id="LeR.lensed_rate"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.lensed_rate">[docs]</a>    <span class="k">def</span> <span class="nf">lensed_rate</span><span class="p">(</span>
+
+<div class="viewcode-block" id="LeR.lensed_rate">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.lensed_rate">[docs]</a>
+    <span class="k">def</span> <span class="nf">lensed_rate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">lensed_param</span><span class="o">=</span><span class="s2">&quot;./lensed_params.json&quot;</span><span class="p">,</span>
         <span class="n">snr_threshold</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
@@ -1102,11 +1198,11 @@
                 <span class="n">snr</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;opt_snr_net&quot;</span><span class="p">]</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="c1"># snr not provided</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;snr not provided in gw_param dict. Exiting...&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;snr not provided in lensed_param dict. Exiting...&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span>
 
             <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>  <span class="c1"># boolean array to store the result of the threshold condition</span>
-            <span class="c1"># Below can be just one line with 3D numpy operation</span>
+            <span class="c1"># for each row: choose a threshold and check if the number of images above threshold. Sum over the images. If sum is greater than num_img, then snr_hit = True </span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">snr_threshold</span><span class="p">)):</span>
                 <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">snr_hit</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">snr</span> <span class="o">&gt;</span> <span class="n">snr_threshold</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">num_img</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">snr_hit</span> <span class="o">&amp;</span> <span class="n">not_rejected</span>
@@ -1179,8 +1275,11 @@
         <span class="n">lensed_param_detectable</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">jsonfile</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="p">(</span><span class="n">total_rate</span><span class="p">,</span> <span class="n">lensed_param_detectable</span><span class="p">)</span></div>
+
     
-<div class="viewcode-block" id="LeR.rate_comparision"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.rate_comparision">[docs]</a>    <span class="k">def</span> <span class="nf">rate_comparision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">detectability_condition</span><span class="o">=</span><span class="s2">&quot;step_function&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="LeR.rate_comparision">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.rate_comparision">[docs]</a>
+    <span class="k">def</span> <span class="nf">rate_comparision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">detectability_condition</span><span class="o">=</span><span class="s2">&quot;step_function&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to calculate unlensed and lensed merger rate and their ratio. </span>
 <span class="sd">        It will get the unlensed_rate and lensed_rate from json_file_ler_param=&quot;./LeR_params.json&quot;</span>
@@ -1240,7 +1339,10 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">unlensed_rate</span><span class="p">,</span> <span class="n">lensed_rate</span><span class="p">,</span> <span class="n">rate_ratio</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="LeR.rate_comparision_with_rate_calculation"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.rate_comparision_with_rate_calculation">[docs]</a>    <span class="k">def</span> <span class="nf">rate_comparision_with_rate_calculation</span><span class="p">(</span>
+
+<div class="viewcode-block" id="LeR.rate_comparision_with_rate_calculation">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.rate_comparision_with_rate_calculation">[docs]</a>
+    <span class="k">def</span> <span class="nf">rate_comparision_with_rate_calculation</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">snr_threshold_unlensed</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
         <span class="n">unlened_param</span><span class="o">=</span><span class="s2">&quot;./gw_params.json&quot;</span><span class="p">,</span>
@@ -1326,18 +1428,21 @@
             <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="c1"># append the results</span>
         <span class="k">if</span> <span class="n">detectability_condition</span> <span class="o">==</span> <span class="s2">&quot;step_function&quot;</span><span class="p">:</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;unlensed_rate_ratio_step&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rate_ratio</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;rate_ratio_step&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rate_ratio</span>
         <span class="k">elif</span> <span class="n">detectability_condition</span> <span class="o">==</span> <span class="s2">&quot;pdet&quot;</span><span class="p">:</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;unlensed_rate_ratio_pdet&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rate_ratio</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;rate_ratio_pdet&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rate_ratio</span>
         <span class="c1"># write the results</span>
         <span class="n">append_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">json_file_ler_param</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="p">(</span><span class="n">unlensed_rate</span><span class="p">,</span> <span class="n">lensed_rate</span><span class="p">,</span> <span class="n">rate_ratio</span><span class="p">)</span></div>
 
+
     <span class="c1"># ---------------------------------------------------#</span>
     <span class="c1"># functions for selecting n lensed detectable events #</span>
     <span class="c1"># ---------------------------------------------------#</span>
-<div class="viewcode-block" id="LeR.selecting_n_lensed_detectable_events"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.selecting_n_lensed_detectable_events">[docs]</a>    <span class="k">def</span> <span class="nf">selecting_n_lensed_detectable_events</span><span class="p">(</span>
+<div class="viewcode-block" id="LeR.selecting_n_lensed_detectable_events">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.selecting_n_lensed_detectable_events">[docs]</a>
+    <span class="k">def</span> <span class="nf">selecting_n_lensed_detectable_events</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">nsamples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
         <span class="n">snr_threshold</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
@@ -1456,7 +1561,10 @@
 
         <span class="k">return</span> <span class="n">param_final</span></div>
 
-<div class="viewcode-block" id="LeR.relative_mu_dt_lensed"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.relative_mu_dt_lensed">[docs]</a>    <span class="k">def</span> <span class="nf">relative_mu_dt_lensed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">snr_threshold</span><span class="o">=</span><span class="p">[</span><span class="mf">8.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">]):</span>
+
+<div class="viewcode-block" id="LeR.relative_mu_dt_lensed">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.relative_mu_dt_lensed">[docs]</a>
+    <span class="k">def</span> <span class="nf">relative_mu_dt_lensed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">snr_threshold</span><span class="o">=</span><span class="p">[</span><span class="mf">8.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to classify the lensed images wrt to the morse phase difference.</span>
 
@@ -1563,7 +1671,10 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">mu_rel0</span><span class="p">,</span> <span class="n">dt_rel0</span><span class="p">,</span> <span class="n">mu_rel90</span><span class="p">,</span> <span class="n">dt_rel90</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="LeR.mu_vs_dt_plot"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.mu_vs_dt_plot">[docs]</a>    <span class="k">def</span> <span class="nf">mu_vs_dt_plot</span><span class="p">(</span>
+
+<div class="viewcode-block" id="LeR.mu_vs_dt_plot">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.mu_vs_dt_plot">[docs]</a>
+    <span class="k">def</span> <span class="nf">mu_vs_dt_plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">x_array</span><span class="p">,</span>
         <span class="n">y_array</span><span class="p">,</span>
@@ -1665,13 +1776,21 @@
             <span class="n">extent</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">extent</span><span class="p">),</span>
         <span class="p">)</span>
 
+        <span class="c1"># labels</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$log_</span><span class="si">{10}</span><span class="s2">\Delta t$ (days)&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\Delta log_</span><span class="si">{10}</span><span class="s2">\mu$&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;relative magnification vs relative time delay&quot;</span><span class="p">)</span>
+
         <span class="c1"># save figure</span>
         <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;mu_vs_dt.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="LeR.selecting_n_unlensed_detectable_events"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.selecting_n_unlensed_detectable_events">[docs]</a>    <span class="k">def</span> <span class="nf">selecting_n_unlensed_detectable_events</span><span class="p">(</span>
+
+<div class="viewcode-block" id="LeR.selecting_n_unlensed_detectable_events">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.selecting_n_unlensed_detectable_events">[docs]</a>
+    <span class="k">def</span> <span class="nf">selecting_n_unlensed_detectable_events</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">nsamples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
         <span class="n">snr_threshold</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
@@ -1759,7 +1878,10 @@
 
         <span class="k">return</span> <span class="n">param_final</span></div>
 
-<div class="viewcode-block" id="LeR.relative_mu_dt_unlensed"><a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.relative_mu_dt_unlensed">[docs]</a>    <span class="k">def</span> <span class="nf">relative_mu_dt_unlensed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LeR.relative_mu_dt_unlensed">
+<a class="viewcode-back" href="../../autoapi/ler/ler/index.html#ler.LeR.relative_mu_dt_unlensed">[docs]</a>
+    <span class="k">def</span> <span class="nf">relative_mu_dt_unlensed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to generate relative magnification vs time delay difference for unlensed samples.</span>
 
@@ -1792,7 +1914,9 @@
         <span class="n">dt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">t_</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">24</span><span class="p">)</span>  <span class="c1"># in days</span>
         <span class="n">dmu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mu_</span><span class="p">)))</span>
 
-        <span class="k">return</span> <span class="p">(</span><span class="n">dmu</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="p">(</span><span class="n">dmu</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span></div>
+</div>
+
 </pre></div>
 
            </div>

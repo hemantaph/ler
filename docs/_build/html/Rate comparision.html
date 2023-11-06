@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculation of unlensed and lensed rate of detectable events &mdash; ler 0.2.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="_static/nbsphinx-code-cells.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=000c92bf"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="ler.helperroutines" href="autoapi/ler/helperroutines/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Unlensed%20events.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed%20events.html">Lensed events</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/ler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.ler</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/multiprocessing_routine/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.multiprocessing_routine</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/helperroutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.helperroutines</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Calculation of unlensed and lensed rate of detectable events</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Going-through-the-code-step-by-step">Going through the code step by step</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Looking-at-the-initilized-instances">Looking at the initilized instances</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Unlensed-events">Unlensed events</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Unlensed-sampler">Unlensed sampler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Looking-at-sampled-paramters">Looking at sampled paramters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Calculation-of-the-unlensed-rate">Calculation of the unlensed rate</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Lensed-events">Lensed events</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Lensed-sampler">Lensed sampler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Comparision">Comparision</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Plots">Plots</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Getting-the-parameters-from-the-stored-json-files-and-plotting-it">Getting the parameters from the stored json files and plotting it</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#with-more-accurate-snr">with more accurate snr</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Calculation of unlensed and lensed rate of detectable events</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Rate comparision.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Calculation-of-unlensed-and-lensed-rate-of-detectable-events">
+<h1>Calculation of unlensed and lensed rate of detectable events<a class="headerlink" href="#Calculation-of-unlensed-and-lensed-rate-of-detectable-events" title="Link to this heading"></a></h1>
+<p>For this example notebook: <a class="reference external" href="https://github.com/hemantaph/ler/blob/main/examples/rate_comparision.ipynb">https://github.com/hemantaph/ler/blob/main/examples/rate_comparision.ipynb</a></p>
+<section id="Going-through-the-code-step-by-step">
+<h2>Going through the code step by step<a class="headerlink" href="#Going-through-the-code-step-by-step" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import numpy as np
+from ler import LeR
+import json
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+PyCBC.libutils: pkg-config call failed, setting NO_PKGCONFIG=1
+/Users/phurailatpamhemantakumar/anaconda3/envs/lal/lib/python3.10/site-packages/numba/core/decorators.py:262: NumbaDeprecationWarning: <span class="ansi-bold">numba.generated_jit is deprecated. Please see the documentation at: https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-generated-jit for more information and advice on a suitable replacement.</span>
+  warnings.warn(msg, NumbaDeprecationWarning)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># check the input and output
+# check for available attributes and methods
+# check of examples
+LeR?
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+LeR<span class="ansi-blue-fg">(</span>
+    nsamples<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">100000</span><span class="ansi-blue-fg">,</span>
+    npool<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">4</span><span class="ansi-blue-fg">,</span>
+    z_min<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.0</span><span class="ansi-blue-fg">,</span>
+    z_max<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">10.0</span><span class="ansi-blue-fg">,</span>
+    batch_size<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">25000</span><span class="ansi-blue-fg">,</span>
+    snr_finder<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;gwsnr&#39;</span><span class="ansi-blue-fg">,</span>
+    json_file_ler_param<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;./LeR_params.json&#39;</span><span class="ansi-blue-fg">,</span>
+    <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span>
+<span class="ansi-red-fg">Docstring:</span>
+Class to calculate both the rates of lensed and unlensed events.
+
+Parameters
+----------
+nsamples : `int`
+    number of samples for sampling.
+    default nsamples = 100000.
+npool : `int`
+    number of cores to use.
+    default npool = 4.
+z_min : `float`
+    minimum redshift.
+    default z_min = 0.
+    for popI_II, popIII, primordial, BNS z_min = 0., 5., 5., 0. respectively.
+z_max : `float`
+    maximum redshift.
+    default z_max = 10.
+    for popI_II, popIII, primordial, BNS z_max = 10., 40., 40., 2. respectively.
+batch_size : `int`
+    batch size for SNR calculation.
+    default batch_size = 25000.
+    reduce the batch size if you are getting memory error.
+snr_finder : `str`
+    default snr_finder = &#39;gwsnr&#39;.
+    if &#39;gwsnr&#39;, the SNR will be calculated using the gwsnr package.
+    if &#39;custom&#39;, the SNR will be calculated using a custom function.
+kwargs : `keyword arguments`
+    Note : kwargs takes input for initializing the :class:`~ler.CompactBinaryPopulation`, :class:`LensGalaxyPopulation`, :meth:`~gwsnr_intialization`.
+
+Examples
+----------
+- class initialization
+- ``ler`` needs `gwsnr &lt;https://github.com/hemantaph/gwsnr/&gt;`_.
+- generation of ``gwsnr`` snr interpolator will take time at the first initialization. The interpolator will be stored in the working dir.
+- ``m_min``, ``m_max`` were used for initializing the ``CompactBinaryPopulation`` class. ``waveform_approximant`` was used for initializing the ``snr_calculator`` (``gwsnr``) class. ``min_lensed_images`` was used for initializing the ``LensGalaxyPopulation`` class.
+
+&gt;&gt;&gt; from ler import LeR
+&gt;&gt;&gt; ler_ = LeR(nsamples=100000, npool=int(4), z_min=0., z_max=10., batch_size=25000, snr_finder=&#39;gwsnr&#39;, m_min=4.59, m_max=86.22, waveform_approximant=&#39;IMRPhenomD&#39;, min_lensed_images=2)
+Given: IMR waveform
+psds not given. Choosing bilby&#39;s default psds
+getting stored interpolator...
+In case if you need regeneration of interpolator of the given gwsnr param, please delete this file, ./interpolator_pickle/halfSNR_dict_0.pickle
+
+Instance Attributes
+----------
+LeR class has the following attributes,
+
++-------------------------------------+----------------------------------+
+| Atrributes                          | Type                             |
++=====================================+==================================+
+|:attr:`~gw_param`                    |`dict`                            |
++-------------------------------------+----------------------------------+
+|:attr:`~gw_param_detectable`         |`dict`                            |
++-------------------------------------+----------------------------------+
+|:attr:`~lensed_param`                |`dict`                            |
++-------------------------------------+----------------------------------+
+|:attr:`~lensed_param_detectable`     |`dict`                            |
++-------------------------------------+----------------------------------+
+|:attr:`~gw_param_sampler_dict`       |`dict`                            |
++-------------------------------------+----------------------------------+
+|:attr:`~lensed_param_sampler_dict`   |`dict`                            |
++-------------------------------------+----------------------------------+
+|:attr:`~snr_calculator_dict`         |`dict`                            |
++-------------------------------------+----------------------------------+
+|:attr:`~z_to_Dc`                     |`scipy.interpolate.interp1d`      |
++-------------------------------------+----------------------------------+
+|:attr:`~Dc_to_z`                     |`scipy.interpolate.interp1d`      |
++-------------------------------------+----------------------------------+
+|:attr:`~z_to_luminosity_distance`    |`scipy.interpolate.interp1d`      |
++-------------------------------------+----------------------------------+
+|:attr:`~differential_comoving_volume`|`scipy.interpolate.interp1d`      |
++-------------------------------------+----------------------------------+
+|:attr:`~compact_binary_pop`          |`CompactBinaryPopulation class`   |
++-------------------------------------+----------------------------------+
+|:attr:`~lens_galaxy_pop`             |`LensGalaxyPopulation class`      |
++-------------------------------------+----------------------------------+
+| :attr:`~snr`                        |``gwsnr`` `package`               |
++-------------------------------------+----------------------------------+
+
+Instance Methods
+----------
+LeR class has the following method(s),
+
++------------------------------------+-------------------------------------+
+| Method(s)                          | Description                         |
++====================================+=====================================+
+|:meth:`~gwsnr_intialization`        |Function for initializing the        |
+|                                    |``gwsnr`` package.                   |
++------------------------------------+-------------------------------------+
+|:meth:`~create_lookup_tables`       |To creating lookup tables for fast   |
+|                                    |calculation for the following        |
+|                                    |conversion operations,               |
+|                                    |redshift to co-moving distance.      |
+|                                    |co-moving distance to redshift.      |
+|                                    |redshift to luminosity distance.     |
++------------------------------------+-------------------------------------+
+|:meth:`~unlensed_cbc_statistics`    |Function to generate unlensed GW     |
+|                                    |source parameters.                   |
++------------------------------------+-------------------------------------+
+|:meth:`~unlensed_rate`              |Function to calculate unlensed       |
+|                                    |merger rate.                         |
++------------------------------------+-------------------------------------+
+|:meth:`~lensed_cbc_statistics`      |Function to generate lensed GW       |
+|                                    |source parameters.                   |
++------------------------------------+-------------------------------------+
+|:meth:`~lensed_rate`                |Function to calculate lensed         |
+|                                    |merger rate.                         |
++------------------------------------+-------------------------------------+
+|:meth:`~batch_handler`              |Function to handle the batch size.   |
++------------------------------------+-------------------------------------+
+|:meth:`~store_ler_params`           |Fuction to store the parameters of   |
+|                                    |the LER model.                       |
++------------------------------------+-------------------------------------+
+<span class="ansi-red-fg">File:</span>           ~/phd/mypackages/ler/ler/ler.py
+<span class="ansi-red-fg">Type:</span>           type
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Initialization of LeR class with default inputs
+# This also initializes the gwsnr (SNR calculator method),
+#  CompactBinaryPopulation (for unlensed event sampling) and
+#  LensGalaxyPopulation (for lensed event sampling)
+# By default the SNR calculator is set to be the IMRPhenomD waveforms and calcules using the interpolation method
+# for higher accracy in set nsamples_mtot=200, nsamples_mass_ratio=50. This will take longer to generate the interpolator.
+ler = LeR()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Given: IMR waveform, {self.waveform_approximant}.
+psds not given. Choosing bilby&#39;s default psds
+given psds:  {&#39;L1&#39;: &#39;aLIGO_O4_high_asd.txt&#39;, &#39;H1&#39;: &#39;aLIGO_O4_high_asd.txt&#39;, &#39;V1&#39;: &#39;AdV_asd.txt&#39;}
+Interpolator will be loaded for L1 detector from ./interpolator_pickle/L1/halfSNR_dict_6.pickle
+Interpolator will be loaded for H1 detector from ./interpolator_pickle/H1/halfSNR_dict_6.pickle
+Interpolator will be loaded for V1 detector from ./interpolator_pickle/V1/halfSNR_dict_6.pickle
+</pre></div></div>
+</div>
+</section>
+<section id="Looking-at-the-initilized-instances">
+<h2>Looking at the initilized instances<a class="headerlink" href="#Looking-at-the-initilized-instances" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>All the initialized instances’s input parameters are also stored in the file “./LeR_params.json”</p></li>
+<li><p>For CompactBinaryPopulation, for sampling source properties. It is initialized as compact_binary_pop instance. One can acess it as ler.compact_binary_pop</p></li>
+<li><p>For LensGalaxyPopulation, for sampling lens galaxy properties. It is initialized as lens_galaxy_pop instance. One can acess it as ler.lens_galaxy_pop</p></li>
+<li><p>For GWSNR, for calculating the SNR in the detector frame. It is initialized as gnsnr instance. One can acess it as ler.snr</p></li>
+<li><p>Note: CompactBinaryPopulation, LensGalaxyPopulation, GWSNR can also be use as stand alone module without using LeR class.</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># open json file &quot;./LeR_params.json&quot;
+with open(&#39;./LeR_params.json&#39;) as f:
+    init_params = json.load(f)
+
+# categorised into 3 groups of init params
+print(&quot;init params groups: &quot;, init_params.keys())
+
+# looking at first groups, &#39;gw_param_sampler_dict&#39; use for initialising the CompactBinaryPopulation as compact_binary_pop instance
+print(&quot;for the source property smapler: &quot;, init_params[&#39;gw_param_sampler_dict&#39;])
+
+# looking at second groups, &#39;lensed_param_sampler_dict&#39; use for initialising the LensingPopulation as lens_galaxy_pop instance
+print(&quot;for the lens property smapler: &quot;, init_params[&#39;lensed_param_sampler_dict&#39;])
+
+# looking at third groups, &#39;snr_calculator_dict&#39; use for initialising the SNRCalculator (GWSNR) as snr instance
+print(&quot;for the snr calculator: &quot;, init_params[&#39;snr_calculator_dict&#39;])
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+init params groups:  dict_keys([&#39;gw_param_sampler_dict&#39;, &#39;lensed_param_sampler_dict&#39;, &#39;snr_calculator_dict&#39;])
+for the source property smapler:  {&#39;nsamples&#39;: 100000, &#39;m_min&#39;: 4.59, &#39;m_max&#39;: 86.22, &#39;z_min&#39;: 0.0, &#39;z_max&#39;: 10.0, &#39;event_type&#39;: &#39;popI_II&#39;, &#39;merger_rate_density_fn&#39;: &#39;None&#39;, &#39;merger_rate_density_param&#39;: None, &#39;src_model_params&#39;: None, &#39;spin_zero&#39;: False}
+for the lens property smapler:  {&#39;nsamples&#39;: 100000, &#39;min_lensed_images&#39;: 2, &#39;max_lensed_images&#39;: 4, &#39;lensModelList&#39;: [&#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;]}
+for the snr calculator:  {&#39;mtot_min&#39;: 2.0, &#39;mtot_max&#39;: 439.6, &#39;nsamples_mtot&#39;: 100, &#39;nsamples_mass_ratio&#39;: 50, &#39;sampling_frequency&#39;: 2048.0, &#39;waveform_approximant&#39;: &#39;IMRPhenomD&#39;, &#39;minimum_frequency&#39;: 20.0, &#39;snr_type&#39;: &#39;interpolation&#39;, &#39;waveform_inspiral_must_be_above_fmin&#39;: False, &#39;psds&#39;: None, &#39;psd_file&#39;: False, &#39;ifos&#39;: &#39;None&#39;, &#39;interpolator_dir&#39;: &#39;./interpolator_pickle&#39;}
+</pre></div></div>
+</div>
+<ul class="simple">
+<li><p>Any of the the input paramters stated above can be changed and entered in LeR initialization</p></li>
+<li><p>e.g. ler = LeR(event_type=’popI_II’, min_lensed_images=2, nsamples_mtot=100, nsamples_mass_ratio=50)</p></li>
+</ul>
+<hr class="docutils" />
+<section id="Unlensed-events">
+<h3>Unlensed events<a class="headerlink" href="#Unlensed-events" title="Link to this heading"></a></h3>
+</section>
+</section>
+<section id="Unlensed-sampler">
+<h2>Unlensed sampler<a class="headerlink" href="#Unlensed-sampler" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>You can reinitialized ‘compact_binary_pop’ and ‘lens_galaxy_pop’ at this functional level</p></li>
+<li><p>e.g. You can simply change the type of the source, ler.unlensed_cbc_statistics(event_type=popI_II) to ler.unlensed_cbc_statistics(event_type=popIII)</p></li>
+<li><p>or change the nsamples, otherwise it will use the nsamples value used in LeR class initialization</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># let&#39;s look at the input parameters
+ler.unlensed_cbc_statistics?
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Signature:</span>
+ler<span class="ansi-blue-fg">.</span>unlensed_cbc_statistics<span class="ansi-blue-fg">(</span>
+    nsamples<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    resume<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">,</span>
+    json_file<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;./gw_params.json&#39;</span><span class="ansi-blue-fg">,</span>
+    <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span>
+<span class="ansi-red-fg">Docstring:</span>
+Function to generate unlensed GW source parameters.
+
+Parameters
+----------
+nsamples : `int`
+    number of samples.
+    default nsamples = 100000.
+resume : `bool`
+    resume = False (default) or True.
+    if True, the function will resume from the last batch.
+json_file : `str`
+    json file name for storing the parameters.
+    default json_file = &#39;./gw_params.json&#39;.
+kwargs : `dict`
+    key word arguments for initializing the ``CompactBinaryPopulation`` class.
+
+    This initialization is either done at the time of class initialization or at the time of calling this function.
+
+    Following parameters can be provided,
+
+    ``m_min`` : `float`
+        minimum mass of the compact binary (single).
+    ``m_max`` : `float`
+        maximum mass of the compact binary (single).
+    ``event_type`` : `str`
+        event_type = &#39;popI_II&#39; or `popIII` or `primordial`.
+    ``src_model_params`` : `dict`
+        src_model_params = {&#39;alpha&#39;: 3.63, &#39;beta&#39;: 1.26, &#39;delta_m&#39;: 4.82,
+
+        &#39;mmin&#39;: 4.59, &#39;mmax&#39;: 86.22, &#39;lambda_peak&#39;: 0.08,
+
+        &#39;mu_g&#39;: 33.07, &#39;sigma_g&#39;: 5.69}}
+
+Returns
+----------
+unlensed_gw_params : `dict`
+    dictionary of unlensed GW source parameters.
+    unlensed_gw_params.keys() = [&#39;m1&#39;, &#39;m2&#39;, &#39;z&#39;, &#39;snr&#39;, &#39;theta_jn&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;]
+<span class="ansi-red-fg">File:</span>      ~/phd/mypackages/ler/ler/ler.py
+<span class="ansi-red-fg">Type:</span>      method
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># sampling unlensed events (gw source parameters )
+ler.batch_size=25000 # number of samples per batch, more than 50000 might cause memory error
+ler.unlensed_cbc_statistics(nsamples=100000);
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+chosen batch size = 25000. If you want to change batch size, self.batch_size = new_size
+There will be 4 batche(s)
+Batch no. 1
+sampling gw source params...
+calculating snrs...
+Batch no. 2
+sampling gw source params...
+calculating snrs...
+Batch no. 3
+sampling gw source params...
+calculating snrs...
+Batch no. 4
+sampling gw source params...
+calculating snrs...
+</pre></div></div>
+</div>
+</section>
+<section id="Looking-at-sampled-paramters">
+<h2>Looking at sampled paramters<a class="headerlink" href="#Looking-at-sampled-paramters" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>for memory management, the sampled parameters are not stored as LeR intances.</p></li>
+<li><p>It is strored in the ‘./gw_params.json’ by default.</p></li>
+<li><p>But you can call the stored paramters as LeR instance, e.g. ler.gw_param=”default”</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ler.gw_param=&quot;default&quot;
+print(ler.gw_param.keys())
+# to save memory, we can remove the data from ler.gw_param instance
+ler.gw_param=None
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+dict_keys([&#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;zs&#39;, &#39;luminosity_distance&#39;, &#39;iota&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;tilt_1&#39;, &#39;tilt_2&#39;, &#39;phi_12&#39;, &#39;phi_jl&#39;, &#39;opt_snr_net&#39;, &#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;])
+</pre></div></div>
+</div>
+</section>
+<section id="Calculation-of-the-unlensed-rate">
+<h2>Calculation of the unlensed rate<a class="headerlink" href="#Calculation-of-the-unlensed-rate" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>If sampled parameter dictionary is not provided, the default values from the “./gw_params.json”.</p></li>
+<li><p>You can also provide the dict as json file or python dictionary.</p></li>
+<li><p>dict should contain “opt_snr_net” (network SNR) key with corresponding value, or</p></li>
+<li><p>dict should contain “pdet_net” (detection probability) key with corresponding value</p></li>
+<li><p>User can choose whether the rate is calculated for the network SNR or the detection probability.</p></li>
+<li><p>Default is the network SNR.</p></li>
+<li><p>The detectable parameter from the given one selected wrt to the SNR threshold (default=8.) provided</p></li>
+<li><p>It is stored in the a dict (default=”./gw_params_detectable.json”)</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># rates with step function detectability condition
+ler.unlensed_rate(detectability_condition=&quot;step_function&quot;);
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+getting gw_params from json file ./gw_params.json...
+total unlensed rate (yr^-1) (with step function): 774.6236489086674
+storing detectable unlensed params in ./gw_params_detectable.json
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># rates with pdet function detectability condition
+# pdet accounts for error snr distribution (normal with mean=net_opt_snr, std=1) due to noise for each event.
+ler.unlensed_rate(detectability_condition=&quot;pdet_function&quot;);
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+getting gw_params from json file ./gw_params.json...
+total unlensed rate (yr^-1) (with pdet function): 843.3236035395472
+storing detectable unlensed params in ./gw_params_detectable.json
+</pre></div></div>
+</div>
+<ul class="simple">
+<li><p>remember that absolute value of of rate will inherit errors from the local merger rate</p></li>
+<li><p>what matters is the ratio of unlensed and lensed events</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># looking at the detectable events
+ler.gw_param_detectable = &#39;default&#39;
+print(ler.gw_param_detectable.keys())
+# save memory
+ler.gw_param_detectable = None
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+dict_keys([&#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;zs&#39;, &#39;luminosity_distance&#39;, &#39;iota&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;tilt_1&#39;, &#39;tilt_2&#39;, &#39;phi_12&#39;, &#39;phi_jl&#39;, &#39;opt_snr_net&#39;, &#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;])
+</pre></div></div>
+</div>
+<ul class="simple">
+<li><p>both detectable and undetectable events are saved as json file in the current folder</p></li>
+</ul>
+<hr class="docutils" />
+<section id="Lensed-events">
+<h3>Lensed events<a class="headerlink" href="#Lensed-events" title="Link to this heading"></a></h3>
+</section>
+</section>
+<section id="Lensed-sampler">
+<h2>Lensed sampler<a class="headerlink" href="#Lensed-sampler" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>You can reinitialized ‘compact_binary_pop’ and ‘lens_galaxy_pop’ at this functional level</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Here I have considered LeR class has already initialised as ler
+# let&#39;s look at the input parameters
+ler.lensed_cbc_statistics?
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Signature:</span>
+ler<span class="ansi-blue-fg">.</span>lensed_cbc_statistics<span class="ansi-blue-fg">(</span>
+    nsamples<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    resume<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">,</span>
+    json_file<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;./lensed_params.json&#39;</span><span class="ansi-blue-fg">,</span>
+    <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span>
+<span class="ansi-red-fg">Docstring:</span>
+Function to generate lensed GW source parameters, lens galaxy parameters and image paramters.
+
+Parameters
+----------
+nsamples : `int`
+    number of samples.
+    default nsamples = 100000.
+resume : `bool`
+    resume = False (default) or True.
+    if True, the function will resume from the last batch.
+json_file : `str`
+    json file name for storing the parameters.
+    default json_file = &#39;./lensed_params.json&#39;.
+kwargs : `dict`
+    key word arguments for initializing the ``LensGalaxyPopulation`` class.
+
+    This initialization is either done at the time of class initialization or at the time of calling this function.
+
+    Following parameters can be provided,
+
+    ``min_lensed_images`` : `int`
+        minimum number of lensed images.
+    ``max_lensed_images`` : `int`
+        maximum number of lensed images.
+    ``lensModelList`` : `list`
+        list of lens models.
+        e.g. lensModelList = [&#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;].
+
+Returns
+----------
+lensed_param : `dict`
+    dictionary of lensed GW source parameters, lens galaxy parameters and image paramters.
+    lensed_param.keys() = [&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;e1&#39;, &#39;e2&#39;, &#39;gamma1&#39;, &#39;gamma2&#39;, &#39;Dl&#39;,
+    &#39;Ds&#39;, &#39;Dls&#39;, &#39;theta_E&#39;, &#39;gamma&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;,
+    &#39;luminosity_distance&#39;, &#39;iota&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;n_images&#39;,
+    &#39;x0_image_positions&#39;, &#39;x1_image_positions&#39;, &#39;magnifications&#39;, &#39;time_delays&#39;, &#39;traces&#39;,
+    &#39;determinants&#39;, &#39;image_type&#39;, &#39;weights&#39;, &#39;opt_snr_net&#39;, &#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;]
+<span class="ansi-red-fg">File:</span>      ~/phd/mypackages/ler/ler/ler.py
+<span class="ansi-red-fg">Type:</span>      method
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># sampling lens parameters and image(s) parameters
+# batch_size already set to 25000
+# you can change it, e.g.
+ler.batch_size=25000
+ler.lensed_cbc_statistics(nsamples=100000);
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+chosen batch size = 25000. If you want to change batch size, self.batch_size = new_size
+There will be 4 batche(s)
+Batch no. 1
+sampling lensed params...
+solving lens equations...
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|███████████████████████████████████████████████████████| 25000/25000 [00:05&lt;00:00, 4694.05it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calculating snrs...
+Batch no. 2
+sampling lensed params...
+solving lens equations...
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|███████████████████████████████████████████████████████| 25000/25000 [00:05&lt;00:00, 4689.41it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calculating snrs...
+Batch no. 3
+sampling lensed params...
+solving lens equations...
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|███████████████████████████████████████████████████████| 25000/25000 [00:05&lt;00:00, 4645.74it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calculating snrs...
+Batch no. 4
+sampling lensed params...
+solving lens equations...
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|███████████████████████████████████████████████████████| 25000/25000 [00:05&lt;00:00, 4667.21it/s]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calculating snrs...
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># lensed rates
+# default: with step function
+ler.lensed_rate();
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+getting lensed_param from json file ./lensed_params.json...
+total lensed rate (yr^-1) (with step function): 0.9336308660374432
+storing detectable lensed params in ./lensed_params_detectable.json...
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># looking at the detectable events
+ler.lensed_param_detectable = &#39;default&#39;
+print(ler.lensed_param_detectable.keys())
+# save memory
+ler.lensed_param_detectable = None
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+dict_keys([&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;e1&#39;, &#39;e2&#39;, &#39;gamma1&#39;, &#39;gamma2&#39;, &#39;Dl&#39;, &#39;Ds&#39;, &#39;Dls&#39;, &#39;theta_E&#39;, &#39;gamma&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;luminosity_distance&#39;, &#39;iota&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;tilt_1&#39;, &#39;tilt_2&#39;, &#39;phi_12&#39;, &#39;phi_jl&#39;, &#39;n_images&#39;, &#39;x0_image_positions&#39;, &#39;x1_image_positions&#39;, &#39;magnifications&#39;, &#39;time_delays&#39;, &#39;image_type&#39;, &#39;weights&#39;, &#39;opt_snr_net&#39;, &#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;])
+</pre></div></div>
+</div>
+<ul class="simple">
+<li><p>both detectable and undetectable events are saved as json file in the current folder</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="Comparision">
+<h2>Comparision<a class="headerlink" href="#Comparision" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ler.rate_comparision();
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+unlensed_rate: 774.6236489086674
+lensed_rate: 0.9336308660374432
+ratio: 829.6894169709265
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Results and input paramters stored in json file ler.json_file_ler_param=&quot;./LeR_params.json&quot;
+# looking the results
+with open(ler.json_file_ler_param, &#39;r&#39;, encoding=&#39;utf-8&#39;) as f:
+            data = json.load(f)
+
+print(data.keys())
+print(f&quot;rate_ratio_step = {data[&#39;rate_ratio_step&#39;]}&quot;)
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+dict_keys([&#39;gw_param_sampler_dict&#39;, &#39;lensed_param_sampler_dict&#39;, &#39;snr_calculator_dict&#39;, &#39;unlensed_rate_step&#39;, &#39;unlensed_rate_pdet&#39;, &#39;lensed_rate_step&#39;, &#39;rate_ratio_step&#39;])
+rate_ratio_step = 829.6894169709265
+</pre></div></div>
+</div>
+<hr class="docutils" />
+<section id="Plots">
+<h3>Plots<a class="headerlink" href="#Plots" title="Link to this heading"></a></h3>
+</section>
+</section>
+<section id="Getting-the-parameters-from-the-stored-json-files-and-plotting-it">
+<h2>Getting the parameters from the stored json files and plotting it<a class="headerlink" href="#Getting-the-parameters-from-the-stored-json-files-and-plotting-it" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import json
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># detectable unlensed events
+f = open (&#39;gw_params_detectable.json&#39;, &quot;r&quot;)
+data = json.loads(f.read())
+
+data.keys()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+dict_keys([&#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;zs&#39;, &#39;luminosity_distance&#39;, &#39;iota&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;tilt_1&#39;, &#39;tilt_2&#39;, &#39;phi_12&#39;, &#39;phi_jl&#39;, &#39;opt_snr_net&#39;, &#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;, &#39;pdet_net&#39;])
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>len(data[&#39;mass_1_source&#39;])
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.hist(data[&#39;mass_1_source&#39;], histtype=&#39;step&#39;, density=True, bins=20)
+plt.xlabel(r&#39;$m_1^{src}$&#39;)
+plt.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/Rate_comparision_34_0.png" src="_images/Rate_comparision_34_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># detectable lensed events
+f = open (&#39;lensed_params_detectable.json&#39;, &quot;r&quot;)
+data = json.loads(f.read())
+
+data.keys()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+dict_keys([&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;e1&#39;, &#39;e2&#39;, &#39;gamma1&#39;, &#39;gamma2&#39;, &#39;Dl&#39;, &#39;Ds&#39;, &#39;Dls&#39;, &#39;theta_E&#39;, &#39;gamma&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;luminosity_distance&#39;, &#39;iota&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;tilt_1&#39;, &#39;tilt_2&#39;, &#39;phi_12&#39;, &#39;phi_jl&#39;, &#39;n_images&#39;, &#39;x0_image_positions&#39;, &#39;x1_image_positions&#39;, &#39;magnifications&#39;, &#39;time_delays&#39;, &#39;image_type&#39;, &#39;weights&#39;, &#39;opt_snr_net&#39;, &#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;, &#39;pdet_net&#39;])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>len(data[&#39;magnifications&#39;])
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+828
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.hist(np.log10(np.array(data[&#39;magnifications&#39;]).flatten()), histtype=&#39;step&#39;, density=True, bins=20)
+plt.xlabel(r&#39;$m_1^{src}$&#39;)
+plt.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/Rate_comparision_37_0.png" src="_images/Rate_comparision_37_0.png" />
+</div>
+</div>
+<section id="with-more-accurate-snr">
+<h3>with more accurate snr<a class="headerlink" href="#with-more-accurate-snr" title="Link to this heading"></a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># with inner product snr
+ler_ = LeR(npool=6,z_min=0., z_max=10.,snr_type = &#39;inner_product&#39;,\
+           psds={&#39;L1&#39;:&#39;aLIGOaLIGODesignSensitivityT1800044&#39;,&#39;H1&#39;:&#39;aLIGOaLIGODesignSensitivityT1800044&#39;,&#39;V1&#39;:&#39;AdvVirgo&#39;}, \
+           waveform_inspiral_must_be_above_fmin=False)
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># with interpolation snr
+ler_ = LeR(npool=6,z_min=0., z_max=10.,snr_type = &#39;interpolation&#39;,\
+           psds={&#39;L1&#39;:&#39;aLIGOaLIGODesignSensitivityT1800044&#39;,&#39;H1&#39;:&#39;aLIGOaLIGODesignSensitivityT1800044&#39;,&#39;V1&#39;:&#39;AdvVirgo&#39;}, \
+           waveform_inspiral_must_be_above_fmin=False, nsamples_mtot=200, nsamples_mass_ratio=500)
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="autoapi/ler/helperroutines/index.html" class="btn btn-neutral float-left" title="ler.helperroutines" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
