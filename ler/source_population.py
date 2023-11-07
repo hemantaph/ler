@@ -253,7 +253,7 @@ class SourceGalaxyPopulationModel:
         zs = rejection_sample(pdf, z_min, z_max, size=size)
         return zs
 
-    def merger_rate_density_popI_II_Oguri(self, zs, R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30):
+    def merger_rate_density_popI_II_Oguri(self, zs, R0=25.0 * 1e-9, b2=1.6, b3=2.0, b4=30):
         """
         Function to compute the merger rate density (PopI/PopII)
 
@@ -288,6 +288,11 @@ class SourceGalaxyPopulationModel:
         2.7848018586883885e-08
 
         """
+        # if self.event_type == "BNS":
+        #     R0 = 170.0 * 1e-9
+        # if self.event_type == "NSBH":
+        #     R0 = 27.0 * 1e-9
+
         #print("\n merger_rate_density_popI_II_Oguri \n")
         # replace values with self.merger_rate_density_param, if given
         param = dict(R0=R0, b2=b2, b3=b3, b4=b4)

@@ -3,6 +3,8 @@ LeR
 """
 
 import sys
+import warnings
+warnings.filterwarnings("ignore", "Wswiglal-redir-stdio")
 
 __author__ = 'hemanta_ph <hemantaphurailatpam@gmail.com>'
 

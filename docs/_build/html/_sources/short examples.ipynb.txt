@@ -1,0 +1,494 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# BBH rates short example"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# If ler is not yet installed, uncomment the following line to install it.\n",
+    "# !pip install ler gwcosmo@git+https://git.ligo.org/lscsoft/gwcosmo.git@v1.0.0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "PyCBC.libutils: pkg-config call failed, setting NO_PKGCONFIG=1\n"
+     ]
+    }
+   ],
+   "source": [
+    "from ler import LeR  # calling the package"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Given: IMR waveform, {self.waveform_approximant}.\n",
+      "psds not given. Choosing bilby's default psds\n",
+      "given psds:  {'L1': 'aLIGO_O4_high_asd.txt', 'H1': 'aLIGO_O4_high_asd.txt', 'V1': 'AdV_asd.txt'}\n",
+      "Interpolator will be loaded for L1 detector from ./interpolator_pickle/L1/halfSNR_dict_1.pickle\n",
+      "Interpolator will be loaded for H1 detector from ./interpolator_pickle/H1/halfSNR_dict_1.pickle\n",
+      "Interpolator will be loaded for V1 detector from ./interpolator_pickle/V1/halfSNR_dict_1.pickle\n"
+     ]
+    }
+   ],
+   "source": [
+    "ler = LeR(npool=int(4))  # package initialization (default: O4 sensitivity)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "chosen batch size = 25000. If you want to change batch size, self.batch_size = new_size\n",
+      "There will be 4 batche(s)\n",
+      "Batch no. 1\n",
+      "sampling gw source params...\n",
+      "calculating snrs...\n",
+      "Batch no. 2\n",
+      "sampling gw source params...\n",
+      "calculating snrs...\n",
+      "Batch no. 3\n",
+      "sampling gw source params...\n",
+      "calculating snrs...\n",
+      "Batch no. 4\n",
+      "sampling gw source params...\n",
+      "calculating snrs...\n"
+     ]
+    }
+   ],
+   "source": [
+    "unlensed_params = ler.unlensed_cbc_statistics() # unlensed param sampling"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "chosen batch size = 25000. If you want to change batch size, self.batch_size = new_size\n",
+      "There will be 4 batche(s)\n",
+      "Batch no. 1\n",
+      "sampling lensed params...\n",
+      "solving lens equations...\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "100%|███████████████████████████████████████████████████████| 25000/25000 [00:05<00:00, 4652.53it/s]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "calculating snrs...\n",
+      "Batch no. 2\n",
+      "sampling lensed params...\n",
+      "solving lens equations...\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "100%|███████████████████████████████████████████████████████| 25000/25000 [00:05<00:00, 4585.42it/s]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "calculating snrs...\n",
+      "Batch no. 3\n",
+      "sampling lensed params...\n",
+      "solving lens equations...\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "100%|███████████████████████████████████████████████████████| 25000/25000 [00:05<00:00, 4679.35it/s]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "calculating snrs...\n",
+      "Batch no. 4\n",
+      "sampling lensed params...\n",
+      "solving lens equations...\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "100%|███████████████████████████████████████████████████████| 25000/25000 [00:05<00:00, 4273.06it/s]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "calculating snrs...\n"
+     ]
+    }
+   ],
+   "source": [
+    "lensed_params = ler.lensed_cbc_statistics()  # lensed param sampling"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "getting gw_params from json file ./gw_params.json...\n",
+      "total unlensed rate (yr^-1) (with step function): 782.5345286154723\n",
+      "storing detectable unlensed params in ./gw_params_detectable.json\n",
+      "getting lensed_param from json file ./lensed_params.json...\n",
+      "total lensed rate (yr^-1) (with step function): 0.9489048626322648\n",
+      "storing detectable lensed params in ./lensed_params_detectable.json...\n",
+      "unlensed/lensed rate ratio =  824.6712177706828\n"
+     ]
+    }
+   ],
+   "source": [
+    "rates = ler.rate_comparision_with_rate_calculation()  # rate comparison\n",
+    "# results"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "if we expect 250 events in O4, then number of lensed events= 0.3031511159996829\n"
+     ]
+    }
+   ],
+   "source": [
+    "# if we expect 250 events in O4, then number of lensed events will be\n",
+    "print(\"if we expect 250 events in O4, then number of lensed events=\", 250/rates[0]*rates[1])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "dict_keys(['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl', 'opt_snr_net', 'L1', 'H1', 'V1'])"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# getting detectable parameters\n",
+    "ler.gw_param_detectable = \"gw_params_detectable.json\"\n",
+    "ler.gw_param_detectable.keys()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# BNS rates short example"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Given: Inspiral waveform, TaylorF2.\n",
+      "psds not given. Choosing bilby's default psds\n",
+      "given psds:  {'L1': 'aLIGO_O4_high_asd.txt', 'H1': 'aLIGO_O4_high_asd.txt', 'V1': 'AdV_asd.txt'}\n",
+      "Interpolator will be generated for L1 detector at ../interpolator_pickle/L1/halfSNR_dict_1.pickle\n",
+      "Interpolator will be generated for H1 detector at ../interpolator_pickle/H1/halfSNR_dict_1.pickle\n",
+      "Interpolator will be generated for V1 detector at ../interpolator_pickle/V1/halfSNR_dict_1.pickle\n",
+      "Generating interpolator for ['L1', 'H1', 'V1'] detectors\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "interpolation for each mass_ratios: 100%|█████████████████████████| 100/100 [00:21<00:00,  4.75it/s]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "interpolator generated\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Here I am showing more input parameters for ler\n",
+    "# merger_rate_density_param[\"R0\"] is the merger rate density at z=0 for the BNS and is different for BBH\n",
+    "# default waveform for ler is IMRPhenomD but BNS (below example) I am using TaylorF2\n",
+    "ler = LeR(npool=int(4),z_min=0., z_max=5., batch_size=25000,\n",
+    "    m_min=1., \n",
+    "    m_max=3.,\n",
+    "    event_type='BNS',\n",
+    "    category='popI_II',\n",
+    "    sub_category='Alsing',\n",
+    "    spin_constant=0.,\n",
+    "    mtot_min=2., \n",
+    "    mtot_max=18., \n",
+    "    nsamples_mtot=50, \n",
+    "    nsamples_mass_ratio=100, \n",
+    "    sampling_frequency=2048.,\n",
+    "    waveform_approximant = 'TaylorF2', \n",
+    "    minimum_frequency = 20., \n",
+    "    snr_type = 'interpolation', \n",
+    "    waveform_inspiral_must_be_above_fmin=False,\n",
+    "    interpolator_dir=\"../interpolator_pickle\",\n",
+    "    merger_rate_density_param=dict(R0=170.0 * 1e-9, b2=1.6, b3=2.0, b4=30))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "chosen batch size = 25000. If you want to change batch size, self.batch_size = new_size\n",
+      "There will be 4 batche(s)\n",
+      "Batch no. 1\n",
+      "sampling gw source params...\n",
+      "calculating snrs...\n",
+      "Batch no. 2\n",
+      "sampling gw source params...\n",
+      "calculating snrs...\n",
+      "Batch no. 3\n",
+      "sampling gw source params...\n",
+      "calculating snrs...\n",
+      "Batch no. 4\n",
+      "sampling gw source params...\n",
+      "calculating snrs...\n"
+     ]
+    }
+   ],
+   "source": [
+    "unlensed_params = ler.unlensed_cbc_statistics() # unlensed param sampling"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "chosen batch size = 25000. If you want to change batch size, self.batch_size = new_size\n",
+      "There will be 4 batche(s)\n",
+      "Batch no. 1\n",
+      "sampling lensed params...\n",
+      "solving lens equations...\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "100%|███████████████████████████████████████████████████████| 25000/25000 [00:05<00:00, 4554.93it/s]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "calculating snrs...\n",
+      "Batch no. 2\n",
+      "sampling lensed params...\n",
+      "solving lens equations...\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "100%|███████████████████████████████████████████████████████| 25000/25000 [00:05<00:00, 4539.24it/s]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "calculating snrs...\n",
+      "Batch no. 3\n",
+      "sampling lensed params...\n",
+      "solving lens equations...\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "100%|███████████████████████████████████████████████████████| 25000/25000 [00:05<00:00, 4398.78it/s]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "calculating snrs...\n",
+      "Batch no. 4\n",
+      "sampling lensed params...\n",
+      "solving lens equations...\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "100%|███████████████████████████████████████████████████████| 25000/25000 [00:05<00:00, 4607.40it/s]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "calculating snrs...\n"
+     ]
+    }
+   ],
+   "source": [
+    "lensed_params = ler.lensed_cbc_statistics()  # lensed param sampling"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "getting gw_params from json file ./gw_params.json...\n",
+      "total unlensed rate (yr^-1) (with step function): 42.67542482598783\n",
+      "storing detectable unlensed params in ./gw_params_detectable.json\n",
+      "getting lensed_param from json file ./lensed_params.json...\n",
+      "total lensed rate (yr^-1) (with step function): 0.03125611653059152\n",
+      "storing detectable lensed params in ./lensed_params_detectable.json...\n",
+      "unlensed/lensed rate ratio =  1365.3463565833524\n"
+     ]
+    }
+   ],
+   "source": [
+    "rates = ler.rate_comparision_with_rate_calculation()  # rate comparision with rate calculation"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "if we expect 10 events in O4, then number of lensed events= 0.0073241488885091655\n"
+     ]
+    }
+   ],
+   "source": [
+    "# if we expect 250 events in O4, then number of lensed events will be\n",
+    "print(\"if we expect 10 events in O4, then number of lensed events=\", 10/rates[0]*rates[1])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "lerenv",
+   "language": "python",
+   "name": "lerenv"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.13"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

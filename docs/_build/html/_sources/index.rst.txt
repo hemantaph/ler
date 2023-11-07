@@ -34,6 +34,7 @@ The code is available at `github <https://github.com/hemantaph/ler>`_
    :caption: Examples:
    
    Rate comparision
+   short examples
 
 
 Indices and tables

@@ -2571,7 +2571,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: merger_rate_density_popI_II_Oguri(zs, R0=23.9 * 1e-09, b2=1.6, b3=2.0, b4=30)
+   .. py:method:: merger_rate_density_popI_II_Oguri(zs, R0=25.0 * 1e-09, b2=1.6, b3=2.0, b4=30)
 
       
       Function to compute the merger rate density (PopI/PopII)
