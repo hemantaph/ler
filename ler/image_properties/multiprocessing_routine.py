@@ -114,7 +114,7 @@ def solve_lens_equation1(lens_parameters):
             },
         ]
         caustic_double_points = caustics_epl_shear(
-            kwargs_lens, return_which="double", maginf=-100
+            kwargs_lens, return_which="double", maginf=-1000
         )
         caustic = np.logical_not(np.isnan(caustic_double_points).any())
         # If there is a nan, caustic=False, draw a new gamma
@@ -289,10 +289,10 @@ def solve_lens_equation2(lens_parameters):
             },
         ]
         caustic_double_points = caustics_epl_shear(
-            kwargs_lens, return_which="double", maginf=-100
+            kwargs_lens, return_which="double", maginf=-1000
         )
         caustic_quad_points = caustics_epl_shear(
-            kwargs_lens, return_which="caustic", maginf=-100
+            kwargs_lens, return_which="caustic", maginf=-1000
         )
         caustic = not (np.isnan(caustic_double_points).any())
         caustic &= not (np.isnan(caustic_quad_points).any())
