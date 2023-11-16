@@ -9,6 +9,7 @@ ler.egg-info/requires.txt
 ler.egg-info/top_level.txt
 ler/gw_source_population/__init__.py
 ler/gw_source_population/gw_source_population.py
+ler/gw_source_population/test.py
 ler/image_properties/__init__.py
 ler/image_properties/image_properties.py
 ler/image_properties/multiprocessing_routine.py

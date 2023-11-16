@@ -2,7 +2,8 @@
 """ 
 This module contains helper routines for other modules in the ler package.
 """
-
+import os
+import pickle
 import numpy as np
 import json
 from scipy.interpolate import interp1d
@@ -47,6 +48,7 @@ class NumpyEncoder(json.JSONEncoder):
             return obj.tolist()
         return json.JSONEncoder.default(self, obj)
 
+
 def update_dict(old, new):
     """Update a dictionary with keys and values."""
     keys = old.keys()
@@ -55,6 +57,7 @@ def update_dict(old, new):
             old[key] = value
 
     return old
+
 
 def append_json(file_name, dictionary, replace=False):
     """Append and update a json file with a dictionary.
@@ -139,34 +142,34 @@ def rejection_sample(pdf, xmin, xmax, size=100, chunk_size=10000):
     # Return the correct number of samples
     return x_sample[:size]
 
+
 def rejection_sample2d(pdf, xmin, xmax, ymin, ymax, size=100, chunk_size=10000):
-    
     chunk_size = 10000
-    
+
     x = np.linspace(xmin, xmax, chunk_size)
     y = np.linspace(ymin, ymax, chunk_size)
-    z = pdf(x,y)
+    z = pdf(x, y)
     zmax = np.max(z)
-    
-    
+
     # Rejection sample in chunks
     x_sample = []
     y_sample = []
     while len(x_sample) < size:
         x_try = np.random.uniform(xmin, xmax, size=chunk_size)
         y_try = np.random.uniform(ymin, ymax, size=chunk_size)
-        
+
         z_try = np.random.uniform(0, zmax, size=chunk_size)
         zmax = max(zmax, np.max(z_try))
 
         x_sample += list(x_try[z_try < pdf(x_try, y_try)])
         y_sample += list(y_try[z_try < pdf(x_try, y_try)])
-        
+
     # Transform the samples to a 1D numpy array
     x_sample = np.array(x_sample).flatten()
     y_sample = np.array(y_sample).flatten()
     # Return the correct number of samples
     return x_sample[:size], y_sample[:size]
+
 
 def add_dictionaries_together(dictionary1, dictionary2):
     """Adds two dictionaries with the same keys together."""
@@ -212,31 +215,157 @@ def trim_dictionary(dictionary, size):
             )
     return dictionary
 
-def create_inv_cdf(x,y):
-    
+
+def create_func_pdf_cdf_invcdf(x, y, category="function"):
     # remove idx of nan values
     idx = np.argwhere(np.isnan(y))
     x = np.delete(x, idx)
     y = np.delete(y, idx)
     # create pdf with interpolation
-    pdf_unorm = interp1d(x, y, kind='cubic', fill_value="extrapolate")
-    xlim=[x[0], x[-1]]
+    pdf_unorm = interp1d(x, y, kind="cubic", fill_value="extrapolate")
+    if category == "function":
+        return pdf_unorm
+    if category == "function_inverse":
+        # create inverse function
+        return interp1d(y, x, kind="cubic", fill_value="extrapolate")
+
+    xlim = [x[0], x[-1]]
     norm = quad(pdf_unorm, xlim[0], xlim[1])[0]
-    y = y/norm 
+    y = y / norm
     # normalize the pdf
-    pdf = interp1d(x, y, kind='cubic', fill_value="extrapolate")
-
-
+    pdf = interp1d(x, y, kind="cubic", fill_value="extrapolate")
+    if category == "pdf" or category == None:
+        return pdf
     # create cdf
-    # def cdf_fn():
-    #     cdf = []
-    #     for x_ in x:
-    #         cdf.append(quad(pdf, xlim[0], x_)[0])
-    #     return cdf
     cdf = lambda x: quad(pdf, xlim[0], x)[0]
     # get all values of cdf
     cdf_values = np.array([cdf(x_) for x_ in x])
+    cdf_ = interp1d(x, cdf_values, kind="cubic", fill_value="extrapolate")
+    if category == "cdf":
+        return cdf_
+    # create inverse cdf
+    inv_cdf = interp1d(cdf_values, x, kind="cubic", fill_value="extrapolate")
+    if category == "inv_cdf":
+        return inv_cdf
+    if category == "all":
+        return([pdf, cdf_, inv_cdf])
+    
+def create_conditioned_pdf_cdf_invcdf(x, conditioned_y, pdf_func, category="pdf"):
+    """
+    pdf_func is the function to calculate the pdf of x given y
+    x is an array and the output of pdf_func is an array
+    y is the condition
+    we consider parameter plane of x and y
+    """
 
-    inv_cdf = interp1d(cdf_values, x, kind='cubic')
+    list = []
+    for y in conditioned_y:
+        phi = pdf_func(x,y)
+        # creating the interpolator
+        list.append(create_func_pdf_cdf_invcdf(x,phi, category=category))
+    return list
 
-    return pdf, cdf, inv_cdf
+def interpolator_from_pickle(
+    param_dict_given, directory, sub_directory, name, x, pdf_func, conditioned_y=None, dimension=1,category="pdf", create_new=False
+):
+    """
+    Function to decide which interpolator to use.
+    """
+
+    # check first whether the directory, subdirectory and pickle exist
+    path_inv_cdf, it_exist = interpolator_pickle_path(
+        param_dict_given=param_dict_given,
+        directory=directory,
+        sub_directory=sub_directory,
+        interpolator_name=name,
+    )
+    if create_new:
+        it_exist = False
+    if it_exist:
+        print(f"{name} interpolator will be loaded from {path_inv_cdf}")
+        # load the interpolator
+        with open(path_inv_cdf, "rb") as handle:
+            interpolator = pickle.load(handle)
+        return interpolator
+    else:
+        print(f"{name} interpolator will be generated at {path_inv_cdf}")
+
+        # create the interpolator
+        if dimension==1:
+            y = pdf_func(x)
+            interpolator = create_func_pdf_cdf_invcdf(x, y, category=category)
+        elif dimension==2:
+            interpolator = create_conditioned_pdf_cdf_invcdf(x, conditioned_y, pdf_func, category=category)
+        else:
+            raise ValueError("The dimension is not supported.")
+        # save the interpolator
+        with open(path_inv_cdf, "wb") as handle:
+            pickle.dump(interpolator, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        return interpolator
+
+def interpolator_pickle_path(
+    param_dict_given,
+    directory,
+    sub_directory,
+    interpolator_name,
+):
+    """
+    Function to create the interpolator pickle file path for velocity dispersion.
+    """
+
+    # check the dir 'interpolator' exist
+    full_dir = directory + "/" + sub_directory
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+        os.makedirs(full_dir)
+    else:
+        if not os.path.exists(full_dir):
+            os.makedirs(full_dir)
+
+    # check if param_dict_list.pickle exists
+    path1 = full_dir + "/init_dict.pickle"
+    if not os.path.exists(path1):
+        dict_list = []
+        with open(path1, "wb") as handle:
+            pickle.dump(dict_list, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+    # check if the input dict is the same as one of the dict inside the pickle file
+    param_dict_stored = pickle.load(open(path1, "rb"))
+
+    path2 = full_dir
+    len_ = len(param_dict_stored)
+    if param_dict_given in param_dict_stored:
+        idx = param_dict_stored.index(param_dict_given)
+        # load the interpolator
+        path_inv_cdf = path2 + "/" + interpolator_name + "_" + str(idx) + ".pickle"
+        # there will be exception if the file is deleted by mistake
+        if os.path.exists(path_inv_cdf):
+            it_exist = True
+        else:
+            it_exist = False
+    else:
+        it_exist = False
+        path_inv_cdf = path2 + "/" + interpolator_name + "_" + str(len_) + ".pickle"
+        param_dict_stored.append(param_dict_given)
+        with open(path1, "wb") as handle:
+            pickle.dump(param_dict_stored, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+    return path_inv_cdf, it_exist
+
+def interpolator_pdf_conditioned(x, conditioned_y, y_array, interpolator_list):
+    """
+    Function to sample from the interpolator
+    """
+    # find the index of z in zlist
+    idx = np.searchsorted(y_array, conditioned_y)
+
+    return interpolator_list[idx](x)
+
+def interpolator_sampler_conditioned(conditioned_y, y_array, interpolator_list, size=1000):
+    """
+    Function sampler with inverse cdf from the interpolator
+    """
+    # find the index of z in zlist
+    idx = np.searchsorted(y_array, conditioned_y)
+    u = np.random.uniform(0, 1, size=size)
+    return interpolator_list[idx](u)

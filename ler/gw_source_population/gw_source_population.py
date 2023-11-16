@@ -1059,7 +1059,7 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
 
         return (event_priors_, event_prior_params_, sampler_names_)
 
-    def sample_gw_parameters(self, size=1000, **kwargs):
+    def sample_gw_parameters(self, size=1000, param=None):
         """
         Function to sample BBH/BNS/NSBH intrinsic and extrinsics parameters
 
@@ -1067,9 +1067,6 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         ----------
         size : `int`
             Number of samples to draw
-        kwargs : `dict`
-            Keyword arguments to pass in parameter values
-            e.g. zs = np.array([0.1,0.2,0.3])
 
         Returns
         ----------
@@ -1086,6 +1083,11 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         dict_keys(['zs', 'geocent_time', 'sky_position', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2'])
         """
 
+        if param is None:
+            param = {}
+            param_keys = param.keys()
+        else:
+            param_keys = param.keys()
         # sample parameters
         param_names = list(self.gw_param_samplers.keys())
         samplers_params = list(self.gw_param_samplers_params.values())
@@ -1095,13 +1097,13 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         sampler_names = list(self.sampler_names.keys())
 
         gw_parameters = {}  # initialize dictionary to store parameters
-        for name, sampler, param in zip(param_names, sampler_names, samplers_params):
-            if name not in kwargs:
+        for name, sampler, param_ in zip(param_names, sampler_names, samplers_params):
+            if name not in param_keys:
                 # Sample the parameter using the specified sampler function
-                gw_parameters[name] = getattr(self, sampler)(size=size, param=param)
+                gw_parameters[name] = getattr(self, sampler)(size=size, param=param_)
             else:
                 # Use the provided value from kwargs
-                gw_parameters[name] = kwargs[name]
+                gw_parameters[name] = param[name]
 
         # calculate luminosity distance
         zs = gw_parameters["zs"]
