@@ -1,12 +1,8 @@
 import numpy as np
 from scipy.integrate import quad
-# from multiprocessing import Pool, Manager
-from ler.lens_galaxy_population import optical_depth
-cosmology_h = optical_depth.cosmology_h
-phi_cut_SIE = optical_depth.phi_cut_SIE
-sample_axis_ratio = optical_depth.axis_ratio_rayleigh
-# od = optical_depth.OpticalDepth()
-# tau_integrand = od.tau_integrand
+
+from ler.lens_galaxy_population import phi_cut_SIE
+from ler.lens_galaxy_population import axis_ratio_rayleigh as sample_axis_ratio
 
 import pickle
 with open('./mp_interpolator/differential_comoving_volume.pickle', 'rb') as input_:
