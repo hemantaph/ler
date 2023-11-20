@@ -15,7 +15,8 @@ from scipy.integrate import quad
 from lenstronomy.Util.param_util import phi_q2_ellipticity
 
 # for redshift to luminosity distance conversion
-from astropy.cosmology import Planck18
+from astropy.cosmology import LambdaCDM
+cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
 from astropy import constants as const
 
 # the following .py file will be called if they are not given in the class initialization
@@ -24,7 +25,7 @@ from ..image_properties import ImageProperties
 from ..utils import add_dictionaries_together, trim_dictionary
 
 
-class LensGalaxyPopulation(CompactBinaryPopulation, ImageProperties):
+class LensGalaxyParameterDistribution(CompactBinaryPopulation, ImageProperties):
     """
     Class to sample lens galaxy parameters
 
@@ -153,50 +154,69 @@ class LensGalaxyPopulation(CompactBinaryPopulation, ImageProperties):
     def __init__(
         self,
         npool=4,
+        z_min=0.001,
+        z_max=10.0,
+        cosmology=None,
+        event_type="BBH",
         CompactBinaryPopulation_=False,
         lens_type="epl_galaxy",
-        lens_functions=dict(
-            strong_lensing_condition="rjs_with_einstein_radius",
-            optical_depth="optical_depth_SIS_haris",
-            param_sampler_type="sample_all_routine1",
-        ),
+        lens_functions= None,
         sampler_priors=None,
         sampler_priors_params=None,
         **kwargs
     ):
+        
         self.npool = npool
+        self.z_min = z_min
+        self.z_max = z_max
+        self.cosmo = cosmology if cosmology else cosmo
+        # function initialization
         self.sample_lens_parameters_routine = getattr(
             self, lens_functions["param_sampler_type"]
         )
         self.rejection_sample_sl = getattr(
             self, lens_functions["strong_lensing_condition"]
         )  # SL: Strong Lensing
-        self.strong_lensing_optical_depth = getattr(
-            self, lens_functions["optical_depth"]
-        )
+        # self.strong_lensing_optical_depth = getattr(
+        #     self, lens_functions["optical_depth"]
+        # )
         # self.rejection_sample_sl = self.rj_on_cross_section
+        # dealing with prior functions and categorization
+        (
+            self.lens_param_samplers,
+            self.lens_param_samplers_params,
+            self.lens_sampler_names,
+            self.lens_functions,
+        ) = self.lens_priors_categorization(
+            lens_type, sampler_priors, sampler_priors_params, lens_functions,
+        )
 
+        # initialization of CompactBinaryPopulation class
+        # it also initializes the CBCSourceRedshiftDistribution class
+        # list of relevant initialized instances,
+        # 1. self.sample_source_redshift
+        # 2. self.sample_gw_parameters
         if CompactBinaryPopulation_ == False:
             input_params = dict(
-                z_min=0.0,
-                z_max=10.0,
-                event_type="BBH",
+                z_min=self.z_min,
+                z_max=self.z_max,
+                event_type=event_type,
                 event_priors=None,
                 event_priors_params=None,
                 spin_zero=True,
-                cosmology=None,
+                cosmology=self.cosmo,
             )
             input_params.update(kwargs)
             # initialization of clasess
             CompactBinaryPopulation.__init__(
                 self,
-                z_min=input_params["z_min"],
-                z_max=input_params["z_max"],
+                z_min=self.z_min,
+                z_max=self.z_max,
                 event_type=input_params["event_type"],
                 event_priors=input_params["event_priors"],
                 event_priors_params=input_params["event_priors_params"],
                 spin_zero=input_params["spin_zero"],
-                cosmology=input_params["cosmology"],
+                cosmology=self.cosmo,
             )
         else:
             # if the classes are already initialized, then just use them
@@ -216,17 +236,6 @@ class LensGalaxyPopulation(CompactBinaryPopulation, ImageProperties):
             n_min_images=input_params_image["n_min_images"],
             n_max_images=input_params_image["n_max_images"],
             lens_model_list=input_params_image["lens_model_list"],
-        )
-
-        # dict to strore lens parameters
-        self.lens_parameters = dict()
-        # dealing with prior functions and categorization
-        (
-            self.lens_param_samplers,
-            self.lens_param_samplers_params,
-            self.lens_sampler_names,
-        ) = self.lens_priors_categorization(
-            lens_type, sampler_priors, sampler_priors_params
         )
 
         # cosmolgy related functions, for fast calculation through interpolation
@@ -251,7 +260,7 @@ class LensGalaxyPopulation(CompactBinaryPopulation, ImageProperties):
         return None
 
     def lens_priors_categorization(
-        self, lens_type, sampler_priors=None, sampler_priors_params=None
+        self, lens_type, sampler_priors=None, sampler_priors_params=None, lens_functions=None,
     ):
         """
         Function to categorize the lens priors/samplers
@@ -288,6 +297,11 @@ class LensGalaxyPopulation(CompactBinaryPopulation, ImageProperties):
                 mass_density_spectral_index=dict(mean=2.0, std=0.2),
                 source_parameters=None,
             )
+            lens_functions_ = dict(
+                strong_lensing_condition="rjs_with_einstein_radius",
+                optical_depth="optical_depth_SIS_haris",
+                param_sampler_type="sample_all_routine1",
+            ),
         else:
             raise ValueError("lens_type not recognized")
 
@@ -296,6 +310,8 @@ class LensGalaxyPopulation(CompactBinaryPopulation, ImageProperties):
             sampler_priors_.update(sampler_priors)
         if sampler_priors_params:
             sampler_priors_params_.update(sampler_priors_params)
+        if lens_functions:
+            lens_functions_.update(lens_functions)
 
         # dict of sampler names with description
         lens_sampler_names_ = dict(
@@ -309,7 +325,7 @@ class LensGalaxyPopulation(CompactBinaryPopulation, ImageProperties):
             sample_source_parameters="source parameters other than redshift",
         )
 
-        return sampler_priors_, sampler_priors_params_, lens_sampler_names_
+        return sampler_priors_, sampler_priors_params_, lens_sampler_names_, lens_functions_
 
     def sample_lens_parameters(
         self,
@@ -468,18 +484,17 @@ class LensGalaxyPopulation(CompactBinaryPopulation, ImageProperties):
 
         def zs_function(zs_sl):
             # get zs
+            # self.sample_source_redshifts from CBCSourceRedshiftDistribution class
             zs = self.sample_source_redshifts(
                 size
             )  # this function is from CompactBinaryPopulation class
             # put strong lensing condition with optical depth
             tau = self.strong_lensing_optical_depth(zs)
-            tau_max = np.max(
-                self.strong_lensing_optical_depth(z_max)
-            )  # tau increases with z
-            r = np.random.uniform(0, tau_max, size=len(zs))
-            pick_sl = r < tau  # pick strongly lensed sources
+            tau_max = self.strong_lensing_optical_depth(z_max)[0] # tau increases with z
+            r = np.random.uniform(0, tau_max, size=len(zs)) 
             # Add the strongly lensed source redshifts to the list
-            zs_sl += list(zs[pick_sl])  # list concatenation
+            # pick strongly lensed sources
+            zs_sl += list(zs[r < tau])  # list concatenation
 
             # Check if the zs_sl are larger than requested size
             if len(zs_sl) >= size:
@@ -532,9 +547,8 @@ class LensGalaxyPopulation(CompactBinaryPopulation, ImageProperties):
         """
 
         # lens redshift distribution
-        r = self.lens_redshift_sampler_helper_function(
-            np.random.uniform(0, 1, size=len(zs))
-        )
+        u = njit(np.random.uniform(0, 1, size=len(zs)))
+        r = (10 * u**3 - 15 * u**4 + 6 * u**5)  # See the integral of Eq. A7 of https://arxiv.org/pdf/1807.07062.pdf (cdf)
         # comoving distance to the lens galaxy
         # on the condition that lens lie between the source and the observer
         lens_galaxy_Dc = (
@@ -790,58 +804,6 @@ class LensGalaxyPopulation(CompactBinaryPopulation, ImageProperties):
         return getcrosssect_num(theta_E, q) / (4 * np.pi)
 
     def create_lookup_table_lensing(self, z_max):
-        """
-        Functions to create lookup tables
-        1. Redshift to co-moving distance.
-        2. Co-moving distance to redshift.
-        3. Redshift to angular diameter distance.
-        4. Lens redshift sampler helper function.
-
-        Parameters
-        ----------
-        z_max : `float`
-            maximum redshift
-
-        Attributes
-        ----------
-        z_to_Dc : `scipy.interpolate.interpolate`
-            redshift to co-moving distance
-        Dc_to_z : `scipy.interpolate.interpolate`
-            co-moving distance to redshift
-        angular_diameter_distance_z1z2 : `lambda function`
-            redshift to angular diameter distance (between two redshifts)
-        angular_diameter_distance : `lambda function`
-            redshift to angular diameter distance
-        lens_redshift_sampler_helper_function : `scipy.interpolate.interpolate`
-            lens redshift sampler helper function
-        """
-
-        # initialing cosmological functions for fast calculation through interpolation
-        # z_min is fixed to 0.0, as the lens redshifts are drawn between 0.0 and z_max
-        z = np.linspace(0.0, z_max, 500)  # red-shift
-        Dc = self.cosmo.comoving_distance(z).value  # co-moving distance in Mpc
-        self.z_to_Dc = interp1d(z, Dc, kind="cubic")
-        self.Dc_to_z = interp1d(Dc, z, kind="cubic")
-
-        # for angular diameter distance
-        quad_ = []  # refers to integration (with quad algorithm) from scipy
-        for zl in z:
-            quad_.append(
-                quad(
-                    self.cosmo._inv_efunc_scalar,
-                    0.0,
-                    zl,
-                    args=self.cosmo._inv_efunc_scalar_args,
-                )[0]
-            )
-        quad_ = np.array(quad_)
-        quad_int = interp1d(z, np.array(quad_), kind="cubic")
-
-        H0d = self.cosmo._hubble_distance.value
-        self.angular_diameter_distance_z1z2 = (
-            lambda zl0, zs0: H0d * (quad_int(zs0) - quad_int(zl0)) / (zs0 + 1.0)
-        )
-        self.angular_diameter_distance = lambda zs0: H0d * quad_int(zs0) / (zs0 + 1.0)
 
         # create a lookup table for the lens redshift draws
         r = np.linspace(0, 1, num=100)

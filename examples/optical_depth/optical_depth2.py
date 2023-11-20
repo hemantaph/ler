@@ -8,8 +8,7 @@ from astropy.cosmology import LambdaCDM
 cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
 from numba import njit, jit
 from ler.utils import  interpolator_from_pickle
-
-import mp
+#import mp
 
 class OpticalDepth():
     """

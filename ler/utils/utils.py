@@ -7,7 +7,9 @@ import pickle
 import numpy as np
 import json
 from scipy.interpolate import interp1d
-from scipy.integrate import quad
+from scipy.interpolate import CubicSpline
+from scipy.integrate import quad, cumtrapz
+from numba import njit, jit
 
 
 class NumpyEncoder(json.JSONEncoder):
@@ -114,6 +116,17 @@ def get_param_from_json(json_file):
         param[key] = np.array(value)
     return param
 
+def dict_inside_dict_to_array(dictionary):
+    """
+    Function to convert a dictionary to an array.
+    """
+    array = []
+    for key, value in dictionary.items():
+        if isinstance(value, dict):
+            array.append(dict_to_array(value))
+        else:
+            array.append(value)
+    return np.array(array)
 
 def rejection_sample(pdf, xmin, xmax, size=100, chunk_size=10000):
     """
@@ -215,12 +228,51 @@ def trim_dictionary(dictionary, size):
             )
     return dictionary
 
+# def create_func_pdf_invcdf(x, y, category="function"):
+#     # remove idx of nan values
+#     idx = np.argwhere(np.isnan(y))
+#     x = np.delete(x, idx)
+#     y = np.delete(y, idx)
+#     # create pdf with interpolation
+#     pdf_unorm = interp1d(x, y, kind="cubic")
+#     if category == "function":
+#         return pdf_unorm
+#     if category == "function_inverse":
+#         # create inverse function
+#         return interp1d(y, x, kind="cubic")
 
-def create_func_pdf_cdf_invcdf(x, y, category="function"):
+#     xlim = [x[0], x[-1]]
+#     norm = quad(pdf_unorm, xlim[0], xlim[1])[0]
+#     y = y / norm
+#     # normalize the pdf
+#     pdf = interp1d(x, y, kind="cubic")
+#     if category == "pdf" or category == None:
+#         return pdf
+#     # create cdf
+#     cdf = lambda x: quad(pdf, xlim[0], x)[0]
+#     # get all values of cdf
+#     cdf_values = np.array([cdf(x_) for x_ in x])
+#     cdf_ = interp1d(x, cdf_values, kind="cubic")
+#     if category == "cdf":
+#         return cdf_
+#     # create inverse cdf
+#     inv_cdf = interp1d(cdf_values, x, kind="cubic")
+#     if category == "inv_cdf":
+#         return inv_cdf
+#     if category == "all":
+#         return([pdf, cdf_, inv_cdf])
+
+def create_func_pdf_invcdf(x, y, category="function"):
     # remove idx of nan values
+    # print("len(x)=",len(x))
+    # print("len(y)=",len(y))
     idx = np.argwhere(np.isnan(y))
     x = np.delete(x, idx)
     y = np.delete(y, idx)
+    # print("len(x)=",len(x))
+    # print("len(y)=",len(y))
+    # print("x=",x)
+    # print("y=",y)
     # create pdf with interpolation
     pdf_unorm = interp1d(x, y, kind="cubic", fill_value="extrapolate")
     if category == "function":
@@ -229,28 +281,54 @@ def create_func_pdf_cdf_invcdf(x, y, category="function"):
         # create inverse function
         return interp1d(y, x, kind="cubic", fill_value="extrapolate")
 
-    xlim = [x[0], x[-1]]
-    norm = quad(pdf_unorm, xlim[0], xlim[1])[0]
+    min_, max_ = min(x), max(x)
+    norm = quad(pdf_unorm, min_, max_)[0]
     y = y / norm
-    # normalize the pdf
-    pdf = interp1d(x, y, kind="cubic", fill_value="extrapolate")
-    if category == "pdf" or category == None:
+    if category == "pdf" or category is None:
+        # normalize the pdf
+        pdf = interp1d(x, y, kind="cubic", fill_value="extrapolate")
         return pdf
-    # create cdf
-    cdf = lambda x: quad(pdf, xlim[0], x)[0]
-    # get all values of cdf
-    cdf_values = np.array([cdf(x_) for x_ in x])
-    cdf_ = interp1d(x, cdf_values, kind="cubic", fill_value="extrapolate")
-    if category == "cdf":
-        return cdf_
-    # create inverse cdf
+    # cdf
+    cdf_values = cumtrapz(y, x, initial=0)
+    # print("len(x)=",len(x))
+    # print("len(cdf_values)=",len(cdf_values))
+    #cdf = lambda x: quad(pdf, min_, x)[0] # if quad is used, it will be very slow
+    # cdf_values = np.array([cdf(x_) for x_ in x])
+
+    # to remove duplicate values on x-axis before interpolation
+    #idx = np.unique(cdf_values, return_index=True)[1]
+    # find the first index of the unique values
+    #idx = np.unique(cdf_values, return_index=True)[1]
+    #cdf_values = cdf_values[idx]
+    #x = x[idx]
+
+    # to avoid duplicate values on x-axis before interpolation
+    # also avoid negative values
+    # first element greater than 0
+    idx = np.argwhere(cdf_values > 0)[0][0]
+    cdf_values = cdf_values[idx:]
+    x = x[idx:]
+    # forcing cdf to start from 0
+    # if idx > 0:
+    #     # add 0 to the first element
+    #     cdf_values = np.insert(cdf_values, 0, 0)
+    #     x = np.insert(x, 0, x[idx-1])
+    #     # print("cdf_values[idx-1]=",cdf_values[idx-1])
+    #     # print("cdf_values[idx]=",cdf_values[idx])
+    #     # print("vd[idx-1]=",x[0])
+    #     # print(x[idx-1])
+
+    # print("idx=",idx)
+    # print("len(x)=",len(x))
+    # print("len(cdf_values)=",len(cdf_values))
+    # inverse cdf
     inv_cdf = interp1d(cdf_values, x, kind="cubic", fill_value="extrapolate")
     if category == "inv_cdf":
         return inv_cdf
     if category == "all":
-        return([pdf, cdf_, inv_cdf])
+        return([pdf, inv_cdf])
     
-def create_conditioned_pdf_cdf_invcdf(x, conditioned_y, pdf_func, category="pdf"):
+def create_conditioned_pdf_invcdf(x, conditioned_y, pdf_func, category):
     """
     pdf_func is the function to calculate the pdf of x given y
     x is an array and the output of pdf_func is an array
@@ -258,12 +336,72 @@ def create_conditioned_pdf_cdf_invcdf(x, conditioned_y, pdf_func, category="pdf"
     we consider parameter plane of x and y
     """
 
-    list = []
+    list_ = []
     for y in conditioned_y:
         phi = pdf_func(x,y)
+        list_.append(create_func_pdf_invcdf(x, phi, category=category))
         # creating the interpolator
-        list.append(create_func_pdf_cdf_invcdf(x,phi, category=category))
-    return list
+        # inv_cdf = create_func_pdf_invcdf(x, phi, category="inv_cdf")
+        # print(f"z={y}, \n phi={phi}, \n sigma={inv_cdf(np.random.uniform(0, 1, size=10))}")
+        # list_.append(inv_cdf)
+        
+    return list_
+
+def create_func(x, y):
+    idx = np.argwhere(np.isnan(y))
+    x = np.delete(x, idx)
+    y = np.delete(y, idx)
+    return CubicSpline(x, y).c, x
+
+def create_func_inv(x, y):
+    idx = np.argwhere(np.isnan(y))
+    x = np.delete(x, idx)
+    y = np.delete(y, idx)
+    return CubicSpline(y, x).c, y
+
+def create_pdf(x, y):
+    idx = np.argwhere(np.isnan(y))
+    x = np.delete(x, idx)
+    y = np.delete(y, idx)
+    pdf_unorm = interp1d(x, y, kind="cubic", fill_value="extrapolate")
+    min_, max_ = min(x), max(x)
+    norm = quad(pdf_unorm, min_, max_)[0]
+    y = y / norm
+    return CubicSpline(x, y).c, x
+
+def create_inv_cdf_array(x, y):
+    idx = np.argwhere(np.isnan(y))
+    x = np.delete(x, idx)
+    y = np.delete(y, idx)
+    pdf_unorm = interp1d(x, y, kind="cubic", fill_value="extrapolate")
+    min_, max_ = min(x), max(x)
+    norm = quad(pdf_unorm, min_, max_)[0]
+    y = y / norm
+    cdf_values = cumtrapz(y, x, initial=0)
+    # to remove duplicate values on x-axis before interpolation
+    idx = np.argwhere(cdf_values > 0)[0][0]
+    cdf_values = cdf_values[idx:]
+    x = x[idx:]
+    cdf_values = np.insert(cdf_values, 0, 0)
+    x = np.insert(x, 0, x[idx-1])
+
+    return np.array([cdf_values, x])
+
+def create_conditioned_pdf(x, conditioned_y, pdf_func):
+    list_ = []
+    for y in conditioned_y:
+        phi = pdf_func(x,y)
+        list_.append(create_pdf(x, phi))
+        
+    return np.array(list_)
+
+def create_conditioned_inv_cdf_array(x, conditioned_y, pdf_func):
+    list_ = []
+    for y in conditioned_y:
+        phi = pdf_func(x,y)
+        list_.append(create_inv_cdf_array(x, phi))
+        
+    return np.array(list_)
 
 def interpolator_from_pickle(
     param_dict_given, directory, sub_directory, name, x, pdf_func, conditioned_y=None, dimension=1,category="pdf", create_new=False
@@ -293,9 +431,21 @@ def interpolator_from_pickle(
         # create the interpolator
         if dimension==1:
             y = pdf_func(x)
-            interpolator = create_func_pdf_cdf_invcdf(x, y, category=category)
+            if category=="function":
+                interpolator = create_func(x, y)
+            elif category=="function_inverse":
+                interpolator = create_func_inv(x, y)
+            elif category=="pdf":
+                interpolator = create_pdf(x, y)
+            elif category=="inv_cdf":
+                interpolator = create_inv_cdf_array(x, y)
+            else:
+                raise ValueError("The category given should be function, function_inverse, pdf or inv_cdf.")
         elif dimension==2:
-            interpolator = create_conditioned_pdf_cdf_invcdf(x, conditioned_y, pdf_func, category=category)
+            if category=="pdf":
+                interpolator = create_conditioned_pdf(x, conditioned_y, pdf_func)
+            elif category=="inv_cdf":
+                interpolator = create_conditioned_inv_cdf_array(x, conditioned_y, pdf_func)
         else:
             raise ValueError("The dimension is not supported.")
         # save the interpolator
@@ -369,3 +519,22 @@ def interpolator_sampler_conditioned(conditioned_y, y_array, interpolator_list, 
     idx = np.searchsorted(y_array, conditioned_y)
     u = np.random.uniform(0, 1, size=size)
     return interpolator_list[idx](u)
+
+@njit
+def njit_cubic_spline_interpolator(xnew, coefficients, x):
+    # Handling extrapolation
+    i = np.searchsorted(x, xnew) - 1
+    idx1 = xnew <= x[0]
+    idx2 = xnew > x[-1]
+    i[idx1] = 0
+    i[idx2] = len(x) - 2
+
+    # Calculate the relative position within the interval
+    dx = xnew - x[i]
+
+    # Calculate the interpolated value
+    # Cubic polynomial: a + b*dx + c*dx^2 + d*dx^3
+    a, b, c, d = coefficients[:, i]
+    #result = a + b*dx + c*dx**2 + d*dx**3
+    result = d + c*dx + b*dx**2 + a*dx**3
+    return result
