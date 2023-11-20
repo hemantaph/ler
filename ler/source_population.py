@@ -577,7 +577,8 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         src_model_params=None,
         redshift_constant = False,
         mass_constant=False,
-        spin_constant=0.,
+        spin_zero=True,
+        spin_precessing=False,
     ):
         # initialized SourceGalaxyPopulationModel mother class
         # self.z_min and self.z_max will inherit from SourceGalaxyPopulationModel
@@ -615,13 +616,13 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
                 pass
 
         # check spin
-        if spin_constant or spin_constant==0.:
-            self.spin_constant = spin_constant
-        else:
+        if spin_zero is False:
             try:
                 self.binary_spin = getattr(self, "binary_spin_" + event_type)
             except:
                 self.binary_spin = getattr(self, "binary_spin_BBH")
+        self.spin_zero = spin_zero
+        self.spin_precessing = spin_precessing
 
         # set attribute
         self.src_model_params = src_model_params
@@ -719,20 +720,13 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         theta_jn = prior_default["theta_jn"].sample(nsamples)
         phase = prior_default["phase"].sample(nsamples)
         # sampling spin parameters
-        if self.spin_constant==0. or self.spin_constant==True:
+        if self.spin_zero==True:
             a_1 = np.zeros(nsamples)
             a_2 = np.zeros(nsamples)
             tilt_1 = np.zeros(nsamples)
             tilt_2 = np.zeros(nsamples)
             phi_12 = np.zeros(nsamples)
             phi_jl = np.zeros(nsamples)
-        elif type(self.spin_constant)==list:
-            a_1 = self.spin_constant[0]*np.ones(nsamples)
-            a_2 = self.spin_constant[1]*np.ones(nsamples)
-            tilt_1 = self.spin_constant[2]*np.ones(nsamples)
-            tilt_2 = self.spin_constant[3]*np.ones(nsamples)
-            phi_12 = self.spin_constant[4]*np.ones(nsamples)
-            phi_jl = self.spin_constant[5]*np.ones(nsamples)
         else:
             a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl = self.binary_spin(nsamples)
 
@@ -1086,10 +1080,16 @@ class CompactBinaryPopulation(SourceGalaxyPopulationModel):
         prior_default = bilby.gw.prior.BBHPriorDict()
         a_1 = prior_default["a_1"].sample(size)
         a_2 = prior_default["a_2"].sample(size)
-        tilt_1 = prior_default["tilt_1"].sample(size)
-        tilt_2 = prior_default["tilt_2"].sample(size)
-        phi_12 = prior_default["phi_12"].sample(size)
-        phi_jl = prior_default["phi_jl"].sample(size)
+        if self.spin_precessing:
+            tilt_1 = prior_default["tilt_1"].sample(size)
+            tilt_2 = prior_default["tilt_2"].sample(size)
+            phi_12 = prior_default["phi_12"].sample(size)
+            phi_jl = prior_default["phi_jl"].sample(size)
+        else:
+            tilt_1 = np.zeros(size)
+            tilt_2 = np.zeros(size)
+            phi_12 = np.zeros(size)
+            phi_jl = np.zeros(size)
 
         return (a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl)
     

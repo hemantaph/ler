@@ -13,7 +13,7 @@ if python_version < (3, 10):
 
 setup(
     name="ler",
-    version="0.2.9",
+    version="0.3.0",
     description="Gravitational waves Lensing Rates",
     long_description=long_description,
     long_description_content_type='text/markdown',

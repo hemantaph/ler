@@ -240,7 +240,8 @@ class LeR:
             "src_model_params": None,
             "mass_constant": False,
             "redshift_constant": False,
-            "spin_constant": False,
+            "spin_zero": True,
+            "spin_precessing": False,
         }
         # for lensed case
         # set 'min_lensed_images' = 2 for double image lensed case
@@ -400,7 +401,8 @@ class LeR:
             src_model_params=self.gw_param_sampler_dict["src_model_params"],
             mass_constant=self.gw_param_sampler_dict["mass_constant"],
             redshift_constant=self.gw_param_sampler_dict["redshift_constant"],
-            spin_constant=self.gw_param_sampler_dict["spin_constant"],
+            spin_zero=self.gw_param_sampler_dict["spin_zero"],
+            spin_precessing=self.gw_param_sampler_dict["spin_precessing"],
         )
         self.lens_galaxy_pop = LensGalaxyPopulation(self.compact_binary_pop)
 
