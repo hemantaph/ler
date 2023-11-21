@@ -13,19 +13,19 @@ authors:
     affiliation: "1"
   - name: Harsh Narola
     # equal-contrib: False
-    affiliation: "2"
+    affiliation: "2,3"
   - name: Anupreeta More
     # equal-contrib: False
-    affiliation: "3"
+    affiliation: "4,5"
   - name: Ng Chung Yin (Leo)
     # equal-contrib: False 
     affiliation: "1"
   - name: Justin Janquart
     # equal-contrib: False 
-    affiliation: "3"
+    affiliation: "2,3"
   - name: Chris Van Den Broeck
     # equal-contrib: False 
-    affiliation: "3"
+    affiliation: "2,3"
   - name: Otto Akseli HANNUKSELA 
     # equal-contrib: False 
     affiliation: "1"
