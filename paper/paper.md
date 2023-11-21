@@ -65,7 +65,7 @@ Obtaining precise outcomes in statistical analyses of this nature necessitates t
 - Generation of image properties:
     * Source position $(\beta)$ is sampled from the caustic in the source plane.
     * Sampled lens properties and source position is fed in *Lenstronomy* to generate properties of the images. This is the slowest part of the entire simulation, which <span style="font-family:cambria; color:maroon;">LeR</span> tackles through parallelization with multiprocessing.
-    * Image properties like magnification $(\mu_i)$ and time delay ($\Delta t_i$) modifies the original source signal strength, changing the signal-to-noise ratio SNR and detection ability by the detector(s).
+    * Image properties like magnification $(\mu_i)$ and time delay ($\Delta t_i$) modifies the original source signal strength, changing the signal-to-noise ratio SNR and our ability to detect.
 
 - Calculation of Detectable Merger Rates Per Year:
     * The calculation of rates necessitates integration over simulated events that meet specific detection criteria. This process includes computing SNRs $(\rho)$ for each event or its lensed images, followed by an assessment against a predetermined threshold(s) $(\rho_{th})$.
