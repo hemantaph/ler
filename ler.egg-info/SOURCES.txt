@@ -10,6 +10,7 @@ ler.egg-info/top_level.txt
 ler/gw_source_population/__init__.py
 ler/gw_source_population/cbc_source_parameter_distribution.py
 ler/gw_source_population/cbc_source_redshift_distribution.py
+ler/gw_source_population/jit_functions.py
 ler/gw_source_population/test.py
 ler/image_properties/__init__.py
 ler/image_properties/image_properties.py

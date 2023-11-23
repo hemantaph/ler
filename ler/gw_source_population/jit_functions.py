@@ -3,6 +3,8 @@ from numba import njit, jit
 from astropy.cosmology import LambdaCDM
 cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
 
+from ler.utils import inverse_transform_sampler
+
 # import pickle
 # # call the interpolator
 # try:
@@ -148,7 +150,7 @@ def star_formation_rate_madau_dickinson2014(
 
 
 @jit
-def merger_rate_density_primordial_ken2022(
+def merger_rate_density_bbh_primordial_ken2022(
         zs, cosmology=cosmo, n0=0.044 * 1e-9, t0=13.786885302009708
     ):
         """
@@ -182,3 +184,60 @@ def merger_rate_density_primordial_ken2022(
 
         return rate_density
 
+@njit
+def lognormal_distribution_2D(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000):
+       
+    # mass function for primordial
+    psi = lambda m: np.exp(-np.log(m / Mc) ** 2 / (2 * sigma**2)) / (
+        np.sqrt(2 * np.pi) * sigma * m
+    )
+    # probability density function
+    pdf = (
+        lambda m1, m2: (m1 + m2) ** (36 / 37)
+        * (m1 * m2) ** (32 / 37)
+        * psi(m1)
+        * psi(m2)
+    )
+
+    # rejection sampling
+    m1 = np.random.uniform(m_min, m_max, chunk_size)
+    m2 = np.random.uniform(m_min, m_max, chunk_size)
+    z = pdf(m1, m2)
+    zmax = np.max(z)
+
+    # Rejection sample in chunks
+    m1_sample = np.zeros(size)
+    m2_sample = np.zeros(size)
+    old_num = 0
+    while True:
+        m1_try = np.random.uniform(m_min, m_max, size=chunk_size)
+        m2_try = np.random.uniform(m_min, m_max, size=chunk_size)
+
+        z_try = np.random.uniform(0, zmax, size=chunk_size)
+        zmax = max(zmax, np.max(z_try))
+        idx = z_try < pdf(m1_try, m2_try)
+        new_num = old_num + np.sum(idx)
+        if new_num >= size:
+            m1_sample[old_num:size] = m1_try[idx][: size - old_num]
+            m2_sample[old_num:size] = m2_try[idx][: size - old_num]
+            break
+        else:
+            m1_sample[old_num:new_num] = m1_try[idx]
+            m2_sample[old_num:new_num] = m2_try[idx]
+            old_num = new_num
+            
+    # swap the mass if m1 < m2
+    idx = m1_sample < m2_sample
+    m1_sample[idx], m2_sample[idx] = m2_sample[idx], m1_sample[idx]
+    return m1_sample, m2_sample
+
+@njit
+def inverse_transform_sampler_m1m2(size, inv_cdf, x):
+    
+    m1 = inverse_transform_sampler(size, inv_cdf, x)
+    m2 = inverse_transform_sampler(size, inv_cdf, x)
+    # swap m1 and m2 if m1 < m2
+    idx = m1 < m2
+    m1[idx], m2[idx] = m2[idx], m1[idx]
+    
+    return m1, m2

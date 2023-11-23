@@ -159,8 +159,8 @@ def rejection_sample(pdf, xmin, xmax, size=100, chunk_size=10000):
 def rejection_sample2d(pdf, xmin, xmax, ymin, ymax, size=100, chunk_size=10000):
     chunk_size = 10000
 
-    x = np.linspace(xmin, xmax, chunk_size)
-    y = np.linspace(ymin, ymax, chunk_size)
+    x = np.random.uniform(xmin, xmax, chunk_size)
+    y = np.random.uniform(ymin, ymax, chunk_size)
     z = pdf(x, y)
     zmax = np.max(z)
 
@@ -373,18 +373,14 @@ def create_inv_cdf_array(x, y):
     idx = np.argwhere(np.isnan(y))
     x = np.delete(x, idx)
     y = np.delete(y, idx)
-    pdf_unorm = interp1d(x, y, kind="cubic", fill_value="extrapolate")
-    min_, max_ = min(x), max(x)
-    norm = quad(pdf_unorm, min_, max_)[0]
-    y = y / norm
     cdf_values = cumtrapz(y, x, initial=0)
+    cdf_values = cdf_values / cdf_values[-1]
     # to remove duplicate values on x-axis before interpolation
-    idx = np.argwhere(cdf_values > 0)[0][0]
-    cdf_values = cdf_values[idx:]
-    x = x[idx:]
-    cdf_values = np.insert(cdf_values, 0, 0)
-    x = np.insert(x, 0, x[idx-1])
-
+    # idx = np.argwhere(cdf_values > 0)[0][0]
+    # cdf_values = cdf_values[idx:]
+    # x = x[idx:]
+    # cdf_values = np.insert(cdf_values, 0, 0)
+    # x = np.insert(x, 0, x[idx-1])
     return np.array([cdf_values, x])
 
 def create_conditioned_pdf(x, conditioned_y, pdf_func):
@@ -404,7 +400,7 @@ def create_conditioned_inv_cdf_array(x, conditioned_y, pdf_func):
     return np.array(list_)
 
 def interpolator_from_pickle(
-    param_dict_given, directory, sub_directory, name, x, pdf_func, conditioned_y=None, dimension=1,category="pdf", create_new=False
+    param_dict_given, directory, sub_directory, name, x, pdf_func=None, y=None, conditioned_y=None, dimension=1,category="pdf", create_new=False
 ):
     """
     Function to decide which interpolator to use.
@@ -430,7 +426,8 @@ def interpolator_from_pickle(
 
         # create the interpolator
         if dimension==1:
-            y = pdf_func(x)
+            if y is None:
+                y = pdf_func(x)
             if category=="function":
                 interpolator = create_func(x, y)
             elif category=="function_inverse":
@@ -521,8 +518,9 @@ def interpolator_sampler_conditioned(conditioned_y, y_array, interpolator_list, 
     return interpolator_list[idx](u)
 
 @njit
-def njit_cubic_spline_interpolator(xnew, coefficients, x):
+def cubic_spline_interpolator(xnew, coefficients, x):
     # Handling extrapolation
+    # xnew = np.array([xnew]).reshape(-1)
     i = np.searchsorted(x, xnew) - 1
     idx1 = xnew <= x[0]
     idx2 = xnew > x[-1]
@@ -538,3 +536,11 @@ def njit_cubic_spline_interpolator(xnew, coefficients, x):
     #result = a + b*dx + c*dx**2 + d*dx**3
     result = d + c*dx + b*dx**2 + a*dx**3
     return result
+
+@njit
+def inverse_transform_sampler(size, inv_cdf, x):
+    u = np.random.uniform(0, 1, size)
+    idx = np.searchsorted(inv_cdf, u)
+    x1, x0, y1, y0 = inv_cdf[idx], inv_cdf[idx-1], x[idx], x[idx-1]
+    samples = y0 + (y1 - y0) * (u - x0) / (x1 - x0)
+    return samples
