@@ -9,11 +9,9 @@ population model is used to generate the compact binary population model.
 
 import warnings
 warnings.filterwarnings("ignore")
-import os
+
 import numpy as np
-from numba import njit, jit
-import pickle
-import importlib
+from numba import njit
 
 # from gwcosmo import priors as p
 from scipy.integrate import quad
@@ -22,8 +20,8 @@ from scipy.integrate import quad
 from astropy.cosmology import LambdaCDM
 cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
 
-from ..utils import  interpolator_from_pickle, njit_cubic_spline_interpolator
-from .jit_functions import merger_rate_density_bbh_popI_II_oguri2018, star_formation_rate_madau_dickinson2014, merger_rate_density_bbh_popIII_ken2022, merger_rate_density_primordial_ken2022, sample_source_redshift
+from ..utils import  interpolator_from_pickle, cubic_spline_interpolator, inverse_transform_sampler
+from .jit_functions import merger_rate_density_bbh_popI_II_oguri2018, star_formation_rate_madau_dickinson2014, merger_rate_density_bbh_popIII_ken2022, merger_rate_density_bbh_primordial_ken2022
 
 
 class CBCSourceRedshiftDistribution(object):
@@ -80,7 +78,7 @@ class CBCSourceRedshiftDistribution(object):
     +-------------------------------------+----------------------------------+
     |:attr:`~normalization_pdf_z`         | `float`                          |
     +-------------------------------------+----------------------------------+
-    |:attr:`~z_to_Dl`    | `scipy.interpolate.interpolate`  |
+    |:attr:`~z_to_luminosity_distance`    | `scipy.interpolate.interpolate`  |
     +-------------------------------------+----------------------------------+
     |:attr:`~differential_comoving_volume`| `scipy.interpolate.interpolate`  |
     +-------------------------------------+----------------------------------+
@@ -130,7 +128,7 @@ class CBCSourceRedshiftDistribution(object):
     |                                     | Function to compute the merger   |
     |                                     | rate density (PopIII)            |
     +-------------------------------------+----------------------------------+
-    |:meth:`~merger_rate_density_primordial_ken2022`                         |
+    |:meth:`~merger_rate_density_bbh_primordial_ken2022`                         |
     +-------------------------------------+----------------------------------+
     |                                     | Function to compute the merger   |
     |                                     | rate density (Primordial)        |
@@ -171,7 +169,7 @@ class CBCSourceRedshiftDistribution(object):
     Normalization constant of the pdf p(z)
     """
 
-    z_to_Dl = None
+    z_to_luminosity_distance = None
     """``scipy.interpolate.interpolate`` \n
     Function to convert redshift to luminosity distance
     """
@@ -185,13 +183,12 @@ class CBCSourceRedshiftDistribution(object):
         self,
         z_min=0.001,
         z_max=10.0,
-        nsamples_z=500,
         event_type="BBH",
         merger_rate_density="merger_rate_density_bbh_popI_II_oguri2018",
         merger_rate_density_param=None,
         cosmology=None,
         directory="./interpolator_pickle",
-        create_new_interpolator=dict(redshift_distribution=False, z_to_Dl=False, differential_comoving_volume=False)
+        create_new_interpolator=False,
     ):
         # set attributes
         self.z_min = z_min
@@ -199,45 +196,63 @@ class CBCSourceRedshiftDistribution(object):
         self.event_type = event_type
         # if None is passed, use the default cosmology
         self.cosmo = cosmology if cosmology else cosmo
-        self.create_lookup_table(z_min, z_max, directory, create_new_interpolator)
+    
+        self.create_new_interpolator = dict(
+            redshift_distribution=dict(create_new=False, resolution=500), z_to_luminosity_distance=dict(create_new=False, resolution=500), differential_comoving_volume=dict(create_new=False, resolution=500))
+        if create_new_interpolator:
+            self.create_new_interpolator.update(create_new_interpolator)
 
-        # # Define the merger-rate density function/method instances
-        # self.merger_rate_density = merger_rate_density  # function initialization
-        # self.merger_rate_density_param = merger_rate_density_param  # dict of parameters corresponding to the merger_rate_density function 
+        self.create_lookup_table(z_min, z_max, directory)
 
-        # # To find the normalization constant of the pdf p(z)
-        # self.normalization_pdf_z = quad(
-        #     self.merger_rate_density_src_frame,
-        #     z_min,
-        #     z_max,
-        #     args=(merger_rate_density_param,),
-        # )[0]
+        # Define the merger-rate density function/method instances
+        self.merger_rate_density = merger_rate_density  # function initialization
+        # if None is passed, use the default merger_rate_density_param
+        if merger_rate_density_param is None:
+            if self.event_type == "BBH":
+                R0 = 23.9 * 1e-9
+            elif self.event_type == "BNS":
+                R0 = 170.0 * 1e-9
+            elif self.event_type == "NSBH":
+                R0 = 27.0 * 1e-9
+            else:
+                raise ValueError("event_type must be one of 'BBH', 'BNS', 'NSBH'")
+            self.merger_rate_density_param = dict(R0=R0, b2=1.6, b3=2.0, b4=30)  # dict of parameters corresponding to the merger_rate_density function 
 
-        # # Inverse transform sampling
-        # # create sampler using the pdf p(z)
-        # # Dont be fooled by the '=' sign. self.pdf_z generates probability density function but self.sample_source_redshift is a sampler.
-        # zs_inv_cdf = interpolator_from_pickle(
-        #         param_dict_given= dict(z_min=z_min, 
-        #                                z_max=z_max, 
-        #                                cosmology=cosmo,
-        #                                event_type=event_type,
-        #                                merger_rate_density=merger_rate_density,
-        #                                 merger_rate_density_param=merger_rate_density_param,
-        #                                 resolution=nsamples_z,
-        #                                 ),
-        #         directory=directory,
-        #         sub_directory=merger_rate_density,
-        #         name=merger_rate_density,
-        #         x = np.linspace(z_min, z_max, nsamples_z),
-        #         pdf_func= lambda z_: self.pdf_z(zs=z_, param=merger_rate_density_param),
-        #         conditioned_y=None,
-        #         dimension=1,
-        #         category="inv_cdf",
-        #         create_new=create_new_interpolator["redshift_distribution"],
-        #     )
+        # To find the normalization constant of the pdf p(z)
+        # note that there is an attribute self.merger_rate_density_src_frame where njit is applied, and thus it cannot be used with quad
+        merger_rate_density_src_frame = lambda z_: self.merger_rate_density(zs=z_, param=merger_rate_density_param)/(1+z_) * (self.cosmo.differential_comoving_volume(z_).value * 4 * np.pi)
 
-        # self.sample_source_redshift = njit(lambda size: sample_source_redshift(size=size, zs_inv_cdf=zs_inv_cdf))
+        self.normalization_pdf_z = quad(
+            merger_rate_density_src_frame,
+            z_min,
+            z_max
+        )[0]
 
+        # generate inverse cdf for inverse transform sampling
+        # create sampler using the pdf p(z)
+        resolution = self.create_new_interpolator["redshift_distribution"]["resolution"]
+        create_new = self.create_new_interpolator["redshift_distribution"]["create_new"]
+        zs_inv_cdf = interpolator_from_pickle(
+                param_dict_given= dict(z_min=z_min, 
+                                       z_max=z_max, 
+                                       cosmology=cosmo,
+                                       event_type=event_type,
+                                       merger_rate_density=merger_rate_density,
+                                        merger_rate_density_param=merger_rate_density_param,
+                                        resolution=resolution,
+                                        ),
+                directory=directory,
+                sub_directory=merger_rate_density,
+                name=merger_rate_density,
+                x = np.linspace(z_min, z_max, resolution),
+                pdf_func= lambda z_: self.pdf_z(zs=z_, param=merger_rate_density_param),
+                conditioned_y=None,
+                dimension=1,
+                category="inv_cdf",
+                create_new=create_new,
+            )
+
+        self.sample_source_redshift = njit( lambda size, param=None: inverse_transform_sampler(size, zs_inv_cdf[0], zs_inv_cdf[1]) )
 
     @property
     def sample_source_redshift(self):
@@ -287,7 +302,7 @@ class CBCSourceRedshiftDistribution(object):
             merger_rate_density_bbh_popIII_ken2022=dict(
                 n0=19.2 * 1e-9, aIII=0.66, bIII=0.3, zIII=11.6
             ),
-            merger_rate_density_primordial_ken2022=dict(
+            merger_rate_density_bbh_primordial_ken2022=dict(
                 n0=0.044 * 1e-9, t0=13.786885302009708
             ),
         )
@@ -339,7 +354,7 @@ class CBCSourceRedshiftDistribution(object):
         rate_density = (
             self.merger_rate_density(zs, param=param)
             / (1 + zs)
-            * self.differential_comoving_volume(zs)
+            * (self.differential_comoving_volume(zs))
         )
 
         return rate_density
@@ -384,11 +399,6 @@ class CBCSourceRedshiftDistribution(object):
         >>> rate_density  # Mpc^-3 yr^-1
         2.3903670073287287e-08
         """
-
-        if self.event_type == "BNS":
-            R0 = 170.0 * 1e-9
-        if self.event_type == "NSBH":
-            R0 = 27.0 * 1e-9
 
         if param:
             R0 = param["R0"]
@@ -456,7 +466,7 @@ class CBCSourceRedshiftDistribution(object):
 
         return merger_rate_density_bbh_popIII_ken2022(zs=zs, n0=n0, aIII=aIII, bIII=bIII, zIII=zIII)
     
-    def merger_rate_density_primordial_ken2022(self,
+    def merger_rate_density_bbh_primordial_ken2022(self,
         zs, n0=0.044 * 1e-9, t0=13.786885302009708, param=None
     ):
         """
@@ -484,7 +494,7 @@ class CBCSourceRedshiftDistribution(object):
         Examples
         ----------
         >>> from ler.gw_source_population import SourceGalaxyPopulationModel
-        >>> pop = SourceGalaxyPopulationModel(z_min=5, z_max=40, event_type = "BBH", merger_rate_density="merger_rate_density_primordial_ken2022")
+        >>> pop = SourceGalaxyPopulationModel(z_min=5, z_max=40, event_type = "BBH", merger_rate_density="merger_rate_density_bbh_primordial_ken2022")
         >>> rate_density = pop.merger_rate_density(zs=10)
         >>> rate_density  # Mpc^-3 yr^-1
         9.78691173794454e-10
@@ -494,9 +504,9 @@ class CBCSourceRedshiftDistribution(object):
             n0 = param["n0"]
             t0 = param["t0"]
 
-        return merger_rate_density_primordial_ken2022(zs=zs, cosmology=self.cosmo, n0=n0, t0=t0)
+        return merger_rate_density_bbh_primordial_ken2022(zs=zs, cosmology=self.cosmo, n0=n0, t0=t0)
     
-    def create_lookup_table(self, z_min, z_max, directory, create_new_interpolator):
+    def create_lookup_table(self, z_min, z_max, directory):
         """
         Function to create a lookup table for the differential comoving volume
         and luminosity distance wrt redshift.
@@ -510,43 +520,46 @@ class CBCSourceRedshiftDistribution(object):
 
         Attributes
         ----------
-        z_to_Dl : `scipy.interpolate.interpolate`
+        z_to_luminosity_distance : `scipy.interpolate.interpolate`
             Function to convert redshift to luminosity distance
         differential_comoving_volume : `scipy.interpolate.interpolate`
             Function to calculate the differential comoving volume
         """
 
         # initialing cosmological functions for fast calculation through interpolation
-        z = np.linspace(z_min, z_max, 500)  # redshift array
+        resolution = self.create_new_interpolator["z_to_luminosity_distance"]["resolution"]
+        create_new = self.create_new_interpolator["z_to_luminosity_distance"]["create_new"]
         spline1 = interpolator_from_pickle(
-            param_dict_given= dict(z_min=z_min, z_max=z_max, cosmology=self.cosmo),
+            param_dict_given= dict(z_min=z_min, z_max=z_max, cosmology=self.cosmo, resolution=resolution),
             directory=directory,
-            sub_directory="z_to_Dl",
-            name="z_to_Dl",
-            x = z,
+            sub_directory="z_to_luminosity_distance",
+            name="z_to_luminosity_distance",
+            x = np.linspace(z_min, z_max, resolution),
             pdf_func= lambda z_: self.cosmo.luminosity_distance(z_).value, 
             conditioned_y=None, 
             dimension=1,
             category="function",
-            create_new=create_new_interpolator["z_to_Dl"],
+            create_new=create_new,
         )
-        self.z_to_Dl = njit(lambda z_: njit_cubic_spline_interpolator(z_, spline1[0], spline1[1]))
+        self.z_to_luminosity_distance = njit(lambda z_: cubic_spline_interpolator(z_, spline1[0], spline1[1]))
 
         # Create a lookup table for the differential comoving volume
         # get differential co-moving volume interpolator
+        resolution = self.create_new_interpolator["differential_comoving_volume"]["resolution"]
+        create_new = self.create_new_interpolator["differential_comoving_volume"]["create_new"]
         spline2 = interpolator_from_pickle(
-            param_dict_given= dict(z_min=0.001, z_max=z_max, cosmology=self.cosmo), 
+            param_dict_given= dict(z_min=0.001, z_max=z_max, cosmology=self.cosmo, resolution=resolution), 
             directory=directory,
             sub_directory="differential_comoving_volume", 
             name="differential_comoving_volume",
-            x = z,
+            x = np.linspace(0.001, z_max, resolution),
             pdf_func= lambda z_: self.cosmo.differential_comoving_volume(z_).value * 4 * np.pi,  # volume of shell
             conditioned_y=None, 
             dimension=1,
             category="function",
-            create_new=create_new_interpolator["differential_comoving_volume"],
+            create_new=create_new,
         )
-        self.differential_comoving_volume = njit(lambda z_: njit_cubic_spline_interpolator(z_, spline2[0], spline2[1]))
+        self.differential_comoving_volume = njit(lambda z_: cubic_spline_interpolator(z_, spline2[0], spline2[1]))
 
         return None
 
