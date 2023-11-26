@@ -1,6 +1,7 @@
 import numpy as np
-from numba import njit, jit
-from scipy.stats import rayleigh
+from numba import njit
+#from scipy.stats import rayleigh
+from ..utils import inverse_transform_sampler
 
 # def rjs_with_einstein_radius(self, param_dict):
 #     theta_E = param_dict["theta_E"]
@@ -14,7 +15,17 @@ from scipy.stats import rayleigh
 
 @njit
 def rjs_with_cross_section(theta_E, q):
-    pass
+    # rejection sampling
+    size = len(theta_E)
+    u = np.random.uniform(0, 1, size=size)
+    mask = u < phi_cut_SIE(q)
+
+
+
+
+    
+
+    return idx
 
 
 
@@ -78,10 +89,17 @@ def pdf_phi_z_div_0(s, z):
     return phi_sim_z / phi_sim_0
 
 @njit
-def phi(s,z):
-    result = s**4*pdf_phi_z_div_0(s,z)*phi_loc_bernardi(s)
-    result[result < 0.] = 0.
+def phi(s,z, cosmology_h=0.7):
+
+    result = s**4*pdf_phi_z_div_0(s,z)*phi_loc_bernardi(sigma=s, cosmology_h=cosmology_h)
+    # result[result < 0.] = 0.
     return result
+
+@njit
+def phi_loc_bernardi(sigma, alpha=0.94, beta=1.85, phistar=2.099e-2, sigmastar=113.78, cosmology_h=0.7):
+    phistar = phistar * (cosmology_h / 0.7) ** 3  # Mpc**-3
+    philoc_ = phistar*(sigma/sigmastar)**alpha * np.exp(-(sigma/sigmastar)**beta) * beta/gamma_(alpha/beta)/sigma
+    return philoc_
 
 # elliptical lens galaxy
 @njit
@@ -98,8 +116,8 @@ def phi_cut_SIE(q):
             result[i] = np.pi
     return result/np.pi
 
-@jit
-def axis_ratio_rayleigh(sigma, q_min=0.2, param=None):
+@njit
+def axis_ratio_rayleigh(sigma, q_min=0.2):
         """
         Function to sample axis ratio from rayleigh distribution with given velocity dispersion.
 
@@ -114,9 +132,6 @@ def axis_ratio_rayleigh(sigma, q_min=0.2, param=None):
             axis ratio of the lens galaxy
         """
 
-        if param:
-            q_min = param["q_min"]
-
         size = len(sigma)
         a = sigma / 161.0
         q = np.ones(size)
@@ -125,8 +140,10 @@ def axis_ratio_rayleigh(sigma, q_min=0.2, param=None):
 
         while size_ != 0:
             # Draw the axis ratio see Appendix of https://arxiv.org/pdf/1807.07062.pdf
-            s = abs(0.38 - 0.09177 * a[idx])
-            b = rayleigh.rvs(scale=s, size=size_)
+            s = 0.38 - 0.09177 * a[idx]
+            s[s<=0] = 0.0001
+            u = np.random.uniform(0, 1, size=size_)
+            b = s * np.sqrt(-2 * np.log(u))  # inverse cdf rayleigh distribution
             q_ = 1.0 - b
 
             # Weed out axis ratios that have axis ratio below q_min
@@ -139,3 +156,24 @@ def axis_ratio_rayleigh(sigma, q_min=0.2, param=None):
             size_ = len(idx)
 
         return q
+
+# @njit
+# def velocity_dispersion_ewoud(size, zl, vd_inv_cdf, z_min, z_max, vd_min, vd_max,):
+
+#     zlist = np.linspace(z_min, z_max, 100)
+#     # find the index of z in zlist
+#     idx = np.searchsorted(zlist, zl)
+    
+#     sigma = np.zeros(size)
+#     old_num = 0
+#     while True:
+#         sigma_ = inverse_transform_sampler(size, vd_inv_cdf[idx][0], vd_inv_cdf[idx][1])
+#         # choose sigma that is within the range
+#         sigma_ = sigma_[(sigma_>vd_min) & (sigma_<vd_max)]
+#         new_num = old_num + len(sigma_)
+#         if new_num >= size:
+#             sigma[old_num:size] = sigma_[:size-old_num]
+#             break
+#         else:
+#             sigma[old_num:new_num] = sigma_
+#             old_num = new_num

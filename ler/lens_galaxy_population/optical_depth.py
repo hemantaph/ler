@@ -7,9 +7,8 @@ from scipy.integrate import quad
 from scipy.stats import gengamma
 from astropy.cosmology import LambdaCDM
 cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
-cosmology_h = 0.7
-from ..utils import  interpolator_from_pickle
-from .jit_functions import phi_cut_SIE, axis_ratio_rayleigh, axis_ratio_SIS, gamma_, phi
+from ..utils import  interpolator_from_pickle, cubic_spline_interpolator, inverse_transform_sampler
+from .jit_functions import phi_cut_SIE, axis_ratio_rayleigh, axis_ratio_SIS, gamma_, phi, phi_loc_bernardi
 
 class OpticalDepth():
     """
@@ -57,7 +56,6 @@ class OpticalDepth():
         ):
 
         self.cosmo = cosmology if cosmology else cosmo
-        global cosmology_h
         cosmology_h = self.cosmo.h
         self.sampler_priors = sampler_priors
         self.sampler_priors_params = sampler_priors_params
@@ -81,14 +79,13 @@ class OpticalDepth():
         # velocity dispersion #
         #######################
         # generating inverse cdf interpolator for velocity dispersion
-        param_dict_given_ = dict(z_min=self.z_min, z_max=self.z_max, vd_min=self.vd_min, vd_max=self.vd_max, cosmology=cosmo, name=vd_name)
+        param_dict_given_ = dict(z_min=self.z_min, z_max=self.z_max, vd_min=self.vd_min, vd_max=self.vd_max, cosmology=cosmo, name=vd_name, resolution=self.c_n_i["velocity_dispersion"]["resolution"])
         sub_directory_ = vd_name
         x_ = np.linspace(self.vd_min, self.vd_max, self.c_n_i["velocity_dispersion"]["resolution"])
         category_ = "inv_cdf"
         create_new_ = self.c_n_i["velocity_dispersion"]["create_new"]
 
         # if velocity_dispersion_haris, you don't need to generate interpolator
-        check = True  # check if the velocity dispersion name is in the library
         if vd_name == "velocity_dispersion_haris" or vd_name == "velocity_dispersion_gengamma":
             # no interpolation needed
             self.vd_inv_cdf = None
@@ -96,21 +93,25 @@ class OpticalDepth():
         else:      
             if vd_name == "velocity_dispersion_bernardi":
                 # setting up input parameters for interpolation
-                pdf_func_ = lambda vd_: vd_**4*phi_loc_bernardi(vd_)
+                pdf_func_ = lambda vd_: vd_**4*phi_loc_bernardi(sigma=vd_, cosmology_h=cosmology_h)
                 conditioned_y_ = None
                 dimension_ = 1
 
             elif vd_name == "velocity_dispersion_ewoud":
+                self.zl_list = np.linspace(self.z_min, self.z_max, 100)
                 # setting up input parameters for interpolation
-                pdf_func_ = lambda vd_, zl_: phi(vd_,zl_)*self.differential_comoving_volume(zl_)
-                conditioned_y_ = np.linspace(self.z_min, self.z_max, 100)
+                pdf_func_ = lambda vd_, zl_: phi(vd_, zl_, cosmology_h=cosmology_h)*self.differential_comoving_volume(np.array([zl_]))
+                conditioned_y_ = self.zl_list
                 dimension_ = 2
 
             else:
-                print("velocity dispersion name not in `ler` library.")
-                check = False
-
-            # this will initialize the interpolator
+                # this is to allow user to pass in their own sampler
+                if callable(sampler_priors["velocity_dispersion"]):
+                    pass
+                else:
+                    # raise error and terminate
+                    raise ValueError("velocity dispersion name not in `ler` library. And sampler_priors['velocity_dispersion'] is not a callable function.")
+                
             self.vd_inv_cdf = interpolator_from_pickle(
                 param_dict_given = param_dict_given_,
                 directory=self.directory,
@@ -124,59 +125,51 @@ class OpticalDepth():
                 create_new=create_new_,
             )
 
-        # this will initialize the sampler
-        # check sampler_priors["velocity_dispersion"] is a callable function or not
-        if check:
-            pass
-        else:
-            if callable(sampler_priors["velocity_dispersion"]):
-                pass
-            else:
-                # raise error and terminate
-                raise ValueError("velocity dispersion name not in `ler` library. And sampler_priors['velocity_dispersion'] is not a callable function.")
+            # # this will initialize the interpolator
+            # try:
+            #     self.vd_inv_cdf = interpolator_from_pickle(
+            #         param_dict_given = param_dict_given_,
+            #         directory=self.directory,
+            #         sub_directory=sub_directory_,
+            #         name=vd_name,
+            #         x = x_,
+            #         pdf_func= pdf_func_,
+            #         conditioned_y=conditioned_y_,
+            #         dimension=dimension_,
+            #         category=category_,
+            #         create_new=create_new_,
+            #     )
+            # except:
+            #     print("vd_inv_cdf not generated.")
+            #     pass
 
         self.sample_velocity_dispersion = sampler_priors["velocity_dispersion"]
-
-        ##############
-        # for multiprocessing task
-        # pickle dump interpolator
-        # create dir
-        if not os.path.exists("./mp_interpolator"):
-            os.makedirs("./mp_interpolator")
-            
-        with open("./mp_interpolator/differential_comoving_volume.pickle", "wb") as handle:
-            pickle.dump(self.differential_comoving_volume, handle, protocol=pickle.HIGHEST_PROTOCOL)
-        with open("./mp_interpolator/velocity_dispersion.pickle", "wb") as handle:
-            pickle.dump(self.vd_inv_cdf, handle, protocol=pickle.HIGHEST_PROTOCOL)
-        with open("./mp_interpolator/angular_diameter_distance.pickle", "wb") as handle:
-            pickle.dump(self.angular_diameter_distance, handle, protocol=pickle.HIGHEST_PROTOCOL)
-        # this z list is related to the velocity dispersion vs redshift interpolator
-        with open("./mp_interpolator/redshift_list.pickle", "wb") as handle:
-            pickle.dump(np.linspace(self.z_min, self.z_max, 100), handle, protocol=pickle.HIGHEST_PROTOCOL)
-        ##############
 
         #################
         # optical depth #
         #################
-        # setting up input parameters for interpolation
-        param_dict_given_ = dict(z_min=self.z_min, z_max=self.z_max, vd_min=self.vd_min, vd_max=self.vd_max, cosmology=cosmo, tau_name=tau_name, vd_name=vd_name)
-        sub_directory_ = tau_name
-        if self.z_min==0.0:
-            x_ = np.linspace(self.z_min+0.001, self.z_max, self.c_n_i["optical_depth"]["resolution"])
-        else:
-            x_ = np.geomspace(self.z_min, self.z_max, self.c_n_i["optical_depth"]["resolution"])
-        pdf_func_ = self.optical_depth_multiprocessing
-        dimension_ = 1
-        category_ = "function"
-        create_new_ = self.c_n_i["optical_depth"]["create_new"]
-
-        # generating function interpolator for velocity dispersion
         if tau_name=="optical_depth_SIS_haris":
             self.sample_axis_ratio = axis_ratio_SIS
             # no interpolation needed
-            self.strong_lensing_optical_depth = getattr(self, tau_name)
+            optical_depth_setter = getattr(self, tau_name)
+
+        elif callable(tau_name):
+            self.sample_axis_ratio = axis_ratio_SIS
+            optical_depth_setter = tau_name
 
         else:
+            # setting up input parameters for interpolation
+            param_dict_given_ = dict(z_min=self.z_min, z_max=self.z_max, vd_min=self.vd_min, vd_max=self.vd_max, cosmology=cosmo, tau_name=tau_name, vd_name=vd_name)
+            sub_directory_ = tau_name
+            if self.z_min==0.0:
+                x_ = np.linspace(self.z_min+0.001, self.z_max, self.c_n_i["optical_depth"]["resolution"])
+            else:
+                x_ = np.geomspace(self.z_min, self.z_max, self.c_n_i["optical_depth"]["resolution"])
+            pdf_func_ = self.optical_depth_multiprocessing
+            dimension_ = 1
+            category_ = "function"
+            create_new_ = self.c_n_i["optical_depth"]["create_new"]
+
             if tau_name == "optical_depth_SIS_hemanta" or tau_name == "SIS":
                 from .mp import optical_depth_sis_mp
                 self.sample_axis_ratio = axis_ratio_SIS
@@ -197,7 +190,7 @@ class OpticalDepth():
                     self.tau_mp_routine = optical_depth_sie1_mp
 
             # this will initialize the interpolator
-            self.strong_lensing_optical_depth = interpolator_from_pickle(
+            optical_depth_setter = interpolator_from_pickle(
                 param_dict_given = param_dict_given_,
                 directory=self.directory,
                 sub_directory=sub_directory_,
@@ -209,9 +202,9 @@ class OpticalDepth():
                 category=category_,
                 create_new=create_new_,
             )
-
-    def test(self):
-        print("cosmology_h: ", cosmology_h)
+                
+        self.strong_lensing_optical_depth = optical_depth_setter
+        
 
     def rjs_with_cross_section(self, param_dict):
         """
@@ -237,7 +230,7 @@ class OpticalDepth():
         # return the dictionary with the mask applied
         return {key: val[mask] for key, val in param_dict.items()}
 
-    def velocity_dispersion_haris(self, size, a=2.32 / 2.67, c=2.67, param=None, **kwargs):
+    def velocity_dispersion_haris(self, size, a=2.32 / 2.67, c=2.67, get_attribute=False, param=None, **kwargs):
         """
         Function to sample velocity dispersion from gengamma distribution
 
@@ -259,18 +252,25 @@ class OpticalDepth():
             a = param["a"]
             c = param["c"]
 
-        # sample velocity dispersion from gengamma distribution
-        return 161.*gengamma.rvs(a, c, size=size)  # km/s
+        if get_attribute:
+            return lambda size: 161.*gengamma.rvs(a, c, size=size)
+        else:
+            # sample velocity dispersion from gengamma distribution
+            return 161.*gengamma.rvs(a, c, size=size)  # km/s
     
-    def velocity_dispersion_bernardi(self, size, **kwargs):
+    def velocity_dispersion_bernardi(self, size, get_attribute=False, **kwargs):
         """
         Function to sample velocity dispersion from the interpolator
         """
 
+        vd_inv_cdf = self.vd_inv_cdf.copy()
         # get the interpolator (inverse cdf) and sample
-        return self.vd_inv_cdf(np.random.uniform(0, 1, size=size))
+        if get_attribute:
+            return njit(lambda size: inverse_transform_sampler(size, vd_inv_cdf[0], vd_inv_cdf[1]))
+        else:
+            return inverse_transform_sampler(size, vd_inv_cdf[0], vd_inv_cdf[1])
 
-    def velocity_dispersion_ewoud(self, size, zl, init_sigma=[]):
+    def velocity_dispersion_ewoud(self, size, zl, get_attribute=False):
         """
         Function to sample velocity dispersion from the interpolator
         """
@@ -278,20 +278,18 @@ class OpticalDepth():
         z_max = self.z_max
         z_min = self.z_min
         zlist = np.linspace(z_min, z_max, 100)
-        # find the index of z in zlist
-        idx = np.searchsorted(zlist, zl)
-        # get the interpolator (inverse cdf) and sample
-        u = np.random.uniform(0, 1, size=size)
-        sigma = self.vd_inv_cdf[idx](u)
-        vd_min = self.vd_min
-        vd_max = self.vd_max
-        # choose sigma that is within the range
-        sigma = np.concatenate((init_sigma,sigma[(sigma>vd_min) & (sigma<vd_max)]))
-        size_ = size - len(sigma)
-        if size_ <= 0:
-            return sigma
+        vd_inv_cdf = self.vd_inv_cdf.copy()
+
+        @njit
+        def sampler(size, zl, inv_cdf, zlist):
+
+            idx = np.searchsorted(zlist, zl)
+            return inverse_transform_sampler(size, inv_cdf[idx][0], inv_cdf[idx][1])
+        
+        if get_attribute:
+            return njit(lambda size, zl: sampler(size, zl, vd_inv_cdf, zlist))
         else:
-            return self.velocity_dispersion_ewoud(size_, zl, sigma)
+            return sampler(size, zl, vd_inv_cdf, zlist)
 
     # SIS crossection 
     def cross_section_SIS(self, sigma, zl, zs):
@@ -325,14 +323,25 @@ class OpticalDepth():
     def optical_depth_multiprocessing(self, zs):
 
         zs = np.array([zs]).reshape(-1)
-        no = np.ones(len(zs))*8*1e-3*self.cosmo.h**3
-        input_params = np.array([zs, no]).T
+        no = 8*1e-3*self.cosmo.h**3
+        vd_inv_cdf = self.vd_inv_cdf
+        splinedVcdz = self.splinedVcdz
+        splineDa = self.splineDa
+        idx = np.arange(len(zs))
+        try:
+            zl_list = self.zl_list
+            input_params = [(zs[i], no, vd_inv_cdf, splinedVcdz, splineDa, idx[i], zl_list) for i in range(len(zs))]
+        except:
+            input_params = [(zs[i], no, vd_inv_cdf, splinedVcdz, splineDa, idx[i]) for i in range(len(zs))]
 
         # Create a pool of workers and parallelize the integration
         with Pool(processes=4) as pool:
-            tau_list = list(pool.imap(self.tau_mp_routine, input_params))
+            result = list(pool.map(self.tau_mp_routine, input_params))
 
-        return np.array(tau_list)
+        result = np.array(result)
+        tau_list = result[:,1][np.array(result[:,0], dtype=int)]
+
+        return tau_list
     
 
     def optical_depth_SIS_haris(self, zs):
@@ -366,75 +375,97 @@ class OpticalDepth():
         """
 
         Dc = lambda z_: self.cosmo.comoving_distance(z_).value  # co-moving distance in Mpc
-        self.z_to_Dc = interpolator_from_pickle(
-            param_dict_given= dict(z_min=0.001, z_max=z_max, cosmology=self.cosmo),
+        resolution = self.c_n_i["z_to_Dc"]["resolution"]
+        create_new = self.c_n_i["z_to_Dc"]["create_new"]
+        splineDc = interpolator_from_pickle(
+            param_dict_given= dict(z_min=0.001, z_max=z_max, cosmology=self.cosmo, resolution=resolution),
             directory=self.directory,
             sub_directory="z_to_Dc", 
             name="z_to_Dc",
-            x = np.linspace(0.001, z_max, self.c_n_i["z_to_Dc"]["resolution"]),
+            x = np.linspace(0.001, z_max, resolution),
             pdf_func= Dc, 
-            conditioned_y=None, 
+            conditioned_y=None,
             dimension=1,
             category="function",
-            create_new=self.c_n_i["z_to_Dc"]["create_new"],
+            create_new= create_new,
         )
-        self.Dc_to_z = interpolator_from_pickle(
-            param_dict_given= dict(z_min=0.001, z_max=z_max, cosmology=self.cosmo), 
+        self.z_to_Dc = njit(lambda z_: cubic_spline_interpolator(z_, splineDc[0], splineDc[1]))
+
+        # for co-moving distance to redshift
+        resolution = self.c_n_i["Dc_to_z"]["resolution"]
+        create_new = self.c_n_i["Dc_to_z"]["create_new"]
+        splineDcInv = interpolator_from_pickle(
+            param_dict_given= dict(z_min=0.001, z_max=z_max, cosmology=self.cosmo, resolution=resolution), 
             directory=self.directory,
             sub_directory="Dc_to_z", 
             name="Dc_to_z",
-            x = np.linspace(0.001, z_max, self.c_n_i["Dc_to_z"]["resolution"]),
+            x = np.linspace(0.001, z_max, resolution),
             pdf_func= Dc, 
             conditioned_y=None, 
             dimension=1,
             category="function_inverse",
-            create_new=self.c_n_i["Dc_to_z"]["create_new"],
+            create_new=create_new,
         )
+        self.Dc_to_z = njit(lambda Dc_: cubic_spline_interpolator(Dc_, splineDcInv[0], splineDcInv[1]))
 
         # for angular diameter distance
+        resolution = self.c_n_i["angular_diameter_distance"]["resolution"]
+        create_new = self.c_n_i["angular_diameter_distance"]["create_new"]
         Da = lambda z_: self.cosmo.angular_diameter_distance(z_).value
-        self.angular_diameter_distance = interpolator_from_pickle(
-                    param_dict_given= dict(z_min=0.001, z_max=z_max, cosmology=self.cosmo), 
+        splineDa = interpolator_from_pickle(
+                    param_dict_given= dict(z_min=0.001, z_max=z_max, cosmology=self.cosmo, resolution=resolution), 
                     directory=self.directory,
                     sub_directory="angular_diameter_distance", 
                     name="angular_diameter_distance",
-                    x = np.linspace(0.001, z_max, self.c_n_i["angular_diameter_distance"]["resolution"]),
+                    x = np.linspace(0.001, z_max, resolution),
                     pdf_func= Da, 
                     conditioned_y=None, 
                     dimension=1,
                     category="function",
-                    create_new=self.c_n_i["angular_diameter_distance"]["create_new"],
+                    create_new=create_new,
                 )
+        self.splineDa = splineDa
+        angular_diameter_distance = njit(lambda z_: cubic_spline_interpolator(z_, splineDa[0], splineDa[1]))
+        self.angular_diameter_distance = angular_diameter_distance
+
         # for angular diameter distance between two redshifts
-        self.angular_diameter_distance_z1z2 = lambda zl0, zs0: (self.angular_diameter_distance(zs0)*(1.+zs0) - self.angular_diameter_distance(zl0)*(1.+zl0))/(1.+zs0)
+        self.angular_diameter_distance_z1z2 = njit(lambda zl0, zs0: (angular_diameter_distance(zs0)*(1.+zs0) - angular_diameter_distance(zl0)*(1.+zl0))/(1.+zs0))
 
         # get differential co-moving volume interpolator
-        self.differential_comoving_volume = interpolator_from_pickle(
-            param_dict_given= dict(z_min=0.001, z_max=z_max, cosmology=self.cosmo), 
+        resolution = self.c_n_i["differential_comoving_volume"]["resolution"]
+        create_new = self.c_n_i["differential_comoving_volume"]["create_new"]
+        splinedVcdz = interpolator_from_pickle(
+            param_dict_given= dict(z_min=0.001, z_max=z_max, cosmology=self.cosmo, resolution=resolution), 
             directory=self.directory,
             sub_directory="differential_comoving_volume", 
             name="differential_comoving_volume",
-            x = np.linspace(0.001, z_max, self.c_n_i["differential_comoving_volume"]["resolution"]),
+            x = np.linspace(0.001, z_max, resolution),
             pdf_func= lambda z_: self.cosmo.differential_comoving_volume(z_).value * 4 * np.pi,
             conditioned_y=None, 
             dimension=1,
             category="function",
-            create_new=self.c_n_i["differential_comoving_volume"]["create_new"],
+            create_new=create_new,
         )
+        self.splinedVcdz = splinedVcdz
+        self.differential_comoving_volume = njit(lambda z_: cubic_spline_interpolator(z_, splinedVcdz[0], splinedVcdz[1]))
 
     @property
-    def sample_lens_redshift(self):
+    def strong_lensing_optical_depth(self):
         """
-        Function to sample lens redshifts, conditioned on the lens being strongly lensed
+        Function to compute the strong lensing optical depth.
         """
-        return self._sample_lens_redshift
+        return self._strong_lensing_optical_depth
 
-    @sample_lens_redshift.setter
-    def sample_lens_redshift(self, prior):
-        try:
-            self._sample_lens_redshift = getattr(self, prior)
-        except:
-            self._sample_lens_redshift = prior
+    @strong_lensing_optical_depth.setter
+    def strong_lensing_optical_depth(self, input_):
+        if callable(input_):
+            self._strong_lensing_optical_depth = input_
+        else:
+            # input can be function or spline interpolator array
+            try:
+                self._strong_lensing_optical_depth = njit(lambda z_: cubic_spline_interpolator(z_, input_[0], input_[1]))
+            except:
+                raise ValueError("strong_lensing_optical_depth must be a callable function or spline interpolator array.")
 
     @property
     def sample_velocity_dispersion(self):
@@ -446,7 +477,7 @@ class OpticalDepth():
     @sample_velocity_dispersion.setter
     def sample_velocity_dispersion(self, prior):
         try:
-            self._sample_velocity_dispersion = getattr(self, prior)
+            self._sample_velocity_dispersion = getattr(self, prior)(size=None, zl=None, get_attribute=True)
         except:
             self._sample_velocity_dispersion = prior
 
@@ -464,12 +495,47 @@ class OpticalDepth():
         except:
             self._sample_axis_ratio = prior
 
+    @property
+    def available_velocity_dispersion_list_and_its_params(self):
+        """
+        Function to list all available velocity dispersion sampler and its parameters.
+        """
+        self._available_velocity_dispersion_list_and_its_params = dict(
+            velocity_dispersion_haris=dict(a=2.32 / 2.67, c=2.67),
+            velocity_dispersion_gengamma=dict(a=2.32 / 2.67, c=2.67),
+            velocity_dispersion_bernardi=None,
+            velocity_dispersion_ewoud=None,
+        )
 
-@njit
-def phi_loc_bernardi(sigma, alpha=0.94, beta=1.85, phistar=2.099e-2, sigmastar=113.78):
-    phistar = phistar * (cosmology_h / 0.7) ** 3  # Mpc**-3
-    philoc_ = phistar*(sigma/sigmastar)**alpha * np.exp(-(sigma/sigmastar)**beta) * beta/gamma_(alpha/beta)/sigma
-    return philoc_
+        return self._available_velocity_dispersion_list_and_its_params
+    
+    @property
+    def available_axis_ratio_list(self):
+        """
+        Function to list all available axis ratio sampler.
+        """
+        self._available_axis_ratio_list = dict(
+            axis_ratio_rayleigh=axis_ratio_rayleigh,
+            axis_ratio_SIS=axis_ratio_SIS,
+        )
+
+        return self._available_axis_ratio_list
+    
+    @property
+    def available_optical_depth_list(self):
+        """
+        Function to list all available optical depth sampler.
+        """
+        self._available_optical_depth_list = dict(
+            optical_depth_SIS_haris=self.optical_depth_SIS_haris,
+            optical_depth_SIS_hemanta=self.optical_depth_SIS_hemanta,
+            optical_depth_SIE_hemanta=self.optical_depth_SIE_hemanta,
+        )
+
+        return self._available_optical_depth_list
+
+
+
 
 
 

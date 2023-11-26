@@ -197,10 +197,10 @@ class CBCSourceRedshiftDistribution(object):
         # if None is passed, use the default cosmology
         self.cosmo = cosmology if cosmology else cosmo
     
-        self.create_new_interpolator = dict(
+        self.c_n_i = dict(
             redshift_distribution=dict(create_new=False, resolution=500), z_to_luminosity_distance=dict(create_new=False, resolution=500), differential_comoving_volume=dict(create_new=False, resolution=500))
         if create_new_interpolator:
-            self.create_new_interpolator.update(create_new_interpolator)
+            self.c_n_i.update(create_new_interpolator)
 
         self.create_lookup_table(z_min, z_max, directory)
 
@@ -230,8 +230,8 @@ class CBCSourceRedshiftDistribution(object):
 
         # generate inverse cdf for inverse transform sampling
         # create sampler using the pdf p(z)
-        resolution = self.create_new_interpolator["redshift_distribution"]["resolution"]
-        create_new = self.create_new_interpolator["redshift_distribution"]["create_new"]
+        resolution = self.c_n_i["redshift_distribution"]["resolution"]
+        create_new = self.c_n_i["redshift_distribution"]["create_new"]
         zs_inv_cdf = interpolator_from_pickle(
                 param_dict_given= dict(z_min=z_min, 
                                        z_max=z_max, 
@@ -527,8 +527,8 @@ class CBCSourceRedshiftDistribution(object):
         """
 
         # initialing cosmological functions for fast calculation through interpolation
-        resolution = self.create_new_interpolator["z_to_luminosity_distance"]["resolution"]
-        create_new = self.create_new_interpolator["z_to_luminosity_distance"]["create_new"]
+        resolution = self.c_n_i["z_to_luminosity_distance"]["resolution"]
+        create_new = self.c_n_i["z_to_luminosity_distance"]["create_new"]
         spline1 = interpolator_from_pickle(
             param_dict_given= dict(z_min=z_min, z_max=z_max, cosmology=self.cosmo, resolution=resolution),
             directory=directory,
@@ -545,8 +545,8 @@ class CBCSourceRedshiftDistribution(object):
 
         # Create a lookup table for the differential comoving volume
         # get differential co-moving volume interpolator
-        resolution = self.create_new_interpolator["differential_comoving_volume"]["resolution"]
-        create_new = self.create_new_interpolator["differential_comoving_volume"]["create_new"]
+        resolution = self.c_n_i["differential_comoving_volume"]["resolution"]
+        create_new = self.c_n_i["differential_comoving_volume"]["create_new"]
         spline2 = interpolator_from_pickle(
             param_dict_given= dict(z_min=0.001, z_max=z_max, cosmology=self.cosmo, resolution=resolution), 
             directory=directory,

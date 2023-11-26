@@ -26,7 +26,7 @@ from gwcosmo import priors as p
 
 # for multiprocessing
 # Import helper routines
-from ..utils import rejection_sample, rejection_sample2d, interpolator_from_pickle, cubic_spline_interpolator
+from ..utils import interpolator_from_pickle, cubic_spline_interpolator
 
 # import redshift distribution sampler
 from .cbc_source_redshift_distribution import CBCSourceRedshiftDistribution
@@ -393,42 +393,6 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         del gw_parameters["source_frame_masses"]
 
         return gw_parameters
-
-    def sample_redshift(self, size, z_min=0.0, z_max=10.0, param=None):
-        """
-        Function to sample redshifts with the initialized prior.
-
-        Parameters
-        ----------
-        size : `int`
-            Number of samples to draw
-        param : `dict`
-            Allows to pass in above parameters as dict.
-            e.g. param = dict(z_min=0.0001, z_max=10)
-
-        Returns
-        ----------
-        zs : `array`
-            Array of sampled redshifts
-
-        Examples
-        ----------
-        >>> from ler.gw_source_population import CompactBinaryPopulation
-        >>> cbc = CompactBinaryPopulation()
-        >>> zs =
-        """
-
-        if param:
-            z_min = param["z_min"]
-            z_max = param["z_max"]
-        # zs = self.sample_source_redshift(size)
-        size_ = 0
-        while size_ < size:
-            zs = self.sample_source_redshift(size)
-            zs = zs[(zs >= z_min) & (zs <= z_max)]
-            size_ = len(zs)
-
-        return zs
 
     def binary_masses_BBH_popI_II_powerlaw_gaussian(
         self,
