@@ -20,12 +20,13 @@ cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
 from astropy import constants as const
 
 # the following .py file will be called if they are not given in the class initialization
-from ..gw_source_population import CompactBinaryPopulation
+from ..gw_source_population import CBCSourceParameterDistribution
 from ..image_properties import ImageProperties
 from ..utils import add_dictionaries_together, trim_dictionary
+from ..jit_functions import phi_cut_SIE, axis_ratio_rayleigh
 
 
-class LensGalaxyParameterDistribution(CompactBinaryPopulation, ImageProperties):
+class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImageProperties):
     """
     Class to sample lens galaxy parameters
 
@@ -746,6 +747,33 @@ class LensGalaxyParameterDistribution(CompactBinaryPopulation, ImageProperties):
         theta_E_max = np.max(theta_E)  # maximum einstein radius
         u = np.random.uniform(0, theta_E_max**2, size=size)
         mask = u < theta_E**2
+
+        # return the dictionary with the mask applied
+        return {key: val[mask] for key, val in param_dict.items()}
+
+    def rjs_with_cross_section(self, param_dict):
+        """
+        Function to conduct rejection sampling wrt einstein radius
+
+        Parameters
+        ----------
+        param_dict : `dict`
+            dictionary of lens parameters
+
+        Returns
+        -------
+        lens_params : `dict`
+            dictionary of lens parameters after rejection sampling
+        """
+
+        theta_E = param_dict["theta_E"]
+        q = param_dict["q"]
+        phi_cut = phi_cut_SIE(q)
+        size = len(theta_E)
+        cross_section = theta_E**2 * phi_cut
+        max_ = np.max(cross_section)  # maximum einstein radius
+        u = np.random.uniform(0, max_, size=size)
+        mask = u < cross_section
 
         # return the dictionary with the mask applied
         return {key: val[mask] for key, val in param_dict.items()}

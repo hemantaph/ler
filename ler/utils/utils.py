@@ -544,3 +544,4 @@ def inverse_transform_sampler(size, inv_cdf, x):
     x1, x0, y1, y0 = inv_cdf[idx], inv_cdf[idx-1], x[idx], x[idx-1]
     samples = y0 + (y1 - y0) * (u - x0) / (x1 - x0)
     return samples
+
