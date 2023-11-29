@@ -415,6 +415,8 @@ class LeR:
             sampler_priors_params=self.lensed_param_sampler_dict[
                 "sampler_priors_params"],
             directory=self.lensed_param_sampler_dict["directory"],
+            event_priors=self.gw_param_sampler_dict["event_priors"],
+            event_priors_params=self.gw_param_sampler_dict["event_priors_params"],
         )
 
 
@@ -428,13 +430,17 @@ class LeR:
         parameters_dict = {}
 
         # cbc params
-        # gw_param_sampler_dict = self.gw_param_sampler_dict.copy()
-        # gw_param_sampler_dict["event_type"] = str(
-        #     gw_param_sampler_dict["event_type"]
-        # )
-        # parameters_dict.update({"gw_param_sampler_dict": gw_param_sampler_dict})
+        gw_param_sampler_dict = self.gw_param_sampler_dict.copy()
+        # convert all dict values to str
+        for key, value in gw_param_sampler_dict.items():
+            gw_param_sampler_dict[key] = str(value)
+        parameters_dict.update({"gw_param_sampler_dict": gw_param_sampler_dict})
 
         # lensed params
+        lensed_param_sampler_dict = self.lensed_param_sampler_dict.copy()
+        # convert all dict values to str
+        for key, value in lensed_param_sampler_dict.items():
+            lensed_param_sampler_dict[key] = str(value)
         parameters_dict.update(
             {"lensed_param_sampler_dict": self.lensed_param_sampler_dict}
         )

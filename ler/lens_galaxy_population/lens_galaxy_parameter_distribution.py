@@ -219,7 +219,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             print("Using the initialized CBCSourceParameterDistribution class")
             # if the classes are already initialized, then just use them
             #self.__bases__ = (cbc_class,)
-            super().__init__(cbc_class.sample_zs)
+            #super().__init__(cbc_class.sample_zs)
 
         # initialize the optical depth class
         # follwing attributes are initialized
