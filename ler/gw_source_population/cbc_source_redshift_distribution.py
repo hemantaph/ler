@@ -209,7 +209,7 @@ class CBCSourceRedshiftDistribution(object):
         # if None is passed, use the default merger_rate_density_param
         if merger_rate_density_param is None:
             if self.event_type == "BBH":
-                R0 = 23.9 * 1e-9
+                R0 = 25 * 1e-9
             elif self.event_type == "BNS":
                 R0 = 170.0 * 1e-9
             elif self.event_type == "NSBH":
@@ -220,7 +220,9 @@ class CBCSourceRedshiftDistribution(object):
 
         # To find the normalization constant of the pdf p(z)
         # note that there is an attribute self.merger_rate_density_src_frame where njit is applied, and thus it cannot be used with quad
-        merger_rate_density_src_frame = lambda z_: self.merger_rate_density(zs=z_, param=merger_rate_density_param)/(1+z_) * (self.cosmo.differential_comoving_volume(z_).value * 4 * np.pi)
+        # merger_rate_density_src_frame = lambda z_: self.merger_rate_density(zs=z_, param=merger_rate_density_param)/(1+z_) * self.differential_comoving_volume(z_)
+
+        merger_rate_density_src_frame = lambda z: self.merger_rate_density_src_frame(np.array([z]))[0]
 
         self.normalization_pdf_z = quad(
             merger_rate_density_src_frame,

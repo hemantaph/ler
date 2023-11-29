@@ -13,9 +13,10 @@ import numpy as np
 from gwsnr import GWSNR
 from scipy.stats import norm, gaussian_kde
 from scipy.interpolate import interp1d
-from astropy.cosmology import Planck18
-from ..lens_galaxy_population import LensGalaxyPopulation
-from ..gw_source_population import CompactBinaryPopulation
+from astropy.cosmology import LambdaCDM
+cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+from ..lens_galaxy_population import LensGalaxyParameterDistribution
+from ..gw_source_population import CBCSourceParameterDistribution
 from ..utils import append_json, get_param_from_json
 
 # Conversions from SI units to CGS units
@@ -52,19 +53,19 @@ class LeR:
         if 'custom', the SNR will be calculated using a custom function.
     json_file_ler_param: `str`
         default json_file_ler_param = 'ler_param.json'.
-        json file containing the parameters for initializing the :class:`~ler.LeR` class, :class:`~ler.CompactBinaryPopulation` class, :class:`~ler.LensGalaxyPopulation` class, :class:`~gwsnr.GWSNR` class.
+        json file containing the parameters for initializing the :class:`~ler.LeR` class, :class:`~ler.CBCSourceParameterDistribution` class, :class:`~ler.LensGalaxyParameterDistribution` class, :class:`~gwsnr.GWSNR` class.
     kwargs : `keyword arguments`
-        Note : kwargs takes input for initializing the :class:`~ler.CompactBinaryPopulation`, :class:`LensGalaxyPopulation`, :meth:`~gwsnr_intialization`.
+        Note : kwargs takes input for initializing the :class:`~ler.CBCSourceParameterDistribution`, :class:`LensGalaxyParameterDistribution`, :meth:`~gwsnr_intialization`.
 
     Examples
     ----------
     - class initialization
     - ``ler`` needs `gwsnr <https://github.com/hemantaph/gwsnr/>`_.
     - generation of ``gwsnr`` snr interpolator will take time at the first initialization. The interpolator will be stored in the working dir.
-    - ``m_min``, ``m_max`` were used for initializing the ``CompactBinaryPopulation`` class. ``waveform_approximant`` was used for initializing the ``snr_calculator`` (``gwsnr``) class. ``min_lensed_images`` was used for initializing the ``LensGalaxyPopulation`` class.
+    - ``m_min``, ``m_max`` were used for initializing the ``CBCSourceParameterDistribution`` class. ``waveform_approximant`` was used for initializing the ``snr_calculator`` (``gwsnr``) class. ``n_min_images`` was used for initializing the ``LensGalaxyParameterDistribution`` class.
 
     >>> from ler import LeR
-    >>> ler_ = LeR(nsamples=100000, npool=int(4), z_min=0., z_max=10., batch_size=25000, snr_finder='gwsnr', m_min=4.59, m_max=86.22, waveform_approximant='IMRPhenomD', min_lensed_images=2)
+    >>> ler_ = LeR(nsamples=100000, npool=int(4), z_min=0., z_max=10., batch_size=25000, snr_finder='gwsnr', m_min=4.59, m_max=86.22, waveform_approximant='IMRPhenomD', n_min_images=2)
     Given: IMR waveform
     psds not given. Choosing bilby's default psds
     getting stored interpolator...
@@ -98,9 +99,9 @@ class LeR:
     +-------------------------------------+----------------------------------+
     |:attr:`~differential_comoving_volume`|`scipy.interpolate.interp1d`      |
     +-------------------------------------+----------------------------------+
-    |:attr:`~compact_binary_pop`          |`CompactBinaryPopulation class`   |
+    |:attr:`~compact_binary_pop`          |`CBCSourceParameterDistribution class`   |
     +-------------------------------------+----------------------------------+
-    |:attr:`~lens_galaxy_pop`             |`LensGalaxyPopulation class`      |
+    |:attr:`~lens_galaxy_pop`             |`LensGalaxyParameterDistribution class`      |
     +-------------------------------------+----------------------------------+
     | :attr:`~snr`                        |``gwsnr`` `package`               |
     +-------------------------------------+----------------------------------+
@@ -144,16 +145,16 @@ class LeR:
     # Attributes
     gw_param_sampler_dict = None
     """``dict`` \n
-    dictionary of params for initializing ``CompactBinaryPopulation`` class \n
+    dictionary of params for initializing ``CBCSourceParameterDistribution`` class \n
     this will be used for GW unlensed parameters sampling \n
     gw_param_sampler_dict.keys() = ['nsamples', 'm_min', 'm_max', 'z_min', 'z_max', 'event_type', 'src_model_params']
     """
 
     lensed_param_sampler_dict = None
     """``dict`` \n
-    dictionary of params for initializing ``LensGalaxyPopulation`` class \n
+    dictionary of params for initializing ``LensGalaxyParameterDistribution`` class \n
     this will be used for GW lensed parameters sampling \n
-    lensed_param_sampler_dict.keys() = ['nsamples', 'min_lensed_images', 'max_lensed_images', 'lensModelList']
+    lensed_param_sampler_dict.keys() = ['nsamples', 'n_min_images', 'n_max_images', 'lensModelList']
     """
 
     snr_calculator_dict = None
@@ -184,12 +185,12 @@ class LeR:
     """
 
     compact_binary_pop = None
-    """``CompactBinaryPopulation class`` \n
+    """``CBCSourceParameterDistribution class`` \n
     class for sampling GW parameters.
     """
 
     lens_galaxy_pop = None
-    """``LensGalaxyPopulation class`` \n
+    """``LensGalaxyParameterDistribution class`` \n
     class for sampling lensed GW parameters.
     """
 
@@ -200,18 +201,20 @@ class LeR:
 
     def __init__(
         self,
-        nsamples=100000,
         npool=int(4),
-        z_min=0.0,
+        z_min=0.001,
         z_max=10.0,
         batch_size=25000,
         snr_finder="gwsnr",
         json_file_ler_param="./LeR_params.json",
+        cosmology=None,
+        directory="./interpolator_pickle",
         **kwargs,
     ):
         self.z_min = z_min
         self.z_max = z_max
         self.npool = npool
+        self.cosmo = cosmology if cosmology else cosmo
         # batch size for parameters sampling and snr calculation
         # try keeping it below 50000
         # reduce the batch size if you are getting memory error
@@ -226,51 +229,55 @@ class LeR:
         # for unlened case (source params)
         # defualt for 'src_model_params' is set for popI_II PowerLaw+PEAK model
         # for other models, please change the 'src_model_params' accordingly
-        self.gw_param_sampler_dict = {
-            "nsamples": nsamples,
-            "m_min": 4.59,
-            "m_max": 86.22,
-            "z_min": z_min,
-            "z_max": z_max,
-            "event_type": "BBH",
-            "category": "popI_II",
-            "sub_category": "gwcosmo",
-            "redshift_event_type": None,
-            "redshift_category": None,
-            "merger_rate_density_fn": None,
-            "merger_rate_density_param": None,
-            "src_model_params": None,
-            "mass_constant": False,
-            "redshift_constant": False,
-            "spin_constant": False,
-        }
+        self.gw_param_sampler_dict = dict(
+            z_min=z_min,
+            z_max=z_max,
+            event_type="BBH",
+            event_priors=None,
+            event_priors_params=None,
+            cosmology=self.cosmo,
+            spin_zero=True,
+            spin_precession=False,
+            directory=directory,
+            create_new_interpolator=False,
+        )
         # for lensed case
-        # set 'min_lensed_images' = 2 for double image lensed case
-        self.lensed_param_sampler_dict = {
-            "nsamples": nsamples,
-            "min_lensed_images": 2,
-            "max_lensed_images": 4,
-            "lensModelList": ["EPL_NUMBA", "SHEAR"],
-        }
+        # set 'n_min_images' = 2 for double image lensed case
+        self.lensed_param_sampler_dict = dict(
+            npool=npool,
+            z_min=z_min,
+            z_max=z_max,
+            cosmology=None,
+            event_type="BBH",
+            cbc_class=False,
+            lens_type="epl_galaxy",
+            lens_functions= None,
+            sampler_priors=None,
+            sampler_priors_params=None,
+            directory=directory,
+            n_min_images=2,
+            n_max_images=4,
+        )
 
         # for snr_calculator
         # for 'waveform_approximant' other than IMRPhenomD or TaylorF2, please set 'snr_type' = 'inner_product'
         # you will get accurate results if you set 'nsamples_mtot': 200, 'nsamples_mass_ratio': 500., 'sampling_frequency': 4096.
-        self.snr_calculator_dict = {
-            "mtot_min": 2.0,
-            "mtot_max": 439.6,
-            "nsamples_mtot": 100,
-            "nsamples_mass_ratio": 50,
-            "sampling_frequency": 2048.0,
-            "waveform_approximant": "IMRPhenomD",
-            "minimum_frequency": 20.0,
-            "snr_type": "interpolation",
-            "waveform_inspiral_must_be_above_fmin": False,
-            "psds": None,
-            "psd_file": False,
-            "ifos": None,
-            "interpolator_dir": "./interpolator_pickle",
-        }
+        self.snr_calculator_dict = dict(
+            npool=npool,
+            mtot_min=2.0,
+            mtot_max=439.6,
+            nsamples_mtot=100,
+            nsamples_mass_ratio=50,
+            sampling_frequency=2048.0,
+            waveform_approximant="IMRPhenomD",
+            minimum_frequency=20.0,
+            snr_type="interpolation",
+            waveform_inspiral_must_be_above_fmin=False,
+            psds=None,
+            psd_file=False,
+            ifos=None,
+            interpolator_dir=directory,
+        )
 
         # update dict from kwargs
         keys1 = self.gw_param_sampler_dict.keys()
@@ -284,9 +291,9 @@ class LeR:
             if key in keys3:
                 self.snr_calculator_dict[key] = value
 
-        # initialization of clasess, for both  CompactBinaryPopulation and LensGalaxyPopulation
-        # CompactBinaryPopulation already inherits from Source_Galaxy_Population_Model class form source_population.py
-        # LensGalaxyPopulation already inherits from Lens_Galaxy_Population_Model class form lens_galaxy_population.py
+        # initialization of clasess, for both  CBCSourceParameterDistribution and LensGalaxyParameterDistribution
+        # CBCSourceParameterDistribution already inherits from Source_Galaxy_Population_Model class form source_population.py
+        # LensGalaxyParameterDistribution already inherits from Lens_Galaxy_Population_Model class form lens_galaxy_population.py
         self.class_initialization()
 
         # initializing function for fast SNR calculation (in case of gwsnr)
@@ -380,31 +387,36 @@ class LeR:
     def lensed_param_detectable(self, value):
         self._lensed_param_detectable = value
 
-    # CompactBinaryPopulation class and LensGalaxyPopulation class initialization
+    # CBCSourceParameterDistribution class and LensGalaxyParameterDistribution class initialization
     def class_initialization(self):
         """
-        Function for initializing the ``CompactBinaryPopulation`` and ``LensGalaxyPopulation`` classes.
+        Function for initializing the ``CBCSourceParameterDistribution`` and ``LensGalaxyParameterDistribution`` classes.
         """
-        self.compact_binary_pop = CompactBinaryPopulation(
+        self.compact_binary_pop = CBCSourceParameterDistribution(
             z_min=self.z_min,
             z_max=self.z_max,
-            m_min=self.gw_param_sampler_dict["m_min"],
-            m_max=self.gw_param_sampler_dict["m_max"],
             event_type=self.gw_param_sampler_dict["event_type"],
-            category=self.gw_param_sampler_dict["category"],
-            sub_category=self.gw_param_sampler_dict["sub_category"],
-            redshift_event_type=self.gw_param_sampler_dict["redshift_event_type"],
-            redshift_category=self.gw_param_sampler_dict["redshift_category"],
-            merger_rate_density_fn=self.gw_param_sampler_dict[
-                "merger_rate_density_fn"],
-            merger_rate_density_param=self.gw_param_sampler_dict[
-                "merger_rate_density_param"],
-            src_model_params=self.gw_param_sampler_dict["src_model_params"],
-            mass_constant=self.gw_param_sampler_dict["mass_constant"],
-            redshift_constant=self.gw_param_sampler_dict["redshift_constant"],
-            spin_constant=self.gw_param_sampler_dict["spin_constant"],
+            event_priors=self.gw_param_sampler_dict["event_priors"],
+            event_priors_params=self.gw_param_sampler_dict["event_priors_params"],
+            cosmology=self.cosmo,
+            spin_zero=self.gw_param_sampler_dict["spin_zero"],
+            spin_precession=self.gw_param_sampler_dict["spin_precession"],
         )
-        self.lens_galaxy_pop = LensGalaxyPopulation(self.compact_binary_pop)
+        self.lens_galaxy_pop = LensGalaxyParameterDistribution(
+            npool=self.lensed_param_sampler_dict["npool"],
+            z_min=self.lensed_param_sampler_dict["z_min"],
+            z_max=self.lensed_param_sampler_dict["z_max"],
+            cosmology=self.lensed_param_sampler_dict["cosmology"],
+            event_type=self.lensed_param_sampler_dict["event_type"],
+            cbc_class=False,
+            lens_type=self.lensed_param_sampler_dict["lens_type"],
+            lens_functions= self.lensed_param_sampler_dict["lens_functions"],
+            sampler_priors=self.lensed_param_sampler_dict["sampler_priors"],
+            sampler_priors_params=self.lensed_param_sampler_dict[
+                "sampler_priors_params"],
+            directory=self.lensed_param_sampler_dict["directory"],
+        )
+
 
         return None
 
@@ -416,11 +428,11 @@ class LeR:
         parameters_dict = {}
 
         # cbc params
-        gw_param_sampler_dict = self.gw_param_sampler_dict.copy()
-        gw_param_sampler_dict["merger_rate_density_fn"] = str(
-            gw_param_sampler_dict["merger_rate_density_fn"]
-        )
-        parameters_dict.update({"gw_param_sampler_dict": gw_param_sampler_dict})
+        # gw_param_sampler_dict = self.gw_param_sampler_dict.copy()
+        # gw_param_sampler_dict["event_type"] = str(
+        #     gw_param_sampler_dict["event_type"]
+        # )
+        # parameters_dict.update({"gw_param_sampler_dict": gw_param_sampler_dict})
 
         # lensed params
         parameters_dict.update(
@@ -539,9 +551,9 @@ class LeR:
         # initialing cosmological functions for fast calculation through interpolation
         z = np.linspace(z_min, z_max, 500)  # red-shifts
         # co-moving distance in Mpc
-        Dc = Planck18.comoving_distance(z).value
+        Dc = self.cosmo.comoving_distance(z).value
         # luminosity distance in Mpc
-        luminosity_distance = Planck18.luminosity_distance(z).value
+        luminosity_distance = self.cosmo.luminosity_distance(z).value
 
         # generating interpolators
         self.z_to_Dc = interp1d(z, Dc, kind="cubic")
@@ -550,7 +562,7 @@ class LeR:
 
         # Lookup table for differential comoving distance
         differential_comoving_volume = (
-            Planck18.differential_comoving_volume(z).value * 4 * np.pi
+            self.cosmo.differential_comoving_volume(z).value * 4 * np.pi
         )  # differential comoving volume in Mpc^3
         self.differential_comoving_volume = interp1d(
             z, differential_comoving_volume, kind="cubic"
@@ -641,7 +653,7 @@ class LeR:
         """
         # get gw params
         print("sampling gw source params...")
-        gw_param = self.compact_binary_pop.sample_gw_parameters(nsamples=nsamples)
+        gw_param = self.compact_binary_pop.sample_gw_parameters(size=nsamples)
         # Get all of the signal to noise ratios
         print("calculating snrs...")
         snrs = self.snr.snr(GWparam_dict=gw_param)
@@ -669,7 +681,7 @@ class LeR:
             json file name for storing the parameters.
             default json_file = './gw_params.json'.
         kwargs : `dict`
-            key word arguments for initializing the ``CompactBinaryPopulation`` class. \n
+            key word arguments for initializing the ``CBCSourceParameterDistribution`` class. \n
             This initialization is either done at the time of class initialization or at the time of calling this function. \n
             Following parameters can be provided, \n
             ``m_min`` : `float`
@@ -855,19 +867,12 @@ class LeR:
         print("sampling lensed params...")
         lensed_param = self.lens_galaxy_pop.sample_lens_parameters(size=nsamples)
         # now get (strongly lensed) image paramters along with lens parameters
-        lensed_param = self.lens_galaxy_pop.get_image_properties(
-            n_min_images=self.lensed_param_sampler_dict["min_lensed_images"],
-            n_max_images=self.lensed_param_sampler_dict["max_lensed_images"],
-            lens_parameters=lensed_param,
-            lensModelList=self.lensed_param_sampler_dict["lensModelList"],
-            npool=self.npool,
-        )
+        lensed_param = self.lens_galaxy_pop.image_properties(lensed_param)
         # Get all of the signal to noise ratios
         print("calculating snrs...")
         snrs = self.lens_galaxy_pop.get_lensed_snrs(
             snr_calculator=self.snr,
             lensed_param=lensed_param,
-            n_max_images=self.lensed_param_sampler_dict["max_lensed_images"],
         )
         lensed_param.update(snrs)
 
@@ -893,12 +898,12 @@ class LeR:
             json file name for storing the parameters.
             default json_file = './lensed_params.json'.
         kwargs : `dict`
-            key word arguments for initializing the ``LensGalaxyPopulation`` class. \n
+            key word arguments for initializing the ``LensGalaxyParameterDistribution`` class. \n
             This initialization is either done at the time of class initialization or at the time of calling this function. \n
             Following parameters can be provided, \n
-            ``min_lensed_images`` : `int`
+            ``n_min_images`` : `int`
                 minimum number of lensed images.
-            ``max_lensed_images`` : `int`
+            ``n_max_images`` : `int`
                 maximum number of lensed images.
             ``lensModelList`` : `list`
                 list of lens models.
@@ -910,7 +915,7 @@ class LeR:
             dictionary of lensed GW source parameters, lens galaxy parameters and image paramters.
             lensed_param.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl',
             'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source',
-            'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
+            'luminosity_distance', 'theta_jn', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
             'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces',
             'determinants', 'image_type', 'weights', 'opt_snr_net', 'L1', 'H1', 'V1']
         """
@@ -971,7 +976,7 @@ class LeR:
             dictionary of lensed GW source parameters, lens galaxy parameters and image paramters.
             lensed_param.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl',
             'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source',
-            'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
+            'luminosity_distance', 'theta_jn', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
             'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces',
             'determinants', 'image_type', 'weights', 'opt_snr_net', 'L1', 'H1', 'V1']
         snr_threshold : `float`
@@ -997,7 +1002,7 @@ class LeR:
             dictionary of detectable lensed GW source parameters, lens galaxy parameters and image paramters.
             detectable_lensed_param.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2',
             'Dl', 'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source',
-            'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
+            'luminosity_distance', 'theta_jn', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
             'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces',
             'determinants', 'image_type', 'weights', 'opt_snr_net', 'L1', 'H1', 'V1']
         """
@@ -1043,7 +1048,7 @@ class LeR:
             # The total rate is Eq. A4 of https://arxiv.org/pdf/2106.06303.pdf
             # R = C0 int Theta(rho-rhoc) p(z) p(theta) dtheta dz_s, where C0 = int R(zs)/(1+zs) dVc/dzs tau(zs) dzs is the normalization constant for p(z)
             # Thus R = C0 <Theta(rho-rhoc)>
-            total_rate = self.lens_galaxy_pop.normalization_pdf_z * np.mean(snr_hit)
+            total_rate = self.lens_galaxy_pop.normalization_pdf_z_lensed * np.mean(snr_hit)
             print("total lensed rate (yr^-1) (with step function): {}".format(total_rate))
             # append the results
             data['lensed_rate_step'] = total_rate
@@ -1200,7 +1205,7 @@ class LeR:
             dictionary of lensed GW source parameters, lens galaxy parameters and image paramters.
             lensed_param.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl',
             'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source',
-            'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
+            'luminosity_distance', 'theta_jn', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
             'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces',
             'determinants', 'image_type', 'weights', 'opt_snr_net', 'L1', 'H1', 'V1']
         jsonfile_unlensed : `str`
@@ -1300,7 +1305,7 @@ class LeR:
             dictionary of lensed GW source parameters, lens galaxy parameters and image paramters.
             param_final.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2',
             'Dl', 'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source',
-            'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
+            'luminosity_distance', 'theta_jn', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
             'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'image_type',
             'weights', 'opt_snr_net', 'L1', 'H1', 'V1']
 
@@ -1394,7 +1399,7 @@ class LeR:
             dictionary of lensed GW source parameters, lens galaxy parameters and image paramters.
             lensed_param.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl',
             'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source',
-            'luminosity_distance', 'iota', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
+            'luminosity_distance', 'theta_jn', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
             'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces',
             'determinants', 'image_type', 'weights', 'opt_snr_net', 'L1', 'H1', 'V1']
         snr_threshold : `float`

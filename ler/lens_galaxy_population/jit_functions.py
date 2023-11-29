@@ -13,20 +13,6 @@ from ..utils import inverse_transform_sampler
 #     # return the dictionary with the mask applied
 #     return {key: val[mask] for key, val in param_dict.items()}
 
-@njit
-def rjs_with_cross_section(theta_E, q):
-    # rejection sampling
-    size = len(theta_E)
-    u = np.random.uniform(0, 1, size=size)
-    mask = u < phi_cut_SIE(q)
-
-
-
-
-    
-
-    return idx
-
 
 
 @njit
@@ -117,7 +103,7 @@ def phi_cut_SIE(q):
     return result/np.pi
 
 @njit
-def axis_ratio_rayleigh(sigma, q_min=0.2):
+def axis_ratio_rayleigh(sigma, q_min=0.2, q_max=1.0):
         """
         Function to sample axis ratio from rayleigh distribution with given velocity dispersion.
 
@@ -146,13 +132,14 @@ def axis_ratio_rayleigh(sigma, q_min=0.2):
             b = s * np.sqrt(-2 * np.log(u))  # inverse cdf rayleigh distribution
             q_ = 1.0 - b
 
-            # Weed out axis ratios that have axis ratio below q_min
-            idx2 = q_ > q_min
+            # selecting only q that is within the range
+            idx2 = (q_ >= q_min) & (q_ <= q_max)
             q[idx[idx2]] = q_[idx2]
 
             # remaining idx from the original array
             # that still not have axis ratio above q_min
-            idx = idx[q <= q_min]
+            idx = idx[(q_ <= q_min) | (q_ >= q_max)]
+
             size_ = len(idx)
 
         return q

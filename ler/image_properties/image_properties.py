@@ -6,6 +6,10 @@ The class inherits from the CompactBinaryPopulation class, which is used to samp
 import warnings
 warnings.filterwarnings("ignore")
 import numpy as np
+from numba import njit
+
+from astropy.cosmology import LambdaCDM
+cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
 
 # the following .py file will be called if they are not given in the class initialization
 from .multiprocessing_routine import solve_lens_equation1, solve_lens_equation2
@@ -13,6 +17,8 @@ from .multiprocessing_routine import solve_lens_equation1, solve_lens_equation2
 # for multiprocessing
 from multiprocessing import Pool
 from tqdm import tqdm
+
+from ..utils import  interpolator_from_pickle, cubic_spline_interpolator
 
 
 class ImageProperties():
@@ -36,12 +42,44 @@ class ImageProperties():
 
     """
 
-    def __init__(self, npool=4, n_min_images=2, n_max_images=4, lens_model_list=['EPL_NUMBA', 'SHEAR']):
+    def __init__(self, 
+                 npool=4,
+                 z_min=0.01,
+                 z_max=10,
+                 n_min_images=2, 
+                 n_max_images=4, 
+                 lens_model_list=['EPL_NUMBA', 'SHEAR'],
+                 cosmology=None,
+                 spin_zero=True,
+                 spin_precession=False,
+                 directory="./interpolator_pickle",
+                 create_new_interpolator=dict(
+                     Dl_to_z=dict(create_new=False, resolution=500))
+        ):
 
         self.npool = 4
         self.n_min_images = n_min_images
         self.n_max_images = n_max_images
         self.lens_model_list = lens_model_list  # list of lens models
+        self.spin_zero = spin_zero
+        self.spin_precession = spin_precession
+
+        self.cosmo = cosmology if cosmology else cosmo
+        resolution = create_new_interpolator["Dl_to_z"]["resolution"]
+        create_new = create_new_interpolator["Dl_to_z"]["create_new"]
+        spline1 = interpolator_from_pickle(
+            param_dict_given= dict(z_min=z_min, z_max=z_max, cosmology=self.cosmo, resolution=resolution),
+            directory=directory,
+            sub_directory="Dl_to_z",
+            name="Dl_to_z",
+            x = np.linspace(z_min, z_max, resolution),
+            pdf_func= lambda z_: cosmo.luminosity_distance(z_).value, 
+            conditioned_y=None, 
+            dimension=1,
+            category="function_inverse",
+            create_new=create_new,
+        )
+        self.Dl_to_z = njit(lambda z_: cubic_spline_interpolator(z_, spline1[0], spline1[1]))
 
     def image_properties(
             self,
@@ -62,7 +100,7 @@ class ImageProperties():
                 dictionary of lens parameters and image properties
                 e.g. lens_parameters contains the following keys:\n
                 lens related=>['zs': source redshift, 'zl': lens redshift, 'gamma1': shear component in the x-direction, 'gamma2': shear component in the y-direction, 'e1': ellipticity component in the x-direction, 'e2': ellipticity component in the y-direction, 'gamma': spectral index of the mass density distribution, 'theta_E': einstein radius in radian]\n
-                source related=>['mass_1': mass in detector frame (mass1>mass2), 'mass_2': mass in detector frame, 'mass_1_source':mass in source frame, 'mass_2_source':mass source frame, 'luminosity_distance': luminosity distance, 'iota': inclination angle, 'psi': polarization angle, 'phase': coalesence phase, 'geocent_time': coalensence GPS time at geocenter, 'ra': right ascension, 'dec': declination, 'a_1': spin magnitude of the more massive black hole, 'a2': spin magnitude of the less massive black hole, 'tilt_1': tilt angle of the more massive black hole, 'tilt_2': tilt angle of the less massive black hole, 'phi_12': azimuthal angle between the two spins, 'phi_jl': azimuthal angle between the total angular momentum and the orbital angular momentum]\n
+                source related=>['mass_1': mass in detector frame (mass1>mass2), 'mass_2': mass in detector frame, 'mass_1_source':mass in source frame, 'mass_2_source':mass source frame, 'luminosity_distance': luminosity distance, 'theta_jn': inclination angle, 'psi': polarization angle, 'phase': coalesence phase, 'geocent_time': coalensence GPS time at geocenter, 'ra': right ascension, 'dec': declination, 'a_1': spin magnitude of the more massive black hole, 'a2': spin magnitude of the less massive black hole, 'tilt_1': tilt angle of the more massive black hole, 'tilt_2': tilt angle of the less massive black hole, 'phi_12': azimuthal angle between the two spins, 'phi_jl': azimuthal angle between the total angular momentum and the orbital angular momentum]\n
                 image related=>['x_source': source position in the x-direction, 'y_source': source position in the y-direction, 'x0_image_position': image position in the x-direction, 'x1_image_position': image position in the y-direction, 'magnifications': magnifications, 'time_delays': time delays, 'n_images': number of images formed, 'determinant': determinants, 'trace': traces, 'iteration': to keep track of the iteration number, 'weights': weights for the caustic considered]
 
         """
@@ -70,6 +108,7 @@ class ImageProperties():
         npool = self.npool
         n_min_images = self.n_min_images
         n_max_images = self.n_max_images
+        lensModelList = self.lens_model_list
         
         zs = lens_parameters["zs"]
         size = len(zs)
@@ -133,10 +172,6 @@ class ImageProperties():
                 disable=False,
             ):
                 # print(result)
-                """
-                for i in tqdm(range(size)):
-                    result = self.solve_lens_equation(input_arguments[i])
-                """
                 (
                     x_source_i,
                     y_source_i,
@@ -208,7 +243,7 @@ class ImageProperties():
 
         return lens_parameters
 
-    def get_lensed_snrs(self, snr_calculator, lensed_param, n_max_images=4):
+    def get_lensed_snrs(self, snr_calculator, lensed_param):
         """
         Function to calculate the signal to noise ratio for each image in each event.
 
@@ -220,7 +255,7 @@ class ImageProperties():
                 Luminosity distance and time delay are modified to be effective luminosity distance and effective time delay, respectively, for each image using the magnifications and time delays.\n
             lensed_param : `dict`
                 dictionary containing the both already lensed source paramters and image parameters.
-                e.g. lensed_param.keys() = ['mass_1', 'mass_2', 'zs', 'luminosity_distance', 'iota', 'psi', 'phi', 'ra', 'dec', 'geocent_time', 'phase', 'a_1', 'a2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl', 'magnifications', 'time_delays']
+                e.g. lensed_param.keys() = ['mass_1', 'mass_2', 'zs', 'luminosity_distance', 'theta_jn', 'psi', 'phi', 'ra', 'dec', 'geocent_time', 'phase', 'a_1', 'a2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl', 'magnifications', 'time_delays']
             n_max_images : `int`
                 maximum number of images to consider
                 default: 4
@@ -233,29 +268,40 @@ class ImageProperties():
 
         """
         # needed to calculate effective luminosity distance and effective time delay
+        n_max_images = self.n_max_images
         magnifications = lensed_param["magnifications"]
         time_delays = lensed_param["time_delays"]
+        size = len(magnifications)
 
         # Get the binary parameters
         number_of_lensed_events = len(magnifications)
-        mass_1, mass_2, luminosity_distance, iota, psi, ra, dec, geocent_time, phase, a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl  = (
-            lensed_param["mass_1"],
-            lensed_param["mass_2"],
+        mass_1_source, mass_2_source, luminosity_distance, theta_jn, psi, ra, dec, geocent_time, phase, a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl  = (
+            lensed_param["mass_1_source"],
+            lensed_param["mass_2_source"],
             lensed_param["luminosity_distance"],
-            lensed_param["iota"],
+            lensed_param["theta_jn"],
             lensed_param["psi"],
             lensed_param["ra"],
             lensed_param["dec"],
             lensed_param["geocent_time"],
             lensed_param["phase"],
-            lensed_param["a_1"],
-            lensed_param["a_2"],
-            lensed_param["tilt_1"],
-            lensed_param["tilt_2"],
-            lensed_param["phi_12"],
-            lensed_param["phi_jl"],
+            np.zeros(size),
+            np.zeros(size),
+            np.zeros(size),
+            np.zeros(size),
+            np.zeros(size),
+            np.zeros(size),
         )
-
+        if not self.spin_zero:
+            a_1, a_2 = (lensed_param["a_1"], lensed_param["a_2"])
+            if self.spin_precession:
+                tilt_1, tilt_2, phi_12, phi_jl = (
+                    lensed_param["tilt_1"],
+                    lensed_param["tilt_2"],
+                    lensed_param["phi_12"],
+                    lensed_param["phi_jl"],
+                )
+        
         # setting up snr dictionary
         detectors = snr_calculator.list_of_detectors
         optimal_snrs = dict()
@@ -284,15 +330,18 @@ class ImageProperties():
             effective_geocent_time[
                 effective_geocent_time < 0
             ] += 31556952  # number of seconds in a year
-
+            zs_eff = self.Dl_to_z(effective_luminosity_distance)
+            #zs_eff = lensed_param["zs"][idx]
+            mass_1 = mass_1_source[idx] * (1 + zs_eff)
+            mass_2 = mass_2_source[idx] * (1 + zs_eff)
             # Each image has their own effective luminosity distance and effective geocent time
             if len(effective_luminosity_distance) != 0:
                 # Returns a dictionary
                 optimal_snr = snr_calculator.snr(
-                    mass_1[idx],
-                    mass_2[idx],
+                    mass_1,
+                    mass_2,
                     effective_luminosity_distance,
-                    iota[idx],
+                    theta_jn[idx],
                     psi[idx],
                     phase[idx],
                     effective_geocent_time,

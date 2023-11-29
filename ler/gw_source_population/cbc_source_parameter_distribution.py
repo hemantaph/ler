@@ -15,7 +15,6 @@ from numba import njit
 
 # for redshift to luminosity distance conversion
 from astropy.cosmology import LambdaCDM
-
 cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
 
 # from gwcosmo import priors as p
@@ -860,7 +859,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         if event_type == "BBH":
             merger_rate_density_prior = "merger_rate_density_bbh_popI_II_oguri2018"
             merger_rate_density_prior_params = dict(
-                R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30
+                R0=25. * 1e-9, b2=1.6, b3=2.0, b4=30
             )
             source_frame_masses_prior = "binary_masses_BBH_popI_II_powerlaw_gaussian"
             source_frame_masses_prior_params = dict(
@@ -920,7 +919,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             ra=njit(lambda size_: np.random.uniform(0, 2 * np.pi, size=size_)),
             dec=njit(
                 lambda size_: np.arcsin(
-                    (np.random.uniform(0, 1, size=size_) - 0.5) * np.pi
+                    (np.random.uniform(0, 1, size=size_)*2-1)
                 )
             ),
             phase=njit(lambda size_: np.random.uniform(0, 2 * np.pi, size=size_)),

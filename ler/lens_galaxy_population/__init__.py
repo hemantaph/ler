@@ -1,4 +1,3 @@
 from .lens_galaxy_parameter_distribution import *
 from .optical_depth import *
 from .mp import *
-from .optical_depth import phi_cut_SIE
