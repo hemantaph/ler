@@ -538,10 +538,10 @@ def cubic_spline_interpolator(xnew, coefficients, x):
     return result
 
 @njit
-def inverse_transform_sampler(size, inv_cdf, x):
+def inverse_transform_sampler(size, cdf, x):
     u = np.random.uniform(0, 1, size)
-    idx = np.searchsorted(inv_cdf, u)
-    x1, x0, y1, y0 = inv_cdf[idx], inv_cdf[idx-1], x[idx], x[idx-1]
+    idx = np.searchsorted(cdf, u)
+    x1, x0, y1, y0 = cdf[idx], cdf[idx-1], x[idx], x[idx-1]
     samples = y0 + (y1 - y0) * (u - x0) / (x1 - x0)
     return samples
 

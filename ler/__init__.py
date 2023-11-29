@@ -3,6 +3,7 @@ LeR
 """
 
 import sys
+import pycbc
 #from . import rates, gw_source_population, lens_galaxy_population, image_properties, utils
 
 __author__ = 'hemanta_ph <hemantaphurailatpam@gmail.com>'
