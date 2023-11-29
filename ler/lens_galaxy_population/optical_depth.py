@@ -140,7 +140,8 @@ class OpticalDepth():
 
         else:
             # setting up input parameters for interpolation
-            param_dict_given_ = dict(z_min=self.z_min, z_max=self.z_max, vd_min=self.vd_min, vd_max=self.vd_max, cosmology=cosmo, tau_name=tau_name, vd_name=vd_name)
+            param_dict_given_ = dict(z_min=self.z_min, z_max=self.z_max, vd_min=self.vd_min, vd_max=self.vd_max, cosmology=self.cosmo, tau_name=tau_name, vd_name=vd_name)
+            #self.param_dict_given_ = param_dict_given_
             sub_directory_ = tau_name
             if self.z_min==0.0:
                 x_ = np.linspace(self.z_min+0.001, self.z_max, self.c_n_i["optical_depth"]["resolution"])
