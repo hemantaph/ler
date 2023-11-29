@@ -645,6 +645,52 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         param=None,
 
     ):
+        """
+        Function to sample source mass1 and mass2 from bimodal distribution. Refer to Will M. Farr et al. 2020 Eqn. 6
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+        w : `float`
+            Weight of the left peak
+            default: 0.643
+        muL : `float`
+            Mean of the left peak
+            default: 1.352
+        sigmaL : `float`
+            Width of the left peak
+            default: 0.08
+        muR : `float`
+            Mean of the right peak
+            default: 1.88
+        sigmaR : `float`
+            Width of the right peak
+            default: 0.3
+        mmin : `float`
+            Minimum mass of the BNS
+            default: 1.0
+        mmax : `float`
+            Maximum mass of the BNS
+            default: 2.3
+        resolution : `int`
+            Number of points to sample
+            default: 500
+        create_new : `bool`
+            If True, create new interpolator
+            default: False
+        param : `dict`
+            Allows to pass in above parameters as dict.
+            e.g. param = dict(w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3, resolution=500)
+        
+        Returns
+        ----------
+        mass_1_source : `array`
+            Array of mass1 in source frame
+        mass_2_source : `array`
+            Array of mass2 in source frame
+        """
+        å
         if param:
             w, muL, sigmaL, muR, sigmaR, mmin, mmax = (
                 param["w"],
@@ -1016,6 +1062,18 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
     def sample_source_frame_masses(self):
         """
         Function to sample source frame masses (mass1_source, mass2_source) with the initialized prior.
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+
+        Returns
+        ----------
+        mass_1_source : `array`
+            Array of mass1 in source frame
+        mass_2_source : `array`
+            Array of mass2 in source frame
         """
         return self._sample_source_frame_masses
 

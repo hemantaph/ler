@@ -272,6 +272,18 @@ class CBCSourceRedshiftDistribution(object):
     def merger_rate_density(self):
         """
         Function to get the merger rate density function wrt redshift.
+
+        Parameters
+        ----------
+        zs : `float`
+            Source redshifts
+        param : `dict`
+            Allows to pass in above parameters as dict.
+
+        Returns
+        ----------
+        merger_rate_density : `float`
+            merger rate density
         """
         return self._merger_rate_density
     
