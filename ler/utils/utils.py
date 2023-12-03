@@ -520,7 +520,6 @@ def interpolator_sampler_conditioned(conditioned_y, y_array, interpolator_list, 
 @njit
 def cubic_spline_interpolator(xnew, coefficients, x):
     # Handling extrapolation
-    # xnew = np.array([xnew]).reshape(-1)
     i = np.searchsorted(x, xnew) - 1
     idx1 = xnew <= x[0]
     idx2 = xnew > x[-1]

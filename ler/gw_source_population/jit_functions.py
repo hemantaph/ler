@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+"""
+This module contains various functions use for simulating GW source population.
+"""
+
 import numpy as np
 from numba import njit, jit
 from astropy.cosmology import LambdaCDM
@@ -27,126 +32,115 @@ def sample_source_redshift(size, zs_inv_cdf=None):
 def merger_rate_density_bbh_popI_II_oguri2018(
         zs, R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30,
     ):
-        """
-        Function to compute the merger rate density (PopI/PopII). Reference: Oguri et al. (2018). The output is in detector frame and is unnormalized.
+    """
+    Function to compute the merger rate density (PopI/PopII). Reference: Oguri et al. (2018). The output is in detector frame and is unnormalized.
 
-        Parameters
-        ----------
-        zs : `float`
-            Source redshifts
-        R0 : `float`
-            local merger rate density at low redshift
-            default: 23.9*1e-9 Mpc^-3 yr^-1
-        b2 : `float`
-            Fitting paramters
-            default: 1.6
-        b3 : `float`
-            Fitting paramters
-            default: 2.0
-        b4 : `float`
-            Fitting paramters
-            default: 30
-        param : `dict`
-            Allows to pass in above parameters as dict.
-            e.g. param = dict(R0=23.9*1e-9, b2=1.6, b3=2.0, b4=30)
-            default: None
+    Parameters
+    ----------
+    zs : `float` or `numpy.ndarray` (nD array of floats)
+        Source redshifts
+    R0 : `float`
+        local merger rate density at low redshift
+        default: 23.9*1e-9 Mpc^-3 yr^-1
+    b2 : `float`
+        Fitting paramters
+        default: 1.6
+    b3 : `float`
+        Fitting paramters
+        default: 2.0
+    b4 : `float`
+        Fitting paramters
+        default: 30
 
-        Returns
-        ----------
-        rate_density : `float`
-            merger rate density
+    Returns
+    ----------
+    rate_density : `float` or `numpy.ndarray` (nD array of floats)
+        merger rate density
 
-        Examples
-        ----------
-        """
+    Examples
+    ----------
+    >>> from ler.gw_source_population import merger_rate_density_bbh_popI_II_oguri2018
+    >>> rate_density = merger_rate_density_bbh_popI_II_oguri2018(zs=0.1)
+    """
     
-        # rate_density
-        return R0 * (b4 + 1) * np.exp(b2 * zs) / (b4 + np.exp(b3 * zs))
+    # rate_density
+    return R0 * (b4 + 1) * np.exp(b2 * zs) / (b4 + np.exp(b3 * zs))
 
 @njit
 def merger_rate_density_bbh_popIII_ken2022(zs, n0=19.2 * 1e-9, aIII=0.66, bIII=0.3, zIII=11.6,
     ):
-        """
-        Function to compute the unnormalized merger rate density (PopIII). Reference: Ng et al. 2022. The output is in detector frame and is unnormalized.
+    """
+    Function to compute the unnormalized merger rate density (PopIII). Reference: Ng et al. 2022. The output is in detector frame and is unnormalized.
 
-        Parameters
-        ----------
-        zs : `float`
-            Source redshifts
-        n0 : `float`
-            normalization constant
-            default: 19.2*1e-9
-        aIII : `float`
-            Fitting paramters
-            default: 0.66
-        bIII : `float`
-            Fitting paramters
-            default: 0.3
-        zIII : `float`
-            Fitting paramters
-            default: 11.6
-        param : `dict`
-            Allows to pass in above parameters as dict.
-            e.g. param = dict(aIII=0.66, bIII=0.3, zIII=11.6)
-            default: None
+    Parameters
+    ----------
+    zs : `float` or `numpy.ndarray` (nD array of floats)
+        Source redshifts
+    n0 : `float`
+        normalization constant
+        default: 19.2*1e-9
+    aIII : `float`
+        Fitting paramters
+        default: 0.66
+    bIII : `float`
+        Fitting paramters
+        default: 0.3
+    zIII : `float`
+        Fitting paramters
+        default: 11.6
 
-        Returns
-        ----------
-        rate_density : `float`
-            merger rate density
+    Returns
+    ----------
+    rate_density : `float` or `numpy.ndarray` (nD array of floats)
+        merger rate density
 
-        Examples
-        ----------
-        """
+    Examples
+    ----------
+    >>> from ler.gw_source_population import merger_rate_density_bbh_popIII_ken2022
+    >>> rate_density = merger_rate_density_bbh_popIII_ken2022(zs=0.1)
+    """
 
-        # rate density
-        return (
-            n0
-            * np.exp(aIII * (zs - zIII))
-            / (bIII + aIII * np.exp((aIII + bIII) * (zs - zIII)))
-        )
+    # rate density
+    return (
+        n0
+        * np.exp(aIII * (zs - zIII))
+        / (bIII + aIII * np.exp((aIII + bIII) * (zs - zIII)))
+    )
 
 @njit
 def star_formation_rate_madau_dickinson2014(
         zs, af=2.7, bf=5.6, cf=2.9,
     ):
-        """
-        Function to compute star formation rate as given in Eqn. 15 Madau & Dickinson (2014).
+    """
+    Function to compute star formation rate as given in Eqn. 15 Madau & Dickinson (2014). The output is in detector frame and is unnormalized.
 
-        Parameters
-        ----------
-        zs : `float`
-            Source redshifts
-        af : `float`
-            Fitting paramters
-            default: 2.7
-        bf : `float`
-            Fitting paramters
-            default: 5.6
-        cf : `float`
-            Fitting paramters
-            default: 2.9
-        param : `dict`
-            Allows to pass in above parameters as dict.
-            e.g. param = dict(af=2.7, bf=5.6, cf=2.9)
-            default: None
+    Parameters
+    ----------
+    zs : `float` or `numpy.ndarray` (nD array of floats)
+        Source redshifts
+    af : `float`
+        Fitting paramters
+        default: 2.7
+    bf : `float`
+        Fitting paramters
+        default: 5.6
+    cf : `float`
+        Fitting paramters
+        default: 2.9
+        
+    Returns
+    ----------
+    rate_density : `float` or `numpy.ndarray` (nD array of floats)
+        merger rate density
 
-        Returns
-        ----------
-        rate_density : `float`
-            merger rate density
+    Examples
+    ----------
+    >>> from ler.gw_source_population import star_formation_rate_madau_dickinson2014
+    >>> rate_density = star_formation_rate_madau_dickinson2014(zs=0.1)
+    """
 
-        Examples
-        ----------
-        >>> from ler.gw_source_population import SourceGalaxyPopulationModel
-        >>> cbc = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, merger_rate_density="star_formation_rate_madau_dickinson2014")
-        >>> rate_density = cbc.merger_rate_density(zs=0.0001) # local merger rate density at low redshift
-        >>> rate_density  # Mpc^-3 yr^-1
-        0.014965510855362926
-        """
-
-        # rate density
-        return 0.015 * (1 + zs) ** af / (1 + ((1 + zs) / cf) ** bf)
+    # rate density
+    return 0.015 * (1 + zs) ** af / (1 + ((1 + zs) / cf) ** bf)
 
 
 @jit
@@ -186,12 +180,48 @@ def merger_rate_density_bbh_primordial_ken2022(
 
 @njit
 def lognormal_distribution_2D(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000):
+    """
+    Function to sample from a lognormal distribution in 2D space. Reference: Ng et al. 2022. This a helper function for popIII BBH and primordial BBH merger rate density distribution functions.
+
+    Parameters
+    ----------
+    size : `int`
+        Number of samples to draw
+    m_min : `float`
+        Minimum mass
+        default: 1.0
+    m_max : `float`
+        Maximum mass
+        default: 100.0
+    Mc : `float`
+        Mass scale
+        default: 20.0
+    sigma : `float`
+        width of the distribution
+        default: 0.3
+    chunk_size : `int`
+        Number of samples to draw in each chunk
+        default: 10000
+
+    Returns
+    ----------
+    m1_sample : `numpy.ndarray` (1D array of floats)
+        Mass of the primary
+    m2_sample : `numpy.ndarray` (1D array of floats)
+        Mass of the secondary
+
+    Examples
+    ----------
+    >>> from ler.gw_source_population import lognormal_distribution_2D
+    >>> m1_sample, m2_sample = lognormal_distribution_2D(size=1000)
+    """
        
-    # mass function for primordial
+    # mass function. Eqn. 1 of Ng et al. 2022
     psi = lambda m: np.exp(-np.log(m / Mc) ** 2 / (2 * sigma**2)) / (
         np.sqrt(2 * np.pi) * sigma * m
     )
     # probability density function
+    # Eqn. 4 of Ng et al. 2022
     pdf = (
         lambda m1, m2: (m1 + m2) ** (36 / 37)
         * (m1 * m2) ** (32 / 37)
@@ -233,6 +263,30 @@ def lognormal_distribution_2D(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, 
 
 @njit
 def inverse_transform_sampler_m1m2(size, inv_cdf, x):
+    """
+    Function to sample from a distribution using inverse transform sampling. This is a helper function BNS Alsing mass distribution function.
+
+    Parameters
+    ----------
+    size : `int`
+        Number of samples to draw
+    inv_cdf : `numpy.ndarray` (1D array of floats)
+        Inverse cumulative distribution function
+    x : `numpy.ndarray` (1D array of floats)
+        array of mass values for which the inverse cumulative distribution function is computed
+
+    Returns
+    ----------
+    m1 : `numpy.ndarray` (1D array of floats)
+        Mass of the primary
+    m2 : `numpy.ndarray` (1D array of floats)
+        Mass of the secondary
+
+    Examples
+    ----------
+    >>> from ler.gw_source_population import inverse_transform_sampler_m1m2
+    >>> m1, m2 = inverse_transform_sampler_m1m2(size=1000, inv_cdf=inv_cdf, x=x)
+    """
     
     m1 = inverse_transform_sampler(size, inv_cdf, x)
     m2 = inverse_transform_sampler(size, inv_cdf, x)

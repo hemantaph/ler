@@ -26,7 +26,7 @@ from .jit_functions import merger_rate_density_bbh_popI_II_oguri2018, star_forma
 
 class CBCSourceRedshiftDistribution(object):
     """Class to generate a population of source galaxies.
-    This class is inherited by :class:`~ler.ler.CompactBinaryPopulation` class.
+    This class is inherited by :class:`~ler.ler.CompactBinaryPopulation` and :class:`~ler.ler.LensGalaxyParameterDistribution` class.
 
     Parameters
     ----------
@@ -39,24 +39,28 @@ class CBCSourceRedshiftDistribution(object):
     event_type : `str`
         Type of event to generate.
         e.g. 'BBH', 'BNS', 'NSBH'
-    merger_rate_density : `str`
-        Type of merger rate density function to use
-        default: None/'merger_rate_density_popI_II_oguri2018'
-        for others see instance method in :class:`~ler.ler.SourceGalaxyPopulationModel`
-    merger_rate_density_param : `dict`
-        Dictionary of merger rate density function parameters
-        default: dict(R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30)
     cosmology : `astropy.cosmology`
         Cosmology to use
-        default: Planck18
+        default: None/astropy.cosmology.FlatLambdaCDM(H0=70, Om0=0.3)
+    merger_rate_density : `str` or `function`
+        Type of merger rate density function to use
+        default: 'merger_rate_density_popI_II_oguri2018'
+        for others see instance method in :class:`~ler.ler.merger_rate_density_model_list`
+    merger_rate_density_param : `dict`
+        Dictionary of merger rate density function parameters
+        default: None/dict(R0=25 * 1e-9, b2=1.6, b3=2.0, b4=30)
+    directory : `str`
+        Directory to store the interpolator pickle files
+        default: './interpolator_pickle'
+    create_new_interpolator : `dict`
+        Dictionary of interpolator creation parameters
+        default: None/dict(redshift_distribution=dict(create_new=False, resolution=500), z_to_luminosity_distance=dict(create_new=False, resolution=500), differential_comoving_volume=dict(create_new=False, resolution=500))
 
     Examples
     ----------
-    >>> from ler.gw_source_population import SourceGalaxyPopulationModel
-    >>> cbc = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, merger_rate_density="merger_rate_density_bbh_popI_II_oguri2018")
-    >>> zs = cbc.sample_source_redshift(size=1000)
-    >>> zs[:5]
-    array([2.9613628 , 1.18360022, 2.47637065, 2.51401502, 4.22868975])
+    >>> from ler.gw_source_population import CBCSourceRedshiftDistribution
+    >>> cbc = CBCSourceRedshiftDistribution(z_min=0.001, z_max=10, merger_rate_density="merger_rate_density_bbh_popI_II_oguri2018")
+    >>> cbc.merger_rate_density(zs=0.0001) # local merger rate density at low redshift
 
     Instance Attributes
     ----------
@@ -72,23 +76,17 @@ class CBCSourceRedshiftDistribution(object):
     +-------------------------------------+----------------------------------+
     |:attr:`~cosmo`                       | `astropy.cosmology`              |
     +-------------------------------------+----------------------------------+
-    |:attr:`~merger_rate_density`         | `function`                       |
-    +-------------------------------------+----------------------------------+
     |:attr:`~merger_rate_density_param`   | `dict`                           |
     +-------------------------------------+----------------------------------+
     |:attr:`~normalization_pdf_z`         | `float`                          |
     +-------------------------------------+----------------------------------+
-    |:attr:`~z_to_luminosity_distance`    | `scipy.interpolate.interpolate`  |
+    |:attr:`~merger_rate_density_model_list`                                 |
     +-------------------------------------+----------------------------------+
-    |:attr:`~differential_comoving_volume`| `scipy.interpolate.interpolate`  |
-    +-------------------------------------+----------------------------------+
-    |:attr:`~merger_rate_density_model_list`                                |
-    +-------------------------------------+----------------------------------+
-    |                                     | Function to list available       |
+    |                                     | List of available                |
     |                                     | merger rate density functions    |
     |                                     | and its parameters               |
     +-------------------------------------+----------------------------------+
-    |:attr:`~sample_source_redshift`   | Function to sample source        |
+    |:attr:`~sample_source_redshift`      | Function to sample source        |
     |                                     | redshifts (source frame)         |
     +-------------------------------------+----------------------------------+
 
@@ -98,6 +96,12 @@ class CBCSourceRedshiftDistribution(object):
     +-------------------------------------+----------------------------------+
     | Methods                             | Type                             |
     +=====================================+==================================+
+    |:attr:`~merger_rate_density`         | `function`                       |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~z_to_luminosity_distance`    | `function`                       |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~differential_comoving_volume`| `function`                       |
+    +-------------------------------------+----------------------------------+
     |:meth:`~pdf_z`                       | Function to compute the pdf      |
     |                                     | p(z)                             |
     +-------------------------------------+----------------------------------+
@@ -128,7 +132,7 @@ class CBCSourceRedshiftDistribution(object):
     |                                     | Function to compute the merger   |
     |                                     | rate density (PopIII)            |
     +-------------------------------------+----------------------------------+
-    |:meth:`~merger_rate_density_bbh_primordial_ken2022`                         |
+    |:meth:`~merger_rate_density_bbh_primordial_ken2022`                     |
     +-------------------------------------+----------------------------------+
     |                                     | Function to compute the merger   |
     |                                     | rate density (Primordial)        |
@@ -161,7 +165,13 @@ class CBCSourceRedshiftDistribution(object):
 
     merger_rate_density_param = None
     """``dict`` \n
-    Dictionary of merger rate density function parameters
+    Dictionary of merger rate density function input parameters
+    """
+
+    c_n_i = None
+    """``dict`` \n
+    c_n_i stands for 'create new interpolator'. Dictionary of interpolator creation parameters. \n
+    e.g. dict(redshift_distribution=dict(create_new=False, resolution=500), z_to_luminosity_distance=dict(create_new=False, resolution=500), differential_comoving_volume=dict(create_new=False, resolution=500))
     """
 
     normalization_pdf_z = None
@@ -196,18 +206,19 @@ class CBCSourceRedshiftDistribution(object):
         self.event_type = event_type
         # if None is passed, use the default cosmology
         self.cosmo = cosmology if cosmology else cosmo
-    
+        # setting up the interpolator creation parameters
         self.c_n_i = dict(
             redshift_distribution=dict(create_new=False, resolution=500), z_to_luminosity_distance=dict(create_new=False, resolution=500), differential_comoving_volume=dict(create_new=False, resolution=500))
         if create_new_interpolator:
             self.c_n_i.update(create_new_interpolator)
-
+        # creating of interpolators for redshift dependent quantities
         self.create_lookup_table(z_min, z_max, directory)
 
         # Define the merger-rate density function/method instances
+        # self.merger_rate_density takes function or function name as input 
         self.merger_rate_density = merger_rate_density  # function initialization
         # if None is passed, use the default merger_rate_density_param
-        if merger_rate_density_param is None:
+        if merger_rate_density_param is None and merger_rate_density== "merger_rate_density_bbh_popI_II_oguri2018":
             if self.event_type == "BBH":
                 R0 = 25 * 1e-9
             elif self.event_type == "BNS":
@@ -216,14 +227,12 @@ class CBCSourceRedshiftDistribution(object):
                 R0 = 27.0 * 1e-9
             else:
                 raise ValueError("event_type must be one of 'BBH', 'BNS', 'NSBH'")
-            self.merger_rate_density_param = dict(R0=R0, b2=1.6, b3=2.0, b4=30)  # dict of parameters corresponding to the merger_rate_density function 
+            self.merger_rate_density_param = dict(R0=R0, b2=1.6, b3=2.0, b4=30)
 
         # To find the normalization constant of the pdf p(z)
-        # note that there is an attribute self.merger_rate_density_src_frame where njit is applied, and thus it cannot be used with quad
-        # merger_rate_density_src_frame = lambda z_: self.merger_rate_density(zs=z_, param=merger_rate_density_param)/(1+z_) * self.differential_comoving_volume(z_)
-
+        # merger_rate_density_src_frame is njit function and takes array as input but quad integrand function takes only float as input
         merger_rate_density_src_frame = lambda z: self.merger_rate_density_src_frame(np.array([z]))[0]
-
+        # this normalization is important to find the correct pdf p(z)
         self.normalization_pdf_z = quad(
             merger_rate_density_src_frame,
             z_min,
@@ -254,75 +263,8 @@ class CBCSourceRedshiftDistribution(object):
                 create_new=create_new,
             )
 
+        # redshift sampler using inverse transform sampling
         self.sample_source_redshift = njit( lambda size, param=None: inverse_transform_sampler(size, zs_inv_cdf[0], zs_inv_cdf[1]) )
-
-    @property
-    def sample_source_redshift(self):
-        """
-        Function to sample source redshifts (source frame) between z_min and z_max from the source galaxy population
-        """
-        return self._sample_source_redshift
-    
-    @sample_source_redshift.setter
-    def sample_source_redshift(self, prior):
-        if callable(prior):
-            self._sample_source_redshift = prior
-    
-    @property
-    def merger_rate_density(self):
-        """
-        Function to get the merger rate density function wrt redshift.
-
-        Parameters
-        ----------
-        zs : `float`
-            Source redshifts
-        param : `dict`
-            Allows to pass in above parameters as dict.
-
-        Returns
-        ----------
-        merger_rate_density : `float`
-            merger rate density
-        """
-        return self._merger_rate_density
-    
-    @merger_rate_density.setter
-    def merger_rate_density(self, merger_rate_density):
-        error_msg = ValueError(f"merger_rate_density must be one of {self.merger_rate_density_model_list}")
-        # check if it is a string
-        if isinstance(merger_rate_density, str):
-            try:
-                self._merger_rate_density = getattr(self, merger_rate_density)
-            except:
-                raise error_msg
-        # check if it is a function
-        elif callable(merger_rate_density):
-            self._merger_rate_density = merger_rate_density
-        else:
-            raise error_msg
-        
-    @property
-    def merger_rate_density_model_list(self):
-        """
-        Dictionary of available merger rate density functions and its parameters.
-        """
-
-        self._merger_rate_density_model_list = dict(
-            merger_rate_density_bbh_popI_II_oguri2018=dict(
-                R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30
-            ),
-            star_formation_rate_madau_dickinson2014=dict(af=2.7, bf=5.6, cf=2.9),
-            merger_rate_density_bbh_popIII_ken2022=dict(
-                n0=19.2 * 1e-9, aIII=0.66, bIII=0.3, zIII=11.6
-            ),
-            merger_rate_density_bbh_primordial_ken2022=dict(
-                n0=0.044 * 1e-9, t0=13.786885302009708
-            ),
-        )
-
-        return self._merger_rate_density_model_list
-    
 
     def pdf_z(self, zs, param=None):
         """
@@ -330,7 +272,7 @@ class CBCSourceRedshiftDistribution(object):
 
         Parameters
         ----------
-        zs : `float`
+        zs : `float` or `numpy.ndarray` (1D array of floats)
             Source redshifts
         param : `dict`
             Allows to pass in above parameters as dict.
@@ -339,8 +281,15 @@ class CBCSourceRedshiftDistribution(object):
 
         Returns
         ----------
-        pdf : `float`
+        pdf : `numpy.ndarray`
+            1D array of floats
             pdf p(z)
+
+        Examples
+        ----------
+        >>> from ler.gw_source_population import SourceGalaxyPopulationModel
+        >>> cbc = SourceGalaxyPopulationModel()
+        >>> pdf = cbc.pdf_z(zs=0.1)
         """
 
         return self.merger_rate_density_src_frame(zs=zs,param=param)/self.normalization_pdf_z
@@ -351,7 +300,7 @@ class CBCSourceRedshiftDistribution(object):
 
         Parameters
         ----------
-        zs : `float`
+        zs : `float` or `numpy.ndarray` (1D array of floats)
             Source redshifts
         param : `dict`
             Allows to pass in above parameters as dict.
@@ -360,10 +309,18 @@ class CBCSourceRedshiftDistribution(object):
 
         Returns
         ----------
-        rate_density : `float`
-            merger rate density
+        rate_density : `numpy.ndarray`
+            1D array of floats
+            merger rate density (source frame) (Mpc^-3 yr^-1)
+
+        Examples
+        ----------
+        >>> from ler.gw_source_population import SourceGalaxyPopulationModel
+        >>> cbc = SourceGalaxyPopulationModel()
+        >>> rate_density = cbc.merger_rate_density_src_frame(zs=0.1)
         """
 
+        zs = np.array([zs]).reshape(-1)
         # Define the merger-rate density function
         rate_density = (
             self.merger_rate_density(zs, param=param)
@@ -381,7 +338,7 @@ class CBCSourceRedshiftDistribution(object):
 
         Parameters
         ----------
-        zs : `float`
+        zs : `float` or `numpy.ndarray` (nD array of floats)
             Source redshifts
         R0 : `float`
             local merger rate density at low redshift
@@ -402,16 +359,14 @@ class CBCSourceRedshiftDistribution(object):
 
         Returns
         ----------
-        rate_density : `float`
+        rate_density : `float` or `numpy.ndarray` (nD array of floats)
             merger rate density
 
         Examples
         ----------
         >>> from ler.gw_source_population import SourceGalaxyPopulationModel
-        >>> cbc = SourceGalaxyPopulationModel(z_min=0.0001, z_max=10, merger_rate_density="merger_rate_density_bbh_popI_II_oguri2018")
-        >>> rate_density = cbc.merger_rate_density(zs=0.0001) # local merger rate density at low redshift
-        >>> rate_density  # Mpc^-3 yr^-1
-        2.3903670073287287e-08
+        >>> pop = SourceGalaxyPopulationModel(z_min=0.0, z_max=10, event_type = "BBH", merger_rate_density="merger_rate_density_bbh_popI_II_oguri2018")
+        >>> rate_density = pop.merger_rate_density(zs=0.1)
         """
 
         if param:
@@ -425,6 +380,39 @@ class CBCSourceRedshiftDistribution(object):
     def star_formation_rate_madau_dickinson2014(self,
         zs, af=2.7, bf=5.6, cf=2.9, param=None
     ):
+        """
+        Function to compute star formation rate as given in Eqn. 15 Madau & Dickinson (2014). The output is in detector frame and is unnormalized.
+
+        Parameters
+        ----------
+        zs : `float` or `numpy.ndarray` (nD array of floats)
+            Source redshifts
+        af : `float`
+            Fitting paramters
+            default: 2.7
+        bf : `float`
+            Fitting paramters
+            default: 5.6
+        cf : `float`
+            Fitting paramters
+            default: 2.9
+        param : `dict`
+            Allows to pass in above parameters as dict.
+            e.g. param = dict(af=2.7, bf=5.6, cf=2.9)
+            default: None
+            
+        Returns
+        ----------
+        rate_density : `float` or `numpy.ndarray` (nD array of floats)
+            merger rate density
+
+        Examples
+        ----------
+        >>> from ler.gw_source_population import SourceGalaxyPopulationModel
+        >>> pop = SourceGalaxyPopulationModel(z_min=5., z_max=40., event_type = "BBH", merger_rate_density="star_formation_rate_madau_dickinson2014")
+        >>> rate_density = pop.merger_rate_density(zs=10)
+        """
+
         if param:
             af = param["af"]
             bf = param["bf"]
@@ -440,7 +428,7 @@ class CBCSourceRedshiftDistribution(object):
 
         Parameters
         ----------
-        zs : `float`
+        zs : `float` or `numpy.ndarray` (nD array of floats)
             Source redshifts
         n0 : `float`
             normalization constant
@@ -461,7 +449,7 @@ class CBCSourceRedshiftDistribution(object):
 
         Returns
         ----------
-        rate_density : `float`
+        rate_density : `float` or `numpy.ndarray` (nD array of floats)
             merger rate density
 
         Examples
@@ -556,17 +544,32 @@ class CBCSourceRedshiftDistribution(object):
             create_new=create_new,
         )
         self.z_to_luminosity_distance = njit(lambda z_: cubic_spline_interpolator(z_, spline1[0], spline1[1]))
+        self.z_to_luminosity_distance.__doc__ = """
+        Function to convert redshift to luminosity distance.
+        
+        Parameters
+        ----------
+        zs : `numpy.ndarray`
+            1D array of floats
+            Source redshifts
+
+        Returns
+        ----------
+        luminosity_distance : `numpy.ndarray`
+            1D array of floats
+            luminosity distance
+        """
 
         # Create a lookup table for the differential comoving volume
         # get differential co-moving volume interpolator
         resolution = self.c_n_i["differential_comoving_volume"]["resolution"]
         create_new = self.c_n_i["differential_comoving_volume"]["create_new"]
         spline2 = interpolator_from_pickle(
-            param_dict_given= dict(z_min=0.001, z_max=z_max, cosmology=self.cosmo, resolution=resolution), 
+            param_dict_given= dict(z_min=z_min, z_max=z_max, cosmology=self.cosmo, resolution=resolution), 
             directory=directory,
             sub_directory="differential_comoving_volume", 
             name="differential_comoving_volume",
-            x = np.linspace(0.001, z_max, resolution),
+            x = np.linspace(z_min, z_max, resolution),
             pdf_func= lambda z_: self.cosmo.differential_comoving_volume(z_).value * 4 * np.pi,  # volume of shell
             conditioned_y=None, 
             dimension=1,
@@ -574,6 +577,101 @@ class CBCSourceRedshiftDistribution(object):
             create_new=create_new,
         )
         self.differential_comoving_volume = njit(lambda z_: cubic_spline_interpolator(z_, spline2[0], spline2[1]))
+        self.differential_comoving_volume.__doc__ = """
+        Function to calculate the differential comoving volume.
 
-        return None
+        Parameters
+        ----------
+        zs : `numpy.ndarray`
+            1D array of floats
+            Source redshifts
 
+        Returns
+        ----------
+        differential_comoving_volume : `float`
+            1D array of floats
+            differential comoving volume
+        """
+
+    @property
+    def sample_source_redshift(self):
+        """
+        Function to sample source redshifts (source frame) between z_min and z_max from the source galaxy population
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to generate
+
+        Returns
+        ----------
+        zs : 
+            Source redshifts
+        """
+        return self._sample_source_redshift
+    
+    @sample_source_redshift.setter
+    def sample_source_redshift(self, prior):
+        # prior has to be a function
+        if callable(prior):
+            self._sample_source_redshift = prior
+    
+    @property
+    def merger_rate_density(self):
+        """
+        Function to get the merger rate density function wrt redshift. The output is in detector frame and is unnormalized.
+
+        Parameters
+        ----------
+        zs : `float`
+            1D array of floats
+            Source redshifts
+
+        Returns
+        ----------
+        merger_rate_density : `float`
+            merger rate density in detector frame (Mpc^-3 yr^-1)
+
+        Examples
+        ----------
+        >>> from ler.gw_source_population import SourceGalaxyPopulationModel
+        >>> cbc = SourceGalaxyPopulationModel()
+        >>> merger_rate_density = cbc.merger_rate_density(zs=0.1)
+        """
+        return self._merger_rate_density
+    
+    @merger_rate_density.setter
+    def merger_rate_density(self, merger_rate_density):
+        error_msg = ValueError(f"merger_rate_density must be one of {self.merger_rate_density_model_list}")
+        # check if it is a string
+        if isinstance(merger_rate_density, str):
+            try:
+                self._merger_rate_density = getattr(self, merger_rate_density)
+            except:
+                raise error_msg
+        # check if it is a function
+        elif callable(merger_rate_density):
+            self._merger_rate_density = merger_rate_density
+        else:
+            raise error_msg
+        
+    @property
+    def merger_rate_density_model_list(self):
+        """
+        Dictionary of available merger rate density functions and its parameters.
+        """
+
+        self._merger_rate_density_model_list = dict(
+            merger_rate_density_bbh_popI_II_oguri2018=dict(
+                R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30
+            ),
+            star_formation_rate_madau_dickinson2014=dict(af=2.7, bf=5.6, cf=2.9),
+            merger_rate_density_bbh_popIII_ken2022=dict(
+                n0=19.2 * 1e-9, aIII=0.66, bIII=0.3, zIII=11.6
+            ),
+            merger_rate_density_bbh_primordial_ken2022=dict(
+                n0=0.044 * 1e-9, t0=13.786885302009708
+            ),
+        )
+
+        return self._merger_rate_density_model_list
