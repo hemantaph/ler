@@ -1,7 +1,7 @@
 import numpy as np
 from numba import njit
 #from scipy.stats import rayleigh
-from ..utils import inverse_transform_sampler
+from ..utils import inverse_transform_sampler, cubic_spline_interpolator
 
 # def rjs_with_einstein_radius(self, param_dict):
 #     theta_E = param_dict["theta_E"]
@@ -144,23 +144,67 @@ def axis_ratio_rayleigh(sigma, q_min=0.2, q_max=1.0):
 
         return q
 
-# @njit
-# def velocity_dispersion_ewoud(size, zl, vd_inv_cdf, z_min, z_max, vd_min, vd_max,):
+@njit
+def velocity_dispersion_z_dependent(size, zl, zl_list, vd_inv_cdf):
+    """
+    Function to sample velocity dispersion from the interpolator
 
-#     zlist = np.linspace(z_min, z_max, 100)
-#     # find the index of z in zlist
-#     idx = np.searchsorted(zlist, zl)
-    
-#     sigma = np.zeros(size)
-#     old_num = 0
-#     while True:
-#         sigma_ = inverse_transform_sampler(size, vd_inv_cdf[idx][0], vd_inv_cdf[idx][1])
-#         # choose sigma that is within the range
-#         sigma_ = sigma_[(sigma_>vd_min) & (sigma_<vd_max)]
-#         new_num = old_num + len(sigma_)
-#         if new_num >= size:
-#             sigma[old_num:size] = sigma_[:size-old_num]
-#             break
-#         else:
-#             sigma[old_num:new_num] = sigma_
-#             old_num = new_num
+    Parameters
+    ----------
+    size: int
+        Number of samples to draw
+    zl: `numpy.ndarray` (1D array of float of size=size)
+        Redshift of the lens galaxy
+
+    Returns
+    ----------
+    samples: numpy.ndarray
+        Samples of velocity dispersion
+    """
+
+    index = np.searchsorted(zl_list, zl)
+    u = np.random.uniform(0, 1, size)
+    samples = np.zeros(size)
+        
+    for i in range(size):
+        cdf, x = vd_inv_cdf[index[i],0], vd_inv_cdf[index[i],1]
+        idx = np.searchsorted(cdf, u[i])  # vd cdf
+        x1, x0, y1, y0 = cdf[idx], cdf[idx-1], x[idx], x[idx-1]
+        samples[i] = y0 + (y1 - y0) * (u[i] - x0) / (x1 - x0)
+
+    return samples
+
+@njit
+def lens_redshift_SDSS_catalogue(zs, splineDc, splineDcInv, u, cdf):
+    """
+    Function to sample lens redshift from the SDSS catalogue.
+
+    Parameters
+    ----------
+    zs: `numpy.ndarray` (1D array of float of size=size)
+        Redshift of the source galaxy
+    splineDc: `list`
+        List of spline coefficients for the comoving distance and redshifts
+    splineDcInv: `list`
+        List of spline coefficients for the inverse of comoving distance and redshifts
+    u: `numpy.ndarray` (1D array of float of size=size)
+        e.g. u = np.linspace(0, 1, 500)
+    cdf: `numpy.ndarray` (1D array of float of size=size)
+        Cumulative distribution function of the lens redshift distribution between 0 and 1
+
+    Returns
+    ----------
+    zl: `numpy.ndarray` (1D array of float of size=size)
+        Redshift of the lens galaxy corresponding to the zs
+    """
+
+    splineDc_coeff = splineDc[0]
+    splineDc_z_list = splineDc[1]
+    splineDcInv_coeff = splineDcInv[0]
+    splineDcInv_z_list = splineDcInv[1]
+
+    size = len(zs)
+    r = inverse_transform_sampler(size, cdf, u)
+    lens_galaxy_Dc = cubic_spline_interpolator(zs, splineDc_coeff, splineDc_z_list) * r  # corresponding element-wise multiplication between 2 arrays
+
+    return cubic_spline_interpolator(lens_galaxy_Dc, splineDcInv_coeff, splineDcInv_z_list)

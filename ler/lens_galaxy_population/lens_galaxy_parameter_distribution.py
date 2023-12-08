@@ -6,37 +6,58 @@ Either the class takes in initialized CompactBinaryPopulation class as input or 
 """
 
 import warnings
-
 warnings.filterwarnings("ignore")
 import numpy as np
 from numba import njit
-from scipy.stats import gengamma, rayleigh, norm
-from scipy.interpolate import interp1d
 from scipy.integrate import quad
 from lenstronomy.Util.param_util import phi_q2_ellipticity
 
 # for redshift to luminosity distance conversion
 from astropy.cosmology import LambdaCDM
-cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
-from astropy import constants as const
 
 # the following .py file will be called if they are not given in the class initialization
 from ..gw_source_population import CBCSourceParameterDistribution
 from .optical_depth import OpticalDepth
 from ..image_properties import ImageProperties
-from ..utils import add_dictionaries_together, trim_dictionary, inverse_transform_sampler
-from .jit_functions import phi_cut_SIE, axis_ratio_rayleigh
+from ..utils import add_dictionaries_together, trim_dictionary
+from .jit_functions import phi_cut_SIE, velocity_dispersion_z_dependent, lens_redshift_SDSS_catalogue
 
 
 class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImageProperties, OpticalDepth):
     """
-    Class to sample lens galaxy parameters
+    Class to sample lens galaxy parameters, source parameters conditioned on the source being strongly lensed, and image properties \n
 
     Parameters
     ----------
-    CompactBinaryPopulation_ : CompactBinaryPopulation class
-        This is an already initialized class that contains a function (CompactBinaryPopulation.sample_gw_parameters) that actually samples the source parameters. \n
-        :class:`~ler.source_population.CompactBinaryPopulation`
+    npool : `int`
+        number of processors to use
+    z_min : `float`
+        minimum redshift
+    z_max : `float`
+        maximum redshift    
+    cosmology : `astropy.cosmology`
+        Cosmology to use
+        default: None/astropy.cosmology.FlatLambdaCDM(H0=70, Om0=0.3)
+    event_type : `str`
+        Type of event to generate.
+        e.g. 'BBH', 'BNS', 'NSBH'
+        default: 'BBH'
+    lens_type : `str`
+        Type of lens galaxy to generate.
+        default: 'epl_galaxy'
+    lens_functions, lens_priors, lens_priors_params : `dict`, `dict`, `dict`
+        dictionary of lens functions, priors, and priors parameters
+        Check for default/available lens functions, priors and corresponding input parameters by running,
+        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+        >>> lens = LensGalaxyParameterDistribution()
+        >>> print(lens.lens_functions)
+        >>> print(lens.lens_priors)
+        >>> print(lens.lens_priors_params)
+    directory : `str`
+        directory to store the interpolators
+        default: './interpolator_pickle'
+    **kwargs : 
+        keyword arguments to pass to the parent classes
 
     Examples
     --------
@@ -47,17 +68,29 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
     +-------------------------------------+----------------------------------+
     | Atrributes                          | Type                             |
     +=====================================+==================================+
-    |:attr:`~cbc_pop`                     | CompactBinaryPopulation class    |
+    |:attr:`~npool`                       | `int`                            |
     +-------------------------------------+----------------------------------+
-    |:attr:`~z_min`                       | float                            |
+    |:attr:`~z_min`                       | `float`                          |
     +-------------------------------------+----------------------------------+
-    |:attr:`~z_max`                       | float                            |
+    |:attr:`~z_max`                       | `float`                          |
     +-------------------------------------+----------------------------------+
-    |:attr:`~m_min`                       | float                            |
+    |:attr:`~cosmo`                       | `astropy.cosmology`              |
     +-------------------------------------+----------------------------------+
-    |:attr:`~m_max`                       | float                            |
+    |:attr:`~event_type`                  | `str`                            |
     +-------------------------------------+----------------------------------+
-    |:attr:`~normalization_pdf_z`         | float                            |
+    |:attr:`~directory`                   | `str`                            |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~create_new_interpolator`     | `dict`                           |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~lens_param_samplers`         | `dict`                           |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~lens_param_samplers_params`  | `dict`                           |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~lens_sampler_names`          | `dict`                           |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~lens_functions`              | `dict`                           |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~normalization_pdf_z_lensed`  | `float`                          |
     +-------------------------------------+----------------------------------+
 
     Instance Methods
@@ -66,62 +99,80 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
     +-------------------------------------+----------------------------------+
     | Methods                             | Type                             |
     +=====================================+==================================+
-    |:meth:`~create_lookup_table`         | Function to create a lookup      |
-    |                                     | table for the differential       |
-    |                                     | comoving volume and luminosity   |
-    |                                     | distance wrt redshift            |
+    |:meth:`~sample_lens_parameters`      | Function to call the specific    |
+    |                                     | galaxy lens parameters sampler   |
+    |                                     | routine.                         |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_lens_parameters`      | Function to sample lens galaxy   |
-    |                                     | parameters                       |
+    |:meth:`~sample_all_routine`          | Function to sample galaxy lens   |
+    |                                     | parameters along with the source |
+    |                                     | parameters.                      |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_lens_parameters_routine`                                 |
-    +-------------------------------------+----------------------------------+
-    |                                     | Function to sample lens galaxy   |
-    |                                     | parameters                       |
-    +-------------------------------------+----------------------------------+
-    |:meth:`~sample_sl_source_parameters`                       |
+    |:meth:`~strongly_lensed_source_redshifts`                               |
     +-------------------------------------+----------------------------------+
     |                                     | Function to sample source        |
-    |                                     | parameters conditioned on the    |
+    |                                     | redshifts conditioned on the     |
     |                                     | source being strongly lensed     |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_lens_redshifts`       | Function to sample lens redshifts|
+    |:meth:`~source_parameters`           | Function to sample gw source     |
+    |                                     | parameters                       |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_velocity_dispersion_axis_ratio`                          |
+    |:meth:`~lens_redshift_SDSS_catalogue`| Function to sample lens          |
+    |                                     | redshifts, conditioned on the    |
+    |                                     | lens being strongly lensed       |
     +-------------------------------------+----------------------------------+
-    |                                     | Function to sample velocity      |
-    |                                     | dispersion and axis ratio of the |
-    |                                     | lens galaxy                      |
+    |:meth:`~axis_rotation_angle_uniform` | Function to sample the axis      |
+    |                                     | rotation angle of the elliptical |
+    |                                     | lens galaxy from a uniform       |
+    |                                     | distribution                     |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~shear_norm`                  | Function to sample the           |
+    |                                     | elliptical lens galaxy shear     |
+    |                                     | from a normal distribution       |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~mass_density_spectral_index_normal`                             |
+    +-------------------------------------+----------------------------------+
+    |                                     | Function to sample the lens      |
+    |                                     | galaxy spectral index of the     |
+    |                                     | mass density profile from a      |
+    |                                     | normal distribution              |
     +-------------------------------------+----------------------------------+
     |:meth:`~compute_einstein_radii`      | Function to compute the Einstein |
     |                                     | radii of the lens galaxies       |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_axis_ratio_angle_phi` | Function to sample the axis      |
-    |                                     | rotation angle of the elliptical |
-    |                                     | lens galaxy                      |
-    +-------------------------------------+----------------------------------+
-    |:meth:`~sample_galaxy_shear`         | Function to sample the lens      |
-    |                                     | galaxy shear                     |
-    +-------------------------------------+----------------------------------+
-    |:meth:`~sample_gamma`                | Function to sample the lens      |
-    |                                     | galaxy spectral index of the     |
-    |                                     | density profile                  |
-    +-------------------------------------+----------------------------------+
-    |:meth:`~rejection_sample_lensing_probability`                           |
-    +-------------------------------------+----------------------------------+
-    |                                     | Function to conduct rejection    |
+    |:meth:`~rjs_with_einstein_radius`    | Function to conduct rejection    |
     |                                     | sampling wrt einstein radius     |
     +-------------------------------------+----------------------------------+
-    |:meth:`~strong_lensing_optical_depth`| Function to compute the strong   |
-    |                                     | lensing optical depth            |
+    |:meth:`~rjs_with_cross_section`      | Function to conduct rejection    |
+    |                                     | sampling wrt cross_section       |
     +-------------------------------------+----------------------------------+
-    |:meth:`~get_image_properties`        | Function to get the image        |
-    |                                     | properties e.g. image positions, |
-    |                                     | magnifications, time delays, etc.|
+    |:attr:`~rejection_sample_sl`         | Function to conduct rejection    |
+    |                                     | sampling with the given rejection|
+    |                                     | sampling function                |
     +-------------------------------------+----------------------------------+
-    |:meth:`~get_lensed_snrs`             | Function to get the lensed SNRs  |
+    |:attr:`~sample_source_redshift_sl`   | Function to sample source        |
+    |                                     | redshifts conditioned on the     |
+    |                                     | source being strongly lensed     |
     +-------------------------------------+----------------------------------+
-
+    |:attr:`~sample_lens_redshift`        | Function to sample lens          |
+    |                                     | redshifts, conditioned on the    |
+    |                                     | lens being strongly lensed       |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~sample_axis_rotation_angle`  | Function to sample the axis      |
+    |                                     | rotation angle of the elliptical |
+    |                                     | lens galaxy from a uniform       |
+    |                                     | distribution                     |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~sample_shear`                | Function to sample the           |
+    |                                     | elliptical lens galaxy shear     |
+    |                                     | from a normal distribution       |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~sample_mass_density_spectral_index`                             |
+    +-------------------------------------+----------------------------------+
+    |                                     | Function to sample the lens      |
+    |                                     | galaxy spectral index of the     |
+    |                                     | mass density profile from a      |
+    |                                     | normal distribution              |
+    +-------------------------------------+----------------------------------+
     """
 
     # Attributes
@@ -161,127 +212,38 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         z_max=10.0,
         cosmology=None,
         event_type="BBH",
-        cbc_class=False,
         lens_type="epl_galaxy",
         lens_functions= None,
-        sampler_priors=None,
-        sampler_priors_params=None,
+        lens_priors=None,
+        lens_priors_params=None,
         directory="./interpolator_pickle",
+        create_new_interpolator=False,
         **kwargs
     ):
         
         self.npool = npool
         self.z_min = z_min
         self.z_max = z_max
-        self.cosmo = cosmology if cosmology else cosmo
+        self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+        self.event_type = event_type
+        self.directory = directory
+        self.create_new_interpolator = create_new_interpolator
 
         # dealing with prior functions and categorization
-        self.lens_param_samplers, self.lens_param_samplers_params, self.lens_sampler_names, self.lens_functions = self.lens_priors_categorization(lens_type, sampler_priors,
-        sampler_priors_params, lens_functions)
+        self.lens_param_samplers, self.lens_param_samplers_params, self.lens_sampler_names, self.lens_functions = self.lens_priors_categorization(lens_type, lens_priors,
+        lens_priors_params, lens_functions)
         
         # function initialization
         self.sample_lens_parameters_routine = getattr(self, self.lens_functions['param_sampler_type'])
-
         self.rejection_sample_sl = getattr(self, self.lens_functions['strong_lensing_condition'])
 
-        # initialization of CompactBinaryPopulation class
-        # it also initializes the CBCSourceRedshiftDistribution class
-        # list of relevant initialized instances,
-        # 1. self.sample_source_redshift
-        # 2. self.sample_gw_parameters
-        if cbc_class == False:
-            input_params = dict(
-                z_min=self.z_min,
-                z_max=self.z_max,
-                event_type=event_type,
-                event_priors=None,
-                event_priors_params=None,
-                spin_zero=True,
-                cosmology=self.cosmo,
-                spin_precession=False,
-                directory=directory,
-            )
-            input_params.update(kwargs)
-            # initialization of clasess
-            CBCSourceParameterDistribution.__init__(
-                self,
-                z_min=self.z_min,
-                z_max=self.z_max,
-                event_type=input_params["event_type"],
-                event_priors=input_params["event_priors"],
-                event_priors_params=input_params["event_priors_params"],
-                spin_zero=input_params["spin_zero"],
-                cosmology=self.cosmo,
-                spin_precession=input_params["spin_precession"],
-                directory=input_params["directory"],
-            )
-        else:
-            print("Using the initialized CBCSourceParameterDistribution class")
-            # if the classes are already initialized, then just use them
-            #self.__bases__ = (cbc_class,)
-            #super().__init__(cbc_class.sample_zs)
-
-        # initialize the optical depth class
-        # follwing attributes are initialized
-        # 1. self.strong_lensing_optical_depth
-        # 2. self.sample_velocity_dispersion
-        # 3. self.sample_axis_ratio
-        OpticalDepth.__init__(
-            self,
-            npool=self.npool,
-            z_min=self.z_min,
-            z_max=self.z_max,
-            functions=dict(
-                optical_depth=self.lens_functions["optical_depth"],
-            ),
-            sampler_priors=dict(
-                velocity_dispersion=self.lens_param_samplers["velocity_dispersion"],
-                axis_ratio=self.lens_param_samplers["axis_ratio"],
-            ),
-            sampler_priors_params=dict(
-                velocity_dispersion=self.lens_param_samplers_params[
-                    "velocity_dispersion"],
-                axis_ratio=self.lens_param_samplers_params["axis_ratio"],
-            ),
-            cosmology=None,
-            directory=directory,
-            create_new_interpolator=dict(
-            velocity_dispersion=dict(create_new=False, resolution=100), 
-            optical_depth=dict(create_new=False, resolution=100), 
-            z_to_Dc=dict(create_new=False, resolution=100), 
-            Dc_to_z=dict(create_new=False, resolution=100),
-            angular_diameter_distance=dict(create_new=False, resolution=100),
-            differential_comoving_volume=dict(create_new=False, resolution=100),
-            ),
-        )
-
-        # initialize the image properties class
-        input_params_image = dict(
-            npool=npool,
-            n_min_images=2,
-            n_max_images=4,
-            lens_model_list=["EPL_NUMBA", "SHEAR"],
-        )
-        input_params_image.update(kwargs)
-        ImageProperties.__init__(
-            self,
-            npool=input_params_image["npool"],
-            z_min=self.z_min,
-            z_max=self.z_max,
-            n_min_images=input_params_image["n_min_images"],
-            n_max_images=input_params_image["n_max_images"],
-            lens_model_list=input_params_image["lens_model_list"],
-            cosmology=self.cosmo,
-
-        )
+        # initializing parent classes
+        self.class_initialization_lens(params=kwargs);
 
         # initializing samplers
         # self.sample_velocity_dispersion and self.sample_axis_ratio are initialized in OpticalDepth class
         self.sample_source_redshift_sl = self.lens_param_samplers["source_redshift_sl"]
         self.sample_lens_redshift = self.lens_param_samplers["lens_redshift"]
-        # self.sample_velocity_dispersion = self.lens_param_samplers[
-        #     "velocity_dispersion"
-        # ]
         # self.sample_axis_ratio = self.lens_param_samplers["axis_ratio"]
         self.sample_axis_rotation_angle = self.lens_param_samplers[
             "axis_rotation_angle"
@@ -293,7 +255,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         self.sample_source_parameters = self.lens_param_samplers["source_parameters"]
 
         # extra care to the velocity dispersion sampler
-        if self.sampler_priors["velocity_dispersion"]  == "velocity_dispersion_ewoud":
+        if self.lens_param_samplers["velocity_dispersion"]  == "velocity_dispersion_ewoud":
             vd_inv_cdf = self.vd_inv_cdf
             zl_list = self.zl_list
             self.sample_velocity_dispersion = lambda size, zl: velocity_dispersion_z_dependent(size=size, zl=zl, zl_list=zl_list, vd_inv_cdf=vd_inv_cdf)
@@ -310,9 +272,88 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             self.z_max
         )[0]
 
+    def class_initialization_lens(self, params=None):
+        """
+        Function to initialize the parent classes
+
+        Parameters
+        ----------
+        params : `dict`
+            dictionary of parameters to initialize the parent classes
+        """
+
+        # initialization of CompactBinaryPopulation class
+        # it also initializes the CBCSourceRedshiftDistribution class
+        # list of relevant initialized instances,
+        # 1. self.sample_source_redshift
+        # 2. self.sample_gw_parameters
+        input_params = dict(
+            source_priors=None,
+            source_priors_params=None,
+            spin_zero=True,
+            spin_precession=False,
+        )
+        input_params.update(params)
+        # initialization of clasess
+        CBCSourceParameterDistribution.__init__(
+            self,
+            z_min=self.z_min,
+            z_max=self.z_max,
+            event_type=self.event_type,
+            source_priors=input_params["source_priors"],
+            source_priors_params=input_params["source_priors_params"],
+            spin_zero=input_params["spin_zero"],
+            cosmology=self.cosmo,
+            spin_precession=input_params["spin_precession"],
+            directory=self.directory,
+            create_new_interpolator=self.create_new_interpolator,
+        )
+
+        # initialize the optical depth class
+        # follwing attributes are initialized
+        # 1. self.strong_lensing_optical_depth
+        # 2. self.sample_velocity_dispersion
+        # 3. self.sample_axis_ratio
+        OpticalDepth.__init__(
+            self,
+            npool=self.npool,
+            z_min=self.z_min,
+            z_max=self.z_max,
+            optical_depth_function=self.lens_functions["optical_depth"],
+            sampler_priors=dict(
+                velocity_dispersion=self.lens_param_samplers["velocity_dispersion"],
+                axis_ratio=self.lens_param_samplers["axis_ratio"],
+            ),
+            sampler_priors_params=dict(
+                velocity_dispersion=self.lens_param_samplers_params[
+                    "velocity_dispersion"],
+                axis_ratio=self.lens_param_samplers_params["axis_ratio"],
+            ),
+            cosmology=None,
+            directory=self.directory,
+            create_new_interpolator=self.create_new_interpolator,
+        )
+
+        # initialize the image properties class
+        input_params_image = dict(
+            n_min_images=2,
+            n_max_images=4,
+            lens_model_list=["EPL_NUMBA", "SHEAR"],
+        )
+        input_params_image.update(params)
+        ImageProperties.__init__(
+            self,
+            npool=self.npool,
+            z_min=self.z_min,
+            z_max=self.z_max,
+            n_min_images=input_params_image["n_min_images"],
+            n_max_images=input_params_image["n_max_images"],
+            lens_model_list=input_params_image["lens_model_list"],
+            cosmology=self.cosmo,
+        )
 
     def lens_priors_categorization(
-        self, lens_type, sampler_priors=None, sampler_priors_params=None, lens_functions=None,
+        self, lens_type, lens_priors=None, lens_priors_params=None, lens_functions=None,
     ):
         """
         Function to categorize the lens priors/samplers
@@ -322,14 +363,27 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             lens_type : `str`
                 lens type
                 e.g. 'epl_galaxy' for elliptical power-law galaxy
-            sampler_priors : `dict`
+            lens_priors : `dict`
                 dictionary of priors
-            sampler_priors_params : `dict`
+            lens_priors_params : `dict`
                 dictionary of priors parameters
+            lens_functions : `dict`
+                dictionary of lens functions
+
+        Returns
+        -------
+        lens_priors_ : `dict`
+            dictionary of priors
+        lens_priors_params_ : `dict`
+            dictionary of priors parameters
+        lens_sampler_names_ : `dict`
+            dictionary of sampler names
+        lens_functions_ : `dict`
+            dictionary of lens functions
         """
 
         if lens_type == "epl_galaxy":
-            sampler_priors_ = dict(
+            lens_priors_ = dict(
                 source_redshift_sl="strongly_lensed_source_redshifts",
                 lens_redshift="lens_redshift_SDSS_catalogue",
                 velocity_dispersion="velocity_dispersion_gengamma",
@@ -339,7 +393,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
                 mass_density_spectral_index="mass_density_spectral_index_normal",
                 source_parameters="sample_gw_parameters",
             )
-            sampler_priors_params_ = dict(
+            lens_priors_params_ = dict(
                 source_redshift_sl=None,
                 lens_redshift=None,
                 velocity_dispersion=dict(a=2.32 / 2.67, c=2.67, vd_min=0., vd_max=600.),
@@ -352,16 +406,16 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             lens_functions_ = dict(
                 strong_lensing_condition="rjs_with_einstein_radius",
                 optical_depth="optical_depth_SIS_haris",
-                param_sampler_type="sample_all_routine1",
+                param_sampler_type="sample_all_routine",
             )
         else:
             raise ValueError("lens_type not recognized")
 
         # update the priors if input is given
-        if sampler_priors:
-            sampler_priors_.update(sampler_priors)
-        if sampler_priors_params:
-            sampler_priors_params_.update(sampler_priors_params)
+        if lens_priors:
+            lens_priors_.update(lens_priors)
+        if lens_priors_params:
+            lens_priors_params_.update(lens_priors_params)
         if lens_functions:
             lens_functions_.update(lens_functions)
 
@@ -377,7 +431,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             sample_source_parameters="source parameters other than redshift",
         )
 
-        return(sampler_priors_, sampler_priors_params_, lens_sampler_names_, lens_functions_)
+        return(lens_priors_, lens_priors_params_, lens_sampler_names_, lens_functions_)
 
     def sample_lens_parameters(
         self,
@@ -385,14 +439,14 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         lens_parameters_input=None,
     ):
         """
-        Function to call the specific galaxy lens parameters sampler.
+        Function to call the specific galaxy lens parameters sampler routine.
         """
 
         return self.sample_lens_parameters_routine(
             size=size, lens_parameters_input=lens_parameters_input
         )
 
-    def sample_all_routine1(self, size=1000, lens_parameters_input=None):
+    def sample_all_routine(self, size=1000, lens_parameters_input=None):
         """
         Function to sample galaxy lens parameters along with the source parameters.
 
@@ -427,6 +481,12 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             mass_2_source: mass 2 (smaller) of the source\n
             ra: right ascension of the source\n
             dec: declination of the source\n
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+        >>> lens = LensGalaxyParameterDistribution()
+        >>> lens.sample_all_routine(size=1000)
         """
 
         if lens_parameters_input is None:
@@ -475,7 +535,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         if len(lens_parameters["zl"]) < size:
             # Run iteratively until we have the right number of lensing parmaeters
             # print("current sampled size", len(lens_parameters["zl"]))
-            return self.sample_all_routine1(
+            return self.sample_all_routine(
                 size=size, lens_parameters_input=lens_parameters
             )
         else:
@@ -516,38 +576,6 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             )  # remove detector frame masses
 
             return lens_parameters
-        
-    def velocity_dispersion_z_dependent(self, size, zl, zl_list, vd_inv_cdf, ):
-        """
-        Function to sample velocity dispersion from the interpolator
-
-        Parameters
-        ----------
-        size: int
-            Number of samples to draw
-        zl: numpy.ndarray
-            Redshift of the lens galaxy
-        """
-
-        vd_inv_cdf = self.vd_inv_cdf.copy()
-
-        @njit
-        def sampler(size, zl, inv_cdf, zlist):
-
-            index = np.searchsorted(zlist, zl)
-            u = np.random.uniform(0, 1, size)
-            samples = np.zeros(size)
-            
-
-            for i in range(size):
-                cdf, x = inv_cdf[index[i],0], inv_cdf[index[i],1]
-                idx = np.searchsorted(cdf, u[i])  # vd cdf
-                x1, x0, y1, y0 = cdf[idx], cdf[idx-1], x[idx], x[idx-1]
-                samples[i] = y0 + (y1 - y0) * (u[i] - x0) / (x1 - x0)
-
-            return samples
-        
-        return sampler(size, zl, vd_inv_cdf, zl_list)
 
     def strongly_lensed_source_redshifts(self, size=1000):
         """
@@ -563,6 +591,11 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         redshifts : `float`
             source redshifts conditioned on the source being strongly lensed
 
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+        >>> lens = LensGalaxyParameterDistribution()
+        >>> lens.strongly_lensed_source_redshifts(size=1000)
         """
 
         z_max = self.z_max
@@ -609,12 +642,18 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         source_parameters : `dict`
             Dictionary of source parameters
             source_parameters.keys() = ['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'inclination', 'polarization_angle', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl']
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+        >>> lens = LensGalaxyParameterDistribution()
+        >>> lens.source_parameters(size=1000)
         """
 
         # sample gravitional waves source parameter
         return self.sample_gw_parameters(size=size, param=param)
-
-    def lens_redshift_SDSS_catalogue(self, zs, get_attribute=False):
+    
+    def lens_redshift_SDSS_catalogue(self, zs, get_attribute=False, param=None):
         """
         Function to sample lens redshifts, conditioned on the lens being strongly lensed
 
@@ -622,52 +661,77 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         ----------
         zs : `float`
             source redshifts
+        get_attribute : `bool`
+            If True, returns a function that can be called with zs as input
 
         Returns
         -------
         zl : `float`
             lens redshifts
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+        >>> lens = LensGalaxyParameterDistribution()
+        >>> lens.lens_redshift_SDSS_catalogue(zs=1.0)
         """
 
-        size = len(zs)
-        # lens redshift distribution
+        splineDc = self.splineDc  # spline coefficients for the comoving distance and redshifts
+        splineDcInv = self.splineDcInv  # spline coefficients for the redshifts and comoving distance
         u = np.linspace(0, 1, 500)
         cdf = (10 * u**3 - 15 * u**4 + 6 * u**5)  # See the integral of Eq. A7 of https://arxiv.org/pdf/1807.07062.pdf (cdf)
-        # comoving distance to the lens galaxy
-        # on the condition that lens lie between the source and the observer
-        r = inverse_transform_sampler(size, cdf, u)
-        lens_galaxy_Dc = (
-            self.z_to_Dc(zs) * r
-        )  # corresponding element-wise multiplication between 2 arrays
+        zs = np.array([zs]).reshape(-1)
 
         # lens redshifts
-        return self.Dc_to_z(lens_galaxy_Dc)
+        #return self.Dc_to_z(lens_galaxy_Dc)
+        if get_attribute:
+            return njit(lambda zs: lens_redshift_SDSS_catalogue(zs, splineDc, splineDcInv, u, cdf))
+        else:
+            return lens_redshift_SDSS_catalogue(zs, splineDc, splineDcInv, u, cdf)
 
     def axis_rotation_angle_uniform(
-        self, size=1000, phi_min=0.0, phi_max=2 * np.pi, param=None
+        self, size=1000, phi_min=0.0, phi_max=2 * np.pi, get_attribute=False,param=None
     ):
         """
-        Function to sample the axis rotation angle of the elliptical lens galaxy from a uniform distribution
+        Function to sample the axis rotation angle of the elliptical lens galaxy from a uniform distribution.
 
         Parameters
         ----------
         size : `int`
             number of lens parameters to sample
+        phi_min : `float`
+            minimum axis rotation angle of the elliptical lens galaxy
+        phi_max : `float`
+            maximum axis rotation angle of the elliptical lens galaxy
+        get_attribute : `bool`
+            If True, returns a function that can be called with size as input
+        param : `dict`
+            Allows to pass in above parameters as dict.
+            e.g. param = dict(phi_min=0.0, phi_max=2 * np.pi)
 
         Returns
         -------
         phi : `float`
             axis rotation angle of the elliptical lens galaxy
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+        >>> lens = LensGalaxyParameterDistribution()
+        >>> lens.axis_rotation_angle_uniform(size=1000)
         """
 
         if param:
             phi_min = param["phi_min"]
             phi_max = param["phi_max"]
 
-        # Draw the angles from a uniform distribution
-        return np.random.uniform(phi_min, phi_max, size=size)
+        if get_attribute:
+            return njit(lambda size: np.random.uniform(phi_min, phi_max, size=size))
+        else:
+            # Draw the angles from a uniform distribution
+            return np.random.uniform(phi_min, phi_max, size=size)
 
-    def shear_norm(self, size, scale=0.05, param=None):
+    def shear_norm(self, size, scale=0.05, get_attribute=False, param=None):
         """
         Function to sample the elliptical lens galaxy shear from a normal distribution
 
@@ -675,6 +739,13 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         ----------
         size : `int`
             number of lens parameters to sample
+        scale : `float`
+            standard deviation of the normal distribution
+        get_attribute : `bool`
+            If True, returns a function that can be called with size as input
+        param : `dict`
+            Allows to pass in above parameters as dict.
+            e.g. param = dict(scale=0.05)
 
         Returns
         -------
@@ -683,16 +754,24 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         gamma_2 : `float`
             shear component in the y-direction
 
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+        >>> lens = LensGalaxyParameterDistribution()
+        >>> gamma_1, gamma_2 = lens.shear_norm(size=1000)
         """
 
         if param:
             scale = param["scale"]
 
-        # Draw an external shear from a normal distribution
-        return norm.rvs(size=size, scale=scale), norm.rvs(size=size, scale=scale)
+        if get_attribute:
+            return njit(lambda size: np.random.normal(loc=0, scale=scale,size=(2,size)))
+        else:
+            # Draw an external shear from a normal distribution
+            return np.random.normal(loc=0., scale=scale,size=(2,size))
 
     def mass_density_spectral_index_normal(
-        self, size=1000, mean=2.0, std=0.2, param=None
+        self, size=1000, mean=2.0, std=0.2, get_attribute=False, param=None
     ):
         """
         Function to sample the lens galaxy spectral index of the mass density profile from a normal distribution
@@ -701,20 +780,35 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         ----------
         size : `int`
             number of lens parameters to sample
+        mean : `float`
+            mean of the normal distribution
+        std : `float`
+            standard deviation of the normal distribution
+        param : `dict`
+            Allows to pass in above parameters as dict.
+            e.g. param = dict(mean=2.0, std=0.2)
 
         Returns
         -------
         gamma : `float`
             spectral index of the density profile
 
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+        >>> lens = LensGalaxyParameterDistribution()
+        >>> lens.mass_density_spectral_index_normal(size=1000)
         """
 
         if param:
             mean = param["mean"]
             std = param["std"]
 
-        # Draw the spectral index from a normal distribution
-        return np.random.normal(loc=mean, scale=std, size=size)
+        if get_attribute:
+            return njit(lambda size: np.random.normal(loc=mean, scale=std, size=size))
+        else:
+            # Draw the spectral index from a normal distribution
+            return np.random.normal(loc=mean, scale=std, size=size)
 
     def compute_einstein_radii(self, sigma, zl, zs):
         """
@@ -733,6 +827,15 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         -------
         theta_E : `float`
             Einstein radii of the lens galaxies in radian
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+        >>> lens = LensGalaxyParameterDistribution()
+        >>> sigma = 200.0
+        >>> zl = 0.5
+        >>> zs = 1.0
+        >>> lens.compute_einstein_radii(sigma, zl, zs)
         """
 
         # Compute the angular diameter distances
@@ -740,7 +843,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         Dls = self.angular_diameter_distance_z1z2(zl, zs)
         # Compute the Einstein radii
         theta_E = (
-            4.0 * np.pi * (sigma / const.c.to("km/s").value) ** 2 * Dls / (Ds)
+            4.0 * np.pi * (sigma / 299792.458) ** 2 * Dls / (Ds)
         )  # Note: km/s for sigma; Dls, Ds are in Mpc
 
         return theta_E
@@ -752,7 +855,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         Parameters
         ----------
         param_dict : `dict`
-            dictionary of lens parameters
+            dictionary of lens parameters and source parameters
 
         Returns
         -------
@@ -776,7 +879,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         Parameters
         ----------
         param_dict : `dict`
-            dictionary of lens parameters
+            dictionary of lens parameters and source parameters
 
         Returns
         -------
@@ -796,12 +899,28 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         # return the dictionary with the mask applied
         return {key: val[mask] for key, val in param_dict.items()}
 
-
     @property
     def sample_source_redshift_sl(self):
         """
         Function to sample source redshifts conditioned on the source being strongly lensed
+
+        Parameters
+        ----------
+        size : `int`
+            number samples to draw
+
+        Returns
+        -------
+        zs : `numpy.ndarray` (1D array of floats)
+            source redshifts conditioned on the source being strongly lensed
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+        >>> lens = LensGalaxyParameterDistribution()
+        >>> lens.sample_source_redshift_sl(size=1000)
         """
+
         return self._sample_source_redshift_sl
 
     @sample_source_redshift_sl.setter
@@ -815,55 +934,63 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
     def sample_lens_redshift(self):
         """
         Function to sample lens redshifts, conditioned on the lens being strongly lensed
+
+        Parameters
+        ----------
+        zs : `numpy.ndarray` (1D array of floats)
+            source redshifts
+
+        Returns
+        -------
+        zl : `numpy.ndarray` (1D array of floats)
+            lens redshifts corresponding to the source redshifts
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+        >>> lens = LensGalaxyParameterDistribution()
+        >>> zs = lens.sample_source_redshift_sl(size=1000)
+        >>> lens.sample_lens_redshift(zs=zs)
         """
+
         return self._sample_lens_redshift
 
     @sample_lens_redshift.setter
     def sample_lens_redshift(self, prior):
         try:
-            self._sample_lens_redshift = getattr(self, prior)
+            args = self.lens_param_samplers_params["lens_redshift"]
+            self._sample_lens_redshift = getattr(self, prior)(zs=None, get_attribute=True, param=args)
         except:
             self._sample_lens_redshift = prior
-
-    @property
-    def sample_velocity_dispersion(self):
-        """
-        Function to sample velocity dispersion from gengamma distribution
-        """
-        return self._sample_velocity_dispersion
-
-    @sample_velocity_dispersion.setter
-    def sample_velocity_dispersion(self, prior):
-        try:
-            self._sample_velocity_dispersion = getattr(self, prior)
-        except:
-            self._sample_velocity_dispersion = prior
-
-    @property
-    def sample_axis_ratio(self):
-        """
-        Function to sample axis ratio from rayleigh distribution with given velocity dispersion.
-        """
-        return self._sample_axis_ratio
-
-    @sample_axis_ratio.setter
-    def sample_axis_ratio(self, prior):
-        try:
-            self._sample_axis_ratio = getattr(self, prior)
-        except:
-            self._sample_axis_ratio = prior
 
     @property
     def sample_axis_rotation_angle(self):
         """
         Function to sample the axis rotation angle of the elliptical lens galaxy from a uniform distribution
+
+        Parameters
+        ----------
+        size : `int`
+            number of lens parameters to sample
+
+        Returns
+        -------
+        phi : `float`
+            axis rotation angle of the elliptical lens galaxy
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+        >>> lens = LensGalaxyParameterDistribution()
+        >>> lens.axis_rotation_angle_uniform(size=1000)
         """
         return self._sample_axis_rotation_angle
 
     @sample_axis_rotation_angle.setter
     def sample_axis_rotation_angle(self, prior):
         try:
-            self._sample_axis_rotation_angle = getattr(self, prior)
+            args = self.lens_param_samplers_params["axis_rotation_angle"]
+            self._sample_axis_rotation_angle = getattr(self, prior)(zs=None, get_attribute=True, param=args)
         except:
             self._sample_axis_rotation_angle = prior
 
@@ -871,13 +998,33 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
     def sample_shear(self):
         """
         Function to sample the elliptical lens galaxy shear from a normal distribution
+
+        Parameters
+        ----------
+        size : `int`
+            number of lens parameters to sample
+
+        Returns
+        -------
+        gamma_1 : `float`
+            shear component in the x-direction
+        gamma_2 : `float`
+            shear component in the y-direction
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+        >>> lens = LensGalaxyParameterDistribution()
+        >>> gamma_1, gamma_2 = lens.shear_norm(size=1000)
         """
+
         return self._sample_shear
 
     @sample_shear.setter
     def sample_shear(self, prior):
         try:
-            self._sample_shear = getattr(self, prior)
+            args = self.lens_param_samplers_params["shear"]
+            self._sample_shear = getattr(self, prior)(size=None, get_attribute=True, param=args)
         except:
             self._sample_shear = prior
 
@@ -885,13 +1032,31 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
     def sample_mass_density_spectral_index(self):
         """
         Function to sample the lens galaxy spectral index of the mass density profile from a normal distribution
+
+        Parameters
+        ----------
+        size : `int`
+            number of lens parameters to sample
+
+        Returns
+        -------
+        gamma : `float`
+            spectral index of the density profile
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+        >>> lens = LensGalaxyParameterDistribution()
+        >>> lens.mass_density_spectral_index_normal(size=1000)
         """
+
         return self._sample_mass_density_spectral_index
 
     @sample_mass_density_spectral_index.setter
     def sample_mass_density_spectral_index(self, prior):
         try:
-            self._sample_mass_density_spectral_index = getattr(self, prior)
+            args = self.lens_param_samplers_params["mass_density_spectral_index"]
+            self._sample_mass_density_spectral_index = getattr(self, prior)(size=None, get_attribute=True, param=args)
         except:
             self._sample_mass_density_spectral_index = prior
 
@@ -899,6 +1064,16 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
     def sample_source_parameters(self):
         """
         Function to sample source parameters conditioned on the source being strongly lensed
+
+        Parameters
+        ----------
+        size : `int`
+            number of lens parameters to sample
+
+        Returns
+        -------
+        source_parameters : `dict`
+            dictionary of source parameters conditioned on the source being strongly lensed
         """
         return self._sample_source_parameters
 
@@ -909,27 +1084,38 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         except:
             self._sample_source_parameters = prior
 
-@njit
-def velocity_dispersion_z_dependent(size, zl, zl_list, vd_inv_cdf):
+
+    @property
+    def available_lens_prior_list_and_its_params(self):
         """
-        Function to sample velocity dispersion from the interpolator
+        Dictionary with list all the available priors and it's corresponding parameters. This is an immutable instance attribute.
+        """
+        
+        self._available_lens_prior_list_and_its_params = dict(
+            source_redshift_sl=dict(strongly_lensed_source_redshifts=None),
+            lens_redshift=dict(lens_redshift_SDSS_catalogue=None),
+            velocity_dispersion=self.available_velocity_dispersion_list_and_its_params,
+            axis_ratio=self.available_axis_ratio_list_and_its_params,
+            axis_rotation_angle=dict(axis_rotation_angle_uniform=dict(phi_min=0.0, phi_max=2 * np.pi)),
+            shear=dict(shear_norm=dict(scale=0.05)),
+            mass_density_spectral_index=dict(mass_density_spectral_index_normal=dict(mean=2.0, std=0.2)),
+            source_parameters=dict(sample_gw_parameters=None),
+        )
 
-        Parameters
-        ----------
-        size: int
-            Number of samples to draw
-        zl: numpy.ndarray
-            Redshift of the lens galaxy
+        return self._available_lens_prior_list_and_its_params
+    
+    @property
+    def available_lens_functions(self):
+        """
+        Dictionary with list all the available lens functions. This is an immutable instance attribute.
         """
 
-        index = np.searchsorted(zl_list, zl)
-        u = np.random.uniform(0, 1, size)
-        samples = np.zeros(size)
-            
-        for i in range(size):
-            cdf, x = vd_inv_cdf[index[i],0], vd_inv_cdf[index[i],1]
-            idx = np.searchsorted(cdf, u[i])  # vd cdf
-            x1, x0, y1, y0 = cdf[idx], cdf[idx-1], x[idx], x[idx-1]
-            samples[i] = y0 + (y1 - y0) * (u[i] - x0) / (x1 - x0)
+        self._available_lens_functions = dict(
+            strong_lensing_condition=["rjs_with_einstein_radius", "rjs_with_cross_section"],
+            optical_depth=["SIS", "optical_depth_SIS_haris","optical_depth_SIS_hemanta", "SIE", "optical_depth_SIE_hemanta"],
+            param_sampler_type=["sample_all_routine"],
+        )
 
-        return samples
+        return self._available_lens_functions
+
+

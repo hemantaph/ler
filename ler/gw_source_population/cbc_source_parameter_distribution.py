@@ -12,8 +12,6 @@ from numba import njit
 # for redshift to luminosity distance conversion
 from astropy.cosmology import LambdaCDM
 
-cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
-
 # from gwcosmo import priors as p
 from scipy.integrate import quad
 
@@ -46,10 +44,10 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         e.g. 'BBH', 'BNS', 'NSBH'
     source_priors, source_priors_params : `dict`, `dict`
         Dictionary of prior sampler functions and its input parameters.
-        Check for available priors and corresponding inout parameters by running,
+        Check for available priors and corresponding input parameters by running,
         >>> from ler.gw_source_population import CompactBinaryPopulation
         >>> cbc = CompactBinaryPopulation()
-        >>> cbc.available_prior_list_and_its_params()
+        >>> cbc.available_gw_prior_list_and_its_params()
         # To check the current chosen priors and its parameters, run,
         >>> print("default priors=",cbc.gw_param_samplers)
         >>> print("default priors's parameters=",cbc.gw_param_samplers_params)
@@ -103,7 +101,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
     +-------------------------------------+----------------------------------+
     |:attr:`~create_new_interpolator`     | `dict`                           |
     +-------------------------------------+----------------------------------+
-    |:attr:`~available_prior_list_and_its_params`                            |
+    |:attr:`~available_gw_prior_list_and_its_params`                            |
     +-------------------------------------+----------------------------------+
     |                                     | `dict`                           |
     +-------------------------------------+----------------------------------+
@@ -264,7 +262,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         # set attributes
         self.z_min = z_min
         self.z_max = z_max
-        self.cosmo = cosmology if cosmology else cosmo
+        self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
         # note that self.cosmo is initialized in the super class
         self.spin_zero = spin_zero
         self.spin_precession = spin_precession
@@ -435,13 +433,14 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         # calculate luminosity distance
         zs = gw_parameters["zs"]
         gw_parameters["luminosity_distance"] = self.z_to_luminosity_distance(zs)  # Mpc
+        
         # mass1 and mass2
-        gw_parameters["mass_1_source"], gw_parameters["mass_2_source"] = gw_parameters[
-            "source_frame_masses"
-        ]  # Msun
-        gw_parameters["mass_1"], gw_parameters["mass_2"] = gw_parameters[
-            "mass_1_source"
-        ] * (1 + zs), gw_parameters["mass_2_source"] * (
+        m1, m2 = gw_parameters["source_frame_masses"]  # Msun
+        # exchange m1 and m2 if m1 < m2 in the fastest way
+        idx = m1 < m2
+        m1[idx], m2[idx] = m2[idx], m1[idx]
+        gw_parameters["mass_1_source"], gw_parameters["mass_2_source"] = m1, m2
+        gw_parameters["mass_1"], gw_parameters["mass_2"] = m1 * (1 + zs), m2 * (
             1 + zs
         )  # Msun
         del gw_parameters["source_frame_masses"]
@@ -992,7 +991,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             return np.arccos((np.random.uniform(0, 1, size=size) - 0.5) * 2)
 
     @property
-    def available_prior_list_and_its_params(self):
+    def available_gw_prior_list_and_its_params(self):
         """
         Dictionary with list all the available priors and it's corresponding parameters. This is an immutable instance attribute.
 
@@ -1000,7 +999,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         ----------
         >>> from ler.gw_source_population import CompactBinaryPopulation
         >>> cbc = CompactBinaryPopulation()
-        >>> priors = cbc.available_prior_list_and_its_params
+        >>> priors = cbc.available_gw_prior_list_and_its_params
         >>> priors.keys()  # type of priors
         dict_keys(['merger_rate_density', 'source_frame_masses', 'spin', 'geocent_time', 'ra', 'phase', 'psi', 'theta_jn'])
         >>> priors['source_frame_masses'].keys()  # type of source_frame_masses priors
@@ -1009,7 +1008,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         dict_keys(['mminbh', 'mmaxbh', 'alpha', 'mu_g', 'sigma_g', 'lambda_peak', 'delta_m', 'beta'])
         """
 
-        self._available_prior_list_and_its_params = dict(
+        self._available_gw_prior_list_and_its_params = dict(
             merger_rate_density=self.merger_rate_density_model_list,
             source_frame_masses=dict(
                 binary_masses_BBH_popI_II_powerlaw_gaussian=dict(
@@ -1056,7 +1055,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             theta_jn=dict(theta_jn_uniform_bilby=None),
         )
 
-        return self._available_prior_list_and_its_params
+        return self._available_gw_prior_list_and_its_params
 
     def source_priors_categorization(
         self, event_type, source_priors, event_prior_params
@@ -1112,7 +1111,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             )
             a_max = 0.8
 
-        if event_type == "BNS":
+        elif event_type == "BNS":
             merger_rate_density_prior = "merger_rate_density_bbh_popI_II_oguri2018"
             merger_rate_density_prior_params = dict(
                 R0=170.0 * 1e-9, b2=1.6, b3=2.0, b4=30
@@ -1129,7 +1128,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             )
             a_max = 0.05
 
-        if event_type == "NSBH":
+        elif event_type == "NSBH":
             merger_rate_density_prior = "merger_rate_density_bbh_popI_II_oguri2018"
             merger_rate_density_prior_params = dict(
                 R0=27.0 * 1e-9, b2=1.6, b3=2.0, b4=30
@@ -1148,7 +1147,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             )
             a_max = 0.8
 
-        if event_type == "BBH_popIII":
+        elif event_type == "BBH_popIII":
             merger_rate_density_prior = "merger_rate_density_bbh_popIII_ken2022"
             merger_rate_density_prior_params = dict(
                 n0=19.2 * 1e-9, aIII=0.66, bIII=0.3, zIII=11.6
@@ -1159,7 +1158,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             )
             a_max = 0.8
 
-        if event_type == "BBH_primordial":
+        elif event_type == "BBH_primordial":
             merger_rate_density_prior = "merger_rate_density_bbh_primordial_ken2022"
             merger_rate_density_prior_params = dict(
                 n0=0.044 * 1e-9, t0=13.786885302009708
@@ -1169,6 +1168,9 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000
             )
             a_max = 0.8
+
+        else:
+            raise ValueError("event_type is not recognized")
 
         # setting the priors and its parameters
         source_priors_ = dict(
