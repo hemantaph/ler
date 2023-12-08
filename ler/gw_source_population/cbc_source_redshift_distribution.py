@@ -18,7 +18,6 @@ from scipy.integrate import quad
 
 # for redshift to luminosity distance conversion
 from astropy.cosmology import LambdaCDM
-cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
 
 from ..utils import  interpolator_from_pickle, cubic_spline_interpolator, inverse_transform_sampler
 from .jit_functions import merger_rate_density_bbh_popI_II_oguri2018, star_formation_rate_madau_dickinson2014, merger_rate_density_bbh_popIII_ken2022, merger_rate_density_bbh_primordial_ken2022
@@ -205,7 +204,7 @@ class CBCSourceRedshiftDistribution(object):
         self.z_max = z_max
         self.event_type = event_type
         # if None is passed, use the default cosmology
-        self.cosmo = cosmology if cosmology else cosmo
+        self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
         # setting up the interpolator creation parameters
         self.c_n_i = dict(
             redshift_distribution=dict(create_new=False, resolution=500), z_to_luminosity_distance=dict(create_new=False, resolution=500), differential_comoving_volume=dict(create_new=False, resolution=500))
@@ -246,7 +245,7 @@ class CBCSourceRedshiftDistribution(object):
         zs_inv_cdf = interpolator_from_pickle(
                 param_dict_given= dict(z_min=z_min, 
                                        z_max=z_max, 
-                                       cosmology=cosmo,
+                                       cosmology=self.cosmo,
                                        event_type=event_type,
                                        merger_rate_density=merger_rate_density,
                                         merger_rate_density_param=merger_rate_density_param,

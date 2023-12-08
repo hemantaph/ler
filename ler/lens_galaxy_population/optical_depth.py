@@ -1,81 +1,236 @@
 from numba import njit
 from multiprocessing import Pool
-from tqdm import tqdm
 import numpy as np
 from scipy.integrate import quad
 from scipy.stats import gengamma
 from astropy.cosmology import LambdaCDM
-cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
 from ..utils import  interpolator_from_pickle, cubic_spline_interpolator, inverse_transform_sampler
-from .jit_functions import phi_cut_SIE, axis_ratio_rayleigh, axis_ratio_SIS, gamma_, phi, phi_loc_bernardi
+from .jit_functions import phi_cut_SIE, axis_ratio_rayleigh, axis_ratio_SIS, phi, phi_loc_bernardi
 
 class OpticalDepth():
     """
-    Class to calculate the optical depth of a lens galaxy population.
+    Class to calculate the optical depth, velocity dispersion and axis-ratio of a lens galaxy population.
 
     Parameters
     ----------
-    param_dict_given : dict
-        Dictionary of parameters for the interpolator
-    directory : str
-        Directory to save the interpolator
-    optical_depth_method : str
-        Method to calculate the optical depth
-        e.g. 'optical_depth_SIS_haris', 'optical_depth_SIS_hemata', 'optical_depth_SIE_hemanta'
-    vel_disp_method : str
-        Method to sample velocity dispersion
-        e.g. 'velocity_dispersion_gengamma', 'velocity_dispersion_bernardi', 'velocity_dispersion_ewoud' 
+    npool : `int`
+        number of processors to use for multiprocessing
+    z_min : `float`
+        minimum redshift of the lens galaxy population
+    z_max : `float`
+        maximum redshift of the lens galaxy population
+    optical_depth_function : `str` or `callable`
+        Function or function name to calculate optical depth.
+        Check for default/available optical depth functions by running,
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> print(OpticalDepth().available_optical_depth_list_and_its_params)
+    sampler_priors, sampler_priors_params : `dict`, `dict`
+        dictionary of sampler functions and it's parameters to sample velocity dispersion and axis-ratio.
+        Check for default/available sampler priors and corresponding input parameters by running,
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> print(OpticalDepth().available_velocity_dispersion_list_and_its_params)
+        >>> print(OpticalDepth().available_axis_ratio_list_and_its_params)
+    cosmology : `astropy.cosmology`
+        Cosmology to use
+        default: None/astropy.cosmology.FlatLambdaCDM(H0=70, Om0=0.3)
+    directory : `str`
+        directory to store interpolator pickle files
+        default: "./interpolator_pickle"
+    create_new_interpolator : `dict`
+        dictionary to create new interpolator for velocity dispersion and optical depth.
+
+    Examples
+    --------
+    >>> from ler.lens_galaxy_population import OpticalDepth
+    >>> od = OpticalDepth()
+    >>> print(od.strong_lensing_optical_depth(0.5))
+
+    Instance Attributes
+    -------------------
+    OpticalDepth class has the following attributes:
+    +-------------------------------------+----------------------------------+
+    | Atrributes                          | Type                             |
+    +=====================================+==================================+
+    |:attr:`~npool`                       | `int`                            |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~z_min`                       | `float`                          |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~z_max`                       | `float`                          |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~functions`                   | `dict`                           |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~sampler_priors`              | `dict`                           |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~sampler_priors_params`       | `dict`                           |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~cosmo`                       | `astropy.cosmology`              |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~directory`                   | `str`                            |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~c_n_i`                       | `dict`                           |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~vd_inv_cdf`                  | `numpy.ndarray`                  |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~available_velocity_dispersion_list_and_its_params`              |
+    +-------------------------------------+----------------------------------+
+    |                                     | `dict`                           |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~available_axis_ratio_list_and_its_params`                       |
+    +-------------------------------------+----------------------------------+
+    |                                     | `dict`                           |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~available_optical_depth_list_and_its_params`                    |
+    +-------------------------------------+----------------------------------+
+    |                                     | `dict`                           |
+    +-------------------------------------+----------------------------------+
+
+    Instance Methods
+    ----------------
+    OpticalDepth class has the following methods:
+    +-------------------------------------+----------------------------------+
+    | Methods                             | Type                             |
+    +=====================================+==================================+
+    |:meth:`~create_lookup_table`         | Function to create a lookup      |
+    |                                     | table for redshift dependent     |
+    |                                     | cosmological functions           |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~initialize_velocity_dispersion_sampler`                         |
+    +-------------------------------------+----------------------------------+
+    |                                     | Function to initialize velocity  |
+    |                                     | dispersion sampler               |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~initialize_optical_depth_function`                              |
+    +-------------------------------------+----------------------------------+
+    |                                     | Function to initialize optical   |
+    |                                     | depth function                   |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~velocity_dispersion_gengamma`| Function to sample velocity      |
+    |                                     | dispersion from gengamma         |
+    |                                     | distribution                     |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~velocity_dispersion_bernardi`| Function to sample velocity      |
+    |                                     | dispersion from Bernardi et al.  |
+    |                                     | (2010)                           |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~velocity_dispersion_ewoud`   | Function to sample velocity      |
+    |                                     | dispersion from Wempe et al.     |
+    |                                     | (2022)                           |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~cross_section_SIS`           | Function to compute the SIS      |
+    |                                     | cross-section                    |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~tau_zl_zs`               | Function to compute the optical  |
+    |                                     | depth integrand                  |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~optical_depth_calculator`    | Function to compute the optical  |
+    |                                     | depth without multiprocessing    |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~optical_depth_multiprocessing`                                  |
+    +-------------------------------------+----------------------------------+
+    |                                     | Function to compute the optical  |
+    |                                     | depth with multiprocessing       |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~optical_depth_SIS_haris`     | Function to compute the strong   |
+    |                                     | lensing optical depth (SIS)      |
+    |                                     | Haris et al. (2018) (analytic)   |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~optical_depth_SIS_hemanta`   | Function to compute the strong   |
+    |                                     | lensing optical depth (SIS)      |
+    |                                     | (numerical)                      |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~optical_depth_SIE_hemanta`   | Function to compute the strong   |
+    |                                     | lensing optical depth (SIE)      |
+    |                                     | (numerical)                      |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~strong_lensing_optical_depth`| Function to compute the strong   |
+    |                                     | lensing optical depth            |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~sample_velocity_dispersion`  | Function to sample velocity      |
+    |                                     | dispersion                       |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~sample_axis_ratio`           | Function to sample axis ratio    |
+    +-------------------------------------+----------------------------------+
     """
 
     def __init__(self,
         npool=4,
         z_min=0.001,
         z_max=10.0,
-        functions=dict(
-            optical_depth="optical_depth_SIE_hemanta",
-        ),
-        sampler_priors=dict(
-            velocity_dispersion="velocity_dispersion_bernardi",
-            axis_ratio="axis_ratio_rayleigh",
-        ),
-        sampler_priors_params=dict(
-            velocity_dispersion=dict(vd_min=0., vd_max=600.),
-            axis_ratio=dict(q_min=0.01, q_max=1.),
-        ),
+        optical_depth_function=None,
+        sampler_priors=None,
+        sampler_priors_params=None,
         cosmology=None,
         directory="./interpolator_pickle",
-        create_new_interpolator=dict(
-            velocity_dispersion=dict(create_new=False, resolution=100), 
-            optical_depth=dict(create_new=False, resolution=100), 
-            z_to_Dc=dict(create_new=False, resolution=500), 
+        create_new_interpolator=False,
+    ):
+
+        self.npool = npool
+        self.z_min = z_min
+        self.z_max = z_max
+        self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+
+        self.sampler_priors = dict(
+            velocity_dispersion="velocity_dispersion_bernardi",
+            axis_ratio="axis_ratio_rayleigh",
+        )
+        if sampler_priors:
+            self.sampler_priors.update(sampler_priors)
+        self.sampler_priors_params = dict(
+            velocity_dispersion=dict(vd_min=0., vd_max=600.),
+            axis_ratio=dict(q_min=0.01, q_max=1.),
+        )
+        if sampler_priors_params:
+            self.sampler_priors_params.update(sampler_priors_params)
+
+        optical_depth_function = optical_depth_function if optical_depth_function else "optical_depth_SIE_hemanta"
+
+        self.directory = directory
+        self.c_n_i = dict(
+            velocity_dispersion=dict(create_new=False, resolution=100),
+            optical_depth=dict(create_new=False, resolution=100),
+            z_to_Dc=dict(create_new=False, resolution=500),
             Dc_to_z=dict(create_new=False, resolution=500),
             angular_diameter_distance=dict(create_new=False, resolution=500),
             differential_comoving_volume=dict(create_new=False, resolution=500),
-        ),
-        ):
+        )
+        if create_new_interpolator:
+            self.c_n_i.update(create_new_interpolator)
 
-        self.npool = npool
-        self.cosmo = cosmology if cosmology else cosmo
-        cosmology_h = self.cosmo.h
-        self.sampler_priors = sampler_priors
-        self.sampler_priors_params = sampler_priors_params
-        self.directory = directory
-        self.c_n_i = create_new_interpolator
-
-        self.z_min = z_min
-        self.z_max = z_max
-        self.vd_min = sampler_priors_params['velocity_dispersion']['vd_min']
-        self.vd_max = sampler_priors_params['velocity_dispersion']['vd_max']
-        vd_name = sampler_priors["velocity_dispersion"]
-        tau_name = functions["optical_depth"]
+        vd_name = sampler_priors["velocity_dispersion"]  # velocity dispersion sampler name
+        tau_name = optical_depth_function  # optical depth function name
 
         self.create_lookup_table_fuction(self.z_max)
 
-        #######################
-        # velocity dispersion #
-        #######################
+        # setting velocity dispersion sampler method
+        self.initialize_velocity_dispersion_sampler(vd_name);
+
+        # setting optical depth method
+        if callable(optical_depth_function):
+            self.strong_lensing_optical_depth = optical_depth_function
+        else:
+            self.initialize_optical_depth_function(tau_name, vd_name);
+        
+    def initialize_velocity_dispersion_sampler(self, vd_name):
+        """
+        Function to initialize velocity dispersion sampler
+
+        Parameters
+        ----------
+        vd_name : `str`
+            name of velocity dispersion sampler
+        """
+
+        # setting up input parameters for interpolation
+        # check vd_min and vd_max exists in sampler_priors_params
+        try:
+            self.vd_min = self.sampler_priors_params['velocity_dispersion']['vd_min']
+            self.vd_max = self.sampler_priors_params['velocity_dispersion']['vd_max']
+        except:
+            self.vd_min = 0.
+            self.vd_max = 600.
+
         # generating inverse cdf interpolator for velocity dispersion
-        param_dict_given_ = dict(z_min=self.z_min, z_max=self.z_max, vd_min=self.vd_min, vd_max=self.vd_max, cosmology=cosmo, name=vd_name, resolution=self.c_n_i["velocity_dispersion"]["resolution"])
+        param_dict_given_ = dict(z_min=self.z_min, z_max=self.z_max, vd_min=self.vd_min, vd_max=self.vd_max, cosmology=self.cosmo, name=vd_name, resolution=self.c_n_i["velocity_dispersion"]["resolution"])
         sub_directory_ = vd_name
         x_ = np.linspace(self.vd_min, self.vd_max, self.c_n_i["velocity_dispersion"]["resolution"])
         category_ = "inv_cdf"
@@ -89,7 +244,7 @@ class OpticalDepth():
      
         elif vd_name == "velocity_dispersion_bernardi":
             # setting up input parameters for interpolation
-            pdf_func_ = lambda vd_: vd_**4*phi_loc_bernardi(sigma=vd_, cosmology_h=cosmology_h)
+            pdf_func_ = lambda vd_: vd_**4*phi_loc_bernardi(sigma=vd_, cosmology_h=self.cosmo.h)
             conditioned_y_ = None
             dimension_ = 1
 
@@ -99,13 +254,13 @@ class OpticalDepth():
             else:
                 self.zl_list = np.linspace(self.z_min, self.z_max, 100)
             # setting up input parameters for interpolation
-            pdf_func_ = lambda vd_, zl_: phi(vd_, zl_, cosmology_h=cosmology_h)*self.differential_comoving_volume(np.array([zl_]))
+            pdf_func_ = lambda vd_, zl_: phi(vd_, zl_, cosmology_h=self.cosmo.h)*self.differential_comoving_volume(np.array([zl_]))
             conditioned_y_ = self.zl_list
             dimension_ = 2
 
         else:
             # this is to allow user to pass in their own sampler
-            if callable(sampler_priors["velocity_dispersion"]):
+            if callable(self.sampler_priors["velocity_dispersion"]):
                 pass
             else:
                 # raise error and terminate
@@ -124,11 +279,20 @@ class OpticalDepth():
             create_new=create_new_,
         )
 
-        self.sample_velocity_dispersion = sampler_priors["velocity_dispersion"]
+        self.sample_velocity_dispersion = self.sampler_priors["velocity_dispersion"]
 
-        #################
-        # optical depth #
-        #################
+    def initialize_optical_depth_function(self, tau_name, vd_name):
+        """
+        Function to initialize optical depth function.
+
+        Parameters
+        ----------
+        tau_name : `str`
+            name of optical depth function
+        vd_name : `str`
+            name of velocity dispersion sampler
+        """
+
         if tau_name=="optical_depth_SIS_haris":
             self.sample_axis_ratio = axis_ratio_SIS
             # no interpolation needed
@@ -159,10 +323,10 @@ class OpticalDepth():
 
             elif tau_name=="optical_depth_SIE_hemanta" or tau_name == "SIE":
                 # axis-ratio sampler
-                if sampler_priors["axis_ratio"]=="axis_ratio_rayleigh":
+                if self.sampler_priors["axis_ratio"]=="axis_ratio_rayleigh":
                     self.sample_axis_ratio = axis_ratio_rayleigh
                 else:
-                    self.sample_axis_ratio = sampler_priors["axis_ratio"]
+                    self.sample_axis_ratio = self.sampler_priors["axis_ratio"]
 
                 if vd_name == "velocity_dispersion_ewoud":
                     from .mp import optical_depth_sie2_mp
@@ -184,9 +348,8 @@ class OpticalDepth():
                 category=category_,
                 create_new=create_new_,
             )
-                
-        self.strong_lensing_optical_depth = optical_depth_setter
 
+        self.strong_lensing_optical_depth = optical_depth_setter
 
     def velocity_dispersion_gengamma(self, size, a=2.32 / 2.67, c=2.67, get_attribute=False, param=None, **kwargs):
         """
@@ -199,11 +362,23 @@ class OpticalDepth():
         a,c : `float`
             parameters of gengamma distribution
             refer to https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.gengamma.html
+        get_attribute : `bool`
+            if True, returns a function that can be used to sample velocity dispersion
+        param : `dict`
+            Allows to pass in above parameters as dict.
+            e.g. param = dict(a=2.32 / 2.67, c=2.67)
 
         Returns
         -------
-        sigma : `array`
+        sigma : `numpy.ndarray` (1D array of floats)
             velocity dispersion of the lens galaxy
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth(sampler_priors=dict(velocity_dispersion="velocity_dispersion_gengamma"), sampler_priors_params=dict(velocity_dispersion=dict(a=2.32 / 2.67, c=2.67)))
+        >>> print(od.sample_velocity_dispersion(size=10))
+
         """
 
         if param:
@@ -218,7 +393,25 @@ class OpticalDepth():
     
     def velocity_dispersion_bernardi(self, size, get_attribute=False, **kwargs):
         """
-        Function to sample velocity dispersion from the interpolator
+        Function to sample velocity dispersion from Bernardi et al. (2010). This uses inverse transform sampling.
+
+        Parameters
+        ----------
+        size : `int`
+            number of lens parameters to sample
+        get_attribute : `bool`
+            if True, returns a function that can be used to sample velocity dispersion
+
+        Returns
+        -------
+        sigma : `numpy.ndarray` (1D array of floats)
+            velocity dispersion of the lens galaxy
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth(sampler_priors=dict(velocity_dispersion="velocity_dispersion_bernardi"))
+        >>> print(od.sample_velocity_dispersion(size=10))
         """
 
         vd_inv_cdf = self.vd_inv_cdf.copy()
@@ -228,9 +421,29 @@ class OpticalDepth():
         else:
             return inverse_transform_sampler(size, vd_inv_cdf[0], vd_inv_cdf[1])
 
-    def velocity_dispersion_ewoud(self, size, zl, get_attribute=False):
+    def velocity_dispersion_ewoud(self, size, zl, get_attribute=False, **kwargs):
         """
-        Function to sample velocity dispersion from the interpolator
+        Function to sample velocity dispersion (redshift dependent) from Wempe et al. (2022). This uses inverse transform sampling.
+
+        Parameters
+        ----------
+        size : `int`
+            number of lens parameters to sample
+        zl : `float`
+            redshift of the lens galaxy
+        get_attribute : `bool`
+            if True, returns a function that can be used to sample velocity dispersion
+
+        Returns
+        -------
+        sigma : `numpy.ndarray` (1D array of floats)
+            velocity dispersion of the lens galaxy
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth(sampler_priors=dict(velocity_dispersion="velocity_dispersion_ewoud"))
+        >>> print(od.sample_velocity_dispersion(size=10, zl=0.5))
         """
 
         z_max = self.z_max
@@ -240,7 +453,7 @@ class OpticalDepth():
 
         @njit
         def sampler(size, zl, inv_cdf, zlist):
-
+            
             idx = np.searchsorted(zlist, zl)
             return inverse_transform_sampler(size, inv_cdf[idx][0], inv_cdf[idx][1])
         
@@ -249,9 +462,32 @@ class OpticalDepth():
         else:
             return sampler(size, zl, vd_inv_cdf, zlist)
 
-    # SIS crossection 
     def cross_section_SIS(self, sigma, zl, zs):
+        """
+        Function to compute the SIS cross-section
 
+        Parameters
+        ----------
+        sigma : `float`
+            velocity dispersion of the lens galaxy
+        zl : `float`
+            redshift of the lens galaxy
+        zs : `float`
+            redshift of the source galaxy
+
+        Returns
+        -------
+        cross_section : `float`
+            SIS cross-section
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth()
+        >>> print(od.cross_section_SIS(sigma=200., zl=0.5, zs=1.0))
+        """
+        zl = np.array([zl]).reshape(-1)
+        zs = np.array([zs]).reshape(-1)
         Ds = self.angular_diameter_distance(zs)
         Dls = self.angular_diameter_distance_z1z2(zl, zs)
         theta_E = (
@@ -260,25 +496,90 @@ class OpticalDepth():
 
         return np.pi * theta_E**2
     
-    def tau_integrand(self, zl, zs):
-            # size=5000 will take ~ 48s to run, with ewoud vd sampler
+    def tau_zl_zs(self, zl, zs):
+        """
+        Function to compute the optical depth for a given lens redshift and source redshift
+
+        Parameters
+        ----------
+        zl : `float`
+            redshift of the lens galaxy
+        zs : `float`
+            redshift of the source galaxy
+
+        Returns
+        -------
+        tau : `float`
+            optical depth
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth()
+        >>> print(od.tau_zl_zs(zl=0.5, zs=1.0))
+        """
+        zl = np.array([zl]).reshape(-1)
+        zs = np.array([zs]).reshape(-1)
+        # size=5000 will take ~ 48s to run, with ewoud vd sampler
+        try:
+            sigma = self.sample_velocity_dispersion(size=5000)
+        except:
             sigma = self.sample_velocity_dispersion(size=5000, zl=zl)
-            q = self.sample_axis_ratio(sigma)  # if SIS, q=array of 1.0
-            no = 8*1e-3*self.cosmo.h**3
-            test = phi_cut_SIE(q)*self.cross_section_SIS(sigma=sigma, zl=zl, zs=zs)/(4*np.pi)*no*self.differential_comoving_volume(zl)
-            # average
-            return np.mean(test)
+
+        q = self.sample_axis_ratio(sigma)  # if SIS, q=array of 1.0
+        no = 8*1e-3*self.cosmo.h**3
+        test = phi_cut_SIE(q)*self.cross_section_SIS(sigma=sigma, zl=zl, zs=zs)/(4*np.pi)*no*self.differential_comoving_volume(zl)
+        # average
+        return np.mean(test)
     
     def optical_depth_calculator(self, zs):
+        """
+        Function to compute the optical depth without multiprocessing. This is the integrated version of tau_zl_zs from z=0 to z=zs.
+
+        Parameters
+        ----------
+        zs : `float`
+            source redshifts
+
+        Returns
+        -------
+        tau : `float`
+            optical depth
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth()
+        >>> print(od.optical_depth_calculator(zs=1.0))
+        """
 
         zs = np.array([zs]).reshape(-1)
         tau_list = []
         for z in zs:
-            tau_list.append(quad(self.tau_integrand, 0, z, args=(z))[0])
+            tau_list.append(quad(self.tau_zl_zs, 0, z, args=(z))[0])
 
         return np.array(tau_list)
     
     def optical_depth_multiprocessing(self, zs):
+        """
+        Function to compute the optical depth with multiprocessing. This is the integrated version of optical depth from z=0 to z=zs.
+
+        Parameters
+        ----------
+        zs : `float`
+            source redshifts
+
+        Returns
+        -------
+        tau : `float`
+            optical depth
+            
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth()
+        >>> print(od.optical_depth_multiprocessing(zs=1.0))
+        """
 
         zs = np.array([zs]).reshape(-1)
         no = 8*1e-3*self.cosmo.h**3
@@ -300,12 +601,11 @@ class OpticalDepth():
         tau_list = result[:,1][np.array(result[:,0], dtype=int)]
 
         return tau_list
-    
 
     def optical_depth_SIS_haris(self, zs):
         """
         Function to compute the strong lensing optical depth (SIS). \n
-        LambdaCDM(H0=70, Om0=0.3, Ode0=0.7) was used to derive the following equation.
+        LambdaCDM(H0=70, Om0=0.3, Ode0=0.7) was used to derive the following equation. This is the analytic version of optical depth from z=0 to z=zs.
 
         Parameters
         ----------
@@ -316,6 +616,12 @@ class OpticalDepth():
         -------
         tau : `float`
             strong lensing optical depth
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth()
+        >>> print(od.optical_depth_SIS_haris(zs=1.0))
         """
 
         # z to luminosity_distance (luminosity_distance) conversion
@@ -329,7 +635,11 @@ class OpticalDepth():
         1. Redshift to co-moving distance.
         2. Co-moving distance to redshift.
         3. Redshift to angular diameter distance.
-        4. Lens redshift sampler helper function.
+
+        Parameters
+        ----------
+        z_max : `float`
+            maximum redshift of the lens galaxy population
         """
 
         Dc = lambda z_: self.cosmo.comoving_distance(z_).value  # co-moving distance in Mpc
@@ -347,6 +657,7 @@ class OpticalDepth():
             category="function",
             create_new= create_new,
         )
+        self.splineDc = splineDc
         self.z_to_Dc = njit(lambda z_: cubic_spline_interpolator(z_, splineDc[0], splineDc[1]))
 
         # for co-moving distance to redshift
@@ -364,6 +675,7 @@ class OpticalDepth():
             category="function_inverse",
             create_new=create_new,
         )
+        self.splineDcInv = splineDcInv
         self.Dc_to_z = njit(lambda Dc_: cubic_spline_interpolator(Dc_, splineDcInv[0], splineDcInv[1]))
 
         # for angular diameter distance
@@ -411,7 +723,24 @@ class OpticalDepth():
     def strong_lensing_optical_depth(self):
         """
         Function to compute the strong lensing optical depth.
+
+        Parameters
+        ----------
+        zs : `numpy.ndarray` (1D array of floats)
+            source redshifts
+
+        Returns
+        -------
+        tau : `numpy.ndarray` (1D array of floats)
+            strong lensing optical depth
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth()
+        >>> print(od.strong_lensing_optical_depth(np.array([0.1,0.2,0.3])))
         """
+
         return self._strong_lensing_optical_depth
 
     @strong_lensing_optical_depth.setter
@@ -421,15 +750,34 @@ class OpticalDepth():
         else:
             # input can be function or spline interpolator array
             try:
-                self._strong_lensing_optical_depth = njit(lambda z_: cubic_spline_interpolator(z_, input_[0], input_[1]))
+                self._strong_lensing_optical_depth = njit(lambda zs: cubic_spline_interpolator(zs, input_[0], input_[1]))
             except:
                 raise ValueError("strong_lensing_optical_depth must be a callable function or spline interpolator array.")
 
     @property
     def sample_velocity_dispersion(self):
         """
-        Function to sample velocity dispersion from gengamma distribution
+        Function to sample velocity dispersion. `zl` is required only if velocity dispersion sampler is redshift dependent.
+
+        Parameters
+        ----------
+        size : `int`
+            number of lens parameters to sample
+        zl : `float`
+            redshift of the lens galaxy
+
+        Returns
+        -------
+        sigma : `numpy.ndarray` (1D array of floats)
+            velocity dispersion of the lens galaxy
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth()
+        >>> print(od.sample_velocity_dispersion(size=10))
         """
+
         return self._sample_velocity_dispersion
 
     @sample_velocity_dispersion.setter
@@ -443,7 +791,24 @@ class OpticalDepth():
     def sample_axis_ratio(self):
         """
         Function to sample axis ratio from rayleigh distribution with given velocity dispersion.
+
+        Parameters
+        ----------
+        sigma : `numpy.ndarray` (1D array of floats)
+            velocity dispersion of the lens galaxy
+
+        Returns
+        -------
+        q : `numpy.ndarray` (1D array of floats)
+            axis ratio of the lens galaxy
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth()
+        >>> print(od.sample_axis_ratio(sigma=200.))
         """
+
         return self._sample_axis_ratio
 
     @sample_axis_ratio.setter
@@ -468,29 +833,28 @@ class OpticalDepth():
         return self._available_velocity_dispersion_list_and_its_params
     
     @property
-    def available_axis_ratio_list(self):
+    def available_axis_ratio_list_and_its_params(self):
         """
         Function to list all available axis ratio sampler.
         """
-        self._available_axis_ratio_list = dict(
-            axis_ratio_rayleigh=axis_ratio_rayleigh,
-            axis_ratio_SIS=axis_ratio_SIS,
+        self._available_axis_ratio_list_and_its_params = dict(
+            axis_ratio_rayleigh=None,
+            axis_ratio_SIS=None,
         )
 
-        return self._available_axis_ratio_list
+        return self._available_axis_ratio_list_and_its_params
     
     @property
-    def available_optical_depth_list(self):
+    def available_optical_depth_list_and_its_params(self):
         """
         Function to list all available optical depth sampler.
         """
-        self._available_optical_depth_list = dict(
-            optical_depth_SIS_haris=self.optical_depth_SIS_haris,
-            optical_depth_SIS_hemanta=self.optical_depth_SIS_hemanta,
-            optical_depth_SIE_hemanta=self.optical_depth_SIE_hemanta,
+        self._available_optical_depth_list_and_its_params = dict(
+            optical_depth_SIS_haris=None,
+            optical_depth_SIS_hemanta=None,
+            optical_depth_SIE_hemanta=None,
         )
-
-        return self._available_optical_depth_list
+        return self._available_optical_depth_list_and_its_params
 
 
 

@@ -275,9 +275,9 @@ class ImageProperties():
 
         # Get the binary parameters
         number_of_lensed_events = len(magnifications)
-        mass_1_source, mass_2_source, luminosity_distance, theta_jn, psi, ra, dec, geocent_time, phase, a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl  = (
-            lensed_param["mass_1_source"],
-            lensed_param["mass_2_source"],
+        mass_1, mass_2, luminosity_distance, theta_jn, psi, ra, dec, geocent_time, phase, a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl  = (
+            lensed_param["mass_1"],
+            lensed_param["mass_2"],
             lensed_param["luminosity_distance"],
             lensed_param["theta_jn"],
             lensed_param["psi"],

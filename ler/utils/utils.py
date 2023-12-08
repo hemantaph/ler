@@ -544,3 +544,73 @@ def inverse_transform_sampler(size, cdf, x):
     samples = y0 + (y1 - y0) * (u - x0) / (x1 - x0)
     return samples
 
+def batch_handler(size, batch_size, sampling_routine, json_file, resume=False,
+    ):
+        """
+        Function to run the sampling in batches.
+
+        Parameters
+        ----------
+        size : `int`
+            number of samples.
+        batch_size : `int`
+            batch size.
+        sampling_routine : `function`
+            function to sample the parameters.
+            e.g. unlensed_sampling_routine() or lensed_sampling_routine()
+        json_file : `str`
+            name of the json file to store the parameters.
+        resume : `bool`
+            if True, it will resume the sampling from the last batch.
+            default resume = False.
+        """
+        
+        
+        # if size is multiple of batch_size
+        if size % batch_size == 0:
+            num_batches = size // batch_size
+        # if size is not multiple of batch_size
+        else:
+            num_batches = size // batch_size + 1
+
+        print(
+            f"chosen batch size = {batch_size}. If you want to change batch size, self.batch_size = new_size"
+        )
+        print(f"There will be {num_batches} batche(s)")
+
+        # note frac_batches+(num_batches-1)*batch_size = size
+        if size > batch_size:
+            frac_batches = size - (num_batches - 1) * batch_size
+        # if size is less than batch_size
+        else:
+            frac_batches = size
+        track_batches = 0  # to track the number of batches
+
+        if not resume:
+            track_batches = track_batches + 1
+            print(f"Batch no. {track_batches}")
+            # new first batch with the frac_batches
+            sampling_routine(size=frac_batches, json_file=json_file)
+        else:
+            # check where to resume from
+            try:
+                print(f"resuming from {json_file}")
+                with open(json_file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    track_batches = (len(data["zs"]) - frac_batches) // batch_size + 1
+            except:
+                track_batches = track_batches + 1
+                print(f"Batch no. {track_batches}")
+                # new first batch with the frac_batches
+                sampling_routine(size=frac_batches, json_file=json_file)
+
+        # ---------------------------------------------------#
+        min_, max_ = track_batches, num_batches
+        for i in range(min_, max_):
+            track_batches = track_batches + 1
+            print(f"Batch no. {track_batches}")
+            sampling_routine(size=batch_size, json_file=json_file, resume=True)
+        # ---------------------------------------------------#
+
+        return None
+

@@ -4,6 +4,7 @@ LeR
 
 import sys
 import multiprocessing as mp
+import pycbc
 
 try:
    mp.set_start_method('spawn', force=True)

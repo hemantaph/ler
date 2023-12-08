@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-This module contains the main class for calculating the rates of detectable gravitational waves events. The class inherits the :class:`~leLensGalaxyParameterDistribution` class for source parameters and lens parameters sampling. It also finds the image properties. :class:`~ler.LensGalaxyParameterDistribution` inherits the :class:`~ler.CBCSourceParameterDistribution`, :class:`~ler.ImageProperties` and uses `gwsnr` package for SNR calculation. 
+This module contains the main class for calculating the rates of detectable gravitational waves events. The class inherits the :class:`~ler.rates.CBCSourceParameterDistribution` class for source parameters sampling and uses `gwsnr` package for SNR calculation. 
 """
 
 import os
@@ -50,7 +50,7 @@ class GWRATES(CBCSourceParameterDistribution):
         names of the json files to strore the necessary parameters.
         default json_file_names = {'ler_param': './LeR_params.json', 'gw_param': './gw_param.json', 'gw_param_detectable': './gw_param_detectable.json'}.\n
     kwargs : `keyword arguments`
-        Note : kwargs takes input for initializing the :class:`~ler.CBCSourceParameterDistribution`, :meth:`~gwsnr_intialization`.
+        Note : kwargs takes input for initializing the :class:`~ler.rates.CBCSourceParameterDistribution`, :meth:`~gwsnr_intialization`.
 
     Examples
     ----------
