@@ -1188,7 +1188,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             merger_rate_density=merger_rate_density_prior_params,
             source_frame_masses=source_frame_masses_prior_params,
             zs=None,
-            geocent_time=dict(min_=1238166018, max_=1238166018 + 31536000),
+            geocent_time=dict(min_=1238166018, max_=1269702018),
             ra=dict(min_=0., max_=2.*np.pi),
             dec=None,
             phase=dict(min_=0., max_=2.*np.pi),

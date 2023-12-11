@@ -5,6 +5,11 @@ The class inherits from the CompactBinaryPopulation class, which is used to samp
 """
 import warnings
 warnings.filterwarnings("ignore")
+# for multiprocessing
+from multiprocessing import Pool
+from tqdm import tqdm
+import json
+
 import numpy as np
 from numba import njit
 
@@ -12,11 +17,9 @@ from astropy.cosmology import LambdaCDM
 cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
 
 # the following .py file will be called if they are not given in the class initialization
-from .multiprocessing_routine import solve_lens_equation1, solve_lens_equation2
+from .multiprocessing_routine import solve_lens_equation
 
-# for multiprocessing
-from multiprocessing import Pool
-from tqdm import tqdm
+
 
 from ..utils import  interpolator_from_pickle, cubic_spline_interpolator
 
@@ -101,7 +104,7 @@ class ImageProperties():
                 e.g. lens_parameters contains the following keys:\n
                 lens related=>['zs': source redshift, 'zl': lens redshift, 'gamma1': shear component in the x-direction, 'gamma2': shear component in the y-direction, 'e1': ellipticity component in the x-direction, 'e2': ellipticity component in the y-direction, 'gamma': spectral index of the mass density distribution, 'theta_E': einstein radius in radian]\n
                 source related=>['mass_1': mass in detector frame (mass1>mass2), 'mass_2': mass in detector frame, 'mass_1_source':mass in source frame, 'mass_2_source':mass source frame, 'luminosity_distance': luminosity distance, 'theta_jn': inclination angle, 'psi': polarization angle, 'phase': coalesence phase, 'geocent_time': coalensence GPS time at geocenter, 'ra': right ascension, 'dec': declination, 'a_1': spin magnitude of the more massive black hole, 'a2': spin magnitude of the less massive black hole, 'tilt_1': tilt angle of the more massive black hole, 'tilt_2': tilt angle of the less massive black hole, 'phi_12': azimuthal angle between the two spins, 'phi_jl': azimuthal angle between the total angular momentum and the orbital angular momentum]\n
-                image related=>['x_source': source position in the x-direction, 'y_source': source position in the y-direction, 'x0_image_position': image position in the x-direction, 'x1_image_position': image position in the y-direction, 'magnifications': magnifications, 'time_delays': time delays, 'n_images': number of images formed, 'determinant': determinants, 'trace': traces, 'iteration': to keep track of the iteration number, 'weights': weights for the caustic considered]
+                image related=>['x_source': source position in the x-direction, 'y_source': source position in the y-direction, 'x0_image_position': image position in the x-direction, 'x1_image_position': image position in the y-direction, 'magnifications': magnifications, 'time_delays': time delays, 'n_images': number of images formed, 'determinant': determinants, 'trace': traces, 'iteration': to keep track of the iteration number
 
         """
 
@@ -152,21 +155,21 @@ class ImageProperties():
         traces = np.ones((size, n_max_images)) * np.nan
         n_images = np.ones(size, dtype=int)
         x_source, y_source = np.ones(size) * np.nan, np.ones(size) * np.nan
-        weights = np.ones(size) * np.nan
 
         # Solve the lens equation
         print("solving lens equations...")
         if n_min_images == 2:
-            solve_lens_equation = solve_lens_equation1
+            solve_lens_equation_ = solve_lens_equation
         elif n_min_images > 2:
-            solve_lens_equation = solve_lens_equation2
+            print("n_min_images > 2 is not supported yet")
+            raise NotImplementedError
         else:
             raise ValueError("n_min_images should be greater than 1")
         with Pool(processes=npool) as pool:
             # call the same function with different data in parallel
             # imap->retain order in the list, while map->doesn't
             for result in tqdm(
-                pool.imap(solve_lens_equation, input_arguments),
+                pool.imap(solve_lens_equation_, input_arguments),
                 total=len(input_arguments),
                 ncols=100,
                 disable=False,
@@ -183,7 +186,6 @@ class ImageProperties():
                     determinant_i,
                     trace_i,
                     iter_i,
-                    weights_i,
                 ) = result
 
                 n_image_i = min(n_image_i, n_max_images)
@@ -213,7 +215,6 @@ class ImageProperties():
                 traces[iter_i] = trace
                 x_source[iter_i] = x_source_i
                 y_source[iter_i] = y_source_i
-                weights[iter_i] = weights_i
 
         # time-delays: convert to positive values
         # time-delays will be relative to the first arrived signal of an lensed event
@@ -237,22 +238,22 @@ class ImageProperties():
             "magnifications": magnifications,
             "time_delays": time_delays,
             "image_type": image_type,
-            "weights": weights,
         }
         lens_parameters.update(image_parameters)
 
         return lens_parameters
 
-    def get_lensed_snrs(self, snr_calculator, lensed_param):
+    def get_lensed_snrs(self, snr_calculator, list_of_detectors, lensed_param):
         """
         Function to calculate the signal to noise ratio for each image in each event.
 
         Parameters
         ----------
-            snr_calculator : `class`
-                snr_calculator class
-                this is an already initialized class that contains a function (snr_calculator.snr) that actually calculates snr with the given gw_params.\n
-                Luminosity distance and time delay are modified to be effective luminosity distance and effective time delay, respectively, for each image using the magnifications and time delays.\n
+            snr_calculator : `function`
+                snr function, as describe in the :class:`~ler.rates.GWRATES` class.
+            list_of_detectors : `list`
+                list of detectors
+                e.g. ['H1', 'L1', 'V1']
             lensed_param : `dict`
                 dictionary containing the both already lensed source paramters and image parameters.
                 e.g. lensed_param.keys() = ['mass_1', 'mass_2', 'zs', 'luminosity_distance', 'theta_jn', 'psi', 'phi', 'ra', 'dec', 'geocent_time', 'phase', 'a_1', 'a2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl', 'magnifications', 'time_delays']
@@ -303,24 +304,30 @@ class ImageProperties():
                 )
         
         # setting up snr dictionary
-        detectors = snr_calculator.list_of_detectors
         optimal_snrs = dict()
         optimal_snrs["opt_snr_net"] = (
             np.ones((number_of_lensed_events, n_max_images)) * np.nan
         )
-        for detector in detectors:
+        for detector in list_of_detectors:
             optimal_snrs[detector] = (
                 np.ones((number_of_lensed_events, n_max_images)) * np.nan
             )
 
         # LALSimulation cannot handle NaN
-        if snr_calculator.snr_type == "inner_product":
-            print("There will be {} progress bar iteration".format(n_max_images))
+        # if snr_calculator.snr_type == "inner_product":
+        #     print("There will be {} progress bar iteration".format(n_max_images))
+
+        # handling big geocent time
+        # geocent_time = np.random.uniform(1238166018, 1238166018 + 31536000, size)
 
         for i in range(n_max_images):
             # Get the optimal signal to noise ratios for each image
             buffer = magnifications[:, i]
+            # idx1 = ~np.isnan(buffer)  # index of not-nan
+            # idx2 = (geocent_time-geocent_time_min) < 63072000 # two years
+            # idx = idx1 & idx2
             idx = ~np.isnan(buffer)  # index of not-nan
+            
             effective_luminosity_distance = luminosity_distance[idx] / np.sqrt(
                 np.abs(buffer[idx])
             )
@@ -330,16 +337,19 @@ class ImageProperties():
             effective_geocent_time[
                 effective_geocent_time < 0
             ] += 31556952  # number of seconds in a year
-            zs_eff = self.Dl_to_z(effective_luminosity_distance)
-            #zs_eff = lensed_param["zs"][idx]
-            mass_1 = mass_1_source[idx] * (1 + zs_eff)
-            mass_2 = mass_2_source[idx] * (1 + zs_eff)
+
+            # save geocent time
+            with open("./geocent_time.json", "w") as write_file:
+                json.dump(list(geocent_time[idx]), write_file, indent=4)
+            with open("./effective_geocent_time.json", "w") as write_file:
+                json.dump(list(effective_geocent_time), write_file, indent=4)
+
             # Each image has their own effective luminosity distance and effective geocent time
             if len(effective_luminosity_distance) != 0:
                 # Returns a dictionary
-                optimal_snr = snr_calculator.snr(
-                    mass_1,
-                    mass_2,
+                optimal_snr = snr_calculator(
+                    mass_1[idx],
+                    mass_2[idx],
                     effective_luminosity_distance,
                     theta_jn[idx],
                     psi[idx],
@@ -357,7 +367,7 @@ class ImageProperties():
                 )
 
                 optimal_snrs["opt_snr_net"][idx, i] = optimal_snr["opt_snr_net"]
-                for detector in detectors:
+                for detector in list_of_detectors:
                     optimal_snrs[detector][idx, i] = optimal_snr[detector]
 
         return optimal_snrs

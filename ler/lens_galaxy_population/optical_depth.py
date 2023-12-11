@@ -177,7 +177,7 @@ class OpticalDepth():
             self.sampler_priors.update(sampler_priors)
         self.sampler_priors_params = dict(
             velocity_dispersion=dict(vd_min=0., vd_max=600.),
-            axis_ratio=dict(q_min=0.01, q_max=1.),
+            axis_ratio=dict(q_min=0.2, q_max=1.),
         )
         if sampler_priors_params:
             self.sampler_priors_params.update(sampler_priors_params)
@@ -350,6 +350,41 @@ class OpticalDepth():
             )
 
         self.strong_lensing_optical_depth = optical_depth_setter
+        self.sample_axis_ratio = self.sampler_priors["axis_ratio"]
+
+    def axis_ratio_rayleigh(self, sigma, q_min=0.2, q_max=1.0, get_attribute=False, param=None):
+        """
+        Function to sample axis ratio from rayleigh distribution with given velocity dispersion.
+
+        Parameters
+        ----------
+        sigma : `float: array`
+            velocity dispersion of the lens galaxy
+        q_min, q_max : `float`
+            minimum and maximum axis ratio
+        get_attribute : `bool`
+            if True, returns a function that can be used to sample axis ratio
+
+        Returns
+        -------
+        q : `float: array`
+            axis ratio of the lens galaxy
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth(sampler_priors=dict(axis_ratio="axis_ratio_rayleigh"))
+        >>> print(od.sample_axis_ratio(sigma=200.))
+        """
+
+        if param:
+            q_min = param["q_min"]
+            q_max = param["q_max"]
+            
+        if get_attribute:
+            return njit(lambda sigma: axis_ratio_rayleigh(sigma, q_min, q_max))
+        else:
+            return axis_ratio_rayleigh(sigma, q_min, q_max)
 
     def velocity_dispersion_gengamma(self, size, a=2.32 / 2.67, c=2.67, get_attribute=False, param=None, **kwargs):
         """
@@ -814,7 +849,8 @@ class OpticalDepth():
     @sample_axis_ratio.setter
     def sample_axis_ratio(self, prior):
         try:
-            self._sample_axis_ratio = getattr(self, prior)
+            args = self.sampler_priors_params["axis_ratio"]
+            self._sample_axis_ratio = getattr(self, prior)(sigma=None, get_attribute=True, param=args)
         except:
             self._sample_axis_ratio = prior
 
