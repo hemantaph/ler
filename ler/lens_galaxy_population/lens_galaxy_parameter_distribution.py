@@ -208,7 +208,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
     def __init__(
         self,
         npool=4,
-        z_min=0.001,
+        z_min=0.0,
         z_max=10.0,
         cosmology=None,
         event_type="BBH",
@@ -543,9 +543,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             lens_parameters = trim_dictionary(lens_parameters, size)
 
             # Sample the axis rotation angle
-            lens_parameters["phi"] = self.sample_axis_rotation_angle(
-                size=size, param=samplers_params["axis_rotation_angle"],
-            )
+            lens_parameters["phi"] = self.sample_axis_rotation_angle(size=size)
 
             # Transform the axis ratio and the angle, to ellipticities e1, e2, using lenstronomy
             lens_parameters["e1"], lens_parameters["e2"] = phi_q2_ellipticity(
@@ -554,13 +552,11 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
 
             # Sample shears
             lens_parameters["gamma1"], lens_parameters["gamma2"] = self.sample_shear(
-                size=size, param=samplers_params["shear"]
-            )
+                size=size)
 
             # Sample the spectral index of the mass density distribution
             lens_parameters["gamma"] = self.sample_mass_density_spectral_index(
-                size=size, param=samplers_params["mass_density_spectral_index"]
-            )
+                size=size)
 
             # sample gravitional waves source parameter
             param = dict(zs=np.array(zs))
@@ -570,10 +566,6 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
 
             # Add source params strongly lensed to the lens params
             lens_parameters.update(gw_param)
-            del (
-                lens_parameters["mass_1"],
-                lens_parameters["mass_2"],
-            )  # remove detector frame masses
 
             return lens_parameters
 
@@ -625,7 +617,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
 
         return np.array(zs_function(zs_sl))
 
-    def source_parameters(self, size, param=None):
+    def source_parameters(self, size, get_attribute=False, param=None):
         """
         Function to sample gw source parameters
 
@@ -650,8 +642,11 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         >>> lens.source_parameters(size=1000)
         """
 
-        # sample gravitional waves source parameter
-        return self.sample_gw_parameters(size=size, param=param)
+        if get_attribute:
+            return lambda size: self.sample_gw_parameters(size=size, param=param)
+        else:
+            # sample gravitional waves source parameter
+            return self.sample_gw_parameters(size=size, param=param)
     
     def lens_redshift_SDSS_catalogue(self, zs, get_attribute=False, param=None):
         """
@@ -931,6 +926,31 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             self._sample_source_redshift_sl = prior
 
     @property
+    def sample_source_parameters(self):
+        """
+        Function to sample source parameters conditioned on the source being strongly lensed
+
+        Parameters
+        ----------
+        size : `int`
+            number of lens parameters to sample
+
+        Returns
+        -------
+        source_parameters : `dict`
+            dictionary of source parameters conditioned on the source being strongly lensed
+        """
+        return self._sample_source_parameters
+    
+    @sample_source_parameters.setter
+    def sample_source_parameters(self, prior):
+        try:
+            args = self.lens_param_samplers_params["source_parameters"]
+            self._sample_source_parameters = getattr(self, prior)(size=None, get_attribute=True, param=args)
+        except:
+            self._sample_source_parameters = prior
+
+    @property
     def sample_lens_redshift(self):
         """
         Function to sample lens redshifts, conditioned on the lens being strongly lensed
@@ -982,7 +1002,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         --------
         >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
         >>> lens = LensGalaxyParameterDistribution()
-        >>> lens.axis_rotation_angle_uniform(size=1000)
+        >>> lens.sample_axis_rotation_angle(size=1000)
         """
         return self._sample_axis_rotation_angle
 
@@ -990,7 +1010,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
     def sample_axis_rotation_angle(self, prior):
         try:
             args = self.lens_param_samplers_params["axis_rotation_angle"]
-            self._sample_axis_rotation_angle = getattr(self, prior)(zs=None, get_attribute=True, param=args)
+            self._sample_axis_rotation_angle = getattr(self, prior)(size=None, get_attribute=True, param=args)
         except:
             self._sample_axis_rotation_angle = prior
 

@@ -60,6 +60,22 @@ def update_dict(old, new):
 
     return old
 
+def load_json(file_name):
+    """Load a json file.
+
+    Parameters
+    ----------
+    file_name : `str`
+        json file name for storing the parameters.
+
+    Returns
+    ----------
+    param : `dict`
+    """
+    with open(file_name, "r", encoding="utf-8") as f:
+        param = json.load(f)
+
+    return param
 
 def append_json(file_name, dictionary, replace=False):
     """Append and update a json file with a dictionary.
@@ -590,7 +606,7 @@ def batch_handler(size, batch_size, sampling_routine, json_file, resume=False,
             track_batches = track_batches + 1
             print(f"Batch no. {track_batches}")
             # new first batch with the frac_batches
-            sampling_routine(size=frac_batches, json_file=json_file)
+            sampling_routine(size=frac_batches, json_file=json_file);
         else:
             # check where to resume from
             try:
@@ -602,14 +618,14 @@ def batch_handler(size, batch_size, sampling_routine, json_file, resume=False,
                 track_batches = track_batches + 1
                 print(f"Batch no. {track_batches}")
                 # new first batch with the frac_batches
-                sampling_routine(size=frac_batches, json_file=json_file)
+                sampling_routine(size=frac_batches, json_file=json_file);
 
         # ---------------------------------------------------#
         min_, max_ = track_batches, num_batches
         for i in range(min_, max_):
             track_batches = track_batches + 1
             print(f"Batch no. {track_batches}")
-            sampling_routine(size=batch_size, json_file=json_file, resume=True)
+            sampling_routine(size=batch_size, json_file=json_file, resume=True);
         # ---------------------------------------------------#
 
         return None

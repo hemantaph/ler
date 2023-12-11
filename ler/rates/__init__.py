@@ -1,2 +1,2 @@
-from .rates import *
-from .gwrates import *
+from .ler import LeR
+from .gwrates import GWRATES
