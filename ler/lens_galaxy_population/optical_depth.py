@@ -196,7 +196,7 @@ class OpticalDepth():
         if create_new_interpolator:
             self.c_n_i.update(create_new_interpolator)
 
-        vd_name = sampler_priors["velocity_dispersion"]  # velocity dispersion sampler name
+        vd_name = self.sampler_priors["velocity_dispersion"]  # velocity dispersion sampler name
         tau_name = optical_depth_function  # optical depth function name
 
         self.create_lookup_table_fuction(self.z_max)
@@ -335,6 +335,20 @@ class OpticalDepth():
                     from .mp import optical_depth_sie1_mp
                     self.tau_mp_routine = optical_depth_sie1_mp
 
+            elif tau_name=="optical_depth_EPL_Shear_hemanta":
+                # axis-ratio sampler
+                if self.sampler_priors["axis_ratio"]=="axis_ratio_rayleigh":
+                    self.sample_axis_ratio = axis_ratio_rayleigh
+                else:
+                    self.sample_axis_ratio = self.sampler_priors["axis_ratio"]
+
+                if vd_name == "velocity_dispersion_ewoud":
+                    from .mp import optical_depth_epl2_mp
+                    self.tau_mp_routine = optical_depth_epl2_mp
+                else:
+                    from .mp import optical_depth_epl1_mp
+                    self.tau_mp_routine = optical_depth_epl1_mp
+
             # this will initialize the interpolator
             optical_depth_setter = interpolator_from_pickle(
                 param_dict_given = param_dict_given_,
@@ -349,6 +363,7 @@ class OpticalDepth():
                 create_new=create_new_,
             )
 
+        #self.optical_depth_setter = optical_depth_setter
         self.strong_lensing_optical_depth = optical_depth_setter
         self.sample_axis_ratio = self.sampler_priors["axis_ratio"]
 

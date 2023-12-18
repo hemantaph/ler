@@ -1342,7 +1342,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             args = self.gw_param_samplers_params["geocent_time"]
             # follwing should return a sampler function with only one argument (size)
             self._sample_geocent_time = getattr(self, prior)(
-                size=None, get_attribute=True, param=args
+                size=None, get_attribute=True, param=args,
             )
         except:
             self._sample_geocent_time = prior

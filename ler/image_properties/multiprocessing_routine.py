@@ -136,7 +136,7 @@ def solve_lens_equation(lens_parameters):
             sourcePos_y=y_source,
             kwargs_lens=kwargs_lens,
             solver="analytical",
-            magnification_limit=1.0 / 100.0,
+            magnification_limit=1.0 / 1000.0,
         )
         nImages = len(x0_image_position)  # shows how many images
         if nImages >= n_min_images:
@@ -180,5 +180,6 @@ def solve_lens_equation(lens_parameters):
         nImages,
         determinant,
         trace,
+        lens_parameters[3],
         iteration,
     )

@@ -585,7 +585,7 @@ class GWRATES(CBCSourceParameterDistribution):
         else:
             print("using provided gw_param dict...")
             # store all params in json file self.json_file_names["gw_param"]
-            append_json(self.json_file_names["gw_param"], gw_param, replace=True)
+            gw_param = gw_param.copy()
             
         if detectability_condition == "step_function":
             try:
