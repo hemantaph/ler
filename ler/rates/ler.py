@@ -232,6 +232,7 @@ class LeR(LensGalaxyParameterDistribution):
         snr_finder="gwsnr",
         json_file_names=None,
         directory="./interpolator_pickle",
+        verbose=True,
         **kwargs,
     ):
         
@@ -256,6 +257,85 @@ class LeR(LensGalaxyParameterDistribution):
             self.snr = snr_finder
 
         self.store_ler_params(json_file=self.json_file_names["ler_param"])
+
+        if verbose:
+            self.print_all_params()
+
+    def print_all_params(self):
+        """
+        Function to print all the parameters.
+        """
+
+        # print all relevant functions and sampler priors
+        print("\n LeR set up params:")
+        print("npool = ", self.npool)
+        print("z_min = ", self.z_min)
+        print("z_max = ", self.z_max)
+        print("event_type = ", self.event_type)
+        print("size = ", self.size)
+        print("batch_size = ", self.batch_size)
+        print("cosmology = ", self.cosmo)
+        print("snr_finder = ", self.snr)
+        print("json_file_names = ", self.json_file_names)
+        print("directory = ", self.directory)
+
+        print("\n Source params:")
+        print("merger_rate_density = ", self.gw_param_samplers["merger_rate_density"])
+        print("merger_rate_density_params = ", self.gw_param_samplers_params["merger_rate_density"])
+        print("source_frame_masses = ", self.gw_param_samplers["source_frame_masses"])
+        print("source_frame_masses_params = ", self.gw_param_samplers_params["source_frame_masses"])
+        print("geocent_time = ", self.gw_param_samplers["geocent_time"])
+        print("geocent_time_params = ", self.gw_param_samplers_params["geocent_time"])
+        print("ra = ", self.gw_param_samplers["ra"])
+        print("ra_params = ", self.gw_param_samplers_params["ra"])
+        print("dec = ", self.gw_param_samplers["dec"])
+        print("dec_params = ", self.gw_param_samplers_params["dec"])
+        print("phase = ", self.gw_param_samplers["phase"])
+        print("phase_params = ", self.gw_param_samplers_params["phase"])
+        print("psi = ", self.gw_param_samplers["psi"])
+        print("psi_params = ", self.gw_param_samplers_params["psi"])
+        print("theta_jn = ", self.gw_param_samplers["theta_jn"])
+        print("theta_jn_params = ", self.gw_param_samplers_params["theta_jn"])
+        if self.spin_zero==False:
+            print("a_1 = ", self.gw_param_samplers["a_1"])
+            print("a_1_params = ", self.gw_param_samplers_params["a_1"])
+            print("a_2 = ", self.gw_param_samplers["a_2"])
+            print("a_2_params = ", self.gw_param_samplers_params["a_2"])
+            if self.spin_precession==True:
+                print("tilt_1 = ", self.gw_param_samplers["tilt_1"])
+                print("tilt_1_params = ", self.gw_param_samplers_params["tilt_1"])
+                print("tilt_2 = ", self.gw_param_samplers["tilt_2"])
+                print("tilt_2_params = ", self.gw_param_samplers_params["tilt_2"])
+                print("phi_12 = ", self.gw_param_samplers["phi_12"])
+                print("phi_12_params = ", self.gw_param_samplers_params["phi_12"])
+                print("phi_jl = ", self.gw_param_samplers["phi_jl"])
+                print("phi_jl_params = ", self.gw_param_samplers_params["phi_jl"])
+
+        print("\n Lens params:")
+        print("lens_redshift = ", self.lens_param_samplers["lens_redshift"])
+        print("lens_redshift_params = ", self.lens_param_samplers_params["lens_redshift"])
+        print("velocity_dispersion = ", self.lens_param_samplers["velocity_dispersion"])
+        print("velocity_dispersion_params = ", self.lens_param_samplers_params["velocity_dispersion"])
+        print("axis_ratio = ", self.lens_param_samplers["axis_ratio"])
+        print("axis_ratio_params = ", self.lens_param_samplers_params["axis_ratio"])
+        print("axis_rotation_angle = ", self.lens_param_samplers["axis_rotation_angle"])
+        print("axis_rotation_angle_params = ", self.lens_param_samplers_params["axis_rotation_angle"])
+        print("shear = ", self.lens_param_samplers["shear"])
+        print("shear_params = ", self.lens_param_samplers_params["shear"])
+        print("mass_density_spectral_index = ", self.lens_param_samplers["mass_density_spectral_index"])
+        print("mass_density_spectral_index_params = ", self.lens_param_samplers_params["mass_density_spectral_index"])
+        # lens functions
+        print("\n Lens functions:")
+        print("strong_lensing_condition = ", self.lens_functions["strong_lensing_condition"])
+        print("optical_depth = ", self.lens_functions["optical_depth"])
+
+        print("\n Image properties:")
+        print("lens_model_list = ", self.lens_model_list)
+        print("n_min_images = ", self.n_min_images)
+        print("n_max_images = ", self.n_max_images)
+        print("max_magnification = ", 1000)
+        print("geocent_time_min = ", self.geocent_time_min)
+        print("geocent_time_max = ", self.geocent_time_max)
 
     @property
     def snr(self):
@@ -655,8 +735,7 @@ class LeR(LensGalaxyParameterDistribution):
             unlensed_param = get_param_from_json(unlensed_param)
         else:
             print("using provided unlensed_param dict...")
-            # store all params in json file self.json_file_names["unlensed_param"]
-            append_json(self.json_file_names["unlensed_param"], unlensed_param, replace=True)
+            unlensed_param = unlensed_param.copy()
             
         if detectability_condition == "step_function":
             param = unlensed_param["opt_snr_net"]
@@ -809,8 +888,7 @@ class LeR(LensGalaxyParameterDistribution):
             lensed_param = get_param_from_json(lensed_param)
         else:
             print("using provided lensed_param dict...")
-            # store all params in json file self.json_file_names["lensed_param"]
-            append_json(self.json_file_names["lensed_param"], lensed_param, replace=True)
+            lensed_param = lensed_param.copy()
 
         # check for images with snr above threshold
         # convert to array

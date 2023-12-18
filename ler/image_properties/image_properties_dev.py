@@ -8,6 +8,7 @@ warnings.filterwarnings("ignore")
 # for multiprocessing
 from multiprocessing import Pool
 from tqdm import tqdm
+import json
 
 import numpy as np
 from numba import njit
@@ -20,7 +21,8 @@ from .multiprocessing_routine import solve_lens_equation
 
 
 
-from ..utils import  interpolator_from_pickle, cubic_spline_interpolator
+from ..utils import  interpolator_from_pickle, cubic_spline_interpolator, inverse_transform_sampler
+
 
 class ImageProperties():
     """
@@ -28,92 +30,24 @@ class ImageProperties():
 
     Parameters
     ----------
-    npool : `int`
-        number of processes to use
-        default: 4
-    z_min : `float`
-        minimum redshift to consider
-        default: 0.0
-    z_max : `float`
-        maximum redshift to consider
-        default: 10.0
-    n_min_images : `int`
-        minimum number of images to consider
-        default: 2
-    n_max_images : `int`
-        maximum number of images to consider
-        default: 4
-    geocent_time_min : `float`
-        minimum geocent time to consider
-        default: 1126259462.4 , which is the GPS time of the first GW detection
-    geocent_time_max : `float`
-        maximum geocent time to consider
-        default: 1126259462.4+365*24*3600*100 , which is the GPS time of the first GW detection + 100 years. Some time delays can be very large.
-    lens_model_list : `list`
-        list of lens models
-        default: ['EPL_NUMBA', 'SHEAR']
-    cosmology : `astropy.cosmology`
-        cosmology
-        default: None/astropy.cosmology.LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
-    spin_zero : `bool`
-        whether to assume spin zero or not
-        default: True
-    spin_precession : `bool`
-        whether to assume spin precession or not
-        default: False
-    directory : `str`
-        directory to save the interpolator pickle files
-        default: "./interpolator_pickle"
-    create_new_interpolator : `dict`
-        dictionary to create new interpolator pickle files
-        default: dict(Dl_to_z=dict(create_new=False, resolution=500))
-
-    Examples
-    --------
-    >>> from ler.image_properties import ImageProperties
-    >>> image_properties = ImageProperties()
-    >>> lens_parameters = dict(zs=2.0, zl=0.5, gamma1=0.0, gamma2=0.0, e1=0.0, e2=0.0, gamma=2.0, theta_E=1.0)
-    >>> lens_parameters = image_properties.image_properties(lens_parameters)
-    >>> print(lens_parameters.keys())
-
-    Instance Attributes
-    ----------
-    ImageProperties has the following instance attributes:\n
-    +-------------------------------------+----------------------------------+
-    | Atrributes                          | Type                             |
-    +=====================================+==================================+
-    |:attr:`npool`                        | `int`                            |
-    +-------------------------------------+----------------------------------+
-    |:attr:`z_min`                        | `float`                          |
-    +-------------------------------------+----------------------------------+
-    |:attr:`z_max`                        | `float`                          |
-    +-------------------------------------+----------------------------------+
-    |:attr:`n_min_images`                 | `int`                            |
-    +-------------------------------------+----------------------------------+
-    |:attr:`n_max_images`                 | `int`                            |
-    +-------------------------------------+----------------------------------+
-    |:attr:`geocent_time_min`             | `float`                          |
-    +-------------------------------------+----------------------------------+
-    |:attr:`geocent_time_max`             | `float`                          |
-    +-------------------------------------+----------------------------------+
-    |:attr:`lens_model_list`              | `list`                           |
-    +-------------------------------------+----------------------------------+
-    |:attr:`cosmo`                        | `astropy.cosmology`              |
-    +-------------------------------------+----------------------------------+
-    |:attr:`spin_zero`                    | `bool`                           |
-    +-------------------------------------+----------------------------------+
-    |:attr:`spin_precession`              | `bool`                           |
-    +-------------------------------------+----------------------------------+
-    |:attr:`directory`                    | `str`                            |
-    +-------------------------------------+----------------------------------+
-    |:attr:`create_new_interpolator`      | `dict`                           |
-    +-------------------------------------+----------------------------------+
+        npool : `int`
+            number of processes to use
+            default: 4
+        n_min_images : `int`
+            minimum number of images to consider
+            default: 2
+        n_max_images : `int`
+            maximum number of images to consider
+            default: 4
+        lens_model_list : `list`
+            list of lens models
+            default: ['EPL_NUMBA', 'SHEAR']
 
     """
 
     def __init__(self, 
                  npool=4,
-                 z_min=0.0,
+                 z_min=0.01,
                  z_max=10,
                  n_min_images=2, 
                  n_max_images=4,
@@ -175,6 +109,7 @@ class ImageProperties():
                 lens related=>['zs': source redshift, 'zl': lens redshift, 'gamma1': shear component in the x-direction, 'gamma2': shear component in the y-direction, 'e1': ellipticity component in the x-direction, 'e2': ellipticity component in the y-direction, 'gamma': spectral index of the mass density distribution, 'theta_E': einstein radius in radian]\n
                 source related=>['mass_1': mass in detector frame (mass1>mass2), 'mass_2': mass in detector frame, 'mass_1_source':mass in source frame, 'mass_2_source':mass source frame, 'luminosity_distance': luminosity distance, 'theta_jn': inclination angle, 'psi': polarization angle, 'phase': coalesence phase, 'geocent_time': coalensence GPS time at geocenter, 'ra': right ascension, 'dec': declination, 'a_1': spin magnitude of the more massive black hole, 'a2': spin magnitude of the less massive black hole, 'tilt_1': tilt angle of the more massive black hole, 'tilt_2': tilt angle of the less massive black hole, 'phi_12': azimuthal angle between the two spins, 'phi_jl': azimuthal angle between the total angular momentum and the orbital angular momentum]\n
                 image related=>['x_source': source position in the x-direction, 'y_source': source position in the y-direction, 'x0_image_position': image position in the x-direction, 'x1_image_position': image position in the y-direction, 'magnifications': magnifications, 'time_delays': time delays, 'n_images': number of images formed, 'determinant': determinants, 'trace': traces, 'iteration': to keep track of the iteration number
+
         """
 
         npool = self.npool
@@ -238,7 +173,7 @@ class ImageProperties():
             # call the same function with different data in parallel
             # imap->retain order in the list, while map->doesn't
             for result in tqdm(
-                pool.imap_unordered(solve_lens_equation_, input_arguments),
+                pool.imap(solve_lens_equation_, input_arguments),
                 total=len(input_arguments),
                 ncols=100,
                 disable=False,
@@ -254,7 +189,6 @@ class ImageProperties():
                     n_image_i,
                     determinant_i,
                     trace_i,
-                    gamma_i,
                     iter_i,
                 ) = result
 
@@ -285,7 +219,6 @@ class ImageProperties():
                 traces[iter_i] = trace
                 x_source[iter_i] = x_source_i
                 y_source[iter_i] = y_source_i
-                lens_parameters["gamma"][iter_i] = gamma_i
 
         # time-delays: convert to positive values
         # time-delays will be relative to the first arrived signal of an lensed event
@@ -384,18 +317,47 @@ class ImageProperties():
                 np.ones((number_of_lensed_events, n_max_images)) * np.nan
             )
 
-        # Get the optimal signal to noise ratios for each image
-        # iterate over the image type (column)
+        # LALSimulation cannot handle NaN
+        # if snr_calculator.snr_type == "inner_product":
+        #     print("There will be {} progress bar iteration".format(n_max_images))
+
+        # handling geocent time
+        # x = np.linspace(1238166018, 1238166018 + 31536000, 1000)
+        # cdf = (1/31536000)*(x-1238166018)
+        # geocent_time = inverse_transform_sampler(size, cdf, x)
+
+        # idx = (geocent_time>1238166018) & (geocent_time<1238166018 + 31536000)
+        # print(np.sum(idx))
+        # geocent_time_min = 1238166018
+
         for i in range(n_max_images):
-            
-            # get the effective time for each image type
+            # Get the optimal signal to noise ratios for each image
+            # buffer = magnifications[:, i]
+            # idx1 = ~np.isnan(buffer)  # index of not-nan
+            # idx2 = (geocent_time-geocent_time_min) < 63072000 # two years
+            # idx = idx1 & idx2
+            # idx = ~np.isnan(buffer)  # index of not-nan
             effective_geocent_time = geocent_time + time_delays[:, i]
-            # choose only the events that are within the time range and also not nan
             idx = (effective_geocent_time < self.geocent_time_max) & (effective_geocent_time > self.geocent_time_min)
-            # get the effective luminosity distance for each image type
+
+            # with open("./geocent_time.json", "w") as write_file:
+            #     json.dump(list(geocent_time[idx]), write_file, indent=4)
+            
+            # effective_luminosity_distance = luminosity_distance[idx] / np.sqrt(
+            #     np.abs(buffer[idx])
+            # )
             effective_luminosity_distance = luminosity_distance / np.sqrt(
                 np.abs(magnifications[:, i])
             )
+            
+            # effective_geocent_time should be within two years
+            # idx_ = (effective_geocent_time < (geocent_time_min+31536000*2)) & (effective_geocent_time > geocent_time_min)
+            # idx = idx & idx_
+            # print(np.sum(idx))
+
+            # save geocent time
+            # with open("./time_delays.json", "w") as write_file:
+            #     json.dump(list(time_delays[idx, i]), write_file, indent=4)
 
             # Each image has their own effective luminosity distance and effective geocent time
             if len(effective_luminosity_distance) != 0:

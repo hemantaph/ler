@@ -3,6 +3,9 @@ from numba import njit
 #from scipy.stats import rayleigh
 from ..utils import inverse_transform_sampler, cubic_spline_interpolator
 
+from lenstronomy.LensModel.Solver.epl_shear_solver import caustics_epl_shear
+from shapely.geometry import Polygon
+
 # def rjs_with_einstein_radius(self, param_dict):
 #     theta_E = param_dict["theta_E"]
 #     size = len(theta_E)
@@ -208,3 +211,99 @@ def lens_redshift_SDSS_catalogue(zs, splineDc, splineDcInv, u, cdf):
     lens_galaxy_Dc = cubic_spline_interpolator(zs, splineDc_coeff, splineDc_z_list) * r  # corresponding element-wise multiplication between 2 arrays
 
     return cubic_spline_interpolator(lens_galaxy_Dc, splineDcInv_coeff, splineDcInv_z_list)
+
+
+def phi_cut_epl_shear(e1, e2, gamma, gamma1, gamma2):
+
+    results = []
+    size = len(e1)  # size of the array
+    for i in range(size):
+
+        while True:
+            kwargs_lens = [
+                {
+                    "theta_E": 1.,
+                    "e1": e1[i],
+                    "e2": e2[i],
+                    "gamma": gamma[i],
+                    "center_x": 0.0,
+                    "center_y": 0.0,
+                },
+                {
+                    "gamma1": gamma1[i],
+                    "gamma2": gamma2[i],
+                    "ra_0": 0,
+                    "dec_0": 0,
+                },
+            ]
+            caustic_double_points = caustics_epl_shear(
+                kwargs_lens, return_which="double", maginf=-5000
+            )
+            caustic = np.logical_not(np.isnan(caustic_double_points).any())
+            # If there is a nan, caustic=False, draw a new gamma
+            if caustic:
+                break
+            else:
+                gamma[i] = np.random.normal(loc=2.0, scale=0.2, size=1)[0]
+
+        caustic_double = Polygon(caustic_double_points.T)
+        area = caustic_double.area
+
+        # kwargs_lens = [
+        #     {
+        #         "theta_E": 1.,
+        #         "e1": e1[i],
+        #         "e2": e2[i],
+        #         "gamma": gamma[i],
+        #         "center_x": 0.0,
+        #         "center_y": 0.0,
+        #     },
+        #     {
+        #         "gamma1": gamma1[i],
+        #         "gamma2": gamma2[i],
+        #         "ra_0": 0,
+        #         "dec_0": 0,
+        #     },
+        # ]
+
+        # caustic_double_points = caustics_epl_shear(
+        #             kwargs_lens, return_which="double", maginf=-5000
+        #         )
+
+        # try:
+        #     caustic_double = Polygon(caustic_double_points.T)
+        
+        #     area = caustic_double.area
+        # except:
+        #     print("\n",e1[i], e2[i], gamma[i], gamma1[i], gamma2[i])
+
+        results.append(np.round(area/np.pi, 3))
+
+    return np.array(results)
+
+@njit
+def bounded_normal_sample(size, mean, std, low, high):
+    """
+    Function to sample from a normal distribution with bounds.
+
+    Parameters
+    ----------
+    mean: `float`
+        Mean of the normal distribution
+    std: `float`
+        Standard deviation of the normal distribution
+    low: `float`
+        Lower bound
+    high: `float`
+        Upper bound
+    """
+    samples = np.empty(size)
+    for i in range(size):
+        while True:
+            sample = np.random.normal(mean, std)
+            if low <= sample <= high:
+                break
+        samples[i] = sample
+    return samples
+
+    

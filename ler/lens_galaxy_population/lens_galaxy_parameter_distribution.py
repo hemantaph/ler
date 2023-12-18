@@ -139,10 +139,10 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
     |:meth:`~compute_einstein_radii`      | Function to compute the Einstein |
     |                                     | radii of the lens galaxies       |
     +-------------------------------------+----------------------------------+
-    |:meth:`~rjs_with_einstein_radius`    | Function to conduct rejection    |
+    |:meth:`~rjs_with_cross_section_SIE`    | Function to conduct rejection    |
     |                                     | sampling wrt einstein radius     |
     +-------------------------------------+----------------------------------+
-    |:meth:`~rjs_with_cross_section`      | Function to conduct rejection    |
+    |:meth:`~rjs_with_cross_section_SIE`      | Function to conduct rejection    |
     |                                     | sampling wrt cross_section       |
     +-------------------------------------+----------------------------------+
     |:attr:`~rejection_sample_sl`         | Function to conduct rejection    |
@@ -404,7 +404,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
                 source_parameters=None,
             )
             lens_functions_ = dict(
-                strong_lensing_condition="rjs_with_einstein_radius",
+                strong_lensing_condition="rjs_with_cross_section_SIE",
                 optical_depth="optical_depth_SIS_haris",
                 param_sampler_type="sample_all_routine",
             )
@@ -843,7 +843,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
 
         return theta_E
 
-    def rjs_with_einstein_radius(self, param_dict):
+    def rjs_with_cross_section_SIE(self, param_dict):
         """
         Function to conduct rejection sampling wrt einstein radius
 
@@ -867,7 +867,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         # return the dictionary with the mask applied
         return {key: val[mask] for key, val in param_dict.items()}
 
-    def rjs_with_cross_section(self, param_dict):
+    def rjs_with_cross_section_SIE(self, param_dict):
         """
         Function to conduct rejection sampling wrt cross_section
 
@@ -1131,7 +1131,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         """
 
         self._available_lens_functions = dict(
-            strong_lensing_condition=["rjs_with_einstein_radius", "rjs_with_cross_section"],
+            strong_lensing_condition=["rjs_with_cross_section_SIE", "rjs_with_cross_section_SIE"],
             optical_depth=["SIS", "optical_depth_SIS_haris","optical_depth_SIS_hemanta", "SIE", "optical_depth_SIE_hemanta"],
             param_sampler_type=["sample_all_routine"],
         )
