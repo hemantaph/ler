@@ -19,3 +19,7 @@ __pycache__/
 # C extensions
 *.so
 
+# Ignore build, dist and ler.egg-info
+build
+dist
+ler.egg-info
