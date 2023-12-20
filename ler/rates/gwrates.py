@@ -196,6 +196,7 @@ class GWRATES(CBCSourceParameterDistribution):
         snr_finder="gwsnr",
         json_file_names=None,
         directory="./interpolator_pickle",
+        verbose=True,
         **kwargs,
     ):
         
@@ -220,6 +221,59 @@ class GWRATES(CBCSourceParameterDistribution):
             self.snr = snr_finder
 
         self.store_gwrates_params(json_file=self.json_file_names["gwrates_param"])
+
+        if verbose:
+            self.print_all_params()
+
+    def print_all_params(self):
+        """
+        Function to print all the parameters.
+        """
+
+        # print all relevant functions and sampler priors
+        print("\n LeR set up params:")
+        print("npool = ", self.npool)
+        print("z_min = ", self.z_min)
+        print("z_max = ", self.z_max)
+        print("event_type = ", self.event_type)
+        print("size = ", self.size)
+        print("batch_size = ", self.batch_size)
+        print("cosmology = ", self.cosmo)
+        print("snr_finder = ", self.snr)
+        print("json_file_names = ", self.json_file_names)
+        print("directory = ", self.directory)
+
+        print("\n Source params:")
+        print("merger_rate_density = ", self.gw_param_samplers["merger_rate_density"])
+        print("merger_rate_density_params = ", self.gw_param_samplers_params["merger_rate_density"])
+        print("source_frame_masses = ", self.gw_param_samplers["source_frame_masses"])
+        print("source_frame_masses_params = ", self.gw_param_samplers_params["source_frame_masses"])
+        print("geocent_time = ", self.gw_param_samplers["geocent_time"])
+        print("geocent_time_params = ", self.gw_param_samplers_params["geocent_time"])
+        print("ra = ", self.gw_param_samplers["ra"])
+        print("ra_params = ", self.gw_param_samplers_params["ra"])
+        print("dec = ", self.gw_param_samplers["dec"])
+        print("dec_params = ", self.gw_param_samplers_params["dec"])
+        print("phase = ", self.gw_param_samplers["phase"])
+        print("phase_params = ", self.gw_param_samplers_params["phase"])
+        print("psi = ", self.gw_param_samplers["psi"])
+        print("psi_params = ", self.gw_param_samplers_params["psi"])
+        print("theta_jn = ", self.gw_param_samplers["theta_jn"])
+        print("theta_jn_params = ", self.gw_param_samplers_params["theta_jn"])
+        if self.spin_zero==False:
+            print("a_1 = ", self.gw_param_samplers["a_1"])
+            print("a_1_params = ", self.gw_param_samplers_params["a_1"])
+            print("a_2 = ", self.gw_param_samplers["a_2"])
+            print("a_2_params = ", self.gw_param_samplers_params["a_2"])
+            if self.spin_precession==True:
+                print("tilt_1 = ", self.gw_param_samplers["tilt_1"])
+                print("tilt_1_params = ", self.gw_param_samplers_params["tilt_1"])
+                print("tilt_2 = ", self.gw_param_samplers["tilt_2"])
+                print("tilt_2_params = ", self.gw_param_samplers_params["tilt_2"])
+                print("phi_12 = ", self.gw_param_samplers["phi_12"])
+                print("phi_12_params = ", self.gw_param_samplers_params["phi_12"])
+                print("phi_jl = ", self.gw_param_samplers["phi_jl"])
+                print("phi_jl_params = ", self.gw_param_samplers_params["phi_jl"])
 
     @property
     def snr(self):

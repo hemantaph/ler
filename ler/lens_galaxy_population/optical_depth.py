@@ -186,7 +186,8 @@ class OpticalDepth():
 
         self.directory = directory
         self.c_n_i = dict(
-            velocity_dispersion=dict(create_new=False, resolution=100),
+            velocity_dispersion=dict(create_new=False, resolution=500),
+            axis_ratio=dict(create_new=False, resolution=500),
             optical_depth=dict(create_new=False, resolution=100),
             z_to_Dc=dict(create_new=False, resolution=500),
             Dc_to_z=dict(create_new=False, resolution=500),
@@ -304,13 +305,14 @@ class OpticalDepth():
 
         else:
             # setting up input parameters for interpolation
-            param_dict_given_ = dict(z_min=self.z_min, z_max=self.z_max, vd_min=self.vd_min, vd_max=self.vd_max, cosmology=self.cosmo, tau_name=tau_name, vd_name=vd_name)
+            resolution = self.c_n_i["optical_depth"]["resolution"]
+            param_dict_given_ = dict(z_min=self.z_min, z_max=self.z_max, vd_min=self.vd_min, vd_max=self.vd_max, cosmology=self.cosmo, tau_name=tau_name, vd_name=vd_name, q_name=self.sampler_priors["axis_ratio"], resolution=resolution)
             #self.param_dict_given_ = param_dict_given_
             sub_directory_ = tau_name
             if self.z_min==0.0:
-                x_ = np.linspace(self.z_min+0.001, self.z_max, self.c_n_i["optical_depth"]["resolution"])
+                x_ = np.geomspace(self.z_min+0.001, self.z_max, resolution)
             else:
-                x_ = np.geomspace(self.z_min, self.z_max, self.c_n_i["optical_depth"]["resolution"])
+                x_ = np.geomspace(self.z_min, self.z_max, resolution)
             pdf_func_ = self.optical_depth_multiprocessing
             dimension_ = 1
             category_ = "function"
@@ -335,20 +337,6 @@ class OpticalDepth():
                     from .mp import optical_depth_sie1_mp
                     self.tau_mp_routine = optical_depth_sie1_mp
 
-            elif tau_name=="optical_depth_EPL_Shear_hemanta":
-                # axis-ratio sampler
-                if self.sampler_priors["axis_ratio"]=="axis_ratio_rayleigh":
-                    self.sample_axis_ratio = axis_ratio_rayleigh
-                else:
-                    self.sample_axis_ratio = self.sampler_priors["axis_ratio"]
-
-                if vd_name == "velocity_dispersion_ewoud":
-                    from .mp import optical_depth_epl2_mp
-                    self.tau_mp_routine = optical_depth_epl2_mp
-                else:
-                    from .mp import optical_depth_epl1_mp
-                    self.tau_mp_routine = optical_depth_epl1_mp
-
             # this will initialize the interpolator
             optical_depth_setter = interpolator_from_pickle(
                 param_dict_given = param_dict_given_,
@@ -367,7 +355,7 @@ class OpticalDepth():
         self.strong_lensing_optical_depth = optical_depth_setter
         self.sample_axis_ratio = self.sampler_priors["axis_ratio"]
 
-    def axis_ratio_rayleigh(self, sigma, q_min=0.2, q_max=1.0, get_attribute=False, param=None):
+    def axis_ratio_rayleigh(self, sigma, q_min=0.2, q_max=1.0, get_attribute=False, param=None, **kwargs):
         """
         Function to sample axis ratio from rayleigh distribution with given velocity dispersion.
 
@@ -400,6 +388,85 @@ class OpticalDepth():
             return njit(lambda sigma: axis_ratio_rayleigh(sigma, q_min, q_max))
         else:
             return axis_ratio_rayleigh(sigma, q_min, q_max)
+        
+    def axis_ratio_padilla_strauss(self, size=1000, q_min=0.2, q_max=1.0, get_attribute=False, param=None, **kwargs):
+        """
+        Function to sample axis ratio using Padilla and Strauss 2008 distribution for axis ratio
+
+        Parameters
+        ----------
+        size : `int`
+            sample size
+        q_min, q_max : `float`
+            minimum and maximum axis ratio
+        get_attribute : `bool`
+            if True, returns a function that can be used to sample axis ratio
+
+        Returns
+        -------
+        q : `float: array`
+            axis ratio of the lens galaxy
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth(sampler_priors=dict(axis_ratio="axis_ratio_padilla_strauss"))
+        >>> print(od.sample_axis_ratio(size=10))
+        """
+
+        try:
+            size = len(kwargs["sigma"])
+        except:
+            pass
+        if param:
+            q_min = param["q_min"]
+            q_max = param["q_max"]
+
+        # Using Padilla and Strauss 2008 distribution for axis ratio
+        q = np.array([0.04903276402927845, 0.09210526315789469, 0.13596491228070173, 0.20789473684210524, 0.2899703729522482, 0.3230132450331126, 0.35350877192982455, 0.37946148483792264, 0.4219298245614036, 0.4689525967235971, 0.5075026141512723, 0.5226472638550018, 0.5640350877192983, 0.6096491228070177, 0.6500000000000001, 0.6864848379226213, 0.7377192982456142, 0.7787295224817011, 0.8007581038689441, 0.822786685256187, 0.8668438480306729, 0.8973684210526317, 0.9254385964912283])
+        pdf = np.array([0.04185262687135349, 0.06114520695141845, 0.096997499638376, 0.1932510900336828, 0.39547914337673706, 0.49569751276216234, 0.6154609137685201, 0.7182049959882812, 0.920153741243567, 1.1573982157399754, 1.3353263628106684, 1.413149656448315, 1.5790713532948977, 1.7280185150744938, 1.8132994441344819, 1.8365803753840484, 1.8178662203211204, 1.748929843583365, 1.688182592496342, 1.6274353414093188, 1.4948487090314488, 1.402785526832393, 1.321844068356993])
+
+        spline_coeff = interpolator_from_pickle(
+            param_dict_given = dict(parameter="axis_ratio", pdf="Padilla and Strauss 2008 distribution for axis ratio"),
+            directory=self.directory,
+            sub_directory="axis_ratio",
+            name="axis_ratio_spline_coeff",
+            x = q,
+            pdf_func=None,
+            y=pdf,
+            conditioned_y=None,
+            dimension=1,
+            category="function",
+            create_new=True,
+        )
+
+        resolution = self.c_n_i["axis_ratio"]["resolution"]
+        create_new = self.c_n_i["axis_ratio"]["create_new"]
+        q_array = np.linspace(q_min, q_max, resolution)
+        pdf_array = cubic_spline_interpolator(q_array, spline_coeff[0], spline_coeff[1])
+
+        q_inv_cdf = interpolator_from_pickle(
+            param_dict_given = dict(parameter="axis_ratio", pdf="Padilla and Strauss 2008 distribution for axis ratio", q_min=q_min, q_max=q_max, resolution=resolution),
+            directory=self.directory,
+            sub_directory="axis_ratio",
+            name="axis_ratio",
+            x = q_array,
+            pdf_func=None,
+            y=pdf_array,
+            conditioned_y=None,
+            dimension=1,
+            category="inv_cdf",
+            create_new=create_new,
+        )
+
+        # def sampler(sigma):
+        #     size = len(sigma)
+        #     return inverse_transform_sampler(size, q_inv_cdf[0], q_inv_cdf[1])
+            
+        if get_attribute:
+            return njit(lambda sigma: inverse_transform_sampler(len(sigma), q_inv_cdf[0], q_inv_cdf[1]))
+        else:
+            return inverse_transform_sampler(size, q_inv_cdf[0], q_inv_cdf[1])
 
     def velocity_dispersion_gengamma(self, size, a=2.32 / 2.67, c=2.67, get_attribute=False, param=None, **kwargs):
         """
