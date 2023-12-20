@@ -386,7 +386,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             lens_priors_ = dict(
                 source_redshift_sl="strongly_lensed_source_redshifts",
                 lens_redshift="lens_redshift_SDSS_catalogue",
-                velocity_dispersion="velocity_dispersion_gengamma",
+                velocity_dispersion="velocity_dispersion_ewoud",
                 axis_ratio="axis_ratio_rayleigh",
                 axis_rotation_angle="axis_rotation_angle_uniform",
                 shear="shear_norm",
@@ -405,7 +405,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             )
             lens_functions_ = dict(
                 strong_lensing_condition="rjs_with_cross_section_SIE",
-                optical_depth="optical_depth_SIS_haris",
+                optical_depth="optical_depth_SIE_hemanta",
                 param_sampler_type="sample_all_routine",
             )
         else:
@@ -507,7 +507,10 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             sigma = self.sample_velocity_dispersion(len(zs), zl)
 
         # Sample axis ratios
-        q = self.sample_axis_ratio(sigma)
+        try:
+            q = self.sample_axis_ratio(sigma)
+        except:
+            q = self.sample_axis_ratio(len(sigma))
 
         # Compute the Einstein radii
         theta_E = self.compute_einstein_radii(sigma, zl, zs)
