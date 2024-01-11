@@ -273,8 +273,14 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             z_to_luminosity_distance=dict(create_new=False, resolution=500),
             differential_comoving_volume=dict(create_new=False, resolution=500),
         )
-        if create_new_interpolator:
+        if isinstance(create_new_interpolator, dict):
             self.create_new_interpolator.update(create_new_interpolator)
+        elif create_new_interpolator is True:
+            self.create_new_interpolator = dict(
+                redshift_distribution=dict(create_new=True, resolution=500),
+                z_to_luminosity_distance=dict(create_new=True, resolution=500),
+                differential_comoving_volume=dict(create_new=True, resolution=500),
+            )
 
         # dealing with prior functions and categorization
         (
