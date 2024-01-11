@@ -336,7 +336,7 @@ class ImageProperties():
         -------
             snrs : `dict`
                 signal to noise ratio for each image in each event.
-                (dictionary containing 'H1', 'L1', ..., and 'opt_snr_net', which is the network snr, for each image as an array with dimensions (number_of_lensed_events,n_max_images) )
+                (dictionary containing 'H1', 'L1', ..., and 'optimal_snr_net', which is the network snr, for each image as an array with dimensions (number_of_lensed_events,n_max_images) )
 
         """
         # needed to calculate effective luminosity distance and effective time delay
@@ -376,7 +376,7 @@ class ImageProperties():
         
         # setting up snr dictionary
         optimal_snrs = dict()
-        optimal_snrs["opt_snr_net"] = (
+        optimal_snrs["optimal_snr_net"] = (
             np.ones((number_of_lensed_events, n_max_images)) * np.nan
         )
         for detector in list_of_detectors:
@@ -419,7 +419,7 @@ class ImageProperties():
                     jsonFile=False,
                 )
 
-                optimal_snrs["opt_snr_net"][idx, i] = optimal_snr["opt_snr_net"]
+                optimal_snrs["optimal_snr_net"][idx, i] = optimal_snr["optimal_snr_net"]
                 for detector in list_of_detectors:
                     optimal_snrs[detector][idx, i] = optimal_snr[detector]
 

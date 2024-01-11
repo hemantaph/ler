@@ -451,13 +451,13 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         self,
         size,
         mminbh=4.98,
-        mmaxbh=86.22,
-        alpha=2.63,
-        mu_g=33.07,
-        sigma_g=5.69,
-        lambda_peak=0.10,
-        delta_m=4.82,
-        beta=1.26,
+        mmaxbh=112.5,
+        alpha=3.78,
+        mu_g=32.27,
+        sigma_g=3.88,
+        lambda_peak=0.03,
+        delta_m=4.8,
+        beta=0.81,
         get_attribute=False,
         param=None,
     ):
@@ -1310,13 +1310,21 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
     @sample_source_frame_masses.setter
     def sample_source_frame_masses(self, prior):
+        args = self.gw_param_samplers_params["source_frame_masses"]
+    
+        # Check if 'prior' is a callable attribute of self
+        args = self.gw_param_samplers_params["source_frame_masses"]
         try:
-            args = self.gw_param_samplers_params["source_frame_masses"]
+            # If prior is a method of the class
             self._sample_source_frame_masses = getattr(self, prior)(
-                size=None, get_attribute=True, param=args
+                size=None, get_attribute=True, param=args,
             )
         except:
-            self._sample_source_frame_masses = prior
+            # If prior is a standalone function
+            try:
+                self._sample_source_frame_masses = lambda size: prior(size, param=args)
+            except:
+                raise ValueError("given source_frame_masses function should follow the signature of the default ones")
 
     @property
     def sample_geocent_time(self):

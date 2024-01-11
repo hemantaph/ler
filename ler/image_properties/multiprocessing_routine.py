@@ -126,21 +126,26 @@ def solve_lens_equation(lens_parameters):
     strongly_lensed = False
     while strongly_lensed == False:
         # Draw random points within the caustic
-        x_source, y_source = pointpats.random.poisson(caustic_double, size=1)
-        # Solve the lens equation
-        (
-            x0_image_position,
-            x1_image_position,
-        ) = lens_eq_solver.image_position_from_source(
-            sourcePos_x=x_source,
-            sourcePos_y=y_source,
-            kwargs_lens=kwargs_lens,
-            solver="analytical",
-            magnification_limit=1.0 / 1000.0,
-        )
-        nImages = len(x0_image_position)  # shows how many images
-        if nImages >= n_min_images:
-            strongly_lensed = True
+        # sometimes x_source, y_source positions are at same location and the solver fails
+        # so we use a try-except block to catch the error and draw a new point
+        try:
+            x_source, y_source = pointpats.random.poisson(caustic_double, size=1)
+            # Solve the lens equation
+            (
+                x0_image_position,
+                x1_image_position,
+            ) = lens_eq_solver.image_position_from_source(
+                sourcePos_x=x_source,
+                sourcePos_y=y_source,
+                kwargs_lens=kwargs_lens,
+                solver="analytical",
+                magnification_limit=1.0 / 1000.0,
+            )
+            nImages = len(x0_image_position)  # shows how many images
+            if nImages >= n_min_images:
+                strongly_lensed = True
+        except:
+            pass
 
     # ---------------------------------------------------#
     #          magnification and time-delay
