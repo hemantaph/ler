@@ -846,7 +846,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
 
         return theta_E
 
-    def rjs_with_cross_section_SIE(self, param_dict):
+    def rjs_with_cross_section_SIS(self, param_dict):
         """
         Function to conduct rejection sampling wrt einstein radius
 

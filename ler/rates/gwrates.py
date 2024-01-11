@@ -3,15 +3,11 @@
 This module contains the main class for calculating the rates of detectable gravitational waves events. The class inherits the :class:`~ler.gw_source_population.CBCSourceParameterDistribution` class for source parameters sampling and uses `gwsnr` package for SNR calculation. 
 """
 
+import contextlib
 import os
 import warnings
 warnings.filterwarnings("ignore")
-import json
-import contextlib
 import numpy as np
-import matplotlib.pyplot as plt
-from gwsnr import GWSNR
-from scipy.stats import norm, gaussian_kde
 from astropy.cosmology import LambdaCDM
 from ..gw_source_population import CBCSourceParameterDistribution
 from ..utils import load_json, append_json, get_param_from_json, batch_handler
@@ -65,6 +61,8 @@ class GWRATES(CBCSourceParameterDistribution):
     +-------------------------------------+----------------------------------+
     | Atrributes                          | Type                             |
     +=====================================+==================================+
+    |:attr:`~npool`                       | `int`                            |
+    +-------------------------------------+----------------------------------+
     |:attr:`~z_min`                       | `float`                          |
     +-------------------------------------+----------------------------------+
     |:attr:`~z_max`                       | `float`                          |
@@ -84,10 +82,6 @@ class GWRATES(CBCSourceParameterDistribution):
     |:attr:`~gw_param_sampler_dict`       | `dict`                           |
     +-------------------------------------+----------------------------------+
     |:attr:`~snr_calculator_dict`         | `dict`                           |
-    +-------------------------------------+----------------------------------+
-    |:attr:`~gw_param_json_file`          | `str`                            |
-    +-------------------------------------+----------------------------------+
-    |:attr:`~gw_param_detectable_json_file`| `str`                           |
     +-------------------------------------+----------------------------------+
     |:attr:`~gw_param`                    | `dict`                           |
     +-------------------------------------+----------------------------------+
@@ -112,14 +106,14 @@ class GWRATES(CBCSourceParameterDistribution):
     |:meth:`~store_gwrates_params`        | Function to store the all the    |
     |                                     | necessary parameters.            |
     +-------------------------------------+----------------------------------+
-    |:meth:`~gw_cbc_statistics`           | Function to generate gw    |
+    |:meth:`~gw_cbc_statistics`           | Function to generate gw          |
     |                                     | GW source parameters.            |
     +-------------------------------------+----------------------------------+
-    |:meth:`~gw_sampling_routine`   | Function to generate gw    |
+    |:meth:`~gw_sampling_routine`         | Function to generate gw          |
     |                                     | GW source parameters.            |
     +-------------------------------------+----------------------------------+
-    |:meth:`~gw_rate`               | Function to calculate the        |
-    |                                     | gw rate.                   |
+    |:meth:`~gw_rate`                     | Function to calculate the        |
+    |                                     | gw rate.                         |
     +-------------------------------------+----------------------------------+
     |:meth:`~selecting_n_gw_detectable_events`                               |
     +-------------------------------------+----------------------------------+
@@ -212,18 +206,24 @@ class GWRATES(CBCSourceParameterDistribution):
             self.json_file_names.update(json_file_names)
         self.directory = directory
 
-        # initialization of parent class
-        self.class_initialization(params=kwargs)
-        if snr_finder == "gwsnr":
-            # initialization self.snr and self.pdet from GWSNR class
-            self.gwsnr_intialization(params=kwargs)
-        else:
-            self.snr = snr_finder
+        def initialization():
+            # initialization of parent class
+            self.class_initialization(params=kwargs)
+            if snr_finder == "gwsnr":
+                # initialization self.snr and self.pdet from GWSNR class
+                self.gwsnr_intialization(params=kwargs)
+            else:
+                self.snr = snr_finder
 
-        self.store_gwrates_params(json_file=self.json_file_names["gwrates_param"])
+            self.store_gwrates_params(output_jsonfile=self.json_file_names["gwrates_param"])
 
         if verbose:
+            initialization()
             self.print_all_params()
+        else:
+            with contextlib.redirect_stdout(None):
+                initialization()
+            
 
     def print_all_params(self):
         """
@@ -231,7 +231,7 @@ class GWRATES(CBCSourceParameterDistribution):
         """
 
         # print all relevant functions and sampler priors
-        print("\n LeR set up params:")
+        print("\n GWRATES set up params:")
         print("npool = ", self.npool)
         print("z_min = ", self.z_min)
         print("z_max = ", self.z_max)
@@ -243,7 +243,34 @@ class GWRATES(CBCSourceParameterDistribution):
         print("json_file_names = ", self.json_file_names)
         print("directory = ", self.directory)
 
-        print("\n Source params:")
+        print("\n GWRATES also takes ler.CBCSourceParameterDistribution params as kwargs, as follows:")
+        print("source_priors=", self.gw_param_sampler_dict["source_priors"])
+        print("source_priors_params=", self.gw_param_sampler_dict["source_priors_params"])
+        print("spin_zero=", self.gw_param_sampler_dict["spin_zero"])
+        print("spin_precession=", self.gw_param_sampler_dict["spin_precession"])
+        print("create_new_interpolator=", self.gw_param_sampler_dict["create_new_interpolator"])
+
+        print("\n GWRATES also takes gwsnr.GWSNR params as kwargs, as follows:")
+        print("mtot_min = ", self.snr_calculator_dict["mtot_min"])
+        print("mtot_max = ", self.snr_calculator_dict["mtot_max"])
+        print("ratio_min = ", self.snr_calculator_dict["ratio_min"])
+        print("ratio_max = ", self.snr_calculator_dict["ratio_max"])
+        print("mtot_resolution = ", self.snr_calculator_dict["mtot_resolution"])
+        print("ratio_resolution = ", self.snr_calculator_dict["ratio_resolution"])
+        print("sampling_frequency = ", self.snr_calculator_dict["sampling_frequency"])
+        print("waveform_approximant = ", self.snr_calculator_dict["waveform_approximant"])
+        print("minimum_frequency = ", self.snr_calculator_dict["minimum_frequency"])
+        print("snr_type = ", self.snr_calculator_dict["snr_type"])
+        print("psds = ", self.snr_calculator_dict["psds"])
+        print("isit_psd_file = ", self.snr_calculator_dict["isit_psd_file"])
+        print("ifos = ", self.snr_calculator_dict["ifos"])
+        print("interpolator_dir = ", self.snr_calculator_dict["interpolator_dir"])
+        print("create_new_interpolator = ", self.snr_calculator_dict["create_new_interpolator"])
+        print("gwsnr_verbose = ", self.snr_calculator_dict["gwsnr_verbose"])
+        print("multiprocessing_verbose = ", self.snr_calculator_dict["multiprocessing_verbose"])
+        print("mtot_cut = ", self.snr_calculator_dict["mtot_cut"])
+
+        print("\n For reference, the chosen source parameters are listed below:")
         print("merger_rate_density = ", self.gw_param_samplers["merger_rate_density"])
         print("merger_rate_density_params = ", self.gw_param_samplers_params["merger_rate_density"])
         print("source_frame_masses = ", self.gw_param_samplers["source_frame_masses"])
@@ -275,6 +302,7 @@ class GWRATES(CBCSourceParameterDistribution):
                 print("phi_jl = ", self.gw_param_samplers["phi_jl"])
                 print("phi_jl_params = ", self.gw_param_samplers_params["phi_jl"])
 
+        
     @property
     def snr(self):
         """
@@ -412,6 +440,9 @@ class GWRATES(CBCSourceParameterDistribution):
             create_new_interpolator=input_params["create_new_interpolator"],
         )
 
+        self.gw_param_sampler_dict["source_priors"]=self.gw_param_samplers.copy()
+        self.gw_param_sampler_dict["source_priors_params"]=self.gw_param_samplers_params.copy()
+
     def gwsnr_intialization(self, params=None):
         """
         Function to initialize the gwsnr class
@@ -421,23 +452,29 @@ class GWRATES(CBCSourceParameterDistribution):
         params : `dict`
             dictionary of parameters to initialize the gwsnr class
         """
+        from gwsnr import GWSNR
 
         # initialization of GWSNR class
         input_params = dict(
             npool=self.npool,
             mtot_min=2.0,
-            mtot_max=439.6,
-            size_mtot=100,
-            size_mass_ratio=50,
+            mtot_max=200,
+            ratio_min=0.1,
+            ratio_max=1.0,
+            mtot_resolution=100,
+            ratio_resolution=50,
             sampling_frequency=2048.0,
             waveform_approximant="IMRPhenomD",
             minimum_frequency=20.0,
             snr_type="interpolation",
-            waveform_inspiral_must_be_above_fmin=False,
-            psds=None,
-            psd_file=False,
+            psds={'L1':'aLIGO_O4_high_asd.txt','H1':'aLIGO_O4_high_asd.txt', 'V1':'AdV_asd.txt'},
+            isit_psd_file=False,
             ifos=None,
             interpolator_dir=self.directory,
+            create_new_interpolator=False,
+            gwsnr_verbose=True,
+            multiprocessing_verbose=True,
+            mtot_cut=True,
         )
         if params:
             for key, value in params.items():
@@ -448,31 +485,35 @@ class GWRATES(CBCSourceParameterDistribution):
                     npool=input_params["npool"],
                     mtot_min=input_params["mtot_min"],
                     mtot_max=input_params["mtot_max"],
-                    # nsampl_es_mtot=input_params["size_mtot"],
-                    # nsampl_es_mass_ratio=input_params["size_mass_ratio"],
+                    ratio_min=input_params["ratio_min"],
+                    ratio_max=input_params["ratio_max"],
+                    mtot_resolution=input_params["mtot_resolution"],
+                    ratio_resolution=input_params["ratio_resolution"],
                     sampling_frequency=input_params["sampling_frequency"],
                     waveform_approximant=input_params["waveform_approximant"],
                     minimum_frequency=input_params["minimum_frequency"],
                     snr_type=input_params["snr_type"],
-                    waveform_inspiral_must_be_above_fmin=input_params[
-                        "waveform_inspiral_must_be_above_fmin"
-                    ],
                     psds=input_params["psds"],
-                    psd_file=input_params["psd_file"],
+                    isit_psd_file=input_params["isit_psd_file"],
                     ifos=input_params["ifos"],
                     interpolator_dir=input_params["interpolator_dir"],
+                    create_new_interpolator=input_params["create_new_interpolator"],
+                    gwsnr_verbose=input_params["gwsnr_verbose"],
+                    multiprocessing_verbose=input_params["multiprocessing_verbose"],
+                    mtot_cut=input_params["mtot_cut"],
                 )
 
         self.snr = gwsnr.snr
+        self.list_of_detectors = gwsnr.detector_list
         #self.pdet = gwsnr.pdet
 
-    def store_gwrates_params(self, json_file="./gwrates_params.json"):
+    def store_gwrates_params(self, output_jsonfile="./gwrates_params.json"):
         """
         Function to store the all the necessary parameters. This is useful for reproducing the results. All the parameters stored are in string format to make it json compatible.
 
         Parameters
         ----------
-        json_file : `str`
+        output_jsonfile : `str`
             name of the json file to store the parameters
         """
 
@@ -503,14 +544,14 @@ class GWRATES(CBCSourceParameterDistribution):
                 snr_calculator_dict[key] = str(value)
             parameters_dict.update({"snr_calculator_dict": snr_calculator_dict})
 
-            file_name = json_file
+            file_name = output_jsonfile
             append_json(file_name, parameters_dict, replace=True)
         except:
             # if snr_calculator is custom function
             pass
 
     def gw_cbc_statistics(
-        self, size=None, resume=False, json_file=None,
+        self, size=None, resume=False, output_jsonfile=None,
     ):
         """
         Function to generate gw GW source parameters. This function also stores the parameters in json file.
@@ -523,15 +564,21 @@ class GWRATES(CBCSourceParameterDistribution):
         resume : `bool`
             resume = False (default) or True.
             if True, the function will resume from the last batch.
-        json_file : `str`
+        output_jsonfile : `str`
             json file name for storing the parameters.
-            default json_file = './gw_params.json'.
+            default output_jsonfile = './gw_params.json'.
 
         Returns
         ----------
         gw_param : `dict`
             dictionary of gw GW source parameters.
-            gw_param.keys() = ['zs', 'geocent_time', 'ra', 'dec', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2', 'opt_snr_net', 'L1', 'H1', 'V1']
+            gw_param.keys() = ['zs', 'geocent_time', 'ra', 'dec', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2', 'optimal_snr_net', 'L1', 'H1', 'V1']
+        
+        Examples
+        ----------
+        >>> from ler.rates import GWRATES
+        >>> ler = GWRATES()
+        >>> param = ler.gw_cbc_statistics()
         """
 
         # gw parameter sampling
@@ -539,24 +586,25 @@ class GWRATES(CBCSourceParameterDistribution):
             size = self.size
 
         # get json file name
-        if json_file is None:
-            json_file = self.json_file_names["gw_param"]
+        if output_jsonfile is None:
+            output_jsonfile = self.json_file_names["gw_param"]
         else:
-            self.json_file_names["gw_param"] = json_file
+            self.json_file_names["gw_param"] = output_jsonfile
+        print(f"simulated gw params will be stored in {output_jsonfile}")
 
         # sampling in batches
         batch_handler(
             size=size,
             batch_size=self.batch_size,
             sampling_routine=self.gw_sampling_routine,
-            json_file=json_file,
+            output_jsonfile=output_jsonfile,
             resume=resume,
         )
 
-        gw_param = get_param_from_json(json_file)
+        gw_param = get_param_from_json(output_jsonfile)
         return gw_param
     
-    def gw_sampling_routine(self, size, json_file, resume=False,
+    def gw_sampling_routine(self, size, output_jsonfile, resume=False,
     ):
         """
         Function to generate gw GW source parameters. This function also stores the parameters in json file.
@@ -569,15 +617,15 @@ class GWRATES(CBCSourceParameterDistribution):
         resume : `bool`
             resume = False (default) or True.
             if True, the function will resume from the last batch.
-        json_file : `str`
+        output_jsonfile : `str`
             json file name for storing the parameters.
-            default json_file = './gw_params.json'.
+            default output_jsonfile = './gw_params.json'.
 
         Returns
         ----------
         gw_param : `dict`
             dictionary of gw GW source parameters.
-            gw_param.keys() = ['zs', 'geocent_time', 'ra', 'dec', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2', 'opt_snr_net', 'L1', 'H1', 'V1']
+            gw_param.keys() = ['zs', 'geocent_time', 'ra', 'dec', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2', 'optimal_snr_net', 'L1', 'H1', 'V1']
         """
 
         # get gw params
@@ -589,13 +637,13 @@ class GWRATES(CBCSourceParameterDistribution):
         gw_param.update(snrs)
 
         # store all params in json file
-        append_json(file_name=json_file, dictionary=gw_param, replace=not (resume))
+        append_json(file_name=output_jsonfile, dictionary=gw_param, replace=not (resume))
 
     def gw_rate(
         self,
         gw_param=None,
         snr_threshold=8.0,
-        jsonfile=None,
+        output_jsonfile=None,
         detectability_condition="step_function",
     ):
         """
@@ -605,13 +653,13 @@ class GWRATES(CBCSourceParameterDistribution):
         ----------
         gw_param : `dict` or `str`
             dictionary of GW source parameters or json file name.
-            default gw_param = './gw_params.json'.
+            default gw_param = self.json_file_names["gw_param"]
         snr_threshold : `float`
             threshold for detection signal to noise ratio.
             e.g. snr_threshold = 8.
-        jsonfile : `str`
+        output_jsonfile : `str`
             json file name for storing the parameters of the detectable events.
-            default jsonfile = './gw_params_detectable.json'.
+            default output_jsonfile = './gw_params_detectable.json'.
         detectability_condition : `str`
             detectability condition. 
             default detectability_condition = 'step_function'.
@@ -623,7 +671,13 @@ class GWRATES(CBCSourceParameterDistribution):
             total gw rate (Mpc^-3 yr^-1).
         gw_param : `dict`
             dictionary of gw GW source parameters of the detectable events.
-            gw_param.keys() = ['zs', 'geocent_time', 'ra', 'dec', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2', 'opt_snr_net', 'L1', 'H1', 'V1']
+            gw_param.keys() = ['zs', 'geocent_time', 'ra', 'dec', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2', 'optimal_snr_net', 'L1', 'H1', 'V1']
+
+        Examples
+        ----------
+        >>> from ler.rates import GWRATES
+        >>> ler = GWRATES()
+        >>> total_rate, gw_param = ler.gw_rate()
         """
         
         # call self.json_file_names["gwrates_param"] and for adding the final results
@@ -643,9 +697,9 @@ class GWRATES(CBCSourceParameterDistribution):
             
         if detectability_condition == "step_function":
             try:
-                snr_param = gw_param["opt_snr_net"]
+                snr_param = gw_param["optimal_snr_net"]
             except:
-                print("opt_snr_net not provided in gw_param dict. Exiting...")
+                print("optimal_snr_net not provided in gw_param dict. Exiting...")
                 return None
             threshold = snr_threshold
 
@@ -654,11 +708,11 @@ class GWRATES(CBCSourceParameterDistribution):
             if "pdet_net" in gw_param.keys():
                 snr_param = gw_param["pdet_net"]
             else:
-                if "opt_snr_net" in gw_param.keys():
-                    snr_param = 1 - norm.cdf(snr_threshold - gw_param["opt_snr_net"])
+                if "optimal_snr_net" in gw_param.keys():
+                    snr_param = 1 - norm.cdf(snr_threshold - gw_param["optimal_snr_net"])
                     gw_param["pdet_net"] = snr_param
                 else:
-                    print("pdet or opt_snr_net not provided in gw_param dict. Exiting...")
+                    print("pdet or optimal_snr_net not provided in gw_param dict. Exiting...")
                     return None
             threshold = 0.5
 
@@ -673,12 +727,12 @@ class GWRATES(CBCSourceParameterDistribution):
             gw_param[key] = value[idx_detectable]
 
         # store all detectable params in json file
-        if jsonfile is None:
-            jsonfile = self.json_file_names["gw_param_detectable"]
+        if output_jsonfile is None:
+            output_jsonfile = self.json_file_names["gw_param_detectable"]
         else:
-            self.json_file_names["gw_param_detectable"] = jsonfile
-        print(f"storing detectable gw params in {jsonfile}")
-        append_json(jsonfile, gw_param, replace=True)
+            self.json_file_names["gw_param_detectable"] = output_jsonfile
+        print(f"storing detectable gw params in {output_jsonfile}")
+        append_json(output_jsonfile, gw_param, replace=True)
 
         # write the results
         data['detectable_gw_rate_per_year'] = total_rate
@@ -693,7 +747,7 @@ class GWRATES(CBCSourceParameterDistribution):
         batch_size=None,
         snr_threshold=8.0,
         resume=False,
-        json_file="./gw_params_detectable.json",
+        output_jsonfile="./gw_params_n_detectable.json",
     ):
         """
         Function to select n gw detectable events.
@@ -709,15 +763,21 @@ class GWRATES(CBCSourceParameterDistribution):
         resume : `bool`
             if True, it will resume the sampling from the last batch.
             default resume = False.
-        json_file : `str`
+        output_jsonfile : `str`
             json file name for storing the parameters.
-            default json_file = './gw_params_detectable.json'.
+            default output_jsonfile = './gw_params_detectable.json'.
 
         Returns
         ----------
         param_final : `dict`
             dictionary of gw GW source parameters of the detectable events.
-            param_final.keys() = ['zs', 'geocent_time', 'ra', 'dec', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2', 'opt_snr_net', 'L1', 'H1', 'V1']
+            param_final.keys() = ['zs', 'geocent_time', 'ra', 'dec', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2', 'optimal_snr_net', 'L1', 'H1', 'V1']
+
+        Examples
+        ----------
+        >>> from ler.rates import GWRATES
+        >>> ler = GWRATES()
+        >>> param_final = ler.selecting_n_gw_detectable_events(size=500)
         """
 
         if batch_size is None:
@@ -726,12 +786,12 @@ class GWRATES(CBCSourceParameterDistribution):
         if not resume:
             n = 0  # iterator
             try:
-                os.remove(json_file)
+                os.remove(output_jsonfile)
             except:
                 pass
         else:
             # get sample size as nsamples from json file
-            param_final = get_param_from_json(json_file)
+            param_final = get_param_from_json(output_jsonfile)
             n = len(param_final["zs"])
             del param_final
 
@@ -741,120 +801,34 @@ class GWRATES(CBCSourceParameterDistribution):
             # disable print statements
             with contextlib.redirect_stdout(None):
                 self.gw_sampling_routine(
-                    size=batch_size, json_file=buffer_file, resume=False
+                    size=batch_size, output_jsonfile=buffer_file, resume=False
                 )
 
                 # get gw params
                 gw_param = get_param_from_json(buffer_file)
 
                 # get snr
-                snr = gw_param["opt_snr_net"]
+                snr = gw_param["optimal_snr_net"]
                 # index of detectable events
                 idx = snr > snr_threshold
 
                 # store all params in json file
                 for key, value in gw_param.items():
                     gw_param[key] = value[idx]
-                append_json(json_file, gw_param, replace=False)
+                append_json(output_jsonfile, gw_param, replace=False)
 
                 n += np.sum(idx)
             print("collected number of events = ", n)
 
         # trim the final param dictionary
         print(f"trmming final result to size={size}")
-        param_final = get_param_from_json(json_file)
+        param_final = get_param_from_json(output_jsonfile)
         # trim the final param dictionary, randomly, without repeating
         idx = np.random.choice(len(param_final["zs"]), size, replace=False)
         for key, value in param_final.items():
             param_final[key] = param_final[key][idx]
 
         # save the final param dictionary
-        append_json(json_file, param_final, replace=True)
+        append_json(output_jsonfile, param_final, replace=True)
 
         return param_final
-    
-    def gw_param_plot(
-            self,
-            param_name="zs",
-            param_dict="./gw_params.json",
-            param_xlabel="source redshift",
-            param_ylabel="probability density",
-            param_min=None,
-            param_max=None,
-            figsize=(4, 4),
-            kde=True,
-            kde_bandwidth=0.2,
-            histogram=True,
-            histogram_bins=30,
-    ):
-        """
-        Function to plot the distribution of the GW source parameters.
-
-        Parameters
-        ----------
-        param_name : `str`
-            name of the parameter to plot.
-            default param_name = 'zs'.
-        param_dict : `dict` or `str`
-            dictionary of GW source parameters or json file name.
-            default param_dict = './gw_params.json'.
-        param_xlabel : `str`
-            x-axis label.
-            default param_xlabel = 'source redshift'.
-        param_ylabel : `str`
-            y-axis label.
-            default param_ylabel = 'probability density'.
-        param_min : `float`
-            minimum value of the parameter.
-            default param_min = None.
-        param_max : `float`
-            maximum value of the parameter.
-            default param_max = None.
-        figsize : `tuple`
-            figure size.
-            default figsize = (4, 4).
-        kde : `bool`
-            if True, kde will be plotted.
-            default kde = True.
-        kde_bandwidth : `float`
-            bandwidth for kde.
-            default kde_bandwidth = 0.2.
-        histogram : `bool`
-            if True, histogram will be plotted.
-            default histogram = True.
-        histogram_bins : `int`
-            number of bins for histogram.
-            default histogram_bins = 30.
-        """
-
-        # get gw params from json file if not provided
-        if type(param_dict) == str:
-            print(f"getting gw_params from json file {param_dict}...")
-            param_dict = get_param_from_json(param_dict)
-
-        if param_min is None:
-            param_min = np.min(param_dict[param_name])
-        if param_max is None:
-            param_max = np.max(param_dict[param_name])
-
-        # plot the distribution of the parameter
-        plt.figure(figsize=figsize)
-        if histogram:
-            plt.hist(
-                param_dict[param_name],
-                bins=histogram_bins,
-                density=True,
-                histtype="step",
-            )
-        if kde:
-            kde = gaussian_kde(param_dict[param_name], bw_method=kde_bandwidth)
-            x = np.linspace(param_min, param_max, 1000)
-            plt.plot(x, kde(x))
-        plt.xlabel(param_xlabel)
-        plt.ylabel(param_ylabel)
-
-
-    
-
-
-

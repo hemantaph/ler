@@ -9,7 +9,7 @@ import json
 from scipy.interpolate import interp1d
 from scipy.interpolate import CubicSpline
 from scipy.integrate import quad, cumtrapz
-from numba import njit, jit
+from numba import njit
 
 
 class NumpyEncoder(json.JSONEncoder):
@@ -560,7 +560,7 @@ def inverse_transform_sampler(size, cdf, x):
     samples = y0 + (y1 - y0) * (u - x0) / (x1 - x0)
     return samples
 
-def batch_handler(size, batch_size, sampling_routine, json_file, resume=False,
+def batch_handler(size, batch_size, sampling_routine, output_jsonfile, resume=False,
     ):
         """
         Function to run the sampling in batches.
@@ -574,7 +574,7 @@ def batch_handler(size, batch_size, sampling_routine, json_file, resume=False,
         sampling_routine : `function`
             function to sample the parameters.
             e.g. unlensed_sampling_routine() or lensed_sampling_routine()
-        json_file : `str`
+        output_jsonfile : `str`
             name of the json file to store the parameters.
         resume : `bool`
             if True, it will resume the sampling from the last batch.
@@ -590,7 +590,7 @@ def batch_handler(size, batch_size, sampling_routine, json_file, resume=False,
             num_batches = size // batch_size + 1
 
         print(
-            f"chosen batch size = {batch_size}. If you want to change batch size, self.batch_size = new_size"
+            f"chosen batch size = {batch_size} with total size = {size}"
         )
         print(f"There will be {num_batches} batche(s)")
 
@@ -606,26 +606,26 @@ def batch_handler(size, batch_size, sampling_routine, json_file, resume=False,
             track_batches = track_batches + 1
             print(f"Batch no. {track_batches}")
             # new first batch with the frac_batches
-            sampling_routine(size=frac_batches, json_file=json_file);
+            sampling_routine(size=frac_batches, output_jsonfile=output_jsonfile);
         else:
             # check where to resume from
             try:
-                print(f"resuming from {json_file}")
-                with open(json_file, "r", encoding="utf-8") as f:
+                print(f"resuming from {output_jsonfile}")
+                with open(output_jsonfile, "r", encoding="utf-8") as f:
                     data = json.load(f)
                     track_batches = (len(data["zs"]) - frac_batches) // batch_size + 1
             except:
                 track_batches = track_batches + 1
                 print(f"Batch no. {track_batches}")
                 # new first batch with the frac_batches
-                sampling_routine(size=frac_batches, json_file=json_file);
+                sampling_routine(size=frac_batches, output_jsonfile=output_jsonfile);
 
         # ---------------------------------------------------#
         min_, max_ = track_batches, num_batches
         for i in range(min_, max_):
             track_batches = track_batches + 1
             print(f"Batch no. {track_batches}")
-            sampling_routine(size=batch_size, json_file=json_file, resume=True);
+            sampling_routine(size=batch_size, output_jsonfile=output_jsonfile, resume=True);
         # ---------------------------------------------------#
 
         return None
