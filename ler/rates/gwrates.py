@@ -92,7 +92,7 @@ class GWRATES(CBCSourceParameterDistribution):
     ----------
     LeR class has the following methods, \n
     +-------------------------------------+----------------------------------+
-    | Methods                             | Type                             |
+    | Methods                             | Description                      |
     +=====================================+==================================+
     |:meth:`~class_initialization`        | Function to initialize the       |
     |                                     | parent classes                   |
@@ -243,14 +243,14 @@ class GWRATES(CBCSourceParameterDistribution):
         print("json_file_names = ", self.json_file_names)
         print("directory = ", self.directory)
 
-        print("\n GWRATES also takes ler.CBCSourceParameterDistribution params as kwargs, as follows:")
+        print("\n GWRATES also takes CBCSourceParameterDistribution params as kwargs, as follows:")
         print("source_priors=", self.gw_param_sampler_dict["source_priors"])
         print("source_priors_params=", self.gw_param_sampler_dict["source_priors_params"])
         print("spin_zero=", self.gw_param_sampler_dict["spin_zero"])
         print("spin_precession=", self.gw_param_sampler_dict["spin_precession"])
         print("create_new_interpolator=", self.gw_param_sampler_dict["create_new_interpolator"])
 
-        print("\n GWRATES also takes gwsnr.GWSNR params as kwargs, as follows:")
+        print("\n GWRATES also takes GWSNR params as kwargs, as follows:")
         print("mtot_min = ", self.snr_calculator_dict["mtot_min"])
         print("mtot_max = ", self.snr_calculator_dict["mtot_max"])
         print("ratio_min = ", self.snr_calculator_dict["ratio_min"])

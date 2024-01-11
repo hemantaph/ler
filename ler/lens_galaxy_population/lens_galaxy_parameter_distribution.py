@@ -227,7 +227,22 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
         self.event_type = event_type
         self.directory = directory
-        self.create_new_interpolator = create_new_interpolator
+        # initialize the interpolator's parameters
+        self.create_new_interpolator = dict(
+            redshift_distribution=dict(create_new=False, resolution=500),
+            z_to_luminosity_distance=dict(create_new=False, resolution=500),
+            differential_comoving_volume=dict(create_new=False, resolution=500),
+            Dl_to_z=dict(create_new=False, resolution=500),
+        )
+        if isinstance(create_new_interpolator, dict):
+            self.create_new_interpolator.update(create_new_interpolator)
+        elif create_new_interpolator is True:
+            self.create_new_interpolator = dict(
+                redshift_distribution=dict(create_new=True, resolution=500),
+                z_to_luminosity_distance=dict(create_new=True, resolution=500),
+                differential_comoving_volume=dict(create_new=True, resolution=500),
+                Dl_to_z=dict(create_new=True, resolution=500),
+            )
 
         # dealing with prior functions and categorization
         self.lens_param_samplers, self.lens_param_samplers_params, self.lens_sampler_names, self.lens_functions = self.lens_priors_categorization(lens_type, lens_priors,
@@ -329,7 +344,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
                     "velocity_dispersion"],
                 axis_ratio=self.lens_param_samplers_params["axis_ratio"],
             ),
-            cosmology=None,
+            cosmology=self.cosmo,
             directory=self.directory,
             create_new_interpolator=self.create_new_interpolator,
         )
@@ -338,6 +353,8 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         input_params_image = dict(
             n_min_images=2,
             n_max_images=4,
+            geocent_time_min=1126259462.4,
+            geocent_time_max=1126259462.4+365*24*3600*100,
             lens_model_list=["EPL_NUMBA", "SHEAR"],
         )
         input_params_image.update(params)
@@ -350,6 +367,11 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             n_max_images=input_params_image["n_max_images"],
             lens_model_list=input_params_image["lens_model_list"],
             cosmology=self.cosmo,
+            geocent_time_min=input_params_image["geocent_time_min"],
+            geocent_time_max=input_params_image["geocent_time_max"],
+            spin_zero=input_params["spin_zero"],
+            spin_precession=input_params["spin_precession"],
+            directory=self.directory,
         )
 
     def lens_priors_categorization(
@@ -396,7 +418,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             lens_priors_params_ = dict(
                 source_redshift_sl=None,
                 lens_redshift=None,
-                velocity_dispersion=dict(a=2.32 / 2.67, c=2.67, vd_min=0., vd_max=600.),
+                velocity_dispersion=None,
                 axis_ratio=dict(q_min=0.2, q_max=1.),
                 axis_rotation_angle=dict(phi_min=0.0, phi_max=2 * np.pi),
                 shear=dict(scale=0.05),

@@ -124,11 +124,10 @@ class ImageProperties():
                  spin_zero=True,
                  spin_precession=False,
                  directory="./interpolator_pickle",
-                 create_new_interpolator=dict(
-                     Dl_to_z=dict(create_new=False, resolution=500))
+                 create_new_interpolator=False,
         ):
 
-        self.npool = 4
+        self.npool = npool
         self.n_min_images = n_min_images
         self.n_max_images = n_max_images
         self.lens_model_list = lens_model_list  # list of lens models
@@ -136,10 +135,21 @@ class ImageProperties():
         self.spin_precession = spin_precession
         self.geocent_time_min = geocent_time_min
         self.geocent_time_max = geocent_time_max
-
         self.cosmo = cosmology if cosmology else cosmo
-        resolution = create_new_interpolator["Dl_to_z"]["resolution"]
-        create_new = create_new_interpolator["Dl_to_z"]["create_new"]
+        
+        # initialize the interpolator's parameters
+        self.create_new_interpolator = dict(
+            Dl_to_z=dict(create_new=False, resolution=500),
+        )
+        if isinstance(create_new_interpolator, dict):
+            self.create_new_interpolator.update(create_new_interpolator)
+        elif create_new_interpolator is True:
+            self.create_new_interpolator = dict(
+                Dl_to_z=dict(create_new=True, resolution=500)
+            )
+
+        resolution = self.create_new_interpolator["Dl_to_z"]["resolution"]
+        create_new = self.create_new_interpolator["Dl_to_z"]["create_new"]
         spline1 = interpolator_from_pickle(
             param_dict_given= dict(z_min=z_min, z_max=z_max, cosmology=self.cosmo, resolution=resolution),
             directory=directory,
@@ -416,7 +426,7 @@ class ImageProperties():
                     tilt_2[idx],
                     phi_12[idx],
                     phi_jl[idx],
-                    jsonFile=False,
+                    output_jsonfile=False,
                 )
 
                 optimal_snrs["optimal_snr_net"][idx, i] = optimal_snr["optimal_snr_net"]

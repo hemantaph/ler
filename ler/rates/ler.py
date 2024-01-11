@@ -8,6 +8,7 @@ import warnings
 warnings.filterwarnings("ignore")
 import contextlib
 import numpy as np
+from scipy.stats import norm
 from astropy.cosmology import LambdaCDM
 from ..lens_galaxy_population import LensGalaxyParameterDistribution
 from ..utils import load_json, append_json, get_param_from_json, batch_handler
@@ -96,7 +97,7 @@ class LeR(LensGalaxyParameterDistribution):
     ----------
     LeR class has the following methods, \n
     +-------------------------------------+----------------------------------+
-    | Methods                             | Type                             |
+    | Methods                             | Description                      |
     +=====================================+==================================+
     |:meth:`~class_initialization`        | Function to initialize the       |
     |                                     | parent classes                   |
@@ -277,7 +278,7 @@ class LeR(LensGalaxyParameterDistribution):
         """
 
         # print all relevant functions and sampler priors
-        print("\n GWRATES set up params:")
+        print("\n LeR set up params:")
         print("npool = ", self.npool)
         print("z_min = ", self.z_min)
         print("z_max = ", self.z_max)
@@ -289,40 +290,27 @@ class LeR(LensGalaxyParameterDistribution):
         print("json_file_names = ", self.json_file_names)
         print("directory = ", self.directory)
         
-        print("\n GWRATES also takes ler.CBCSourceParameterDistribution params as kwargs, as follows:")
+        print("\n LeR also takes CBCSourceParameterDistribution params as kwargs, as follows:")
         print("source_priors=", self.gw_param_sampler_dict["source_priors"])
         print("source_priors_params=", self.gw_param_sampler_dict["source_priors_params"])
         print("spin_zero=", self.gw_param_sampler_dict["spin_zero"])
         print("spin_precession=", self.gw_param_sampler_dict["spin_precession"])
         print("create_new_interpolator=", self.gw_param_sampler_dict["create_new_interpolator"])
 
-        print("\n Lens params:")
-        print("lens_redshift = ", self.lens_param_samplers["lens_redshift"])
-        print("lens_redshift_params = ", self.lens_param_samplers_params["lens_redshift"])
-        print("velocity_dispersion = ", self.lens_param_samplers["velocity_dispersion"])
-        print("velocity_dispersion_params = ", self.lens_param_samplers_params["velocity_dispersion"])
-        print("axis_ratio = ", self.lens_param_samplers["axis_ratio"])
-        print("axis_ratio_params = ", self.lens_param_samplers_params["axis_ratio"])
-        print("axis_rotation_angle = ", self.lens_param_samplers["axis_rotation_angle"])
-        print("axis_rotation_angle_params = ", self.lens_param_samplers_params["axis_rotation_angle"])
-        print("shear = ", self.lens_param_samplers["shear"])
-        print("shear_params = ", self.lens_param_samplers_params["shear"])
-        print("mass_density_spectral_index = ", self.lens_param_samplers["mass_density_spectral_index"])
-        print("mass_density_spectral_index_params = ", self.lens_param_samplers_params["mass_density_spectral_index"])
-        # lens functions
-        print("\n Lens functions:")
-        print("strong_lensing_condition = ", self.lens_functions["strong_lensing_condition"])
-        print("optical_depth = ", self.lens_functions["optical_depth"])
+        print("\n LeR also takes LensGalaxyParameterDistribution params as kwargs, as follows:")
+        print("lens_type = ", self.gw_param_sampler_dict["lens_type"])
+        print("lens_functions = ", self.gw_param_sampler_dict["lens_functions"])
+        print("lens_priors = ", self.gw_param_sampler_dict["lens_priors"])
+        print("lens_priors_params = ", self.gw_param_sampler_dict["lens_priors_params"])
 
         print("\n Image properties:")
-        print("lens_model_list = ", self.lens_model_list)
         print("n_min_images = ", self.n_min_images)
         print("n_max_images = ", self.n_max_images)
-        print("max_magnification = ", 1000)
         print("geocent_time_min = ", self.geocent_time_min)
         print("geocent_time_max = ", self.geocent_time_max)
+        print("lens_model_list = ", self.lens_model_list)
 
-        print("\n GWRATES also takes gwsnr.GWSNR params as kwargs, as follows:")
+        print("\n LeR also takes gwsnr.GWSNR params as kwargs, as follows:")
         print("mtot_min = ", self.snr_calculator_dict["mtot_min"])
         print("mtot_max = ", self.snr_calculator_dict["mtot_max"])
         print("ratio_min = ", self.snr_calculator_dict["ratio_min"])
@@ -373,6 +361,24 @@ class LeR(LensGalaxyParameterDistribution):
                 print("phi_12_params = ", self.gw_param_samplers_params["phi_12"])
                 print("phi_jl = ", self.gw_param_samplers["phi_jl"])
                 print("phi_jl_params = ", self.gw_param_samplers_params["phi_jl"])
+
+        print("\n For reference, the chosen lens related parameters and functions are listed below:")
+        print("lens_redshift = ", self.lens_param_samplers["lens_redshift"])
+        print("lens_redshift_params = ", self.lens_param_samplers_params["lens_redshift"])
+        print("velocity_dispersion = ", self.lens_param_samplers["velocity_dispersion"])
+        print("velocity_dispersion_params = ", self.lens_param_samplers_params["velocity_dispersion"])
+        print("axis_ratio = ", self.lens_param_samplers["axis_ratio"])
+        print("axis_ratio_params = ", self.lens_param_samplers_params["axis_ratio"])
+        print("axis_rotation_angle = ", self.lens_param_samplers["axis_rotation_angle"])
+        print("axis_rotation_angle_params = ", self.lens_param_samplers_params["axis_rotation_angle"])
+        print("shear = ", self.lens_param_samplers["shear"])
+        print("shear_params = ", self.lens_param_samplers_params["shear"])
+        print("mass_density_spectral_index = ", self.lens_param_samplers["mass_density_spectral_index"])
+        print("mass_density_spectral_index_params = ", self.lens_param_samplers_params["mass_density_spectral_index"])
+        # lens functions
+        print("Lens functions:")
+        print("strong_lensing_condition = ", self.lens_functions["strong_lensing_condition"])
+        print("optical_depth = ", self.lens_functions["optical_depth"])
 
     @property
     def snr(self):
@@ -544,6 +550,12 @@ class LeR(LensGalaxyParameterDistribution):
             directory=input_params["directory"],
             create_new_interpolator=input_params["create_new_interpolator"],
         )
+
+        self.gw_param_sampler_dict["source_priors"]=self.gw_param_samplers.copy()
+        self.gw_param_sampler_dict["source_priors_params"]=self.gw_param_samplers_params.copy()
+        self.gw_param_sampler_dict["lens_priors"]=self.lens_param_samplers.copy()
+        self.gw_param_sampler_dict["lens_priors_params"]=self.lens_param_samplers_params.copy()
+        self.gw_param_sampler_dict["lens_functions"]=self.lens_functions.copy()
 
     def gwsnr_intialization(self, params=None):
         """
@@ -1107,8 +1119,7 @@ class LeR(LensGalaxyParameterDistribution):
             unlensed_rate = data["detectable_unlensed_rate_per_year"]
             lensed_rate = data["detectable_lensed_rate_per_year"]
         except:
-            print(f"unlensed_rate_step or lensed_rate_step not found in {self.json_file_names['ler_param']} json file. Exiting...")
-            return None
+            raise ValueError(f"unlensed_rate_step or lensed_rate_step not found in {self.json_file_names['ler_param']} json file. Exiting...")
         
         rate_ratio = unlensed_rate / lensed_rate
         # append the results
@@ -1202,7 +1213,10 @@ class LeR(LensGalaxyParameterDistribution):
         # calculate rate ratio
         rate_ratio = unlensed_rate / lensed_rate
         # append the results
-        data['rate_ratio_step'] = rate_ratio
+        data['detectable_unlensed_rate_per_year'] = unlensed_rate
+        data['detectable_lensed_rate_per_year'] = lensed_rate
+        data['rate_ratio'] = rate_ratio
+        data['detectability_condition'] = detectability_condition
         # write the results
         append_json(self.json_file_names["ler_param"], data, replace=True)
         
