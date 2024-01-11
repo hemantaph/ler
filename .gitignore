@@ -6,6 +6,11 @@
 .json
 **.json
 
+# ignore pickle
+*.pickle
+.pickle
+**.pickle
+
 .DS_Store
 
 examples/interpolator_pickle/
