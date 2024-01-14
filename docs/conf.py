@@ -24,7 +24,7 @@ sys.path.insert(0, os.path.abspath("../ler"))
 project = 'ler'
 copyright = '2023, Phurailatpam Hemantakumar'
 author = 'Phurailatpam Hemantakumar'
-release = '0.3.0'
+release = '0.3.1'
 
 
 # -- General configuration ---------------------------------------------------
