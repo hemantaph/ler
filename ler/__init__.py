@@ -14,6 +14,6 @@ except RuntimeError:
 
 __author__ = 'hemanta_ph <hemantaphurailatpam@gmail.com>'
 
-__version__ = "0.2.7"
+__version__ = "0.3.0"
 
 
