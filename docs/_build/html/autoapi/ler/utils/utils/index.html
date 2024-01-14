@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.utils.utils &mdash; ler 0.3.0 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=e259d695"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Unlensed%20events.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Lensed%20events.html">Lensed Events</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Rate%20comparision.html">Rate comparision</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.utils</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/autoapi/ler/utils/utils/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ler.utils.utils">
+<span id="ler-utils-utils"></span><h1><a class="reference internal" href="#module-ler.utils.utils" title="ler.utils.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.utils</span></code></a><a class="headerlink" href="#module-ler.utils.utils" title="Link to this heading"></a></h1>
+<p>This module contains helper routines for other modules in the ler package.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.utils.NumpyEncoder" title="ler.utils.utils.NumpyEncoder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NumpyEncoder</span></code></a></p></td>
+<td><p>class for storing a numpy.ndarray or any nested-list composition as JSON file</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.utils.update_dict" title="ler.utils.utils.update_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_dict</span></code></a>(old, new)</p></td>
+<td><p>Update a dictionary with keys and values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.utils.load_json" title="ler.utils.utils.load_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_json</span></code></a>(file_name)</p></td>
+<td><p>Load a json file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.utils.append_json" title="ler.utils.utils.append_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_json</span></code></a>(file_name, dictionary[, replace])</p></td>
+<td><p>Append and update a json file with a dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.utils.get_param_from_json" title="ler.utils.utils.get_param_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_param_from_json</span></code></a>(json_file)</p></td>
+<td><p>Function to get the parameters from json file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.utils.dict_inside_dict_to_array" title="ler.utils.utils.dict_inside_dict_to_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict_inside_dict_to_array</span></code></a>(dictionary)</p></td>
+<td><p>Function to convert a dictionary to an array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.utils.rejection_sample" title="ler.utils.utils.rejection_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rejection_sample</span></code></a>(pdf, xmin, xmax[, size, chunk_size])</p></td>
+<td><p>Helper function for rejection sampling from a pdf with maximum and minimum arguments.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.utils.add_dictionaries_together" title="ler.utils.utils.add_dictionaries_together"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_dictionaries_together</span></code></a>(dictionary1, dictionary2)</p></td>
+<td><p>Adds two dictionaries with the same keys together.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.utils.trim_dictionary" title="ler.utils.utils.trim_dictionary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim_dictionary</span></code></a>(dictionary, size)</p></td>
+<td><p>Filters an event dictionary to only contain the size.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.utils.create_conditioned_pdf_invcdf" title="ler.utils.utils.create_conditioned_pdf_invcdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_conditioned_pdf_invcdf</span></code></a>(x, conditioned_y, ...)</p></td>
+<td><p>pdf_func is the function to calculate the pdf of x given y</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.utils.interpolator_from_pickle" title="ler.utils.utils.interpolator_from_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolator_from_pickle</span></code></a>(param_dict_given, directory, ...)</p></td>
+<td><p>Function to decide which interpolator to use.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.utils.interpolator_pickle_path" title="ler.utils.utils.interpolator_pickle_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolator_pickle_path</span></code></a>(param_dict_given, directory, ...)</p></td>
+<td><p>Function to create the interpolator pickle file path for velocity dispersion.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.utils.interpolator_pdf_conditioned" title="ler.utils.utils.interpolator_pdf_conditioned"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolator_pdf_conditioned</span></code></a>(x, conditioned_y, ...)</p></td>
+<td><p>Function to sample from the interpolator</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.utils.interpolator_sampler_conditioned" title="ler.utils.utils.interpolator_sampler_conditioned"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolator_sampler_conditioned</span></code></a>(conditioned_y, ...[, ...])</p></td>
+<td><p>Function sampler with inverse cdf from the interpolator</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.utils.batch_handler" title="ler.utils.utils.batch_handler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">batch_handler</span></code></a>(size, batch_size, sampling_routine, ...)</p></td>
+<td><p>Function to run the sampling in batches.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ler.utils.utils.NumpyEncoder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">NumpyEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skipkeys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ensure_ascii</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_circular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#NumpyEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.NumpyEncoder" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">json.JSONEncoder</span></code></p>
+<p>class for storing a numpy.ndarray or any nested-list composition as JSON file</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>json.JSONEncoder</strong><span class="classifier"><cite>class</cite></span></dt><dd><p>class for encoding JSON file</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>json.JSONEncoder.default</strong><span class="classifier"><cite>function</cite></span></dt><dd><p>function for encoding JSON file</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.utils.utils.NumpyEncoder.default">
+<span class="sig-name descname"><span class="pre">default</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#NumpyEncoder.default"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.NumpyEncoder.default" title="Link to this definition"></a></dt>
+<dd><p>function for encoding JSON file</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.utils.update_dict">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">update_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">old</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#update_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.update_dict" title="Link to this definition"></a></dt>
+<dd><p>Update a dictionary with keys and values.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.utils.load_json">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">load_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#load_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.load_json" title="Link to this definition"></a></dt>
+<dd><p>Load a json file.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>file_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>param</strong><span class="classifier"><cite>dict</cite></span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.utils.append_json">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">append_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#append_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.append_json" title="Link to this definition"></a></dt>
+<dd><p>Append and update a json file with a dictionary.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>file_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters.</p>
+</dd>
+<dt><strong>dictionary</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary to be appended to the json file.</p>
+</dd>
+<dt><strong>replace</strong><span class="classifier"><cite>bool</cite>, optional</span></dt><dd><p>If True, replace the json file with the dictionary. Default is False.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.utils.get_param_from_json">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">get_param_from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#get_param_from_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.get_param_from_json" title="Link to this definition"></a></dt>
+<dd><p>Function to get the parameters from json file.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>json_file</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>param</strong><span class="classifier"><cite>dict</cite></span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.utils.dict_inside_dict_to_array">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">dict_inside_dict_to_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#dict_inside_dict_to_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.dict_inside_dict_to_array" title="Link to this definition"></a></dt>
+<dd><p>Function to convert a dictionary to an array.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.utils.rejection_sample">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">rejection_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#rejection_sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.rejection_sample" title="Link to this definition"></a></dt>
+<dd><p>Helper function for rejection sampling from a pdf with maximum and minimum arguments.
+Input parameters:</p>
+<blockquote>
+<div><p>pdf: the pdf to sample from
+xmin: the minimum argument of the pdf
+xmax: the maximum argument of the pdf
+size: the number of samples to draw</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Output:</dt><dd><p>samples: the samples drawn from the pdf</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.utils.add_dictionaries_together">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">add_dictionaries_together</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dictionary2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#add_dictionaries_together"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.add_dictionaries_together" title="Link to this definition"></a></dt>
+<dd><p>Adds two dictionaries with the same keys together.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.utils.trim_dictionary">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">trim_dictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#trim_dictionary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.trim_dictionary" title="Link to this definition"></a></dt>
+<dd><p>Filters an event dictionary to only contain the size.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.utils.create_conditioned_pdf_invcdf">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">create_conditioned_pdf_invcdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditioned_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdf_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#create_conditioned_pdf_invcdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.create_conditioned_pdf_invcdf" title="Link to this definition"></a></dt>
+<dd><p>pdf_func is the function to calculate the pdf of x given y
+x is an array and the output of pdf_func is an array
+y is the condition
+we consider parameter plane of x and y</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.utils.interpolator_from_pickle">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">interpolator_from_pickle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_dict_given</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sub_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdf_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditioned_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pdf'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_new</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#interpolator_from_pickle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.interpolator_from_pickle" title="Link to this definition"></a></dt>
+<dd><p>Function to decide which interpolator to use.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.utils.interpolator_pickle_path">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">interpolator_pickle_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_dict_given</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sub_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolator_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#interpolator_pickle_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.interpolator_pickle_path" title="Link to this definition"></a></dt>
+<dd><p>Function to create the interpolator pickle file path for velocity dispersion.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.utils.interpolator_pdf_conditioned">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">interpolator_pdf_conditioned</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditioned_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolator_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#interpolator_pdf_conditioned"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.interpolator_pdf_conditioned" title="Link to this definition"></a></dt>
+<dd><p>Function to sample from the interpolator</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.utils.interpolator_sampler_conditioned">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">interpolator_sampler_conditioned</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conditioned_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolator_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#interpolator_sampler_conditioned"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.interpolator_sampler_conditioned" title="Link to this definition"></a></dt>
+<dd><p>Function sampler with inverse cdf from the interpolator</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.utils.batch_handler">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">batch_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_routine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#batch_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.batch_handler" title="Link to this definition"></a></dt>
+<dd><p>Function to run the sampling in batches.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of samples.</p>
+</dd>
+<dt><strong>batch_size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>batch size.</p>
+</dd>
+<dt><strong>sampling_routine</strong><span class="classifier"><cite>function</cite></span></dt><dd><p>function to sample the parameters.
+e.g. unlensed_sampling_routine() or lensed_sampling_routine()</p>
+</dd>
+<dt><strong>output_jsonfile</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>name of the json file to store the parameters.</p>
+</dd>
+<dt><strong>resume</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if True, it will resume the sampling from the last batch.
+default resume = False.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

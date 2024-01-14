@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LeR complete examples &mdash; ler 0.3.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/nbsphinx-code-cells.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=e259d695"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lens_parameters/Lens%20parameter%20distributions.html">Lens parameter distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lens_parameters/Lens%20parameter%20distributions.html#SIE-model-on-optical-depth">SIE model on optical depth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lens_parameters/Lens%20parameter%20distributions.html#SIS-model-on-optical-depth">SIS model on optical depth</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Rate%20comparision.html">Rate comparision</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">LeR complete examples</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/rates/ler_bbh_examples.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="LeR-complete-examples">
+<h1>LeR complete examples<a class="headerlink" href="#LeR-complete-examples" title="Link to this heading"></a></h1>
+<section id="Short-lensed/unlensed-BBH-example-with-three-detectors">
+<h2>Short lensed/unlensed BBH example with three detectors<a class="headerlink" href="#Short-lensed/unlensed-BBH-example-with-three-detectors" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>This part of the notebook is a short example to simulate lensed and unlensed binary black hole mergers and calculate their rates (<span class="math notranslate nohighlight">\(yr^{-1}\)</span>) and finally compare the results.</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># call the LeR class</span>
+<span class="kn">from</span> <span class="nn">ler.rates</span> <span class="kn">import</span> <span class="n">LeR</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># class initialization</span>
+<span class="c1"># &gt;&gt;&gt; ler = LeR() # if you want the models and its parameters to print</span>
+<span class="c1"># set &#39;npool&#39; according to your machine&#39;s available CPU cores. Default is 4.</span>
+<span class="c1"># to check no. of cores,</span>
+<span class="c1"># &gt;&gt;&gt; import multiprocessing as mp</span>
+<span class="c1"># &gt;&gt;&gt; print(mp.cpu_count())</span>
+<span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># simulation of the GW CBC population (unlensed).</span>
+<span class="c1"># this will generate a json file with the simulated population parameters</span>
+<span class="c1"># by default 100,000 events will be sampled with batches of 25,000.</span>
+<span class="c1"># results will be saved in the same directory as json file.</span>
+<span class="c1"># resume=True will resume the simulation from the last saved batch.</span>
+<span class="n">unlensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">(</span><span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+chosen batch size = 25000 with total size = 100000
+There will be 4 batche(s)
+resuming from ./unlensed_param.json
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># simulation of the GW CBC population (lensed).</span>
+<span class="c1"># this will generate a json file with the simulated source parameters, lensed parameters and image parameters.</span>
+<span class="c1"># if the program hangs dues to memory issues,</span>
+<span class="c1"># 1. try reducing the batch size.</span>
+<span class="c1"># 2. and you can resume from the last saved batch.</span>
+<span class="n">lensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">lensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+chosen batch size = 25000 with total size = 100000
+There will be 4 batche(s)
+resuming from ./lensed_param.json
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># generate detectable events and compute the rate ratio</span>
+<span class="c1"># note: here no input params are provided, so it will track the json files generated above</span>
+<span class="c1"># For individual rate computation, use</span>
+<span class="c1"># &gt;&gt;&gt; ler.unlensed_rate();</span>
+<span class="c1"># &gt;&gt;&gt; ler.lensed_rate();</span>
+<span class="n">rate_ratio</span><span class="p">,</span> <span class="n">unlensed_param_detectable</span><span class="p">,</span> <span class="n">lensed_param_detectable</span> <span class="o">=</span><span class="n">ler</span><span class="o">.</span><span class="n">rate_comparision_with_rate_calculation</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+getting unlensed_params from json file ./unlensed_param.json...
+total unlensed rate (yr^-1) (with step function): 452.39505801973456
+storing detectable unlensed params in ./unlensed_param_detectable.json
+getting lensed_params from json file ./lensed_param.json...
+total lensed rate (yr^-1) (with step function): 1.2292725363350339
+storing detectable lensed params in ./lensed_param_detectable.json
+unlensed_rate: 452.39505801973456
+lensed_rate: 1.2292725363350339
+ratio: 368.01851879690565
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># available parameters</span>
+<span class="c1"># Note: This is for spin-less systems.</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">unlensed_param_detectable</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lensed_param_detectable</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+dict_keys([&#39;zs&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;, &#39;luminosity_distance&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;, &#39;optimal_snr_net&#39;])
+dict_keys([&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;theta_E&#39;, &#39;phi&#39;, &#39;e1&#39;, &#39;e2&#39;, &#39;gamma1&#39;, &#39;gamma2&#39;, &#39;gamma&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;, &#39;luminosity_distance&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;n_images&#39;, &#39;x0_image_positions&#39;, &#39;x1_image_positions&#39;, &#39;magnifications&#39;, &#39;time_delays&#39;, &#39;image_type&#39;, &#39;optimal_snr_net&#39;, &#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Note: all ler initialization parameters and results are saved in a json file.</span>
+<span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">load_json</span>
+<span class="n">ler_params</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="s1">&#39;./ler_params.json&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ler_params</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;detectable_unlensed_rate_per_year: &quot;</span><span class="p">,</span> <span class="n">ler_params</span><span class="p">[</span><span class="s1">&#39;detectable_unlensed_rate_per_year&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;detectable_lensed_rate_per_year; &quot;</span><span class="p">,</span><span class="n">ler_params</span><span class="p">[</span><span class="s1">&#39;detectable_lensed_rate_per_year&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;rate_ratio: &quot;</span><span class="p">,</span><span class="n">ler_params</span><span class="p">[</span><span class="s1">&#39;rate_ratio&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+dict_keys([&#39;npool&#39;, &#39;z_min&#39;, &#39;z_max&#39;, &#39;size&#39;, &#39;batch_size&#39;, &#39;cosmology&#39;, &#39;snr_finder&#39;, &#39;json_file_names&#39;, &#39;directory&#39;, &#39;gw_param_sampler_dict&#39;, &#39;snr_calculator_dict&#39;, &#39;detectable_unlensed_rate_per_year&#39;, &#39;detectable_lensed_rate_per_year&#39;, &#39;rate_ratio&#39;, &#39;detectability_condition&#39;])
+detectable_unlensed_rate_per_year:  452.39505801973456
+detectable_lensed_rate_per_year;  1.2292725363350339
+rate_ratio:  368.01851879690565
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># quick plot</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">plots</span> <span class="k">as</span> <span class="n">lerplt</span>
+
+<span class="c1"># plotting the distribution of event parameters</span>
+<span class="c1"># comparision of redshift distribution for lensed and unlensed events</span>
+<span class="c1"># param_dict can be either a dictionary or a json file name that contains the parameters</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="c1"># for unlensed case</span>
+<span class="n">lerplt</span><span class="o">.</span><span class="n">param_plot</span><span class="p">(</span>
+    <span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;zs&#39;</span><span class="p">,</span>
+    <span class="n">param_dict</span><span class="o">=</span><span class="s1">&#39;./unlensed_param_detectable.json&#39;</span><span class="p">,</span>
+    <span class="n">plot_label</span><span class="o">=</span><span class="s1">&#39;zs (unlensed-detectable)&#39;</span><span class="p">,</span>
+    <span class="n">histogram</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">kde_bandwidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">lerplt</span><span class="o">.</span><span class="n">param_plot</span><span class="p">(</span>
+    <span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;zs&#39;</span><span class="p">,</span>
+    <span class="n">param_dict</span><span class="o">=</span><span class="s1">&#39;./unlensed_param.json&#39;</span><span class="p">,</span>
+    <span class="n">plot_label</span><span class="o">=</span><span class="s1">&#39;zs (unlensed-all)&#39;</span><span class="p">,</span>
+    <span class="n">histogram</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="c1"># for lensed case</span>
+<span class="n">lerplt</span><span class="o">.</span><span class="n">param_plot</span><span class="p">(</span>
+    <span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;zs&#39;</span><span class="p">,</span>
+    <span class="n">param_dict</span><span class="o">=</span><span class="s1">&#39;./lensed_param_detectable.json&#39;</span><span class="p">,</span>
+    <span class="n">plot_label</span><span class="o">=</span><span class="s1">&#39;zs (lensed-detectable)&#39;</span><span class="p">,</span>
+    <span class="n">histogram</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">kde_bandwidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">lerplt</span><span class="o">.</span><span class="n">param_plot</span><span class="p">(</span>
+    <span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;zs&#39;</span><span class="p">,</span>
+    <span class="n">param_dict</span><span class="o">=</span><span class="s1">&#39;./lensed_param.json&#39;</span><span class="p">,</span>
+    <span class="n">plot_label</span><span class="o">=</span><span class="s1">&#39;zs (lensed-all)&#39;</span><span class="p">,</span>
+    <span class="n">histogram</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+getting gw_params from json file ./unlensed_param_detectable.json...
+getting gw_params from json file ./unlensed_param.json...
+getting gw_params from json file ./lensed_param_detectable.json...
+getting gw_params from json file ./lensed_param.json...
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/rates_ler_bbh_examples_9_1.png" src="../_images/rates_ler_bbh_examples_9_1.png" />
+</div>
+</div>
+</section>
+<section id="Custom-functions">
+<h2>Custom functions<a class="headerlink" href="#Custom-functions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ler</span></code> allows internal model functions to be change with custom functions.</p></li>
+<li><p>It also allows to change the default parameters of the existing model functions.</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First let&#39;s look at what are the input parameters available for ler.LeR</span>
+<span class="c1"># The input paramters can divided into five categories</span>
+<span class="c1"># 1. ler.LeR set up params</span>
+<span class="c1"># 2. ler.CBCSourceParameterDistribution set up params (as kwargs)</span>
+<span class="c1"># 3. ler.LensGalaxyParameterDistribution set up params (as kwargs)</span>
+<span class="c1"># 4. ler.ImageProperties set up params (as kwargs)</span>
+<span class="c1"># 5. gwsnr.GWSNR set up params (as kwargs)</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">ler.rates</span> <span class="kn">import</span> <span class="n">LeR</span>
+<span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span><span class="n">npool</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+z_to_luminosity_distance interpolator will be loaded from ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_1.pickle
+differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_2.pickle
+merger_rate_density_bbh_popI_II_oguri2018 interpolator will be loaded from ./interpolator_pickle/merger_rate_density_bbh_popI_II_oguri2018/merger_rate_density_bbh_popI_II_oguri2018_5.pickle
+z_to_Dc interpolator will be loaded from ./interpolator_pickle/z_to_Dc/z_to_Dc_1.pickle
+Dc_to_z interpolator will be loaded from ./interpolator_pickle/Dc_to_z/Dc_to_z_1.pickle
+angular_diameter_distance interpolator will be loaded from ./interpolator_pickle/angular_diameter_distance/angular_diameter_distance_1.pickle
+differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_0.pickle
+velocity_dispersion_ewoud interpolator will be loaded from ./interpolator_pickle/velocity_dispersion_ewoud/velocity_dispersion_ewoud_1.pickle
+optical_depth_SIE_hemanta interpolator will be loaded from ./interpolator_pickle/optical_depth_SIE_hemanta/optical_depth_SIE_hemanta_1.pickle
+Dl_to_z interpolator will be loaded from ./interpolator_pickle/Dl_to_z/Dl_to_z_1.pickle
+npool:  4
+snr type:  interpolation
+waveform approximant:  IMRPhenomD
+sampling frequency:  2048.0
+minimum frequency (fmin):  20.0
+mtot=mass1+mass2
+min(mtot):  2.0
+max(mtot) (with the given fmin=20.0): 184.98599853446768
+min(ratio):  0.1
+max(ratio):  1.0
+mtot resolution:  100
+ratio resolution:  100
+interpolator directory:  ./interpolator_pickle
+Interpolator will be loaded for L1 detector from ./interpolator_pickle/L1/halfSNR_dict_3.pickle
+Interpolator will be loaded for H1 detector from ./interpolator_pickle/H1/halfSNR_dict_3.pickle
+Interpolator will be loaded for V1 detector from ./interpolator_pickle/V1/halfSNR_dict_3.pickle
+
+ LeR set up params:
+npool =  4
+z_min =  0.0
+z_max =  10.0
+event_type =  BBH
+size =  100000
+batch_size =  25000
+cosmology =  LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=None)
+snr_finder =  &lt;bound method GWSNR.snr of &lt;gwsnr.gwsnr.GWSNR object at 0x115d9f070&gt;&gt;
+json_file_names =  {&#39;ler_param&#39;: &#39;./ler_params.json&#39;, &#39;unlensed_param&#39;: &#39;./unlensed_param.json&#39;, &#39;unlensed_param_detectable&#39;: &#39;./unlensed_param_detectable.json&#39;, &#39;lensed_param&#39;: &#39;./lensed_param.json&#39;, &#39;lensed_param_detectable&#39;: &#39;./lensed_param_detectable.json&#39;}
+directory =  ./interpolator_pickle
+
+ LeR also takes CBCSourceParameterDistribution params as kwargs, as follows:
+source_priors= {&#39;merger_rate_density&#39;: &#39;merger_rate_density_bbh_popI_II_oguri2018&#39;, &#39;source_frame_masses&#39;: &#39;binary_masses_BBH_popI_II_powerlaw_gaussian&#39;, &#39;zs&#39;: &#39;sample_source_redshift&#39;, &#39;geocent_time&#39;: &#39;sampler_uniform&#39;, &#39;ra&#39;: &#39;sampler_uniform&#39;, &#39;dec&#39;: &#39;sampler_cosine&#39;, &#39;phase&#39;: &#39;sampler_uniform&#39;, &#39;psi&#39;: &#39;sampler_uniform&#39;, &#39;theta_jn&#39;: &#39;sampler_sine&#39;}
+source_priors_params= {&#39;merger_rate_density&#39;: {&#39;R0&#39;: 2.5000000000000002e-08, &#39;b2&#39;: 1.6, &#39;b3&#39;: 2.0, &#39;b4&#39;: 30}, &#39;source_frame_masses&#39;: {&#39;mminbh&#39;: 4.98, &#39;mmaxbh&#39;: 112.5, &#39;alpha&#39;: 3.78, &#39;mu_g&#39;: 32.27, &#39;sigma_g&#39;: 3.88, &#39;lambda_peak&#39;: 0.03, &#39;delta_m&#39;: 4.8, &#39;beta&#39;: 0.81}, &#39;zs&#39;: None, &#39;geocent_time&#39;: {&#39;min_&#39;: 1238166018, &#39;max_&#39;: 1269702018}, &#39;ra&#39;: {&#39;min_&#39;: 0.0, &#39;max_&#39;: 6.283185307179586}, &#39;dec&#39;: None, &#39;phase&#39;: {&#39;min_&#39;: 0.0, &#39;max_&#39;: 6.283185307179586}, &#39;psi&#39;: {&#39;min_&#39;: 0.0, &#39;max_&#39;: 3.141592653589793}, &#39;theta_jn&#39;: None}
+spin_zero= True
+spin_precession= False
+create_new_interpolator= False
+
+ LeR also takes LensGalaxyParameterDistribution params as kwargs, as follows:
+lens_type =  epl_galaxy
+lens_functions =  {&#39;strong_lensing_condition&#39;: &#39;rjs_with_cross_section_SIE&#39;, &#39;optical_depth&#39;: &#39;optical_depth_SIE_hemanta&#39;, &#39;param_sampler_type&#39;: &#39;sample_all_routine&#39;}
+lens_priors =  {&#39;source_redshift_sl&#39;: &#39;strongly_lensed_source_redshifts&#39;, &#39;lens_redshift&#39;: &#39;lens_redshift_SDSS_catalogue&#39;, &#39;velocity_dispersion&#39;: &#39;velocity_dispersion_ewoud&#39;, &#39;axis_ratio&#39;: &#39;axis_ratio_rayleigh&#39;, &#39;axis_rotation_angle&#39;: &#39;axis_rotation_angle_uniform&#39;, &#39;shear&#39;: &#39;shear_norm&#39;, &#39;mass_density_spectral_index&#39;: &#39;mass_density_spectral_index_normal&#39;, &#39;source_parameters&#39;: &#39;sample_gw_parameters&#39;}
+lens_priors_params =  {&#39;source_redshift_sl&#39;: None, &#39;lens_redshift&#39;: None, &#39;velocity_dispersion&#39;: {&#39;a&#39;: 0.8689138576779026, &#39;c&#39;: 2.67, &#39;vd_min&#39;: 0.0, &#39;vd_max&#39;: 600.0}, &#39;axis_ratio&#39;: {&#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0}, &#39;axis_rotation_angle&#39;: {&#39;phi_min&#39;: 0.0, &#39;phi_max&#39;: 6.283185307179586}, &#39;shear&#39;: {&#39;scale&#39;: 0.05}, &#39;mass_density_spectral_index&#39;: {&#39;mean&#39;: 2.0, &#39;std&#39;: 0.2}, &#39;source_parameters&#39;: None}
+
+ Image properties:
+n_min_images =  2
+n_max_images =  4
+geocent_time_min =  1126259462.4
+geocent_time_max =  4279859462.4
+lens_model_list =  [&#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;]
+
+ LeR also takes gwsnr.GWSNR params as kwargs, as follows:
+mtot_min =  2.0
+mtot_max =  200
+ratio_min =  0.1
+ratio_max =  1.0
+mtot_resolution =  100
+ratio_resolution =  100
+sampling_frequency =  2048.0
+waveform_approximant =  IMRPhenomD
+minimum_frequency =  20.0
+snr_type =  interpolation
+psds =  {&#39;L1&#39;: &#39;aLIGO_O4_high_asd.txt&#39;, &#39;H1&#39;: &#39;aLIGO_O4_high_asd.txt&#39;, &#39;V1&#39;: &#39;AdV_asd.txt&#39;}
+isit_psd_file =  False
+ifos =  None
+interpolator_dir =  ./interpolator_pickle
+create_new_interpolator =  False
+gwsnr_verbose =  True
+multiprocessing_verbose =  True
+mtot_cut =  True
+
+ For reference, the chosen source parameters are listed below:
+merger_rate_density =  merger_rate_density_bbh_popI_II_oguri2018
+merger_rate_density_params =  {&#39;R0&#39;: 2.5000000000000002e-08, &#39;b2&#39;: 1.6, &#39;b3&#39;: 2.0, &#39;b4&#39;: 30}
+source_frame_masses =  binary_masses_BBH_popI_II_powerlaw_gaussian
+source_frame_masses_params =  {&#39;mminbh&#39;: 4.98, &#39;mmaxbh&#39;: 112.5, &#39;alpha&#39;: 3.78, &#39;mu_g&#39;: 32.27, &#39;sigma_g&#39;: 3.88, &#39;lambda_peak&#39;: 0.03, &#39;delta_m&#39;: 4.8, &#39;beta&#39;: 0.81}
+geocent_time =  sampler_uniform
+geocent_time_params =  {&#39;min_&#39;: 1238166018, &#39;max_&#39;: 1269702018}
+ra =  sampler_uniform
+ra_params =  {&#39;min_&#39;: 0.0, &#39;max_&#39;: 6.283185307179586}
+dec =  sampler_cosine
+dec_params =  None
+phase =  sampler_uniform
+phase_params =  {&#39;min_&#39;: 0.0, &#39;max_&#39;: 6.283185307179586}
+psi =  sampler_uniform
+psi_params =  {&#39;min_&#39;: 0.0, &#39;max_&#39;: 3.141592653589793}
+theta_jn =  sampler_sine
+theta_jn_params =  None
+
+ For reference, the chosen lens related parameters and functions are listed below:
+lens_redshift =  lens_redshift_SDSS_catalogue
+lens_redshift_params =  None
+velocity_dispersion =  velocity_dispersion_ewoud
+velocity_dispersion_params =  {&#39;a&#39;: 0.8689138576779026, &#39;c&#39;: 2.67, &#39;vd_min&#39;: 0.0, &#39;vd_max&#39;: 600.0}
+axis_ratio =  axis_ratio_rayleigh
+axis_ratio_params =  {&#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0}
+axis_rotation_angle =  axis_rotation_angle_uniform
+axis_rotation_angle_params =  {&#39;phi_min&#39;: 0.0, &#39;phi_max&#39;: 6.283185307179586}
+shear =  shear_norm
+shear_params =  {&#39;scale&#39;: 0.05}
+mass_density_spectral_index =  mass_density_spectral_index_normal
+mass_density_spectral_index_params =  {&#39;mean&#39;: 2.0, &#39;std&#39;: 0.2}
+
+ Lens functions:
+strong_lensing_condition =  rjs_with_cross_section_SIE
+optical_depth =  optical_depth_SIE_hemanta
+</pre></div></div>
+</div>
+<p>As an example, I will change,</p>
+<ul class="simple">
+<li><p>merger_rate_density_params’s default value of <strong>local merger rate density</strong> (<span class="math notranslate nohighlight">\(R_0\)</span>) to 2.3e-9 <span class="math notranslate nohighlight">\(Mpc^{-3} yr^{-1}\)</span>. But, I am still using the default merger_rate_density function, which is ‘merger_rate_density_bbh_popI_II_oguri2018’.</p></li>
+<li><p><strong>source_frame_masses</strong> to a custom function. This is similar to the internal default function, i.e. PowerLaw+Peak model. I am using <code class="docutils literal notranslate"><span class="pre">gwcosmo</span></code>’s powerlaw_gaussian prior for this example.</p></li>
+<li><p><strong>optical depth</strong> for strong lensing condition and <strong>velocity dispersion</strong> of the lensing galaxy to SIS model and gamma function respectively. The default optical depth is for the SIE model and default velocity dispersion has additional redshift dependence.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gwsnr</span></code> parameters: By default, it uses ‘IMRPhenomD’ <strong>waveform model</strong> with no spin. It uses interpolation method to find the ‘snr’ and it is super fast. But for the example below, I am using ‘IMRPhenomXPHM` with precessing spins. This is without interpolation but through inner product method. It will be slower.</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gwcosmo</span> <span class="kn">import</span> <span class="n">priors</span> <span class="k">as</span> <span class="n">p</span>
+
+<span class="c1"># define your custom function of mass_1_source and mass_2_source calculation</span>
+<span class="c1"># all ler internal functions are defined in a similar way</span>
+<span class="k">def</span> <span class="nf">powerlaw_peak</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">mminbh</span><span class="o">=</span><span class="mf">4.98</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="o">=</span><span class="mf">86.22</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">2.63</span><span class="p">,</span> <span class="n">mu_g</span><span class="o">=</span><span class="mf">33.07</span><span class="p">,</span> <span class="n">sigma_g</span><span class="o">=</span><span class="mf">5.69</span><span class="p">,</span> <span class="n">lambda_peak</span><span class="o">=</span><span class="mf">0.10</span><span class="p">,</span> <span class="n">delta_m</span><span class="o">=</span><span class="mf">4.82</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.26</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to sample mass1 and mass2 from a powerlaw with a gaussian peak</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    size : `int`</span>
+<span class="sd">        Number of samples to draw</span>
+<span class="sd">    mminbh : `float`</span>
+<span class="sd">        Minimum mass of the black hole (Msun)</span>
+<span class="sd">        default: 4.98</span>
+<span class="sd">    mmaxbh : `float`</span>
+<span class="sd">        Maximum mass of the black hole (Msun)</span>
+<span class="sd">        default: 86.22</span>
+<span class="sd">    alpha : `float`</span>
+<span class="sd">        Spectral index for the powerlaw of the primary mass distribution</span>
+<span class="sd">        default: 2.63</span>
+<span class="sd">    mu_g : `float`</span>
+<span class="sd">        Mean of the Gaussian component in the primary mass distribution</span>
+<span class="sd">        default: 33.07</span>
+<span class="sd">    sigma_g : `float`</span>
+<span class="sd">        Width of the Gaussian component in the primary mass distribution</span>
+<span class="sd">        default: 5.69</span>
+<span class="sd">    lambda_peak : `float`</span>
+<span class="sd">        Fraction of the model in the Gaussian component</span>
+<span class="sd">        default: 0.10</span>
+<span class="sd">    delta_m : `float`</span>
+<span class="sd">        Range of mass tapering on the lower end of the mass distribution</span>
+<span class="sd">        default: 4.82</span>
+<span class="sd">    beta : `float`</span>
+<span class="sd">        Spectral index for the powerlaw of the mass ratio distribution</span>
+<span class="sd">        default: 1.26</span>
+<span class="sd">    param : `dict`</span>
+<span class="sd">        Dictionary of parameters for the model. This will override the above.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">param</span><span class="p">:</span>
+        <span class="n">mminbh</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s1">&#39;mminbh&#39;</span><span class="p">]</span>
+        <span class="n">mmaxbh</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s1">&#39;mmaxbh&#39;</span><span class="p">]</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">]</span>
+        <span class="n">mu_g</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s1">&#39;mu_g&#39;</span><span class="p">]</span>
+        <span class="n">sigma_g</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s1">&#39;sigma_g&#39;</span><span class="p">]</span>
+        <span class="n">lambda_peak</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s1">&#39;lambda_peak&#39;</span><span class="p">]</span>
+        <span class="n">delta_m</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s1">&#39;delta_m&#39;</span><span class="p">]</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">BBH_powerlaw_gaussian</span><span class="p">(</span>
+        <span class="n">mminbh</span><span class="o">=</span><span class="n">mminbh</span><span class="p">,</span>
+        <span class="n">mmaxbh</span><span class="o">=</span><span class="n">mmaxbh</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span>
+        <span class="n">mu_g</span><span class="o">=</span><span class="n">mu_g</span><span class="p">,</span>
+        <span class="n">sigma_g</span><span class="o">=</span><span class="n">sigma_g</span><span class="p">,</span>
+        <span class="n">lambda_peak</span><span class="o">=</span><span class="n">lambda_peak</span><span class="p">,</span>
+        <span class="n">delta_m</span><span class="o">=</span><span class="n">delta_m</span><span class="p">,</span>
+        <span class="n">beta</span><span class="o">=</span><span class="n">beta</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># sample mass1 and mass2</span>
+    <span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">Nsample</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize the class with the custom function</span>
+<span class="c1"># changing ler input params</span>
+<span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span><span class="n">npool</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="c1"># for source parameters</span>
+    <span class="n">source_priors</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">merger_rate_density</span><span class="o">=</span><span class="s1">&#39;merger_rate_density_bbh_popI_II_oguri2018&#39;</span><span class="p">,</span>
+        <span class="n">source_frame_masses</span><span class="o">=</span><span class="n">powerlaw_peak</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">source_priors_params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">merger_rate_density</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">R0</span><span class="o">=</span><span class="mf">2.9e-08</span><span class="p">,</span>
+            <span class="n">b2</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span>
+            <span class="n">b3</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+            <span class="n">b4</span><span class="o">=</span><span class="mi">30</span>
+        <span class="p">),</span>
+        <span class="n">source_frame_masses</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">mminbh</span><span class="o">=</span><span class="mf">4.98</span><span class="p">,</span>
+            <span class="n">mmaxbh</span><span class="o">=</span><span class="mf">86.22</span><span class="p">,</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">2.63</span><span class="p">,</span>
+            <span class="n">mu_g</span><span class="o">=</span><span class="mf">33.07</span><span class="p">,</span>
+            <span class="n">sigma_g</span><span class="o">=</span><span class="mf">5.69</span><span class="p">,</span>
+            <span class="n">lambda_peak</span><span class="o">=</span><span class="mf">0.10</span><span class="p">,</span>
+            <span class="n">delta_m</span><span class="o">=</span><span class="mf">4.82</span><span class="p">,</span>
+            <span class="n">beta</span><span class="o">=</span><span class="mf">1.26</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+    <span class="c1"># for lens parameters</span>
+    <span class="n">lens_functions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">strong_lensing_condition</span><span class="o">=</span><span class="s2">&quot;rjs_with_cross_section_SIS&quot;</span><span class="p">,</span>
+        <span class="n">optical_depth</span><span class="o">=</span><span class="s2">&quot;optical_depth_SIS_haris&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">lens_priors</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">velocity_dispersion</span><span class="o">=</span><span class="s2">&quot;velocity_dispersion_gengamma&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">lens_priors_params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">velocity_dispersion</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">2.32</span> <span class="o">/</span> <span class="mf">2.67</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">2.67</span><span class="p">)</span>
+    <span class="p">),</span>
+    <span class="c1"># for snr generation</span>
+    <span class="n">waveform_approximant</span> <span class="o">=</span> <span class="s1">&#39;IMRPhenomXPHM&#39;</span><span class="p">,</span>
+    <span class="n">snr_type</span><span class="o">=</span><span class="s1">&#39;inner_product&#39;</span><span class="p">,</span>
+    <span class="n">spin_zero</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">spin_precession</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span><span class="n">npool</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nsamples_mtot</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">nsamples_mass_ratio</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="n">source_priors</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">source_frame_masses</span><span class="o">=</span><span class="s2">&quot;binary_masses_BBH_popI_II_powerlaw_gaussian&quot;</span>
+    <span class="p">),</span>
+    <span class="n">source_priors_params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">source_frame_masses</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">mminbh</span><span class="o">=</span><span class="mf">4.98</span><span class="p">,</span>
+            <span class="n">mmaxbh</span><span class="o">=</span><span class="mf">86.22</span><span class="p">,</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">2.63</span><span class="p">,</span>
+            <span class="n">mu_g</span><span class="o">=</span><span class="mf">33.07</span><span class="p">,</span>
+            <span class="n">sigma_g</span><span class="o">=</span><span class="mf">5.69</span><span class="p">,</span>
+            <span class="n">lambda_peak</span><span class="o">=</span><span class="mf">0.10</span><span class="p">,</span>
+            <span class="n">delta_m</span><span class="o">=</span><span class="mf">4.82</span><span class="p">,</span>
+            <span class="n">beta</span><span class="o">=</span><span class="mf">1.26</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+    <span class="n">lens_functions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">strong_lensing_condition</span><span class="o">=</span><span class="s2">&quot;rjs_with_cross_section_SIS&quot;</span><span class="p">,</span>
+        <span class="n">optical_depth</span><span class="o">=</span><span class="s2">&quot;optical_depth_SIS_haris&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">lens_priors</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">velocity_dispersion</span><span class="o">=</span><span class="s2">&quot;velocity_dispersion_gengamma&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">lens_priors_params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">velocity_dispersion</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">2.32</span> <span class="o">/</span> <span class="mf">2.67</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">2.67</span><span class="p">)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># simulation of the unlensed CBC population</span>
+<span class="c1"># you can set the batch size at the LeR initialization</span>
+<span class="c1"># or you can set it using the `batch_size` instance variable</span>
+<span class="c1"># if the sample size is large, it is recommended to set the batch size to a large number, but it will consume more RAM memory or simply your machine&#39;s individual core won&#39;t be able to handle it.</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">50000</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_jsonfile</span> <span class="o">=</span> <span class="s1">&#39;./new_unlensed_params.json&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+chosen batch size = 50000 with total size = 100000
+There will be 2 batche(s)
+resuming from ./new_unlensed_params.json
+Batch no. 1
+sampling gw source params...
+calculating snrs...
+solving SNR with inner product
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|████████████████████████████████████████████████████████| 40809/40809 [00:54&lt;00:00, 750.80it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Batch no. 2
+sampling gw source params...
+calculating snrs...
+solving SNR with inner product
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|████████████████████████████████████████████████████████| 40712/40712 [00:54&lt;00:00, 745.62it/s]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># simulation of the GW CBC population (lensed).</span>
+<span class="c1"># this will generate a json file with the simulated source parameters, lensed parameters and image parameters.</span>
+<span class="c1"># if the program hangs dues to memory issues,</span>
+<span class="c1"># 1. try reducing the batch size.</span>
+<span class="c1"># 2. and you can resume from the last saved batch.</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">lensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_jsonfile</span> <span class="o">=</span> <span class="s1">&#39;./new_lensed_params.json&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+chosen batch size = 50000 with total size = 100000
+There will be 2 batche(s)
+resuming from ./new_lensed_params.json
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Note: you can also also called the generate parameters using an instance attribute. This instance attribute gets the dict from the json file generated above.</span>
+<span class="c1"># Note: This is for spin-precessing systems, and it will contain extra (spin-related) parameters.</span>
+<span class="n">unlensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_param</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">unlensed_param</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">lensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">lensed_param</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lensed_param</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+dict_keys([&#39;zs&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;tilt_1&#39;, &#39;tilt_2&#39;, &#39;phi_12&#39;, &#39;phi_jl&#39;, &#39;luminosity_distance&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;, &#39;optimal_snr_net&#39;])
+dict_keys([&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;theta_E&#39;, &#39;phi&#39;, &#39;e1&#39;, &#39;e2&#39;, &#39;gamma1&#39;, &#39;gamma2&#39;, &#39;gamma&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;tilt_1&#39;, &#39;tilt_2&#39;, &#39;phi_12&#39;, &#39;phi_jl&#39;, &#39;luminosity_distance&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;n_images&#39;, &#39;x0_image_positions&#39;, &#39;x1_image_positions&#39;, &#39;magnifications&#39;, &#39;time_delays&#39;, &#39;image_type&#39;, &#39;optimal_snr_net&#39;, &#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># generate detectable events and compute the rate ratio</span>
+<span class="c1"># note: here no input params are provided, so it will track the json files generated above</span>
+<span class="c1"># For individual rate computation, use</span>
+<span class="c1"># &gt;&gt;&gt; ler.unlensed_rate();</span>
+<span class="c1"># &gt;&gt;&gt; ler.lensed_rate();</span>
+<span class="n">rate_ratio</span><span class="p">,</span> <span class="n">unlensed_param_detectable</span><span class="p">,</span> <span class="n">lensed_param_detectable</span> <span class="o">=</span><span class="n">ler</span><span class="o">.</span><span class="n">rate_comparision_with_rate_calculation</span><span class="p">(</span>
+    <span class="n">unlensed_param</span><span class="o">=</span><span class="s1">&#39;./new_unlensed_params.json&#39;</span><span class="p">,</span>
+    <span class="n">snr_threshold_unlensed</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
+    <span class="n">lensed_param</span><span class="o">=</span><span class="s1">&#39;./new_lensed_params.json&#39;</span><span class="p">,</span>
+    <span class="n">output_jsonfile_unlensed</span><span class="o">=</span><span class="s1">&#39;./new_unlensed_params_detectable.json&#39;</span><span class="p">,</span>
+    <span class="n">output_jsonfile_lensed</span><span class="o">=</span><span class="s1">&#39;./new_lensed_params_detectable.json&#39;</span><span class="p">,</span>
+    <span class="n">snr_threshold_lensed</span><span class="o">=</span><span class="p">[</span><span class="mf">8.0</span><span class="p">,</span><span class="mf">8.0</span><span class="p">],</span>
+    <span class="n">num_img</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+getting unlensed_params from json file ./new_unlensed_params.json...
+total unlensed rate (yr^-1) (with step function): 880.9798498279042
+storing detectable unlensed params in ./new_unlensed_params_detectable.json
+getting lensed_params from json file ./new_lensed_params.json...
+total lensed rate (yr^-1) (with step function): 0.6287065084983634
+storing detectable lensed params in ./new_lensed_params_detectable.json
+unlensed_rate: 880.9798498279042
+lensed_rate: 0.6287065084983634
+ratio: 1401.2577218773893
+</pre></div></div>
+</div>
+<p><strong>Important Note:</strong> * input parameters, snr_threshold_lensed=[8.0,8.0], num_img=[1,1], means that two of the images should have snr&gt;8.0. You can also set: snr_threshold_lensed=8, num_img=2</p>
+<ul class="simple">
+<li><p>Similarly, if snr_threshold_lensed=[8.0,6.0], num_img=[2,2], it means that two of the images should have snr&gt;8.0 and other two images should have snr&gt;6.0. But in this case, even though the simulated lensed (detectable) events are correct, the rate calculation will not be right as the strong lensing condition was set for 2 image case.</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># to check all the stored json file names</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">json_file_names</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;ler_param&#39;: &#39;./ler_params.json&#39;,
+ &#39;unlensed_param&#39;: &#39;./new_unlensed_params.json&#39;,
+ &#39;unlensed_param_detectable&#39;: &#39;./new_unlensed_params_detectable.json&#39;,
+ &#39;lensed_param&#39;: &#39;./new_lensed_params.json&#39;,
+ &#39;lensed_param_detectable&#39;: &#39;./new_lensed_params_detectable.json&#39;}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># again you can call the generated detectable events&#39; parameters using an instance attribute</span>
+<span class="c1"># Note: The data is not stored in this instance attribute, it is stored in the json file. This scheme is used to save RAM memory.</span>
+<span class="n">unlensed_param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_param_detectable</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">unlensed_param_detectable</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">lensed_param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">lensed_param_detectable</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lensed_param_detectable</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+dict_keys([&#39;zs&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;tilt_1&#39;, &#39;tilt_2&#39;, &#39;phi_12&#39;, &#39;phi_jl&#39;, &#39;luminosity_distance&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;, &#39;optimal_snr_net&#39;])
+dict_keys([&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;theta_E&#39;, &#39;phi&#39;, &#39;e1&#39;, &#39;e2&#39;, &#39;gamma1&#39;, &#39;gamma2&#39;, &#39;gamma&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;tilt_1&#39;, &#39;tilt_2&#39;, &#39;phi_12&#39;, &#39;phi_jl&#39;, &#39;luminosity_distance&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;n_images&#39;, &#39;x0_image_positions&#39;, &#39;x1_image_positions&#39;, &#39;magnifications&#39;, &#39;time_delays&#39;, &#39;image_type&#39;, &#39;optimal_snr_net&#39;, &#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;])
+</pre></div></div>
+</div>
+<section id="How-to-look-for-available-model-functions?">
+<h3>How to look for available model functions?<a class="headerlink" href="#How-to-look-for-available-model-functions?" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># All available names are stored as a dict in ler instance</span>
+<span class="c1"># the keys of this dict shows the parameter type</span>
+<span class="c1"># the values are also dict, where the keys are the model function names and the values are their input parameters</span>
+
+<span class="c1"># for unlensed case</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ler</span><span class="o">.</span><span class="n">available_gw_prior_list_and_its_params</span><span class="p">[</span><span class="s1">&#39;source_frame_masses&#39;</span><span class="p">])</span>
+<span class="c1"># for lensed case</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ler</span><span class="o">.</span><span class="n">available_lens_prior_list_and_its_params</span><span class="p">[</span><span class="s1">&#39;velocity_dispersion&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;binary_masses_BBH_popI_II_powerlaw_gaussian&#39;: {&#39;mminbh&#39;: 4.98, &#39;mmaxbh&#39;: 112.5, &#39;alpha&#39;: 3.78, &#39;mu_g&#39;: 32.27, &#39;sigma_g&#39;: 3.88, &#39;lambda_peak&#39;: 0.03, &#39;delta_m&#39;: 4.8, &#39;beta&#39;: 0.81}, &#39;binary_masses_BBH_popIII_lognormal&#39;: {&#39;Mc&#39;: 30.0, &#39;sigma&#39;: 0.3, &#39;beta&#39;: 1.1}, &#39;binary_masses_BBH_primordial_lognormal&#39;: {&#39;Mc&#39;: 30.0, &#39;sigma&#39;: 0.3, &#39;beta&#39;: 1.1}, &#39;binary_masses_BNS_gwcosmo&#39;: {&#39;mminns&#39;: 1.0, &#39;mmaxns&#39;: 3.0, &#39;alphans&#39;: 0.0}, &#39;binary_masses_BNS_bimodal&#39;: {&#39;w&#39;: 0.643, &#39;muL&#39;: 1.352, &#39;sigmaL&#39;: 0.08, &#39;muR&#39;: 1.88, &#39;sigmaR&#39;: 0.3, &#39;mmin&#39;: 1.0, &#39;mmax&#39;: 2.3}}
+{&#39;velocity_dispersion_haris&#39;: {&#39;a&#39;: 0.8689138576779026, &#39;c&#39;: 2.67}, &#39;velocity_dispersion_gengamma&#39;: {&#39;a&#39;: 0.8689138576779026, &#39;c&#39;: 2.67}, &#39;velocity_dispersion_bernardi&#39;: None, &#39;velocity_dispersion_ewoud&#39;: None}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># for looking at the choosen models and its input parameters</span>
+
+<span class="c1"># for unlensed case</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ler</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ler</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">)</span>
+<span class="c1"># for lensed case</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ler</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ler</span><span class="o">.</span><span class="n">lens_param_samplers_params</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;merger_rate_density&#39;: &#39;merger_rate_density_bbh_popI_II_oguri2018&#39;, &#39;source_frame_masses&#39;: &lt;function powerlaw_peak at 0x2a85e6d40&gt;, &#39;zs&#39;: &#39;sample_source_redshift&#39;, &#39;geocent_time&#39;: &#39;sampler_uniform&#39;, &#39;ra&#39;: &#39;sampler_uniform&#39;, &#39;dec&#39;: &#39;sampler_cosine&#39;, &#39;phase&#39;: &#39;sampler_uniform&#39;, &#39;psi&#39;: &#39;sampler_uniform&#39;, &#39;theta_jn&#39;: &#39;sampler_sine&#39;, &#39;a_1&#39;: &#39;sampler_uniform&#39;, &#39;a_2&#39;: &#39;sampler_uniform&#39;, &#39;tilt_1&#39;: &#39;sampler_sine&#39;, &#39;tilt_2&#39;: &#39;sampler_sine&#39;, &#39;phi_12&#39;: &#39;sampler_uniform&#39;, &#39;phi_jl&#39;: &#39;sampler_uniform&#39;}
+{&#39;merger_rate_density&#39;: {&#39;R0&#39;: 2.9e-08, &#39;b2&#39;: 1.6, &#39;b3&#39;: 2.0, &#39;b4&#39;: 30}, &#39;source_frame_masses&#39;: {&#39;mminbh&#39;: 4.98, &#39;mmaxbh&#39;: 86.22, &#39;alpha&#39;: 2.63, &#39;mu_g&#39;: 33.07, &#39;sigma_g&#39;: 5.69, &#39;lambda_peak&#39;: 0.1, &#39;delta_m&#39;: 4.82, &#39;beta&#39;: 1.26}, &#39;zs&#39;: None, &#39;geocent_time&#39;: {&#39;min_&#39;: 1238166018, &#39;max_&#39;: 1269702018}, &#39;ra&#39;: {&#39;min_&#39;: 0.0, &#39;max_&#39;: 6.283185307179586}, &#39;dec&#39;: None, &#39;phase&#39;: {&#39;min_&#39;: 0.0, &#39;max_&#39;: 6.283185307179586}, &#39;psi&#39;: {&#39;min_&#39;: 0.0, &#39;max_&#39;: 3.141592653589793}, &#39;theta_jn&#39;: None, &#39;a_1&#39;: {&#39;min_&#39;: 0.0, &#39;max_&#39;: 0.8}, &#39;a_2&#39;: {&#39;min_&#39;: 0.0, &#39;max_&#39;: 0.8}, &#39;tilt_1&#39;: None, &#39;tilt_2&#39;: None, &#39;phi_12&#39;: {&#39;min_&#39;: 0, &#39;max_&#39;: 6.283185307179586}, &#39;phi_jl&#39;: {&#39;min_&#39;: 0, &#39;max_&#39;: 6.283185307179586}}
+{&#39;source_redshift_sl&#39;: &#39;strongly_lensed_source_redshifts&#39;, &#39;lens_redshift&#39;: &#39;lens_redshift_SDSS_catalogue&#39;, &#39;velocity_dispersion&#39;: &#39;velocity_dispersion_gengamma&#39;, &#39;axis_ratio&#39;: &#39;axis_ratio_rayleigh&#39;, &#39;axis_rotation_angle&#39;: &#39;axis_rotation_angle_uniform&#39;, &#39;shear&#39;: &#39;shear_norm&#39;, &#39;mass_density_spectral_index&#39;: &#39;mass_density_spectral_index_normal&#39;, &#39;source_parameters&#39;: &#39;sample_gw_parameters&#39;}
+{&#39;source_redshift_sl&#39;: None, &#39;lens_redshift&#39;: None, &#39;velocity_dispersion&#39;: {&#39;a&#39;: 0.8689138576779026, &#39;c&#39;: 2.67}, &#39;axis_ratio&#39;: {&#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0}, &#39;axis_rotation_angle&#39;: {&#39;phi_min&#39;: 0.0, &#39;phi_max&#39;: 6.283185307179586}, &#39;shear&#39;: {&#39;scale&#39;: 0.05}, &#39;mass_density_spectral_index&#39;: {&#39;mean&#39;: 2.0, &#39;std&#39;: 0.2}, &#39;source_parameters&#39;: None}
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="Using-internal-model-functions">
+<h2>Using internal model functions<a class="headerlink" href="#Using-internal-model-functions" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calling the default mass distribution model</span>
+<span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">binary_masses_BBH_popI_II_powerlaw_gaussian</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<span class="n">default_model</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">mass_1_source</span><span class="o">=</span><span class="n">mass_1_source</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">plots</span> <span class="k">as</span> <span class="n">lerplt</span>
+
+<span class="c1"># let&#39;s do a comparision plot between you custom model and the default model</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">lerplt</span><span class="o">.</span><span class="n">param_plot</span><span class="p">(</span>
+    <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;mass_1_source&quot;</span><span class="p">,</span>
+    <span class="n">param_dict</span><span class="o">=</span><span class="n">unlensed_param</span><span class="p">,</span> <span class="c1"># or the json file name</span>
+    <span class="n">plot_label</span><span class="o">=</span><span class="s1">&#39;default model&#39;</span><span class="p">,</span>
+<span class="p">);</span>
+<span class="n">lerplt</span><span class="o">.</span><span class="n">param_plot</span><span class="p">(</span>
+    <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;mass_1_source&quot;</span><span class="p">,</span>
+    <span class="n">param_dict</span><span class="o">=</span><span class="n">default_model</span><span class="p">,</span>
+    <span class="n">plot_label</span><span class="o">=</span><span class="s1">&#39;custom model&#39;</span><span class="p">,</span>
+<span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;source $m_1$ ($M_{\odot}$)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$p(source mass_1)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/rates_ler_bbh_examples_28_0.png" src="../_images/rates_ler_bbh_examples_28_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># comparing axis-ratio internally available models</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">padilla_strauss</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">axis_ratio_padilla_strauss</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+
+<span class="c1"># axis_ratio_rayleigh depends on the velocity dispersion</span>
+<span class="c1">#</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">velocity_dispersion_gengamma</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+<span class="n">rayleigh</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">axis_ratio_rayleigh</span><span class="p">(</span><span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">)</span>
+
+<span class="c1"># make a dict</span>
+<span class="n">axis_ratio_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">padilla_strauss</span><span class="o">=</span><span class="n">padilla_strauss</span><span class="p">,</span>
+    <span class="n">rayleigh</span><span class="o">=</span><span class="n">rayleigh</span><span class="p">,</span>
+<span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+axis_ratio_spline_coeff interpolator will be generated at ./interpolator_pickle/axis_ratio/axis_ratio_spline_coeff_0.pickle
+axis_ratio interpolator will be loaded from ./interpolator_pickle/axis_ratio/axis_ratio_1.pickle
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the distribution of axis-ratio</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">lerplt</span><span class="o">.</span><span class="n">param_plot</span><span class="p">(</span>
+    <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;padilla_strauss&quot;</span><span class="p">,</span>
+    <span class="n">param_dict</span><span class="o">=</span><span class="n">axis_ratio_dict</span><span class="p">,</span>
+    <span class="n">plot_label</span><span class="o">=</span><span class="s1">&#39;padilla_strauss&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">lerplt</span><span class="o">.</span><span class="n">param_plot</span><span class="p">(</span>
+    <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;rayleigh&quot;</span><span class="p">,</span>
+    <span class="n">param_dict</span><span class="o">=</span><span class="n">axis_ratio_dict</span><span class="p">,</span>
+    <span class="n">plot_label</span><span class="o">=</span><span class="s1">&#39;rayleigh&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;axis ratio&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$p(axis ratio)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/rates_ler_bbh_examples_30_0.png" src="../_images/rates_ler_bbh_examples_30_0.png" />
+</div>
+</div>
+</section>
+<section id="Selecting-particular-number-of-detectable-events">
+<h2>Selecting particular number of detectable events<a class="headerlink" href="#Selecting-particular-number-of-detectable-events" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler.rates</span> <span class="kn">import</span> <span class="n">LeR</span>
+
+<span class="c1"># class initialization</span>
+<span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># for unlensed case</span>
+<span class="n">n_size_unlensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">selecting_n_unlensed_detectable_events</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">snr_threshold</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">25000</span><span class="p">,</span>
+    <span class="n">output_jsonfile</span><span class="o">=</span><span class="s1">&#39;./unlensed_params_n_detectable.json&#39;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+collected number of events =  0
+collected number of events =  129
+collected number of events =  215
+trmming final result to size=200
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># for lensed case</span>
+<span class="c1"># 2 super-threshold and 1 sub-threshold images</span>
+<span class="n">n_size_lensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">selecting_n_lensed_detectable_events</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">snr_threshold</span><span class="o">=</span><span class="p">[</span><span class="mf">8.0</span><span class="p">,</span><span class="mf">6.0</span><span class="p">],</span>
+    <span class="n">num_img</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">25000</span><span class="p">,</span>
+    <span class="n">output_jsonfile</span><span class="o">=</span><span class="s1">&#39;./unlensed_params_n_detectable.json&#39;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+collected number of events =  0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|███████████████████████████████████████████████████████| 25000/25000 [00:07&lt;00:00, 3142.56it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+collected number of events =  62
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|███████████████████████████████████████████████████████| 25000/25000 [00:07&lt;00:00, 3351.38it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+collected number of events =  122
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|███████████████████████████████████████████████████████| 25000/25000 [00:07&lt;00:00, 3437.18it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+collected number of events =  185
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|███████████████████████████████████████████████████████| 25000/25000 [00:07&lt;00:00, 3452.77it/s]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+collected number of events =  250
+trmming final result to size=200
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">n_size_lensed_param</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;size of each parameters=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">n_size_lensed_param</span><span class="p">[</span><span class="s1">&#39;zl&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+dict_keys([&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;theta_E&#39;, &#39;phi&#39;, &#39;e1&#39;, &#39;e2&#39;, &#39;gamma1&#39;, &#39;gamma2&#39;, &#39;gamma&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;, &#39;luminosity_distance&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;n_images&#39;, &#39;x0_image_positions&#39;, &#39;x1_image_positions&#39;, &#39;magnifications&#39;, &#39;time_delays&#39;, &#39;image_type&#39;, &#39;optimal_snr_net&#39;, &#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;])
+size of each parameters=200
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># look at some of the snrs of lensed images.</span>
+<span class="c1"># Row: events, Column: images.</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">n_size_lensed_param</span><span class="p">[</span><span class="s1">&#39;optimal_snr_net&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[15.37967704  8.96932604 12.17777234  0.        ]
+ [13.23217156 19.8391471   9.6873049  16.47700069]
+ [16.26164508 18.95772724 36.24972024  8.43962396]
+ [11.12094205  9.11685976  8.67737324 12.04403982]
+ [11.52361382 12.53536864 13.02538595  7.43707171]]
+</pre></div></div>
+</div>
+<p>The end</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

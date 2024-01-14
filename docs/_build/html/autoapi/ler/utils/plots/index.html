@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.utils.plots &mdash; ler 0.3.0 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=e259d695"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Unlensed%20events.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Lensed%20events.html">Lensed Events</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Rate%20comparision.html">Rate comparision</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.plots</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/autoapi/ler/utils/plots/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ler.utils.plots">
+<span id="ler-utils-plots"></span><h1><a class="reference internal" href="#module-ler.utils.plots" title="ler.utils.plots"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.plots</span></code></a><a class="headerlink" href="#module-ler.utils.plots" title="Link to this heading"></a></h1>
+<p>This module contains functions to plot the results.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.plots.param_plot" title="ler.utils.plots.param_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_plot</span></code></a>([param_name, param_dict, plot_label, ...])</p></td>
+<td><p>Function to plot the distribution of the GW source parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.plots.relative_mu_dt_unlensed" title="ler.utils.plots.relative_mu_dt_unlensed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_mu_dt_unlensed</span></code></a>(param[, size])</p></td>
+<td><p>Function to generate relative magnification vs time delay difference for unlensed samples.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.plots.relative_mu_dt_lensed" title="ler.utils.plots.relative_mu_dt_lensed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_mu_dt_lensed</span></code></a>(lensed_param[, snr_threshold])</p></td>
+<td><p>Function to classify the lensed images wrt to the morse phase difference.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.plots.mu_vs_dt_plot" title="ler.utils.plots.mu_vs_dt_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mu_vs_dt_plot</span></code></a>(x_array, y_array[, savefig, ax, colors, ...])</p></td>
+<td><p>Function to generate 2D KDE and plot the relative magnification vs time delay difference for lensed samples.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.plots.param_plot">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.plots.</span></span><span class="sig-name descname"><span class="pre">param_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'zs'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'zs'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kde</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kde_bandwidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">histogram</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">histogram_bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/plots.html#param_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.plots.param_plot" title="Link to this definition"></a></dt>
+<dd><p>Function to plot the distribution of the GW source parameters.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>param_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>name of the parameter to plot.
+default param_name = ‘zs’.</p>
+</dd>
+<dt><strong>param_dict</strong><span class="classifier"><cite>dict</cite> or <cite>str</cite></span></dt><dd><p>dictionary of GW source parameters or json file name.
+default param_dict = ‘./gw_params.json’.</p>
+</dd>
+<dt><strong>param_xlabel</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>x-axis label.
+default param_xlabel = ‘source redshift’.</p>
+</dd>
+<dt><strong>param_ylabel</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>y-axis label.
+default param_ylabel = ‘probability density’.</p>
+</dd>
+<dt><strong>param_min</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>minimum value of the parameter.
+default param_min = None.</p>
+</dd>
+<dt><strong>param_max</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>maximum value of the parameter.
+default param_max = None.</p>
+</dd>
+<dt><strong>figsize</strong><span class="classifier"><cite>tuple</cite></span></dt><dd><p>figure size.
+default figsize = (4, 4).</p>
+</dd>
+<dt><strong>kde</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if True, kde will be plotted.
+default kde = True.</p>
+</dd>
+<dt><strong>kde_bandwidth</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>bandwidth for kde.
+default kde_bandwidth = 0.2.</p>
+</dd>
+<dt><strong>histogram</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if True, histogram will be plotted.
+default histogram = True.</p>
+</dd>
+<dt><strong>histogram_bins</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of bins for histogram.
+default histogram_bins = 30.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.rates</span> <span class="kn">import</span> <span class="n">LeR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">();</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rate</span><span class="p">,</span> <span class="n">param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_rate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span><span class="o">.</span><span class="n">param_plot</span><span class="p">(</span><span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;zs&#39;</span><span class="p">,</span> <span class="n">param_dict</span><span class="o">=</span><span class="n">param</span><span class="p">,</span> <span class="n">plot_label</span><span class="o">=</span><span class="s1">&#39;all events&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span><span class="o">.</span><span class="n">param_plot</span><span class="p">(</span><span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;zs&#39;</span><span class="p">,</span> <span class="n">param_dict</span><span class="o">=</span><span class="n">param_detectable</span><span class="p">,</span> <span class="n">plot_label</span><span class="o">=</span><span class="s1">&#39;detectable events&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;source redshift&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;probability density&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;source redshift distribution&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;source_redshift_distribution.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.plots.relative_mu_dt_unlensed">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.plots.</span></span><span class="sig-name descname"><span class="pre">relative_mu_dt_unlensed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/plots.html#relative_mu_dt_unlensed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.plots.relative_mu_dt_unlensed" title="Link to this definition"></a></dt>
+<dd><p>Function to generate relative magnification vs time delay difference for unlensed samples.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>param</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of unlensed GW source parameters.
+unlensed_param.keys() = [‘m1’, ‘m2’, ‘z’, ‘snr’, ‘theta_jn’, ‘ra’, ‘dec’, ‘psi’, ‘phase’, ‘geocent_time’]</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>dmu</strong><span class="classifier"><cite>float.array</cite></span></dt><dd><p>relative magnification.</p>
+</dd>
+<dt><strong>dt</strong><span class="classifier"><cite>float.array</cite></span></dt><dd><p>relative time delay.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.plots.relative_mu_dt_lensed">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.plots.</span></span><span class="sig-name descname"><span class="pre">relative_mu_dt_lensed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[8.0,</span> <span class="pre">8.0]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/plots.html#relative_mu_dt_lensed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.plots.relative_mu_dt_lensed" title="Link to this definition"></a></dt>
+<dd><p>Function to classify the lensed images wrt to the morse phase difference.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>lensed_param</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of lensed GW source parameters, lens galaxy parameters and image paramters.
+lensed_param.keys() = [‘zl’, ‘zs’, ‘sigma’, ‘q’, ‘e1’, ‘e2’, ‘gamma1’, ‘gamma2’, ‘Dl’,
+‘Ds’, ‘Dls’, ‘theta_E’, ‘gamma’, ‘mass_1’, ‘mass_2’, ‘mass_1_source’, ‘mass_2_source’,
+‘luminosity_distance’, ‘theta_jn’, ‘psi’, ‘phase’, ‘geocent_time’, ‘ra’, ‘dec’, ‘n_images’,
+‘x0_image_positions’, ‘x1_image_positions’, ‘magnifications’, ‘time_delays’, ‘traces’,
+‘determinants’, ‘image_type’, ‘weights’, ‘optimal_snr_net’, ‘L1’, ‘H1’, ‘V1’]</p>
+</dd>
+<dt><strong>snr_threshold</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>threshold for detection signal to noise ratio.
+e.g. snr_threshold = [8.,8.] or [8.,6.] for subthreshold</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>mu_rel0</strong><span class="classifier"><cite>float.array</cite></span></dt><dd><p>relative magnification for 0 degree phase difference.</p>
+</dd>
+<dt><strong>dt_rel0</strong><span class="classifier"><cite>float.array</cite></span></dt><dd><p>relative time delay for 0 degree phase difference.</p>
+</dd>
+<dt><strong>mu_rel90</strong><span class="classifier"><cite>float.array</cite></span></dt><dd><p>relative magnification for 90 degree phase difference.</p>
+</dd>
+<dt><strong>dt_rel90</strong><span class="classifier"><cite>float.array</cite></span></dt><dd><p>relative time delay for 90 degree phase difference.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.plots.mu_vs_dt_plot">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.plots.</span></span><span class="sig-name descname"><span class="pre">mu_vs_dt_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savefig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'blue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linestyles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'upper'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.01,</span> <span class="pre">500.0,</span> <span class="pre">0.01,</span> <span class="pre">100.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contour_levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.1,</span> <span class="pre">0.4,</span> <span class="pre">0.68,</span> <span class="pre">0.95]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/plots.html#mu_vs_dt_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.plots.mu_vs_dt_plot" title="Link to this definition"></a></dt>
+<dd><p>Function to generate 2D KDE and plot the relative magnification vs time delay difference for lensed samples.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>x_array</strong><span class="classifier"><cite>float.array</cite></span></dt><dd><p>x array.</p>
+</dd>
+<dt><strong>y_array</strong><span class="classifier"><cite>float.array</cite></span></dt><dd><p>y array.</p>
+</dd>
+<dt><strong>xlabel</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>x label.</p>
+</dd>
+<dt><strong>ylabel</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>y label.</p>
+</dd>
+<dt><strong>title</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>title.</p>
+</dd>
+<dt><strong>savefig</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if True, it will save the figure.
+default savefig = False.</p>
+</dd>
+<dt><strong>ax</strong><span class="classifier"><cite>matplotlib.axes</cite></span></dt><dd><p>matplotlib axes.
+default ax = None.</p>
+</dd>
+<dt><strong>colors</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>color of the plot.
+default colors = ‘blue’.</p>
+</dd>
+<dt><strong>linestyles</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>linestyle of the plot.
+default linestyles = ‘-‘.</p>
+</dd>
+<dt><strong>origin</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>origin of the plot.
+default origin = ‘upper’.</p>
+</dd>
+<dt><strong>alpha</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>alpha of the plot.
+default alpha = 0.6.</p>
+</dd>
+<dt><strong>extent</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>extent of the plot.
+default extent = [1e-2,5e2,1e-2,1e2].</p>
+</dd>
+<dt><strong>contour_levels</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>contour levels of the plot.
+default contour_levels = [0.10,0.40,0.68,0.95] which corresponds to 1,2,3,4 sigma.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -23,17 +23,18 @@ The code is available at `github <https://github.com/hemantaph/ler>`_
    :maxdepth: 1
    :caption: API:
 
-   autoapi/ler/ler/index.rst
-   autoapi/ler/source_population/index.rst
+   autoapi/ler/rates/index.rst
+   autoapi/ler/gw_source_population/index.rst
    autoapi/ler/lens_galaxy_population/index.rst
-   autoapi/ler/multiprocessing_routine/index.rst
-   autoapi/ler/helperroutines/index.rst
+   autoapi/ler/image_properties/index.rst
+   autoapi/ler/utils/index.rst
    
 .. toctree::
    :maxdepth: 2
    :caption: Examples:
    
-   Rate comparision
+   rates/LeR complete examples
+   rates/GWRATES complete exmaples
 
 
 Indices and tables

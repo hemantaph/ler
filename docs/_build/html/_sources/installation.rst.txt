@@ -40,27 +40,9 @@ To install ``ler`` for development purposes use `github.ler <https://github.com/
         pip install -e .
     
 .. _dependencies:
-Installation of numba and healpy with conda
+Installation of numba with conda
 =======================
 
 .. code-block:: console
 
     conda install -c conda-forge numba
-    conda install -c conda-forge healpy
-    
-.. _gwcosmo:
-Installation from the source for gwcosmo
-=======================
-    
-.. tabs::
-
-     .. code-tab:: console pip
-
-        pip install git+https://git.ligo.org/lscsoft/gwcosmo.git@v1.0.0
-        
-     .. code-tab:: console git
-     
-        git clone https://git.ligo.org/lscsoft/gwcosmo.git
-        cd gwcosmo
-        pip install -r requirements.txt
-        pip install .

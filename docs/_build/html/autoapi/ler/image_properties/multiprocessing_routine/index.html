@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.image_properties.multiprocessing_routine &mdash; ler 0.3.0 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=e259d695"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Unlensed%20events.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Lensed%20events.html">Lensed Events</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Rate%20comparision.html">Rate comparision</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.multiprocessing_routine</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/autoapi/ler/image_properties/multiprocessing_routine/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ler.image_properties.multiprocessing_routine">
+<span id="ler-image-properties-multiprocessing-routine"></span><h1><a class="reference internal" href="#module-ler.image_properties.multiprocessing_routine" title="ler.image_properties.multiprocessing_routine"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.multiprocessing_routine</span></code></a><a class="headerlink" href="#module-ler.image_properties.multiprocessing_routine" title="Link to this heading"></a></h1>
+<p>This sub-module contains the functions to solve the lens equation for a given set of lens parameters. The lens equation is solved using the analytical solver in lenstronomy. The functions in this sub-module are used in the multiprocessing routine to solve the lens equation for a given set of lens parameters.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.multiprocessing_routine.solve_lens_equation" title="ler.image_properties.multiprocessing_routine.solve_lens_equation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_lens_equation</span></code></a>(lens_parameters)</p></td>
+<td><p>Function to solve the lens equation (min_image = 2)</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.multiprocessing_routine.solve_lens_equation">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.multiprocessing_routine.</span></span><span class="sig-name descname"><span class="pre">solve_lens_equation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lens_parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/multiprocessing_routine.html#solve_lens_equation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.multiprocessing_routine.solve_lens_equation" title="Link to this definition"></a></dt>
+<dd><p>Function to solve the lens equation (min_image = 2)</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>lens_parameters</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>a list of parameters
+lens_parameters[0] = min_images : minimum number of images
+lens_parameters[1] = e1 : ellipticity
+lens_parameters[2] = e2 : ellipticity
+lens_parameters[3] = gamma : power-law index
+lens_parameters[4] = gamma1 : shear
+lens_parameters[5] = gamma2 : shear
+lens_parameters[6] = zl : redshift of the lens
+lens_parameters[7] = zs : redshift of the source
+lens_parameters[8] = einstein_radius : Einstein radius
+lens_parameters[9] = iteration : iteration number
+lens_parameters[10:] = lens_model_list : numpy array of lens models</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>x_source</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>x position of the source in the source plane</p>
+</dd>
+<dt><strong>y_source</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>y position of the source in the source plane</p>
+</dd>
+<dt><strong>x0_image_position</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>x position of the images in the source plane</p>
+</dd>
+<dt><strong>x1_image_position</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>y position of the images in the source plane</p>
+</dd>
+<dt><strong>magnifications</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>magnification of the images</p>
+</dd>
+<dt><strong>time_delays</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>time-delay of the images</p>
+</dd>
+<dt><strong>nImages</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of images</p>
+</dd>
+<dt><strong>determinant</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>determinant of the hessian matrix</p>
+</dd>
+<dt><strong>trace</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>trace of the hessian matrix</p>
+</dd>
+<dt><strong>iteration</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>iteration number</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.multiprocessing_routine</span> <span class="kn">import</span> <span class="n">solve_lens_equation1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># lens parameters input contains 12 parameters [e1, e2, gamma, gamma1, gamma2, zl, zs, einstein_radius, iteration, lens_model_list]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.024069457093642648</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.016002190961948142</span><span class="p">,</span> <span class="mf">1.8945414936459974</span><span class="p">,</span> <span class="mf">0.10117465203892329</span><span class="p">,</span> <span class="mf">0.09600089396968613</span><span class="p">,</span> <span class="mf">0.2503743800068136</span><span class="p">,</span> <span class="mf">0.9418211055453296</span><span class="p">,</span> <span class="mf">2.5055790287104725e-06</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.04030088581646998</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01419438113690042</span><span class="p">,</span> <span class="mf">2.0068239327017</span><span class="p">,</span> <span class="mf">0.08482718989370612</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.015393332086560785</span><span class="p">,</span> <span class="mf">1.0952303138971118</span><span class="p">,</span> <span class="mf">2.5534097159384417</span><span class="p">,</span> <span class="mf">1.0125570159563301e-06</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input_arguments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">lens_parameters1</span><span class="p">,</span> <span class="n">lens_parameters2</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># solve the lens equation for each set of lens parameters</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Pool</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">solve_lens_equation1</span><span class="p">,</span> <span class="n">input_arguments</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># result is a list of tuples</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># each tuple contains the output parameters of the function</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># each output parameter contains x_source, y_source, x0_image_position, x1_image_position, magnifications, time_delays, nImages, determinant, trace, iteration</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;magnification of images with lens parameters &#39;lens_parameters1&#39; is </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">magnification of images with lens parameters &#39;lens_parameters1&#39; is [ 2.18973765 -1.27542831]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

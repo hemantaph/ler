@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to ler’s documentation! &mdash; ler 0.2.2 documentation</title>
+  <title>Welcome to ler’s documentation! &mdash; ler 0.3.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -16,7 +16,7 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=000c92bf"></script>
+        <script src="_static/documentation_options.js?v=e259d695"></script>
         <script src="_static/doctools.js?v=888ff710"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -55,15 +55,16 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/ler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.ler</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/multiprocessing_routine/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.multiprocessing_routine</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/helperroutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.helperroutines</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Rate%20comparision.html">Calculation of unlensed and lensed rate of detectable events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
 </ul>
 
         </div>
@@ -102,8 +103,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="Installation.html#ler-for-development">ler for development</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Installation.html#installation-of-numba-and-healpy-with-conda">Installation of numba and healpy with conda</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Installation.html#installation-from-the-source-for-gwcosmo">Installation from the source for gwcosmo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Installation.html#installation-of-numba-with-conda">Installation of numba with conda</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Unlensed%20events.html">Unlensed events</a><ul>
@@ -121,25 +121,28 @@
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/ler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.ler</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/multiprocessing_routine/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.multiprocessing_routine</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/helperroutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.helperroutines</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Rate%20comparision.html">Calculation of unlensed and lensed rate of detectable events</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Rate%20comparision.html#Going-through-the-code-step-by-step">Going through the code step by step</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Rate%20comparision.html#Looking-at-the-initilized-instances">Looking at the initilized instances</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Rate%20comparision.html#Unlensed-sampler">Unlensed sampler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Rate%20comparision.html#Looking-at-sampled-paramters">Looking at sampled paramters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Rate%20comparision.html#Calculation-of-the-unlensed-rate">Calculation of the unlensed rate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Rate%20comparision.html#Lensed-sampler">Lensed sampler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Rate%20comparision.html#Comparision">Comparision</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Rate%20comparision.html#Getting-the-parameters-from-the-stored-json-files-and-plotting-it">Getting the parameters from the stored json files and plotting it</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rates/LeR%20complete%20examples.html">LeR complete examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rates/LeR%20complete%20examples.html#Short-lensed/unlensed-BBH-example-with-three-detectors">Short lensed/unlensed BBH example with three detectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rates/LeR%20complete%20examples.html#Custom-functions">Custom functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rates/LeR%20complete%20examples.html#Using-internal-model-functions">Using internal model functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rates/LeR%20complete%20examples.html#Selecting-particular-number-of-detectable-events">Selecting particular number of detectable events</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rates/GWRATES%20complete%20exmaples.html#Short-BBH-example-with-three-detectors">Short BBH example with three detectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rates/GWRATES%20complete%20exmaples.html#Custom-functions">Custom functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rates/GWRATES%20complete%20exmaples.html#Using-internal-model-functions">Using internal model functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rates/GWRATES%20complete%20exmaples.html#Selecting-particular-number-of-detectable-events">Selecting particular number of detectable events</a></li>
 </ul>
 </li>
 </ul>

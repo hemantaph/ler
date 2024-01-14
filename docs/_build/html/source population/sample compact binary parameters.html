@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sampling parameters for a compact binary &mdash; ler 0.3.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/nbsphinx-code-cells.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=e259d695"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lens_parameters/Lens%20parameter%20distributions.html">Lens parameter distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lens_parameters/Lens%20parameter%20distributions.html#SIE-model-on-optical-depth">SIE model on optical depth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lens_parameters/Lens%20parameter%20distributions.html#SIS-model-on-optical-depth">SIS model on optical depth</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Rate%20comparision.html">Rate comparision</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Sampling parameters for a compact binary</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/source population/sample compact binary parameters.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Sampling-parameters-for-a-compact-binary">
+<h1>Sampling parameters for a compact binary<a class="headerlink" href="#Sampling-parameters-for-a-compact-binary" title="Link to this heading"></a></h1>
+<section id="Introduction">
+<h2>Introduction<a class="headerlink" href="#Introduction" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>This notebook is a tutorial on how to use <code class="docutils literal notranslate"><span class="pre">ler</span></code>’s CompactBinaryPopulation module to generate a population of compact binaries coalesence (CBC) with its intrinsic and extrinsic parameters.</p></li>
+<li><p>Refer to the <a class="reference external" href="https://ler.readthedocs.io/en/latest/Unlensed%20events.html">documentation</a> for more details on how CBC parameter priors are used in the calculation of event rates using <code class="docutils literal notranslate"><span class="pre">ler</span></code>.</p></li>
+<li><p>Parameters to sampled, <span class="math notranslate nohighlight">\(\theta \in\)</span> {<span class="math notranslate nohighlight">\(m_1\)</span>:mass1, <span class="math notranslate nohighlight">\(m_2\)</span>:mass2, <span class="math notranslate nohighlight">\(D_l\)</span>:luminosity-distance, <span class="math notranslate nohighlight">\(\iota\)</span>:inclination-angle, <span class="math notranslate nohighlight">\(\psi\)</span>:polarization, <span class="math notranslate nohighlight">\(ra\)</span>:right-ascension,<span class="math notranslate nohighlight">\(dec\)</span>:declination,<span class="math notranslate nohighlight">\(\phi_c\)</span>:phase-of-coalescene,<span class="math notranslate nohighlight">\(t_c\)</span>:time-of-coalescene}.</p></li>
+<li><p>CompactBinaryPopulation class inherits from the SourceGalaxyPopulationModel class. SourceGalaxyPopulationModel is used to sample distributions of CBC’s source frame redshifts with provided merger rate density evolution model.</p></li>
+</ul>
+<section id="Default-sampling-methods-for-compact-binary-sources-(BBH).">
+<h3>Default sampling methods for compact binary sources (BBH).<a class="headerlink" href="#Default-sampling-methods-for-compact-binary-sources-(BBH)." title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>unit</p></th>
+<th class="head"><p>sampling method</p></th>
+<th class="head"><p>range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(z_s\)</span></p></td>
+<td><p>None</p></td>
+<td><p>merger-rate <span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span></p></td>
+<td><p>[0,10]</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(m_1,m_2\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathcal{M}_{\odot}\)</span></p></td>
+<td><p>PowerLaw+PEAK model</p></td>
+<td><p>[<span class="math notranslate nohighlight">\(m_{\text{min}}\)</span>,<span class="math notranslate nohighlight">\(m_{\text{max}}\)</span>]</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(ra\)</span></p></td>
+<td><p>radian</p></td>
+<td><p>Uniform</p></td>
+<td><p>[0,<span class="math notranslate nohighlight">\(2\pi\)</span>]</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(dec\)</span></p></td>
+<td><p>radian</p></td>
+<td><p>cosine</p></td>
+<td><p>[<span class="math notranslate nohighlight">\(-\pi/2\)</span>,<span class="math notranslate nohighlight">\(\pi/2\)</span>]</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\iota\)</span></p></td>
+<td><p>radian</p></td>
+<td><p>sine</p></td>
+<td><p>[0,<span class="math notranslate nohighlight">\(\pi\)</span>]</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\psi\)</span></p></td>
+<td><p>radian</p></td>
+<td><p>Uniform</p></td>
+<td><p>[0,<span class="math notranslate nohighlight">\(\pi\)</span>]</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\phi_c\)</span></p></td>
+<td><p>radian</p></td>
+<td><p>Uniform</p></td>
+<td><p>[0,<span class="math notranslate nohighlight">\(2\pi\)</span>]</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(t_c\)</span></p></td>
+<td><p>sec</p></td>
+<td><p>Uniform</p></td>
+<td><p>[<span class="math notranslate nohighlight">\(t_{\text{min}}\)</span>,<span class="math notranslate nohighlight">\(t_{\text{max}}\)</span>]</p></td>
+</tr>
+</tbody>
+</table>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># calling necessary class from ler package</span>
+<span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceParameterDistribution</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># class initialization</span>
+<span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceParameterDistribution</span><span class="p">()</span>
+
+<span class="c1"># listing the available priors.</span>
+<span class="n">priors</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">available_prior_list_and_its_params</span>
+
+<span class="c1"># types of priors</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;types of priors=&quot;</span><span class="p">,</span><span class="n">priors</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+<span class="c1"># available models of a type</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;models of a type=&quot;</span><span class="p">,</span><span class="n">priors</span><span class="p">[</span><span class="s1">&#39;source_frame_masses&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+<span class="c1"># parameters of a model</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;parameters of a model=&quot;</span><span class="p">,</span><span class="n">priors</span><span class="p">[</span><span class="s1">&#39;source_frame_masses&#39;</span><span class="p">][</span><span class="s1">&#39;binary_masses_BBH_popI_II_powerlaw_gaussian&#39;</span><span class="p">])</span>
+
+<span class="c1"># default priors</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;default priors=&quot;</span><span class="p">,</span><span class="n">cbc</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">)</span>
+
+<span class="c1"># default priors&#39;s parameters</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;default priors&#39;s parameters=&quot;</span><span class="p">,</span><span class="n">cbc</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+z_to_luminosity_distance interpolator will be loaded from ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_0.pickle
+differential_comoving_volume interpolator will be generated at ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_6.pickle
+merger_rate_density_bbh_popI_II_oguri2018 interpolator will be generated at ./interpolator_pickle/merger_rate_density_bbh_popI_II_oguri2018/merger_rate_density_bbh_popI_II_oguri2018_7.pickle
+types of priors= dict_keys([&#39;merger_rate_density&#39;, &#39;source_frame_masses&#39;, &#39;zs&#39;, &#39;spin&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;])
+models of a type= dict_keys([&#39;binary_masses_BBH_popI_II_powerlaw_gaussian&#39;, &#39;binary_masses_BBH_popIII_lognormal&#39;, &#39;binary_masses_BBH_primordial_lognormal&#39;, &#39;binary_masses_BNS_gwcosmo&#39;, &#39;binary_masses_BNS_bimodal&#39;])
+parameters of a model= {&#39;mminbh&#39;: 4.98, &#39;mmaxbh&#39;: 112.5, &#39;alpha&#39;: 3.78, &#39;mu_g&#39;: 32.27, &#39;sigma_g&#39;: 3.88, &#39;lambda_peak&#39;: 0.03, &#39;delta_m&#39;: 4.8, &#39;beta&#39;: 0.81}
+default priors= {&#39;merger_rate_density&#39;: &#39;merger_rate_density_bbh_popI_II_oguri2018&#39;, &#39;source_frame_masses&#39;: &#39;binary_masses_BBH_popI_II_powerlaw_gaussian&#39;, &#39;zs&#39;: &#39;sample_source_redshift&#39;, &#39;geocent_time&#39;: &#39;sampler_uniform&#39;, &#39;ra&#39;: CPUDispatcher(&lt;function CBCSourceParameterDistribution.event_priors_categorization.&lt;locals&gt;.&lt;lambda&gt; at 0x2ac13c310&gt;), &#39;dec&#39;: CPUDispatcher(&lt;function CBCSourceParameterDistribution.event_priors_categorization.&lt;locals&gt;.&lt;lambda&gt; at 0x2ac13c3a0&gt;), &#39;phase&#39;: CPUDispatcher(&lt;function CBCSourceParameterDistribution.event_priors_categorization.&lt;locals&gt;.&lt;lambda&gt; at 0x2ac13c550&gt;), &#39;psi&#39;: CPUDispatcher(&lt;function CBCSourceParameterDistribution.event_priors_categorization.&lt;locals&gt;.&lt;lambda&gt; at 0x2ac13c700&gt;), &#39;theta_jn&#39;: CPUDispatcher(&lt;function CBCSourceParameterDistribution.event_priors_categorization.&lt;locals&gt;.&lt;lambda&gt; at 0x2ac13c8b0&gt;)}
+default priors&#39;s parameters= {&#39;merger_rate_density&#39;: {&#39;R0&#39;: 2.5000000000000002e-08, &#39;b2&#39;: 1.6, &#39;b3&#39;: 2.0, &#39;b4&#39;: 30}, &#39;source_frame_masses&#39;: {&#39;mminbh&#39;: 4.98, &#39;mmaxbh&#39;: 112.5, &#39;alpha&#39;: 3.78, &#39;mu_g&#39;: 32.27, &#39;sigma_g&#39;: 3.88, &#39;lambda_peak&#39;: 0.03, &#39;delta_m&#39;: 4.8, &#39;beta&#39;: 0.81}, &#39;zs&#39;: None, &#39;geocent_time&#39;: {&#39;min_&#39;: 1238166018, &#39;max_&#39;: 1269702018}, &#39;ra&#39;: None, &#39;dec&#39;: None, &#39;phase&#39;: None, &#39;psi&#39;: None, &#39;theta_jn&#39;: None}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># available sampler functions (instance attributes)</span>
+<span class="c1"># the chosen priors will be tied down with the corresponding attribute</span>
+<span class="c1"># e.g &#39;binary_masses_BBH_popI_II_powerlaw_gaussian&#39; is the choice then,</span>
+<span class="c1"># cbc.sample_source_frame_masses will sample from it</span>
+<span class="c1"># all available sampler attributes are listed below</span>
+<span class="n">cbc</span><span class="o">.</span><span class="n">sampler_names</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;sample_source_frame_masses&#39;: &#39;samples mass1 and mass2 of the compact binaries&#39;,
+ &#39;sample_zs&#39;: &#39;samples source redshifts&#39;,
+ &#39;sample_geocent_time&#39;: &#39;samples geocent_time&#39;,
+ &#39;sample_ra&#39;: &#39;samples right ascension of sky position&#39;,
+ &#39;sample_dec&#39;: &#39;samples declination of sky position&#39;,
+ &#39;sample_phase&#39;: &#39;samples coalescence phase&#39;,
+ &#39;sample_psi&#39;: &#39;samples polarization angle&#39;,
+ &#39;sample_theta_jn&#39;: &#39;samples theta_jn&#39;}
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="Sampling-of-parameters">
+<h2>Sampling of parameters<a class="headerlink" href="#Sampling-of-parameters" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>cbc.sample_gw_parameters method instance sample all the parameters for a compact binary coalescence.</p></li>
+<li><p>For sampling single parameter, use the respective method instance. e.g. cbc.binary_masses_BBH_popI_II_powerlaw_gaussian(size=1000)</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># It sample all the parameters</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">sample_gw_parameters</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<span class="c1"># which parameters are sampled?</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sampled parameters=&quot;</span><span class="p">,</span><span class="nb">list</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+sampled parameters= [&#39;zs&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;, &#39;luminosity_distance&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([-0.30854608,         nan, -0.72186901, ..., -0.70959012,
+               nan,  0.33584625])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># you can put your own sampled parameters</span>
+<span class="c1"># or you can defined your own sampler which I will show in the next cell</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">sample_gw_parameters</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">size</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">])</span>  <span class="c1"># all other parameters are sampled from default priors</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1. ]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># defining your own sampler priors.</span>
+<span class="c1"># note: the input and output of the function should be the following format</span>
+<span class="k">def</span> <span class="nf">test_zs</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Test for zs sampler</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    size: int</span>
+<span class="sd">        Number of samples to be drawn</span>
+<span class="sd">    param: None</span>
+<span class="sd">        dictionary of parameters</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    zs: array_like</span>
+<span class="sd">        Redshifts</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">zs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">zs</span>
+
+<span class="c1"># you can put the sampler when you initialize the class</span>
+<span class="n">cbc</span> <span class="o">=</span> <span class="n">CompactBinaryPopulation</span><span class="p">(</span><span class="n">event_priors</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;zs&#39;</span><span class="p">:</span> <span class="n">test_zs</span><span class="p">},</span> <span class="n">event_priors_params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;zs&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">sample_gw_parameters</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sampled redshift values=&quot;</span><span class="p">,</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">])</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Sampled redshift values= [0.6651818  0.97285451 0.3135095  0.6759467  0.83463507 0.95009127
+ 0.26877908 0.63590493 0.40339875 0.8631734 ]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># its the function which was defined in the previous cell</span>
+cbc.sample_source_redshifts<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Signature:</span> cbc<span class="ansi-blue-fg">.</span>sample_source_redshifts<span class="ansi-blue-fg">(</span>size<span class="ansi-blue-fg">,</span> param<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-red-fg">Docstring:</span>
+Test for zs sampler
+
+Parameters
+----------
+size: int
+    Number of samples to be drawn
+param: None
+    dictionary of parameters
+
+Returns
+-------
+zs: array_like
+    Redshifts
+<span class="ansi-red-fg">File:</span>      /var/folders/ws/0948zvwd7g795j2l3fryghjw0000gp/T/ipykernel_32864/3102535209.py
+<span class="ansi-red-fg">Type:</span>      function
+</pre></div></div>
+</div>
+</section>
+<section id="Available-priors-and-their-comparisions">
+<h2>Available priors and their comparisions<a class="headerlink" href="#Available-priors-and-their-comparisions" title="Link to this heading"></a></h2>
+<section id="Redshift-distribution">
+<h3>Redshift distribution<a class="headerlink" href="#Redshift-distribution" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>For detailed explaination, refer Notebook with title ‘Merger rate density model comparision.ipynb’.</p></li>
+</ul>
+</section>
+<section id="Compact-binary-mass-distribution-of-BBHs">
+<h3>Compact binary mass distribution of BBHs<a class="headerlink" href="#Compact-binary-mass-distribution-of-BBHs" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Default mass distribution model is <code class="docutils literal notranslate"><span class="pre">powerlaw</span> <span class="pre">with</span> <span class="pre">a</span> <span class="pre">gaussian</span> <span class="pre">peak</span></code>. Refer to <a class="reference external" href="https://arxiv.org/pdf/2106.06303.pdf">WIERDA et al. 2021</a> Appendix B1. for more details.</p></li>
+<li><p>This model of BBHs is a statistical model that describes the distribution of primary black hole masses in the BBH population. It consists of two components:</p>
+<ul>
+<li><p><strong>Power-law component</strong>: This component describes the overall trend of the mass distribution, which is that the number of BBHs with a given primary mass decreases as the mass increases.</p></li>
+<li><p><strong>Gaussian peak component</strong>: This component describes a concentration of BBHs at a particular mass, thought to be due to pulsational pair-instability supernovae (PPISNe).</p></li>
+</ul>
+</li>
+<li><p>The model also includes cut-offs at the minimum and maximum primary black hole masses, which are necessary due to physical limits.</p></li>
+<li><p>For secondary mass distribution, the mass ratio is first sampled from a powerlaw distribution and then the secondary mass is calculated from the sampled mass ratio and primary mass.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ler</span></code> follows the ‘BBH_powerlaw_gaussian’ class implementation of <a class="reference external" href="https://lscsoft.docs.ligo.org/gwcosmo/">gwcosmo</a>.</p></li>
+<li><p>In terms of its fit to the observed data, the POWER-LAW + PEAK model is comparable to other models, such as the broken power law model. However, the POWER-LAW + PEAK model has the advantage of being more physically motivated and more flexible.</p></li>
+</ul>
+<p>Here is a table comparing the POWER-LAW + PEAK model with other models:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Flexibility</p></th>
+<th class="head"><p>Physical motivation</p></th>
+<th class="head"><p>Fit to data</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>POWER-LAW + PEAK</p></td>
+<td><p>Semi-parametric</p></td>
+<td><p>High</p></td>
+<td><p>Yes</p></td>
+<td><p>Good</p></td>
+</tr>
+<tr class="row-odd"><td><p>Broken power law</p></td>
+<td><p>Parametric</p></td>
+<td><p>Medium</p></td>
+<td><p>No</p></td>
+<td><p>Good</p></td>
+</tr>
+<tr class="row-even"><td><p>Uniform mass distribution</p></td>
+<td><p>Parametric</p></td>
+<td><p>Low</p></td>
+<td><p>No</p></td>
+<td><p>Poor</p></td>
+</tr>
+</tbody>
+</table>
+<section id="Sampling">
+<h4>Sampling<a class="headerlink" href="#Sampling" title="Link to this heading"></a></h4>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CompactBinaryPopulation</span><span class="p">()</span>
+<span class="c1"># sampling the source frame masses</span>
+<span class="n">m1_src</span><span class="p">,</span> <span class="n">m2_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">sample_source_frame_masses</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot histogram of mass_1_source_frame</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">m1_src</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;m1&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">m2_src</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;m2&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;mass_source_frame&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;pdf&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/source_population_sample_compact_binary_parameters_16_0.png" src="../_images/source_population_sample_compact_binary_parameters_16_0.png" />
+</div>
+</div>
+</section>
+<section id="comparing-two-input-parameters">
+<h4>comparing two input parameters<a class="headerlink" href="#comparing-two-input-parameters" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>This section explain how to input model parameters.</p></li>
+<li><p>It can be at the class initialization stage or at the sampling stage.</p></li>
+<li><p>params in <a class="reference external" href="https://arxiv.org/pdf/2106.06303.pdf">WIERDA et al. 2021</a> vs the default params in <a class="reference external" href="https://lscsoft.docs.ligo.org/gwcosmo/">gwcosmo</a>.</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Wierda et al. 2021</span>
+<span class="n">param1</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">mminbh</span><span class="o">=</span><span class="mf">4.98</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="o">=</span><span class="mf">86.22</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">2.63</span><span class="p">,</span> <span class="n">mu_g</span><span class="o">=</span><span class="mf">33.07</span><span class="p">,</span> <span class="n">sigma_g</span><span class="o">=</span><span class="mf">5.69</span><span class="p">,</span> <span class="n">lambda_peak</span><span class="o">=</span><span class="mf">0.10</span><span class="p">,</span> <span class="n">delta_m</span><span class="o">=</span><span class="mf">4.82</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.26</span><span class="p">)</span>
+<span class="c1"># gwcosmo</span>
+<span class="n">param2</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">mminbh</span><span class="o">=</span><span class="mf">4.98</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="o">=</span><span class="mf">86.22</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">2.63</span><span class="p">,</span> <span class="n">mu_g</span><span class="o">=</span><span class="mf">33.07</span><span class="p">,</span> <span class="n">sigma_g</span><span class="o">=</span><span class="mf">5.69</span><span class="p">,</span> <span class="n">lambda_peak</span><span class="o">=</span><span class="mf">0.10</span><span class="p">,</span> <span class="n">delta_m</span><span class="o">=</span><span class="mf">4.82</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.26</span><span class="p">)</span>
+
+<span class="c1"># if it is in class initialization</span>
+<span class="c1"># cbc = CompactBinaryPopulation(event_priors={&#39;source_frame_masses&#39;: cbc.source_frame_masses_powerlaw_gaussian}, event_priors_params={&#39;source_frame_masses&#39;: param1})</span>
+
+<span class="c1"># sampling</span>
+<span class="n">m1_src1</span><span class="p">,</span> <span class="n">m2_src1</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">sample_source_frame_masses</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="n">param1</span><span class="p">)</span>
+<span class="n">m1_src2</span><span class="p">,</span> <span class="n">m2_src2</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">sample_source_frame_masses</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="n">param2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># KDE construction</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">gaussian_kde</span>
+<span class="n">kde1</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">m1_src1</span><span class="p">)</span>
+<span class="n">kde2</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">m1_src2</span><span class="p">)</span>
+
+<span class="c1"># plot histogram of mass_1_source_frame</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span> <span class="n">kde1</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">100</span><span class="p">)),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Wierda&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span> <span class="n">kde2</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">100</span><span class="p">)),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;gwcosmo&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;mass_source_frame&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;pdf&#39;</span><span class="p">)</span>
+<span class="c1">#plt.xlim(0,60)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/source_population_sample_compact_binary_parameters_19_0.png" src="../_images/source_population_sample_compact_binary_parameters_19_0.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="Compact-binary-mass-distribution-of-BNS">
+<h3>Compact binary mass distribution of BNS<a class="headerlink" href="#Compact-binary-mass-distribution-of-BNS" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>The <strong>bimodal mass distribution</strong> of neutron stars in binary systems can be modeled by a double Gaussian distribution, with peaks at around 1.35 M☉ and 1.8 M☉. This model is thought to reflect the different evolutionary paths that neutron stars can take. For more details refer to Refer to <a class="reference external" href="https://arxiv.org/pdf/1805.06442.pdf">Alsing et al. 2018</a> and Will <a class="reference external" href="https://arxiv.org/pdf/2005.00032.pdf">M. Farr et al. 2020</a>.</p></li>
+</ul>
+<p><span class="math">\begin{equation}
+p(m) = wN (\mu_L, \sigma_L) + (1 − w)N (\mu_R, \sigma_R)
+\nonumber
+\end{equation}</span></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(m\)</span>: neutron star mass, <span class="math notranslate nohighlight">\(w\)</span>: fraction of neutron stars in the low-mass peak, <span class="math notranslate nohighlight">\(\mu_L\)</span> and <span class="math notranslate nohighlight">\(\mu_R\)</span> are the mean masses of the low-mass and high-mass peaks, respectively, <span class="math notranslate nohighlight">\(\sigma_L\)</span> and <span class="math notranslate nohighlight">\(\sigma_R\)</span> are the standard deviations of the low-mass and high-mass peaks, respectively.</p></li>
+<li><p>Neutron stars that form from the collapse of massive stars in binary systems can either remain isolated or undergo mass transfer from their companion stars. Neutron stars that remain isolated have a lower mass distribution, with a peak at around 1.35 M☉. This is because the neutron star will start to collapse if it becomes too massive. Neutron stars that undergo mass transfer from their companion stars can have a higher mass distribution, with a peak at around 1.8 M☉. This is because the
+neutron star can accrete mass from its companion star until it reaches a maximum mass.</p></li>
+<li><p>The parameters of the double Gaussian distribution are as follows:</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(w\)</span></p></td>
+<td><p>0.643</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mu_L\)</span></p></td>
+<td><p>1.352 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\sigma_L\)</span></p></td>
+<td><p>0.08 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mu_R\)</span></p></td>
+<td><p>1.88 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\sigma_R\)</span></p></td>
+<td><p>0.3 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>Note: each normal distribution is independently truncated and normalized in the range [1, 2.3] <span class="math notranslate nohighlight">\(M_{\odot}\)</span>. This means that the neutron star masses are not allowed to be less than 1 <span class="math notranslate nohighlight">\(M_{\odot}\)</span> or greater than 2.3 <span class="math notranslate nohighlight">\(M_{\odot}\)</span>.</p></li>
+<li><p>This model is a good fit for the observed mass distribution of neutron stars in binary systems.</p></li>
+<li><p>Note: Both primary and secondary masses are sampled from the same distribution, but the value is exchanged if the secondary mass is greater than the primary mass.</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="c1"># calling necessary class from ler package</span>
+<span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CompactBinaryPopulation</span>
+
+<span class="c1"># initializing the class</span>
+<span class="n">cbc</span> <span class="o">=</span> <span class="n">CompactBinaryPopulation</span><span class="p">(</span><span class="n">event_type</span><span class="o">=</span><span class="s2">&quot;BNS&quot;</span><span class="p">)</span>
+
+<span class="c1"># mass_1_source_frame and mass_2_source_frame</span>
+<span class="n">m1_src</span><span class="p">,</span> <span class="n">m2_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">sample_source_frame_masses</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+
+<span class="c1"># plot histogram of mass_1_source_frame, mass_2_source_frame</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">m1_src</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;m1&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">m2_src</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;m2&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;mass_source_frame&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;pdf&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/source_population_sample_compact_binary_parameters_21_0.png" src="../_images/source_population_sample_compact_binary_parameters_21_0.png" />
+</div>
+</div>
+<section id="Comparing-with-other-BNS-models-from-gwcosmo">
+<h4>Comparing with other BNS models from <code class="docutils literal notranslate"><span class="pre">gwcosmo</span></code><a class="headerlink" href="#Comparing-with-other-BNS-models-from-gwcosmo" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gwcosmo</span></code> employs a distribution of the mass with a truncated power law with slope <span class="math notranslate nohighlight">\(-\alpha\)</span> between a minimum mass <span class="math notranslate nohighlight">\(m_{min}\)</span> and a maximum mass <span class="math notranslate nohighlight">\(m_{max}\)</span>. Refer to section 4.2 and eq. A10 in 2111.03604 for more details.</p></li>
+<li><p>Note: Both primary and secondary masses are sampled from the same distribution, but the value is exchanged if the secondary mass is greater than the primary mass.</p></li>
+<li><p>Diffrent distribution can lead to different event rates. Refer to the notebook ‘BNS event rate comparision.ipynb’ for more details.</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># mass_1_source_frame and mass_2_source_frame</span>
+<span class="n">m1_src1</span><span class="p">,</span> <span class="n">m2_src1</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">binary_masses_BNS_bimodal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<span class="n">m1_src2</span><span class="p">,</span> <span class="n">m2_src2</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">binary_masses_BNS_popI_II_gwcosmo</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+
+<span class="c1"># plot histogram of mass_1_source_frame, mass_2_source_frame</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">m1_src1</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;m1 (bimodal)&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">m2_src1</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;m2 (bimodal)&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">m1_src2</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;m1 (powerlaw)&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">m2_src2</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;m2 (powerlaw)&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;mass (source frame) $M_{\odot}$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;pdf&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Mass distribution of BNS&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/source_population_sample_compact_binary_parameters_23_0.png" src="../_images/source_population_sample_compact_binary_parameters_23_0.png" />
+</div>
+</div>
+<ul class="simple">
+<li><p>The power law distribution model is a simpler model than the bimodal distribution model, but it is not as good of a fit to the observed mass distribution of BNS systems.</p></li>
+<li><p>It is important to note that both the bimodal distribution model and the power law distribution model are just models. The true mass distribution of BNS systems may be more complex than either of these models can describe. More data and more sophisticated models are needed to better understand the mass distribution of BNS systems.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="BBHs-mass-distribution-with-different-origins-(popI/II-vs-popIII-vs-primordial-black-holes)">
+<h2>BBHs mass distribution with different origins (popI/II vs popIII vs primordial black holes)<a class="headerlink" href="#BBHs-mass-distribution-with-different-origins-(popI/II-vs-popIII-vs-primordial-black-holes)" title="Link to this heading"></a></h2>
+<section id="Primordial-origin">
+<h3>Primordial origin<a class="headerlink" href="#Primordial-origin" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Take reference to section 2.1 <a class="reference external" href="https://arxiv.org/pdf/2204.11864.pdf">Ng et al. 2022</a> for more details.</p></li>
+<li><p>In BBH primordial mass distribution, black holes form from radiation-induced overdensities in the early Universe.</p></li>
+<li><p>They exhibit a Poisson spatial distribution, initiating binary black hole formation at high redshifts due to gravitational attraction.</p></li>
+<li><p>The PBH mass distribution follows a lognormal function centered at <span class="math notranslate nohighlight">\(M_c\)</span> (not to be confuse with Chirp mass <span class="math notranslate nohighlight">\(\mathcal{M}_c\)</span>) with width <span class="math notranslate nohighlight">\(\sigma\)</span>.</p></li>
+</ul>
+<p><span class="math">\begin{equation}
+\psi(m|M_c,\sigma) = \frac{1}{\sqrt{2 \pi} \sigma m} \exp\left(-\frac{\log^2(m/M_c)}{2\sigma^2}\right)
+\nonumber
+\end{equation}</span></p>
+<ul class="simple">
+<li><p>Like the method used in <a class="reference external" href="https://arxiv.org/pdf/2204.11864.pdf">Ng et al. 2022</a>, <code class="docutils literal notranslate"><span class="pre">ler</span></code> neglects the role of accretion. This means that the constraints we set on the PBH abundance based on merger rate estimates are the least stringent, and may be translated to smaller values of <span class="math notranslate nohighlight">\(f_{PBH}\)</span> (PBH fraction) if a strong accretion phase is assumed.</p></li>
+<li><p>Assuming a small enough abundance <span class="math notranslate nohighlight">\(f_{PBH}&lt;&lt;10^{−3}\)</span> , one can write the PBH mass function as,</p></li>
+</ul>
+<p><span class="math">\begin{equation}
+p(m_1, m_2) \propto (m_1 + m_2)^{-36/37} (m_1 m_2)^{-32/37} \psi(m_1) \psi(m_2)
+\nonumber
+\end{equation}</span></p>
+<ul class="simple">
+<li><p>m1 and m2 will be sampled from the 2D probability distribution function (PDF) with <span class="math notranslate nohighlight">\([m_{min}, m_{max}]\in [1,100]\)</span>. Its reasonable to assume the set limits as the fraction of PBHs with masses outside this range is negligible.</p></li>
+<li><p>Minimum and maximum mass of PBHs are very uncertain. Ref. <a class="reference external" href="https://journals.aps.org/prd/abstract/10.1103/PhysRevD.94.083504">Bernard Carr et al. 2016</a>.</p>
+<ul>
+<li><p><strong>Minimum Mass</strong>: The lower mass limit for PBHs is set by the Hawking radiation process. Black holes that are too light would have evaporated by now. This limit can be as low as ~10^-18 solar masses or even less, but such extremely light PBHs would have evaporated shortly after their formation.</p></li>
+<li><p><strong>Maximum Mass</strong>: The upper mass limit for PBHs is constrained by various cosmological observations like the cosmic microwave background radiation and the large-scale structure of the universe. This could be up to several tens or even hundreds of solar masses, though the exact value is constrained by observational limits.</p></li>
+</ul>
+</li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="c1"># calling necessary class from ler package</span>
+<span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CompactBinaryPopulation</span>
+
+<span class="c1"># initializing the class</span>
+<span class="n">cbc</span> <span class="o">=</span> <span class="n">CompactBinaryPopulation</span><span class="p">(</span><span class="n">event_priors</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">source_frame_masses</span><span class="o">=</span> <span class="s1">&#39;binary_masses_BBH_primordial_lognormal&#39;</span><span class="p">),</span> <span class="n">event_priors_params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">source_frame_masses</span><span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">m_min</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">m_max</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">Mc</span><span class="o">=</span><span class="mf">30.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sampling</span>
+<span class="c1"># PBH</span>
+<span class="n">m1_PBH</span><span class="p">,</span> <span class="n">m2_PBH</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">sample_source_frame_masses</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<span class="c1"># BBH popI/II</span>
+<span class="n">m1_BBH</span><span class="p">,</span> <span class="n">m2_BBH</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">binary_masses_BBH_popI_II_powerlaw_gaussian</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># KDE construction</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">gaussian_kde</span>
+<span class="n">kde_m1_PBH</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">m1_PBH</span><span class="p">)</span>
+<span class="n">kde_m2_PBH</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">m2_PBH</span><span class="p">)</span>
+<span class="n">kde_m1_BBH</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">m1_BBH</span><span class="p">)</span>
+<span class="n">kde_m2_BBH</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">m2_BBH</span><span class="p">)</span>
+
+<span class="c1"># plot pdf</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span> <span class="n">kde_m1_PBH</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">100</span><span class="p">)),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;m1 (PBH)&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span> <span class="n">kde_m2_PBH</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">100</span><span class="p">)),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;m2 (PBH)&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span> <span class="n">kde_m1_BBH</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">100</span><span class="p">)),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;m1 (BBH)&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span> <span class="n">kde_m2_BBH</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">100</span><span class="p">)),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;m2 (BBH)&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;mass (source frame) $M_{\odot}$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;pdf&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">80</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<br/><br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/source_population_sample_compact_binary_parameters_29_0.png" src="../_images/source_population_sample_compact_binary_parameters_29_0.png" />
+</div>
+</div>
+</section>
+<section id="Pop-III-origin">
+<h3>Pop III origin<a class="headerlink" href="#Pop-III-origin" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Refer to <a class="reference external" href="https://ar5iv.labs.arxiv.org/html/2204.11864">Ng et al.</a> for more details. Note that the mass distribution model and model parameters are same as that of primordial black holes.</p></li>
+<li><p>Pop III binary black holes (BBHs) are expected to have a different mass distribution than BBHs with solar metallicity. This is because Pop III stars are more massive and have shorter lifetimes than solar metallicity stars. As a result, Pop III BBHs are expected to have a higher mass fraction of high-mass black holes.</p></li>
+<li><p><strong>Model Usage:</strong> A phenomenological model is used to estimate the volumetric merger rate density of Pop III BBHs, based on a fit to data from population synthesis studies .</p></li>
+<li><p><strong>Mass Spectrum Uncertainty:</strong> The mass spectrum of Pop III BBHs is highly uncertain due to the initial conditions of Pop III stars, with the paper assuming an identical mass spectrum for Pop III BBHs and Primordial Black Hole mergers.</p></li>
+<li><p><strong>High Redshift Merger Dominance:</strong> Mergers of black holes from Pop III stars, along with primordial black hole mergers, are expected to dominate at high redshifts (z ≳ 10), crucial for gravitational-wave detections.</p></li>
+<li><p>Note: If the mass distributions of PBHs and BBHs (popIII) are the same, then we cannot tell them apart based on mass alone. We need to measure redshift to do this. This is a cautious approach, because if their mass is different, then we could use this information to tell them apart and get more accurate measurements.</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
