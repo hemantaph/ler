@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.lens_galaxy_population.optical_depth &mdash; ler 0.3.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=e259d695"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="../../../_static/tabs.js?v=3030b3cb"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Unlensed%20events.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed%20events.html">Lensed events</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ler.lens_galaxy_population.optical_depth</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ler.lens_galaxy_population.optical_depth</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">gengamma</span>
+<span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span>  <span class="n">interpolator_from_pickle</span><span class="p">,</span> <span class="n">cubic_spline_interpolator</span><span class="p">,</span> <span class="n">inverse_transform_sampler</span>
+<span class="kn">from</span> <span class="nn">.jit_functions</span> <span class="kn">import</span> <span class="n">phi_cut_SIE</span><span class="p">,</span> <span class="n">axis_ratio_rayleigh</span><span class="p">,</span> <span class="n">axis_ratio_SIS</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">phi_loc_bernardi</span>
+
+<div class="viewcode-block" id="OpticalDepth">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth">[docs]</a>
+<span class="k">class</span> <span class="nc">OpticalDepth</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to calculate the optical depth, velocity dispersion and axis-ratio of a lens galaxy population.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    npool : `int`</span>
+<span class="sd">        number of processors to use for multiprocessing</span>
+<span class="sd">    z_min : `float`</span>
+<span class="sd">        minimum redshift of the lens galaxy population</span>
+<span class="sd">    z_max : `float`</span>
+<span class="sd">        maximum redshift of the lens galaxy population</span>
+<span class="sd">    optical_depth_function : `str` or `callable`</span>
+<span class="sd">        Function or function name to calculate optical depth.</span>
+<span class="sd">        Check for default/available optical depth functions by running,</span>
+<span class="sd">        &gt;&gt;&gt; from ler.lens_galaxy_population import OpticalDepth</span>
+<span class="sd">        &gt;&gt;&gt; print(OpticalDepth().available_optical_depth_list_and_its_params)</span>
+<span class="sd">    sampler_priors, sampler_priors_params : `dict`, `dict`</span>
+<span class="sd">        dictionary of sampler functions and it&#39;s parameters to sample velocity dispersion and axis-ratio.</span>
+<span class="sd">        Check for default/available sampler priors and corresponding input parameters by running,</span>
+<span class="sd">        &gt;&gt;&gt; from ler.lens_galaxy_population import OpticalDepth</span>
+<span class="sd">        &gt;&gt;&gt; print(OpticalDepth().available_velocity_dispersion_list_and_its_params)</span>
+<span class="sd">        &gt;&gt;&gt; print(OpticalDepth().available_axis_ratio_list_and_its_params)</span>
+<span class="sd">    cosmology : `astropy.cosmology`</span>
+<span class="sd">        Cosmology to use</span>
+<span class="sd">        default: None/astropy.cosmology.FlatLambdaCDM(H0=70, Om0=0.3)</span>
+<span class="sd">    directory : `str`</span>
+<span class="sd">        directory to store interpolator pickle files</span>
+<span class="sd">        default: &quot;./interpolator_pickle&quot;</span>
+<span class="sd">    create_new_interpolator : `dict`</span>
+<span class="sd">        dictionary to create new interpolator for velocity dispersion and optical depth.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from ler.lens_galaxy_population import OpticalDepth</span>
+<span class="sd">    &gt;&gt;&gt; od = OpticalDepth()</span>
+<span class="sd">    &gt;&gt;&gt; print(od.strong_lensing_optical_depth(0.5))</span>
+
+<span class="sd">    Instance Attributes</span>
+<span class="sd">    -------------------</span>
+<span class="sd">    OpticalDepth class has the following attributes:</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    | Atrributes                          | Type                             |</span>
+<span class="sd">    +=====================================+==================================+</span>
+<span class="sd">    |:attr:`~npool`                       | `int`                            |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:attr:`~z_min`                       | `float`                          |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:attr:`~z_max`                       | `float`                          |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:attr:`~functions`                   | `dict`                           |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:attr:`~sampler_priors`              | `dict`                           |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:attr:`~sampler_priors_params`       | `dict`                           |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:attr:`~cosmo`                       | `astropy.cosmology`              |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:attr:`~directory`                   | `str`                            |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:attr:`~c_n_i`                       | `dict`                           |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:attr:`~vd_inv_cdf`                  | `numpy.ndarray`                  |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:attr:`~available_velocity_dispersion_list_and_its_params`              |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |                                     | `dict`                           |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:attr:`~available_axis_ratio_list_and_its_params`                       |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |                                     | `dict`                           |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:attr:`~available_optical_depth_list_and_its_params`                    |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |                                     | `dict`                           |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+
+<span class="sd">    Instance Methods</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    OpticalDepth class has the following methods:</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    | Methods                             | Type                             |</span>
+<span class="sd">    +=====================================+==================================+</span>
+<span class="sd">    |:meth:`~create_lookup_table`         | Function to create a lookup      |</span>
+<span class="sd">    |                                     | table for redshift dependent     |</span>
+<span class="sd">    |                                     | cosmological functions           |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:meth:`~initialize_velocity_dispersion_sampler`                         |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |                                     | Function to initialize velocity  |</span>
+<span class="sd">    |                                     | dispersion sampler               |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:meth:`~initialize_optical_depth_function`                              |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |                                     | Function to initialize optical   |</span>
+<span class="sd">    |                                     | depth function                   |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:meth:`~velocity_dispersion_gengamma`| Function to sample velocity      |</span>
+<span class="sd">    |                                     | dispersion from gengamma         |</span>
+<span class="sd">    |                                     | distribution                     |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:meth:`~velocity_dispersion_bernardi`| Function to sample velocity      |</span>
+<span class="sd">    |                                     | dispersion from Bernardi et al.  |</span>
+<span class="sd">    |                                     | (2010)                           |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:meth:`~velocity_dispersion_ewoud`   | Function to sample velocity      |</span>
+<span class="sd">    |                                     | dispersion from Wempe et al.     |</span>
+<span class="sd">    |                                     | (2022)                           |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:meth:`~cross_section_SIS`           | Function to compute the SIS      |</span>
+<span class="sd">    |                                     | cross-section                    |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:meth:`~tau_zl_zs`               | Function to compute the optical  |</span>
+<span class="sd">    |                                     | depth integrand                  |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:meth:`~optical_depth_calculator`    | Function to compute the optical  |</span>
+<span class="sd">    |                                     | depth without multiprocessing    |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:meth:`~optical_depth_multiprocessing`                                  |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |                                     | Function to compute the optical  |</span>
+<span class="sd">    |                                     | depth with multiprocessing       |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:meth:`~optical_depth_SIS_haris`     | Function to compute the strong   |</span>
+<span class="sd">    |                                     | lensing optical depth (SIS)      |</span>
+<span class="sd">    |                                     | Haris et al. (2018) (analytic)   |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:meth:`~optical_depth_SIS_hemanta`   | Function to compute the strong   |</span>
+<span class="sd">    |                                     | lensing optical depth (SIS)      |</span>
+<span class="sd">    |                                     | (numerical)                      |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:meth:`~optical_depth_SIE_hemanta`   | Function to compute the strong   |</span>
+<span class="sd">    |                                     | lensing optical depth (SIE)      |</span>
+<span class="sd">    |                                     | (numerical)                      |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:meth:`~strong_lensing_optical_depth`| Function to compute the strong   |</span>
+<span class="sd">    |                                     | lensing optical depth            |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:meth:`~sample_velocity_dispersion`  | Function to sample velocity      |</span>
+<span class="sd">    |                                     | dispersion                       |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    |:meth:`~sample_axis_ratio`           | Function to sample axis ratio    |</span>
+<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+        <span class="n">npool</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+        <span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+        <span class="n">z_max</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+        <span class="n">optical_depth_function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">sampler_priors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">sampler_priors_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">cosmology</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;./interpolator_pickle&quot;</span><span class="p">,</span>
+        <span class="n">create_new_interpolator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">npool</span> <span class="o">=</span> <span class="n">npool</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span> <span class="o">=</span> <span class="n">z_min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span> <span class="o">=</span> <span class="n">z_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span> <span class="o">=</span> <span class="n">cosmology</span> <span class="k">if</span> <span class="n">cosmology</span> <span class="k">else</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sampler_priors</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">velocity_dispersion</span><span class="o">=</span><span class="s2">&quot;velocity_dispersion_bernardi&quot;</span><span class="p">,</span>
+            <span class="n">axis_ratio</span><span class="o">=</span><span class="s2">&quot;axis_ratio_rayleigh&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">sampler_priors</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sampler_priors</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sampler_priors</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sampler_priors_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">velocity_dispersion</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">vd_min</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">vd_max</span><span class="o">=</span><span class="mf">600.</span><span class="p">),</span>
+            <span class="n">axis_ratio</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">q_min</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">q_max</span><span class="o">=</span><span class="mf">1.</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">sampler_priors_params</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sampler_priors_params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sampler_priors_params</span><span class="p">)</span>
+
+        <span class="n">optical_depth_function</span> <span class="o">=</span> <span class="n">optical_depth_function</span> <span class="k">if</span> <span class="n">optical_depth_function</span> <span class="k">else</span> <span class="s2">&quot;optical_depth_SIE_hemanta&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">velocity_dispersion</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
+            <span class="n">axis_ratio</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
+            <span class="n">optical_depth</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span>
+            <span class="n">z_to_Dc</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
+            <span class="n">Dc_to_z</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
+            <span class="n">angular_diameter_distance</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
+            <span class="n">differential_comoving_volume</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">create_new_interpolator</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">create_new_interpolator</span><span class="p">)</span>
+
+        <span class="n">vd_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler_priors</span><span class="p">[</span><span class="s2">&quot;velocity_dispersion&quot;</span><span class="p">]</span>  <span class="c1"># velocity dispersion sampler name</span>
+        <span class="n">tau_name</span> <span class="o">=</span> <span class="n">optical_depth_function</span>  <span class="c1"># optical depth function name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_lookup_table_fuction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">)</span>
+
+        <span class="c1"># setting velocity dispersion sampler method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialize_velocity_dispersion_sampler</span><span class="p">(</span><span class="n">vd_name</span><span class="p">);</span>
+
+        <span class="c1"># setting optical depth method</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">optical_depth_function</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">strong_lensing_optical_depth</span> <span class="o">=</span> <span class="n">optical_depth_function</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initialize_optical_depth_function</span><span class="p">(</span><span class="n">tau_name</span><span class="p">,</span> <span class="n">vd_name</span><span class="p">);</span>
+        
+<div class="viewcode-block" id="OpticalDepth.initialize_velocity_dispersion_sampler">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.initialize_velocity_dispersion_sampler">[docs]</a>
+    <span class="k">def</span> <span class="nf">initialize_velocity_dispersion_sampler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vd_name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to initialize velocity dispersion sampler</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        vd_name : `str`</span>
+<span class="sd">            name of velocity dispersion sampler</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># setting up input parameters for interpolation</span>
+        <span class="c1"># check vd_min and vd_max exists in sampler_priors_params</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vd_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler_priors_params</span><span class="p">[</span><span class="s1">&#39;velocity_dispersion&#39;</span><span class="p">][</span><span class="s1">&#39;vd_min&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vd_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler_priors_params</span><span class="p">[</span><span class="s1">&#39;velocity_dispersion&#39;</span><span class="p">][</span><span class="s1">&#39;vd_max&#39;</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vd_min</span> <span class="o">=</span> <span class="mf">0.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vd_max</span> <span class="o">=</span> <span class="mf">600.</span>
+
+        <span class="c1"># generating inverse cdf interpolator for velocity dispersion</span>
+        <span class="n">param_dict_given_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">,</span> <span class="n">vd_min</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vd_min</span><span class="p">,</span> <span class="n">vd_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vd_max</span><span class="p">,</span> <span class="n">cosmology</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">vd_name</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span><span class="p">[</span><span class="s2">&quot;velocity_dispersion&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">])</span>
+        <span class="n">sub_directory_</span> <span class="o">=</span> <span class="n">vd_name</span>
+        <span class="n">x_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vd_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vd_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span><span class="p">[</span><span class="s2">&quot;velocity_dispersion&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">])</span>
+        <span class="n">category_</span> <span class="o">=</span> <span class="s2">&quot;inv_cdf&quot;</span>
+        <span class="n">create_new_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span><span class="p">[</span><span class="s2">&quot;velocity_dispersion&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">]</span>
+        
+        <span class="k">if</span> <span class="n">vd_name</span> <span class="o">==</span> <span class="s2">&quot;velocity_dispersion_gengamma&quot;</span><span class="p">:</span>
+            <span class="c1"># setting up input parameters for interpolation</span>
+            <span class="n">pdf_func_</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">vd_</span><span class="p">:</span> <span class="n">gengamma</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">vd_</span><span class="o">/</span><span class="mf">161.</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">2.32</span> <span class="o">/</span> <span class="mf">2.67</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">2.67</span><span class="p">)</span>   <span class="c1"># gengamma pdf</span>
+            <span class="n">conditioned_y_</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">dimension_</span> <span class="o">=</span> <span class="mi">1</span>
+     
+        <span class="k">elif</span> <span class="n">vd_name</span> <span class="o">==</span> <span class="s2">&quot;velocity_dispersion_bernardi&quot;</span><span class="p">:</span>
+            <span class="c1"># setting up input parameters for interpolation</span>
+            <span class="n">pdf_func_</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">vd_</span><span class="p">:</span> <span class="n">vd_</span><span class="o">**</span><span class="mi">4</span><span class="o">*</span><span class="n">phi_loc_bernardi</span><span class="p">(</span><span class="n">sigma</span><span class="o">=</span><span class="n">vd_</span><span class="p">,</span> <span class="n">cosmology_h</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="o">.</span><span class="n">h</span><span class="p">)</span>
+            <span class="n">conditioned_y_</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">dimension_</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">elif</span> <span class="n">vd_name</span> <span class="o">==</span> <span class="s2">&quot;velocity_dispersion_ewoud&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="o">==</span><span class="mf">0.0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">zl_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="o">+</span><span class="mf">0.001</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">zl_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+            <span class="c1"># setting up input parameters for interpolation</span>
+            <span class="n">pdf_func_</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">vd_</span><span class="p">,</span> <span class="n">zl_</span><span class="p">:</span> <span class="n">phi</span><span class="p">(</span><span class="n">vd_</span><span class="p">,</span> <span class="n">zl_</span><span class="p">,</span> <span class="n">cosmology_h</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="o">.</span><span class="n">h</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">differential_comoving_volume</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">zl_</span><span class="p">]))</span>
+            <span class="n">conditioned_y_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zl_list</span>
+            <span class="n">dimension_</span> <span class="o">=</span> <span class="mi">2</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># this is to allow user to pass in their own sampler</span>
+            <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampler_priors</span><span class="p">[</span><span class="s2">&quot;velocity_dispersion&quot;</span><span class="p">]):</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># raise error and terminate</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;velocity dispersion name not in `ler` library. And sampler_priors[&#39;velocity_dispersion&#39;] is not a callable function.&quot;</span><span class="p">)</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">vd_inv_cdf</span> <span class="o">=</span> <span class="n">interpolator_from_pickle</span><span class="p">(</span>
+            <span class="n">param_dict_given</span> <span class="o">=</span> <span class="n">param_dict_given_</span><span class="p">,</span>
+            <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+            <span class="n">sub_directory</span><span class="o">=</span><span class="n">sub_directory_</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">vd_name</span><span class="p">,</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">x_</span><span class="p">,</span>
+            <span class="n">pdf_func</span><span class="o">=</span> <span class="n">pdf_func_</span><span class="p">,</span>
+            <span class="n">conditioned_y</span><span class="o">=</span><span class="n">conditioned_y_</span><span class="p">,</span>
+            <span class="n">dimension</span><span class="o">=</span><span class="n">dimension_</span><span class="p">,</span>
+            <span class="n">category</span><span class="o">=</span><span class="n">category_</span><span class="p">,</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="n">create_new_</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_velocity_dispersion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler_priors</span><span class="p">[</span><span class="s2">&quot;velocity_dispersion&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="OpticalDepth.initialize_optical_depth_function">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.initialize_optical_depth_function">[docs]</a>
+    <span class="k">def</span> <span class="nf">initialize_optical_depth_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau_name</span><span class="p">,</span> <span class="n">vd_name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to initialize optical depth function.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tau_name : `str`</span>
+<span class="sd">            name of optical depth function</span>
+<span class="sd">        vd_name : `str`</span>
+<span class="sd">            name of velocity dispersion sampler</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">tau_name</span><span class="o">==</span><span class="s2">&quot;optical_depth_SIS_haris&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sample_axis_ratio</span> <span class="o">=</span> <span class="n">axis_ratio_SIS</span>
+            <span class="c1"># no interpolation needed</span>
+            <span class="n">optical_depth_setter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau_name</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">tau_name</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sample_axis_ratio</span> <span class="o">=</span> <span class="n">axis_ratio_SIS</span>
+            <span class="n">optical_depth_setter</span> <span class="o">=</span> <span class="n">tau_name</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># setting up input parameters for interpolation</span>
+            <span class="n">resolution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span><span class="p">[</span><span class="s2">&quot;optical_depth&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
+            <span class="n">param_dict_given_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">,</span> <span class="n">vd_min</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vd_min</span><span class="p">,</span> <span class="n">vd_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vd_max</span><span class="p">,</span> <span class="n">cosmology</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="p">,</span> <span class="n">tau_name</span><span class="o">=</span><span class="n">tau_name</span><span class="p">,</span> <span class="n">vd_name</span><span class="o">=</span><span class="n">vd_name</span><span class="p">,</span> <span class="n">q_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampler_priors</span><span class="p">[</span><span class="s2">&quot;axis_ratio&quot;</span><span class="p">],</span> <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">)</span>
+            <span class="c1">#self.param_dict_given_ = param_dict_given_</span>
+            <span class="n">sub_directory_</span> <span class="o">=</span> <span class="n">tau_name</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="o">==</span><span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">x_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="o">+</span><span class="mf">0.001</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">x_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">)</span>
+            <span class="n">pdf_func_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optical_depth_multiprocessing</span>
+            <span class="n">dimension_</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">category_</span> <span class="o">=</span> <span class="s2">&quot;function&quot;</span>
+            <span class="n">create_new_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span><span class="p">[</span><span class="s2">&quot;optical_depth&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">tau_name</span> <span class="o">==</span> <span class="s2">&quot;optical_depth_SIS_hemanta&quot;</span> <span class="ow">or</span> <span class="n">tau_name</span> <span class="o">==</span> <span class="s2">&quot;SIS&quot;</span><span class="p">:</span>
+                <span class="kn">from</span> <span class="nn">.mp</span> <span class="kn">import</span> <span class="n">optical_depth_sis_mp</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sample_axis_ratio</span> <span class="o">=</span> <span class="n">axis_ratio_SIS</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tau_mp_routine</span> <span class="o">=</span> <span class="n">optical_depth_sis_mp</span>
+
+            <span class="k">elif</span> <span class="n">tau_name</span><span class="o">==</span><span class="s2">&quot;optical_depth_SIE_hemanta&quot;</span> <span class="ow">or</span> <span class="n">tau_name</span> <span class="o">==</span> <span class="s2">&quot;SIE&quot;</span><span class="p">:</span>
+                <span class="c1"># axis-ratio sampler</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler_priors</span><span class="p">[</span><span class="s2">&quot;axis_ratio&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;axis_ratio_rayleigh&quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">sample_axis_ratio</span> <span class="o">=</span> <span class="n">axis_ratio_rayleigh</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">sample_axis_ratio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler_priors</span><span class="p">[</span><span class="s2">&quot;axis_ratio&quot;</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">vd_name</span> <span class="o">==</span> <span class="s2">&quot;velocity_dispersion_ewoud&quot;</span><span class="p">:</span>
+                    <span class="kn">from</span> <span class="nn">.mp</span> <span class="kn">import</span> <span class="n">optical_depth_sie2_mp</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tau_mp_routine</span> <span class="o">=</span> <span class="n">optical_depth_sie2_mp</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="kn">from</span> <span class="nn">.mp</span> <span class="kn">import</span> <span class="n">optical_depth_sie1_mp</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tau_mp_routine</span> <span class="o">=</span> <span class="n">optical_depth_sie1_mp</span>
+
+            <span class="c1"># this will initialize the interpolator</span>
+            <span class="n">optical_depth_setter</span> <span class="o">=</span> <span class="n">interpolator_from_pickle</span><span class="p">(</span>
+                <span class="n">param_dict_given</span> <span class="o">=</span> <span class="n">param_dict_given_</span><span class="p">,</span>
+                <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+                <span class="n">sub_directory</span><span class="o">=</span><span class="n">sub_directory_</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">tau_name</span><span class="p">,</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">x_</span><span class="p">,</span>
+                <span class="n">pdf_func</span><span class="o">=</span> <span class="n">pdf_func_</span><span class="p">,</span>
+                <span class="n">conditioned_y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">dimension</span><span class="o">=</span><span class="n">dimension_</span><span class="p">,</span>
+                <span class="n">category</span><span class="o">=</span><span class="n">category_</span><span class="p">,</span>
+                <span class="n">create_new</span><span class="o">=</span><span class="n">create_new_</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1">#self.optical_depth_setter = optical_depth_setter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strong_lensing_optical_depth</span> <span class="o">=</span> <span class="n">optical_depth_setter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_axis_ratio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler_priors</span><span class="p">[</span><span class="s2">&quot;axis_ratio&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="OpticalDepth.axis_ratio_rayleigh">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.axis_ratio_rayleigh">[docs]</a>
+    <span class="k">def</span> <span class="nf">axis_ratio_rayleigh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">q_min</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">q_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to sample axis ratio from rayleigh distribution with given velocity dispersion.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sigma : `float: array`</span>
+<span class="sd">            velocity dispersion of the lens galaxy</span>
+<span class="sd">        q_min, q_max : `float`</span>
+<span class="sd">            minimum and maximum axis ratio</span>
+<span class="sd">        get_attribute : `bool`</span>
+<span class="sd">            if True, returns a function that can be used to sample axis ratio</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        q : `float: array`</span>
+<span class="sd">            axis ratio of the lens galaxy</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.lens_galaxy_population import OpticalDepth</span>
+<span class="sd">        &gt;&gt;&gt; od = OpticalDepth(sampler_priors=dict(axis_ratio=&quot;axis_ratio_rayleigh&quot;))</span>
+<span class="sd">        &gt;&gt;&gt; print(od.sample_axis_ratio(sigma=200.))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">param</span><span class="p">:</span>
+            <span class="n">q_min</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;q_min&quot;</span><span class="p">]</span>
+            <span class="n">q_max</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;q_max&quot;</span><span class="p">]</span>
+            
+        <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">sigma</span><span class="p">:</span> <span class="n">axis_ratio_rayleigh</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="n">q_min</span><span class="p">,</span> <span class="n">q_max</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">axis_ratio_rayleigh</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="n">q_min</span><span class="p">,</span> <span class="n">q_max</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="OpticalDepth.axis_ratio_padilla_strauss">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.axis_ratio_padilla_strauss">[docs]</a>
+    <span class="k">def</span> <span class="nf">axis_ratio_padilla_strauss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">q_min</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">q_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to sample axis ratio using Padilla and Strauss 2008 distribution for axis ratio</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        size : `int`</span>
+<span class="sd">            sample size</span>
+<span class="sd">        q_min, q_max : `float`</span>
+<span class="sd">            minimum and maximum axis ratio</span>
+<span class="sd">        get_attribute : `bool`</span>
+<span class="sd">            if True, returns a function that can be used to sample axis ratio</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        q : `float: array`</span>
+<span class="sd">            axis ratio of the lens galaxy</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.lens_galaxy_population import OpticalDepth</span>
+<span class="sd">        &gt;&gt;&gt; od = OpticalDepth(sampler_priors=dict(axis_ratio=&quot;axis_ratio_padilla_strauss&quot;))</span>
+<span class="sd">        &gt;&gt;&gt; print(od.sample_axis_ratio(size=10))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;sigma&quot;</span><span class="p">])</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">if</span> <span class="n">param</span><span class="p">:</span>
+            <span class="n">q_min</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;q_min&quot;</span><span class="p">]</span>
+            <span class="n">q_max</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;q_max&quot;</span><span class="p">]</span>
+
+        <span class="c1"># Using Padilla and Strauss 2008 distribution for axis ratio</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.04903276402927845</span><span class="p">,</span> <span class="mf">0.09210526315789469</span><span class="p">,</span> <span class="mf">0.13596491228070173</span><span class="p">,</span> <span class="mf">0.20789473684210524</span><span class="p">,</span> <span class="mf">0.2899703729522482</span><span class="p">,</span> <span class="mf">0.3230132450331126</span><span class="p">,</span> <span class="mf">0.35350877192982455</span><span class="p">,</span> <span class="mf">0.37946148483792264</span><span class="p">,</span> <span class="mf">0.4219298245614036</span><span class="p">,</span> <span class="mf">0.4689525967235971</span><span class="p">,</span> <span class="mf">0.5075026141512723</span><span class="p">,</span> <span class="mf">0.5226472638550018</span><span class="p">,</span> <span class="mf">0.5640350877192983</span><span class="p">,</span> <span class="mf">0.6096491228070177</span><span class="p">,</span> <span class="mf">0.6500000000000001</span><span class="p">,</span> <span class="mf">0.6864848379226213</span><span class="p">,</span> <span class="mf">0.7377192982456142</span><span class="p">,</span> <span class="mf">0.7787295224817011</span><span class="p">,</span> <span class="mf">0.8007581038689441</span><span class="p">,</span> <span class="mf">0.822786685256187</span><span class="p">,</span> <span class="mf">0.8668438480306729</span><span class="p">,</span> <span class="mf">0.8973684210526317</span><span class="p">,</span> <span class="mf">0.9254385964912283</span><span class="p">])</span>
+        <span class="n">pdf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.04185262687135349</span><span class="p">,</span> <span class="mf">0.06114520695141845</span><span class="p">,</span> <span class="mf">0.096997499638376</span><span class="p">,</span> <span class="mf">0.1932510900336828</span><span class="p">,</span> <span class="mf">0.39547914337673706</span><span class="p">,</span> <span class="mf">0.49569751276216234</span><span class="p">,</span> <span class="mf">0.6154609137685201</span><span class="p">,</span> <span class="mf">0.7182049959882812</span><span class="p">,</span> <span class="mf">0.920153741243567</span><span class="p">,</span> <span class="mf">1.1573982157399754</span><span class="p">,</span> <span class="mf">1.3353263628106684</span><span class="p">,</span> <span class="mf">1.413149656448315</span><span class="p">,</span> <span class="mf">1.5790713532948977</span><span class="p">,</span> <span class="mf">1.7280185150744938</span><span class="p">,</span> <span class="mf">1.8132994441344819</span><span class="p">,</span> <span class="mf">1.8365803753840484</span><span class="p">,</span> <span class="mf">1.8178662203211204</span><span class="p">,</span> <span class="mf">1.748929843583365</span><span class="p">,</span> <span class="mf">1.688182592496342</span><span class="p">,</span> <span class="mf">1.6274353414093188</span><span class="p">,</span> <span class="mf">1.4948487090314488</span><span class="p">,</span> <span class="mf">1.402785526832393</span><span class="p">,</span> <span class="mf">1.321844068356993</span><span class="p">])</span>
+
+        <span class="n">spline_coeff</span> <span class="o">=</span> <span class="n">interpolator_from_pickle</span><span class="p">(</span>
+            <span class="n">param_dict_given</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">parameter</span><span class="o">=</span><span class="s2">&quot;axis_ratio&quot;</span><span class="p">,</span> <span class="n">pdf</span><span class="o">=</span><span class="s2">&quot;Padilla and Strauss 2008 distribution for axis ratio&quot;</span><span class="p">),</span>
+            <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;axis_ratio&quot;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;axis_ratio_spline_coeff&quot;</span><span class="p">,</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">q</span><span class="p">,</span>
+            <span class="n">pdf_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">pdf</span><span class="p">,</span>
+            <span class="n">conditioned_y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">dimension</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">category</span><span class="o">=</span><span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">resolution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span><span class="p">[</span><span class="s2">&quot;axis_ratio&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
+        <span class="n">create_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span><span class="p">[</span><span class="s2">&quot;axis_ratio&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">]</span>
+        <span class="n">q_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">q_min</span><span class="p">,</span> <span class="n">q_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">)</span>
+        <span class="n">pdf_array</span> <span class="o">=</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span><span class="n">q_array</span><span class="p">,</span> <span class="n">spline_coeff</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">spline_coeff</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">q_inv_cdf</span> <span class="o">=</span> <span class="n">interpolator_from_pickle</span><span class="p">(</span>
+            <span class="n">param_dict_given</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">parameter</span><span class="o">=</span><span class="s2">&quot;axis_ratio&quot;</span><span class="p">,</span> <span class="n">pdf</span><span class="o">=</span><span class="s2">&quot;Padilla and Strauss 2008 distribution for axis ratio&quot;</span><span class="p">,</span> <span class="n">q_min</span><span class="o">=</span><span class="n">q_min</span><span class="p">,</span> <span class="n">q_max</span><span class="o">=</span><span class="n">q_max</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">),</span>
+            <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;axis_ratio&quot;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;axis_ratio&quot;</span><span class="p">,</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">q_array</span><span class="p">,</span>
+            <span class="n">pdf_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">pdf_array</span><span class="p">,</span>
+            <span class="n">conditioned_y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">dimension</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">category</span><span class="o">=</span><span class="s2">&quot;inv_cdf&quot;</span><span class="p">,</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="n">create_new</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># def sampler(sigma):</span>
+        <span class="c1">#     size = len(sigma)</span>
+        <span class="c1">#     return inverse_transform_sampler(size, q_inv_cdf[0], q_inv_cdf[1])</span>
+            
+        <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">sigma</span><span class="p">:</span> <span class="n">inverse_transform_sampler</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sigma</span><span class="p">),</span> <span class="n">q_inv_cdf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q_inv_cdf</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">inverse_transform_sampler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">q_inv_cdf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q_inv_cdf</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="OpticalDepth.velocity_dispersion_gengamma">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.velocity_dispersion_gengamma">[docs]</a>
+    <span class="k">def</span> <span class="nf">velocity_dispersion_gengamma</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">2.32</span> <span class="o">/</span> <span class="mf">2.67</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">2.67</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to sample velocity dispersion from gengamma distribution</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        size : `int`</span>
+<span class="sd">            number of lens parameters to sample</span>
+<span class="sd">        a,c : `float`</span>
+<span class="sd">            parameters of gengamma distribution</span>
+<span class="sd">            refer to https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.gengamma.html</span>
+<span class="sd">        get_attribute : `bool`</span>
+<span class="sd">            if True, returns a function that can be used to sample velocity dispersion</span>
+<span class="sd">        param : `dict`</span>
+<span class="sd">            Allows to pass in above parameters as dict.</span>
+<span class="sd">            e.g. param = dict(a=2.32 / 2.67, c=2.67)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        sigma : `numpy.ndarray` (1D array of floats)</span>
+<span class="sd">            velocity dispersion of the lens galaxy</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.lens_galaxy_population import OpticalDepth</span>
+<span class="sd">        &gt;&gt;&gt; od = OpticalDepth(sampler_priors=dict(velocity_dispersion=&quot;velocity_dispersion_gengamma&quot;), sampler_priors_params=dict(velocity_dispersion=dict(a=2.32 / 2.67, c=2.67)))</span>
+<span class="sd">        &gt;&gt;&gt; print(od.sample_velocity_dispersion(size=10))</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">param</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="mf">161.</span><span class="o">*</span><span class="n">gengamma</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># sample velocity dispersion from gengamma distribution</span>
+            <span class="k">return</span> <span class="mf">161.</span><span class="o">*</span><span class="n">gengamma</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>  <span class="c1"># km/s</span></div>
+
+    
+<div class="viewcode-block" id="OpticalDepth.velocity_dispersion_bernardi">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.velocity_dispersion_bernardi">[docs]</a>
+    <span class="k">def</span> <span class="nf">velocity_dispersion_bernardi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to sample velocity dispersion from Bernardi et al. (2010). This uses inverse transform sampling.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        size : `int`</span>
+<span class="sd">            number of lens parameters to sample</span>
+<span class="sd">        get_attribute : `bool`</span>
+<span class="sd">            if True, returns a function that can be used to sample velocity dispersion</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        sigma : `numpy.ndarray` (1D array of floats)</span>
+<span class="sd">            velocity dispersion of the lens galaxy</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.lens_galaxy_population import OpticalDepth</span>
+<span class="sd">        &gt;&gt;&gt; od = OpticalDepth(sampler_priors=dict(velocity_dispersion=&quot;velocity_dispersion_bernardi&quot;))</span>
+<span class="sd">        &gt;&gt;&gt; print(od.sample_velocity_dispersion(size=10))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">vd_inv_cdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vd_inv_cdf</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># get the interpolator (inverse cdf) and sample</span>
+        <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">inverse_transform_sampler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">vd_inv_cdf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vd_inv_cdf</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">inverse_transform_sampler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">vd_inv_cdf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vd_inv_cdf</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="OpticalDepth.velocity_dispersion_ewoud">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.velocity_dispersion_ewoud">[docs]</a>
+    <span class="k">def</span> <span class="nf">velocity_dispersion_ewoud</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to sample velocity dispersion (redshift dependent) from Wempe et al. (2022). This uses inverse transform sampling.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        size : `int`</span>
+<span class="sd">            number of lens parameters to sample</span>
+<span class="sd">        zl : `float`</span>
+<span class="sd">            redshift of the lens galaxy</span>
+<span class="sd">        get_attribute : `bool`</span>
+<span class="sd">            if True, returns a function that can be used to sample velocity dispersion</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        sigma : `numpy.ndarray` (1D array of floats)</span>
+<span class="sd">            velocity dispersion of the lens galaxy</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.lens_galaxy_population import OpticalDepth</span>
+<span class="sd">        &gt;&gt;&gt; od = OpticalDepth(sampler_priors=dict(velocity_dispersion=&quot;velocity_dispersion_ewoud&quot;))</span>
+<span class="sd">        &gt;&gt;&gt; print(od.sample_velocity_dispersion(size=10, zl=0.5))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">z_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span>
+        <span class="n">z_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span>
+        <span class="n">zlist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="n">vd_inv_cdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vd_inv_cdf</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="nd">@njit</span>
+        <span class="k">def</span> <span class="nf">sampler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span> <span class="n">inv_cdf</span><span class="p">,</span> <span class="n">zlist</span><span class="p">):</span>
+            
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">zlist</span><span class="p">,</span> <span class="n">zl</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">inverse_transform_sampler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">inv_cdf</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">inv_cdf</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        
+        <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">size</span><span class="p">,</span> <span class="n">zl</span><span class="p">:</span> <span class="n">sampler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span> <span class="n">vd_inv_cdf</span><span class="p">,</span> <span class="n">zlist</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">sampler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span> <span class="n">vd_inv_cdf</span><span class="p">,</span> <span class="n">zlist</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OpticalDepth.cross_section_SIS">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.cross_section_SIS">[docs]</a>
+    <span class="k">def</span> <span class="nf">cross_section_SIS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span> <span class="n">zs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to compute the SIS cross-section</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sigma : `float`</span>
+<span class="sd">            velocity dispersion of the lens galaxy</span>
+<span class="sd">        zl : `float`</span>
+<span class="sd">            redshift of the lens galaxy</span>
+<span class="sd">        zs : `float`</span>
+<span class="sd">            redshift of the source galaxy</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        cross_section : `float`</span>
+<span class="sd">            SIS cross-section</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.lens_galaxy_population import OpticalDepth</span>
+<span class="sd">        &gt;&gt;&gt; od = OpticalDepth()</span>
+<span class="sd">        &gt;&gt;&gt; print(od.cross_section_SIS(sigma=200., zl=0.5, zs=1.0))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">zl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">zl</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">zs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">zs</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">Ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular_diameter_distance</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span>
+        <span class="n">Dls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular_diameter_distance_z1z2</span><span class="p">(</span><span class="n">zl</span><span class="p">,</span> <span class="n">zs</span><span class="p">)</span>
+        <span class="n">theta_E</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mf">4.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">/</span> <span class="mf">299792.458</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Dls</span> <span class="o">/</span> <span class="p">(</span><span class="n">Ds</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># Note: km/s for sigma; Dls, Ds are in Mpc</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">theta_E</span><span class="o">**</span><span class="mi">2</span></div>
+
+    
+<div class="viewcode-block" id="OpticalDepth.tau_zl_zs">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.tau_zl_zs">[docs]</a>
+    <span class="k">def</span> <span class="nf">tau_zl_zs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span> <span class="n">zs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to compute the optical depth for a given lens redshift and source redshift</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        zl : `float`</span>
+<span class="sd">            redshift of the lens galaxy</span>
+<span class="sd">        zs : `float`</span>
+<span class="sd">            redshift of the source galaxy</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tau : `float`</span>
+<span class="sd">            optical depth</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.lens_galaxy_population import OpticalDepth</span>
+<span class="sd">        &gt;&gt;&gt; od = OpticalDepth()</span>
+<span class="sd">        &gt;&gt;&gt; print(od.tau_zl_zs(zl=0.5, zs=1.0))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">zl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">zl</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">zs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">zs</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># size=5000 will take ~ 48s to run, with ewoud vd sampler</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_velocity_dispersion</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_velocity_dispersion</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">zl</span><span class="o">=</span><span class="n">zl</span><span class="p">)</span>
+
+        <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_axis_ratio</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>  <span class="c1"># if SIS, q=array of 1.0</span>
+        <span class="n">no</span> <span class="o">=</span> <span class="mi">8</span><span class="o">*</span><span class="mf">1e-3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="o">.</span><span class="n">h</span><span class="o">**</span><span class="mi">3</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="n">phi_cut_SIE</span><span class="p">(</span><span class="n">q</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cross_section_SIS</span><span class="p">(</span><span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">zl</span><span class="o">=</span><span class="n">zl</span><span class="p">,</span> <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">*</span><span class="n">no</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">differential_comoving_volume</span><span class="p">(</span><span class="n">zl</span><span class="p">)</span>
+        <span class="c1"># average</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">test</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="OpticalDepth.optical_depth_calculator">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.optical_depth_calculator">[docs]</a>
+    <span class="k">def</span> <span class="nf">optical_depth_calculator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to compute the optical depth without multiprocessing. This is the integrated version of tau_zl_zs from z=0 to z=zs.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        zs : `float`</span>
+<span class="sd">            source redshifts</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tau : `float`</span>
+<span class="sd">            optical depth</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.lens_galaxy_population import OpticalDepth</span>
+<span class="sd">        &gt;&gt;&gt; od = OpticalDepth()</span>
+<span class="sd">        &gt;&gt;&gt; print(od.optical_depth_calculator(zs=1.0))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">zs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">zs</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">tau_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">zs</span><span class="p">:</span>
+            <span class="n">tau_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">quad</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau_zl_zs</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">z</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tau_list</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="OpticalDepth.optical_depth_multiprocessing">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.optical_depth_multiprocessing">[docs]</a>
+    <span class="k">def</span> <span class="nf">optical_depth_multiprocessing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to compute the optical depth with multiprocessing. This is the integrated version of optical depth from z=0 to z=zs.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        zs : `float`</span>
+<span class="sd">            source redshifts</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tau : `float`</span>
+<span class="sd">            optical depth</span>
+<span class="sd">            </span>
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.lens_galaxy_population import OpticalDepth</span>
+<span class="sd">        &gt;&gt;&gt; od = OpticalDepth()</span>
+<span class="sd">        &gt;&gt;&gt; print(od.optical_depth_multiprocessing(zs=1.0))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">zs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">zs</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">no</span> <span class="o">=</span> <span class="mi">8</span><span class="o">*</span><span class="mf">1e-3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="o">.</span><span class="n">h</span><span class="o">**</span><span class="mi">3</span>
+        <span class="n">vd_inv_cdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vd_inv_cdf</span>
+        <span class="n">splinedVcdz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">splinedVcdz</span>
+        <span class="n">splineDa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">splineDa</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">zs</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">zl_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zl_list</span>
+            <span class="n">input_params</span> <span class="o">=</span> <span class="p">[(</span><span class="n">zs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">no</span><span class="p">,</span> <span class="n">vd_inv_cdf</span><span class="p">,</span> <span class="n">splinedVcdz</span><span class="p">,</span> <span class="n">splineDa</span><span class="p">,</span> <span class="n">idx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">zl_list</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">zs</span><span class="p">))]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">input_params</span> <span class="o">=</span> <span class="p">[(</span><span class="n">zs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">no</span><span class="p">,</span> <span class="n">vd_inv_cdf</span><span class="p">,</span> <span class="n">splinedVcdz</span><span class="p">,</span> <span class="n">splineDa</span><span class="p">,</span> <span class="n">idx</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">zs</span><span class="p">))]</span>
+
+        <span class="c1"># Create a pool of workers and parallelize the integration</span>
+        <span class="k">with</span> <span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">npool</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau_mp_routine</span><span class="p">,</span> <span class="n">input_params</span><span class="p">))</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">tau_list</span> <span class="o">=</span> <span class="n">result</span><span class="p">[:,</span><span class="mi">1</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)]</span>
+
+        <span class="k">return</span> <span class="n">tau_list</span></div>
+
+
+<div class="viewcode-block" id="OpticalDepth.optical_depth_SIS_haris">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.optical_depth_SIS_haris">[docs]</a>
+    <span class="k">def</span> <span class="nf">optical_depth_SIS_haris</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to compute the strong lensing optical depth (SIS). \n</span>
+<span class="sd">        LambdaCDM(H0=70, Om0=0.3, Ode0=0.7) was used to derive the following equation. This is the analytic version of optical depth from z=0 to z=zs.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        zs : `float`</span>
+<span class="sd">            source redshifts</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tau : `float`</span>
+<span class="sd">            strong lensing optical depth</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.lens_galaxy_population import OpticalDepth</span>
+<span class="sd">        &gt;&gt;&gt; od = OpticalDepth()</span>
+<span class="sd">        &gt;&gt;&gt; print(od.optical_depth_SIS_haris(zs=1.0))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># z to luminosity_distance (luminosity_distance) conversion</span>
+        <span class="n">Dc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_to_Dc</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-3</span>  <span class="c1"># 1e-3 converts Mpc to Gpc</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">Dc</span> <span class="o">/</span> <span class="mf">62.2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span>  <span class="c1"># 62.2 is the critical density in Gpc</span></div>
+
+    
+<div class="viewcode-block" id="OpticalDepth.create_lookup_table_fuction">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.create_lookup_table_fuction">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_lookup_table_fuction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z_max</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Functions to create lookup tables</span>
+<span class="sd">        1. Redshift to co-moving distance.</span>
+<span class="sd">        2. Co-moving distance to redshift.</span>
+<span class="sd">        3. Redshift to angular diameter distance.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        z_max : `float`</span>
+<span class="sd">            maximum redshift of the lens galaxy population</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Dc</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z_</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="o">.</span><span class="n">comoving_distance</span><span class="p">(</span><span class="n">z_</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>  <span class="c1"># co-moving distance in Mpc</span>
+        <span class="n">resolution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span><span class="p">[</span><span class="s2">&quot;z_to_Dc&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
+        <span class="n">create_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span><span class="p">[</span><span class="s2">&quot;z_to_Dc&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">]</span>
+        <span class="n">splineDc</span> <span class="o">=</span> <span class="n">interpolator_from_pickle</span><span class="p">(</span>
+            <span class="n">param_dict_given</span><span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span> <span class="n">cosmology</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">),</span>
+            <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;z_to_Dc&quot;</span><span class="p">,</span> 
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;z_to_Dc&quot;</span><span class="p">,</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">),</span>
+            <span class="n">pdf_func</span><span class="o">=</span> <span class="n">Dc</span><span class="p">,</span> 
+            <span class="n">conditioned_y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">dimension</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">category</span><span class="o">=</span><span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="n">create_new</span><span class="o">=</span> <span class="n">create_new</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">splineDc</span> <span class="o">=</span> <span class="n">splineDc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z_to_Dc</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">z_</span><span class="p">:</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span><span class="n">z_</span><span class="p">,</span> <span class="n">splineDc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">splineDc</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+        <span class="c1"># for co-moving distance to redshift</span>
+        <span class="n">resolution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span><span class="p">[</span><span class="s2">&quot;Dc_to_z&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
+        <span class="n">create_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span><span class="p">[</span><span class="s2">&quot;Dc_to_z&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">]</span>
+        <span class="n">splineDcInv</span> <span class="o">=</span> <span class="n">interpolator_from_pickle</span><span class="p">(</span>
+            <span class="n">param_dict_given</span><span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span> <span class="n">cosmology</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">),</span> 
+            <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;Dc_to_z&quot;</span><span class="p">,</span> 
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Dc_to_z&quot;</span><span class="p">,</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">),</span>
+            <span class="n">pdf_func</span><span class="o">=</span> <span class="n">Dc</span><span class="p">,</span> 
+            <span class="n">conditioned_y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+            <span class="n">dimension</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">category</span><span class="o">=</span><span class="s2">&quot;function_inverse&quot;</span><span class="p">,</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="n">create_new</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">splineDcInv</span> <span class="o">=</span> <span class="n">splineDcInv</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Dc_to_z</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">Dc_</span><span class="p">:</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span><span class="n">Dc_</span><span class="p">,</span> <span class="n">splineDcInv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">splineDcInv</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+        <span class="c1"># for angular diameter distance</span>
+        <span class="n">resolution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span><span class="p">[</span><span class="s2">&quot;angular_diameter_distance&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
+        <span class="n">create_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span><span class="p">[</span><span class="s2">&quot;angular_diameter_distance&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">]</span>
+        <span class="n">Da</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z_</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="o">.</span><span class="n">angular_diameter_distance</span><span class="p">(</span><span class="n">z_</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">splineDa</span> <span class="o">=</span> <span class="n">interpolator_from_pickle</span><span class="p">(</span>
+                    <span class="n">param_dict_given</span><span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span> <span class="n">cosmology</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">),</span> 
+                    <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+                    <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;angular_diameter_distance&quot;</span><span class="p">,</span> 
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;angular_diameter_distance&quot;</span><span class="p">,</span>
+                    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">),</span>
+                    <span class="n">pdf_func</span><span class="o">=</span> <span class="n">Da</span><span class="p">,</span> 
+                    <span class="n">conditioned_y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+                    <span class="n">dimension</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">category</span><span class="o">=</span><span class="s2">&quot;function&quot;</span><span class="p">,</span>
+                    <span class="n">create_new</span><span class="o">=</span><span class="n">create_new</span><span class="p">,</span>
+                <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">splineDa</span> <span class="o">=</span> <span class="n">splineDa</span>
+        <span class="n">angular_diameter_distance</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">z_</span><span class="p">:</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span><span class="n">z_</span><span class="p">,</span> <span class="n">splineDa</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">splineDa</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">angular_diameter_distance</span> <span class="o">=</span> <span class="n">angular_diameter_distance</span>
+
+        <span class="c1"># for angular diameter distance between two redshifts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">angular_diameter_distance_z1z2</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">zl0</span><span class="p">,</span> <span class="n">zs0</span><span class="p">:</span> <span class="p">(</span><span class="n">angular_diameter_distance</span><span class="p">(</span><span class="n">zs0</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="n">zs0</span><span class="p">)</span> <span class="o">-</span> <span class="n">angular_diameter_distance</span><span class="p">(</span><span class="n">zl0</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="n">zl0</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="n">zs0</span><span class="p">))</span>
+
+        <span class="c1"># get differential co-moving volume interpolator</span>
+        <span class="n">resolution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span><span class="p">[</span><span class="s2">&quot;differential_comoving_volume&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
+        <span class="n">create_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span><span class="p">[</span><span class="s2">&quot;differential_comoving_volume&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">]</span>
+        <span class="n">splinedVcdz</span> <span class="o">=</span> <span class="n">interpolator_from_pickle</span><span class="p">(</span>
+            <span class="n">param_dict_given</span><span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span> <span class="n">cosmology</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">),</span> 
+            <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;differential_comoving_volume&quot;</span><span class="p">,</span> 
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;differential_comoving_volume&quot;</span><span class="p">,</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">),</span>
+            <span class="n">pdf_func</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">z_</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="o">.</span><span class="n">differential_comoving_volume</span><span class="p">(</span><span class="n">z_</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
+            <span class="n">conditioned_y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+            <span class="n">dimension</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">category</span><span class="o">=</span><span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="n">create_new</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">splinedVcdz</span> <span class="o">=</span> <span class="n">splinedVcdz</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">differential_comoving_volume</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">z_</span><span class="p">:</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span><span class="n">z_</span><span class="p">,</span> <span class="n">splinedVcdz</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">splinedVcdz</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span></div>
+
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="OpticalDepth.strong_lensing_optical_depth">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.strong_lensing_optical_depth">[docs]</a>
+    <span class="k">def</span> <span class="nf">strong_lensing_optical_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to compute the strong lensing optical depth.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        zs : `numpy.ndarray` (1D array of floats)</span>
+<span class="sd">            source redshifts</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tau : `numpy.ndarray` (1D array of floats)</span>
+<span class="sd">            strong lensing optical depth</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.lens_galaxy_population import OpticalDepth</span>
+<span class="sd">        &gt;&gt;&gt; od = OpticalDepth()</span>
+<span class="sd">        &gt;&gt;&gt; print(od.strong_lensing_optical_depth(np.array([0.1,0.2,0.3])))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strong_lensing_optical_depth</span></div>
+
+
+    <span class="nd">@strong_lensing_optical_depth</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">strong_lensing_optical_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">input_</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_strong_lensing_optical_depth</span> <span class="o">=</span> <span class="n">input_</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># input can be function or spline interpolator array</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_strong_lensing_optical_depth</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">zs</span><span class="p">:</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">input_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">input_</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;strong_lensing_optical_depth must be a callable function or spline interpolator array.&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="OpticalDepth.sample_velocity_dispersion">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.sample_velocity_dispersion">[docs]</a>
+    <span class="k">def</span> <span class="nf">sample_velocity_dispersion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to sample velocity dispersion. `zl` is required only if velocity dispersion sampler is redshift dependent.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        size : `int`</span>
+<span class="sd">            number of lens parameters to sample</span>
+<span class="sd">        zl : `float`</span>
+<span class="sd">            redshift of the lens galaxy</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        sigma : `numpy.ndarray` (1D array of floats)</span>
+<span class="sd">            velocity dispersion of the lens galaxy</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.lens_galaxy_population import OpticalDepth</span>
+<span class="sd">        &gt;&gt;&gt; od = OpticalDepth()</span>
+<span class="sd">        &gt;&gt;&gt; print(od.sample_velocity_dispersion(size=10))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_velocity_dispersion</span></div>
+
+
+    <span class="nd">@sample_velocity_dispersion</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">sample_velocity_dispersion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sample_velocity_dispersion</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span><span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">zl</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sample_velocity_dispersion</span> <span class="o">=</span> <span class="n">prior</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="OpticalDepth.sample_axis_ratio">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.sample_axis_ratio">[docs]</a>
+    <span class="k">def</span> <span class="nf">sample_axis_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to sample axis ratio from rayleigh distribution with given velocity dispersion.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sigma : `numpy.ndarray` (1D array of floats)</span>
+<span class="sd">            velocity dispersion of the lens galaxy</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        q : `numpy.ndarray` (1D array of floats)</span>
+<span class="sd">            axis ratio of the lens galaxy</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.lens_galaxy_population import OpticalDepth</span>
+<span class="sd">        &gt;&gt;&gt; od = OpticalDepth()</span>
+<span class="sd">        &gt;&gt;&gt; print(od.sample_axis_ratio(sigma=200.))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_axis_ratio</span></div>
+
+
+    <span class="nd">@sample_axis_ratio</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">sample_axis_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler_priors_params</span><span class="p">[</span><span class="s2">&quot;axis_ratio&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sample_axis_ratio</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span><span class="n">sigma</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sample_axis_ratio</span> <span class="o">=</span> <span class="n">prior</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="OpticalDepth.available_velocity_dispersion_list_and_its_params">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.available_velocity_dispersion_list_and_its_params">[docs]</a>
+    <span class="k">def</span> <span class="nf">available_velocity_dispersion_list_and_its_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to list all available velocity dispersion sampler and its parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_available_velocity_dispersion_list_and_its_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">velocity_dispersion_haris</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">2.32</span> <span class="o">/</span> <span class="mf">2.67</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">2.67</span><span class="p">),</span>
+            <span class="n">velocity_dispersion_gengamma</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">2.32</span> <span class="o">/</span> <span class="mf">2.67</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">2.67</span><span class="p">),</span>
+            <span class="n">velocity_dispersion_bernardi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">velocity_dispersion_ewoud</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_available_velocity_dispersion_list_and_its_params</span></div>
+
+    
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="OpticalDepth.available_axis_ratio_list_and_its_params">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.available_axis_ratio_list_and_its_params">[docs]</a>
+    <span class="k">def</span> <span class="nf">available_axis_ratio_list_and_its_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to list all available axis ratio sampler.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_available_axis_ratio_list_and_its_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">axis_ratio_rayleigh</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">axis_ratio_SIS</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_available_axis_ratio_list_and_its_params</span></div>
+
+    
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="OpticalDepth.available_optical_depth_list_and_its_params">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.available_optical_depth_list_and_its_params">[docs]</a>
+    <span class="k">def</span> <span class="nf">available_optical_depth_list_and_its_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to list all available optical depth sampler.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_available_optical_depth_list_and_its_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">optical_depth_SIS_haris</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">optical_depth_SIS_hemanta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">optical_depth_SIE_hemanta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_available_optical_depth_list_and_its_params</span></div>
+</div>
+
+
+
+
+
+
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.gw_source_population.jit_functions &mdash; ler 0.3.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=e259d695"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="../../../_static/tabs.js?v=3030b3cb"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Unlensed%20events.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed%20events.html">Lensed events</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ler.gw_source_population.jit_functions</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ler.gw_source_population.jit_functions</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains various functions use for simulating GW source population.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">jit</span>
+<span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
+<span class="n">cosmo</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">inverse_transform_sampler</span>
+
+<span class="c1"># import pickle</span>
+<span class="c1"># # call the interpolator</span>
+<span class="c1"># try:</span>
+<span class="c1">#     with open(&#39;./mp_interpolator/zs_inv_cdf.pickle&#39;, &#39;rb&#39;) as input_:</span>
+<span class="c1">#         print(&#39;Loading the interpolator...&#39;)</span>
+<span class="c1">#         zs_inv_cdf = pickle.load(input_)</span>
+<span class="c1"># except:</span>
+<span class="c1">#     print(&quot;can&#39;t Loading the interpolator...&quot;)</span>
+<span class="c1">#     pass</span>
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">sample_source_redshift</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">zs_inv_cdf</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">zs_inv_cdf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># cdf values</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">zs_inv_cdf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># redshift values</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="merger_rate_density_bbh_popI_II_oguri2018">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.merger_rate_density_bbh_popI_II_oguri2018">[docs]</a>
+<span class="k">def</span> <span class="nf">merger_rate_density_bbh_popI_II_oguri2018</span><span class="p">(</span>
+        <span class="n">zs</span><span class="p">,</span> <span class="n">R0</span><span class="o">=</span><span class="mf">23.9</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">b3</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">b4</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to compute the merger rate density (PopI/PopII). Reference: Oguri et al. (2018). The output is in detector frame and is unnormalized.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    zs : `float` or `numpy.ndarray` (nD array of floats)</span>
+<span class="sd">        Source redshifts</span>
+<span class="sd">    R0 : `float`</span>
+<span class="sd">        local merger rate density at low redshift</span>
+<span class="sd">        default: 23.9*1e-9 Mpc^-3 yr^-1</span>
+<span class="sd">    b2 : `float`</span>
+<span class="sd">        Fitting paramters</span>
+<span class="sd">        default: 1.6</span>
+<span class="sd">    b3 : `float`</span>
+<span class="sd">        Fitting paramters</span>
+<span class="sd">        default: 2.0</span>
+<span class="sd">    b4 : `float`</span>
+<span class="sd">        Fitting paramters</span>
+<span class="sd">        default: 30</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rate_density : `float` or `numpy.ndarray` (nD array of floats)</span>
+<span class="sd">        merger rate density</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population import merger_rate_density_bbh_popI_II_oguri2018</span>
+<span class="sd">    &gt;&gt;&gt; rate_density = merger_rate_density_bbh_popI_II_oguri2018(zs=0.1)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># rate_density</span>
+    <span class="k">return</span> <span class="n">R0</span> <span class="o">*</span> <span class="p">(</span><span class="n">b4</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">b2</span> <span class="o">*</span> <span class="n">zs</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b4</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">b3</span> <span class="o">*</span> <span class="n">zs</span><span class="p">))</span></div>
+
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="merger_rate_density_bbh_popIII_ken2022">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.merger_rate_density_bbh_popIII_ken2022">[docs]</a>
+<span class="k">def</span> <span class="nf">merger_rate_density_bbh_popIII_ken2022</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">n0</span><span class="o">=</span><span class="mf">19.2</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">aIII</span><span class="o">=</span><span class="mf">0.66</span><span class="p">,</span> <span class="n">bIII</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">zIII</span><span class="o">=</span><span class="mf">11.6</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to compute the unnormalized merger rate density (PopIII). Reference: Ng et al. 2022. The output is in detector frame and is unnormalized.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    zs : `float` or `numpy.ndarray` (nD array of floats)</span>
+<span class="sd">        Source redshifts</span>
+<span class="sd">    n0 : `float`</span>
+<span class="sd">        normalization constant</span>
+<span class="sd">        default: 19.2*1e-9</span>
+<span class="sd">    aIII : `float`</span>
+<span class="sd">        Fitting paramters</span>
+<span class="sd">        default: 0.66</span>
+<span class="sd">    bIII : `float`</span>
+<span class="sd">        Fitting paramters</span>
+<span class="sd">        default: 0.3</span>
+<span class="sd">    zIII : `float`</span>
+<span class="sd">        Fitting paramters</span>
+<span class="sd">        default: 11.6</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rate_density : `float` or `numpy.ndarray` (nD array of floats)</span>
+<span class="sd">        merger rate density</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population import merger_rate_density_bbh_popIII_ken2022</span>
+<span class="sd">    &gt;&gt;&gt; rate_density = merger_rate_density_bbh_popIII_ken2022(zs=0.1)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># rate density</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">n0</span>
+        <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">aIII</span> <span class="o">*</span> <span class="p">(</span><span class="n">zs</span> <span class="o">-</span> <span class="n">zIII</span><span class="p">))</span>
+        <span class="o">/</span> <span class="p">(</span><span class="n">bIII</span> <span class="o">+</span> <span class="n">aIII</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">aIII</span> <span class="o">+</span> <span class="n">bIII</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">zs</span> <span class="o">-</span> <span class="n">zIII</span><span class="p">)))</span>
+    <span class="p">)</span></div>
+
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="star_formation_rate_madau_dickinson2014">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.star_formation_rate_madau_dickinson2014">[docs]</a>
+<span class="k">def</span> <span class="nf">star_formation_rate_madau_dickinson2014</span><span class="p">(</span>
+        <span class="n">zs</span><span class="p">,</span> <span class="n">af</span><span class="o">=</span><span class="mf">2.7</span><span class="p">,</span> <span class="n">bf</span><span class="o">=</span><span class="mf">5.6</span><span class="p">,</span> <span class="n">cf</span><span class="o">=</span><span class="mf">2.9</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to compute star formation rate as given in Eqn. 15 Madau &amp; Dickinson (2014). The output is in detector frame and is unnormalized.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    zs : `float` or `numpy.ndarray` (nD array of floats)</span>
+<span class="sd">        Source redshifts</span>
+<span class="sd">    af : `float`</span>
+<span class="sd">        Fitting paramters</span>
+<span class="sd">        default: 2.7</span>
+<span class="sd">    bf : `float`</span>
+<span class="sd">        Fitting paramters</span>
+<span class="sd">        default: 5.6</span>
+<span class="sd">    cf : `float`</span>
+<span class="sd">        Fitting paramters</span>
+<span class="sd">        default: 2.9</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rate_density : `float` or `numpy.ndarray` (nD array of floats)</span>
+<span class="sd">        merger rate density</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population import star_formation_rate_madau_dickinson2014</span>
+<span class="sd">    &gt;&gt;&gt; rate_density = star_formation_rate_madau_dickinson2014(zs=0.1)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># rate density</span>
+    <span class="k">return</span> <span class="mf">0.015</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">zs</span><span class="p">)</span> <span class="o">**</span> <span class="n">af</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">zs</span><span class="p">)</span> <span class="o">/</span> <span class="n">cf</span><span class="p">)</span> <span class="o">**</span> <span class="n">bf</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@jit</span>
+<div class="viewcode-block" id="merger_rate_density_bbh_primordial_ken2022">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.merger_rate_density_bbh_primordial_ken2022">[docs]</a>
+<span class="k">def</span> <span class="nf">merger_rate_density_bbh_primordial_ken2022</span><span class="p">(</span>
+        <span class="n">zs</span><span class="p">,</span> <span class="n">cosmology</span><span class="o">=</span><span class="n">cosmo</span><span class="p">,</span> <span class="n">n0</span><span class="o">=</span><span class="mf">0.044</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="mf">13.786885302009708</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to compute the merger rate density (Primordial). Reference: Ng et al. 2022. The output is in detector frame and is unnormalized.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        zs : `float`</span>
+<span class="sd">            Source redshifts</span>
+<span class="sd">        n0 : `float`</span>
+<span class="sd">            normalization constant</span>
+<span class="sd">            default: 0.044*1e-9</span>
+<span class="sd">        t0 : `float`</span>
+<span class="sd">            Present age of the Universe in Gyr</span>
+<span class="sd">            default: 13.786885302009708</span>
+<span class="sd">        param : `dict`</span>
+<span class="sd">            Allows to pass in above parameters as dict.</span>
+<span class="sd">            e.g. param = dict(t0=13.786885302009708)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ----------</span>
+<span class="sd">        rate_density : `float`</span>
+<span class="sd">            merger rate density</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        ----------</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># rate density</span>
+        <span class="n">rate_density</span> <span class="o">=</span> <span class="n">n0</span> <span class="o">*</span> <span class="p">(</span><span class="n">cosmology</span><span class="o">.</span><span class="n">age</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">zs</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="n">t0</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">34</span> <span class="o">/</span> <span class="mi">37</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">rate_density</span></div>
+
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="lognormal_distribution_2D">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.lognormal_distribution_2D">[docs]</a>
+<span class="k">def</span> <span class="nf">lognormal_distribution_2D</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">m_min</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">m_max</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">Mc</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to sample from a lognormal distribution in 2D space. Reference: Ng et al. 2022. This a helper function for popIII BBH and primordial BBH merger rate density distribution functions.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    size : `int`</span>
+<span class="sd">        Number of samples to draw</span>
+<span class="sd">    m_min : `float`</span>
+<span class="sd">        Minimum mass</span>
+<span class="sd">        default: 1.0</span>
+<span class="sd">    m_max : `float`</span>
+<span class="sd">        Maximum mass</span>
+<span class="sd">        default: 100.0</span>
+<span class="sd">    Mc : `float`</span>
+<span class="sd">        Mass scale</span>
+<span class="sd">        default: 20.0</span>
+<span class="sd">    sigma : `float`</span>
+<span class="sd">        width of the distribution</span>
+<span class="sd">        default: 0.3</span>
+<span class="sd">    chunk_size : `int`</span>
+<span class="sd">        Number of samples to draw in each chunk</span>
+<span class="sd">        default: 10000</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    m1_sample : `numpy.ndarray` (1D array of floats)</span>
+<span class="sd">        Mass of the primary</span>
+<span class="sd">    m2_sample : `numpy.ndarray` (1D array of floats)</span>
+<span class="sd">        Mass of the secondary</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population import lognormal_distribution_2D</span>
+<span class="sd">    &gt;&gt;&gt; m1_sample, m2_sample = lognormal_distribution_2D(size=1000)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+       
+    <span class="c1"># mass function. Eqn. 1 of Ng et al. 2022</span>
+    <span class="n">psi</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">m</span> <span class="o">/</span> <span class="n">Mc</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">m</span>
+    <span class="p">)</span>
+    <span class="c1"># probability density function</span>
+    <span class="c1"># Eqn. 4 of Ng et al. 2022</span>
+    <span class="n">pdf</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">:</span> <span class="p">(</span><span class="n">m1</span> <span class="o">+</span> <span class="n">m2</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">36</span> <span class="o">/</span> <span class="mi">37</span><span class="p">)</span>
+        <span class="o">*</span> <span class="p">(</span><span class="n">m1</span> <span class="o">*</span> <span class="n">m2</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">32</span> <span class="o">/</span> <span class="mi">37</span><span class="p">)</span>
+        <span class="o">*</span> <span class="n">psi</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
+        <span class="o">*</span> <span class="n">psi</span><span class="p">(</span><span class="n">m2</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># rejection sampling</span>
+    <span class="n">m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">m_min</span><span class="p">,</span> <span class="n">m_max</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">)</span>
+    <span class="n">m2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">m_min</span><span class="p">,</span> <span class="n">m_max</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">pdf</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">)</span>
+    <span class="n">zmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+    <span class="c1"># Rejection sample in chunks</span>
+    <span class="n">m1_sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">m2_sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">old_num</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">m1_try</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">m_min</span><span class="p">,</span> <span class="n">m_max</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">)</span>
+        <span class="n">m2_try</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">m_min</span><span class="p">,</span> <span class="n">m_max</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">)</span>
+
+        <span class="n">z_try</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">zmax</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">)</span>
+        <span class="n">zmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">zmax</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">z_try</span><span class="p">))</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">z_try</span> <span class="o">&lt;</span> <span class="n">pdf</span><span class="p">(</span><span class="n">m1_try</span><span class="p">,</span> <span class="n">m2_try</span><span class="p">)</span>
+        <span class="n">new_num</span> <span class="o">=</span> <span class="n">old_num</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">new_num</span> <span class="o">&gt;=</span> <span class="n">size</span><span class="p">:</span>
+            <span class="n">m1_sample</span><span class="p">[</span><span class="n">old_num</span><span class="p">:</span><span class="n">size</span><span class="p">]</span> <span class="o">=</span> <span class="n">m1_try</span><span class="p">[</span><span class="n">idx</span><span class="p">][:</span> <span class="n">size</span> <span class="o">-</span> <span class="n">old_num</span><span class="p">]</span>
+            <span class="n">m2_sample</span><span class="p">[</span><span class="n">old_num</span><span class="p">:</span><span class="n">size</span><span class="p">]</span> <span class="o">=</span> <span class="n">m2_try</span><span class="p">[</span><span class="n">idx</span><span class="p">][:</span> <span class="n">size</span> <span class="o">-</span> <span class="n">old_num</span><span class="p">]</span>
+            <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">m1_sample</span><span class="p">[</span><span class="n">old_num</span><span class="p">:</span><span class="n">new_num</span><span class="p">]</span> <span class="o">=</span> <span class="n">m1_try</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">m2_sample</span><span class="p">[</span><span class="n">old_num</span><span class="p">:</span><span class="n">new_num</span><span class="p">]</span> <span class="o">=</span> <span class="n">m2_try</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">old_num</span> <span class="o">=</span> <span class="n">new_num</span>
+            
+    <span class="c1"># swap the mass if m1 &lt; m2</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">m1_sample</span> <span class="o">&lt;</span> <span class="n">m2_sample</span>
+    <span class="n">m1_sample</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">m2_sample</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">m2_sample</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">m1_sample</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">m1_sample</span><span class="p">,</span> <span class="n">m2_sample</span></div>
+
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="inverse_transform_sampler_m1m2">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.inverse_transform_sampler_m1m2">[docs]</a>
+<span class="k">def</span> <span class="nf">inverse_transform_sampler_m1m2</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">inv_cdf</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to sample from a distribution using inverse transform sampling. This is a helper function BNS Alsing mass distribution function.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    size : `int`</span>
+<span class="sd">        Number of samples to draw</span>
+<span class="sd">    inv_cdf : `numpy.ndarray` (1D array of floats)</span>
+<span class="sd">        Inverse cumulative distribution function</span>
+<span class="sd">    x : `numpy.ndarray` (1D array of floats)</span>
+<span class="sd">        array of mass values for which the inverse cumulative distribution function is computed</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    m1 : `numpy.ndarray` (1D array of floats)</span>
+<span class="sd">        Mass of the primary</span>
+<span class="sd">    m2 : `numpy.ndarray` (1D array of floats)</span>
+<span class="sd">        Mass of the secondary</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population import inverse_transform_sampler_m1m2</span>
+<span class="sd">    &gt;&gt;&gt; m1, m2 = inverse_transform_sampler_m1m2(size=1000, inv_cdf=inv_cdf, x=x)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">m1</span> <span class="o">=</span> <span class="n">inverse_transform_sampler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">inv_cdf</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">m2</span> <span class="o">=</span> <span class="n">inverse_transform_sampler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">inv_cdf</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="c1"># swap m1 and m2 if m1 &lt; m2</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">m1</span> <span class="o">&lt;</span> <span class="n">m2</span>
+    <span class="n">m1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">m2</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">m2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">m1</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

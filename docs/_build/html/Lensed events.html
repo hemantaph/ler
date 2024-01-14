@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lensed events &mdash; ler 0.2.2 documentation</title>
+  <title>Lensed events &mdash; ler 0.3.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -17,7 +17,7 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=000c92bf"></script>
+        <script src="_static/documentation_options.js?v=e259d695"></script>
         <script src="_static/doctools.js?v=888ff710"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -28,7 +28,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="ler.ler" href="autoapi/ler/ler/index.html" />
+    <link rel="next" title="ler.rates" href="autoapi/ler/rates/index.html" />
     <link rel="prev" title="Unlensed events" href="Unlensed%20events.html" /> 
 </head>
 
@@ -69,15 +69,16 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/ler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.ler</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/multiprocessing_routine/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.multiprocessing_routine</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/helperroutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.helperroutines</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Rate%20comparision.html">Calculation of unlensed and lensed rate of detectable events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
 </ul>
 
         </div>
@@ -241,13 +242,12 @@ R_o^L(z_s)= \frac{1}{\mathcal{N}^L}\frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tau
 </section>
 <section id="Image-parameters">
 <h3>Image parameters<a class="headerlink" href="#Image-parameters" title="Link to this heading"></a></h3>
-<ul class="simple">
+<ul>
 <li><p>Einstein radius: <span class="math">\begin{equation}
 \theta_E = \frac{4\pi \sigma^2}{c^2}\frac{D_{Ls}}{D_s} \tag{7}
 \end{equation}</span></p></li>
 <li><p>Souce position in lens plane : <span class="math notranslate nohighlight">\(\beta = [x,y] = [\eta\,cos(\phi),\eta\,sin(\phi)]\)</span></p></li>
-<li><p>sampling methods:</p></li>
-</ul>
+<li><p>sampling methods:</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameter</p></th>
@@ -266,6 +266,8 @@ R_o^L(z_s)= \frac{1}{\mathcal{N}^L}\frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tau
 </tr>
 </tbody>
 </table>
+</li>
+</ul>
 </section>
 <section id="Montecarlo-integration">
 <h3>Montecarlo integration<a class="headerlink" href="#Montecarlo-integration" title="Link to this heading"></a></h3>
@@ -309,7 +311,7 @@ R_L &= \mathcal{N}^U \left< \,P_{det}^{max(\rho)_1} \,P_{det}^{max(\rho)_2} \,\r
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="Unlensed%20events.html" class="btn btn-neutral float-left" title="Unlensed events" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="autoapi/ler/ler/index.html" class="btn btn-neutral float-right" title="ler.ler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="autoapi/ler/rates/index.html" class="btn btn-neutral float-right" title="ler.rates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

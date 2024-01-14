@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.utils.plots &mdash; ler 0.3.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=e259d695"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="../../../_static/tabs.js?v=3030b3cb"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Unlensed%20events.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed%20events.html">Lensed events</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ler.utils.plots</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ler.utils.plots</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains functions to plot the results.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">gaussian_kde</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+
+<span class="kn">from</span> <span class="nn">ler.utils.utils</span> <span class="kn">import</span> <span class="n">get_param_from_json</span>
+
+<div class="viewcode-block" id="param_plot">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/plots/index.html#ler.utils.param_plot">[docs]</a>
+<span class="k">def</span> <span class="nf">param_plot</span><span class="p">(</span>
+        <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;zs&quot;</span><span class="p">,</span>
+        <span class="n">param_dict</span><span class="o">=</span><span class="s2">&quot;./gw_params.json&quot;</span><span class="p">,</span>
+        <span class="n">plot_label</span><span class="o">=</span><span class="s2">&quot;zs&quot;</span><span class="p">,</span>
+        <span class="n">param_min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">param_max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">kde_bandwidth</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">histogram</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">histogram_bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to plot the distribution of the GW source parameters.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    param_name : `str`</span>
+<span class="sd">        name of the parameter to plot.</span>
+<span class="sd">        default param_name = &#39;zs&#39;.</span>
+<span class="sd">    param_dict : `dict` or `str`</span>
+<span class="sd">        dictionary of GW source parameters or json file name.</span>
+<span class="sd">        default param_dict = &#39;./gw_params.json&#39;.</span>
+<span class="sd">    param_xlabel : `str`</span>
+<span class="sd">        x-axis label.</span>
+<span class="sd">        default param_xlabel = &#39;source redshift&#39;.</span>
+<span class="sd">    param_ylabel : `str`</span>
+<span class="sd">        y-axis label.</span>
+<span class="sd">        default param_ylabel = &#39;probability density&#39;.</span>
+<span class="sd">    param_min : `float`</span>
+<span class="sd">        minimum value of the parameter.</span>
+<span class="sd">        default param_min = None.</span>
+<span class="sd">    param_max : `float`</span>
+<span class="sd">        maximum value of the parameter.</span>
+<span class="sd">        default param_max = None.</span>
+<span class="sd">    figsize : `tuple`</span>
+<span class="sd">        figure size.</span>
+<span class="sd">        default figsize = (4, 4).</span>
+<span class="sd">    kde : `bool`</span>
+<span class="sd">        if True, kde will be plotted.</span>
+<span class="sd">        default kde = True.</span>
+<span class="sd">    kde_bandwidth : `float`</span>
+<span class="sd">        bandwidth for kde.</span>
+<span class="sd">        default kde_bandwidth = 0.2.</span>
+<span class="sd">    histogram : `bool`</span>
+<span class="sd">        if True, histogram will be plotted.</span>
+<span class="sd">        default histogram = True.</span>
+<span class="sd">    histogram_bins : `int`</span>
+<span class="sd">        number of bins for histogram.</span>
+<span class="sd">        default histogram_bins = 30.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">    &gt;&gt;&gt; from ler.rates import LeR</span>
+<span class="sd">    &gt;&gt;&gt; ler = LeR()</span>
+<span class="sd">    &gt;&gt;&gt; param = ler.unlensed_cbc_statistics();</span>
+<span class="sd">    &gt;&gt;&gt; rate, param_detectable = ler.unlensed_rate()</span>
+<span class="sd">    &gt;&gt;&gt; plt.figure(figsize=(6, 4))</span>
+<span class="sd">    &gt;&gt;&gt; ler.param_plot(param_name=&#39;zs&#39;, param_dict=param, plot_label=&#39;all events&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; ler.param_plot(param_name=&#39;zs&#39;, param_dict=param_detectable, plot_label=&#39;detectable events&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.xlabel(&#39;source redshift&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.ylabel(&#39;probability density&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.title(&#39;source redshift distribution&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.grid(alpha=0.5)</span>
+<span class="sd">    &gt;&gt;&gt; plt.savefig(&#39;source_redshift_distribution.png&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># get gw params from json file if not provided</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;getting gw_params from json file </span><span class="si">{</span><span class="n">param_dict</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+        <span class="n">param_dict</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">param_min</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">param_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">param_dict</span><span class="p">[</span><span class="n">param_name</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">param_max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">param_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">param_dict</span><span class="p">[</span><span class="n">param_name</span><span class="p">])</span>
+
+    <span class="c1"># plot the distribution of the parameter</span>
+    <span class="k">if</span> <span class="n">histogram</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span>
+            <span class="n">param_dict</span><span class="p">[</span><span class="n">param_name</span><span class="p">],</span>
+            <span class="n">bins</span><span class="o">=</span><span class="n">histogram_bins</span><span class="p">,</span>
+            <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">histtype</span><span class="o">=</span><span class="s2">&quot;step&quot;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="n">plot_label</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">kde</span><span class="p">:</span>
+        <span class="n">kde</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">param_dict</span><span class="p">[</span><span class="n">param_name</span><span class="p">],</span> <span class="n">bw_method</span><span class="o">=</span><span class="n">kde_bandwidth</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">param_min</span><span class="p">,</span> <span class="n">param_max</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">kde</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="n">plot_label</span><span class="o">+</span><span class="s2">&quot; kde&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="relative_mu_dt_unlensed">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/plots/index.html#ler.utils.relative_mu_dt_unlensed">[docs]</a>
+<span class="k">def</span> <span class="nf">relative_mu_dt_unlensed</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to generate relative magnification vs time delay difference for unlensed samples.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    param : `dict`</span>
+<span class="sd">        dictionary of unlensed GW source parameters.</span>
+<span class="sd">        unlensed_param.keys() = [&#39;m1&#39;, &#39;m2&#39;, &#39;z&#39;, &#39;snr&#39;, &#39;theta_jn&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;]</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dmu : `float.array`</span>
+<span class="sd">        relative magnification.</span>
+<span class="sd">    dt : `float.array`</span>
+<span class="sd">        relative time delay.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">t</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;geocent_time&quot;</span><span class="p">]</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;luminosity_distance&quot;</span><span class="p">]</span>
+
+    <span class="n">len_</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">t_</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">mu_</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">t_</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">:</span>
+        <span class="n">idx1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">len_</span><span class="p">),</span> <span class="n">size</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">idx2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">len_</span><span class="p">),</span> <span class="n">size</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">t_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">idx2</span><span class="p">]</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="n">idx1</span><span class="p">])</span>
+        <span class="n">mu_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mu</span><span class="p">[</span><span class="n">idx2</span><span class="p">]</span> <span class="o">/</span> <span class="n">mu</span><span class="p">[</span><span class="n">idx1</span><span class="p">])</span>
+
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">t_</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">24</span><span class="p">)</span>  <span class="c1"># in days</span>
+    <span class="n">dmu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mu_</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">dmu</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="relative_mu_dt_lensed">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/plots/index.html#ler.utils.relative_mu_dt_lensed">[docs]</a>
+<span class="k">def</span> <span class="nf">relative_mu_dt_lensed</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">,</span> <span class="n">snr_threshold</span><span class="o">=</span><span class="p">[</span><span class="mf">8.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to classify the lensed images wrt to the morse phase difference.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lensed_param : `dict`</span>
+<span class="sd">        dictionary of lensed GW source parameters, lens galaxy parameters and image paramters.</span>
+<span class="sd">        lensed_param.keys() = [&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;e1&#39;, &#39;e2&#39;, &#39;gamma1&#39;, &#39;gamma2&#39;, &#39;Dl&#39;,</span>
+<span class="sd">        &#39;Ds&#39;, &#39;Dls&#39;, &#39;theta_E&#39;, &#39;gamma&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;,</span>
+<span class="sd">        &#39;luminosity_distance&#39;, &#39;theta_jn&#39;, &#39;psi&#39;, &#39;phase&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;n_images&#39;,</span>
+<span class="sd">        &#39;x0_image_positions&#39;, &#39;x1_image_positions&#39;, &#39;magnifications&#39;, &#39;time_delays&#39;, &#39;traces&#39;,</span>
+<span class="sd">        &#39;determinants&#39;, &#39;image_type&#39;, &#39;weights&#39;, &#39;optimal_snr_net&#39;, &#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;]</span>
+<span class="sd">    snr_threshold : `float`</span>
+<span class="sd">        threshold for detection signal to noise ratio.</span>
+<span class="sd">        e.g. snr_threshold = [8.,8.] or [8.,6.] for subthreshold</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mu_rel0 : `float.array`</span>
+<span class="sd">        relative magnification for 0 degree phase difference.</span>
+<span class="sd">    dt_rel0 : `float.array`</span>
+<span class="sd">        relative time delay for 0 degree phase difference.</span>
+<span class="sd">    mu_rel90 : `float.array`</span>
+<span class="sd">        relative magnification for 90 degree phase difference.</span>
+<span class="sd">    dt_rel90 : `float.array`</span>
+<span class="sd">        relative time delay for 90 degree phase difference.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># get magnifications, time_delays and snr</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;magnifications&quot;</span><span class="p">])</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;time_delays&quot;</span><span class="p">])</span>
+    <span class="n">snr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">])</span>
+
+    <span class="c1"># for 0 degree phase difference</span>
+    <span class="c1"># get the index of the image which cross the threshold</span>
+    <span class="c1"># get snr_threshold sorted first in descending order</span>
+    <span class="n">snr_threshold</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">snr_threshold</span><span class="p">))</span>
+    <span class="c1"># for type I</span>
+    <span class="n">snr1</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="o">-</span><span class="n">snr</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># for type II</span>
+    <span class="n">snr2</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="o">-</span><span class="n">snr</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># checking for zero values</span>
+    <span class="c1"># check for threshold condition</span>
+    <span class="n">idx1</span><span class="p">,</span> <span class="n">idx2</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">snr</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="o">!=</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">snr1</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="ow">and</span> <span class="n">snr1</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">snr_threshold</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="n">snr1</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">snr_threshold</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="n">idx1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="o">!=</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">snr2</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="ow">and</span> <span class="n">snr2</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">snr_threshold</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="n">snr2</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">snr_threshold</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="n">idx2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+    <span class="c1"># combine magnifications and time_delays</span>
+    <span class="n">mu_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">mu</span><span class="p">[</span><span class="n">idx1</span><span class="p">][:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">mu</span><span class="p">[</span><span class="n">idx2</span><span class="p">][:,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">dt_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">dt</span><span class="p">[</span><span class="n">idx1</span><span class="p">][:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">dt</span><span class="p">[</span><span class="n">idx2</span><span class="p">][:,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+        <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">24</span>
+    <span class="p">)</span>  <span class="c1"># to days</span>
+
+    <span class="c1"># relative magnification</span>
+    <span class="n">mu_rel0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu_</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">mu_</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="c1"># relative time delay</span>
+    <span class="n">dt_rel0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">dt_</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">dt_</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># for 90 degree phase difference</span>
+    <span class="c1"># for type I</span>
+    <span class="n">snr1</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="o">-</span><span class="n">snr</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># for type II</span>
+    <span class="n">snr2</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="o">-</span><span class="n">snr</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># checking for zero values</span>
+    <span class="c1"># check for threshold condition</span>
+    <span class="n">idx1</span><span class="p">,</span> <span class="n">idx2</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">snr</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="o">!=</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">snr1</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="ow">and</span> <span class="n">snr1</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">snr_threshold</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="n">snr1</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">snr_threshold</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="n">idx1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="o">!=</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">snr2</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="ow">and</span> <span class="n">snr2</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">snr_threshold</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="n">snr2</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">snr_threshold</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="n">idx2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+    <span class="c1"># combine magnifications and time_delays</span>
+    <span class="n">mu_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">mu</span><span class="p">[</span><span class="n">idx1</span><span class="p">][:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]],</span> <span class="n">mu</span><span class="p">[</span><span class="n">idx2</span><span class="p">][:,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">dt_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">dt</span><span class="p">[</span><span class="n">idx1</span><span class="p">][:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]],</span> <span class="n">dt</span><span class="p">[</span><span class="n">idx2</span><span class="p">][:,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+        <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">24</span>
+    <span class="p">)</span>  <span class="c1"># in days</span>
+
+    <span class="c1"># relative magnification</span>
+    <span class="n">mu_rel90</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu_</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">mu_</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="c1"># relative time delay</span>
+    <span class="n">dt_rel90</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">dt_</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">dt_</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">mu_rel0</span><span class="p">,</span> <span class="n">dt_rel0</span><span class="p">,</span> <span class="n">mu_rel90</span><span class="p">,</span> <span class="n">dt_rel90</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="mu_vs_dt_plot">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/plots/index.html#ler.utils.mu_vs_dt_plot">[docs]</a>
+<span class="k">def</span> <span class="nf">mu_vs_dt_plot</span><span class="p">(</span>
+    <span class="n">x_array</span><span class="p">,</span>
+    <span class="n">y_array</span><span class="p">,</span>
+    <span class="n">savefig</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">colors</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+    <span class="n">linestyles</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span>
+    <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;upper&quot;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+    <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="mf">1e-2</span><span class="p">,</span> <span class="mf">5e2</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e2</span><span class="p">],</span>
+    <span class="n">contour_levels</span><span class="o">=</span><span class="p">[</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.40</span><span class="p">,</span> <span class="mf">0.68</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">],</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to generate 2D KDE and plot the relative magnification vs time delay difference for lensed samples.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x_array : `float.array`</span>
+<span class="sd">        x array.</span>
+<span class="sd">    y_array : `float.array`</span>
+<span class="sd">        y array.</span>
+<span class="sd">    xlabel : `str`</span>
+<span class="sd">        x label.</span>
+<span class="sd">    ylabel : `str`</span>
+<span class="sd">        y label.</span>
+<span class="sd">    title : `str`</span>
+<span class="sd">        title.</span>
+<span class="sd">    savefig : `bool`</span>
+<span class="sd">        if True, it will save the figure.</span>
+<span class="sd">        default savefig = False.</span>
+<span class="sd">    ax : `matplotlib.axes`</span>
+<span class="sd">        matplotlib axes.</span>
+<span class="sd">        default ax = None.</span>
+<span class="sd">    colors : `str`</span>
+<span class="sd">        color of the plot.</span>
+<span class="sd">        default colors = &#39;blue&#39;.</span>
+<span class="sd">    linestyles : `str`</span>
+<span class="sd">        linestyle of the plot.</span>
+<span class="sd">        default linestyles = &#39;-&#39;.</span>
+<span class="sd">    origin : `str`</span>
+<span class="sd">        origin of the plot.</span>
+<span class="sd">        default origin = &#39;upper&#39;.</span>
+<span class="sd">    alpha : `float`</span>
+<span class="sd">        alpha of the plot.</span>
+<span class="sd">        default alpha = 0.6.</span>
+<span class="sd">    extent : `list`</span>
+<span class="sd">        extent of the plot.</span>
+<span class="sd">        default extent = [1e-2,5e2,1e-2,1e2].</span>
+<span class="sd">    contour_levels : `list`</span>
+<span class="sd">        contour levels of the plot.</span>
+<span class="sd">        default contour_levels = [0.10,0.40,0.68,0.95] which corresponds to 1,2,3,4 sigma.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># applying cutt-off</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">x_array</span> <span class="o">&gt;</span> <span class="n">extent</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">x_array</span> <span class="o">&lt;</span> <span class="n">extent</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">y_array</span> <span class="o">&gt;</span> <span class="n">extent</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">y_array</span> <span class="o">&lt;</span> <span class="n">extent</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="p">)</span>
+    <span class="n">x_array</span> <span class="o">=</span> <span class="n">x_array</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">y_array</span> <span class="o">=</span> <span class="n">y_array</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+    <span class="n">xu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">x_array</span><span class="p">)</span>
+    <span class="n">yu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">y_array</span><span class="p">)</span>
+
+    <span class="n">xmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">)</span>
+    <span class="n">xmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">5e2</span><span class="p">)</span>
+    <span class="n">ymin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">)</span>
+    <span class="n">ymax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">1e2</span><span class="p">)</span>
+
+    <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="n">xmin</span><span class="p">:</span><span class="n">xmax</span><span class="p">:</span><span class="mi">100</span><span class="n">j</span><span class="p">,</span> <span class="n">ymin</span><span class="p">:</span><span class="n">ymax</span><span class="p">:</span><span class="mi">100</span><span class="n">j</span><span class="p">]</span>
+    <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">xx</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">yy</span><span class="o">.</span><span class="n">ravel</span><span class="p">()])</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">xu</span><span class="p">,</span> <span class="n">yu</span><span class="p">])</span>
+    <span class="n">kernel</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">ff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">kernel</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="n">zsort</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="o">-</span><span class="n">ff</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+
+    <span class="n">cumz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">zsort</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">zsort</span><span class="p">)</span>
+    <span class="n">spl</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">cumz</span><span class="p">,</span> <span class="n">zsort</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;cubic&quot;</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;extrapolate&quot;</span><span class="p">)</span>
+
+    <span class="n">levels</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">contour_levels</span><span class="p">:</span>
+        <span class="n">levels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spl</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+    <span class="n">levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">levels</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">ff</span><span class="p">),</span>
+        <span class="n">levels</span><span class="p">,</span>
+        <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span>
+        <span class="n">linestyles</span><span class="o">=</span><span class="n">linestyles</span><span class="p">,</span>
+        <span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span>
+        <span class="n">extent</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">extent</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># labels</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$log_</span><span class="si">{10}</span><span class="s2">\Delta t$ (days)&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\Delta log_</span><span class="si">{10}</span><span class="s2">\mu$&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;relative magnification vs relative time delay&quot;</span><span class="p">)</span>
+
+    <span class="c1"># save figure</span>
+    <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;mu_vs_dt.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+    
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
