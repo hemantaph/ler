@@ -51,7 +51,7 @@ class ImageProperties():
         default: 1126259462.4+365*24*3600*100 , which is the GPS time of the first GW detection + 100 years. Some time delays can be very large.
     lens_model_list : `list`
         list of lens models
-        default: ['EPL_NUMBA', 'SHEAR']
+        default: ['EPL', 'SHEAR']
     cosmology : `astropy.cosmology`
         cosmology
         default: None/astropy.cosmology.LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
@@ -119,7 +119,7 @@ class ImageProperties():
                  n_max_images=4,
                  geocent_time_min=1126259462.4,
                  geocent_time_max=1126259462.4+365*24*3600*100,
-                 lens_model_list=['EPL_NUMBA', 'SHEAR'],
+                 lens_model_list=['EPL', 'SHEAR'],
                  cosmology=None,
                  spin_zero=True,
                  spin_precession=False,

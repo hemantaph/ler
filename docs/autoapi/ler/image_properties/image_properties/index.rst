@@ -26,7 +26,7 @@ Classes
 
 
 
-.. py:class:: ImageProperties(npool=4, z_min=0.0, z_max=10, n_min_images=2, n_max_images=4, geocent_time_min=1126259462.4, geocent_time_max=1126259462.4 + 365 * 24 * 3600 * 100, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_pickle', create_new_interpolator=False)
+.. py:class:: ImageProperties(npool=4, z_min=0.0, z_max=10, n_min_images=2, n_max_images=4, geocent_time_min=1126259462.4, geocent_time_max=1126259462.4 + 365 * 24 * 3600 * 100, lens_model_list=['EPL', 'SHEAR'], cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_pickle', create_new_interpolator=False)
 
 
    
@@ -65,7 +65,7 @@ Classes
 
        **lens_model_list** : `list`
            list of lens models
-           default: ['EPL_NUMBA', 'SHEAR']
+           default: ['EPL', 'SHEAR']
 
        **cosmology** : `astropy.cosmology`
            cosmology
