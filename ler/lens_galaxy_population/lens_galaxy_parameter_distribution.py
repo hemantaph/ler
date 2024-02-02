@@ -355,7 +355,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             n_max_images=4,
             geocent_time_min=1126259462.4,
             geocent_time_max=1126259462.4+365*24*3600*100,
-            lens_model_list=["EPL_NUMBA", "SHEAR"],
+            lens_model_list=["EPL", "SHEAR"],
         )
         input_params_image.update(params)
         ImageProperties.__init__(
