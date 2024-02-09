@@ -1,11 +1,17 @@
 # LeR
 [![DOI](https://zenodo.org/badge/626733473.svg)](https://zenodo.org/badge/latestdoi/626733473) [![PyPI version](https://badge.fury.io/py/ler.svg)](https://badge.fury.io/py/ler) [![DOCS](https://readthedocs.org/projects/ler/badge/?version=latest)](https://ler.readthedocs.io/en/latest/)
 
-## About
-
 <p align="center">
   <img src="lerlogo.png" alt="Your Logo" width="200" height="200">
 </p>
+
+## Installation
+
+```
+pip install ler
+```
+
+## About
 
 `LeR` is a statistical-based python package whose core function is designed for the computation of detectable rates pertaining to both lensed and unlensed gravitational wave (GW) events. This calculation intricately hinges upon the interplay of various components within the package, which can be categorized into three primary segments: 1. Sampling the properties of compact-binary sources, 2. Sampling characteristics of lens galaxies, and 3. Solving the lens equation to derive image attributes of the source. The holistic functionality of the package is built upon leveraging array operations and linear algebra from the `numpy` library, interpolation from `scipy`, and the `multiprocessing` capability inherent to Python. This design optimizes both speed and functionality while upholding user-friendliness. The architecture of the "LeR" API is deliberately organized such that each distinct functionality holds its own significance in scientific research. Simultaneously, these functionalities seamlessly integrate and can be employed collectively based on specific research requirements. Key features of `LeR` and its dependencies can be summarized as follows,
 
@@ -27,9 +33,9 @@
 
 The `LeR` software has been developed to cater to the requirements of both the LIGO scientific collaboration and research scholars engaged in astrophysics studies. It is currently used in generating detectable lensing events and GW lensing rates with the available information on current and future detectors. The results will predict the feasibility of various detectors for detecting and studying such lensing events. Statistics generated from `LeR` will be used in event validation of the ongoing effort to detect lensed gravitational waves. Lastly, `LeR` was designed with upgradability in mind to include additional statistics as required by the related research.
 
-# Installation
+# Documentation
 
-Follow the installation instruction at [ler.readthedoc](https://ler.readthedocs.io/en/latest/installation.html)
+The `ler` package documentation is available at [ReadTheDocs](https://ler.readthedocs.io/en/latest/installation.html).
 
 
 
