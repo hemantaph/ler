@@ -6,9 +6,9 @@ Welcome to ler's documentation!
    :width: 40%
    :alt: ler logo
 
-======
+==================
 ler
-======
+==================
 
 ``ler`` (/ˈɛlɚ/): Lensed (or un-lensed) gravitational waves Event (compact-binaries) Rate calculator and simulator.
 
@@ -20,7 +20,7 @@ The code is available at `ler.github <https://github.com/hemantaph/ler>`_.
    :maxdepth: 2
    :caption: Contents:
 
-   installation
+   Installation
    Unlensed events
    Lensed events
    
