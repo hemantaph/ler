@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.gw_source_population &mdash; ler 0.3.0 documentation</title>
+  <title>ler.gw_source_population &mdash; ler 0.3.1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -16,7 +16,7 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=e259d695"></script>
+        <script src="../../../_static/documentation_options.js?v=4621528c"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -24,7 +24,9 @@
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="ler.gw_source_population.cbc_source_parameter_distribution" href="cbc_source_parameter_distribution/index.html" />
+    <link rel="prev" title="ler.rates.ler" href="../rates/ler/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,11 +52,52 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Unlensed%20events.html">Unlensed events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed%20events.html">Lensed Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed%20events.html">Lensed events</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cbc_source_parameter_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_parameter_distribution</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cbc_source_redshift_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_redshift_distribution</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="jit_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.jit_functions</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#package-contents">Package Contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ler.gw_source_population.interpolator_from_pickle"><code class="docutils literal notranslate"><span class="pre">interpolator_from_pickle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.gw_source_population.merger_rate_density_bbh_popI_II_oguri2018"><code class="docutils literal notranslate"><span class="pre">merger_rate_density_bbh_popI_II_oguri2018()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.gw_source_population.star_formation_rate_madau_dickinson2014"><code class="docutils literal notranslate"><span class="pre">star_formation_rate_madau_dickinson2014()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.gw_source_population.merger_rate_density_bbh_popIII_ken2022"><code class="docutils literal notranslate"><span class="pre">merger_rate_density_bbh_popIII_ken2022()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.gw_source_population.merger_rate_density_bbh_primordial_ken2022"><code class="docutils literal notranslate"><span class="pre">merger_rate_density_bbh_primordial_ken2022()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.gw_source_population.CBCSourceRedshiftDistribution"><code class="docutils literal notranslate"><span class="pre">CBCSourceRedshiftDistribution</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">interpolator_from_pickle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">CBCSourceRedshiftDistribution</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.gw_source_population.lognormal_distribution_2D"><code class="docutils literal notranslate"><span class="pre">lognormal_distribution_2D()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.gw_source_population.inverse_transform_sampler_m1m2"><code class="docutils literal notranslate"><span class="pre">inverse_transform_sampler_m1m2()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.gw_source_population.CBCSourceParameterDistribution"><code class="docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id25"><code class="docutils literal notranslate"><span class="pre">merger_rate_density_bbh_popI_II_oguri2018()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id26"><code class="docutils literal notranslate"><span class="pre">merger_rate_density_bbh_popIII_ken2022()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id27"><code class="docutils literal notranslate"><span class="pre">star_formation_rate_madau_dickinson2014()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id28"><code class="docutils literal notranslate"><span class="pre">merger_rate_density_bbh_primordial_ken2022()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id29"><code class="docutils literal notranslate"><span class="pre">lognormal_distribution_2D()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id30"><code class="docutils literal notranslate"><span class="pre">inverse_transform_sampler_m1m2()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../Rate%20comparision.html">Rate comparision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
 </ul>
 
         </div>
@@ -2611,7 +2654,10 @@ default: 10000</p>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../rates/ler/index.html" class="btn btn-neutral float-left" title="ler.rates.ler" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cbc_source_parameter_distribution/index.html" class="btn btn-neutral float-right" title="ler.gw_source_population.cbc_source_parameter_distribution" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

@@ -1102,7 +1102,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         if event_type == "BBH":
             merger_rate_density_prior = "merger_rate_density_bbh_popI_II_oguri2018"
             merger_rate_density_prior_params = dict(
-                R0=25.0 * 1e-9, b2=1.6, b3=2.0, b4=30
+                R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30
             )
             source_frame_masses_prior = "binary_masses_BBH_popI_II_powerlaw_gaussian"
             source_frame_masses_prior_params = dict(
@@ -1120,7 +1120,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         elif event_type == "BNS":
             merger_rate_density_prior = "merger_rate_density_bbh_popI_II_oguri2018"
             merger_rate_density_prior_params = dict(
-                R0=170.0 * 1e-9, b2=1.6, b3=2.0, b4=30
+                R0=105.5 * 1e-9, b2=1.6, b3=2.0, b4=30
             )
             source_frame_masses_prior = "binary_masses_BNS_bimodal"
             source_frame_masses_prior_params = dict(

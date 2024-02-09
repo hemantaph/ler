@@ -47,7 +47,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         default: 'epl_galaxy'
     lens_functions, lens_priors, lens_priors_params : `dict`, `dict`, `dict`
         dictionary of lens functions, priors, and priors parameters
-        Check for default/available lens functions, priors and corresponding input parameters by running,
+        Check for default/available lens functions, priors and corresponding input parameters by running,\n
         >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
         >>> lens = LensGalaxyParameterDistribution()
         >>> print(lens.lens_functions)
@@ -61,6 +61,10 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
 
     Examples
     --------
+    >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+    >>> lens = LensGalaxyParameterDistribution()
+    >>> lensed_params = lens.sample_lens_parameters(size=1000)
+    >>> lensed_params.keys()
 
     Instance Attributes
     ----------
@@ -139,10 +143,10 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
     |:meth:`~compute_einstein_radii`      | Function to compute the Einstein |
     |                                     | radii of the lens galaxies       |
     +-------------------------------------+----------------------------------+
-    |:meth:`~rjs_with_cross_section_SIE`    | Function to conduct rejection    |
+    |:meth:`~rjs_with_cross_section_SIE`  | Function to conduct rejection    |
     |                                     | sampling wrt einstein radius     |
     +-------------------------------------+----------------------------------+
-    |:meth:`~rjs_with_cross_section_SIE`      | Function to conduct rejection    |
+    |:meth:`~rjs_with_cross_section_SIE`  | Function to conduct rejection    |
     |                                     | sampling wrt cross_section       |
     +-------------------------------------+----------------------------------+
     |:attr:`~rejection_sample_sl`         | Function to conduct rejection    |
@@ -231,6 +235,12 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         self.create_new_interpolator = dict(
             redshift_distribution=dict(create_new=False, resolution=500),
             z_to_luminosity_distance=dict(create_new=False, resolution=500),
+            velocity_dispersion=dict(create_new=False, resolution=500),
+            axis_ratio=dict(create_new=False, resolution=500),
+            optical_depth=dict(create_new=False, resolution=100),
+            z_to_Dc=dict(create_new=False, resolution=500),
+            Dc_to_z=dict(create_new=False, resolution=500),
+            angular_diameter_distance=dict(create_new=False, resolution=500),
             differential_comoving_volume=dict(create_new=False, resolution=500),
             Dl_to_z=dict(create_new=False, resolution=500),
         )
@@ -240,6 +250,12 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             self.create_new_interpolator = dict(
                 redshift_distribution=dict(create_new=True, resolution=500),
                 z_to_luminosity_distance=dict(create_new=True, resolution=500),
+                velocity_dispersion=dict(create_new=True, resolution=500),
+                axis_ratio=dict(create_new=True, resolution=500),
+                optical_depth=dict(create_new=True, resolution=100),
+                z_to_Dc=dict(create_new=True, resolution=500),
+                Dc_to_z=dict(create_new=True, resolution=500),
+                angular_diameter_distance=dict(create_new=True, resolution=500),
                 differential_comoving_volume=dict(create_new=True, resolution=500),
                 Dl_to_z=dict(create_new=True, resolution=500),
             )
@@ -372,6 +388,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             spin_zero=input_params["spin_zero"],
             spin_precession=input_params["spin_precession"],
             directory=self.directory,
+            create_new_interpolator=self.create_new_interpolator,
         )
 
     def lens_priors_categorization(

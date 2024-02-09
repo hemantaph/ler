@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GWRATES complete exmaples &mdash; ler 0.3.0 documentation</title>
+  <title>GWRATES complete exmaples &mdash; ler 0.3.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -17,7 +17,7 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=e259d695"></script>
+        <script src="../_static/documentation_options.js?v=4621528c"></script>
         <script src="../_static/doctools.js?v=888ff710"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -119,38 +119,37 @@
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
+<ul>
+<li><p>class initialization</p></li>
+<li><p>if you want the models and its parameters to print.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ler</span> <span class="pre">=</span> <span class="pre">GWRATES()</span></code></p>
+</li>
+<li><p>set ‘npool’ according to your machine’s available CPU cores. Default is 4.</p></li>
+<li><p>to check no. of cores,</p>
+<p><code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">multiprocessing</span> <span class="pre">as</span> <span class="pre">mp</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">print(mp.cpu_count())</span></code></p>
+</li>
+</ul>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># class initialization</span>
-<span class="c1"># &gt;&gt;&gt; ler = GWRATES() # if you want the models and its parameters to print</span>
-<span class="c1"># set &#39;npool&#39; according to your machine&#39;s available CPU cores. Default is 4.</span>
-<span class="c1"># to check no. of cores,</span>
-<span class="c1"># &gt;&gt;&gt; import multiprocessing as mp</span>
-<span class="c1"># &gt;&gt;&gt; print(mp.cpu_count())</span>
-<span class="n">ler</span> <span class="o">=</span> <span class="n">GWRATES</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span> <span class="o">=</span> <span class="n">GWRATES</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<ul class="simple">
+<li><p>simulation of the GW CBC population</p></li>
+<li><p>this will generate a json file with the simulated population parameters</p></li>
+<li><p>by default 100,000 events will be sampled with batches of 25,000.</p></li>
+<li><p>results will be saved in the same directory as json file.</p></li>
+<li><p>resume=True will resume the simulation from the last saved batch.</p></li>
+</ul>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># simulation of the GW CBC population</span>
-<span class="c1"># this will generate a json file with the simulated population parameters</span>
-<span class="c1"># # by default 100,000 events will be sampled with batches of 25,000.</span>
-<span class="c1"># results will be saved in the same directory as json file.</span>
-<span class="c1"># resume=True will resume the simulation from the last saved batch.</span>
-<span class="n">param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">gw_cbc_statistics</span><span class="p">(</span><span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">gw_cbc_statistics</span><span class="p">(</span><span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -165,14 +164,16 @@ There will be 4 batche(s)
 resuming from ./gw_param.json
 </pre></div></div>
 </div>
+<ul class="simple">
+<li><p>generate detectable events</p></li>
+<li><p>note: here no input param is provided, so it will track the json file generated above</p></li>
+<li><p>final rate is the rate of detectable events</p></li>
+</ul>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># generate detectable events</span>
-<span class="c1"># note: here no input param is provided, so it will track the json file generated above</span>
-<span class="c1"># final rate is the rate of detectable events</span>
-<span class="n">rate</span><span class="p">,</span> <span class="n">param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">gw_rate</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rate</span><span class="p">,</span> <span class="n">param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">gw_rate</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -186,13 +187,15 @@ total gw rate (yr^-1) (with step function): 437.9018524996516
 storing detectable gw params in ./gw_param_detectable.json
 </pre></div></div>
 </div>
+<ul class="simple">
+<li><p>look for available parameters</p></li>
+<li><p><strong>Note:</strong> This is for spin-less systems.</p></li>
+</ul>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># available parameters</span>
-<span class="c1"># Note: This is for spin-less systems.</span>
-<span class="n">param_detectable</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">param_detectable</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -205,12 +208,14 @@ storing detectable gw params in ./gw_param_detectable.json
 dict_keys([&#39;zs&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;, &#39;luminosity_distance&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;, &#39;optimal_snr_net&#39;])
 </pre></div></div>
 </div>
+<ul class="simple">
+<li><p>all gwrates initialization parameters, simulated parameters’s json file names and rate results are strored as json file in the same directory</p></li>
+</ul>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># all gwrates initialization parameters, simulated parameters&#39;s json file names and rate results are strored as json file in the same directory</span>
-<span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">load_json</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">load_json</span>
 <span class="n">ler_params</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="s1">&#39;./gwrates_params.json&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">ler_params</span><span class="p">)</span>
 </pre></div>
@@ -224,6 +229,9 @@ dict_keys([&#39;zs&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#
 {&#39;npool&#39;: &#39;4&#39;, &#39;z_min&#39;: &#39;0.0&#39;, &#39;z_max&#39;: &#39;10.0&#39;, &#39;size&#39;: &#39;100000&#39;, &#39;batch_size&#39;: &#39;25000&#39;, &#39;cosmology&#39;: &#39;LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=None)&#39;, &#39;snr_finder&#39;: &#39;&lt;bound method GWSNR.snr of &lt;gwsnr.gwsnr.GWSNR object at 0x296eec670&gt;&gt;&#39;, &#39;json_file_names&#39;: &#34;{&#39;gwrates_param&#39;: &#39;./gwrates_params.json&#39;, &#39;gw_param&#39;: &#39;./gw_param.json&#39;, &#39;gw_param_detectable&#39;: &#39;./gw_param_detectable.json&#39;}&#34;, &#39;directory&#39;: &#39;./interpolator_pickle&#39;, &#39;gw_param_sampler_dict&#39;: {&#39;z_min&#39;: &#39;0.0&#39;, &#39;z_max&#39;: &#39;10.0&#39;, &#39;event_type&#39;: &#39;BBH&#39;, &#39;source_priors&#39;: &#34;{&#39;merger_rate_density&#39;: &#39;merger_rate_density_bbh_popI_II_oguri2018&#39;, &#39;source_frame_masses&#39;: &#39;binary_masses_BBH_popI_II_powerlaw_gaussian&#39;, &#39;zs&#39;: &#39;sample_source_redshift&#39;, &#39;geocent_time&#39;: &#39;sampler_uniform&#39;, &#39;ra&#39;: &#39;sampler_uniform&#39;, &#39;dec&#39;: &#39;sampler_cosine&#39;, &#39;phase&#39;: &#39;sampler_uniform&#39;, &#39;psi&#39;: &#39;sampler_uniform&#39;, &#39;theta_jn&#39;: &#39;sampler_sine&#39;}&#34;, &#39;source_priors_params&#39;: &#34;{&#39;merger_rate_density&#39;: {&#39;R0&#39;: 2.5000000000000002e-08, &#39;b2&#39;: 1.6, &#39;b3&#39;: 2.0, &#39;b4&#39;: 30}, &#39;source_frame_masses&#39;: {&#39;mminbh&#39;: 4.98, &#39;mmaxbh&#39;: 112.5, &#39;alpha&#39;: 3.78, &#39;mu_g&#39;: 32.27, &#39;sigma_g&#39;: 3.88, &#39;lambda_peak&#39;: 0.03, &#39;delta_m&#39;: 4.8, &#39;beta&#39;: 0.81}, &#39;zs&#39;: None, &#39;geocent_time&#39;: {&#39;min_&#39;: 1238166018, &#39;max_&#39;: 1269702018}, &#39;ra&#39;: {&#39;min_&#39;: 0.0, &#39;max_&#39;: 6.283185307179586}, &#39;dec&#39;: None, &#39;phase&#39;: {&#39;min_&#39;: 0.0, &#39;max_&#39;: 6.283185307179586}, &#39;psi&#39;: {&#39;min_&#39;: 0.0, &#39;max_&#39;: 3.141592653589793}, &#39;theta_jn&#39;: None}&#34;, &#39;cosmology&#39;: &#39;LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=None)&#39;, &#39;spin_zero&#39;: &#39;True&#39;, &#39;spin_precession&#39;: &#39;False&#39;, &#39;directory&#39;: &#39;./interpolator_pickle&#39;, &#39;create_new_interpolator&#39;: &#39;False&#39;}, &#39;snr_calculator_dict&#39;: {&#39;npool&#39;: &#39;4&#39;, &#39;mtot_min&#39;: &#39;2.0&#39;, &#39;mtot_max&#39;: &#39;200&#39;, &#39;ratio_min&#39;: &#39;0.1&#39;, &#39;ratio_max&#39;: &#39;1.0&#39;, &#39;mtot_resolution&#39;: &#39;100&#39;, &#39;ratio_resolution&#39;: &#39;50&#39;, &#39;sampling_frequency&#39;: &#39;2048.0&#39;, &#39;waveform_approximant&#39;: &#39;IMRPhenomD&#39;, &#39;minimum_frequency&#39;: &#39;20.0&#39;, &#39;snr_type&#39;: &#39;interpolation&#39;, &#39;psds&#39;: &#34;{&#39;L1&#39;: &#39;aLIGO_O4_high_asd.txt&#39;, &#39;H1&#39;: &#39;aLIGO_O4_high_asd.txt&#39;, &#39;V1&#39;: &#39;AdV_asd.txt&#39;}&#34;, &#39;isit_psd_file&#39;: &#39;False&#39;, &#39;ifos&#39;: &#39;None&#39;, &#39;interpolator_dir&#39;: &#39;./interpolator_pickle&#39;, &#39;create_new_interpolator&#39;: &#39;False&#39;, &#39;gwsnr_verbose&#39;: &#39;True&#39;, &#39;multiprocessing_verbose&#39;: &#39;True&#39;, &#39;mtot_cut&#39;: &#39;True&#39;}, &#39;detectable_gw_rate_per_year&#39;: 437.9018524996516, &#39;detectability_condition&#39;: &#39;step_function&#39;}
 </pre></div></div>
 </div>
+<ul class="simple">
+<li><p>plotting the distribution of event parameters</p></li>
+</ul>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
@@ -231,8 +239,8 @@ dict_keys([&#39;zs&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">plots</span> <span class="k">as</span> <span class="n">lerplt</span>
 
-<span class="c1"># plotting the distribution of event parameters</span>
-<span class="c1"># param_dict can be either a dictionary or a json file name that contains the parameters</span>
+
+<span class="c1"># input param_dict can be either a dictionary or a json file name that contains the parameters</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">lerplt</span><span class="o">.</span><span class="n">param_plot</span><span class="p">(</span>
     <span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;zs&#39;</span><span class="p">,</span>
@@ -263,7 +271,7 @@ getting gw_params from json file ./gw_param.json...
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/rates_GWRATES_complete_exmaples_9_1.png" src="../_images/rates_GWRATES_complete_exmaples_9_1.png" />
+<img alt="../_images/rates_GWRATES_complete_exmaples_14_1.png" src="../_images/rates_GWRATES_complete_exmaples_14_1.png" />
 </div>
 </div>
 </section>
@@ -371,8 +379,12 @@ theta_jn =  sampler_sine
 theta_jn_params =  None
 </pre></div></div>
 </div>
-<p>As an example, I will change, * merger_rate_density_params’s default value of <strong>local merger rate density</strong> (<span class="math notranslate nohighlight">\(R_0\)</span>) to 2.3e-9 <span class="math notranslate nohighlight">\(Mpc^{-3} yr^{-1}\)</span>. But, I am still using the default merger_rate_density function, which is ‘merger_rate_density_bbh_popI_II_oguri2018’. * <strong>source_frame_masses</strong> to a custom function. This is similar to the internal default function, i.e. PowerLaw+Peak model. I am using <code class="docutils literal notranslate"><span class="pre">gwcosmo</span></code>’s powerlaw_gaussian prior for this example. * <code class="docutils literal notranslate"><span class="pre">gwsnr</span></code> parameters: By
-default, it uses ‘IMRPhenomD’ <strong>waveform model</strong> with no spin. It uses interpolation method to find the ‘snr’ and it is super fast. But for the example below, I am using ‘IMRPhenomXPHM` with precessing spins. This is without interpolation but through inner product method. It will be slower.</p>
+<p>As an example, I will change,</p>
+<ul class="simple">
+<li><p>merger_rate_density_params’s default value of <strong>local merger rate density</strong> (<span class="math notranslate nohighlight">\(R_0\)</span>) to 2.3e-9 <span class="math notranslate nohighlight">\(Mpc^{-3} yr^{-1}\)</span>. But, I am still using the default merger_rate_density function, which is ‘merger_rate_density_bbh_popI_II_oguri2018’.</p></li>
+<li><p><strong>source_frame_masses</strong> to a custom function. This is similar to the internal default function, i.e. PowerLaw+Peak model. I am using <code class="docutils literal notranslate"><span class="pre">gwcosmo</span></code>’s powerlaw_gaussian prior for this example.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gwsnr</span></code> parameters: By default, it uses ‘IMRPhenomD’ <strong>waveform model</strong> with no spin. It uses interpolation method to find the ‘snr’ and it is super fast. But for the example below, I am using ‘IMRPhenomXPHM` with precessing spins. This is without interpolation but through inner product method. It will be slower.</p></li>
+</ul>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -444,13 +456,15 @@ default, it uses ‘IMRPhenomD’ <strong>waveform model</strong> with no spin. 
 <br/></pre></div>
 </div>
 </div>
+<ul class="simple">
+<li><p>Initialize the class with the custom function</p></li>
+<li><p>changing gwrates input params</p></li>
+</ul>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize the class with the custom function</span>
-<span class="c1"># changing gwrates input params</span>
-<span class="n">ler</span> <span class="o">=</span> <span class="n">GWRATES</span><span class="p">(</span><span class="n">npool</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span> <span class="o">=</span> <span class="n">GWRATES</span><span class="p">(</span><span class="n">npool</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">source_priors</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
         <span class="n">merger_rate_density</span><span class="o">=</span><span class="s1">&#39;merger_rate_density_bbh_popI_II_oguri2018&#39;</span><span class="p">,</span>
         <span class="n">source_frame_masses</span><span class="o">=</span><span class="n">powerlaw_peak</span><span class="p">,</span>
@@ -481,15 +495,17 @@ default, it uses ‘IMRPhenomD’ <strong>waveform model</strong> with no spin. 
 </pre></div>
 </div>
 </div>
+<ul class="simple">
+<li><p>simulation of the GW CBC population</p></li>
+<li><p>you can set the batch size at the gwarates initialization</p></li>
+<li><p>or you can set it using the <code class="docutils literal notranslate"><span class="pre">batch_size</span></code> instance variable</p></li>
+<li><p>if the sample size is large, it is recommended to set the batch size to a large number, but it will consume more RAM memory or simply your machine’s individual core won’t be able to handle it.</p></li>
+</ul>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># simulation of the GW CBC population</span>
-<span class="c1"># you can set the batch size at the gwarates initialization</span>
-<span class="c1"># or you can set it using the `batch_size` instance variable</span>
-<span class="c1"># if the sample size is large, it is recommended to set the batch size to a large number, but it will consume more RAM memory or simply your machine&#39;s individual core won&#39;t be able to handle it.</span>
-<span class="n">ler</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">50000</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">50000</span>
 <span class="n">ler</span><span class="o">.</span><span class="n">gw_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_jsonfile</span> <span class="o">=</span> <span class="s1">&#39;./new_gw_params.json&#39;</span><span class="p">);</span>
 <br/></pre></div>
 </div>
@@ -535,13 +551,15 @@ solving SNR with inner product
 100%|████████████████████████████████████████████████████████| 40638/40638 [00:53&lt;00:00, 765.68it/s]
 </pre></div></div>
 </div>
+<ul class="simple">
+<li><p>you can also also called the generate parameters using an instance attribute. This instance attribute gets the dict from the json file generated above.</p></li>
+<li><p>This is for spin-precessing systems, and it will contain extra (spin-related) parameters.</p></li>
+</ul>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Note: you can also also called the generate parameters using an instance attribute. This instance attribute gets the dict from the json file generated above.</span>
-<span class="c1"># Note: This is for spin-precessing systems, and it will contain extra (spin-related) parameters.</span>
-<span class="n">param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">gw_param</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">gw_param</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -554,14 +572,16 @@ solving SNR with inner product
 dict_keys([&#39;zs&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;tilt_1&#39;, &#39;tilt_2&#39;, &#39;phi_12&#39;, &#39;phi_jl&#39;, &#39;luminosity_distance&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;, &#39;optimal_snr_net&#39;])
 </pre></div></div>
 </div>
+<ul class="simple">
+<li><p>generate detectable events</p></li>
+<li><p>and get the rate of detectable events</p></li>
+<li><p>You have two choice to input the generated parameters, either as json file name or as a dict</p></li>
+</ul>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># generate detectable events</span>
-<span class="c1"># and get the rate of detectable events</span>
-<span class="c1"># You have two choice to input the generated parameters, either as json file name or as a dict</span>
-<span class="n">rate</span><span class="p">,</span> <span class="n">param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">gw_rate</span><span class="p">(</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rate</span><span class="p">,</span> <span class="n">param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">gw_rate</span><span class="p">(</span>
     <span class="n">gw_param</span><span class="o">=</span><span class="s1">&#39;./new_gw_params.json&#39;</span><span class="p">,</span>
     <span class="n">snr_threshold</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
     <span class="n">output_jsonfile</span><span class="o">=</span><span class="s1">&#39;./new_gw_params_detectable.json&#39;</span><span class="p">,</span>
@@ -579,12 +599,14 @@ total gw rate (yr^-1) (with step function): 854.0638967191786
 storing detectable gw params in ./new_gw_params_detectable.json
 </pre></div></div>
 </div>
+<ul class="simple">
+<li><p>to check all the stored json file names</p></li>
+</ul>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># to check all the stored json file names</span>
-<span class="n">ler</span><span class="o">.</span><span class="n">json_file_names</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span><span class="o">.</span><span class="n">json_file_names</span>
 </pre></div>
 </div>
 </div>
@@ -599,13 +621,15 @@ storing detectable gw params in ./new_gw_params_detectable.json
  &#39;gw_param_detectable&#39;: &#39;./new_gw_params_detectable.json&#39;}
 </pre></div></div>
 </div>
+<ul class="simple">
+<li><p>again you can call the generated detectable events’ parameters using an instance attribute</p></li>
+<li><p>Note: The data is not stored in this instance attribute, it is stored in the json file. This scheme is used to save RAM memory.</p></li>
+</ul>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># again you can call the generated detectable events&#39; parameters using an instance attribute</span>
-<span class="c1"># Note: The data is not stored in this instance attribute, it is stored in the json file. This scheme is used to save RAM memory.</span>
-<span class="n">param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">gw_param_detectable</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">gw_param_detectable</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">param_detectable</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -620,14 +644,16 @@ dict_keys([&#39;zs&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#
 </div>
 <section id="How-to-look-for-available-model-functions?">
 <h3>How to look for available model functions?<a class="headerlink" href="#How-to-look-for-available-model-functions?" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>All available names are stored as a dict in <code class="docutils literal notranslate"><span class="pre">ler</span></code> instance</p></li>
+<li><p>the keys of this dict shows the parameter type</p></li>
+<li><p>the values are also dict, where the keys are the model function names and the values are their input parameters</p></li>
+</ul>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># All available names are stored as a dict in ler instance</span>
-<span class="c1"># the keys of this dict shows the parameter type</span>
-<span class="c1"># the values are also dict, where the keys are the model function names and the values are their input parameters</span>
-<span class="n">ler</span><span class="o">.</span><span class="n">available_gw_prior_list_and_its_params</span><span class="p">[</span><span class="s1">&#39;source_frame_masses&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span><span class="o">.</span><span class="n">available_gw_prior_list_and_its_params</span><span class="p">[</span><span class="s1">&#39;source_frame_masses&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -659,12 +685,14 @@ dict_keys([&#39;zs&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#
   &#39;mmax&#39;: 2.3}}
 </pre></div></div>
 </div>
+<ul class="simple">
+<li><p>for looking at the choosen models and its input parameters</p></li>
+</ul>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># for looking at the choosen models and its input parameters</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">ler</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">ler</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">ler</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -682,16 +710,21 @@ dict_keys([&#39;zs&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#
 </section>
 <section id="Using-internal-model-functions">
 <h2>Using internal model functions<a class="headerlink" href="#Using-internal-model-functions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>calling the default mass distribution model</p></li>
+</ul>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calling the default mass distribution model</span>
-<span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">binary_masses_BBH_popI_II_powerlaw_gaussian</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">binary_masses_BBH_popI_II_powerlaw_gaussian</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
 <span class="n">default_model</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">mass_1_source</span><span class="o">=</span><span class="n">mass_1_source</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<ul class="simple">
+<li><p>let’s do a comparision plot between you custom model and the default model</p></li>
+</ul>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
@@ -699,7 +732,6 @@ dict_keys([&#39;zs&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">plots</span> <span class="k">as</span> <span class="n">lerplt</span>
 
-<span class="c1"># let&#39;s do a comparision plot between you custom model and the default model</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">lerplt</span><span class="o">.</span><span class="n">param_plot</span><span class="p">(</span>
     <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;mass_1_source&quot;</span><span class="p">,</span>
@@ -723,23 +755,28 @@ dict_keys([&#39;zs&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/rates_GWRATES_complete_exmaples_25_0.png" src="../_images/rates_GWRATES_complete_exmaples_25_0.png" />
+<img alt="../_images/rates_GWRATES_complete_exmaples_40_0.png" src="../_images/rates_GWRATES_complete_exmaples_40_0.png" />
 </div>
 </div>
 </section>
 <section id="Selecting-particular-number-of-detectable-events">
 <h2>Selecting particular number of detectable events<a class="headerlink" href="#Selecting-particular-number-of-detectable-events" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>class initialization</p></li>
+</ul>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler.rates</span> <span class="kn">import</span> <span class="n">GWRATES</span>
 
-<span class="c1"># class initialization</span>
 <span class="n">ler</span> <span class="o">=</span> <span class="n">GWRATES</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<ul class="simple">
+<li><p>sampling till desired number of detectable events are found</p></li>
+</ul>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>

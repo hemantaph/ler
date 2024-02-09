@@ -322,7 +322,6 @@ class LeR(LensGalaxyParameterDistribution):
         print("minimum_frequency = ", self.snr_calculator_dict["minimum_frequency"])
         print("snr_type = ", self.snr_calculator_dict["snr_type"])
         print("psds = ", self.snr_calculator_dict["psds"])
-        print("isit_psd_file = ", self.snr_calculator_dict["isit_psd_file"])
         print("ifos = ", self.snr_calculator_dict["ifos"])
         print("interpolator_dir = ", self.snr_calculator_dict["interpolator_dir"])
         print("create_new_interpolator = ", self.snr_calculator_dict["create_new_interpolator"])
@@ -575,14 +574,13 @@ class LeR(LensGalaxyParameterDistribution):
             mtot_max=200,
             ratio_min=0.1,
             ratio_max=1.0,
-            mtot_resolution=100,
-            ratio_resolution=100,
+            mtot_resolution=500,
+            ratio_resolution=50,
             sampling_frequency=2048.0,
             waveform_approximant="IMRPhenomD",
             minimum_frequency=20.0,
             snr_type="interpolation",
-            psds={'L1':'aLIGO_O4_high_asd.txt','H1':'aLIGO_O4_high_asd.txt', 'V1':'AdV_asd.txt'},
-            isit_psd_file=False,
+            psds=None,
             ifos=None,
             interpolator_dir=self.directory,
             create_new_interpolator=False,
@@ -590,6 +588,8 @@ class LeR(LensGalaxyParameterDistribution):
             multiprocessing_verbose=True,
             mtot_cut=True,
         )
+        # if self.event_type == "BNS":
+        #     input_params["mtot_max"]= 18.
         if params:
             for key, value in params.items():
                 if key in input_params:
@@ -608,10 +608,9 @@ class LeR(LensGalaxyParameterDistribution):
                     minimum_frequency=input_params["minimum_frequency"],
                     snr_type=input_params["snr_type"],
                     psds=input_params["psds"],
-                    isit_psd_file=input_params["isit_psd_file"],
                     ifos=input_params["ifos"],
                     interpolator_dir=input_params["interpolator_dir"],
-                    create_new_interpolator=input_params["create_new_interpolator"],
+                    # create_new_interpolator=input_params["create_new_interpolator"],
                     gwsnr_verbose=input_params["gwsnr_verbose"],
                     multiprocessing_verbose=input_params["multiprocessing_verbose"],
                     mtot_cut=input_params["mtot_cut"],
@@ -704,6 +703,7 @@ class LeR(LensGalaxyParameterDistribution):
             output_jsonfile = self.json_file_names["unlensed_param"]
         else:
             self.json_file_names["unlensed_param"] = output_jsonfile
+        print(f"unlensed params will be store in {output_jsonfile}")
 
         # sampling in batches
         batch_handler(
@@ -751,6 +751,8 @@ class LeR(LensGalaxyParameterDistribution):
 
         # store all params in json file
         append_json(file_name=output_jsonfile, dictionary=unlensed_param, replace=not (resume))
+
+        return unlensed_param
 
     def unlensed_rate(
         self,
@@ -826,6 +828,8 @@ class LeR(LensGalaxyParameterDistribution):
             threshold = 0.5
 
         idx_detectable = param > threshold
+        print(f"number of simulated unlensed detectable events: {np.sum(idx_detectable)}")
+        print(f"number of all simulated unlensed events: {len(idx_detectable)}")
         # montecarlo integration
         # The total rate R = norm <Theta(rho-rhoc)>
         total_rate = self.normalization_pdf_z * np.mean(idx_detectable)
@@ -890,6 +894,7 @@ class LeR(LensGalaxyParameterDistribution):
             output_jsonfile = self.json_file_names["lensed_param"]
         else:
             self.json_file_names["lensed_param"] = output_jsonfile
+        print(f"lensed params will be store in {output_jsonfile}")
 
         # sampling in batches
         batch_handler(
@@ -933,7 +938,7 @@ class LeR(LensGalaxyParameterDistribution):
         lensed_param = self.image_properties(lensed_param)
         # Get all of the signal to noise ratios
         print("calculating snrs...")
-        snrs = self.get_lensed_snrs(
+        snrs, lensed_param = self.get_lensed_snrs(
             snr_calculator=self.snr,
             list_of_detectors=self.list_of_detectors,
             lensed_param=lensed_param,
@@ -942,6 +947,8 @@ class LeR(LensGalaxyParameterDistribution):
 
         # store all params in json file
         append_json(file_name=output_jsonfile, dictionary=lensed_param, replace=not (resume))
+
+        return lensed_param
 
     def lensed_rate(
         self,
@@ -1068,6 +1075,8 @@ class LeR(LensGalaxyParameterDistribution):
             total_rate = self.normalization_pdf_z_lensed * np.mean(snr_hit)
             print(f"total lensed rate (yr^-1) (with pdet function): {total_rate}")
 
+        print(f"number of simulated lensed detectable events: {np.sum(snr_hit)}")
+        print(f"number of simulated all lensed events: {size}")
         # store all detectable params in json file
         if nan_to_num:
             for key, value in lensed_param.items():
@@ -1232,7 +1241,10 @@ class LeR(LensGalaxyParameterDistribution):
         batch_size=None,
         snr_threshold=8.0,
         resume=False,
-        output_jsonfile="./unlensed_params_detectable.json",
+        output_jsonfile="./n_unlensed_param_detectable.json",
+        meta_data_file="meta_unlensed.json",
+        event_batch_limit=500,
+        trim_to_size=True,
     ):
         """
         Function to select n unlensed detectable events.
@@ -1250,7 +1262,7 @@ class LeR(LensGalaxyParameterDistribution):
             default resume = False.
         output_jsonfile : `str`
             json file name for storing the parameters.
-            default output_jsonfile = './unlensed_params_detectable.json'.
+            default output_jsonfile = './n_unlensed_params_detectable.json'.
 
         Returns
         ----------
@@ -1267,54 +1279,85 @@ class LeR(LensGalaxyParameterDistribution):
 
         if batch_size is None:
             batch_size = self.batch_size
+        else:
+            self.batch_size = batch_size
 
         if not resume:
             n = 0  # iterator
+            events_total = 0
             try:
                 os.remove(output_jsonfile)
             except:
                 pass
         else:
             # get sample size as size from json file
-            param_final = get_param_from_json(output_jsonfile)
-            n = len(param_final["zs"])
-            del param_final
+            try:
+                param_final = get_param_from_json(output_jsonfile)
+                n = len(param_final["zs"])
+                events_total = load_json(meta_data_file)["events_total"]
+                del param_final
+            except:
+                n = 0
+                events_total = 0
 
         buffer_file = "./unlensed_params_buffer.json"
         print("collected number of events = ", n)
+        
         while n < size:
             # disable print statements
             with contextlib.redirect_stdout(None):
-                self.unlensed_sampling_routine(
+                unlensed_param = self.unlensed_sampling_routine(
                     size=batch_size, output_jsonfile=buffer_file, resume=False
                 )
 
-                # get unlensed params
-                unlensed_param = get_param_from_json(buffer_file)
+            # get snr
+            snr = unlensed_param["optimal_snr_net"]
+            # snr_ = self.snr(gw_param_dict=unlensed_param)["optimal_snr_net"]
+            # test = snr == snr_
+            # index of detectable events
+            idx = snr > snr_threshold
 
-                # get snr
-                snr = unlensed_param["optimal_snr_net"]
-                # index of detectable events
-                idx = snr > snr_threshold
-
-                # store all params in json file
+            # store all params in json file
+            if np.sum(idx) < event_batch_limit:
                 for key, value in unlensed_param.items():
                     unlensed_param[key] = value[idx]
                 append_json(output_jsonfile, unlensed_param, replace=False)
 
                 n += np.sum(idx)
+                events_total += len(idx)                
+                total_rate = self.normalization_pdf_z * n / events_total
+
+                # save meta data
+                meta_data = dict(events_total=events_total, total_rate=total_rate)
+                try:
+                    append_json(meta_data_file, meta_data, replace=True)
+                except:
+                    append_json(meta_data_file, meta_data, replace=False)
+            
+            # else:
+            #     snr_param = self.snr(gw_param_dict=unlensed_param)['optimal_snr_net']
+            #     print(snr_param)
+
             print("collected number of events = ", n)
+            print("total number of events = ", events_total)
+            print(f"total unlensed rate (yr^-1): {total_rate}")
 
-        # trim the final param dictionary
-        print(f"trmming final result to size={size}")
-        param_final = get_param_from_json(output_jsonfile)
-        # trim the final param dictionary, randomly, without repeating
-        idx = np.random.choice(len(param_final["zs"]), size, replace=False)
-        for key, value in param_final.items():
-            param_final[key] = param_final[key][idx]
+        print(f"storing detectable unlensed params in {output_jsonfile}")
 
-        # save the final param dictionary
-        append_json(output_jsonfile, param_final, replace=True)
+        if trim_to_size:
+            # trim the final param dictionary
+            print(f"\n trmming final result to size={size}")
+            param_final = get_param_from_json(output_jsonfile)
+            # trim the final param dictionary, randomly, without repeating
+            # idx_ = np.random.choice(len(param_final["zs"]), size, replace=False)
+            # for key, value in param_final.items():
+            #     param_final[key] = param_final[key][idx_]
+            for key, value in param_final.items():
+                param_final[key] = param_final[key][:size]
+
+            # save the final param dictionary
+            
+            append_json(output_jsonfile, param_final, replace=True)
 
         return param_final
     
@@ -1326,7 +1369,11 @@ class LeR(LensGalaxyParameterDistribution):
         num_img=2,
         resume=False,
         detectability_condition="step_function",
-        output_jsonfile="./lensed_params_detectable.json",
+        output_jsonfile="./n_lensed_params_detectable.json",
+        meta_data_file="./meta_lensed.json",
+        event_batch_limit=500,
+        trim_to_size=True,
+        nan_to_num=False,
     ):
         """
         Function to select n lensed detectable events.
@@ -1367,18 +1414,26 @@ class LeR(LensGalaxyParameterDistribution):
         
         if batch_size is None:
             batch_size = self.batch_size
+        else:
+            self.batch_size = batch_size
 
         if not resume:
             n = 0  # iterator
+            events_total = 0
             try:
                 os.remove(output_jsonfile)
             except:
                 pass
         else:
             # get sample size as size from json file
-            param_final = get_param_from_json(output_jsonfile)
-            n = len(param_final["zs"])
-            del param_final
+            try:
+                param_final = get_param_from_json(output_jsonfile)
+                n = len(param_final["zs"])
+                events_total = load_json(meta_data_file)["events_total"]
+                del param_final
+            except:
+                n = 0
+                events_total = 0
 
         # check for images with snr above threshold
         # convert to array
@@ -1394,72 +1449,89 @@ class LeR(LensGalaxyParameterDistribution):
         while n < size:
             # disable print statements
             with contextlib.redirect_stdout(None):
-                self.lensed_sampling_routine(
+                lensed_param = self.lensed_sampling_routine(
                     size=self.batch_size, output_jsonfile=buffer_file, resume=False
-                )
+                )  # Dimensions are (size, n_max_images)
 
-                # Dimensions are (size, n_max_images)
-                lensed_param = get_param_from_json(buffer_file)
+            if detectability_condition == "step_function":
+                snr_hit = np.full(len(lensed_param["zs"]), True)  # boolean array to store the result of the threshold condition
+                try:
+                    snr_param = lensed_param["optimal_snr_net"]
+                    snr_param = -np.sort(-snr_param, axis=1)  # sort snr in descending order
+                except:
+                    raise ValueError("snr not provided in lensed_param dict. Exiting...")
+                
+                # for each row: choose a threshold and check if the number of images above threshold. Sum over the images. If sum is greater than num_img, then snr_hit = True 
+                j = 0
+                idx_max = 0
+                for i in range(len(snr_threshold)):
+                    idx_max = idx_max + num_img[i]
+                    snr_hit = snr_hit & (np.sum((snr_param[:,j:idx_max] > snr_threshold[i]), axis=1) >= num_img[i])
+                    j = idx_max
 
-                if detectability_condition == "step_function":
-                    snr_hit = np.full(len(lensed_param["zs"]), True)  # boolean array to store the result of the threshold condition
-                    try:
+            elif detectability_condition == "pdet":
+                # check if pdet is provided in unlensed_param dict
+                if "pdet_net" in lensed_param.keys():
+                    pdet = lensed_param["pdet_net"]
+                    pdet = -np.sort(-pdet, axis=1)  # sort pdet in descending order
+                    pdet = pdet[:,:np.sum(num_img)]  # use only num_img images
+                else:
+                    if "optimal_snr_net" in lensed_param.keys():
+                        # pdet dimension is (size, n_max_images)
                         snr_param = lensed_param["optimal_snr_net"]
                         snr_param = -np.sort(-snr_param, axis=1)  # sort snr in descending order
-                    except:
-                        raise ValueError("snr not provided in lensed_param dict. Exiting...")
-                    
-                    # for each row: choose a threshold and check if the number of images above threshold. Sum over the images. If sum is greater than num_img, then snr_hit = True 
-                    j = 0
-                    idx_max = 0
-                    for i in range(len(snr_threshold)):
-                        idx_max = idx_max + num_img[i]
-                        snr_hit = snr_hit & (np.sum((snr_param[:,j:idx_max] > snr_threshold[i]), axis=1) >= num_img[i])
-                        j = idx_max
 
-                elif detectability_condition == "pdet":
-                    # check if pdet is provided in unlensed_param dict
-                    if "pdet_net" in lensed_param.keys():
-                        pdet = lensed_param["pdet_net"]
-                        pdet = -np.sort(-pdet, axis=1)  # sort pdet in descending order
-                        pdet = pdet[:,:np.sum(num_img)]  # use only num_img images
+                        pdet = np.ones(np.shape(snr_param))
+                        j = 0
+                        idx_max = 0
+                        for i in range(len(snr_threshold)):
+                            idx_max = idx_max + num_img[i]
+                            pdet[:,j:idx_max] = 1 - norm.cdf(snr_threshold[i] - snr_param[:,j:idx_max])
+                            j = idx_max
                     else:
-                        if "optimal_snr_net" in lensed_param.keys():
-                            # pdet dimension is (size, n_max_images)
-                            snr_param = lensed_param["optimal_snr_net"]
-                            snr_param = -np.sort(-snr_param, axis=1)  # sort snr in descending order
-
-                            pdet = np.ones(np.shape(snr_param))
-                            j = 0
-                            idx_max = 0
-                            for i in range(len(snr_threshold)):
-                                idx_max = idx_max + num_img[i]
-                                pdet[:,j:idx_max] = 1 - norm.cdf(snr_threshold[i] - snr_param[:,j:idx_max])
-                                j = idx_max
-                        else:
-                            print("pdet or optimal_snr_net not provided in lensed_param dict. Exiting...")
-                            return None
-                        
-                    snr_hit = np.prod(pdet, axis=1)>0.5
-
-                # store all params in json file
-                for key, value in lensed_param.items():
-                    lensed_param[key] = np.nan_to_num(value[snr_hit])
-                append_json(output_jsonfile, lensed_param, replace=False)
+                        print("pdet or optimal_snr_net not provided in lensed_param dict. Exiting...")
+                        return None
+                    
+                snr_hit = np.prod(pdet, axis=1)>0.5
+                    
+            # store all params in json file
+            if np.sum(snr_hit)<event_batch_limit:
+                if nan_to_num:
+                    for key, value in lensed_param.items():
+                        lensed_param[key] = np.nan_to_num(value[snr_hit])
+                else:
+                    for key, value in lensed_param.items():
+                        lensed_param[key] = value[snr_hit]
+                try:
+                    append_json(output_jsonfile, lensed_param, replace=False)
+                except:
+                    append_json(output_jsonfile, lensed_param, replace=True)
 
                 n += np.sum(snr_hit)
+                events_total += len(snr_hit)
+
+                # save meta data
+                total_rate = self.normalization_pdf_z_lensed * n / events_total
+                meta_data = dict(events_total=events_total, total_rate=total_rate)
+                append_json(meta_data_file, meta_data, replace=True)
+
             print("collected number of events = ", n)
+            print("total number of events = ", events_total)
+            print(f"total lensed rate (yr^-1): {total_rate}")
 
-        # trim the final param dictionary
-        print(f"trmming final result to size={size}")
-        param_final = get_param_from_json(output_jsonfile)
-        # trim the final param dictionary
-        idx = np.random.choice(len(param_final["zs"]), size, replace=False)
-        for key, value in param_final.items():
-            param_final[key] = param_final[key][idx]
+        print(f"storing detectable lensed params in {output_jsonfile}")
 
-        # save the final param dictionary
-        append_json(output_jsonfile, param_final, replace=True)
+        if trim_to_size:
+            # trim the final param dictionary
+            print(f"\n trmming final result to size={size}")
+            param_final = get_param_from_json(output_jsonfile)
+            # trim the final param dictionary
+            #idx = np.random.choice(len(param_final["zs"]), size, replace=False)
+            for key, value in param_final.items():
+                param_final[key] = param_final[key][:size]
+
+            # save the final param dictionary
+            append_json(output_jsonfile, param_final, replace=True)
 
         return param_final
 

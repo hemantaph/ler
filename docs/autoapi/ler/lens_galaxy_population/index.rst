@@ -2610,6 +2610,7 @@ Functions
        **lens_functions, lens_priors, lens_priors_params** : `dict`, `dict`, `dict`
            dictionary of lens functions, priors, and priors parameters
            Check for default/available lens functions, priors and corresponding input parameters by running,
+
            >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
            >>> lens = LensGalaxyParameterDistribution()
            >>> print(lens.lens_functions)
@@ -2634,6 +2635,11 @@ Functions
 
 
    .. rubric:: Examples
+
+   >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+   >>> lens = LensGalaxyParameterDistribution()
+   >>> lensed_params = lens.sample_lens_parameters(size=1000)
+   >>> lensed_params.keys()
 
    Instance Attributes
    ----------
@@ -2714,10 +2720,10 @@ Functions
    |:meth:`~compute_einstein_radii`      | Function to compute the Einstein |
    |                                     | radii of the lens galaxies       |
    +-------------------------------------+----------------------------------+
-   |:meth:`~rjs_with_cross_section_SIE`    | Function to conduct rejection    |
+   |:meth:`~rjs_with_cross_section_SIE`  | Function to conduct rejection    |
    |                                     | sampling wrt einstein radius     |
    +-------------------------------------+----------------------------------+
-   |:meth:`~rjs_with_cross_section_SIE`      | Function to conduct rejection    |
+   |:meth:`~rjs_with_cross_section_SIE`  | Function to conduct rejection    |
    |                                     | sampling wrt cross_section       |
    +-------------------------------------+----------------------------------+
    |:attr:`~rejection_sample_sl`         | Function to conduct rejection    |

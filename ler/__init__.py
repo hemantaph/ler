@@ -13,7 +13,7 @@ except RuntimeError:
 
 __author__ = 'hemanta_ph <hemantaphurailatpam@gmail.com>'
 
-__version__ = "0.3.1"
+__version__ = "0.3.3"
 
 from . import rates, gw_source_population, lens_galaxy_population, image_properties, utils
 

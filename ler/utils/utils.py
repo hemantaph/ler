@@ -215,6 +215,8 @@ def add_dictionaries_together(dictionary1, dictionary2):
         # Check if the item is an ndarray
         if isinstance(dictionary1[key], np.ndarray):
             dictionary[key] = np.concatenate((dictionary1[key], dictionary2[key]))
+        elif isinstance(dictionary1[key], list):
+            dictionary[key] = dictionary1[key] + dictionary2[key]
         # Check if the item is a nested dictionary
         elif isinstance(dictionary1[key], dict):
             dictionary[key] = add_dictionaries_together(
