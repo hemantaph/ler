@@ -1178,7 +1178,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_unlensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, resume=False, output_jsonfile='./unlensed_params_detectable.json')
+   .. py:method:: selecting_n_unlensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, resume=False, output_jsonfile='./n_unlensed_param_detectable.json', meta_data_file='meta_unlensed.json', event_batch_limit=500, trim_to_size=True)
 
       
       Function to select n unlensed detectable events.
@@ -1200,7 +1200,7 @@ Classes
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
-              default output_jsonfile = './unlensed_params_detectable.json'.
+              default output_jsonfile = './n_unlensed_params_detectable.json'.
 
       :Returns:
 
@@ -1228,7 +1228,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_lensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, num_img=2, resume=False, detectability_condition='step_function', output_jsonfile='./lensed_params_detectable.json')
+   .. py:method:: selecting_n_lensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, num_img=2, resume=False, detectability_condition='step_function', output_jsonfile='./n_lensed_params_detectable.json', meta_data_file='./meta_lensed.json', event_batch_limit=500, trim_to_size=True, nan_to_num=False)
 
       
       Function to select n lensed detectable events.

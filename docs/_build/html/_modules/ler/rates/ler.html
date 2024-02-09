@@ -455,7 +455,6 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;minimum_frequency = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s2">&quot;minimum_frequency&quot;</span><span class="p">])</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;snr_type = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s2">&quot;snr_type&quot;</span><span class="p">])</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;psds = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s2">&quot;psds&quot;</span><span class="p">])</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;isit_psd_file = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s2">&quot;isit_psd_file&quot;</span><span class="p">])</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ifos = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s2">&quot;ifos&quot;</span><span class="p">])</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;interpolator_dir = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s2">&quot;interpolator_dir&quot;</span><span class="p">])</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;create_new_interpolator = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">])</span>
@@ -729,14 +728,13 @@
             <span class="n">mtot_max</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
             <span class="n">ratio_min</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
             <span class="n">ratio_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-            <span class="n">mtot_resolution</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-            <span class="n">ratio_resolution</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+            <span class="n">mtot_resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+            <span class="n">ratio_resolution</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
             <span class="n">sampling_frequency</span><span class="o">=</span><span class="mf">2048.0</span><span class="p">,</span>
             <span class="n">waveform_approximant</span><span class="o">=</span><span class="s2">&quot;IMRPhenomD&quot;</span><span class="p">,</span>
             <span class="n">minimum_frequency</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
             <span class="n">snr_type</span><span class="o">=</span><span class="s2">&quot;interpolation&quot;</span><span class="p">,</span>
-            <span class="n">psds</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;L1&#39;</span><span class="p">:</span><span class="s1">&#39;aLIGO_O4_high_asd.txt&#39;</span><span class="p">,</span><span class="s1">&#39;H1&#39;</span><span class="p">:</span><span class="s1">&#39;aLIGO_O4_high_asd.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;V1&#39;</span><span class="p">:</span><span class="s1">&#39;AdV_asd.txt&#39;</span><span class="p">},</span>
-            <span class="n">isit_psd_file</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">psds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">ifos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">interpolator_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">create_new_interpolator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -744,6 +742,8 @@
             <span class="n">multiprocessing_verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">mtot_cut</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="c1"># if self.event_type == &quot;BNS&quot;:</span>
+        <span class="c1">#     input_params[&quot;mtot_max&quot;]= 18.</span>
         <span class="k">if</span> <span class="n">params</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">input_params</span><span class="p">:</span>
@@ -762,10 +762,9 @@
                     <span class="n">minimum_frequency</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;minimum_frequency&quot;</span><span class="p">],</span>
                     <span class="n">snr_type</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;snr_type&quot;</span><span class="p">],</span>
                     <span class="n">psds</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;psds&quot;</span><span class="p">],</span>
-                    <span class="n">isit_psd_file</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;isit_psd_file&quot;</span><span class="p">],</span>
                     <span class="n">ifos</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;ifos&quot;</span><span class="p">],</span>
                     <span class="n">interpolator_dir</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;interpolator_dir&quot;</span><span class="p">],</span>
-                    <span class="n">create_new_interpolator</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">],</span>
+                    <span class="c1"># create_new_interpolator=input_params[&quot;create_new_interpolator&quot;],</span>
                     <span class="n">gwsnr_verbose</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;gwsnr_verbose&quot;</span><span class="p">],</span>
                     <span class="n">multiprocessing_verbose</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;multiprocessing_verbose&quot;</span><span class="p">],</span>
                     <span class="n">mtot_cut</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;mtot_cut&quot;</span><span class="p">],</span>
@@ -864,6 +863,7 @@
             <span class="n">output_jsonfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;unlensed_param&quot;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;unlensed_param&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_jsonfile</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unlensed params will be store in </span><span class="si">{</span><span class="n">output_jsonfile</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># sampling in batches</span>
         <span class="n">batch_handler</span><span class="p">(</span>
@@ -913,7 +913,9 @@
         <span class="n">unlensed_param</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">snrs</span><span class="p">)</span>
 
         <span class="c1"># store all params in json file</span>
-        <span class="n">append_json</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">dictionary</span><span class="o">=</span><span class="n">unlensed_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="ow">not</span> <span class="p">(</span><span class="n">resume</span><span class="p">))</span></div>
+        <span class="n">append_json</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">dictionary</span><span class="o">=</span><span class="n">unlensed_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="ow">not</span> <span class="p">(</span><span class="n">resume</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">unlensed_param</span></div>
 
 
 <div class="viewcode-block" id="LeR.unlensed_rate">
@@ -992,6 +994,8 @@
             <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.5</span>
 
         <span class="n">idx_detectable</span> <span class="o">=</span> <span class="n">param</span> <span class="o">&gt;</span> <span class="n">threshold</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;number of simulated unlensed detectable events: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">idx_detectable</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;number of all simulated unlensed events: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">idx_detectable</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="c1"># montecarlo integration</span>
         <span class="c1"># The total rate R = norm &lt;Theta(rho-rhoc)&gt;</span>
         <span class="n">total_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalization_pdf_z</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">idx_detectable</span><span class="p">)</span>
@@ -1059,6 +1063,7 @@
             <span class="n">output_jsonfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;lensed_param&quot;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;lensed_param&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_jsonfile</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;lensed params will be store in </span><span class="si">{</span><span class="n">output_jsonfile</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># sampling in batches</span>
         <span class="n">batch_handler</span><span class="p">(</span>
@@ -1105,7 +1110,7 @@
         <span class="n">lensed_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_properties</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">)</span>
         <span class="c1"># Get all of the signal to noise ratios</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;calculating snrs...&quot;</span><span class="p">)</span>
-        <span class="n">snrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lensed_snrs</span><span class="p">(</span>
+        <span class="n">snrs</span><span class="p">,</span> <span class="n">lensed_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lensed_snrs</span><span class="p">(</span>
             <span class="n">snr_calculator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">snr</span><span class="p">,</span>
             <span class="n">list_of_detectors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">list_of_detectors</span><span class="p">,</span>
             <span class="n">lensed_param</span><span class="o">=</span><span class="n">lensed_param</span><span class="p">,</span>
@@ -1113,7 +1118,9 @@
         <span class="n">lensed_param</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">snrs</span><span class="p">)</span>
 
         <span class="c1"># store all params in json file</span>
-        <span class="n">append_json</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">dictionary</span><span class="o">=</span><span class="n">lensed_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="ow">not</span> <span class="p">(</span><span class="n">resume</span><span class="p">))</span></div>
+        <span class="n">append_json</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">dictionary</span><span class="o">=</span><span class="n">lensed_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="ow">not</span> <span class="p">(</span><span class="n">resume</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">lensed_param</span></div>
 
 
 <div class="viewcode-block" id="LeR.lensed_rate">
@@ -1243,6 +1250,8 @@
             <span class="n">total_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalization_pdf_z_lensed</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">snr_hit</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;total lensed rate (yr^-1) (with pdet function): </span><span class="si">{</span><span class="n">total_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;number of simulated lensed detectable events: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">snr_hit</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;number of simulated all lensed events: </span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="c1"># store all detectable params in json file</span>
         <span class="k">if</span> <span class="n">nan_to_num</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -1416,7 +1425,10 @@
         <span class="n">batch_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">snr_threshold</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
         <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">output_jsonfile</span><span class="o">=</span><span class="s2">&quot;./unlensed_params_detectable.json&quot;</span><span class="p">,</span>
+        <span class="n">output_jsonfile</span><span class="o">=</span><span class="s2">&quot;./n_unlensed_param_detectable.json&quot;</span><span class="p">,</span>
+        <span class="n">meta_data_file</span><span class="o">=</span><span class="s2">&quot;meta_unlensed.json&quot;</span><span class="p">,</span>
+        <span class="n">event_batch_limit</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">trim_to_size</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to select n unlensed detectable events.</span>
@@ -1434,7 +1446,7 @@
 <span class="sd">            default resume = False.</span>
 <span class="sd">        output_jsonfile : `str`</span>
 <span class="sd">            json file name for storing the parameters.</span>
-<span class="sd">            default output_jsonfile = &#39;./unlensed_params_detectable.json&#39;.</span>
+<span class="sd">            default output_jsonfile = &#39;./n_unlensed_params_detectable.json&#39;.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        ----------</span>
@@ -1451,54 +1463,85 @@
 
         <span class="k">if</span> <span class="n">batch_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">batch_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">resume</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># iterator</span>
+            <span class="n">events_total</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># get sample size as size from json file</span>
-            <span class="n">param_final</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">)</span>
-            <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">param_final</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">])</span>
-            <span class="k">del</span> <span class="n">param_final</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">param_final</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">)</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">param_final</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">])</span>
+                <span class="n">events_total</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="n">meta_data_file</span><span class="p">)[</span><span class="s2">&quot;events_total&quot;</span><span class="p">]</span>
+                <span class="k">del</span> <span class="n">param_final</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">events_total</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="n">buffer_file</span> <span class="o">=</span> <span class="s2">&quot;./unlensed_params_buffer.json&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;collected number of events = &quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        
         <span class="k">while</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">:</span>
             <span class="c1"># disable print statements</span>
             <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">redirect_stdout</span><span class="p">(</span><span class="kc">None</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">unlensed_sampling_routine</span><span class="p">(</span>
+                <span class="n">unlensed_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unlensed_sampling_routine</span><span class="p">(</span>
                     <span class="n">size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">buffer_file</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span>
                 <span class="p">)</span>
 
-                <span class="c1"># get unlensed params</span>
-                <span class="n">unlensed_param</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">buffer_file</span><span class="p">)</span>
+            <span class="c1"># get snr</span>
+            <span class="n">snr</span> <span class="o">=</span> <span class="n">unlensed_param</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span>
+            <span class="c1"># snr_ = self.snr(gw_param_dict=unlensed_param)[&quot;optimal_snr_net&quot;]</span>
+            <span class="c1"># test = snr == snr_</span>
+            <span class="c1"># index of detectable events</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">snr</span> <span class="o">&gt;</span> <span class="n">snr_threshold</span>
 
-                <span class="c1"># get snr</span>
-                <span class="n">snr</span> <span class="o">=</span> <span class="n">unlensed_param</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span>
-                <span class="c1"># index of detectable events</span>
-                <span class="n">idx</span> <span class="o">=</span> <span class="n">snr</span> <span class="o">&gt;</span> <span class="n">snr_threshold</span>
-
-                <span class="c1"># store all params in json file</span>
+            <span class="c1"># store all params in json file</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">event_batch_limit</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">unlensed_param</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="n">unlensed_param</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
                 <span class="n">append_json</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">unlensed_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
                 <span class="n">n</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+                <span class="n">events_total</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>                
+                <span class="n">total_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalization_pdf_z</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="n">events_total</span>
+
+                <span class="c1"># save meta data</span>
+                <span class="n">meta_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">events_total</span><span class="o">=</span><span class="n">events_total</span><span class="p">,</span> <span class="n">total_rate</span><span class="o">=</span><span class="n">total_rate</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">append_json</span><span class="p">(</span><span class="n">meta_data_file</span><span class="p">,</span> <span class="n">meta_data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">append_json</span><span class="p">(</span><span class="n">meta_data_file</span><span class="p">,</span> <span class="n">meta_data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            
+            <span class="c1"># else:</span>
+            <span class="c1">#     snr_param = self.snr(gw_param_dict=unlensed_param)[&#39;optimal_snr_net&#39;]</span>
+            <span class="c1">#     print(snr_param)</span>
+
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;collected number of events = &quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;total number of events = &quot;</span><span class="p">,</span> <span class="n">events_total</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;total unlensed rate (yr^-1): </span><span class="si">{</span><span class="n">total_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="c1"># trim the final param dictionary</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;trmming final result to size=</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">param_final</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">)</span>
-        <span class="c1"># trim the final param dictionary, randomly, without repeating</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">param_final</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">]),</span> <span class="n">size</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">param_final</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">param_final</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">param_final</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;storing detectable unlensed params in </span><span class="si">{</span><span class="n">output_jsonfile</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="c1"># save the final param dictionary</span>
-        <span class="n">append_json</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">param_final</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">trim_to_size</span><span class="p">:</span>
+            <span class="c1"># trim the final param dictionary</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> trmming final result to size=</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">param_final</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">)</span>
+            <span class="c1"># trim the final param dictionary, randomly, without repeating</span>
+            <span class="c1"># idx_ = np.random.choice(len(param_final[&quot;zs&quot;]), size, replace=False)</span>
+            <span class="c1"># for key, value in param_final.items():</span>
+            <span class="c1">#     param_final[key] = param_final[key][idx_]</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">param_final</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">param_final</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">param_final</span><span class="p">[</span><span class="n">key</span><span class="p">][:</span><span class="n">size</span><span class="p">]</span>
+
+            <span class="c1"># save the final param dictionary</span>
+            
+            <span class="n">append_json</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">param_final</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">param_final</span></div>
 
@@ -1513,7 +1556,11 @@
         <span class="n">num_img</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">detectability_condition</span><span class="o">=</span><span class="s2">&quot;step_function&quot;</span><span class="p">,</span>
-        <span class="n">output_jsonfile</span><span class="o">=</span><span class="s2">&quot;./lensed_params_detectable.json&quot;</span><span class="p">,</span>
+        <span class="n">output_jsonfile</span><span class="o">=</span><span class="s2">&quot;./n_lensed_params_detectable.json&quot;</span><span class="p">,</span>
+        <span class="n">meta_data_file</span><span class="o">=</span><span class="s2">&quot;./meta_lensed.json&quot;</span><span class="p">,</span>
+        <span class="n">event_batch_limit</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">trim_to_size</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">nan_to_num</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to select n lensed detectable events.</span>
@@ -1554,18 +1601,26 @@
         
         <span class="k">if</span> <span class="n">batch_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">batch_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">resume</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># iterator</span>
+            <span class="n">events_total</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># get sample size as size from json file</span>
-            <span class="n">param_final</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">)</span>
-            <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">param_final</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">])</span>
-            <span class="k">del</span> <span class="n">param_final</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">param_final</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">)</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">param_final</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">])</span>
+                <span class="n">events_total</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="n">meta_data_file</span><span class="p">)[</span><span class="s2">&quot;events_total&quot;</span><span class="p">]</span>
+                <span class="k">del</span> <span class="n">param_final</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">events_total</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># check for images with snr above threshold</span>
         <span class="c1"># convert to array</span>
@@ -1581,72 +1636,89 @@
         <span class="k">while</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">:</span>
             <span class="c1"># disable print statements</span>
             <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">redirect_stdout</span><span class="p">(</span><span class="kc">None</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">lensed_sampling_routine</span><span class="p">(</span>
+                <span class="n">lensed_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lensed_sampling_routine</span><span class="p">(</span>
                     <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">buffer_file</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span>
-                <span class="p">)</span>
+                <span class="p">)</span>  <span class="c1"># Dimensions are (size, n_max_images)</span>
 
-                <span class="c1"># Dimensions are (size, n_max_images)</span>
-                <span class="n">lensed_param</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">buffer_file</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">detectability_condition</span> <span class="o">==</span> <span class="s2">&quot;step_function&quot;</span><span class="p">:</span>
+                <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">]),</span> <span class="kc">True</span><span class="p">)</span>  <span class="c1"># boolean array to store the result of the threshold condition</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">snr_param</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span>
+                    <span class="n">snr_param</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="o">-</span><span class="n">snr_param</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># sort snr in descending order</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;snr not provided in lensed_param dict. Exiting...&quot;</span><span class="p">)</span>
+                
+                <span class="c1"># for each row: choose a threshold and check if the number of images above threshold. Sum over the images. If sum is greater than num_img, then snr_hit = True </span>
+                <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">idx_max</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">snr_threshold</span><span class="p">)):</span>
+                    <span class="n">idx_max</span> <span class="o">=</span> <span class="n">idx_max</span> <span class="o">+</span> <span class="n">num_img</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">snr_hit</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">snr_param</span><span class="p">[:,</span><span class="n">j</span><span class="p">:</span><span class="n">idx_max</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">snr_threshold</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">num_img</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                    <span class="n">j</span> <span class="o">=</span> <span class="n">idx_max</span>
 
-                <span class="k">if</span> <span class="n">detectability_condition</span> <span class="o">==</span> <span class="s2">&quot;step_function&quot;</span><span class="p">:</span>
-                    <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">]),</span> <span class="kc">True</span><span class="p">)</span>  <span class="c1"># boolean array to store the result of the threshold condition</span>
-                    <span class="k">try</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">detectability_condition</span> <span class="o">==</span> <span class="s2">&quot;pdet&quot;</span><span class="p">:</span>
+                <span class="c1"># check if pdet is provided in unlensed_param dict</span>
+                <span class="k">if</span> <span class="s2">&quot;pdet_net&quot;</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">pdet</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">]</span>
+                    <span class="n">pdet</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="o">-</span><span class="n">pdet</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># sort pdet in descending order</span>
+                    <span class="n">pdet</span> <span class="o">=</span> <span class="n">pdet</span><span class="p">[:,:</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">num_img</span><span class="p">)]</span>  <span class="c1"># use only num_img images</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s2">&quot;optimal_snr_net&quot;</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="c1"># pdet dimension is (size, n_max_images)</span>
                         <span class="n">snr_param</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span>
                         <span class="n">snr_param</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="o">-</span><span class="n">snr_param</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># sort snr in descending order</span>
-                    <span class="k">except</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;snr not provided in lensed_param dict. Exiting...&quot;</span><span class="p">)</span>
-                    
-                    <span class="c1"># for each row: choose a threshold and check if the number of images above threshold. Sum over the images. If sum is greater than num_img, then snr_hit = True </span>
-                    <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
-                    <span class="n">idx_max</span> <span class="o">=</span> <span class="mi">0</span>
-                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">snr_threshold</span><span class="p">)):</span>
-                        <span class="n">idx_max</span> <span class="o">=</span> <span class="n">idx_max</span> <span class="o">+</span> <span class="n">num_img</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                        <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">snr_hit</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">snr_param</span><span class="p">[:,</span><span class="n">j</span><span class="p">:</span><span class="n">idx_max</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">snr_threshold</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">num_img</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-                        <span class="n">j</span> <span class="o">=</span> <span class="n">idx_max</span>
 
-                <span class="k">elif</span> <span class="n">detectability_condition</span> <span class="o">==</span> <span class="s2">&quot;pdet&quot;</span><span class="p">:</span>
-                    <span class="c1"># check if pdet is provided in unlensed_param dict</span>
-                    <span class="k">if</span> <span class="s2">&quot;pdet_net&quot;</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                        <span class="n">pdet</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">]</span>
-                        <span class="n">pdet</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="o">-</span><span class="n">pdet</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># sort pdet in descending order</span>
-                        <span class="n">pdet</span> <span class="o">=</span> <span class="n">pdet</span><span class="p">[:,:</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">num_img</span><span class="p">)]</span>  <span class="c1"># use only num_img images</span>
+                        <span class="n">pdet</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">snr_param</span><span class="p">))</span>
+                        <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+                        <span class="n">idx_max</span> <span class="o">=</span> <span class="mi">0</span>
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">snr_threshold</span><span class="p">)):</span>
+                            <span class="n">idx_max</span> <span class="o">=</span> <span class="n">idx_max</span> <span class="o">+</span> <span class="n">num_img</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                            <span class="n">pdet</span><span class="p">[:,</span><span class="n">j</span><span class="p">:</span><span class="n">idx_max</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">snr_threshold</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">snr_param</span><span class="p">[:,</span><span class="n">j</span><span class="p">:</span><span class="n">idx_max</span><span class="p">])</span>
+                            <span class="n">j</span> <span class="o">=</span> <span class="n">idx_max</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="s2">&quot;optimal_snr_net&quot;</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                            <span class="c1"># pdet dimension is (size, n_max_images)</span>
-                            <span class="n">snr_param</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span>
-                            <span class="n">snr_param</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="o">-</span><span class="n">snr_param</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># sort snr in descending order</span>
-
-                            <span class="n">pdet</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">snr_param</span><span class="p">))</span>
-                            <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
-                            <span class="n">idx_max</span> <span class="o">=</span> <span class="mi">0</span>
-                            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">snr_threshold</span><span class="p">)):</span>
-                                <span class="n">idx_max</span> <span class="o">=</span> <span class="n">idx_max</span> <span class="o">+</span> <span class="n">num_img</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                                <span class="n">pdet</span><span class="p">[:,</span><span class="n">j</span><span class="p">:</span><span class="n">idx_max</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">snr_threshold</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">snr_param</span><span class="p">[:,</span><span class="n">j</span><span class="p">:</span><span class="n">idx_max</span><span class="p">])</span>
-                                <span class="n">j</span> <span class="o">=</span> <span class="n">idx_max</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pdet or optimal_snr_net not provided in lensed_param dict. Exiting...&quot;</span><span class="p">)</span>
-                            <span class="k">return</span> <span class="kc">None</span>
-                        
-                    <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">pdet</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">&gt;</span><span class="mf">0.5</span>
-
-                <span class="c1"># store all params in json file</span>
-                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="n">lensed_param</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="n">snr_hit</span><span class="p">])</span>
-                <span class="n">append_json</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pdet or optimal_snr_net not provided in lensed_param dict. Exiting...&quot;</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="kc">None</span>
+                    
+                <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">pdet</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">&gt;</span><span class="mf">0.5</span>
+                    
+            <span class="c1"># store all params in json file</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">snr_hit</span><span class="p">)</span><span class="o">&lt;</span><span class="n">event_batch_limit</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">nan_to_num</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">lensed_param</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="n">snr_hit</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">lensed_param</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">snr_hit</span><span class="p">]</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">append_json</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">append_json</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
                 <span class="n">n</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">snr_hit</span><span class="p">)</span>
+                <span class="n">events_total</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">snr_hit</span><span class="p">)</span>
+
+                <span class="c1"># save meta data</span>
+                <span class="n">total_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalization_pdf_z_lensed</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="n">events_total</span>
+                <span class="n">meta_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">events_total</span><span class="o">=</span><span class="n">events_total</span><span class="p">,</span> <span class="n">total_rate</span><span class="o">=</span><span class="n">total_rate</span><span class="p">)</span>
+                <span class="n">append_json</span><span class="p">(</span><span class="n">meta_data_file</span><span class="p">,</span> <span class="n">meta_data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;collected number of events = &quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;total number of events = &quot;</span><span class="p">,</span> <span class="n">events_total</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;total lensed rate (yr^-1): </span><span class="si">{</span><span class="n">total_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="c1"># trim the final param dictionary</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;trmming final result to size=</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">param_final</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">)</span>
-        <span class="c1"># trim the final param dictionary</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">param_final</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">]),</span> <span class="n">size</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">param_final</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">param_final</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">param_final</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;storing detectable lensed params in </span><span class="si">{</span><span class="n">output_jsonfile</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="c1"># save the final param dictionary</span>
-        <span class="n">append_json</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">param_final</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">trim_to_size</span><span class="p">:</span>
+            <span class="c1"># trim the final param dictionary</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> trmming final result to size=</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">param_final</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">)</span>
+            <span class="c1"># trim the final param dictionary</span>
+            <span class="c1">#idx = np.random.choice(len(param_final[&quot;zs&quot;]), size, replace=False)</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">param_final</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">param_final</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">param_final</span><span class="p">[</span><span class="n">key</span><span class="p">][:</span><span class="n">size</span><span class="p">]</span>
+
+            <span class="c1"># save the final param dictionary</span>
+            <span class="n">append_json</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">param_final</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">param_final</span></div>
 </div>
