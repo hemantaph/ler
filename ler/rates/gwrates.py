@@ -262,7 +262,6 @@ class GWRATES(CBCSourceParameterDistribution):
         print("minimum_frequency = ", self.snr_calculator_dict["minimum_frequency"])
         print("snr_type = ", self.snr_calculator_dict["snr_type"])
         print("psds = ", self.snr_calculator_dict["psds"])
-        print("isit_psd_file = ", self.snr_calculator_dict["isit_psd_file"])
         print("ifos = ", self.snr_calculator_dict["ifos"])
         print("interpolator_dir = ", self.snr_calculator_dict["interpolator_dir"])
         print("create_new_interpolator = ", self.snr_calculator_dict["create_new_interpolator"])
@@ -467,8 +466,7 @@ class GWRATES(CBCSourceParameterDistribution):
             waveform_approximant="IMRPhenomD",
             minimum_frequency=20.0,
             snr_type="interpolation",
-            psds={'L1':'aLIGO_O4_high_asd.txt','H1':'aLIGO_O4_high_asd.txt', 'V1':'AdV_asd.txt'},
-            isit_psd_file=False,
+            psds=None,
             ifos=None,
             interpolator_dir=self.directory,
             create_new_interpolator=False,
@@ -494,7 +492,6 @@ class GWRATES(CBCSourceParameterDistribution):
                     minimum_frequency=input_params["minimum_frequency"],
                     snr_type=input_params["snr_type"],
                     psds=input_params["psds"],
-                    isit_psd_file=input_params["isit_psd_file"],
                     ifos=input_params["ifos"],
                     interpolator_dir=input_params["interpolator_dir"],
                     create_new_interpolator=input_params["create_new_interpolator"],

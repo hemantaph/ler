@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.lens_galaxy_population &mdash; ler 0.3.0 documentation</title>
+  <title>ler.lens_galaxy_population &mdash; ler 0.3.1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -16,7 +16,7 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=e259d695"></script>
+        <script src="../../../_static/documentation_options.js?v=4621528c"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -24,7 +24,9 @@
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution" href="lens_galaxy_parameter_distribution/index.html" />
+    <link rel="prev" title="ler.gw_source_population.jit_functions" href="../gw_source_population/jit_functions/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,11 +52,50 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Unlensed%20events.html">Unlensed events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed%20events.html">Lensed Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed%20events.html">Lensed events</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lens_galaxy_parameter_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_galaxy_parameter_distribution</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#package-contents">Package Contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.CBCSourceParameterDistribution"><code class="docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.OpticalDepth"><code class="docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.ImageProperties"><code class="docutils literal notranslate"><span class="pre">ImageProperties</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.add_dictionaries_together"><code class="docutils literal notranslate"><span class="pre">add_dictionaries_together()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.trim_dictionary"><code class="docutils literal notranslate"><span class="pre">trim_dictionary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.velocity_dispersion_z_dependent"><code class="docutils literal notranslate"><span class="pre">velocity_dispersion_z_dependent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.lens_redshift_SDSS_catalogue"><code class="docutils literal notranslate"><span class="pre">lens_redshift_SDSS_catalogue()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution"><code class="docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.interpolator_from_pickle"><code class="docutils literal notranslate"><span class="pre">interpolator_from_pickle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.axis_ratio_rayleigh"><code class="docutils literal notranslate"><span class="pre">axis_ratio_rayleigh()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id24"><code class="docutils literal notranslate"><span class="pre">axis_ratio_rayleigh()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.optical_depth_sie2_mp"><code class="docutils literal notranslate"><span class="pre">optical_depth_sie2_mp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id25"><code class="docutils literal notranslate"><span class="pre">lens_redshift_SDSS_catalogue()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id26"><code class="docutils literal notranslate"><span class="pre">axis_ratio_rayleigh()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id27"><code class="docutils literal notranslate"><span class="pre">velocity_dispersion_z_dependent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.bounded_normal_sample"><code class="docutils literal notranslate"><span class="pre">bounded_normal_sample()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../Rate%20comparision.html">Rate comparision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
 </ul>
 
         </div>
@@ -1862,12 +1903,14 @@ default: ‘BBH’</p>
 default: ‘epl_galaxy’</p>
 </dd>
 <dt><strong>lens_functions, lens_priors, lens_priors_params</strong><span class="classifier"><cite>dict</cite>, <cite>dict</cite>, <cite>dict</cite></span></dt><dd><p>dictionary of lens functions, priors, and priors parameters
-Check for default/available lens functions, priors and corresponding input parameters by running,
-&gt;&gt;&gt; from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-&gt;&gt;&gt; lens = LensGalaxyParameterDistribution()
-&gt;&gt;&gt; print(lens.lens_functions)
-&gt;&gt;&gt; print(lens.lens_priors)
-&gt;&gt;&gt; print(lens.lens_priors_params)</p>
+Check for default/available lens functions, priors and corresponding input parameters by running,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.lens_galaxy_population</span> <span class="kn">import</span> <span class="n">LensGalaxyParameterDistribution</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens</span> <span class="o">=</span> <span class="n">LensGalaxyParameterDistribution</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">lens</span><span class="o">.</span><span class="n">lens_functions</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">lens</span><span class="o">.</span><span class="n">lens_priors</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">lens</span><span class="o">.</span><span class="n">lens_priors_params</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd>
 <dt><strong>directory</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>directory to store the interpolators
 default: ‘./interpolator_pickle’</p>
@@ -1878,6 +1921,12 @@ default: ‘./interpolator_pickle’</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.lens_galaxy_population</span> <span class="kn">import</span> <span class="n">LensGalaxyParameterDistribution</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens</span> <span class="o">=</span> <span class="n">LensGalaxyParameterDistribution</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lensed_params</span> <span class="o">=</span> <span class="n">lens</span><span class="o">.</span><span class="n">sample_lens_parameters</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lensed_params</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
 <section id="id2">
 <h4>Instance Attributes<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
 <p>LensGalaxyPopulation class has the following instance attributes:</p>
@@ -1930,6 +1979,106 @@ default: ‘./interpolator_pickle’</p>
 <section id="id3">
 <h4>Instance Methods<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
 <p>LensGalaxyPopulation class has the following instance methods:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Methods</p></th>
+<th class="head"><p>Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_lens_parameters" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_lens_parameters"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_lens_parameters()</span></code></a></p></td>
+<td><p>Function to call the specific
+galaxy lens parameters sampler
+routine.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_all_routine" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_all_routine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_all_routine()</span></code></a></p></td>
+<td><p>Function to sample galaxy lens
+parameters along with the source
+parameters.</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.strongly_lensed_source_redshifts" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.strongly_lensed_source_redshifts"><code class="xref py py-meth docutils literal notranslate"><span class="pre">strongly_lensed_source_redshifts()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>Function to sample source
+redshifts conditioned on the
+source being strongly lensed</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.source_parameters" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.source_parameters"><code class="xref py py-meth docutils literal notranslate"><span class="pre">source_parameters()</span></code></a></p></td>
+<td><p>Function to sample gw source
+parameters</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id25" title="ler.lens_galaxy_population.lens_redshift_SDSS_catalogue"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lens_redshift_SDSS_catalogue()</span></code></a></p></td>
+<td><p>Function to sample lens
+redshifts, conditioned on the
+lens being strongly lensed</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.axis_rotation_angle_uniform" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.axis_rotation_angle_uniform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">axis_rotation_angle_uniform()</span></code></a></p></td>
+<td><p>Function to sample the axis
+rotation angle of the elliptical
+lens galaxy from a uniform
+distribution</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.shear_norm" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.shear_norm"><code class="xref py py-meth docutils literal notranslate"><span class="pre">shear_norm()</span></code></a></p></td>
+<td><p>Function to sample the
+elliptical lens galaxy shear
+from a normal distribution</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.mass_density_spectral_index_normal" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.mass_density_spectral_index_normal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mass_density_spectral_index_normal()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>Function to sample the lens
+galaxy spectral index of the
+mass density profile from a
+normal distribution</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.compute_einstein_radii" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.compute_einstein_radii"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compute_einstein_radii()</span></code></a></p></td>
+<td><p>Function to compute the Einstein
+radii of the lens galaxies</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.rjs_with_cross_section_SIE" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.rjs_with_cross_section_SIE"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rjs_with_cross_section_SIE()</span></code></a></p></td>
+<td><p>Function to conduct rejection
+sampling wrt einstein radius</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.rjs_with_cross_section_SIE" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.rjs_with_cross_section_SIE"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rjs_with_cross_section_SIE()</span></code></a></p></td>
+<td><p>Function to conduct rejection
+sampling wrt cross_section</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">rejection_sample_sl</span></code></p></td>
+<td><p>Function to conduct rejection
+sampling with the given rejection
+sampling function</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_source_redshift_sl" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_source_redshift_sl"><code class="xref py py-attr docutils literal notranslate"><span class="pre">sample_source_redshift_sl</span></code></a></p></td>
+<td><p>Function to sample source
+redshifts conditioned on the
+source being strongly lensed</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_lens_redshift" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_lens_redshift"><code class="xref py py-attr docutils literal notranslate"><span class="pre">sample_lens_redshift</span></code></a></p></td>
+<td><p>Function to sample lens
+redshifts, conditioned on the
+lens being strongly lensed</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_axis_rotation_angle" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_axis_rotation_angle"><code class="xref py py-attr docutils literal notranslate"><span class="pre">sample_axis_rotation_angle</span></code></a></p></td>
+<td><p>Function to sample the axis
+rotation angle of the elliptical
+lens galaxy from a uniform
+distribution</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_shear" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_shear"><code class="xref py py-attr docutils literal notranslate"><span class="pre">sample_shear</span></code></a></p></td>
+<td><p>Function to sample the
+elliptical lens galaxy shear
+from a normal distribution</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_mass_density_spectral_index" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_mass_density_spectral_index"><code class="xref py py-attr docutils literal notranslate"><span class="pre">sample_mass_density_spectral_index</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>Function to sample the lens
+galaxy spectral index of the
+mass density profile from a
+normal distribution</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py property">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_source_redshift_sl">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sample_source_redshift_sl</span></span><a class="headerlink" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_source_redshift_sl" title="Link to this definition"></a></dt>
@@ -3162,7 +3311,10 @@ params[6] = zl_list (list of lens redshifts, list). This use for choosing the ri
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../gw_source_population/jit_functions/index.html" class="btn btn-neutral float-left" title="ler.gw_source_population.jit_functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="lens_galaxy_parameter_distribution/index.html" class="btn btn-neutral float-right" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

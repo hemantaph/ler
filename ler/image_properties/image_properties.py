@@ -394,6 +394,10 @@ class ImageProperties():
                 np.ones((number_of_lensed_events, n_max_images)) * np.nan
             )
 
+        # for updating the lensed_param
+        lensed_param["effective_luminosity_distance"] = np.ones((number_of_lensed_events, n_max_images)) * np.nan
+        lensed_param["effective_geocent_time"] = np.ones((number_of_lensed_events, n_max_images)) * np.nan
+
         # Get the optimal signal to noise ratios for each image
         # iterate over the image type (column)
         for i in range(n_max_images):
@@ -433,4 +437,10 @@ class ImageProperties():
                 for detector in list_of_detectors:
                     optimal_snrs[detector][idx, i] = optimal_snr[detector]
 
-        return optimal_snrs
+                lensed_param["effective_luminosity_distance"][:, i] = effective_luminosity_distance
+                lensed_param["effective_geocent_time"][:, i] = effective_geocent_time
+
+        del lensed_param["luminosity_distance"]
+        del lensed_param["geocent_time"]
+
+        return optimal_snrs, lensed_param
