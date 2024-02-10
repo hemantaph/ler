@@ -22,7 +22,6 @@ The code is available at `ler.github <https://github.com/hemantaph/ler>`_.
 
    Installation
    Unlensed events
-   Lensed events
    
 .. toctree::
    :maxdepth: 1
@@ -41,7 +40,6 @@ The code is available at `ler.github <https://github.com/hemantaph/ler>`_.
    rates/LeR complete examples
    rates/GWRATES complete exmaples
    ../examples/rates/GWRATES complete exmaples
-
 
 Indices and tables
 ==================
