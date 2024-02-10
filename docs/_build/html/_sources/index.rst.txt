@@ -20,7 +20,7 @@ The code is available at `ler.github <https://github.com/hemantaph/ler>`_.
    :maxdepth: 2
    :caption: Contents:
 
-   Installation
+   Installation2
    Summary
    Unlensed_events
    Lensed_events
