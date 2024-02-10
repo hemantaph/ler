@@ -1,6 +1,6 @@
-======================
+============
 Installation
-======================
+============
 
 .. note::
 
@@ -16,7 +16,6 @@ Installation
 This will also install the dependencies needed by the lastest ``ler`` version.  
 
 .. _development:
-
 ler for development
 ======================
 
@@ -41,7 +40,6 @@ To install ``ler`` for development purposes use `github.ler <https://github.com/
         pip install -e .
     
 .. _dependencies:
-
 Installation of numba with conda
 =======================
 
