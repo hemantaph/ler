@@ -21,6 +21,7 @@ The code is available at `ler.github <https://github.com/hemantaph/ler>`_.
    :caption: Contents:
 
    Installation
+   Installation2
    Unlensed events
    
 .. toctree::
