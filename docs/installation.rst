@@ -3,40 +3,40 @@ Installation
 ============
 
 .. note::
-
-    For arm64 architecture processor (e.g. apple silicon) you might need to install some of the dependencies with conda (:ref:`dependencies`). For package development and contribution refer here (:ref:`development`).
+    
+    For package development and contribution refer here (:ref:`development`).
 
 .. tabs::
         
      .. code-tab:: console pip
 
-        pip install ler
+        pip install gwsnr
 
 
-This will also install the dependencies needed by the lastest ``ler`` version.  
+This will also install the dependencies needed by the lastest ``gwsnr`` version.  
 
 .. _development:
-ler for development
+gwsnr for development
 ======================
 
-To install ``ler`` for development purposes use `github.ler <https://github.com/hemantaph/ler/>`_. Use conda environment to avoid dependency error. 
+To install ``gwsnr`` for development purposes use `github.gwsnr <https://github.com/hemantaph/gwsnr/>`_. Use conda environment to avoid dependency error. 
 
     
 .. tabs::
 
-     .. code-tab:: Console with new conda env
+     .. code-tab:: console with new conda env
 
-        git clone https://github.com/hemantaph/ler.git
-        cd ler
-        conda env create -f ler.yml
-        conda activate ler
+        git clone https://github.com/hemantaph/gwsnr.git
+        cd gwsnr
+        conda env create -f gwsnr.yml
+        conda activate gwsnr
         pip install -e .
         
-     .. code-tab:: With existing conda env
+     .. code-tab:: with existing conda env
      
-        git clone https://github.com/hemantaph/ler.git
-        cd ler
-        conda env update --file ler.yml
+        git clone https://github.com/hemantaph/gwsnr.git
+        cd gwsnr
+        conda env update --file gwsnr.yml
         pip install -e .
     
 .. _dependencies:
