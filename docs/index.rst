@@ -3,7 +3,7 @@ Welcome to ler's documentation!
 
 .. image:: ../lerlogo.png
    :align: center
-   :width: 40%
+   :width: 30%
    :alt: ler logo
 
 ==================

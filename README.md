@@ -2,7 +2,7 @@
 [![DOI](https://zenodo.org/badge/626733473.svg)](https://zenodo.org/badge/latestdoi/626733473) [![PyPI version](https://badge.fury.io/py/ler.svg)](https://badge.fury.io/py/ler) [![DOCS](https://readthedocs.org/projects/ler/badge/?version=latest)](https://ler.readthedocs.io/en/latest/)
 
 <p align="center">
-  <img src="lerlogo.png" alt="Your Logo" width="200" height="200">
+  <img src="lerlogo.png" alt="Your Logo" width="30%">
 </p>
 
 ## Installation
@@ -12,6 +12,10 @@ pip install ler
 ```
 
 ## About
+
+<p align="center">
+  <img src="sl.png" alt="Your Logo" width="100%">
+</p>
 
 `LeR` is a statistical-based python package whose core function is designed for the computation of detectable rates pertaining to both lensed and unlensed gravitational wave (GW) events. This calculation intricately hinges upon the interplay of various components within the package, which can be categorized into three primary segments: 1. Sampling the properties of compact-binary sources, 2. Sampling characteristics of lens galaxies, and 3. Solving the lens equation to derive image attributes of the source. The holistic functionality of the package is built upon leveraging array operations and linear algebra from the `numpy` library, interpolation from `scipy`, and the `multiprocessing` capability inherent to Python. This design optimizes both speed and functionality while upholding user-friendliness. The architecture of the "LeR" API is deliberately organized such that each distinct functionality holds its own significance in scientific research. Simultaneously, these functionalities seamlessly integrate and can be employed collectively based on specific research requirements. Key features of `LeR` and its dependencies can be summarized as follows,
 
