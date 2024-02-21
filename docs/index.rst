@@ -23,6 +23,7 @@ The code is available at `ler.github <https://github.com/hemantaph/ler>`_.
    Installation2
    Summary
    GW_events
+   GW_equations
    Lensed_events
    Lensed_equations
    

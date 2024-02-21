@@ -54,7 +54,8 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GW_events.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GW_equations.html">GW event sampling (Analytical formulation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Lensed event sampling (Analytical formulation)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Initial-setup">Initial setup</a></li>
@@ -120,25 +121,25 @@
 <p>Define all the parameters involved.</p>
 <ul class="simple">
 <li><p>Source parameters: <span class="math notranslate nohighlight">\(\theta \in \{m_1,m_2,D_l,\iota,\phi,\psi,ra,dec\}\)</span></p></li>
-<li><p>Lens parameters: <span class="math notranslate nohighlight">\(\theta_L \in \{\)</span> <span class="math notranslate nohighlight">\(\sigma\)</span> (velocity-dispersion), <span class="math notranslate nohighlight">\(q\)</span> (axis-ratio), <span class="math notranslate nohighlight">\(\psi\)</span> (axis-rotation), <span class="math notranslate nohighlight">\(\gamma\)</span> (spectral-index), <span class="math notranslate nohighlight">\([\gamma_1,\gamma_2]\)</span> (external-shear) <span class="math notranslate nohighlight">\(\}\)</span></p></li>
+<li><p>Lens parameters: <span class="math notranslate nohighlight">\(\theta_L \in \{\)</span> <span class="math notranslate nohighlight">\(\sigma\)</span> (velocity-dispersion), <span class="math notranslate nohighlight">\(q\)</span> (axis-ratio), <span class="math notranslate nohighlight">\(\psi\)</span> (axis-rotation), <span class="math notranslate nohighlight">\(\gamma\)</span> (spectral-index), <span class="math notranslate nohighlight">\([\gamma_1,\gamma_2]\)</span> (external-shear), <span class="math notranslate nohighlight">\([e_1,e_2]\)</span> (ellipticity), <span class="math notranslate nohighlight">\(\beta\)</span> (source position) <span class="math notranslate nohighlight">\(\}\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(z_L\)</span> : red-shift of the galaxy lens</p></li>
-<li><p>image param: <span class="math notranslate nohighlight">\(\{\beta \text{(source position)},\; \mu \text{(magnification)},\; dt \text{(time-delay)}\}\)</span>.</p></li>
+<li><p>image param: <span class="math notranslate nohighlight">\(\{\)</span> <span class="math notranslate nohighlight">\(\mu_i\)</span> (magnification), <span class="math notranslate nohighlight">\(dt_i\)</span> (time-delay), <span class="math notranslate nohighlight">\(n_i\)</span> (morse-phase) <span class="math notranslate nohighlight">\(\}\)</span>. There is subscript <span class="math notranslate nohighlight">\(i\)</span> because there can be multiple images.</p></li>
 </ul>
 <p>Given <span class="math notranslate nohighlight">\(d N^L_{obs}(z_s)\)</span> is the number of lensed GW detectable events from sources at red-shift <span class="math notranslate nohighlight">\(z_s\)</span> in a spherical shell of thickness <span class="math notranslate nohighlight">\(d z_s\)</span>, then, let rate of lensing (number of lensed events happening per unit time) is given by,</p>
 <p><span class="math">\begin{equation}
 \begin{split}
-\mathcal{R}_L &= \int_{z_{min}}^{z_{max}} \frac{d N^L_{obs}(z_s)}{d t_{det}} \\
-&= \int_{z_{min}}^{z_{max}} \frac{d N^L_{obs}(z_s)}{d t_{det}\;dV_c} \frac{dV_c}{dz_s} dz_s
+\mathcal{R}_L &= \int_{z_{min}}^{z_{max}} \frac{d N^L_{obs}(z_s)}{d \tau} \\
+&= \int_{z_{min}}^{z_{max}} \frac{d N^L_{obs}(z_s)}{d \tau\;dV_c} \frac{dV_c}{dz_s} dz_s
 \end{split} \tag{1}
 \end{equation}</span></p>
-<p><span class="math notranslate nohighlight">\(\frac{d N^L_{obs}(z_s)}{d t_{det}\;dV_c}\)</span> is the merger rate density at detector-frame, and <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}\)</span> is the differential co-moving volume at red-shift <span class="math notranslate nohighlight">\(z_s\)</span>. After taking care of time-dilation, the expression looks,</p>
+<p><span class="math notranslate nohighlight">\(\frac{d N^L_{obs}(z_s)}{d \tau \;dV_c}\)</span> is the observed merger rate density at source-frame, and <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}\)</span> is the differential co-moving volume at red-shift <span class="math notranslate nohighlight">\(z_s\)</span>. After taking care of time-dilation, the expression looks,</p>
 <p><span class="math">\begin{equation}
 \begin{split}
 \mathcal{R}_L &= \int_{z_{min}}^{z_{max}} \frac{d N^L_{obs}(z_s)}{d t\;dV_c} \frac{1}{1+z_s} \frac{dV_c}{dz_s} dz_s \\
 &= \int_{z_{min}}^{z_{max}} R^L_{obs}(z_s) dz_s
 \end{split} \tag{2}
 \end{equation}</span></p>
-<p>Observed rate of lensed events at source red-shift <span class="math notranslate nohighlight">\(z_s\)</span> (source-frame) is given by <span class="math notranslate nohighlight">\(R^L_{obs}(z_s) = \frac{d N^L_{obs}(z_s)}{d t\;dV_c} \frac{1}{1+z_s} \frac{dV_c}{dz_s}\)</span>. And, let <span class="math notranslate nohighlight">\(R(z_s)\)</span> be the rate of the merger of unlensed events (source frame), regardless of whether it is detectable or not.</p>
+<p>Observed merger rate density of lensed GW events at source red-shift <span class="math notranslate nohighlight">\(z_s\)</span> (detector-frame) is given by <span class="math notranslate nohighlight">\(R^L_{obs}(z_s) = \frac{d N^L_{obs}(z_s)}{d t\;dV_c}\)</span>. And, let <span class="math notranslate nohighlight">\(R(z_s)\)</span> be the rate of the merger of unlensed events (source frame) at <span class="math notranslate nohighlight">\(z_s\)</span>, regardless of whether it is detectable or not.</p>
 <p><span class="math">\begin{equation}
 \begin{split}
 \mathcal{R}_L &= \int_{z_{min}}^{z_{max}} R^L_{obs}(z_s) dz_s \\
@@ -165,10 +166,11 @@ P(z_s) P(SL|z_s) &= P(z_s|SL) P(SL) \\
 P(SL|z_s) &= P(z_s|SL) P(SL) \frac{N_1}{R(z_s)}
 \end{split} \tag{5}
 \end{equation}</span></p>
+<p>Normalizing factor: <span class="math notranslate nohighlight">\(N_1 = \int_{z_{min}}^{z_{max}} R(z_s) dz_s\)</span>.</p>
 </section>
 <section id="Taking-care-of-normalization">
 <h3>Taking care of normalization<a class="headerlink" href="#Taking-care-of-normalization" title="Link to this heading"></a></h3>
-<p>Normalizing factor: <span class="math notranslate nohighlight">\(N_1 = \int_{z_{min}}^{z_{max}} R(z_s) dz_s\)</span>. Similarly, when lensing condition applied, let <span class="math notranslate nohighlight">\(N_2 = \int_{z_{min}}^{z_{max}} R(z_s) P(SL|z_s) dz_s\)</span>.</p>
+<p>Similarly, when lensing condition applied, let <span class="math notranslate nohighlight">\(N_2 = \int_{z_{min}}^{z_{max}} R(z_s) P(SL|z_s) dz_s\)</span>.</p>
 <p><span class="math">\begin{equation}
 \begin{split}
 P(SL) &= \int_{z_{min}}^{z_{max}} P(SL|z_s) P(z_s) dz_s \\
@@ -195,7 +197,7 @@ R(z_s) P(SL|z_s) &= N_2 P(z_s|SL)
 & \;\; P(\beta|\theta_L, z_s, SL) P(\theta_L|z_s, SL) P(\theta) d\beta d\theta d\theta_L dz_s
 \end{split} \tag{8}
 \end{equation}</span></p>
-<p>For <span class="math notranslate nohighlight">\(P(z_s|SL)= \frac{R(z_s)}{N_2} P(SL|z_s)\)</span>, from equation 7b, I have considered ‘optical depth’ (<span class="math notranslate nohighlight">\(\tau(z_s) = P(SL|z_s)\)</span>) is a function of <span class="math notranslate nohighlight">\(z_s\)</span> only. Otherwise, we need to consider the cross-section (<span class="math notranslate nohighlight">\(P(SL|z_s, \theta_L)\)</span>) which will not be discussed here. Below shows how to get <span class="math notranslate nohighlight">\(P(SL|z_s)\)</span>, i.e., the probability of strong lensing of source at <span class="math notranslate nohighlight">\(z_s\)</span>. <span class="math notranslate nohighlight">\(dN(z_l)\)</span> is the number of galaxy lenses at red-shift <span class="math notranslate nohighlight">\(z_l\)</span> (in <span class="math notranslate nohighlight">\(d z_l\)</span>).</p>
+<p>For <span class="math notranslate nohighlight">\(P(z_s|SL)= \frac{R(z_s)}{N_2} P(SL|z_s)\)</span>, from equation 7, I have considered ‘optical depth’ (<span class="math notranslate nohighlight">\(\tau(z_s) = P(SL|z_s)\)</span>) is a function of <span class="math notranslate nohighlight">\(z_s\)</span> only. Otherwise, we need to consider the cross-section (<span class="math notranslate nohighlight">\(P(SL|z_s, \theta_L)\)</span>) which will not be discussed here. Below shows how to get <span class="math notranslate nohighlight">\(P(SL|z_s)\)</span>, i.e., the probability of strong lensing of source at <span class="math notranslate nohighlight">\(z_s\)</span>. <span class="math notranslate nohighlight">\(dN(z_l)\)</span> is the number of galaxy lenses at red-shift <span class="math notranslate nohighlight">\(z_l\)</span> (in <span class="math notranslate nohighlight">\(d z_l\)</span>).</p>
 </section>
 <section id="General-formulation-of-optical-depth-expression">
 <h3>General formulation of optical depth expression<a class="headerlink" href="#General-formulation-of-optical-depth-expression" title="Link to this heading"></a></h3>
@@ -285,15 +287,15 @@ more images or not.</p>
 <section id="The-order-of-sampling-and-rate-calculation-steps-in-LeR-are-listed-below.">
 <h3>The order of sampling and rate calculation steps in LeR are listed below.<a class="headerlink" href="#The-order-of-sampling-and-rate-calculation-steps-in-LeR-are-listed-below." title="Link to this heading"></a></h3>
 <ol class="arabic simple">
-<li><p><span class="math notranslate nohighlight">\(z_s\)</span> from <span class="math notranslate nohighlight">\(\frac{R(z_s)}{N_1}\)</span>. And apply rejection sampling with optical depth, <span class="math notranslate nohighlight">\(P(SL|z_s)\)</span>. Other source parameters are sampled separately, <span class="math notranslate nohighlight">\(P(\theta)\)</span>.</p></li>
+<li><p>Sample <span class="math notranslate nohighlight">\(z_s\)</span> from <span class="math notranslate nohighlight">\(\frac{R(z_s)}{N_1}\)</span>. And apply rejection sampling with optical depth, <span class="math notranslate nohighlight">\(P(SL|z_s)\)</span>. Other source parameters are sampled separately, <span class="math notranslate nohighlight">\(P(\theta)\)</span>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(z_l\)</span> from <span class="math notranslate nohighlight">\(P(z_l|z_s)\)</span>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\sigma\)</span> together from <span class="math notranslate nohighlight">\(P(\sigma|z_l, SL)\)</span>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(q\)</span> from <span class="math notranslate nohighlight">\(P(q|\sigma)\)</span>.</p></li>
 <li><p>Calculation of Einstein radius and apply lensing condition to the sampled lens parameters, <span class="math notranslate nohighlight">\(P(SL|z_s, z_l, \sigma, q) \propto \theta_E^2\,\phi^{SIE}_{CUT}\)</span>.</p></li>
 <li><p>Other lens parameters (<span class="math notranslate nohighlight">\(e_1\)</span>, <span class="math notranslate nohighlight">\(e_2\)</span>, <span class="math notranslate nohighlight">\(\gamma_1\)</span>, <span class="math notranslate nohighlight">\(\gamma_2\)</span>, <span class="math notranslate nohighlight">\(\gamma\)</span>) are sampled independent of the SL condition, <span class="math notranslate nohighlight">\(P(e_1,e_2,\gamma_1,\gamma_2,\gamma)\)</span>. But, this will be rejection sampled later along with the image position.</p></li>
 <li><p>Draw image position, <span class="math notranslate nohighlight">\(\beta\)</span>, from within the caustic boundary and solve the lens equation. Accept it if it results in 2 or more images, otherwise resample <span class="math notranslate nohighlight">\(\beta\)</span>. Sometimes (once in 2-3 million), the 2 or more images condition cannot be satisfied, so resample <span class="math notranslate nohighlight">\(e_1,e_2,\gamma_1,\gamma_2,\gamma\)</span> again and repeat the process.</p></li>
-<li><p>Calculate the magnification, <span class="math notranslate nohighlight">\(\mu\)</span>, time-delay, <span class="math notranslate nohighlight">\(dt\)</span> and morse phase, <span class="math notranslate nohighlight">\(n\)</span> for each of the lensed event.</p></li>
-<li><p>Modify the luminosity distance, <span class="math notranslate nohighlight">\(D_l\)</span> to <span class="math notranslate nohighlight">\(D_l^{eff}=D_l/\sqrt{|\mu|}\)</span>, and geocent_time to <span class="math notranslate nohighlight">\(t_{eff}=t_{geocent}+dt\)</span>.</p></li>
+<li><p>Calculate the magnification, <span class="math notranslate nohighlight">\(\mu_i\)</span>, time-delay, <span class="math notranslate nohighlight">\(dt_i\)</span> and morse phase, <span class="math notranslate nohighlight">\(n_i\)</span> for each of the lensed event.</p></li>
+<li><p>Modify the luminosity distance, <span class="math notranslate nohighlight">\(D_l\)</span> to <span class="math notranslate nohighlight">\(D_l^{eff}=D_l/\sqrt{|\mu_i|}\)</span>, and geocent_time to <span class="math notranslate nohighlight">\(t_{eff}=t_{geocent}+dt_i\)</span>.</p></li>
 <li><p>Calculate SNR with <a class="reference external" href="https://gwsnr.readthedocs.io/en/latest/">gwsnr</a></p></li>
 <li><p>Apply the SNR threshold and check whether the event is detectable or not.</p></li>
 <li><p>Calculate rate of lensed events, <span class="math notranslate nohighlight">\(\mathcal{R}_L\)</span> using equation 13.</p></li>

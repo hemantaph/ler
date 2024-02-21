@@ -50,7 +50,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">GW event sampling (Analytical formulation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -665,7 +666,7 @@
             <span class="n">beta</span><span class="o">=</span><span class="n">beta</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
-            <span class="n">sampler_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size_</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">Nsample</span><span class="o">=</span><span class="n">size_</span><span class="p">)</span>
+            <span class="n">sampler_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">Nsample</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">sampler_function</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># sample mass1 and mass2</span>
@@ -732,8 +733,8 @@
 
         <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">njit</span><span class="p">(</span>
-                <span class="k">lambda</span> <span class="n">size_</span><span class="p">:</span> <span class="n">lognormal_distribution_2D</span><span class="p">(</span>
-                    <span class="n">size_</span><span class="p">,</span>
+                <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">lognormal_distribution_2D</span><span class="p">(</span>
+                    <span class="n">size</span><span class="p">,</span>
                     <span class="n">m_min</span><span class="o">=</span><span class="n">m_min</span><span class="p">,</span>
                     <span class="n">m_max</span><span class="o">=</span><span class="n">m_max</span><span class="p">,</span>
                     <span class="n">Mc</span><span class="o">=</span><span class="n">Mc</span><span class="p">,</span>
@@ -801,8 +802,8 @@
 
         <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">njit</span><span class="p">(</span>
-                <span class="k">lambda</span> <span class="n">size_</span><span class="p">:</span> <span class="n">lognormal_distribution_2D</span><span class="p">(</span>
-                    <span class="n">size_</span><span class="p">,</span>
+                <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">lognormal_distribution_2D</span><span class="p">(</span>
+                    <span class="n">size</span><span class="p">,</span>
                     <span class="n">m_min</span><span class="o">=</span><span class="n">m_min</span><span class="p">,</span>
                     <span class="n">m_max</span><span class="o">=</span><span class="n">m_max</span><span class="p">,</span>
                     <span class="n">Mc</span><span class="o">=</span><span class="n">Mc</span><span class="p">,</span>
@@ -866,7 +867,99 @@
         <span class="n">model</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">BNS</span><span class="p">(</span><span class="n">mminns</span><span class="o">=</span><span class="n">mminns</span><span class="p">,</span> <span class="n">mmaxns</span><span class="o">=</span><span class="n">mmaxns</span><span class="p">,</span> <span class="n">alphans</span><span class="o">=</span><span class="n">alphans</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
-            <span class="n">sampler_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size_</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">Nsample</span><span class="o">=</span><span class="n">size_</span><span class="p">)</span>
+            <span class="n">sampler_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">Nsample</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">sampler_function</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># sampling</span>
+            <span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">Nsample</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="p">(</span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="CBCSourceParameterDistribution.binary_masses_NSBH_broken_powerlaw">
+<a class="viewcode-back" href="../../../autoapi/ler/rates/index.html#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_NSBH_broken_powerlaw">[docs]</a>
+    <span class="k">def</span> <span class="nf">binary_masses_NSBH_broken_powerlaw</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">mminbh</span><span class="o">=</span><span class="mi">26</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="o">=</span><span class="mi">125</span><span class="p">,</span> <span class="n">alpha_1</span><span class="o">=</span><span class="mf">6.75</span><span class="p">,</span> <span class="n">alpha_2</span><span class="o">=</span><span class="mf">6.75</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">delta_m</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">mminns</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">mmaxns</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">alphans</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to calculate source mass1 and mass2 of NSBH from powerlaw distribution (gwcosmo). Parameters are mminbh=26,mmaxbh=125,alpha_1=6.75,alpha_2=6.75,b=0.5,delta_m=5,mminns=1.0,mmaxns=3.0,alphans=0.0.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        size : `int`</span>
+<span class="sd">            Number of samples to draw</span>
+<span class="sd">        mminbh : `float`</span>
+<span class="sd">            Minimum mass of the black hole (Msun)</span>
+<span class="sd">            default: 26</span>
+<span class="sd">        mmaxbh : `float`</span>
+<span class="sd">            Maximum mass of the black hole (Msun)</span>
+<span class="sd">            default: 125</span>
+<span class="sd">        alpha_1 : `float`</span>
+<span class="sd">            Power law index for the primary mass distribution</span>
+<span class="sd">            default: 6.75</span>
+<span class="sd">        alpha_2 : `float`</span>
+<span class="sd">            Power law index for the secondary mass distribution</span>
+<span class="sd">            default: 6.75</span>
+<span class="sd">        b : `float`</span>
+<span class="sd">            Break point of the power law</span>
+<span class="sd">            default: 0.5</span>
+<span class="sd">        delta_m : `float`</span>
+<span class="sd">            Range of mass tapering on</span>
+<span class="sd">            default: 5</span>
+<span class="sd">        mminns : `float`</span>
+<span class="sd">            Minimum mass of the neutron star (Msun)</span>
+<span class="sd">            default: 1.0</span>
+<span class="sd">        mmaxns : `float`</span>
+<span class="sd">            Maximum mass of the neutron star (Msun)</span>
+<span class="sd">            default: 3.0</span>
+<span class="sd">        alphans : `float`</span>
+<span class="sd">            Power law index for the neutron star mass distribution</span>
+<span class="sd">            default: 0.0</span>
+<span class="sd">        get_attribute : `bool`</span>
+<span class="sd">            If True, return a sampler function with size as the only input where parameters are fixed to the given values.</span>
+<span class="sd">        param : `dict`</span>
+<span class="sd">            Allows to pass in above parameters as dict.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mass_1_source : `numpy.ndarray` (1D array of floats)</span>
+<span class="sd">            Array of mass1 in source frame (Msun)</span>
+<span class="sd">        mass_2_source : `numpy.ndarray` (1D array of floats)</span>
+<span class="sd">            Array of mass2 in source frame (Msun)</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        ----------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.gw_source_population import CBCSourceParameterDistribution</span>
+<span class="sd">        &gt;&gt;&gt; cbc = CBCSourceParameterDistribution()</span>
+<span class="sd">        &gt;&gt;&gt; m1_src, m2_src = cbc.binary_masses_NSBH_broken_powerlaw(size=1000)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">param</span><span class="p">:</span>
+            <span class="n">mminbh</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;mminbh&quot;</span><span class="p">]</span>
+            <span class="n">mmaxbh</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;mmaxbh&quot;</span><span class="p">]</span>
+            <span class="n">alpha_1</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;alpha_1&quot;</span><span class="p">]</span>
+            <span class="n">alpha_2</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;alpha_2&quot;</span><span class="p">]</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]</span>
+            <span class="n">delta_m</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;delta_m&quot;</span><span class="p">]</span>
+            <span class="n">mminns</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;mminns&quot;</span><span class="p">]</span>
+            <span class="n">mmaxns</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;mmaxns&quot;</span><span class="p">]</span>
+            <span class="n">alphans</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;alphans&quot;</span><span class="p">]</span>
+
+        <span class="c1"># mass function for NSBH</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">NSBH_broken_powerlaw</span><span class="p">(</span>
+            <span class="n">mminbh</span><span class="o">=</span><span class="n">mminbh</span><span class="p">,</span>
+            <span class="n">mmaxbh</span><span class="o">=</span><span class="n">mmaxbh</span><span class="p">,</span>
+            <span class="n">alpha_1</span><span class="o">=</span><span class="n">alpha_1</span><span class="p">,</span>
+            <span class="n">alpha_2</span><span class="o">=</span><span class="n">alpha_2</span><span class="p">,</span>
+            <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span>
+            <span class="n">delta_m</span><span class="o">=</span><span class="n">delta_m</span><span class="p">,</span>
+            <span class="n">mminns</span><span class="o">=</span><span class="n">mminns</span><span class="p">,</span>
+            <span class="n">mmaxns</span><span class="o">=</span><span class="n">mmaxns</span><span class="p">,</span>
+            <span class="n">alphans</span><span class="o">=</span><span class="n">alphans</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
+            <span class="n">sampler_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">Nsample</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">sampler_function</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># sampling</span>
@@ -990,8 +1083,8 @@
         <span class="c1"># sample from inverse cdf</span>
         <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">njit</span><span class="p">(</span>
-                <span class="k">lambda</span> <span class="n">size_</span><span class="p">:</span> <span class="n">inverse_transform_sampler_m1m2</span><span class="p">(</span>
-                    <span class="n">size_</span><span class="p">,</span> <span class="n">inv_cdf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">inv_cdf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">inverse_transform_sampler_m1m2</span><span class="p">(</span>
+                    <span class="n">size</span><span class="p">,</span> <span class="n">inv_cdf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">inv_cdf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1035,7 +1128,7 @@
             <span class="n">value</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">size_</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size_</span><span class="p">)</span> <span class="o">*</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">*</span> <span class="n">value</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">*</span> <span class="n">value</span></div>
 
@@ -1080,7 +1173,7 @@
             <span class="n">max_</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;max_&quot;</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">size_</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">min_</span><span class="p">,</span> <span class="n">max_</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size_</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">min_</span><span class="p">,</span> <span class="n">max_</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">min_</span><span class="p">,</span> <span class="n">max_</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span></div>
 
@@ -1110,7 +1203,7 @@
 
         <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">njit</span><span class="p">(</span>
-                <span class="k">lambda</span> <span class="n">size_</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size_</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span></div>
@@ -1141,7 +1234,7 @@
 
         <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">njit</span><span class="p">(</span>
-                <span class="k">lambda</span> <span class="n">size_</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size_</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span></div>
@@ -1258,7 +1351,7 @@
         <span class="k">if</span> <span class="n">event_type</span> <span class="o">==</span> <span class="s2">&quot;BBH&quot;</span><span class="p">:</span>
             <span class="n">merger_rate_density_prior</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_bbh_popI_II_oguri2018&quot;</span>
             <span class="n">merger_rate_density_prior_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-                <span class="n">R0</span><span class="o">=</span><span class="mf">23.9</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">b3</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">b4</span><span class="o">=</span><span class="mi">30</span>
+                <span class="n">R0</span><span class="o">=</span><span class="mf">23.9</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">b3</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">b4</span><span class="o">=</span><span class="mi">30</span>  <span class="c1"># </span>
             <span class="p">)</span>
             <span class="n">source_frame_masses_prior</span> <span class="o">=</span> <span class="s2">&quot;binary_masses_BBH_popI_II_powerlaw_gaussian&quot;</span>
             <span class="n">source_frame_masses_prior_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>

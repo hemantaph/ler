@@ -28,7 +28,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Unlensed events" href="Unlensed_events.html" />
+    <link rel="next" title="Gravitational wave event rates" href="GW_events.html" />
     <link rel="prev" title="Installation" href="Installation2.html" /> 
 </head>
 
@@ -55,8 +55,10 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Installation2.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Unlensed_events.html">Unlensed events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GW_equations.html">GW event sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -99,40 +101,59 @@
   <section id="Summary">
 <h1>Summary<a class="headerlink" href="#Summary" title="Link to this heading"></a></h1>
 <p align="center"><p><img alt="Your Logo" class="no-scaled-link" src="_images/sl.png" style="width: 100%;" /></p>
-</p><p><code class="docutils literal notranslate"><span class="pre">LeR</span></code> is a statistical-based python package whose core function is designed for the computation of detectable rates pertaining to both lensed and unlensed gravitational wave (GW) events. This calculation intricately hinges upon the interplay of various components within the package, which can be categorized into three primary segments: 1. Sampling the properties of compact-binary sources, 2. Sampling characteristics of lens galaxies, and 3. Solving the lens equation to derive image attributes
-of the source. The holistic functionality of the package is built upon leveraging array operations and linear algebra from the <code class="docutils literal notranslate"><span class="pre">numpy</span></code> library, interpolation from <code class="docutils literal notranslate"><span class="pre">scipy</span></code>, and the <code class="docutils literal notranslate"><span class="pre">multiprocessing</span></code> capability inherent to Python. This design optimizes both speed and functionality while upholding user-friendliness. The architecture of the “LeR” API is deliberately organized such that each distinct functionality holds its own significance in scientific research. Simultaneously, these
-functionalities seamlessly integrate and can be employed collectively based on specific research requirements. Key features of <code class="docutils literal notranslate"><span class="pre">LeR</span></code> and its dependencies can be summarized as follows,</p>
+</p><p>LeR is a statistical-based python package whose core function is designed for the computation of detectable rates pertaining to both lensed and unlensed gravitational wave (GW) events. This calculation intricately hinges upon the interplay of various components within the package, which can be categorized into four primary segments: <em>1.</em> Sampling the properties of compact-binary sources, <em>2.</em> Sampling the characteristics of lens galaxies, <em>3.</em> Solving the lens equations to derive the properties
+of the resultant images, and finally, <em>4.</em> Computing the rates of detectable GW events. The holistic functionality of the package is built upon leveraging array operations and linear algebra from the <em>numpy</em> library, complemented by interpolation methods from <em>scipy</em> and Python’s native <em>multiprocessing</em> capabilities. The software’s efficiency is notably enhanced by the <em>numba</em> library’s Just-In-Time (<em>njit</em>, n: no-python mode) compilation, which dynamically converts Python and NumPy code into
+machine code, thereby optimizing performance in numerical computations involving extensive loops and array operations. Predominantly, LeR employs the inverse transform sampling method, utilizing interpolated inverse cumulative distribution functions (CDFs). This approach eschews the need for rejection sampling, which often requires numerous loops and the handling of relatively tedious probability density functions (PDFs) of the sampled parameters. The overall design of the package optimizes both
+speed and functionality while upholding user-friendliness. The architecture of the LeR API is deliberately organized such that each distinct functionality holds its own significance in scientific research. Simultaneously, these functionalities seamlessly integrate and can be employed collectively based on specific research requirements. Key features of LeR and its dependencies can be summarized as follows:</p>
 <ul class="simple">
-<li><p>Detectable merger rates:</p>
+<li><p>Sampling Gravitational Wave (GW) Source Properties:</p>
 <ul>
-<li><p>The calculation depends not only on simulated event properties but also on GW detector detectability. We compute optimal signal-to-noise ratios (SNRs) for simulated events, which can be computationally intensive. <code class="docutils literal notranslate"><span class="pre">LeR</span></code> mitigates this using <a class="reference external" href="https://github.com/hemantaph/gwsnr">gwsnr</a> for efficient and rapid SNR calculation. <code class="docutils literal notranslate"><span class="pre">gwsnr</span></code> enables rate calculation for current and future detectors with customizable sensitivities.</p></li>
-<li><p>The merger rates of both the simulated unlensed and lensed events can be computed and subsequently compared.</p></li>
+<li><p>For the unlensed events, The sampling distribution <span class="math notranslate nohighlight">\((\,R_m^U(z_s)\,)\)</span> for the source’s redshift <span class="math notranslate nohighlight">\((\,z_s\,)\)</span> is derived from the merger rate density of compact binaries, which, in turn, is based on the star formation rate. The code is meticulously designed to enable the straightforward integration of future updates or user-specified distributions of these sources.</p></li>
+<li><p>The process of sampling both intrinsic and extrinsic parameters of GW sources, represented by <span class="math notranslate nohighlight">\(\theta_i\)</span>, utilizes the prior distributions <span class="math notranslate nohighlight">\((P(\theta_i))\)</span> available within the <em>gwcosmo</em> and <em>bilby</em> Python packages. Before parameterizing the rate calculation, the software allows users the flexibility to manually alter any pertinent parameters as required. The said feature is employed when one doesn’t specifically have a prior distribution for a particular parameter.</p></li>
 </ul>
 </li>
-<li><p>Sampling GW sources:</p>
+<li><p>Sampling of lens galaxies attributes and source red-shifts:</p>
 <ul>
-<li><p>The distribution of the source’s red-shift is based on the merger rate density of compact binaries, including BBHs, BNSs etc. The code is meticulously structured to facilitate straightforward incorporation of future updates or additional distributions of such sources by users.</p></li>
-<li><p>The sampling of intrinsic and extrinsic parameters of gravitational wave sources is conducted employing the prior distributions encompassed within the <code class="docutils literal notranslate"><span class="pre">gwcosmo</span></code> and <code class="docutils literal notranslate"><span class="pre">bilby</span></code> Python packages. Prior to parameterizing the rate calculation, users retain the flexibility to manually substitute any relevant parameters as needed.</p></li>
-</ul>
-</li>
-<li><p>Sampling of lens galaxies:</p>
-<ul>
-<li><p>The Lens distribution follows <a class="reference external" href="https://arxiv.org/abs/1807.02584">(Oguri et al. 2018</a>. It depends on the sampled source red-shifts and also on the optical depth.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">LeR</span></code> employs the Elliptical Power Law model with the external shear (EPL+Shear) model for sampling other galaxy features, which is available in the <code class="docutils literal notranslate"><span class="pre">Lenstronomy</span></code> package.</p></li>
-<li><p>Rejection sampling is applied on the above samples on condition that whether the event is strongly lensed or not.</p></li>
+<li><p>For lensed case, the source redshift <span class="math notranslate nohighlight">\((z_s)\)</span> is sampled under the strong lensing condition <span class="math notranslate nohighlight">\((\text{SL})\)</span>, based on the precomputed probability of strong lensing with source at <span class="math notranslate nohighlight">\(z_s\)</span> <span class="math notranslate nohighlight">\((\text{optical depth: }P(z_s|\text{SL})\,)\)</span>. This probability can be recalculated for specified configurations of lens galaxies, leveraging <em>multiprocessing</em> and <em>njit</em> functionalities for enhanced efficiency.</p></li>
+<li><p>The package utilizes the Elliptical Power Law with external shear (EPL+Shear) model for galaxy parameters <span class="math notranslate nohighlight">\((\theta_L)\)</span> sampling, following <a class="reference external" href="https://arxiv.org/abs/2106.06303">Wierda et. al 2021</a>. Rejection sampling is applied on the above samples on condition that whether the event is strongly lensed or not, <span class="math notranslate nohighlight">\(P(\theta_L|z_s,\text{SL})\)</span>.</p></li>
 </ul>
 </li>
 <li><p>Generation of image properties:</p>
 <ul>
-<li><p>Source position is sampled from the caustic in the source plane.</p></li>
-<li><p>Sampled lens properties and source position is fed in <code class="docutils literal notranslate"><span class="pre">Lenstronomy</span></code> to generate properties of the images.</p></li>
-<li><p>Properties like magnification and time delay are essential as it modifies the source signal strength, changing the SNR and detection ability.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">LeR</span></code> can handle both super-threshold and sub-threshold events in picking detectable events and rate computation.</p></li>
+<li><p>Source position <span class="math notranslate nohighlight">\((\beta)\)</span> is sampled from the caustic in the source plane.</p></li>
+<li><p>Sampled lens properties and source position is fed in <em>Lenstronomy</em> to generate properties of the images. This is the slowest part of the entire simulation, which LeR tackles through parallelization with multiprocessing.</p></li>
+<li><p>Image properties like magnification <span class="math notranslate nohighlight">\((\mu_i)\)</span> and time delay (<span class="math notranslate nohighlight">\(\Delta t_i\)</span>) modifies the original source signal strength, changing the signal-to-noise ratio SNR and our ability to detect.</p></li>
+</ul>
+</li>
+<li><p>Calculation of Detectable Merger Rates Per Year:</p>
+<ul>
+<li><p>The calculation of rates necessitates integration over simulated events that meet specific detection criteria. This process includes computing SNRs <span class="math notranslate nohighlight">\((\rho)\)</span> for each event or its lensed images, followed by an assessment against a predetermined threshold(s) <span class="math notranslate nohighlight">\((\rho_{th})\)</span>.</p></li>
+<li><p>SNR calculations are optimized using <a class="reference external" href="https://github.com/hemantaph/gwsnr">gwsnr</a>, leveraging interpolation and multiprocessing for accuracy and speed.</p></li>
+<li><p>Simulated events and rate results, along with input configurations, are systematically archived for easy access and future analysis. Additionally, all interpolators used in the process are preserved for future applications.</p></li>
 </ul>
 </li>
 </ul>
-<p>The <code class="docutils literal notranslate"><span class="pre">LeR</span></code> software has been developed to cater to the requirements of both the LIGO scientific collaboration and research scholars engaged in astrophysics studies. It is currently used in generating detectable lensing events and GW lensing rates with the available information on current and future detectors. The results will predict the feasibility of various detectors for detecting and studying such lensing events. Statistics generated from <code class="docutils literal notranslate"><span class="pre">LeR</span></code> will be used in event validation of the
-ongoing effort to detect lensed gravitational waves. Lastly, <code class="docutils literal notranslate"><span class="pre">LeR</span></code> was designed with upgradability in mind to include additional statistics as required by the related research.</p>
+<p>The LeR software has been developed to cater to the requirements of both the LIGO-Virgo-KAGRA Scientific Collaboration and research scholars engaged in astrophysics studies. It is currently used in generating detectable lensing events and GW lensing rates with the available information on current and future detectors. The results will predict the capacity of various detectors to detect and study such lensing events. Statistics generated from LeR will be used in event validation for the ongoing
+effort to detect lensed GWs. Lastly, LeR was designed with upgradability in mind to include additional statistics as required by the related research.</p>
+<p><span class="math notranslate nohighlight">\(\textbf{Detectable Unlensed rates:}\)</span></p>
+<p><span class="math">\begin{equation*}
+\begin{split}
+R_U = \int & dz_s R_m^U(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\}
+\end{split}
+\end{equation*}</span></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(z_s\)</span>: GW source redshift, <span class="math notranslate nohighlight">\(R_m^U(z_s)\)</span>: source frame merger rate density in the co-moving volume at <span class="math notranslate nohighlight">\(z_s\)</span>, <span class="math notranslate nohighlight">\(\theta\)</span>: GW source parameters, <span class="math notranslate nohighlight">\(P\)</span>: probability distribution, <span class="math notranslate nohighlight">\(\rho\)</span>: SNR, <span class="math notranslate nohighlight">\(\rho_{th}\)</span>: SNR threshold, <span class="math notranslate nohighlight">\(\Theta\)</span>: Heaviside function to select detectable events.</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(\textbf{Detectable Lensed rates:}\)</span></p>
+<p><span class="math">\begin{equation*}
+\begin{split}
+R_L = \int & dz_s R_m^L(z_s) \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \, \\
+& \, P(\theta) P(\theta_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta d\theta_L dz_s
+\end{split}
+\end{equation*}</span></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(R_m^L(z_s)\)</span>: strongly lensed source frame merger rate density in the co-moving volume at <span class="math notranslate nohighlight">\(z_s\)</span>, <span class="math notranslate nohighlight">\(\theta_L\)</span>: lens parameters, <span class="math notranslate nohighlight">\(\beta\)</span>: image properties, <span class="math notranslate nohighlight">\(\mu\)</span>: image magnification, <span class="math notranslate nohighlight">\(\Delta t\)</span>: image time delay, <span class="math notranslate nohighlight">\(\mathcal{O}\)</span>: logical OR operator applied across all <span class="math notranslate nohighlight">\(\Theta_i\)</span> of the images, <span class="math notranslate nohighlight">\(\text{SL}\)</span>: strong lensing condition.</p></li>
+</ul>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -148,7 +169,7 @@ ongoing effort to detect lensed gravitational waves. Lastly, <code class="docuti
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="Installation2.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Unlensed_events.html" class="btn btn-neutral float-right" title="Unlensed events" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="GW_events.html" class="btn btn-neutral float-right" title="Gravitational wave event rates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -539,7 +539,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             beta=beta,
         )
         if get_attribute:
-            sampler_function = lambda size_: model.sample(Nsample=size_)
+            sampler_function = lambda size: model.sample(Nsample=size)
             return sampler_function
         else:
             # sample mass1 and mass2
@@ -603,8 +603,8 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         if get_attribute:
             return njit(
-                lambda size_: lognormal_distribution_2D(
-                    size_,
+                lambda size: lognormal_distribution_2D(
+                    size,
                     m_min=m_min,
                     m_max=m_max,
                     Mc=Mc,
@@ -669,8 +669,8 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         if get_attribute:
             return njit(
-                lambda size_: lognormal_distribution_2D(
-                    size_,
+                lambda size: lognormal_distribution_2D(
+                    size,
                     m_min=m_min,
                     m_max=m_max,
                     Mc=Mc,
@@ -731,7 +731,96 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         model = p.BNS(mminns=mminns, mmaxns=mmaxns, alphans=alphans)
 
         if get_attribute:
-            sampler_function = lambda size_: model.sample(Nsample=size_)
+            sampler_function = lambda size: model.sample(Nsample=size)
+            return sampler_function
+        else:
+            # sampling
+            mass_1_source, mass_2_source = model.sample(Nsample=size)
+
+            return (mass_1_source, mass_2_source)
+        
+    def binary_masses_NSBH_broken_powerlaw(
+        self, size, mminbh=26, mmaxbh=125, alpha_1=6.75, alpha_2=6.75, b=0.5, delta_m=5, mminns=1.0, mmaxns=3.0, alphans=0.0, get_attribute=False, param=None
+    ):
+        """
+        Function to calculate source mass1 and mass2 of NSBH from powerlaw distribution (gwcosmo). Parameters are mminbh=26,mmaxbh=125,alpha_1=6.75,alpha_2=6.75,b=0.5,delta_m=5,mminns=1.0,mmaxns=3.0,alphans=0.0.
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+        mminbh : `float`
+            Minimum mass of the black hole (Msun)
+            default: 26
+        mmaxbh : `float`
+            Maximum mass of the black hole (Msun)
+            default: 125
+        alpha_1 : `float`
+            Power law index for the primary mass distribution
+            default: 6.75
+        alpha_2 : `float`
+            Power law index for the secondary mass distribution
+            default: 6.75
+        b : `float`
+            Break point of the power law
+            default: 0.5
+        delta_m : `float`
+            Range of mass tapering on
+            default: 5
+        mminns : `float`
+            Minimum mass of the neutron star (Msun)
+            default: 1.0
+        mmaxns : `float`
+            Maximum mass of the neutron star (Msun)
+            default: 3.0
+        alphans : `float`
+            Power law index for the neutron star mass distribution
+            default: 0.0
+        get_attribute : `bool`
+            If True, return a sampler function with size as the only input where parameters are fixed to the given values.
+        param : `dict`
+            Allows to pass in above parameters as dict.
+
+        Returns
+        ----------
+        mass_1_source : `numpy.ndarray` (1D array of floats)
+            Array of mass1 in source frame (Msun)
+        mass_2_source : `numpy.ndarray` (1D array of floats)
+            Array of mass2 in source frame (Msun)
+
+        Examples
+        ----------
+        >>> from ler.gw_source_population import CBCSourceParameterDistribution
+        >>> cbc = CBCSourceParameterDistribution()
+        >>> m1_src, m2_src = cbc.binary_masses_NSBH_broken_powerlaw(size=1000)
+        """
+
+        if param:
+            mminbh = param["mminbh"]
+            mmaxbh = param["mmaxbh"]
+            alpha_1 = param["alpha_1"]
+            alpha_2 = param["alpha_2"]
+            b = param["b"]
+            delta_m = param["delta_m"]
+            mminns = param["mminns"]
+            mmaxns = param["mmaxns"]
+            alphans = param["alphans"]
+
+        # mass function for NSBH
+        model = p.NSBH_broken_powerlaw(
+            mminbh=mminbh,
+            mmaxbh=mmaxbh,
+            alpha_1=alpha_1,
+            alpha_2=alpha_2,
+            b=b,
+            delta_m=delta_m,
+            mminns=mminns,
+            mmaxns=mmaxns,
+            alphans=alphans,
+        )
+
+        if get_attribute:
+            sampler_function = lambda size: model.sample(Nsample=size)
             return sampler_function
         else:
             # sampling
@@ -852,8 +941,8 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         # sample from inverse cdf
         if get_attribute:
             return njit(
-                lambda size_: inverse_transform_sampler_m1m2(
-                    size_, inv_cdf[0], inv_cdf[1]
+                lambda size: inverse_transform_sampler_m1m2(
+                    size, inv_cdf[0], inv_cdf[1]
                 )
             )
         else:
@@ -894,7 +983,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             value = param["value"]
 
         if get_attribute:
-            return njit(lambda size_: np.ones(size_) * value)
+            return njit(lambda size: np.ones(size) * value)
         else:
             return np.ones(size) * value
 
@@ -936,7 +1025,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             max_ = param["max_"]
 
         if get_attribute:
-            return njit(lambda size_: np.random.uniform(min_, max_, size=size_))
+            return njit(lambda size: np.random.uniform(min_, max_, size=size))
         else:
             return np.random.uniform(min_, max_, size=size)
 
@@ -963,7 +1052,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         if get_attribute:
             return njit(
-                lambda size_: np.arcsin((np.random.uniform(0, 1, size=size_) * 2 - 1))
+                lambda size: np.arcsin((np.random.uniform(0, 1, size=size) * 2 - 1))
             )
         else:
             return np.arcsin((np.random.uniform(0, 1, size=size) * 2 - 1))
@@ -991,7 +1080,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         if get_attribute:
             return njit(
-                lambda size_: np.arccos((np.random.uniform(0, 1, size=size_) - 0.5) * 2)
+                lambda size: np.arccos((np.random.uniform(0, 1, size=size) - 0.5) * 2)
             )
         else:
             return np.arccos((np.random.uniform(0, 1, size=size) - 0.5) * 2)
@@ -1102,7 +1191,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         if event_type == "BBH":
             merger_rate_density_prior = "merger_rate_density_bbh_popI_II_oguri2018"
             merger_rate_density_prior_params = dict(
-                R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30
+                R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30  # 
             )
             source_frame_masses_prior = "binary_masses_BBH_popI_II_powerlaw_gaussian"
             source_frame_masses_prior_params = dict(

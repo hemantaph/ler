@@ -50,7 +50,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">GW event sampling (Analytical formulation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -202,7 +203,7 @@
 
 <span class="nd">@njit</span>
 <div class="viewcode-block" id="axis_ratio_rayleigh">
-<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/jit_functions/index.html#ler.lens_galaxy_population.axis_ratio_rayleigh">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/jit_functions/index.html#ler.image_properties.axis_ratio_rayleigh">[docs]</a>
 <span class="k">def</span> <span class="nf">axis_ratio_rayleigh</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="n">q_min</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">q_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to sample axis ratio from rayleigh distribution with given velocity dispersion.</span>
@@ -247,7 +248,7 @@
 
 <span class="nd">@njit</span>
 <div class="viewcode-block" id="velocity_dispersion_z_dependent">
-<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/jit_functions/index.html#ler.lens_galaxy_population.velocity_dispersion_z_dependent">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/jit_functions/index.html#ler.image_properties.velocity_dispersion_z_dependent">[docs]</a>
 <span class="k">def</span> <span class="nf">velocity_dispersion_z_dependent</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span> <span class="n">zl_list</span><span class="p">,</span> <span class="n">vd_inv_cdf</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to sample velocity dispersion from the interpolator</span>
@@ -280,7 +281,7 @@
 
 <span class="nd">@njit</span>
 <div class="viewcode-block" id="lens_redshift_SDSS_catalogue">
-<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/jit_functions/index.html#ler.lens_galaxy_population.lens_redshift_SDSS_catalogue">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/jit_functions/index.html#ler.image_properties.lens_redshift_SDSS_catalogue">[docs]</a>
 <span class="k">def</span> <span class="nf">lens_redshift_SDSS_catalogue</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">splineDc</span><span class="p">,</span> <span class="n">splineDcInv</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">cdf</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to sample lens redshift from the SDSS catalogue.</span>
@@ -387,7 +388,7 @@
 
 <span class="nd">@njit</span>
 <div class="viewcode-block" id="bounded_normal_sample">
-<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/jit_functions/index.html#ler.lens_galaxy_population.bounded_normal_sample">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/jit_functions/index.html#ler.image_properties.bounded_normal_sample">[docs]</a>
 <span class="k">def</span> <span class="nf">bounded_normal_sample</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to sample from a normal distribution with bounds.</span>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GW event sampling (Analytical formulation) &mdash; ler 0.3.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="_static/nbsphinx-code-cells.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=4621528c"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Lensed event rates" href="Lensed_events.html" />
+    <link rel="prev" title="Gravitational wave event rates" href="GW_events.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Installation2.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">GW event sampling (Analytical formulation)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Initial-setup">Initial setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Rate-equation-(statistical-formulation)">Rate equation (statistical formulation)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#The-order-of-sampling-and-rate-calculation-steps-in-LeR-are-listed-below.">The order of sampling and rate calculation steps in LeR are listed below.</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">GW event sampling (Analytical formulation)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/GW_equations.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="GW-event-sampling-(Analytical-formulation)">
+<h1>GW event sampling (Analytical formulation)<a class="headerlink" href="#GW-event-sampling-(Analytical-formulation)" title="Link to this heading"></a></h1>
+<section id="Initial-setup">
+<h2>Initial setup<a class="headerlink" href="#Initial-setup" title="Link to this heading"></a></h2>
+<p>Note: I will interchangeably use terms like observable events and detectable events.</p>
+<p>Define all the parameters involved.</p>
+<ul class="simple">
+<li><p>Source parameters: <span class="math notranslate nohighlight">\(\theta \in \{m_1,m_2,\iota,\phi,\psi,ra,dec,\text{spins}\}\)</span> and <span class="math notranslate nohighlight">\(z_s\)</span></p></li>
+</ul>
+<p>Given <span class="math notranslate nohighlight">\(d N^U_{obs}(z_s)\)</span> is the number of detectable gravitational wave (GW) events from sources at red-shift <span class="math notranslate nohighlight">\(z_s\)</span>, then, let rate of observing GW (number of such events happening per unit time) is given by,</p>
+<p><span class="math">\begin{equation}
+\begin{split}
+\mathcal{R}_U &= \int_{z_{min}}^{z_{max}} \frac{d N^U_{obs}(z_s)}{d \tau} \\
+&= \int_{z_{min}}^{z_{max}} \frac{d N^U_{obs}(z_s)}{d \tau \;dV_c} \frac{dV_c}{dz_s} dz_s
+\end{split} \tag{1}
+\end{equation}</span></p>
+<p><span class="math notranslate nohighlight">\(\frac{d N^U_{obs}(z_s)}{d \tau \;dV_c}\)</span> is the observed merger rate density at source-frame, and <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}\)</span> is the differential co-moving volume at red-shift <span class="math notranslate nohighlight">\(z_s\)</span>. After taking care of time-dilation, the expression looks,</p>
+<p><span class="math">\begin{equation}
+\begin{split}
+\mathcal{R}_U &= \int_{z_{min}}^{z_{max}} \frac{d N^U_{obs}(z_s)}{d t\;dV_c} \frac{1}{1+z_s} \frac{dV_c}{dz_s} dz_s \\
+&= \int_{z_{min}}^{z_{max}} R^U_{obs}(z_s) dz_s
+\end{split} \tag{2}
+\end{equation}</span></p>
+<p>Observed merger rate density of GW events at source red-shift <span class="math notranslate nohighlight">\(z_s\)</span> (detector-frame) is given by <span class="math notranslate nohighlight">\(R^U_{obs}(z_s) = \frac{d N^U_{obs}(z_s)}{d t\;dV_c}\)</span>. And, let <span class="math notranslate nohighlight">\(R(z_s)\)</span> be the rate of the merger of GW sources (source frame) at <span class="math notranslate nohighlight">\(z_s\)</span>, regardless of whether it is detectable or not.</p>
+<p><span class="math">\begin{equation}
+\begin{split}
+\mathcal{R}_U &= \int_{z_{min}}^{z_{max}} R^U_{obs}(z_s) dz_s \\
+&= \int_{z_{min}}^{z_{max}} R(z_s) P(obs|z_s) dz_s \\
+&= N_1 \int_{z_{min}}^{z_{max}} P(z_s) P(obs|z_s) dz_s \\
+\end{split} \tag{3}
+\end{equation}</span></p>
+<p><span class="math notranslate nohighlight">\(P(obs|z_s)\)</span> is the probability of observing a GW event at red-shift <span class="math notranslate nohighlight">\(z_s\)</span>. Normalizing factor: <span class="math notranslate nohighlight">\(N_1 = \int_{z_{min}}^{z_{max}} R(z_s) dz_s\)</span>.</p>
+</section>
+<section id="Rate-equation-(statistical-formulation)">
+<h2>Rate equation (statistical formulation)<a class="headerlink" href="#Rate-equation-(statistical-formulation)" title="Link to this heading"></a></h2>
+<p>Let’s now consider all the source parameters <span class="math notranslate nohighlight">\(\theta\)</span>, {m_1,m_2,D_L,:nbsphinx-math:<cite>iota</cite>,:nbsphinx-math:<cite>phi</cite>,:nbsphinx-math:<cite>psi</cite>,ra,dec}</p>
+<p><span class="math">\begin{equation}
+\begin{split}
+\mathcal{R}_U &= N_1 \int_{z_{min}}^{z_{max}} P(z_s) P(obs|z_s) dz_s \\
+& \text{consider} \int \rightarrow \int_{z_s}\int_{\theta} \rightarrow \int_{z_s}\int_{m_1}\int_{m_2}\int_{\iota}\int_{\phi}\int_{\psi}\int_{ra}\int_{dec}\int_{\text{spins}} \\
+\mathcal{R}_U &= N_1 \int P(z_s) P(obs|z_s, \theta) P(\theta) d\theta dz_s
+\end{split} \tag{8}
+\end{equation}</span></p>
+<p>Here, I have assumed <span class="math notranslate nohighlight">\(P(\theta)\)</span> is a normalized multidimensional pdf. All parameters in <span class="math notranslate nohighlight">\(\theta\)</span>, other than <span class="math notranslate nohighlight">\(m_1\)</span> and <span class="math notranslate nohighlight">\(m_2\)</span>, are sampled independently. The pdf <span class="math notranslate nohighlight">\(P(\theta)\)</span> is a product of individual pdfs for each parameter.</p>
+<p>Final expression for the rate of observing GW events is given by,</p>
+<p><span class="math">\begin{equation}
+\begin{split}
+\mathcal{R}_U &= N_1 \bigg< P(obs|\theta, z_s) \bigg>_{z_s\in P(z_s), \theta\in P(\theta)} \\
+P(\theta) &= P(m_1,m_2)P(\iota)P(\phi)P(\psi)P(ra)P(dec)P(\text{spins})
+\end{split} \tag{4}
+\end{equation}</span></p>
+<section id="The-order-of-sampling-and-rate-calculation-steps-in-LeR-are-listed-below.">
+<h3>The order of sampling and rate calculation steps in LeR are listed below.<a class="headerlink" href="#The-order-of-sampling-and-rate-calculation-steps-in-LeR-are-listed-below." title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Sample <span class="math notranslate nohighlight">\(z_s\)</span> from <span class="math notranslate nohighlight">\(P(z_s) = \frac{R(z_s)}{N_1}\)</span>.</p></li>
+<li><p>Sample <span class="math notranslate nohighlight">\(\theta\)</span> from <span class="math notranslate nohighlight">\(P(\theta)\)</span>.</p></li>
+<li><p>Calculate SNR with <a class="reference external" href="https://gwsnr.readthedocs.io/en/latest/">gwsnr</a></p></li>
+<li><p>Apply the SNR threshold and check whether the event is detectable or not.</p></li>
+<li><p>Calculate rate of GW events, <span class="math notranslate nohighlight">\(\mathcal{R}_U\)</span> using equation 4.</p></li>
+</ol>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="GW_events.html" class="btn btn-neutral float-left" title="Gravitational wave event rates" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Lensed_events.html" class="btn btn-neutral float-right" title="Lensed event rates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
