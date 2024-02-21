@@ -11,7 +11,7 @@ import numpy as np
 from scipy.stats import norm
 from astropy.cosmology import LambdaCDM
 from ..lens_galaxy_population import LensGalaxyParameterDistribution
-from ..utils import load_json, append_json, get_param_from_json, batch_handler
+from ..utils import load_json, append_json, get_param_from_json, batch_handler, add_dict_values
 
 
 class LeR(LensGalaxyParameterDistribution):
@@ -618,6 +618,7 @@ class LeR(LensGalaxyParameterDistribution):
 
         self.snr = gwsnr.snr
         self.list_of_detectors = gwsnr.detector_list
+        self.snr_bilby = gwsnr.compute_bilby_snr
         #self.pdet = gwsnr.pdet
 
     def store_ler_params(self, output_jsonfile="./ler_params.json"):
@@ -664,7 +665,7 @@ class LeR(LensGalaxyParameterDistribution):
             pass
 
     def unlensed_cbc_statistics(
-        self, size=None, resume=False, output_jsonfile=None,
+        self, size=None, resume=False, save_batch=True, output_jsonfile=None,
     ):
         """
         Function to generate unlensed GW source parameters. This function also stores the parameters in json file.
@@ -677,6 +678,8 @@ class LeR(LensGalaxyParameterDistribution):
         resume : `bool`
             resume = False (default) or True.
             if True, the function will resume from the last batch.
+        save_batch : `bool`
+            if True, the function will save the parameters in batches. if False, the function will save all the parameters at the end of sampling. save_batch=False is faster.
         output_jsonfile : `str`
             json file name for storing the parameters.
             default output_jsonfile = './unlensed_params.json'.
@@ -706,19 +709,28 @@ class LeR(LensGalaxyParameterDistribution):
         print(f"unlensed params will be store in {output_jsonfile}")
 
         # sampling in batches
+        self.dict_buffer = None
         batch_handler(
             size=size,
             batch_size=self.batch_size,
             sampling_routine=self.unlensed_sampling_routine,
             output_jsonfile=output_jsonfile,
+            save_batch=save_batch,
             resume=resume,
         )
 
-        unlensed_param = get_param_from_json(output_jsonfile)
+        if save_batch:
+            unlensed_param = get_param_from_json(output_jsonfile)
+        else:
+            unlensed_param = self.dict_buffer.copy()
+            # save the last batch
+            print(f"saving all unlensed_params in {output_jsonfile}...")
+            append_json(output_jsonfile, unlensed_param, replace=True)
+        self.dict_buffer = None  # save memory
+
         return unlensed_param
     
-    def unlensed_sampling_routine(self, size, output_jsonfile, resume=False,
-    ):
+    def unlensed_sampling_routine(self, size, output_jsonfile, resume=False, save_batch=True):
         """
         Function to generate unlensed GW source parameters. This function also stores the parameters in json file.
 
@@ -749,8 +761,16 @@ class LeR(LensGalaxyParameterDistribution):
         snrs = self.snr(gw_param_dict=unlensed_param)
         unlensed_param.update(snrs)
 
-        # store all params in json file
-        append_json(file_name=output_jsonfile, dictionary=unlensed_param, replace=not (resume))
+        # adding batches
+        if not save_batch:
+            if self.dict_buffer is None:
+                self.dict_buffer = unlensed_param
+            else:
+                for key, value in unlensed_param.items():
+                    self.dict_buffer[key] = np.concatenate((self.dict_buffer[key], value))
+        else:
+            # store all params in json file
+            self.dict_buffer = append_json(file_name=output_jsonfile, new_dictionary=unlensed_param,  old_dictionary=self.dict_buffer, replace=not (resume))
 
         return unlensed_param
 
@@ -760,6 +780,8 @@ class LeR(LensGalaxyParameterDistribution):
         snr_threshold=8.0,
         output_jsonfile=None,
         detectability_condition="step_function",
+        snr_recalculation=False,
+        threshold_snr_recalculation=7.0,
     ):
         """
         Function to calculate the unlensed rate. This function also stores the parameters of the detectable events in json file.
@@ -809,7 +831,22 @@ class LeR(LensGalaxyParameterDistribution):
         else:
             print("using provided unlensed_param dict...")
             unlensed_param = unlensed_param.copy()
-            
+
+        # recalculate snr if required
+        # this ensures that the snr is recalculated for the detectable events
+        # with inner product
+        total_events = len(unlensed_param["zs"])
+        if snr_recalculation:
+            # select only above centain snr threshold
+            param = unlensed_param["optimal_snr_net"]
+            idx_detectable = param > threshold_snr_recalculation
+            # reduce the size of the dict
+            for key, value in unlensed_param.items():
+                unlensed_param[key] = value[idx_detectable]
+            # recalculate more accurate snrs 
+            snrs = self.snr_bilby(gw_param_dict=unlensed_param)
+            unlensed_param.update(snrs)
+
         if detectability_condition == "step_function":
             param = unlensed_param["optimal_snr_net"]
             threshold = snr_threshold
@@ -828,12 +865,13 @@ class LeR(LensGalaxyParameterDistribution):
             threshold = 0.5
 
         idx_detectable = param > threshold
-        print(f"number of simulated unlensed detectable events: {np.sum(idx_detectable)}")
-        print(f"number of all simulated unlensed events: {len(idx_detectable)}")
+        detectable_events = np.sum(idx_detectable)
         # montecarlo integration
         # The total rate R = norm <Theta(rho-rhoc)>
-        total_rate = self.normalization_pdf_z * np.mean(idx_detectable)
+        total_rate = self.normalization_pdf_z * detectable_events/total_events
         print(f"total unlensed rate (yr^-1) (with step function): {total_rate}")
+        print(f"number of simulated unlensed detectable events: {detectable_events}")
+        print(f"number of all simulated unlensed events: {total_events}")
 
         # store all detectable params in json file
         for key, value in unlensed_param.items():
@@ -855,7 +893,7 @@ class LeR(LensGalaxyParameterDistribution):
         return total_rate, unlensed_param
     
     def lensed_cbc_statistics(
-        self, size=None, resume=False, output_jsonfile=None,
+        self, size=None, save_batch=True, resume=False, output_jsonfile=None,
     ):
         """
         Function to generate lensed GW source parameters. This function also stores the parameters in json file.
@@ -897,18 +935,27 @@ class LeR(LensGalaxyParameterDistribution):
         print(f"lensed params will be store in {output_jsonfile}")
 
         # sampling in batches
+        self.dict_buffer = None
         batch_handler(
             size=size,
             batch_size=self.batch_size,
             sampling_routine=self.lensed_sampling_routine,
             output_jsonfile=output_jsonfile,
+            save_batch=save_batch,
             resume=resume,
         )
 
-        lensed_param = get_param_from_json(output_jsonfile)
+        if save_batch:
+            lensed_param = get_param_from_json(output_jsonfile)
+        else:
+            lensed_param = self.dict_buffer.copy()
+            # save the last batch
+            print(f"saving all lensed params in {output_jsonfile}...")
+            append_json(output_jsonfile, lensed_param, replace=True)
+        self.dict_buffer = None
         return lensed_param
     
-    def lensed_sampling_routine(self, size, output_jsonfile, resume=False):
+    def lensed_sampling_routine(self, size, output_jsonfile, save_batch=True, resume=False):
         """
         Function to generate lensed GW source parameters. This function also stores the parameters in json file.
 
@@ -945,8 +992,15 @@ class LeR(LensGalaxyParameterDistribution):
         )
         lensed_param.update(snrs)
 
-        # store all params in json file
-        append_json(file_name=output_jsonfile, dictionary=lensed_param, replace=not (resume))
+        # adding batches
+        if not save_batch:
+            if self.dict_buffer is None:
+                self.dict_buffer = lensed_param
+            else:
+                self.dict_buffer = add_dict_values(self.dict_buffer.copy(), lensed_param)
+        else:
+            # store all params in json file
+            self.dict_buffer = append_json(file_name=output_jsonfile, new_dictionary=lensed_param,  old_dictionary=self.dict_buffer, replace=not (resume))
 
         return lensed_param
 
@@ -958,6 +1012,8 @@ class LeR(LensGalaxyParameterDistribution):
         output_jsonfile=None,
         nan_to_num=True,
         detectability_condition="step_function",
+        snr_recalculation=False,
+        threshold_snr_recalculation=[7.0,7.0],
     ):
         """
         Function to calculate the lensed rate. This function also stores the parameters of the detectable events in json file.
@@ -1016,24 +1072,62 @@ class LeR(LensGalaxyParameterDistribution):
 
         # check for images with snr above threshold
         # convert to array
-        snr_threshold = np.array([snr_threshold]).reshape(-1)  
-        num_img = np.array([num_img]).reshape(-1)
+        snr_threshold_ = np.array([snr_threshold]).reshape(-1)  
+        num_img_ = np.array([num_img]).reshape(-1)
         # get descending sorted idx of snr_threshold
-        idx = np.argsort(-snr_threshold)
-        snr_threshold = snr_threshold[idx]
-        num_img = num_img[idx]
+        idx = np.argsort(-snr_threshold_)
+        snr_threshold = snr_threshold_[idx]
+        num_img = num_img_[idx]
 
         # get size of the lensed_param for a parameter
-        size = len(lensed_param["zs"])
+        total_events = len(lensed_param["zs"])
+        # recalculate snr if required
+        # this ensures that the snr is recalculated for the detectable events
+        # with inner product
+        if snr_recalculation:
+            # dealing with provided threshold_snr_recalculation
+            threshold_snr_recalculation = np.array([threshold_snr_recalculation]).reshape(-1)
+            idx = np.argsort(-threshold_snr_recalculation)
+            threshold_snr_recalculation = threshold_snr_recalculation[idx]
+            num_img_recalculation = num_img[idx]
 
+            # check optimal_snr_net is provided in dict
+            snr_param = lensed_param["optimal_snr_net"]
+            if "optimal_snr_net" in lensed_param.keys():
+                snr_param = -np.sort(-snr_param, axis=1)  # sort snr in descending order
+            else:
+                print("optimal_snr_net not provided in lensed_param dict. Exiting...")
+                return None
+            # for each row: choose a threshold and check if the number of images above threshold. Sum over the images. If sum is greater than num_img, then snr_hit = True 
+            j = 0
+            idx_max = 0
+            snr_hit = np.full(total_events, True)  # boolean array to store the result of the threshold condition
+            for i in range(len(threshold_snr_recalculation)):
+                idx_max = idx_max + num_img_recalculation[i]
+                snr_hit = snr_hit & (np.sum((snr_param[:,j:idx_max] > threshold_snr_recalculation[i]), axis=1) >= num_img_recalculation[i])
+                j = idx_max
+
+            # reduce the size of the dict
+            for key, value in lensed_param.items():
+                lensed_param[key] = value[snr_hit]
+            # recalculate more accurate snrs
+            print("calculating snrs...")
+            snrs, lensed_param = self.get_lensed_snrs(
+                snr_calculator=self.snr_bilby,
+                list_of_detectors=self.list_of_detectors,
+                lensed_param=lensed_param,
+            )
+            lensed_param.update(snrs)
+
+        # from here, we focus on calculating the rate
         if detectability_condition == "step_function":
-            snr_hit = np.full(size, True)  # boolean array to store the result of the threshold condition
-            try:
+            if "optimal_snr_net" in lensed_param.keys():
                 snr_param = lensed_param["optimal_snr_net"]
                 snr_param = -np.sort(-snr_param, axis=1)  # sort snr in descending order
-            except:
+            else:
                 print("snr not provided in lensed_param dict. Exiting...")
                 return None
+            snr_hit = np.full(len(snr_param), True)  # boolean array to store the result of the threshold condition
             
             # for each row: choose a threshold and check if the number of images above threshold. Sum over the images. If sum is greater than num_img, then snr_hit = True 
             j = 0
@@ -1044,7 +1138,7 @@ class LeR(LensGalaxyParameterDistribution):
                 j = idx_max
 
             # montecarlo integration
-            total_rate = self.normalization_pdf_z_lensed * np.mean(snr_hit)
+            total_rate = self.normalization_pdf_z_lensed * np.sum(snr_hit)/total_events
             print("total lensed rate (yr^-1) (with step function): {}".format(total_rate))
 
         elif detectability_condition == "pdet":
@@ -1072,11 +1166,11 @@ class LeR(LensGalaxyParameterDistribution):
                 
             snr_hit = np.prod(pdet, axis=1)>0.5
             # montecarlo integration
-            total_rate = self.normalization_pdf_z_lensed * np.mean(snr_hit)
+            total_rate = self.normalization_pdf_z_lensed * np.sum(snr_hit)/total_events
             print(f"total lensed rate (yr^-1) (with pdet function): {total_rate}")
 
         print(f"number of simulated lensed detectable events: {np.sum(snr_hit)}")
-        print(f"number of simulated all lensed events: {size}")
+        print(f"number of simulated all lensed events: {total_events}")
         # store all detectable params in json file
         if nan_to_num:
             for key, value in lensed_param.items():

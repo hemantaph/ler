@@ -3,6 +3,7 @@
 This module contains the LensGalaxyPopulation class, which is used to sample lens galaxy parameters, source parameters conditioned on the source being strongly lensed, image properties, and lensed SNRs. \n
 The class inherits from the CompactBinaryPopulation class, which is used to sample source parameters. \n
 """
+
 import warnings
 warnings.filterwarnings("ignore")
 # for multiprocessing
@@ -264,7 +265,11 @@ class ImageProperties():
                     n_image_i,
                     determinant_i,
                     trace_i,
+                    e1_i,
+                    e2_i,
                     gamma_i,
+                    gamma1_i,
+                    gamma2_i,
                     iter_i,
                 ) = result
 
@@ -295,32 +300,53 @@ class ImageProperties():
                 traces[iter_i] = trace
                 x_source[iter_i] = x_source_i
                 y_source[iter_i] = y_source_i
+                lens_parameters["e1"][iter_i] = e1_i
+                lens_parameters["e2"][iter_i] = e2_i
                 lens_parameters["gamma"][iter_i] = gamma_i
+                lens_parameters["gamma1"][iter_i] = gamma1_i
+                lens_parameters["gamma2"][iter_i] = gamma2_i
 
         # time-delays: convert to positive values
         # time-delays will be relative to the first arrived signal of an lensed event
-        time_delays = time_delays - np.array([np.sort(time_delays, axis=1)[:, 0]]).T
-
+        time_delays = time_delays - np.array([np.sort(time_delays, axis=1)[:, 0]]).T # this is alright if time delays are already sorted
+        
         # select only strongly lensed events are selected
         assert np.all(n_images >= 2), "There are events with no images!"
 
         # image type classification (morse phase)
         number_of_lensed_events = size
         image_type = np.zeros((number_of_lensed_events, n_max_images))
-        image_type[traces < 0] = 3
-        image_type[traces > 0] = 1
-        image_type[determinants < 0] = 2
+        # image_type[traces < 0] = 3
+        # image_type[traces > 0] = 1
+        # image_type[determinants < 0] = 2
+        for i in range(number_of_lensed_events):
+            for j in range(n_max_images):
+                if determinants[i, j] < 0:
+                    image_type[i, j] = 2
+                elif traces[i, j] > 0:
+                    image_type[i, j] = 1
+                elif traces[i, j] < 0:
+                    image_type[i, j] = 3
 
         # Return a dictionary with all of the lens information but also the BBH parameters from gw_param
         image_parameters = {
-            "n_images": n_images,
             "x0_image_positions": x0_image_positions,
             "x1_image_positions": x1_image_positions,
             "magnifications": magnifications,
             "time_delays": time_delays,
             "image_type": image_type,
         }
+
+        ############ Important ############
+        # sorting wrt time delays
+        idx_sort = np.argsort(time_delays, axis=1) # sort each row
+        # idx_sort has the shape (number_of_lensed_events, n_max_images)
+        for key, value in image_parameters.items():
+            # sort each row
+            image_parameters[key] = np.array([value[i,idx_sort[i]] for i in range(number_of_lensed_events)])
+        ####################################
         lens_parameters.update(image_parameters)
+        lens_parameters["n_images"] = n_images
 
         return lens_parameters
 
@@ -410,6 +436,9 @@ class ImageProperties():
             effective_luminosity_distance = luminosity_distance / np.sqrt(
                 np.abs(magnifications[:, i])
             )
+            
+            # check for nan values
+            idx = idx & ~np.isnan(effective_luminosity_distance) & ~np.isnan(effective_geocent_time)
 
             # Each image has their own effective luminosity distance and effective geocent time
             if len(effective_luminosity_distance) != 0:
@@ -440,7 +469,7 @@ class ImageProperties():
                 lensed_param["effective_luminosity_distance"][:, i] = effective_luminosity_distance
                 lensed_param["effective_geocent_time"][:, i] = effective_geocent_time
 
-        del lensed_param["luminosity_distance"]
-        del lensed_param["geocent_time"]
+        # del lensed_param["luminosity_distance"]
+        # del lensed_param["geocent_time"]
 
         return optimal_snrs, lensed_param

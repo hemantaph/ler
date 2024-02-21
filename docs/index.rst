@@ -22,8 +22,9 @@ The code is available at `ler.github <https://github.com/hemantaph/ler>`_.
 
    Installation2
    Summary
-   Unlensed_events
+   GW_events
    Lensed_events
+   Lensed_equations
    
 .. toctree::
    :maxdepth: 1

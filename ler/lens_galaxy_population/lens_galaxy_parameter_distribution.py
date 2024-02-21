@@ -863,7 +863,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         Returns
         -------
         theta_E : `float`
-            Einstein radii of the lens galaxies in radian
+            Einstein radii of the lens galaxies
 
         Examples
         --------

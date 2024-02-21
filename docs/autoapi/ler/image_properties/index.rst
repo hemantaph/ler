@@ -35,6 +35,8 @@ Functions
 
    ler.image_properties.solve_lens_equation
    ler.image_properties.interpolator_from_pickle
+   ler.image_properties.cubic_spline_interpolator
+   ler.image_properties.axis_ratio_rayleigh
    ler.image_properties.solve_lens_equation
 
 
@@ -131,7 +133,82 @@ Functions
    Function to decide which interpolator to use.
 
 
+   :Parameters:
 
+       **param_dict_given** : `dict`
+           dictionary of parameters.
+
+       **directory** : `str`
+           directory to store the interpolator.
+
+       **sub_directory** : `str`
+           sub-directory to store the interpolator.
+
+       **name** : `str`
+           name of the interpolator.
+
+       **x** : `numpy.ndarray`
+           x values.
+
+       **pdf_func** : `function`
+           function to calculate the pdf of x given y.
+
+       **y** : `numpy.ndarray`
+           y values.
+
+       **conditioned_y** : `numpy.ndarray`
+           conditioned y values.
+
+       **dimension** : `int`
+           dimension of the interpolator. Default is 1.
+
+       **category** : `str`
+           category of the function. Default is "pdf".
+
+       **create_new** : `bool`
+           if True, create a new interpolator. Default is False.
+
+   :Returns:
+
+       **interpolator** : `function`
+           interpolator function.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: cubic_spline_interpolator(xnew, coefficients, x)
+
+   
+   Function to interpolate using cubic spline.
+
+
+   :Parameters:
+
+       **xnew** : `numpy.ndarray`
+           new x values.
+
+       **coefficients** : `numpy.ndarray`
+           coefficients of the cubic spline.
+
+       **x** : `numpy.ndarray`
+           x values.
+
+   :Returns:
+
+       **result** : `numpy.ndarray`
+           interpolated values.
 
 
 
@@ -348,6 +425,37 @@ Functions
       ..
           !! processed by numpydoc !!
 
+
+.. py:function:: axis_ratio_rayleigh(sigma, q_min=0.2, q_max=1.0)
+
+   
+   Function to sample axis ratio from rayleigh distribution with given velocity dispersion.
+
+
+   :Parameters:
+
+       **sigma** : `float: array`
+           velocity dispersion of the lens galaxy
+
+   :Returns:
+
+       **q** : `float: array`
+           axis ratio of the lens galaxy
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:function:: solve_lens_equation(lens_parameters)
 

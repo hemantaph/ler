@@ -1314,23 +1314,35 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         return self._sample_source_frame_masses
 
+    # following setter is an example if the user wants to use a custom prior with custom input
+    # @sample_source_frame_masses.setter
+    # def sample_source_frame_masses(self, prior):
+    #     args = self.gw_param_samplers_params["source_frame_masses"]
+    
+    #     # Check if 'prior' is a callable attribute of self
+    #     args = self.gw_param_samplers_params["source_frame_masses"]
+    #     try:
+    #         # If prior is a method of the class
+    #         self._sample_source_frame_masses = getattr(self, prior)(
+    #             size=None, get_attribute=True, param=args,
+    #         )
+    #     except:
+    #         # If prior is a standalone function
+    #         try:
+    #             self._sample_source_frame_masses = lambda size: prior(size, param=args)
+    #         except:
+    #             raise ValueError("given source_frame_masses function should follow the signature of the default ones")
+
     @sample_source_frame_masses.setter
     def sample_source_frame_masses(self, prior):
-        args = self.gw_param_samplers_params["source_frame_masses"]
-    
-        # Check if 'prior' is a callable attribute of self
-        args = self.gw_param_samplers_params["source_frame_masses"]
         try:
-            # If prior is a method of the class
+            args = self.gw_param_samplers_params["source_frame_masses"]
+            # follwing should return a sampler function with only one argument (size)
             self._sample_source_frame_masses = getattr(self, prior)(
                 size=None, get_attribute=True, param=args,
             )
         except:
-            # If prior is a standalone function
-            try:
-                self._sample_source_frame_masses = lambda size: prior(size, param=args)
-            except:
-                raise ValueError("given source_frame_masses function should follow the signature of the default ones")
+            self._sample_source_frame_masses = prior
 
     @property
     def sample_geocent_time(self):

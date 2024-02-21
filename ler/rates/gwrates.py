@@ -8,6 +8,7 @@ import os
 import warnings
 warnings.filterwarnings("ignore")
 import numpy as np
+from scipy.stats import norm
 from astropy.cosmology import LambdaCDM
 from ..gw_source_population import CBCSourceParameterDistribution
 from ..utils import load_json, append_json, get_param_from_json, batch_handler
@@ -502,6 +503,7 @@ class GWRATES(CBCSourceParameterDistribution):
 
         self.snr = gwsnr.snr
         self.list_of_detectors = gwsnr.detector_list
+        self.snr_bilby = gwsnr.compute_bilby_snr
         #self.pdet = gwsnr.pdet
 
     def store_gwrates_params(self, output_jsonfile="./gwrates_params.json"):
@@ -548,7 +550,7 @@ class GWRATES(CBCSourceParameterDistribution):
             pass
 
     def gw_cbc_statistics(
-        self, size=None, resume=False, output_jsonfile=None,
+        self, size=None, resume=False, save_batch=True, output_jsonfile=None,
     ):
         """
         Function to generate gw GW source parameters. This function also stores the parameters in json file.
@@ -561,6 +563,8 @@ class GWRATES(CBCSourceParameterDistribution):
         resume : `bool`
             resume = False (default) or True.
             if True, the function will resume from the last batch.
+        save_batch : `bool`
+            if True, the function will save the parameters in batches. if False, the function will save all the parameters at the end of sampling. save_batch=False is faster.
         output_jsonfile : `str`
             json file name for storing the parameters.
             default output_jsonfile = './gw_params.json'.
@@ -590,19 +594,27 @@ class GWRATES(CBCSourceParameterDistribution):
         print(f"simulated gw params will be stored in {output_jsonfile}")
 
         # sampling in batches
+        self.dict_buffer = None
         batch_handler(
             size=size,
             batch_size=self.batch_size,
             sampling_routine=self.gw_sampling_routine,
             output_jsonfile=output_jsonfile,
+            save_batch=save_batch,
             resume=resume,
         )
 
-        gw_param = get_param_from_json(output_jsonfile)
+        if save_batch:
+            gw_param = get_param_from_json(output_jsonfile)
+        else:
+            gw_param = self.dict_buffer.copy()
+            # store all params in json file
+            append_json(output_jsonfile, gw_param, replace=True)
+        self.dict_buffer = None  # save memory
+
         return gw_param
     
-    def gw_sampling_routine(self, size, output_jsonfile, resume=False,
-    ):
+    def gw_sampling_routine(self, size, output_jsonfile, resume=False, save_batch=True):
         """
         Function to generate gw GW source parameters. This function also stores the parameters in json file.
 
@@ -633,8 +645,18 @@ class GWRATES(CBCSourceParameterDistribution):
         snrs = self.snr(gw_param_dict=gw_param)
         gw_param.update(snrs)
 
-        # store all params in json file
-        append_json(file_name=output_jsonfile, dictionary=gw_param, replace=not (resume))
+        # adding batches
+        if not save_batch:
+            if self.dict_buffer is None:
+                self.dict_buffer = gw_param
+            else:
+                for key, value in gw_param.items():
+                    self.dict_buffer[key] = np.concatenate((self.dict_buffer[key], value))
+        else:
+            # store all params in json file
+            append_json(file_name=output_jsonfile, new_dictionary=gw_param,  old_dictionary=self.dict_buffer, replace=not (resume))
+
+        return gw_param
 
     def gw_rate(
         self,
@@ -642,6 +664,8 @@ class GWRATES(CBCSourceParameterDistribution):
         snr_threshold=8.0,
         output_jsonfile=None,
         detectability_condition="step_function",
+        snr_recalculation=False,
+        threshold_snr_recalculation=7.0,
     ):
         """
         Function to calculate the gw rate. This function also stores the parameters of the detectable events in json file.
@@ -691,6 +715,21 @@ class GWRATES(CBCSourceParameterDistribution):
             print("using provided gw_param dict...")
             # store all params in json file self.json_file_names["gw_param"]
             gw_param = gw_param.copy()
+
+        # recalculate snr if required
+        # this ensures that the snr is recalculated for the detectable events
+        # with inner product
+        total_events = len(gw_param["zs"])
+        if snr_recalculation:
+            # select only above centain snr threshold
+            param = gw_param["optimal_snr_net"]
+            idx_detectable = param > threshold_snr_recalculation
+            # reduce the size of the dict
+            for key, value in gw_param.items():
+                gw_param[key] = value[idx_detectable]
+            # recalculate more accurate snrs 
+            snrs = self.snr_bilby(gw_param_dict=gw_param)
+            gw_param.update(snrs)
             
         if detectability_condition == "step_function":
             try:
@@ -714,11 +753,14 @@ class GWRATES(CBCSourceParameterDistribution):
             threshold = 0.5
 
         idx_detectable = snr_param > threshold
+        detectable_events = np.sum(idx_detectable)
         # montecarlo integration
         # The total rate R = norm <Theta(rho-rhoc)>
-        total_rate = self.normalization_pdf_z * np.mean(idx_detectable)
+        total_rate = self.normalization_pdf_z * detectable_events / total_events
         print(f"total gw rate (yr^-1) (with step function): {total_rate}")
-
+        print(f"number of simulated unlensed detectable events: {detectable_events}")
+        print(f"number of all simulated unlensed events: {total_events}")
+        
         # store all detectable params in json file
         for key, value in gw_param.items():
             gw_param[key] = value[idx_detectable]

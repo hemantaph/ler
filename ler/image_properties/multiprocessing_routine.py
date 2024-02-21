@@ -7,6 +7,8 @@ import numpy as np
 from lenstronomy.LensModel.lens_model import LensModel
 from lenstronomy.LensModel.Solver.lens_equation_solver import LensEquationSolver
 from lenstronomy.LensModel.Solver.epl_shear_solver import caustics_epl_shear
+from lenstronomy.Util.param_util import phi_q2_ellipticity
+from ..lens_galaxy_population.jit_functions import axis_ratio_rayleigh
 
 # For sampling from caustic
 from shapely.geometry import Polygon
@@ -94,58 +96,83 @@ def solve_lens_equation(lens_parameters):
     # ---------------------------------------------------#
     # Get the caustic curve cut by the lens
     # First check if there is any nan in the caustic points
-    while True:
-        kwargs_lens = [
-            {
-                "theta_E": factor,
-                "e1": lens_parameters[1],
-                "e2": lens_parameters[2],
-                "gamma": lens_parameters[3],
-                "center_x": 0.0,
-                "center_y": 0.0,
-            },
-            {
-                "gamma1": lens_parameters[4],
-                "gamma2": lens_parameters[5],
-                "ra_0": 0,
-                "dec_0": 0,
-            },
-        ]
-        caustic_double_points = caustics_epl_shear(
-            kwargs_lens, return_which="double", maginf=-100
-        )
-        caustic = np.logical_not(np.isnan(caustic_double_points).any())
-        # If there is a nan, caustic=False, draw a new gamma
-        if caustic:
-            break
-        else:
-            lens_parameters[3] = np.random.normal(loc=2.0, scale=0.2, size=1)[0]
-    caustic_double = Polygon(caustic_double_points.T)
+    def check_caustic():
+        """
+        Function to check if there is any nan in the caustic points
+        """
+        while True:
+            kwargs_lens = [
+                {
+                    "theta_E": factor,
+                    "e1": lens_parameters[1],
+                    "e2": lens_parameters[2],
+                    "gamma": lens_parameters[3],
+                    "center_x": 0.0,
+                    "center_y": 0.0,
+                },
+                {
+                    "gamma1": lens_parameters[4],
+                    "gamma2": lens_parameters[5],
+                    "ra_0": 0,
+                    "dec_0": 0,
+                },
+            ]
+            caustic_double_points = caustics_epl_shear(
+                kwargs_lens, return_which="double", maginf=-100
+            )
+            caustic = np.logical_not(np.isnan(caustic_double_points).any())
+
+            # If there is a nan, caustic=False, draw a new gamma
+            if caustic:
+                break
+            else:
+                #
+                q = axis_ratio_rayleigh(sigma=np.array([160.]))[0]
+                phi = np.random.uniform(0.0, 2*np.pi, size=1)[0]
+                lens_parameters[1], lens_parameters[2] = phi_q2_ellipticity(phi, q)
+                # resampling power-law index and shear
+                lens_parameters[3] = np.random.normal(loc=2.0, scale=0.2, size=1)[0]
+                gamma1, gamma2 = np.random.normal(loc=0, scale=0.05,size=(2,1))
+                lens_parameters[4], lens_parameters[5] = gamma1[0], gamma2[0]
+
+        caustic_double = Polygon(caustic_double_points.T)
+        return caustic_double, kwargs_lens
+    
+    caustic_double, kwargs_lens = check_caustic()
 
     # check for strong lensed condition
     strongly_lensed = False
+    i = 0
     while strongly_lensed == False:
         # Draw random points within the caustic
         # sometimes x_source, y_source positions are at same location and the solver fails
         # so we use a try-except block to catch the error and draw a new point
-        try:
-            x_source, y_source = pointpats.random.poisson(caustic_double, size=1)
-            # Solve the lens equation
-            (
-                x0_image_position,
-                x1_image_position,
-            ) = lens_eq_solver.image_position_from_source(
-                sourcePos_x=x_source,
-                sourcePos_y=y_source,
-                kwargs_lens=kwargs_lens,
-                solver="analytical",
-                magnification_limit=1.0 / 1000.0,
-            )
-            nImages = len(x0_image_position)  # shows how many images
-            if nImages >= n_min_images:
-                strongly_lensed = True
-        except:
-            pass
+        # try:
+        x_source, y_source = pointpats.random.poisson(caustic_double, size=1)
+        # Solve the lens equation
+        (
+            x0_image_position,
+            x1_image_position,
+        ) = lens_eq_solver.image_position_from_source(
+            sourcePos_x=x_source,
+            sourcePos_y=y_source,
+            kwargs_lens=kwargs_lens,
+            solver="analytical",
+            magnification_limit=1.0 / 1000.0,
+            arrival_time_sort=True,
+        )
+        nImages = len(x0_image_position)  # shows how many images
+        if nImages >= n_min_images:
+            strongly_lensed = True
+        # except:
+        #     pass
+        ## test ##
+        if i > 10:
+            print("Could not find a valid source position. Run the sampling again by setting resume=True")
+            caustic_double, kwargs_lens = check_caustic()
+            i = 0
+        i += 1
+        ##########
 
     # ---------------------------------------------------#
     #          magnification and time-delay
@@ -175,6 +202,7 @@ def solve_lens_equation(lens_parameters):
     )
     trace = np.array(2 - hessian[0] - hessian[3])
 
+    #  return also gamma1, gamma2
     return (
         x_source,
         y_source,
@@ -185,6 +213,10 @@ def solve_lens_equation(lens_parameters):
         nImages,
         determinant,
         trace,
+        lens_parameters[1],
+        lens_parameters[2],
         lens_parameters[3],
+        lens_parameters[4],
+        lens_parameters[5],
         iteration,
     )

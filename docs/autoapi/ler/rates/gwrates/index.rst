@@ -637,7 +637,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: gw_cbc_statistics(size=None, resume=False, output_jsonfile=None)
+   .. py:method:: gw_cbc_statistics(size=None, resume=False, save_batch=True, output_jsonfile=None)
 
       
       Function to generate gw GW source parameters. This function also stores the parameters in json file.
@@ -652,6 +652,9 @@ Classes
           **resume** : `bool`
               resume = False (default) or True.
               if True, the function will resume from the last batch.
+
+          **save_batch** : `bool`
+              if True, the function will save the parameters in batches. if False, the function will save all the parameters at the end of sampling. save_batch=False is faster.
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
@@ -683,7 +686,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: gw_sampling_routine(size, output_jsonfile, resume=False)
+   .. py:method:: gw_sampling_routine(size, output_jsonfile, resume=False, save_batch=True)
 
       
       Function to generate gw GW source parameters. This function also stores the parameters in json file.
@@ -724,7 +727,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: gw_rate(gw_param=None, snr_threshold=8.0, output_jsonfile=None, detectability_condition='step_function')
+   .. py:method:: gw_rate(gw_param=None, snr_threshold=8.0, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, threshold_snr_recalculation=7.0)
 
       
       Function to calculate the gw rate. This function also stores the parameters of the detectable events in json file.

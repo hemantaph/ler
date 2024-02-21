@@ -2,6 +2,7 @@
 """ 
 This module contains helper routines for other modules in the ler package.
 """
+
 import os
 import pickle
 import numpy as np
@@ -10,11 +11,12 @@ from scipy.interpolate import interp1d
 from scipy.interpolate import CubicSpline
 from scipy.integrate import quad, cumtrapz
 from numba import njit
+# import datetime
 
 
 class NumpyEncoder(json.JSONEncoder):
     """
-    class for storing a numpy.ndarray or any nested-list composition as JSON file
+    Class for storing a numpy.ndarray or any nested-list composition as JSON file. This is required for dealing np.nan and np.inf.
 
     Parameters
     ----------
@@ -50,16 +52,6 @@ class NumpyEncoder(json.JSONEncoder):
             return obj.tolist()
         return json.JSONEncoder.default(self, obj)
 
-
-def update_dict(old, new):
-    """Update a dictionary with keys and values."""
-    keys = old.keys()
-    for key, value in new.items():
-        if key in keys:
-            old[key] = value
-
-    return old
-
 def load_json(file_name):
     """Load a json file.
 
@@ -77,14 +69,14 @@ def load_json(file_name):
 
     return param
 
-def append_json(file_name, dictionary, replace=False):
+def append_json(file_name, new_dictionary, old_dictionary=None, replace=False):
     """Append and update a json file with a dictionary.
 
     Parameters
     ----------
     file_name : `str`
         json file name for storing the parameters.
-    dictionary : `dict`
+    new_dictionary : `dict`
         dictionary to be appended to the json file.
     replace : `bool`, optional
         If True, replace the json file with the dictionary. Default is False.
@@ -92,25 +84,61 @@ def append_json(file_name, dictionary, replace=False):
     """
 
     # check if the file exists
-    try:
+    # time
+    # start = datetime.datetime.now()
+    if old_dictionary:
+        data = old_dictionary
+    elif replace:
+        data = new_dictionary
+    elif not os.path.exists(file_name):
+        # print(f" {file_name} file does not exist. Creating a new one...")
+        replace = True
+    else:
         with open(file_name, "r", encoding="utf-8") as f:
             data = json.load(f)
-    except:
-        "File does not exist. Creating a new one..."
-        replace = True
+    # end = datetime.datetime.now()
+    # print(f"Time taken to load the json file: {end-start}")
 
-    if replace:
-        data = dictionary
-    else:
-        data_key = data.keys()
-        for key, value in dictionary.items():
-            if key in data_key:
-                data[key] = np.concatenate((data[key], value))
+    # start = datetime.datetime.now()
+    if not replace:
+        data = add_dict_values(data, new_dictionary)
+        # data_key = data.keys()
+        # for key, value in new_dictionary.items():
+        #     if key in data_key:
+        #         data[key] = np.concatenate((data[key], value)).tolist()
+    # end = datetime.datetime.now()
+    # print(f"Time taken to append the dictionary: {end-start}")
 
-    json_dump = json.dumps(data, cls=NumpyEncoder)
+    # save the dictionary
+    # start = datetime.datetime.now()
     with open(file_name, "w", encoding="utf-8") as write_file:
-        json.dump(json.loads(json_dump), write_file, indent=4)
+        json.dump(data, write_file, indent=4, cls=NumpyEncoder)
+    # end = datetime.datetime.now()
+    # print(f"Time taken to save the json file: {end-start}")
 
+    return data
+
+def add_dict_values(dict1, dict2):
+    """Adds the values of two dictionaries together.
+    
+    Parameters
+    ----------
+    dict1 : `dict`
+        dictionary to be added.
+    dict2 : `dict`
+        dictionary to be added.
+
+    Returns
+    ----------
+    dict1 : `dict`
+        dictionary with added values.
+    """
+    data_key = dict1.keys()
+    for key, value in dict2.items():
+        if key in data_key:
+            dict1[key] = np.concatenate((dict1[key], value)).tolist()
+
+    return dict1
 
 def get_param_from_json(json_file):
     """
@@ -132,28 +160,27 @@ def get_param_from_json(json_file):
         param[key] = np.array(value)
     return param
 
-def dict_inside_dict_to_array(dictionary):
-    """
-    Function to convert a dictionary to an array.
-    """
-    array = []
-    for key, value in dictionary.items():
-        if isinstance(value, dict):
-            array.append(dict_to_array(value))
-        else:
-            array.append(value)
-    return np.array(array)
-
 def rejection_sample(pdf, xmin, xmax, size=100, chunk_size=10000):
     """
     Helper function for rejection sampling from a pdf with maximum and minimum arguments.
-    Input parameters:
-        pdf: the pdf to sample from
-        xmin: the minimum argument of the pdf
-        xmax: the maximum argument of the pdf
-        size: the number of samples to draw
-    Output:
-        samples: the samples drawn from the pdf
+    
+    Parameters
+    ----------
+    pdf : `function`
+        pdf function.
+    xmin : `float`
+        minimum value of the pdf.
+    xmax : `float`
+        maximum value of the pdf.
+    size : `int`, optional
+        number of samples. Default is 100.
+    chunk_size : `int`, optional
+        chunk size for sampling. Default is 10000.
+
+    Returns
+    ----------
+    x_sample : `numpy.ndarray`
+        samples from the pdf.
     """
     x = np.linspace(xmin, xmax, chunk_size)
     y = pdf(x)
@@ -173,6 +200,31 @@ def rejection_sample(pdf, xmin, xmax, size=100, chunk_size=10000):
 
 
 def rejection_sample2d(pdf, xmin, xmax, ymin, ymax, size=100, chunk_size=10000):
+    """
+    Helper function for rejection sampling from a 2D pdf with maximum and minimum arguments.
+
+    Parameters
+    ----------
+    pdf : `function`
+        2D pdf function.
+    xmin : `float`
+        minimum value of the pdf in the x-axis.
+    xmax : `float`
+        maximum value of the pdf in the x-axis.
+    ymin : `float`
+        minimum value of the pdf in the y-axis.
+    ymax : `float`
+        maximum value of the pdf in the y-axis.
+    size : `int`, optional
+        number of samples. Default is 100.
+    chunk_size : `int`, optional
+        chunk size for sampling. Default is 10000.
+
+    Returns
+    ----------
+    x_sample : `numpy.ndarray`
+        samples from the pdf in the x-axis.
+    """
     chunk_size = 10000
 
     x = np.random.uniform(xmin, xmax, chunk_size)
@@ -201,7 +253,21 @@ def rejection_sample2d(pdf, xmin, xmax, ymin, ymax, size=100, chunk_size=10000):
 
 
 def add_dictionaries_together(dictionary1, dictionary2):
-    """Adds two dictionaries with the same keys together."""
+    """
+    Adds two dictionaries with the same keys together.
+    
+    Parameters
+    ----------
+    dictionary1 : `dict`
+        dictionary to be added.
+    dictionary2 : `dict`
+        dictionary to be added.
+
+    Returns
+    ----------
+    dictionary : `dict`
+        dictionary with added values.
+    """
     dictionary = {}
     # Check if either dictionary empty, in which case only return the dictionary with values
     if len(dictionary1) == 0:
@@ -230,7 +296,21 @@ def add_dictionaries_together(dictionary1, dictionary2):
 
 
 def trim_dictionary(dictionary, size):
-    """Filters an event dictionary to only contain the size."""
+    """
+    Filters an event dictionary to only contain the size.
+    
+    Parameters
+    ----------
+    dictionary : `dict`
+        dictionary to be trimmed.
+    size : `int`
+        size to trim the dictionary to.
+
+    Returns
+    ----------
+    dictionary : `dict`
+        trimmed dictionary.
+    """
     for key in dictionary.keys():
         # Check if the item is an ndarray
         if isinstance(dictionary[key], np.ndarray):
@@ -246,51 +326,33 @@ def trim_dictionary(dictionary, size):
             )
     return dictionary
 
-# def create_func_pdf_invcdf(x, y, category="function"):
-#     # remove idx of nan values
-#     idx = np.argwhere(np.isnan(y))
-#     x = np.delete(x, idx)
-#     y = np.delete(y, idx)
-#     # create pdf with interpolation
-#     pdf_unorm = interp1d(x, y, kind="cubic")
-#     if category == "function":
-#         return pdf_unorm
-#     if category == "function_inverse":
-#         # create inverse function
-#         return interp1d(y, x, kind="cubic")
-
-#     xlim = [x[0], x[-1]]
-#     norm = quad(pdf_unorm, xlim[0], xlim[1])[0]
-#     y = y / norm
-#     # normalize the pdf
-#     pdf = interp1d(x, y, kind="cubic")
-#     if category == "pdf" or category == None:
-#         return pdf
-#     # create cdf
-#     cdf = lambda x: quad(pdf, xlim[0], x)[0]
-#     # get all values of cdf
-#     cdf_values = np.array([cdf(x_) for x_ in x])
-#     cdf_ = interp1d(x, cdf_values, kind="cubic")
-#     if category == "cdf":
-#         return cdf_
-#     # create inverse cdf
-#     inv_cdf = interp1d(cdf_values, x, kind="cubic")
-#     if category == "inv_cdf":
-#         return inv_cdf
-#     if category == "all":
-#         return([pdf, cdf_, inv_cdf])
-
 def create_func_pdf_invcdf(x, y, category="function"):
-    # remove idx of nan values
-    # print("len(x)=",len(x))
-    # print("len(y)=",len(y))
+    """
+    Function to create a interpolated function, inverse function or inverse cdf from the input x and y.
+
+    Parameters
+    ----------
+    x : `numpy.ndarray`
+        x values.
+    y : `numpy.ndarray`
+        y values.
+    category : `str`, optional
+        category of the function. Default is "function". Other options are "function_inverse", "pdf" and "inv_cdf".
+
+    Returns
+    ----------
+    pdf : `pdf function`
+        interpolated pdf function.
+    inv_pdf : `function inverse`
+        interpolated inverse pdf function.
+    inv_cdf : `function`
+        interpolated inverse cdf.
+    """
+
     idx = np.argwhere(np.isnan(y))
     x = np.delete(x, idx)
     y = np.delete(y, idx)
-    # print("len(x)=",len(x))
-    # print("len(y)=",len(y))
-    # print("x=",x)
-    # print("y=",y)
+
     # create pdf with interpolation
     pdf_unorm = interp1d(x, y, kind="cubic", fill_value="extrapolate")
     if category == "function":
@@ -308,38 +370,9 @@ def create_func_pdf_invcdf(x, y, category="function"):
         return pdf
     # cdf
     cdf_values = cumtrapz(y, x, initial=0)
-    # print("len(x)=",len(x))
-    # print("len(cdf_values)=",len(cdf_values))
-    #cdf = lambda x: quad(pdf, min_, x)[0] # if quad is used, it will be very slow
-    # cdf_values = np.array([cdf(x_) for x_ in x])
-
-    # to remove duplicate values on x-axis before interpolation
-    #idx = np.unique(cdf_values, return_index=True)[1]
-    # find the first index of the unique values
-    #idx = np.unique(cdf_values, return_index=True)[1]
-    #cdf_values = cdf_values[idx]
-    #x = x[idx]
-
-    # to avoid duplicate values on x-axis before interpolation
-    # also avoid negative values
-    # first element greater than 0
     idx = np.argwhere(cdf_values > 0)[0][0]
     cdf_values = cdf_values[idx:]
     x = x[idx:]
-    # forcing cdf to start from 0
-    # if idx > 0:
-    #     # add 0 to the first element
-    #     cdf_values = np.insert(cdf_values, 0, 0)
-    #     x = np.insert(x, 0, x[idx-1])
-    #     # print("cdf_values[idx-1]=",cdf_values[idx-1])
-    #     # print("cdf_values[idx]=",cdf_values[idx])
-    #     # print("vd[idx-1]=",x[0])
-    #     # print(x[idx-1])
-
-    # print("idx=",idx)
-    # print("len(x)=",len(x))
-    # print("len(cdf_values)=",len(cdf_values))
-    # inverse cdf
     inv_cdf = interp1d(cdf_values, x, kind="cubic", fill_value="extrapolate")
     if category == "inv_cdf":
         return inv_cdf
@@ -352,32 +385,87 @@ def create_conditioned_pdf_invcdf(x, conditioned_y, pdf_func, category):
     x is an array and the output of pdf_func is an array
     y is the condition
     we consider parameter plane of x and y
+
+    Parameters
+    ----------
+    x : `numpy.ndarray`
+        x values.
+    conditioned_y : `numpy.ndarray`
+        conditioned y values.
+    pdf_func : `function`
+        function to calculate the pdf of x given y.
+    category : `str`, optional
+        category of the function. Default is "function". Other options are "function_inverse", "pdf" and "inv_cdf".
     """
 
     list_ = []
     for y in conditioned_y:
         phi = pdf_func(x,y)
+        # append pdf for each y along the x-axis
         list_.append(create_func_pdf_invcdf(x, phi, category=category))
-        # creating the interpolator
-        # inv_cdf = create_func_pdf_invcdf(x, phi, category="inv_cdf")
-        # print(f"z={y}, \n phi={phi}, \n sigma={inv_cdf(np.random.uniform(0, 1, size=10))}")
-        # list_.append(inv_cdf)
         
     return list_
 
 def create_func(x, y):
+    """
+    Function to create a spline interpolated function from the input x and y.
+
+    Parameters
+    ----------
+    x : `numpy.ndarray`
+        x values.
+    y : `numpy.ndarray`
+        y values.
+
+    Returns
+    ----------
+    c : `numpy.ndarray`
+        spline coefficients.
+    """
+
     idx = np.argwhere(np.isnan(y))
     x = np.delete(x, idx)
     y = np.delete(y, idx)
     return CubicSpline(x, y).c, x
 
 def create_func_inv(x, y):
+    """
+    Function to create a spline interpolated inverse function from the input x and y.
+
+    Parameters
+    ----------
+    x : `numpy.ndarray`
+        x values.
+    y : `numpy.ndarray`
+        y values.
+
+    Returns
+    ----------
+    c : `numpy.ndarray`
+        spline coefficients.
+    """
+
     idx = np.argwhere(np.isnan(y))
     x = np.delete(x, idx)
     y = np.delete(y, idx)
     return CubicSpline(y, x).c, y
 
 def create_pdf(x, y):
+    """
+    Function to create a spline interpolated normalized pdf from the input x and y.
+
+    Parameters
+    ----------
+    x : `numpy.ndarray`
+        x values.
+    y : `numpy.ndarray`
+        y values.   
+    
+    Returns
+    ----------
+    c : `numpy.ndarray`
+        spline coefficients.
+    """
     idx = np.argwhere(np.isnan(y))
     x = np.delete(x, idx)
     y = np.delete(y, idx)
@@ -388,6 +476,22 @@ def create_pdf(x, y):
     return CubicSpline(x, y).c, x
 
 def create_inv_cdf_array(x, y):
+    """
+    Function to create a spline interpolated inverse cdf from the input x and y.
+
+    Parameters
+    ----------
+    x : `numpy.ndarray`
+        x values.
+    y : `numpy.ndarray`
+        y values.
+
+    Returns
+    ----------
+    c : `numpy.ndarray`
+        spline coefficients.
+    """
+
     idx = np.argwhere(np.isnan(y))
     x = np.delete(x, idx)
     y = np.delete(y, idx)
@@ -402,6 +506,23 @@ def create_inv_cdf_array(x, y):
     return np.array([cdf_values, x])
 
 def create_conditioned_pdf(x, conditioned_y, pdf_func):
+    """
+    Function to create a conditioned pdf from the input x and y.
+
+    Parameters
+    ----------
+    x : `numpy.ndarray`
+        x values.
+    conditioned_y : `numpy.ndarray`
+        conditioned y values.
+    pdf_func : `function`
+        function to calculate the pdf of x given y.
+
+    Returns
+    ----------
+    list_ : `list`
+        list of pdfs.
+    """
     list_ = []
     for y in conditioned_y:
         phi = pdf_func(x,y)
@@ -410,6 +531,24 @@ def create_conditioned_pdf(x, conditioned_y, pdf_func):
     return np.array(list_)
 
 def create_conditioned_inv_cdf_array(x, conditioned_y, pdf_func):
+    """
+    Function to create a conditioned inv_cdf from the input x and y.
+
+    Parameters
+    ----------
+    x : `numpy.ndarray`
+        x values.
+    conditioned_y : `numpy.ndarray`
+        conditioned y values.
+    pdf_func : `function`
+        function to calculate the pdf of x given y.
+
+    Returns
+    ----------
+    list_ : `list`
+        list of inv_cdfs.
+    """
+
     list_ = []
     for y in conditioned_y:
         phi = pdf_func(x,y)
@@ -422,6 +561,36 @@ def interpolator_from_pickle(
 ):
     """
     Function to decide which interpolator to use.
+
+    Parameters
+    ----------
+    param_dict_given : `dict`
+        dictionary of parameters.
+    directory : `str`
+        directory to store the interpolator.
+    sub_directory : `str`
+        sub-directory to store the interpolator.
+    name : `str`
+        name of the interpolator.
+    x : `numpy.ndarray`
+        x values.
+    pdf_func : `function`
+        function to calculate the pdf of x given y.
+    y : `numpy.ndarray`
+        y values.
+    conditioned_y : `numpy.ndarray`
+        conditioned y values.
+    dimension : `int`
+        dimension of the interpolator. Default is 1.
+    category : `str`
+        category of the function. Default is "pdf".
+    create_new : `bool`
+        if True, create a new interpolator. Default is False.
+
+    Returns
+    ----------
+    interpolator : `function`
+        interpolator function.
     """
 
     # check first whether the directory, subdirectory and pickle exist
@@ -475,7 +644,25 @@ def interpolator_pickle_path(
     interpolator_name,
 ):
     """
-    Function to create the interpolator pickle file path for velocity dispersion.
+    Function to create the interpolator pickle file path.
+
+    Parameters
+    ----------
+    param_dict_given : `dict`
+        dictionary of parameters.
+    directory : `str`
+        directory to store the interpolator.
+    sub_directory : `str`
+        sub-directory to store the interpolator.
+    interpolator_name : `str`
+        name of the interpolator.
+
+    Returns
+    ----------
+    path_inv_cdf : `str`
+        path of the interpolator pickle file.
+    it_exist : `bool`
+        if True, the interpolator exists.
     """
 
     # check the dir 'interpolator' exist
@@ -519,7 +706,23 @@ def interpolator_pickle_path(
 
 def interpolator_pdf_conditioned(x, conditioned_y, y_array, interpolator_list):
     """
-    Function to sample from the interpolator
+    Function to find the pdf interpolator coefficients from the conditioned y.
+
+    Parameters
+    ----------
+    x : `numpy.ndarray`
+        x values.
+    conditioned_y : `float`
+        conditioned y value.
+    y_array : `numpy.ndarray`
+        y values.
+    interpolator_list : `list`
+        list of interpolators.
+
+    Returns
+    ----------
+    interpolator_list[idx](x) : `numpy.ndarray`
+        samples from the interpolator.
     """
     # find the index of z in zlist
     idx = np.searchsorted(y_array, conditioned_y)
@@ -528,8 +731,23 @@ def interpolator_pdf_conditioned(x, conditioned_y, y_array, interpolator_list):
 
 def interpolator_sampler_conditioned(conditioned_y, y_array, interpolator_list, size=1000):
     """
-    Function sampler with inverse cdf from the interpolator
+    Function to find sampler interpolator coefficients from the conditioned y.
+
+    Parameters
+    ----------
+    conditioned_y : `float`
+        conditioned y value.
+    y_array : `numpy.ndarray`
+        y values.
+    interpolator_list : `list`
+        list of interpolators.
+    size : `int`
+        number of samples.
+
+    Returns
+    ----------
     """
+
     # find the index of z in zlist
     idx = np.searchsorted(y_array, conditioned_y)
     u = np.random.uniform(0, 1, size=size)
@@ -537,6 +755,24 @@ def interpolator_sampler_conditioned(conditioned_y, y_array, interpolator_list, 
 
 @njit
 def cubic_spline_interpolator(xnew, coefficients, x):
+    """
+    Function to interpolate using cubic spline.
+
+    Parameters
+    ----------
+    xnew : `numpy.ndarray`
+        new x values.
+    coefficients : `numpy.ndarray`
+        coefficients of the cubic spline.
+    x : `numpy.ndarray`
+        x values.
+
+    Returns
+    ----------
+    result : `numpy.ndarray`
+        interpolated values.
+    """
+
     # Handling extrapolation
     i = np.searchsorted(x, xnew) - 1
     idx1 = xnew <= x[0]
@@ -556,13 +792,31 @@ def cubic_spline_interpolator(xnew, coefficients, x):
 
 @njit
 def inverse_transform_sampler(size, cdf, x):
+    """
+    Function to sample from the inverse transform method.
+
+    Parameters
+    ----------
+    size : `int`
+        number of samples.
+    cdf : `numpy.ndarray`
+        cdf values.
+    x : `numpy.ndarray`
+        x values.
+
+    Returns
+    ----------
+    samples : `numpy.ndarray`
+        samples from the cdf.
+    """
+
     u = np.random.uniform(0, 1, size)
     idx = np.searchsorted(cdf, u)
     x1, x0, y1, y0 = cdf[idx], cdf[idx-1], x[idx], x[idx-1]
     samples = y0 + (y1 - y0) * (u - x0) / (x1 - x0)
     return samples
 
-def batch_handler(size, batch_size, sampling_routine, output_jsonfile, resume=False,
+def batch_handler(size, batch_size, sampling_routine, output_jsonfile, save_batch=True, resume=False,
     ):
         """
         Function to run the sampling in batches.
@@ -608,7 +862,7 @@ def batch_handler(size, batch_size, sampling_routine, output_jsonfile, resume=Fa
             track_batches = track_batches + 1
             print(f"Batch no. {track_batches}")
             # new first batch with the frac_batches
-            sampling_routine(size=frac_batches, output_jsonfile=output_jsonfile);
+            sampling_routine(size=frac_batches, save_batch=save_batch, output_jsonfile=output_jsonfile);
         else:
             # check where to resume from
             try:
@@ -620,14 +874,14 @@ def batch_handler(size, batch_size, sampling_routine, output_jsonfile, resume=Fa
                 track_batches = track_batches + 1
                 print(f"Batch no. {track_batches}")
                 # new first batch with the frac_batches
-                sampling_routine(size=frac_batches, output_jsonfile=output_jsonfile);
+                sampling_routine(size=frac_batches,  save_batch=save_batch, output_jsonfile=output_jsonfile);
 
         # ---------------------------------------------------#
         min_, max_ = track_batches, num_batches
         for i in range(min_, max_):
             track_batches = track_batches + 1
             print(f"Batch no. {track_batches}")
-            sampling_routine(size=batch_size, output_jsonfile=output_jsonfile, resume=True);
+            sampling_routine(size=batch_size, save_batch=save_batch, output_jsonfile=output_jsonfile, resume=True);
         # ---------------------------------------------------#
 
         return None
