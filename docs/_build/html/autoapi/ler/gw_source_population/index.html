@@ -52,8 +52,10 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Unlensed_events.html">Unlensed events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">GW event sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul class="current">
@@ -2371,6 +2373,65 @@ default: 0.0</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceParameterDistribution</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceParameterDistribution</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m1_src</span><span class="p">,</span> <span class="n">m2_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">binary_masses_BNS_gwcosmo</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.gw_source_population.CBCSourceParameterDistribution.binary_masses_NSBH_broken_powerlaw">
+<span class="sig-name descname"><span class="pre">binary_masses_NSBH_broken_powerlaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mminbh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">26</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmaxbh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">125</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6.75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6.75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mminns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmaxns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.binary_masses_NSBH_broken_powerlaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.CBCSourceParameterDistribution.binary_masses_NSBH_broken_powerlaw" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate source mass1 and mass2 of NSBH from powerlaw distribution (gwcosmo). Parameters are mminbh=26,mmaxbh=125,alpha_1=6.75,alpha_2=6.75,b=0.5,delta_m=5,mminns=1.0,mmaxns=3.0,alphans=0.0.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Number of samples to draw</p>
+</dd>
+<dt><strong>mminbh</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Minimum mass of the black hole (Msun)
+default: 26</p>
+</dd>
+<dt><strong>mmaxbh</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Maximum mass of the black hole (Msun)
+default: 125</p>
+</dd>
+<dt><strong>alpha_1</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Power law index for the primary mass distribution
+default: 6.75</p>
+</dd>
+<dt><strong>alpha_2</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Power law index for the secondary mass distribution
+default: 6.75</p>
+</dd>
+<dt><strong>b</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Break point of the power law
+default: 0.5</p>
+</dd>
+<dt><strong>delta_m</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Range of mass tapering on
+default: 5</p>
+</dd>
+<dt><strong>mminns</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Minimum mass of the neutron star (Msun)
+default: 1.0</p>
+</dd>
+<dt><strong>mmaxns</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Maximum mass of the neutron star (Msun)
+default: 3.0</p>
+</dd>
+<dt><strong>alphans</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Power law index for the neutron star mass distribution
+default: 0.0</p>
+</dd>
+<dt><strong>get_attribute</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>If True, return a sampler function with size as the only input where parameters are fixed to the given values.</p>
+</dd>
+<dt><strong>param</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Allows to pass in above parameters as dict.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>mass_1_source</strong><span class="classifier"><cite>numpy.ndarray</cite> (1D array of floats)</span></dt><dd><p>Array of mass1 in source frame (Msun)</p>
+</dd>
+<dt><strong>mass_2_source</strong><span class="classifier"><cite>numpy.ndarray</cite> (1D array of floats)</span></dt><dd><p>Array of mass2 in source frame (Msun)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceParameterDistribution</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceParameterDistribution</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m1_src</span><span class="p">,</span> <span class="n">m2_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">binary_masses_NSBH_broken_powerlaw</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

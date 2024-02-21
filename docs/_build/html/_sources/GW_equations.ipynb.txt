@@ -1,0 +1,135 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# GW event sampling (Analytical formulation)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Initial setup"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Note: I will interchangeably use terms like observable events and detectable events.\n",
+    "\n",
+    "Define all the parameters involved.\n",
+    "\n",
+    "- Source parameters: $\\theta \\in \\{m_1,m_2,\\iota,\\phi,\\psi,ra,dec,\\text{spins}\\}$ and $z_s$\n",
+    "\n",
+    "Given $d N^U_{obs}(z_s)$ is the number of detectable gravitational wave (GW) events from sources at red-shift $z_s$, then, let rate of observing GW (number of such events happening per unit time) is given by,\n",
+    "\n",
+    "\\begin{equation}\n",
+    "\\begin{split}\n",
+    "\\mathcal{R}_U &= \\int_{z_{min}}^{z_{max}} \\frac{d N^U_{obs}(z_s)}{d \\tau} \\\\\n",
+    "&= \\int_{z_{min}}^{z_{max}} \\frac{d N^U_{obs}(z_s)}{d \\tau \\;dV_c} \\frac{dV_c}{dz_s} dz_s\n",
+    "\\end{split} \\tag{1}\n",
+    "\\end{equation}"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "$\\frac{d N^U_{obs}(z_s)}{d \\tau \\;dV_c}$ is the observed merger rate density at source-frame, and $\\frac{dV_c}{dz_s}$ is the differential co-moving volume at red-shift $z_s$. After taking care of time-dilation, the expression looks,\n",
+    "\n",
+    "\\begin{equation}\n",
+    "\\begin{split}\n",
+    "\\mathcal{R}_U &= \\int_{z_{min}}^{z_{max}} \\frac{d N^U_{obs}(z_s)}{d t\\;dV_c} \\frac{1}{1+z_s} \\frac{dV_c}{dz_s} dz_s \\\\\n",
+    "&= \\int_{z_{min}}^{z_{max}} R^U_{obs}(z_s) dz_s\n",
+    "\\end{split} \\tag{2}\n",
+    "\\end{equation}\n",
+    "\n",
+    "Observed merger rate density of GW events at source red-shift $z_s$ (detector-frame) is given by $R^U_{obs}(z_s) = \\frac{d N^U_{obs}(z_s)}{d t\\;dV_c}$. And, let $R(z_s)$ be the rate of the merger of GW sources (source frame) at $z_s$, regardless of whether it is detectable or not.\n",
+    "\n",
+    "\\begin{equation}\n",
+    "\\begin{split}\n",
+    "\\mathcal{R}_U &= \\int_{z_{min}}^{z_{max}} R^U_{obs}(z_s) dz_s \\\\\n",
+    "&= \\int_{z_{min}}^{z_{max}} R(z_s) P(obs|z_s) dz_s \\\\\n",
+    "&= N_1 \\int_{z_{min}}^{z_{max}} P(z_s) P(obs|z_s) dz_s \\\\\n",
+    "\\end{split} \\tag{3}\n",
+    "\\end{equation}\n",
+    "\n",
+    "$P(obs|z_s)$ is the probability of observing a GW event at red-shift $z_s$. Normalizing factor: $N_1 = \\int_{z_{min}}^{z_{max}} R(z_s) dz_s$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Rate equation (statistical formulation)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's now consider all the source parameters $\\theta$,\n",
+    "\\{m_1,m_2,D_L,\\iota,\\phi,\\psi,ra,dec\\}\n",
+    "\n",
+    "\\begin{equation}\n",
+    "\\begin{split}\n",
+    "\\mathcal{R}_U &= N_1 \\int_{z_{min}}^{z_{max}} P(z_s) P(obs|z_s) dz_s \\\\\n",
+    "& \\text{consider} \\int \\rightarrow \\int_{z_s}\\int_{\\theta} \\rightarrow \\int_{z_s}\\int_{m_1}\\int_{m_2}\\int_{\\iota}\\int_{\\phi}\\int_{\\psi}\\int_{ra}\\int_{dec}\\int_{\\text{spins}} \\\\\n",
+    "\\mathcal{R}_U &= N_1 \\int P(z_s) P(obs|z_s, \\theta) P(\\theta) d\\theta dz_s\n",
+    "\\end{split} \\tag{8}\n",
+    "\\end{equation}\n",
+    "\n",
+    "Here, I have assumed $P(\\theta)$ is a normalized multidimensional pdf. All parameters in $\\theta$, other than $m_1$ and $m_2$, are sampled independently. The pdf $P(\\theta)$ is a product of individual pdfs for each parameter.\n",
+    "\n",
+    "Final expression for the rate of observing GW events is given by,\n",
+    "\n",
+    "\\begin{equation}\n",
+    "\\begin{split}\n",
+    "\\mathcal{R}_U &= N_1 \\bigg< P(obs|\\theta, z_s) \\bigg>_{z_s\\in P(z_s), \\theta\\in P(\\theta)} \\\\\n",
+    "P(\\theta) &= P(m_1,m_2)P(\\iota)P(\\phi)P(\\psi)P(ra)P(dec)P(\\text{spins})\n",
+    "\\end{split} \\tag{4}\n",
+    "\\end{equation}\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### The order of sampling and rate calculation steps in LeR are listed below.\n",
+    "\n",
+    "1. Sample $z_s$ from $P(z_s) = \\frac{R(z_s)}{N_1}$.\n",
+    "2. Sample $\\theta$ from $P(\\theta)$.\n",
+    "10. Calculate SNR with [gwsnr](https://gwsnr.readthedocs.io/en/latest/)\n",
+    "11. Apply the SNR threshold and check whether the event is detectable or not.\n",
+    "12. Calculate rate of GW events, $\\mathcal{R}_U$ using equation 4."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "vscode": {
+     "languageId": "plaintext"
+    }
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": []
+  }
+ ],
+ "metadata": {
+  "language_info": {
+   "name": "python"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

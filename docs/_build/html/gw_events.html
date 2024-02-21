@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Unlensed events &mdash; ler 0.3.1 documentation</title>
+  <title>Gravitational wave event rates &mdash; ler 0.3.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -27,7 +27,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Lensed event rates" href="Lensed_events.html" />
+    <link rel="next" title="GW event sampling (Analytical formulation)" href="GW_equations.html" />
     <link rel="prev" title="Summary" href="Summary.html" /> 
 </head>
 
@@ -54,23 +54,25 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Unlensed events</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#BBH/BNS-merger-rate-density">BBH/BNS merger rate density</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Detectable-Unlensed-events'-rate-in-a-year">Detectable Unlensed events’ rate in a year</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#BBH/BNS-merger-rate-at-source-redshift-z_s-(in-small-dz)">BBH/BNS merger rate at source redshift <span class="math notranslate nohighlight">\(z_s\)</span> (in small dz)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Sampling-methods-for-compact-binary-sources">Sampling methods for compact binary sources</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Montecarlo-integration-(unlensed-events)">Montecarlo integration (unlensed events)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Gravitational wave event rates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Compact-Binaries-Merger-Rate-Density">Compact Binaries Merger Rate Density</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Merger-Rate-Density-Formula">Merger Rate Density Formula</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Merger-Rate-Density-at-Source-Redshift">Merger Rate Density at Source Redshift</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Normalization-of-Merger-Rate-Distribution">Normalization of Merger Rate Distribution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Sampling-Methods">Sampling Methods</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#SNR-calculation-methods">SNR calculation methods</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Inner-product">Inner-product</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Interpolation">Interpolation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Pdet">Pdet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#test">test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Annual-Rate-of-Detectable-Gravitational-Wave-Events">Annual Rate of Detectable Gravitational Wave Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Compact-binaries-mass-distribution">Compact binaries mass distribution</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#BBH-Mass-Distribution:-PowerLaw+Peak-Model">BBH Mass Distribution: PowerLaw+Peak Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#BNS-mass-distribution:-Bimodal-Gaussian-Model">BNS mass distribution: Bimodal Gaussian Model</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#Sampling-Methods-for-Compact-Binary-Sources">Sampling Methods for Compact Binary Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Statistical-Form-of-Detectable-Merger-Rate-(Monte-Carlo-Integration)">Statistical Form of Detectable Merger Rate (Monte Carlo Integration)</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="GW_equations.html">GW event sampling (Analytical formulation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -102,7 +104,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Unlensed events</li>
+      <li class="breadcrumb-item active">Gravitational wave event rates</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/GW_events.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -112,202 +114,285 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Unlensed-events">
-<h1>Unlensed events<a class="headerlink" href="#Unlensed-events" title="Link to this heading"></a></h1>
-<p><strong>Parameters in consideration:</strong> <span class="math notranslate nohighlight">\(z_s\)</span>: source redshift, <span class="math notranslate nohighlight">\(\theta\)</span>: GWs parameters, <span class="math notranslate nohighlight">\(\Theta\)</span>: step function, <span class="math notranslate nohighlight">\(\rho(z_s,\theta)\)</span>: network optimal SNR, <span class="math notranslate nohighlight">\(\rho_{th}\)</span>: threshold SNR, <span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span>: normalized merger-rate distribution, <span class="math notranslate nohighlight">\(\mathcal{N}^U\)</span>: normalizing factor, <span class="math notranslate nohighlight">\(P\)</span>: prior distribution.</p>
-<section id="BBH/BNS-merger-rate-density">
-<h2>BBH/BNS merger rate density<a class="headerlink" href="#BBH/BNS-merger-rate-density" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>Check for all available models <a class="reference external" href="https://dcc.ligo.org/LIGO-P2000434/public">here</a>.</p></li>
-<li><p>LeR default Merger rate follows <a class="reference external" href="https://arxiv.org/pdf/2106.06303.pdf">WIERDA et al. 2021</a>.</p></li>
-<li><p>It is a functional fit to the population I/II star merger-rate density normalized to the local merger- rate density following Oguri (2018).</p></li>
-<li><p>This model follows from the M10 model to the Belczynski et al. (2017), which is arrived from Madau &amp; Dickinson (2014) with the inclusion of the metallicity dependence of the star formation rate, which is bassically the effect related to pair-instability supernova (PSN) and pair-instability pulsation supernova (PPSN).</p></li>
-</ul>
+  <section id="Gravitational-wave-event-rates">
+<h1>Gravitational wave event rates<a class="headerlink" href="#Gravitational-wave-event-rates" title="Link to this heading"></a></h1>
+<p>This document outlines the default settings for calculating detectable gravitational wave event rates (per year) in <a class="reference external" href="https://ler.readthedocs.io/en/latest/index.html">LeR</a>.</p>
+<p><strong>Parameters Considered:</strong> - <span class="math notranslate nohighlight">\(z_s\)</span>: Source redshift. - <span class="math notranslate nohighlight">\(\theta\)</span>: Gravitational wave parameters. - <span class="math notranslate nohighlight">\(\Theta\)</span>: Step function. - <span class="math notranslate nohighlight">\(\rho(z_s,\theta)\)</span>: Network optimal SNR. - <span class="math notranslate nohighlight">\(\rho_{th}\)</span>: Threshold SNR. - <span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span>: Normalized merger-rate distribution (source-frame). - <span class="math notranslate nohighlight">\(\mathcal{N}^U\)</span>: Normalizing factor. - <span class="math notranslate nohighlight">\(P\)</span>: Prior distribution.</p>
+<p>Default cosmology: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7). But, it can be changed by the user at LeR initialization.</p>
+<section id="Compact-Binaries-Merger-Rate-Density">
+<h2>Compact Binaries Merger Rate Density<a class="headerlink" href="#Compact-Binaries-Merger-Rate-Density" title="Link to this heading"></a></h2>
+<p>The merger rate density is a crucial parameter for understanding the population of compact binary mergers, including binary black holes (BBH), binary neutron stars (BNS), and neutron star-black hole (NSBH) systems. It quantifies the number of mergers occurring per unit volume per unit time. The merger rate density is typically expressed in units of <span class="math notranslate nohighlight">\(\text{Gpc}^{-3} \text{yr}^{-1}\)</span> and varies with redshift (<span class="math notranslate nohighlight">\(z\)</span>).</p>
+<p>For available models for merger rate density, see the example section.</p>
+<section id="Merger-Rate-Density-Formula">
+<h3>Merger Rate Density Formula<a class="headerlink" href="#Merger-Rate-Density-Formula" title="Link to this heading"></a></h3>
+<p>The default merger rate density in LeR follows the model presented in <a class="reference external" href="https://arxiv.org/pdf/2106.06303.pdf">WIERDA et al. 2021</a>. This model is a functional fit to the population I/II star merger-rate density, normalized to the local merger rate density. It extends from the M10 model to the Belczynski et al. (2017) model, which incorporates the metallicity dependence of the star formation rate, influenced by pair-instability supernova (PSN) and pair-instability pulsation supernova (PPSN)
+effects.</p>
+<p>The merger rate density in the detector frame is given by:</p>
 <p><span class="math">\begin{equation}
 \mathcal{R}_m(z_s) = \frac{\mathcal{R}_O(b_4+1)e^{b_2 z_s}}{b_4+e^{b_3 z_s}} \text{Gpc}^{-3}\text{yr}^{-1} \tag{1}
-\end{equation}</span> * <span class="math notranslate nohighlight">\(z_s\)</span>: redshift of source * <span class="math notranslate nohighlight">\(\mathcal{R}\)</span>: local mergerrate. <span class="math notranslate nohighlight">\(\mathcal{R}=23.9^{+14.3}_{-8.6}\text{Gpc}^{-3}\text{yr}^{-1}=23.9^{+14.3}_{-8.6} \times 10^{-9}\text{Mpc}^{-3}\text{yr}^{-1}\)</span> * fitting parameters: <span class="math notranslate nohighlight">\(b_2=1.6\)</span>, <span class="math notranslate nohighlight">\(b_3=2.1\)</span>, <span class="math notranslate nohighlight">\(b_4=30\)</span></p>
-</section>
-<section id="Detectable-Unlensed-events'-rate-in-a-year">
-<h2>Detectable Unlensed events’ rate in a year<a class="headerlink" href="#Detectable-Unlensed-events'-rate-in-a-year" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>Detectable unlensed events’ rate in a year is given by the following equation.</p></li>
-</ul>
-<p><span class="math">\begin{equation}
-R_U = \mathcal{N}^U\int dz_s R_o^U(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\} \tag{2}
 \end{equation}</span></p>
 <ul class="simple">
-<li><p>SNR operator <span class="math notranslate nohighlight">\(\Theta[\rho(z_s,\theta)-\rho_{th}]\)</span> is a step function. <span class="math notranslate nohighlight">\(\rho_{th}\)</span> is the threshold SNR.</p></li>
-<li><p><span class="math notranslate nohighlight">\(P(\theta)\)</span> is considered to normalized.</p></li>
-<li><p>Pdet (probability of detection) can be used instead of SNR operator. It allows smoother transition from detectable to non-detectable events at the SNR threshold.</p></li>
-<li><p><span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span> is the normalized merger-rate distribution.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\theta \in\)</span> {<span class="math notranslate nohighlight">\(m_1\)</span>:mass1, <span class="math notranslate nohighlight">\(m_2\)</span>:mass2, <span class="math notranslate nohighlight">\(D_l\)</span>:luminosity-distance, <span class="math notranslate nohighlight">\(\iota\)</span>:inclination-angle, <span class="math notranslate nohighlight">\(\psi\)</span>:polarization, <span class="math notranslate nohighlight">\(ra\)</span>:right-ascension,<span class="math notranslate nohighlight">\(dec\)</span>:declination,<span class="math notranslate nohighlight">\(\phi_c\)</span>:phase-of-coalescene,<span class="math notranslate nohighlight">\(t_c\)</span>:time-of-coalescene}.</p></li>
-<li><p><span class="math notranslate nohighlight">\(D_l\)</span> is derived from <span class="math notranslate nohighlight">\(z_s\)</span>.</p></li>
+<li><p>Where <span class="math notranslate nohighlight">\(z_s\)</span> is the redshift of the source.</p></li>
+<li><p>The local merger rate <span class="math notranslate nohighlight">\(\mathcal{R}_O\)</span> and fitting parameters <span class="math notranslate nohighlight">\(b_2\)</span>, <span class="math notranslate nohighlight">\(b_3\)</span>, and <span class="math notranslate nohighlight">\(b_4\)</span> are specific to each model.</p></li>
 </ul>
-<section id="BBH/BNS-merger-rate-at-source-redshift-z_s-(in-small-dz)">
-<h3>BBH/BNS merger rate at source redshift <span class="math notranslate nohighlight">\(z_s\)</span> (in small dz)<a class="headerlink" href="#BBH/BNS-merger-rate-at-source-redshift-z_s-(in-small-dz)" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(R(z_s)\)</span> is the merger rate at source redshift <span class="math notranslate nohighlight">\(z_s\)</span> in source frame.</p></li>
-</ul>
+<p>The following table provides the local merger rate <span class="math notranslate nohighlight">\(\mathcal{R}_O\)</span> for different compact binary models:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathcal{R}_O\)</span> (<span class="math notranslate nohighlight">\(\text{Gpc}^{-3} \text{yr}^{-1}\)</span>)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>BNS</p></td>
+<td><p><span class="math notranslate nohighlight">\(105.5^{+190.2}_{-83.9}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>BBH</p></td>
+<td><p><span class="math notranslate nohighlight">\(23.9^{+14.9}_{-8.6}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>NSBH</p></td>
+<td><p><span class="math notranslate nohighlight">\(45^{+75}_{-33}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="Merger-Rate-Density-at-Source-Redshift">
+<h3>Merger Rate Density at Source Redshift<a class="headerlink" href="#Merger-Rate-Density-at-Source-Redshift" title="Link to this heading"></a></h3>
+<p>The merger rate density at source redshift <span class="math notranslate nohighlight">\(z_s\)</span> in the source frame, denoted by <span class="math notranslate nohighlight">\(R(z_s)\)</span>, is given by:</p>
 <p><span class="math">\begin{equation}
 R(z_s) = \frac{\mathcal{R}_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tag{3}
 \end{equation}</span></p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\((1+z)\)</span> factor in the denominator is due to the time dilation effect. It basically change from detector frame to source frame.</p></li>
-<li><p>co-moving volume : <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}\)</span>.</p></li>
-<li><p>sampling of <span class="math notranslate nohighlight">\(z_s\)</span> is done through rejection sampling with the merger rate formula given above.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\mathcal{N}^U\)</span> is the normalizing factor of merger rate distribution wrt <span class="math notranslate nohighlight">\(z_s\)</span>.</p></li>
+<li><p>The factor <span class="math notranslate nohighlight">\((1+z_s)\)</span> in the denominator accounts for time dilation.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}\)</span> represents the differential comoving volume.</p></li>
+<li><p>This formula converts the merger rate density from the detector frame to the source frame.</p></li>
 </ul>
-<p><span class="math">\begin{equation}
-\mathcal{N}^U = \int_{z_{min}}^{z_{max}} dz_s \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tag{4}
-\end{equation}</span></p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span> is the normalized merger-rate distribution.</p></li>
-</ul>
-<p><span class="math">\begin{equation}
-R_o^U(z_s)= \frac{1}{\mathcal{N}^U}\frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tag{5}
-\end{equation}</span></p>
 </section>
-<section id="Sampling-methods-for-compact-binary-sources">
-<h3>Sampling methods for compact binary sources<a class="headerlink" href="#Sampling-methods-for-compact-binary-sources" title="Link to this heading"></a></h3>
+<section id="Normalization-of-Merger-Rate-Distribution">
+<h3>Normalization of Merger Rate Distribution<a class="headerlink" href="#Normalization-of-Merger-Rate-Distribution" title="Link to this heading"></a></h3>
+<p>The normalizing factor of the merger rate distribution with respect to <span class="math notranslate nohighlight">\(z_s\)</span>, denoted by <span class="math notranslate nohighlight">\(\mathcal{N}^U\)</span>, is given by:</p>
+<p><span class="math">\begin{equation}
+\mathcal{N}^U = \int_{z_{\text{min}}}^{z_{\text{max}}} dz_s \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tag{4}
+\end{equation}</span></p>
+<p>The normalized merger-rate distribution, <span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span>, is expressed as:</p>
+<p><span class="math">\begin{equation}
+R_o^U(z_s) = \frac{1}{\mathcal{N}^U} \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tag{5}
+\end{equation}</span></p>
+<p>Distribution of <span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span> wrt <span class="math notranslate nohighlight">\(z_s\)</span> is shown below for BBH.</p>
+<p align="center"><p><img alt="zs" src="_images/zs.png" /></p>
+</p></section>
+<section id="Sampling-Methods">
+<h3>Sampling Methods<a class="headerlink" href="#Sampling-Methods" title="Link to this heading"></a></h3>
+<p>Sampling of the source redshift <span class="math notranslate nohighlight">\(z_s\)</span> is based on the inverse transform sampling method. An interpolation of the inverse cumulative distribution function (CDF) is created and stored for future use, making the sampling process faster and more efficient.</p>
+<p><strong>Note:</strong> The merger rate density models and parameters are subject to updates based on new observational data and theoretical developments.</p>
+</section>
+</section>
+<section id="Annual-Rate-of-Detectable-Gravitational-Wave-Events">
+<h2>Annual Rate of Detectable Gravitational Wave Events<a class="headerlink" href="#Annual-Rate-of-Detectable-Gravitational-Wave-Events" title="Link to this heading"></a></h2>
+<p>Continuing from the discussion on Compact Binaries Merger Rate Density, we now focus on the annual rate of detectable gravitational wave events. This rate, denoted as <span class="math notranslate nohighlight">\(R_U\)</span>, quantifies the expected number of gravitational wave events that can be observed by detectors within a year. The expression for <span class="math notranslate nohighlight">\(R_U\)</span> is given by:</p>
+<p><span class="math">\begin{equation}
+R_U = \mathcal{N}^U\int dz_s R_o^U(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\} \tag{2}
+\end{equation}</span></p>
+<p>Key aspects of this equation include:</p>
+<ul class="simple">
+<li><p><strong>SNR Operator :math:`Theta[rho(z_s,theta)-rho_{th}]`:</strong> This is a step function that determines whether the signal-to-noise ratio (SNR) <span class="math notranslate nohighlight">\(\rho(z_s,\theta)\)</span> of an event exceeds the threshold SNR <span class="math notranslate nohighlight">\(\rho_{th}\)</span>. If <span class="math notranslate nohighlight">\(\rho(z_s,\theta) \geq \rho_{th}\)</span>, the event is considered detectable.</p></li>
+<li><p>The SNR threshold <span class="math notranslate nohighlight">\(\rho_{th}\)</span> is typically chosen based on the sensitivity and design specifications of the gravitational wave detector. This strategy is valid as a proxy in the Gaussian noise regime.</p></li>
+<li><p><strong>Prior Distribution :math:`P(theta)`:</strong> This normalized distribution represents the prior knowledge or assumptions about the distribution of gravitational wave parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p></li>
+<li><p><strong>Probability of Detection :math:`P_{text{det}}`:</strong> To allow a smoother transition from detectable to non-detectable events at the SNR threshold, the probability of detection can be used in place of the SNR operator. This is based on the assumption that the matched-filter SNR follows a Gaussian distribution with a mean of <span class="math notranslate nohighlight">\(\rho_{\text{optimal}}\)</span> and a standard deviation of 1.</p></li>
+<li><p><strong>Normalized Merger-Rate Distribution :math:`R_o^U(z_s)`:</strong> This function represents the merger rate density (in the source frame) normalized with respect to the redshift <span class="math notranslate nohighlight">\(z_s\)</span>.</p></li>
+<li><p><strong>Gravitational Wave Parameters :math:`theta`:</strong> The set of parameters includes the masses of the binary components (<span class="math notranslate nohighlight">\(m_1\)</span> and <span class="math notranslate nohighlight">\(m_2\)</span>), the inclination angle (<span class="math notranslate nohighlight">\(\iota\)</span>), the polarization angle (<span class="math notranslate nohighlight">\(\psi\)</span>), the right ascension (<span class="math notranslate nohighlight">\(ra\)</span>), the declination (<span class="math notranslate nohighlight">\(dec\)</span>), the phase of coalescence (<span class="math notranslate nohighlight">\(\phi_c\)</span>), and the time of coalescence (<span class="math notranslate nohighlight">\(t_c\)</span>).</p></li>
+<li><p><strong>Luminosity Distance :math:`D_l`:</strong> The luminosity distance is derived from the source redshift <span class="math notranslate nohighlight">\(z_s\)</span> and cosmological parameters, providing a measure of the distance to the source of the gravitational waves.</p></li>
+</ul>
+<p>The integration over <span class="math notranslate nohighlight">\(z_s\)</span> and <span class="math notranslate nohighlight">\(\theta\)</span> in the equation accounts for the contributions from all detectable events across different redshifts and with varying gravitational wave parameters. This comprehensive approach enables the estimation of the annual rate of detectable gravitational wave events, which is crucial for understanding the observational capabilities of gravitational wave detectors and planning future observational strategies.</p>
+<p>Note: Refer to the section <a class="reference external" href="https://gwsnr.readthedocs.io/en/latest/">GWSNR</a> for details on the calculation of the optimal signal-to-noise ratio (SNR).</p>
+</section>
+<section id="Compact-binaries-mass-distribution">
+<h2>Compact binaries mass distribution<a class="headerlink" href="#Compact-binaries-mass-distribution" title="Link to this heading"></a></h2>
+<section id="BBH-Mass-Distribution:-PowerLaw+Peak-Model">
+<h3>BBH Mass Distribution: PowerLaw+Peak Model<a class="headerlink" href="#BBH-Mass-Distribution:-PowerLaw+Peak-Model" title="Link to this heading"></a></h3>
+<p>The PowerLaw+Peak model is a parametric model used to describe the mass distribution of binary black hole (BBH) mergers. It combines a power-law component with a Gaussian peak to capture both the broad distribution and potential local enhancements in the mass spectrum of BBHs. The model is defined by the following parameters:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(m_{\text{minbh}}\)</span>: Minimum black hole mass in the distribution.</p></li>
+<li><p><span class="math notranslate nohighlight">\(m_{\text{maxbh}}\)</span>: Maximum black hole mass in the distribution.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\alpha\)</span>: Slope of the power-law component.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mu_g\)</span>: Mean of the Gaussian peak.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma_g\)</span>: Standard deviation of the Gaussian peak.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\lambda_{\text{peak}}\)</span>: Fractional contribution of the Gaussian peak to the overall distribution.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\delta_m\)</span>: Smoothing parameter for the transition between the power-law and Gaussian components.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta\)</span>: Exponent for the mass ratio distribution.</p></li>
+</ul>
+<p>For analytical expressions and details on the PowerLaw+Peak model, refer to the <a class="reference external" href="https://arxiv.org/pdf/2010.14533.pdf">GWTC-2 2021</a> (Appendix B3). The default values for the parameters are based on <a class="reference external" href="https://arxiv.org/pdf/2111.03604.pdf">GWTC-3 2021</a>. <a class="reference external" href="https://ler.readthedocs.io/en/latest/index.html">LeR</a> uses this model through <a class="reference external" href="https://lscsoft.docs.ligo.org/gwcosmo/">gwcosmo</a>.</p>
+<p>Here is the default parameters and resultant distribution:</p>
+<table><tr><td><table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(m_{\text{minbh}}\)</span></p></td>
+<td><p>4.98</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(m_{\text{maxbh}}\)</span></p></td>
+<td><p>112.5</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\alpha\)</span></p></td>
+<td><p>3.78</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mu_g\)</span></p></td>
+<td><p>32.27</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\sigma_g\)</span></p></td>
+<td><p>3.88</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\lambda_{\text{peak}}\)</span></p></td>
+<td><p>0.03</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\delta_m\)</span></p></td>
+<td><p>4.8</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\beta\)</span></p></td>
+<td><p>0.81</p></td>
+</tr>
+</tbody>
+</table>
+</td><td><p><img alt="mass_bbh" src="_images/bbh_mass.png" /></p>
+</td></tr></table></section>
+<section id="BNS-mass-distribution:-Bimodal-Gaussian-Model">
+<h3>BNS mass distribution: Bimodal Gaussian Model<a class="headerlink" href="#BNS-mass-distribution:-Bimodal-Gaussian-Model" title="Link to this heading"></a></h3>
+<p>The mass distribution of neutron stars in binary neutron star (BNS) systems can be characterized by a bimodal distribution, which can be modeled using a double Gaussian distribution. This bimodal distribution is thought to reflect the different evolutionary paths that neutron stars can take. For more details, refer to <a class="reference external" href="https://arxiv.org/pdf/1805.06442.pdf">Alsing et al. 2018</a> and <a class="reference external" href="https://arxiv.org/pdf/2005.00032.pdf">M. Farr et al. 2020</a>.</p>
+<p>The probability density function for the neutron star mass, <span class="math notranslate nohighlight">\(m\)</span>, is given by:</p>
+<p><span class="math">\begin{equation}
+p(m) = wN (\mu_L, \sigma_L) + (1 − w)N (\mu_R, \sigma_R)
+\end{equation}</span></p>
+<p>where: - <span class="math notranslate nohighlight">\(w\)</span>: Fraction of neutron stars in the low-mass peak. - <span class="math notranslate nohighlight">\(\mu_L\)</span> and <span class="math notranslate nohighlight">\(\mu_R\)</span>: Mean masses of the low-mass and high-mass peaks, respectively. - <span class="math notranslate nohighlight">\(\sigma_L\)</span> and <span class="math notranslate nohighlight">\(\sigma_R\)</span>: Standard deviations of the low-mass and high-mass peaks, respectively.</p>
+<p>Neutron stars that form from the collapse of massive stars in binary systems can either remain isolated or undergo mass transfer from their companion stars. Neutron stars that remain isolated typically have a lower mass distribution, with a peak at around 1.35 <span class="math notranslate nohighlight">\(M_{\odot}\)</span>. On the other hand, neutron stars that undergo mass transfer from their companion stars can have a higher mass distribution, with a peak at around 1.8 <span class="math notranslate nohighlight">\(M_{\odot}\)</span>.</p>
+<p>Here is the default parameters and resultant distribution:</p>
+<table><tr><td><table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(w\)</span></p></td>
+<td><p>0.643</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mu_L\)</span></p></td>
+<td><p>1.352 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\sigma_L\)</span></p></td>
+<td><p>0.08 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mu_R\)</span></p></td>
+<td><p>1.88 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\sigma_R\)</span></p></td>
+<td><p>0.3 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</td><td><p><img alt="mass_bns" src="_images/bns_mass.png" /></p>
+</td></tr></table><p>Each normal distribution is independently truncated and normalized in the range [1, 2.3] <span class="math notranslate nohighlight">\(M_{\odot}\)</span>, ensuring that the neutron star masses are within the physically plausible range.</p>
+<p>This model has been found to be a good fit for the observed mass distribution of neutron stars in binary systems.</p>
+<p>Note: Both primary and secondary masses are sampled from the same distribution. However, if the secondary mass is greater than the primary mass, their values are exchanged to maintain the convention that the primary mass is the larger of the two.</p>
+</section>
+</section>
+<section id="Sampling-Methods-for-Compact-Binary-Sources">
+<h2>Sampling Methods for Compact Binary Sources<a class="headerlink" href="#Sampling-Methods-for-Compact-Binary-Sources" title="Link to this heading"></a></h2>
+<p>The following table summarizes the sampling methods and ranges for various parameters of compact binary sources:</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>unit</p></th>
-<th class="head"><p>sampling method</p></th>
-<th class="head"><p>range</p></th>
+<th class="head"><p>Unit</p></th>
+<th class="head"><p>Sampling Method</p></th>
+<th class="head"><p>Range</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><span class="math notranslate nohighlight">\(z_s\)</span></p></td>
 <td><p>None</p></td>
-<td><p>merger-rate <span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span></p></td>
-<td><p>[0,10]</p></td>
+<td><p>Merger rate <span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span></p></td>
+<td><p>[0, 10]</p></td>
 </tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(m_1,m_2\)</span></p></td>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(m_1, m_2\)</span></p></td>
 <td><p><span class="math notranslate nohighlight">\(\mathcal{M}_{\odot}\)</span></p></td>
-<td><p>PowerLaw+PEAK model</p></td>
-<td><p>[<span class="math notranslate nohighlight">\(m_{min}\)</span>,<span class="math notranslate nohighlight">\(m_{max}\)</span>]</p></td>
+<td><p>PowerLaw+Peak model</p></td>
+<td><p>[<span class="math notranslate nohighlight">\(m_{\text{min}}\)</span>, <span class="math notranslate nohighlight">\(m_{\text{max}}\)</span>]</p></td>
 </tr>
 <tr class="row-even"><td><p><span class="math notranslate nohighlight">\(ra\)</span></p></td>
-<td><p>radian</p></td>
+<td><p>Radian</p></td>
 <td><p>Uniform</p></td>
-<td><p>[0,<span class="math notranslate nohighlight">\(2\pi\)</span>]</p></td>
+<td><p>[0, <span class="math notranslate nohighlight">\(2\pi\)</span>]</p></td>
 </tr>
 <tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(dec\)</span></p></td>
-<td><p>radian</p></td>
-<td><p>cosine</p></td>
-<td><p>[<span class="math notranslate nohighlight">\(-\pi/2\)</span>,<span class="math notranslate nohighlight">\(\pi/2\)</span>]</p></td>
+<td><p>Radian</p></td>
+<td><p>Cosine</p></td>
+<td><p>[<span class="math notranslate nohighlight">\(-\pi/2\)</span>, <span class="math notranslate nohighlight">\(\pi/2\)</span>]</p></td>
 </tr>
 <tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\iota\)</span></p></td>
-<td><p>radian</p></td>
-<td><p>sine</p></td>
-<td><p>[<span class="math notranslate nohighlight">\(0\)</span>,<span class="math notranslate nohighlight">\(\pi\)</span>]</p></td>
+<td><p>Radian</p></td>
+<td><p>Sine</p></td>
+<td><p>[0, <span class="math notranslate nohighlight">\(\pi\)</span>]</p></td>
 </tr>
 <tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\psi\)</span></p></td>
-<td><p>radian</p></td>
+<td><p>Radian</p></td>
 <td><p>Uniform</p></td>
-<td><p>[<span class="math notranslate nohighlight">\(0\)</span>,<span class="math notranslate nohighlight">\(\pi\)</span>]</p></td>
+<td><p>[0, <span class="math notranslate nohighlight">\(\pi\)</span>]</p></td>
 </tr>
 <tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\phi_c\)</span></p></td>
-<td><p>radian</p></td>
+<td><p>Radian</p></td>
 <td><p>Uniform</p></td>
-<td><p>[<span class="math notranslate nohighlight">\(0\)</span>,<span class="math notranslate nohighlight">\(2\pi\)</span>]</p></td>
+<td><p>[0, <span class="math notranslate nohighlight">\(2\pi\)</span>]</p></td>
 </tr>
 <tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(t_c\)</span></p></td>
-<td><p>sec</p></td>
-<td><p>Uniform(one year)</p></td>
-<td><p>[<span class="math notranslate nohighlight">\(t_{min}\)</span>,<span class="math notranslate nohighlight">\(t_{max}\)</span>]</p></td>
+<td><p>Second</p></td>
+<td><p>Uniform (one year)</p></td>
+<td><p>[<span class="math notranslate nohighlight">\(t_{\text{min}}\)</span>, <span class="math notranslate nohighlight">\(t_{\text{max}}\)</span>]</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="Montecarlo-integration-(unlensed-events)">
-<h3>Montecarlo integration (unlensed events)<a class="headerlink" href="#Montecarlo-integration-(unlensed-events)" title="Link to this heading"></a></h3>
+<section id="Statistical-Form-of-Detectable-Merger-Rate-(Monte-Carlo-Integration)">
+<h2>Statistical Form of Detectable Merger Rate (Monte Carlo Integration)<a class="headerlink" href="#Statistical-Form-of-Detectable-Merger-Rate-(Monte-Carlo-Integration)" title="Link to this heading"></a></h2>
+<p>The detectable merger rate, <span class="math notranslate nohighlight">\(R_U\)</span>, can be statistically estimated using Monte Carlo integration. This can be done using either a step function or the probability of detection (<span class="math notranslate nohighlight">\(P_{\text{det}}\)</span>).</p>
 <ul class="simple">
-<li><p>With step function.</p></li>
+<li><p><strong>With Step Function:</strong></p></li>
 </ul>
 <p><span class="math">\begin{equation}
 \begin{split}
-R_U &= \mathcal{N}^U \left< \Theta[\rho(z_s,\theta)-\rho_{th}]\right>_{z_s,\theta \in Sampled[z_s,\theta]} \\
+R_U &= \mathcal{N}^U \left< \Theta[\rho(z_s,\theta)-\rho_{th}]\right>_{z_s,\theta \in \text{Sampled}[z_s,\theta]} \\
 &= \frac{\mathcal{N}^U}{N} \sum_i \Theta[\rho(z_s^i,\theta_i)-\rho_{th}]
 \end{split} \tag{6}
 \end{equation}</span></p>
 <ul class="simple">
-<li><p>With Pdet.</p></li>
+<li><p><strong>With :math:`P_{text{det}}`:</strong></p></li>
 </ul>
 <p><span class="math">\begin{equation}
 \begin{split}
-R_U &= \mathcal{N}^U \left<  P_{det}(z_s,\theta)\right>_{z_s,\theta \in Sampled[z_s,\theta]} \\
-&= \frac{\mathcal{N}^U}{N} \sum_i P_{det}(z_s^i,\theta_i)
+R_U &= \mathcal{N}^U \left<  P_{\text{det}}(z_s,\theta)\right>_{z_s,\theta \in \text{Sampled}[z_s,\theta]} \\
+&= \frac{\mathcal{N}^U}{N} \sum_i P_{\text{det}}(z_s^i,\theta_i)
 \end{split} \tag{7}
 \end{equation}</span></p>
-</section>
-</section>
-<section id="SNR-calculation-methods">
-<h2>SNR calculation methods<a class="headerlink" href="#SNR-calculation-methods" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>SNR: optimal network signal-to-noise ratio</p></li>
-</ul>
-<section id="Inner-product">
-<h3>Inner-product<a class="headerlink" href="#Inner-product" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>Refer to bilby.gw.detector.get_network_optimal_snr function.</p></li>
-<li><p>Given the power spectral density <span class="math notranslate nohighlight">\(S_n(f)\)</span> of the detector, the optimal network signal-to-noise ratio is given by</p></li>
-</ul>
-<p><span class="math">\begin{equation}
-\rho = \sqrt{4\int_0^\infty \frac{|\tilde{h}(f)|^2}{S_n(f)}df} \tag{8}
-\end{equation}</span></p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\tilde{h}(f)\)</span> is the waveform in the frequency domain.</p></li>
-</ul>
-<p><span class="math">\begin{equation}
-|\tilde{h}(f)|^2 = \left| \tilde{h}_+(f) F_+ + \tilde{h}_\times(f) F_\times \right|^2 \tag{9}
-\end{equation}</span></p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(F_+\)</span> and <span class="math notranslate nohighlight">\(F_\times\)</span> are the antenna pattern functions. It depends on the source location, detector orientation and polarization angle.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\tilde{h}_+\)</span> and <span class="math notranslate nohighlight">\(\tilde{h}_\times\)</span> are the two polarizations of the waveform in the frequency domain.</p></li>
-</ul>
-</section>
-<section id="Interpolation">
-<h3>Interpolation<a class="headerlink" href="#Interpolation" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>Refer to <a class="reference external" href="https://github.com/hemantaph/gwsnr">gwsnr</a> package.</p></li>
-<li><p>Simple interpretation of SNR is from <a class="reference external" href="https://arxiv.org/pdf/1909.06296.pdf">https://arxiv.org/pdf/1909.06296.pdf</a> Equation D1 and 3.4 .</p></li>
-</ul>
-<p><span class="math">\begin{equation}
-\begin{split}
-\rho &= \sqrt{4\int_0^\infty \frac{|h(f)|^2}{S_n(f)}df} \\
-&= \left( \frac{1 Mpc}{D_{eff}} \right)\mathcal{A}_{1Mpc} \sqrt{ 4\int_0^\infty \frac{f^{-7/3}}{S_n(f)}df }
-\end{split} \tag{10}
-\end{equation}</span></p>
-<ul class="simple">
-<li><p>Defining Half-sacaled SNR:</p></li>
-</ul>
-<p><span class="math">\begin{equation}
-\begin{split}
-\rho_{1/2} &= \left( \frac{D_{eff}}{1 Mpc} \right)\mathcal{A}_{1Mpc}^{-1} \times \rho \\
-&= \sqrt{ 4\int_0^\infty \frac{f^{-7/3}}{S_n(f)}df }
-\end{split} \tag{11}
-\end{equation}</span></p>
-<ul class="simple">
-<li><p>Interpolation of <span class="math notranslate nohighlight">\(\rho_{1/2}\)</span> from the pre-calculated SNR table.</p></li>
-<li><p>Works with spinless waveform only.</p></li>
-<li><p>Tested with TaylorF2 and IMRPhenomD waveforms.</p></li>
-</ul>
-</section>
-<section id="Pdet">
-<h3>Pdet<a class="headerlink" href="#Pdet" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>LeR can use Pdet instead of SNR.</p></li>
-<li><p>Pdet is the probability of detection.</p></li>
-<li><p>SNR is taken to a gaussian distribution with mean <span class="math notranslate nohighlight">\(\rho\)</span> optimal and standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span> of 1.</p></li>
-<li><p>Pdet is the probability of SNR being greater than the threshold SNR <span class="math notranslate nohighlight">\(\rho_{th}\)</span>. So its a cumulative distribution function of the gaussian distribution.</p></li>
-</ul>
-<p><strong>Advantages of Pdet over SNR:</strong> * Pdet is a smooth function of SNR. So it allows smoother transition from detectable to non-detectable events at the SNR threshold. * Pdet is a probability. So it is always between 0 and 1. So it is easy to interpret</p>
-</section>
-<section id="test">
-<h3>test<a class="headerlink" href="#test" title="Link to this heading"></a></h3>
-</section>
+<p>In both cases, the average is taken over a sample of <span class="math notranslate nohighlight">\((z_s, \theta)\)</span> pairs, where <span class="math notranslate nohighlight">\(N\)</span> is the total number of samples. The step function <span class="math notranslate nohighlight">\(\Theta[\rho(z_s,\theta)-\rho_{th}]\)</span> evaluates to 1 if the SNR <span class="math notranslate nohighlight">\(\rho(z_s,\theta)\)</span> is above the threshold <span class="math notranslate nohighlight">\(\rho_{th}\)</span>, and 0 otherwise. The probability of detection, <span class="math notranslate nohighlight">\(P_{\text{det}}(z_s,\theta)\)</span>, provides a smoother transition from detectable to non-detectable events at the SNR threshold.</p>
+<p>The table below presents the merger rate values for two different detector configurations, considering spin-less systems for simplicity. The signal-to-noise ratio (SNR) operator is implemented using a step function with a threshold of 8, and the waveform approximant used is IMRPhenomD.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Detector Configuration</p></th>
+<th class="head"><p>BBH (popI-II) Merger Rate (yr-1)</p></th>
+<th class="head"><p>BNS Merger Rate (yr-1)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>[L1, H1, V1] (O4)</p></td>
+<td><p>440.9</p></td>
+<td><p>91942.8</p></td>
+</tr>
+<tr class="row-odd"><td><p>[CE, ET] (3G)</p></td>
+<td><p>3.2</p></td>
+<td><p>38810.4</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 
@@ -316,7 +401,7 @@ R_U &= \mathcal{N}^U \left<  P_{det}(z_s,\theta)\right>_{z_s,\theta \in Sampled[
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="Summary.html" class="btn btn-neutral float-left" title="Summary" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Lensed_events.html" class="btn btn-neutral float-right" title="Lensed event rates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="GW_equations.html" class="btn btn-neutral float-right" title="GW event sampling (Analytical formulation)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

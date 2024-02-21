@@ -1218,6 +1218,87 @@ Functions
       ..
           !! processed by numpydoc !!
 
+   .. py:method:: binary_masses_NSBH_broken_powerlaw(size, mminbh=26, mmaxbh=125, alpha_1=6.75, alpha_2=6.75, b=0.5, delta_m=5, mminns=1.0, mmaxns=3.0, alphans=0.0, get_attribute=False, param=None)
+
+      
+      Function to calculate source mass1 and mass2 of NSBH from powerlaw distribution (gwcosmo). Parameters are mminbh=26,mmaxbh=125,alpha_1=6.75,alpha_2=6.75,b=0.5,delta_m=5,mminns=1.0,mmaxns=3.0,alphans=0.0.
+
+
+      :Parameters:
+
+          **size** : `int`
+              Number of samples to draw
+
+          **mminbh** : `float`
+              Minimum mass of the black hole (Msun)
+              default: 26
+
+          **mmaxbh** : `float`
+              Maximum mass of the black hole (Msun)
+              default: 125
+
+          **alpha_1** : `float`
+              Power law index for the primary mass distribution
+              default: 6.75
+
+          **alpha_2** : `float`
+              Power law index for the secondary mass distribution
+              default: 6.75
+
+          **b** : `float`
+              Break point of the power law
+              default: 0.5
+
+          **delta_m** : `float`
+              Range of mass tapering on
+              default: 5
+
+          **mminns** : `float`
+              Minimum mass of the neutron star (Msun)
+              default: 1.0
+
+          **mmaxns** : `float`
+              Maximum mass of the neutron star (Msun)
+              default: 3.0
+
+          **alphans** : `float`
+              Power law index for the neutron star mass distribution
+              default: 0.0
+
+          **get_attribute** : `bool`
+              If True, return a sampler function with size as the only input where parameters are fixed to the given values.
+
+          **param** : `dict`
+              Allows to pass in above parameters as dict.
+
+      :Returns:
+
+          **mass_1_source** : `numpy.ndarray` (1D array of floats)
+              Array of mass1 in source frame (Msun)
+
+          **mass_2_source** : `numpy.ndarray` (1D array of floats)
+              Array of mass2 in source frame (Msun)
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.gw_source_population import CBCSourceParameterDistribution
+      >>> cbc = CBCSourceParameterDistribution()
+      >>> m1_src, m2_src = cbc.binary_masses_NSBH_broken_powerlaw(size=1000)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
    .. py:method:: binary_masses_BNS_bimodal(size, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3, resolution=500, create_new=False, get_attribute=False, param=None)
 
       
