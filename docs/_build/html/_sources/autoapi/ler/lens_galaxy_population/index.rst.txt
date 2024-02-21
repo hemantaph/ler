@@ -41,9 +41,15 @@ Functions
    ler.lens_galaxy_population.velocity_dispersion_z_dependent
    ler.lens_galaxy_population.lens_redshift_SDSS_catalogue
    ler.lens_galaxy_population.interpolator_from_pickle
+   ler.lens_galaxy_population.cubic_spline_interpolator
+   ler.lens_galaxy_population.inverse_transform_sampler
    ler.lens_galaxy_population.axis_ratio_rayleigh
    ler.lens_galaxy_population.axis_ratio_rayleigh
+   ler.lens_galaxy_population.inverse_transform_sampler
+   ler.lens_galaxy_population.cubic_spline_interpolator
    ler.lens_galaxy_population.optical_depth_sie2_mp
+   ler.lens_galaxy_population.inverse_transform_sampler
+   ler.lens_galaxy_population.cubic_spline_interpolator
    ler.lens_galaxy_population.lens_redshift_SDSS_catalogue
    ler.lens_galaxy_population.axis_ratio_rayleigh
    ler.lens_galaxy_population.velocity_dispersion_z_dependent
@@ -2457,7 +2463,18 @@ Functions
    Adds two dictionaries with the same keys together.
 
 
+   :Parameters:
 
+       **dictionary1** : `dict`
+           dictionary to be added.
+
+       **dictionary2** : `dict`
+           dictionary to be added.
+
+   :Returns:
+
+       **dictionary** : `dict`
+           dictionary with added values.
 
 
 
@@ -2480,7 +2497,18 @@ Functions
    Filters an event dictionary to only contain the size.
 
 
+   :Parameters:
 
+       **dictionary** : `dict`
+           dictionary to be trimmed.
+
+       **size** : `int`
+           size to trim the dictionary to.
+
+   :Returns:
+
+       **dictionary** : `dict`
+           trimmed dictionary.
 
 
 
@@ -3654,7 +3682,7 @@ Functions
       :Returns:
 
           **theta_E** : `float`
-              Einstein radii of the lens galaxies in radian
+              Einstein radii of the lens galaxies
 
 
 
@@ -3748,7 +3776,119 @@ Functions
    Function to decide which interpolator to use.
 
 
+   :Parameters:
 
+       **param_dict_given** : `dict`
+           dictionary of parameters.
+
+       **directory** : `str`
+           directory to store the interpolator.
+
+       **sub_directory** : `str`
+           sub-directory to store the interpolator.
+
+       **name** : `str`
+           name of the interpolator.
+
+       **x** : `numpy.ndarray`
+           x values.
+
+       **pdf_func** : `function`
+           function to calculate the pdf of x given y.
+
+       **y** : `numpy.ndarray`
+           y values.
+
+       **conditioned_y** : `numpy.ndarray`
+           conditioned y values.
+
+       **dimension** : `int`
+           dimension of the interpolator. Default is 1.
+
+       **category** : `str`
+           category of the function. Default is "pdf".
+
+       **create_new** : `bool`
+           if True, create a new interpolator. Default is False.
+
+   :Returns:
+
+       **interpolator** : `function`
+           interpolator function.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: cubic_spline_interpolator(xnew, coefficients, x)
+
+   
+   Function to interpolate using cubic spline.
+
+
+   :Parameters:
+
+       **xnew** : `numpy.ndarray`
+           new x values.
+
+       **coefficients** : `numpy.ndarray`
+           coefficients of the cubic spline.
+
+       **x** : `numpy.ndarray`
+           x values.
+
+   :Returns:
+
+       **result** : `numpy.ndarray`
+           interpolated values.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: inverse_transform_sampler(size, cdf, x)
+
+   
+   Function to sample from the inverse transform method.
+
+
+   :Parameters:
+
+       **size** : `int`
+           number of samples.
+
+       **cdf** : `numpy.ndarray`
+           cdf values.
+
+       **x** : `numpy.ndarray`
+           x values.
+
+   :Returns:
+
+       **samples** : `numpy.ndarray`
+           samples from the cdf.
 
 
 
@@ -4559,6 +4699,80 @@ Functions
    ..
        !! processed by numpydoc !!
 
+.. py:function:: inverse_transform_sampler(size, cdf, x)
+
+   
+   Function to sample from the inverse transform method.
+
+
+   :Parameters:
+
+       **size** : `int`
+           number of samples.
+
+       **cdf** : `numpy.ndarray`
+           cdf values.
+
+       **x** : `numpy.ndarray`
+           x values.
+
+   :Returns:
+
+       **samples** : `numpy.ndarray`
+           samples from the cdf.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: cubic_spline_interpolator(xnew, coefficients, x)
+
+   
+   Function to interpolate using cubic spline.
+
+
+   :Parameters:
+
+       **xnew** : `numpy.ndarray`
+           new x values.
+
+       **coefficients** : `numpy.ndarray`
+           coefficients of the cubic spline.
+
+       **x** : `numpy.ndarray`
+           x values.
+
+   :Returns:
+
+       **result** : `numpy.ndarray`
+           interpolated values.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:function:: optical_depth_sie2_mp(params)
 
    
@@ -4577,6 +4791,80 @@ Functions
            params[5] = idx (index to keep track of the operation, int)
            params[6] = zl_list (list of lens redshifts, list). This use for choosing the right vd_inv_cdf(s) for each lens redshifts.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: inverse_transform_sampler(size, cdf, x)
+
+   
+   Function to sample from the inverse transform method.
+
+
+   :Parameters:
+
+       **size** : `int`
+           number of samples.
+
+       **cdf** : `numpy.ndarray`
+           cdf values.
+
+       **x** : `numpy.ndarray`
+           x values.
+
+   :Returns:
+
+       **samples** : `numpy.ndarray`
+           samples from the cdf.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: cubic_spline_interpolator(xnew, coefficients, x)
+
+   
+   Function to interpolate using cubic spline.
+
+
+   :Parameters:
+
+       **xnew** : `numpy.ndarray`
+           new x values.
+
+       **coefficients** : `numpy.ndarray`
+           coefficients of the cubic spline.
+
+       **x** : `numpy.ndarray`
+           x values.
+
+   :Returns:
+
+       **result** : `numpy.ndarray`
+           interpolated values.
 
 
 

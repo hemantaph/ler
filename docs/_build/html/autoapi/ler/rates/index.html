@@ -26,7 +26,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="ler.rates.gwrates" href="gwrates/index.html" />
-    <link rel="prev" title="Lensed events" href="../../../Lensed%20events.html" /> 
+    <link rel="prev" title="Lensed events" href="../../../Lensed_events.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,9 +50,10 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Unlensed%20events.html">Unlensed events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed%20events.html">Lensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation2.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Unlensed_events.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed events</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul class="current">
@@ -70,6 +71,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#ler.rates.append_json"><code class="docutils literal notranslate"><span class="pre">append_json()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.rates.get_param_from_json"><code class="docutils literal notranslate"><span class="pre">get_param_from_json()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.rates.batch_handler"><code class="docutils literal notranslate"><span class="pre">batch_handler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.rates.add_dict_values"><code class="docutils literal notranslate"><span class="pre">add_dict_values()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.rates.LeR"><code class="docutils literal notranslate"><span class="pre">LeR</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.rates.CBCSourceParameterDistribution"><code class="docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id7"><code class="docutils literal notranslate"><span class="pre">load_json()</span></code></a></li>
@@ -157,7 +159,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#id7" title="ler.rates.load_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_json</span></code></a>(file_name)</p></td>
 <td><p>Load a json file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id8" title="ler.rates.append_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_json</span></code></a>(file_name, dictionary[, replace])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id8" title="ler.rates.append_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_json</span></code></a>(file_name, new_dictionary[, ...])</p></td>
 <td><p>Append and update a json file with a dictionary.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#id9" title="ler.rates.get_param_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_param_from_json</span></code></a>(json_file)</p></td>
@@ -166,16 +168,19 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#id10" title="ler.rates.batch_handler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">batch_handler</span></code></a>(size, batch_size, sampling_routine, ...)</p></td>
 <td><p>Function to run the sampling in batches.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id7" title="ler.rates.load_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_json</span></code></a>(file_name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.rates.add_dict_values" title="ler.rates.add_dict_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_dict_values</span></code></a>(dict1, dict2)</p></td>
+<td><p>Adds the values of two dictionaries together.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id7" title="ler.rates.load_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_json</span></code></a>(file_name)</p></td>
 <td><p>Load a json file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id8" title="ler.rates.append_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_json</span></code></a>(file_name, dictionary[, replace])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id8" title="ler.rates.append_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_json</span></code></a>(file_name, new_dictionary[, ...])</p></td>
 <td><p>Append and update a json file with a dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id9" title="ler.rates.get_param_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_param_from_json</span></code></a>(json_file)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id9" title="ler.rates.get_param_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_param_from_json</span></code></a>(json_file)</p></td>
 <td><p>Function to get the parameters from json file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id10" title="ler.rates.batch_handler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">batch_handler</span></code></a>(size, batch_size, sampling_routine, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id10" title="ler.rates.batch_handler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">batch_handler</span></code></a>(size, batch_size, sampling_routine, ...)</p></td>
 <td><p>Function to run the sampling in batches.</p></td>
 </tr>
 </tbody>
@@ -913,7 +918,7 @@ e.g. param = dict(mean=2.0, std=0.2)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>theta_E</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Einstein radii of the lens galaxies in radian</p>
+<dt><strong>theta_E</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Einstein radii of the lens galaxies</p>
 </dd>
 </dl>
 </dd>
@@ -993,14 +998,14 @@ e.g. param = dict(mean=2.0, std=0.2)</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.rates.append_json">
-<span class="sig-prename descclassname"><span class="pre">ler.rates.</span></span><span class="sig-name descname"><span class="pre">append_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#append_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.append_json" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.rates.</span></span><span class="sig-name descname"><span class="pre">append_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_dictionary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">old_dictionary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#append_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.append_json" title="Link to this definition"></a></dt>
 <dd><p>Append and update a json file with a dictionary.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>file_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters.</p>
 </dd>
-<dt><strong>dictionary</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary to be appended to the json file.</p>
+<dt><strong>new_dictionary</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary to be appended to the json file.</p>
 </dd>
 <dt><strong>replace</strong><span class="classifier"><cite>bool</cite>, optional</span></dt><dd><p>If True, replace the json file with the dictionary. Default is False.</p>
 </dd>
@@ -1030,7 +1035,7 @@ e.g. param = dict(mean=2.0, std=0.2)</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.rates.batch_handler">
-<span class="sig-prename descclassname"><span class="pre">ler.rates.</span></span><span class="sig-name descname"><span class="pre">batch_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_routine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#batch_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.batch_handler" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.rates.</span></span><span class="sig-name descname"><span class="pre">batch_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_routine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#batch_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.batch_handler" title="Link to this definition"></a></dt>
 <dd><p>Function to run the sampling in batches.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1046,6 +1051,28 @@ e.g. unlensed_sampling_routine() or lensed_sampling_routine()</p>
 </dd>
 <dt><strong>resume</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if True, it will resume the sampling from the last batch.
 default resume = False.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.rates.add_dict_values">
+<span class="sig-prename descclassname"><span class="pre">ler.rates.</span></span><span class="sig-name descname"><span class="pre">add_dict_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dict2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#add_dict_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.add_dict_values" title="Link to this definition"></a></dt>
+<dd><p>Adds the values of two dictionaries together.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>dict1</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary to be added.</p>
+</dd>
+<dt><strong>dict2</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary to be added.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>dict1</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary with added values.</p>
 </dd>
 </dl>
 </dd>
@@ -1514,7 +1541,7 @@ optimal_snr_net : <cite>numpy.ndarray</cite> or <cite>float</cite></p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.LeR.unlensed_cbc_statistics">
-<span class="sig-name descname"><span class="pre">unlensed_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.unlensed_cbc_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.unlensed_cbc_statistics" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">unlensed_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.unlensed_cbc_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.unlensed_cbc_statistics" title="Link to this definition"></a></dt>
 <dd><p>Function to generate unlensed GW source parameters. This function also stores the parameters in json file.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1524,6 +1551,8 @@ default size = 100000.</p>
 </dd>
 <dt><strong>resume</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>resume = False (default) or True.
 if True, the function will resume from the last batch.</p>
+</dd>
+<dt><strong>save_batch</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if True, the function will save the parameters in batches. if False, the function will save all the parameters at the end of sampling. save_batch=False is faster.</p>
 </dd>
 <dt><strong>output_jsonfile</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters.
 default output_jsonfile = ‘./unlensed_params.json’.</p>
@@ -1548,7 +1577,7 @@ unlensed_param.keys() = [‘zs’, ‘geocent_time’, ‘ra’, ‘dec’, ‘p
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.LeR.unlensed_sampling_routine">
-<span class="sig-name descname"><span class="pre">unlensed_sampling_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.unlensed_sampling_routine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.unlensed_sampling_routine" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">unlensed_sampling_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.unlensed_sampling_routine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.unlensed_sampling_routine" title="Link to this definition"></a></dt>
 <dd><p>Function to generate unlensed GW source parameters. This function also stores the parameters in json file.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1576,7 +1605,7 @@ unlensed_param.keys() = [‘zs’, ‘geocent_time’, ‘ra’, ‘dec’, ‘p
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.LeR.unlensed_rate">
-<span class="sig-name descname"><span class="pre">unlensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unlensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.unlensed_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.unlensed_rate" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">unlensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unlensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.unlensed_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.unlensed_rate" title="Link to this definition"></a></dt>
 <dd><p>Function to calculate the unlensed rate. This function also stores the parameters of the detectable events in json file.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1617,7 +1646,7 @@ unlensed_param.keys() = [‘zs’, ‘geocent_time’, ‘ra’, ‘dec’, ‘p
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.LeR.lensed_cbc_statistics">
-<span class="sig-name descname"><span class="pre">lensed_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.lensed_cbc_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.lensed_cbc_statistics" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">lensed_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.lensed_cbc_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.lensed_cbc_statistics" title="Link to this definition"></a></dt>
 <dd><p>Function to generate lensed GW source parameters. This function also stores the parameters in json file.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1651,7 +1680,7 @@ lensed_param.keys() =</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.LeR.lensed_sampling_routine">
-<span class="sig-name descname"><span class="pre">lensed_sampling_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.lensed_sampling_routine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.lensed_sampling_routine" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">lensed_sampling_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.lensed_sampling_routine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.lensed_sampling_routine" title="Link to this definition"></a></dt>
 <dd><p>Function to generate lensed GW source parameters. This function also stores the parameters in json file.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1679,7 +1708,7 @@ lensed_param.keys() =</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.LeR.lensed_rate">
-<span class="sig-name descname"><span class="pre">lensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[8.0,</span> <span class="pre">8.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan_to_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.lensed_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.lensed_rate" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">lensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[8.0,</span> <span class="pre">8.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan_to_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[7.0,</span> <span class="pre">7.0]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.lensed_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.lensed_rate" title="Link to this definition"></a></dt>
 <dd><p>Function to calculate the lensed rate. This function also stores the parameters of the detectable events in json file.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2880,14 +2909,14 @@ e.g. ‘BBH’, ‘BNS’, ‘BBH_popIII’, ‘BBH_primordial’, ‘NSBH’</p
 
 <dl class="py function">
 <dt class="sig sig-object py" id="id8">
-<span class="sig-prename descclassname"><span class="pre">ler.rates.</span></span><span class="sig-name descname"><span class="pre">append_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#append_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.rates.</span></span><span class="sig-name descname"><span class="pre">append_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_dictionary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">old_dictionary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#append_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
 <dd><p>Append and update a json file with a dictionary.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>file_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters.</p>
 </dd>
-<dt><strong>dictionary</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary to be appended to the json file.</p>
+<dt><strong>new_dictionary</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary to be appended to the json file.</p>
 </dd>
 <dt><strong>replace</strong><span class="classifier"><cite>bool</cite>, optional</span></dt><dd><p>If True, replace the json file with the dictionary. Default is False.</p>
 </dd>
@@ -2917,7 +2946,7 @@ e.g. ‘BBH’, ‘BNS’, ‘BBH_popIII’, ‘BBH_primordial’, ‘NSBH’</p
 
 <dl class="py function">
 <dt class="sig sig-object py" id="id10">
-<span class="sig-prename descclassname"><span class="pre">ler.rates.</span></span><span class="sig-name descname"><span class="pre">batch_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_routine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#batch_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id10" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.rates.</span></span><span class="sig-name descname"><span class="pre">batch_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_routine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#batch_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id10" title="Link to this definition"></a></dt>
 <dd><p>Function to run the sampling in batches.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3261,7 +3290,7 @@ optimal_snr_net : <cite>numpy.ndarray</cite> or <cite>float</cite></p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.GWRATES.gw_cbc_statistics">
-<span class="sig-name descname"><span class="pre">gw_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/gwrates.html#GWRATES.gw_cbc_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.GWRATES.gw_cbc_statistics" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">gw_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/gwrates.html#GWRATES.gw_cbc_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.GWRATES.gw_cbc_statistics" title="Link to this definition"></a></dt>
 <dd><p>Function to generate gw GW source parameters. This function also stores the parameters in json file.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3271,6 +3300,8 @@ default size = 100000.</p>
 </dd>
 <dt><strong>resume</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>resume = False (default) or True.
 if True, the function will resume from the last batch.</p>
+</dd>
+<dt><strong>save_batch</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if True, the function will save the parameters in batches. if False, the function will save all the parameters at the end of sampling. save_batch=False is faster.</p>
 </dd>
 <dt><strong>output_jsonfile</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters.
 default output_jsonfile = ‘./gw_params.json’.</p>
@@ -3295,7 +3326,7 @@ gw_param.keys() = [‘zs’, ‘geocent_time’, ‘ra’, ‘dec’, ‘phase�
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.GWRATES.gw_sampling_routine">
-<span class="sig-name descname"><span class="pre">gw_sampling_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/gwrates.html#GWRATES.gw_sampling_routine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.GWRATES.gw_sampling_routine" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">gw_sampling_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/gwrates.html#GWRATES.gw_sampling_routine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.GWRATES.gw_sampling_routine" title="Link to this definition"></a></dt>
 <dd><p>Function to generate gw GW source parameters. This function also stores the parameters in json file.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3323,7 +3354,7 @@ gw_param.keys() = [‘zs’, ‘geocent_time’, ‘ra’, ‘dec’, ‘phase�
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.GWRATES.gw_rate">
-<span class="sig-name descname"><span class="pre">gw_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gw_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/gwrates.html#GWRATES.gw_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.GWRATES.gw_rate" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">gw_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gw_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/gwrates.html#GWRATES.gw_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.GWRATES.gw_rate" title="Link to this definition"></a></dt>
 <dd><p>Function to calculate the gw rate. This function also stores the parameters of the detectable events in json file.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3409,7 +3440,7 @@ param_final.keys() = [‘zs’, ‘geocent_time’, ‘ra’, ‘dec’, ‘phas
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../../../Lensed%20events.html" class="btn btn-neutral float-left" title="Lensed events" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../../Lensed_events.html" class="btn btn-neutral float-left" title="Lensed events" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="gwrates/index.html" class="btn btn-neutral float-right" title="ler.rates.gwrates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

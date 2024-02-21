@@ -50,8 +50,9 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Unlensed_events.html">Unlensed events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -96,6 +97,7 @@
 <span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">This module contains helper routines for other modules in the ler package.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -104,13 +106,14 @@
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">CubicSpline</span>
 <span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span><span class="p">,</span> <span class="n">cumtrapz</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
+<span class="c1"># import datetime</span>
 
 
 <div class="viewcode-block" id="NumpyEncoder">
 <a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.NumpyEncoder">[docs]</a>
 <span class="k">class</span> <span class="nc">NumpyEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    class for storing a numpy.ndarray or any nested-list composition as JSON file</span>
+<span class="sd">    Class for storing a numpy.ndarray or any nested-list composition as JSON file. This is required for dealing np.nan and np.inf.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -150,19 +153,6 @@
 </div>
 
 
-
-<div class="viewcode-block" id="update_dict">
-<a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.update_dict">[docs]</a>
-<span class="k">def</span> <span class="nf">update_dict</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Update a dictionary with keys and values.&quot;&quot;&quot;</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="n">old</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">new</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
-            <span class="n">old</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="k">return</span> <span class="n">old</span></div>
-
-
 <div class="viewcode-block" id="load_json">
 <a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.load_json">[docs]</a>
 <span class="k">def</span> <span class="nf">load_json</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
@@ -185,14 +175,14 @@
 
 <div class="viewcode-block" id="append_json">
 <a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.append_json">[docs]</a>
-<span class="k">def</span> <span class="nf">append_json</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">append_json</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">new_dictionary</span><span class="p">,</span> <span class="n">old_dictionary</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Append and update a json file with a dictionary.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    file_name : `str`</span>
 <span class="sd">        json file name for storing the parameters.</span>
-<span class="sd">    dictionary : `dict`</span>
+<span class="sd">    new_dictionary : `dict`</span>
 <span class="sd">        dictionary to be appended to the json file.</span>
 <span class="sd">    replace : `bool`, optional</span>
 <span class="sd">        If True, replace the json file with the dictionary. Default is False.</span>
@@ -200,25 +190,64 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># check if the file exists</span>
-    <span class="k">try</span><span class="p">:</span>
+    <span class="c1"># time</span>
+    <span class="c1"># start = datetime.datetime.now()</span>
+    <span class="k">if</span> <span class="n">old_dictionary</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">old_dictionary</span>
+    <span class="k">elif</span> <span class="n">replace</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">new_dictionary</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
+        <span class="c1"># print(f&quot; {file_name} file does not exist. Creating a new one...&quot;)</span>
+        <span class="n">replace</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="s2">&quot;File does not exist. Creating a new one...&quot;</span>
-        <span class="n">replace</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="c1"># end = datetime.datetime.now()</span>
+    <span class="c1"># print(f&quot;Time taken to load the json file: {end-start}&quot;)</span>
 
-    <span class="k">if</span> <span class="n">replace</span><span class="p">:</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">dictionary</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">data_key</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data_key</span><span class="p">:</span>
-                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">value</span><span class="p">))</span>
+    <span class="c1"># start = datetime.datetime.now()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">replace</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">add_dict_values</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">new_dictionary</span><span class="p">)</span>
+        <span class="c1"># data_key = data.keys()</span>
+        <span class="c1"># for key, value in new_dictionary.items():</span>
+        <span class="c1">#     if key in data_key:</span>
+        <span class="c1">#         data[key] = np.concatenate((data[key], value)).tolist()</span>
+    <span class="c1"># end = datetime.datetime.now()</span>
+    <span class="c1"># print(f&quot;Time taken to append the dictionary: {end-start}&quot;)</span>
 
-    <span class="n">json_dump</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">NumpyEncoder</span><span class="p">)</span>
+    <span class="c1"># save the dictionary</span>
+    <span class="c1"># start = datetime.datetime.now()</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
-        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_dump</span><span class="p">),</span> <span class="n">write_file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span></div>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">write_file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">NumpyEncoder</span><span class="p">)</span>
+    <span class="c1"># end = datetime.datetime.now()</span>
+    <span class="c1"># print(f&quot;Time taken to save the json file: {end-start}&quot;)</span>
 
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="add_dict_values">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.add_dict_values">[docs]</a>
+<span class="k">def</span> <span class="nf">add_dict_values</span><span class="p">(</span><span class="n">dict1</span><span class="p">,</span> <span class="n">dict2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds the values of two dictionaries together.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dict1 : `dict`</span>
+<span class="sd">        dictionary to be added.</span>
+<span class="sd">    dict2 : `dict`</span>
+<span class="sd">        dictionary to be added.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dict1 : `dict`</span>
+<span class="sd">        dictionary with added values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data_key</span> <span class="o">=</span> <span class="n">dict1</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">dict2</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data_key</span><span class="p">:</span>
+            <span class="n">dict1</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">dict1</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">value</span><span class="p">))</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">dict1</span></div>
 
 
 <div class="viewcode-block" id="get_param_from_json">
@@ -244,33 +273,29 @@
     <span class="k">return</span> <span class="n">param</span></div>
 
 
-<div class="viewcode-block" id="dict_inside_dict_to_array">
-<a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.dict_inside_dict_to_array">[docs]</a>
-<span class="k">def</span> <span class="nf">dict_inside_dict_to_array</span><span class="p">(</span><span class="n">dictionary</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Function to convert a dictionary to an array.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">array</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="n">array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dict_to_array</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">array</span><span class="p">)</span></div>
-
-
 <div class="viewcode-block" id="rejection_sample">
 <a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.rejection_sample">[docs]</a>
 <span class="k">def</span> <span class="nf">rejection_sample</span><span class="p">(</span><span class="n">pdf</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper function for rejection sampling from a pdf with maximum and minimum arguments.</span>
-<span class="sd">    Input parameters:</span>
-<span class="sd">        pdf: the pdf to sample from</span>
-<span class="sd">        xmin: the minimum argument of the pdf</span>
-<span class="sd">        xmax: the maximum argument of the pdf</span>
-<span class="sd">        size: the number of samples to draw</span>
-<span class="sd">    Output:</span>
-<span class="sd">        samples: the samples drawn from the pdf</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pdf : `function`</span>
+<span class="sd">        pdf function.</span>
+<span class="sd">    xmin : `float`</span>
+<span class="sd">        minimum value of the pdf.</span>
+<span class="sd">    xmax : `float`</span>
+<span class="sd">        maximum value of the pdf.</span>
+<span class="sd">    size : `int`, optional</span>
+<span class="sd">        number of samples. Default is 100.</span>
+<span class="sd">    chunk_size : `int`, optional</span>
+<span class="sd">        chunk size for sampling. Default is 10000.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x_sample : `numpy.ndarray`</span>
+<span class="sd">        samples from the pdf.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -290,7 +315,34 @@
 
 
 
+<div class="viewcode-block" id="rejection_sample2d">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.rejection_sample2d">[docs]</a>
 <span class="k">def</span> <span class="nf">rejection_sample2d</span><span class="p">(</span><span class="n">pdf</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper function for rejection sampling from a 2D pdf with maximum and minimum arguments.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pdf : `function`</span>
+<span class="sd">        2D pdf function.</span>
+<span class="sd">    xmin : `float`</span>
+<span class="sd">        minimum value of the pdf in the x-axis.</span>
+<span class="sd">    xmax : `float`</span>
+<span class="sd">        maximum value of the pdf in the x-axis.</span>
+<span class="sd">    ymin : `float`</span>
+<span class="sd">        minimum value of the pdf in the y-axis.</span>
+<span class="sd">    ymax : `float`</span>
+<span class="sd">        maximum value of the pdf in the y-axis.</span>
+<span class="sd">    size : `int`, optional</span>
+<span class="sd">        number of samples. Default is 100.</span>
+<span class="sd">    chunk_size : `int`, optional</span>
+<span class="sd">        chunk size for sampling. Default is 10000.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x_sample : `numpy.ndarray`</span>
+<span class="sd">        samples from the pdf in the x-axis.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">10000</span>
 
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">)</span>
@@ -315,13 +367,28 @@
     <span class="n">x_sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x_sample</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
     <span class="n">y_sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_sample</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
     <span class="c1"># Return the correct number of samples</span>
-    <span class="k">return</span> <span class="n">x_sample</span><span class="p">[:</span><span class="n">size</span><span class="p">],</span> <span class="n">y_sample</span><span class="p">[:</span><span class="n">size</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">x_sample</span><span class="p">[:</span><span class="n">size</span><span class="p">],</span> <span class="n">y_sample</span><span class="p">[:</span><span class="n">size</span><span class="p">]</span></div>
+
 
 
 <div class="viewcode-block" id="add_dictionaries_together">
 <a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.add_dictionaries_together">[docs]</a>
 <span class="k">def</span> <span class="nf">add_dictionaries_together</span><span class="p">(</span><span class="n">dictionary1</span><span class="p">,</span> <span class="n">dictionary2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds two dictionaries with the same keys together.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds two dictionaries with the same keys together.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dictionary1 : `dict`</span>
+<span class="sd">        dictionary to be added.</span>
+<span class="sd">    dictionary2 : `dict`</span>
+<span class="sd">        dictionary to be added.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dictionary : `dict`</span>
+<span class="sd">        dictionary with added values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="c1"># Check if either dictionary empty, in which case only return the dictionary with values</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dictionary1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -353,7 +420,21 @@
 <div class="viewcode-block" id="trim_dictionary">
 <a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.trim_dictionary">[docs]</a>
 <span class="k">def</span> <span class="nf">trim_dictionary</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Filters an event dictionary to only contain the size.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filters an event dictionary to only contain the size.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dictionary : `dict`</span>
+<span class="sd">        dictionary to be trimmed.</span>
+<span class="sd">    size : `int`</span>
+<span class="sd">        size to trim the dictionary to.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dictionary : `dict`</span>
+<span class="sd">        trimmed dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="c1"># Check if the item is an ndarray</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dictionary</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
@@ -370,51 +451,35 @@
     <span class="k">return</span> <span class="n">dictionary</span></div>
 
 
-<span class="c1"># def create_func_pdf_invcdf(x, y, category=&quot;function&quot;):</span>
-<span class="c1">#     # remove idx of nan values</span>
-<span class="c1">#     idx = np.argwhere(np.isnan(y))</span>
-<span class="c1">#     x = np.delete(x, idx)</span>
-<span class="c1">#     y = np.delete(y, idx)</span>
-<span class="c1">#     # create pdf with interpolation</span>
-<span class="c1">#     pdf_unorm = interp1d(x, y, kind=&quot;cubic&quot;)</span>
-<span class="c1">#     if category == &quot;function&quot;:</span>
-<span class="c1">#         return pdf_unorm</span>
-<span class="c1">#     if category == &quot;function_inverse&quot;:</span>
-<span class="c1">#         # create inverse function</span>
-<span class="c1">#         return interp1d(y, x, kind=&quot;cubic&quot;)</span>
-
-<span class="c1">#     xlim = [x[0], x[-1]]</span>
-<span class="c1">#     norm = quad(pdf_unorm, xlim[0], xlim[1])[0]</span>
-<span class="c1">#     y = y / norm</span>
-<span class="c1">#     # normalize the pdf</span>
-<span class="c1">#     pdf = interp1d(x, y, kind=&quot;cubic&quot;)</span>
-<span class="c1">#     if category == &quot;pdf&quot; or category == None:</span>
-<span class="c1">#         return pdf</span>
-<span class="c1">#     # create cdf</span>
-<span class="c1">#     cdf = lambda x: quad(pdf, xlim[0], x)[0]</span>
-<span class="c1">#     # get all values of cdf</span>
-<span class="c1">#     cdf_values = np.array([cdf(x_) for x_ in x])</span>
-<span class="c1">#     cdf_ = interp1d(x, cdf_values, kind=&quot;cubic&quot;)</span>
-<span class="c1">#     if category == &quot;cdf&quot;:</span>
-<span class="c1">#         return cdf_</span>
-<span class="c1">#     # create inverse cdf</span>
-<span class="c1">#     inv_cdf = interp1d(cdf_values, x, kind=&quot;cubic&quot;)</span>
-<span class="c1">#     if category == &quot;inv_cdf&quot;:</span>
-<span class="c1">#         return inv_cdf</span>
-<span class="c1">#     if category == &quot;all&quot;:</span>
-<span class="c1">#         return([pdf, cdf_, inv_cdf])</span>
-
+<div class="viewcode-block" id="create_func_pdf_invcdf">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.create_func_pdf_invcdf">[docs]</a>
 <span class="k">def</span> <span class="nf">create_func_pdf_invcdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="s2">&quot;function&quot;</span><span class="p">):</span>
-    <span class="c1"># remove idx of nan values</span>
-    <span class="c1"># print(&quot;len(x)=&quot;,len(x))</span>
-    <span class="c1"># print(&quot;len(y)=&quot;,len(y))</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to create a interpolated function, inverse function or inverse cdf from the input x and y.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : `numpy.ndarray`</span>
+<span class="sd">        x values.</span>
+<span class="sd">    y : `numpy.ndarray`</span>
+<span class="sd">        y values.</span>
+<span class="sd">    category : `str`, optional</span>
+<span class="sd">        category of the function. Default is &quot;function&quot;. Other options are &quot;function_inverse&quot;, &quot;pdf&quot; and &quot;inv_cdf&quot;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pdf : `pdf function`</span>
+<span class="sd">        interpolated pdf function.</span>
+<span class="sd">    inv_pdf : `function inverse`</span>
+<span class="sd">        interpolated inverse pdf function.</span>
+<span class="sd">    inv_cdf : `function`</span>
+<span class="sd">        interpolated inverse cdf.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
-    <span class="c1"># print(&quot;len(x)=&quot;,len(x))</span>
-    <span class="c1"># print(&quot;len(y)=&quot;,len(y))</span>
-    <span class="c1"># print(&quot;x=&quot;,x)</span>
-    <span class="c1"># print(&quot;y=&quot;,y)</span>
+
     <span class="c1"># create pdf with interpolation</span>
     <span class="n">pdf_unorm</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;cubic&quot;</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;extrapolate&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">category</span> <span class="o">==</span> <span class="s2">&quot;function&quot;</span><span class="p">:</span>
@@ -432,43 +497,15 @@
         <span class="k">return</span> <span class="n">pdf</span>
     <span class="c1"># cdf</span>
     <span class="n">cdf_values</span> <span class="o">=</span> <span class="n">cumtrapz</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="c1"># print(&quot;len(x)=&quot;,len(x))</span>
-    <span class="c1"># print(&quot;len(cdf_values)=&quot;,len(cdf_values))</span>
-    <span class="c1">#cdf = lambda x: quad(pdf, min_, x)[0] # if quad is used, it will be very slow</span>
-    <span class="c1"># cdf_values = np.array([cdf(x_) for x_ in x])</span>
-
-    <span class="c1"># to remove duplicate values on x-axis before interpolation</span>
-    <span class="c1">#idx = np.unique(cdf_values, return_index=True)[1]</span>
-    <span class="c1"># find the first index of the unique values</span>
-    <span class="c1">#idx = np.unique(cdf_values, return_index=True)[1]</span>
-    <span class="c1">#cdf_values = cdf_values[idx]</span>
-    <span class="c1">#x = x[idx]</span>
-
-    <span class="c1"># to avoid duplicate values on x-axis before interpolation</span>
-    <span class="c1"># also avoid negative values</span>
-    <span class="c1"># first element greater than 0</span>
     <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">cdf_values</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">cdf_values</span> <span class="o">=</span> <span class="n">cdf_values</span><span class="p">[</span><span class="n">idx</span><span class="p">:]</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">:]</span>
-    <span class="c1"># forcing cdf to start from 0</span>
-    <span class="c1"># if idx &gt; 0:</span>
-    <span class="c1">#     # add 0 to the first element</span>
-    <span class="c1">#     cdf_values = np.insert(cdf_values, 0, 0)</span>
-    <span class="c1">#     x = np.insert(x, 0, x[idx-1])</span>
-    <span class="c1">#     # print(&quot;cdf_values[idx-1]=&quot;,cdf_values[idx-1])</span>
-    <span class="c1">#     # print(&quot;cdf_values[idx]=&quot;,cdf_values[idx])</span>
-    <span class="c1">#     # print(&quot;vd[idx-1]=&quot;,x[0])</span>
-    <span class="c1">#     # print(x[idx-1])</span>
-
-    <span class="c1"># print(&quot;idx=&quot;,idx)</span>
-    <span class="c1"># print(&quot;len(x)=&quot;,len(x))</span>
-    <span class="c1"># print(&quot;len(cdf_values)=&quot;,len(cdf_values))</span>
-    <span class="c1"># inverse cdf</span>
     <span class="n">inv_cdf</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">cdf_values</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;cubic&quot;</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;extrapolate&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">category</span> <span class="o">==</span> <span class="s2">&quot;inv_cdf&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">inv_cdf</span>
     <span class="k">if</span> <span class="n">category</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
-        <span class="k">return</span><span class="p">([</span><span class="n">pdf</span><span class="p">,</span> <span class="n">inv_cdf</span><span class="p">])</span>
+        <span class="k">return</span><span class="p">([</span><span class="n">pdf</span><span class="p">,</span> <span class="n">inv_cdf</span><span class="p">])</span></div>
+
     
 <div class="viewcode-block" id="create_conditioned_pdf_invcdf">
 <a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.create_conditioned_pdf_invcdf">[docs]</a>
@@ -478,33 +515,96 @@
 <span class="sd">    x is an array and the output of pdf_func is an array</span>
 <span class="sd">    y is the condition</span>
 <span class="sd">    we consider parameter plane of x and y</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : `numpy.ndarray`</span>
+<span class="sd">        x values.</span>
+<span class="sd">    conditioned_y : `numpy.ndarray`</span>
+<span class="sd">        conditioned y values.</span>
+<span class="sd">    pdf_func : `function`</span>
+<span class="sd">        function to calculate the pdf of x given y.</span>
+<span class="sd">    category : `str`, optional</span>
+<span class="sd">        category of the function. Default is &quot;function&quot;. Other options are &quot;function_inverse&quot;, &quot;pdf&quot; and &quot;inv_cdf&quot;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">list_</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">conditioned_y</span><span class="p">:</span>
         <span class="n">phi</span> <span class="o">=</span> <span class="n">pdf_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+        <span class="c1"># append pdf for each y along the x-axis</span>
         <span class="n">list_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">create_func_pdf_invcdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">))</span>
-        <span class="c1"># creating the interpolator</span>
-        <span class="c1"># inv_cdf = create_func_pdf_invcdf(x, phi, category=&quot;inv_cdf&quot;)</span>
-        <span class="c1"># print(f&quot;z={y}, \n phi={phi}, \n sigma={inv_cdf(np.random.uniform(0, 1, size=10))}&quot;)</span>
-        <span class="c1"># list_.append(inv_cdf)</span>
         
     <span class="k">return</span> <span class="n">list_</span></div>
 
 
+<div class="viewcode-block" id="create_func">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.create_func">[docs]</a>
 <span class="k">def</span> <span class="nf">create_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to create a spline interpolated function from the input x and y.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : `numpy.ndarray`</span>
+<span class="sd">        x values.</span>
+<span class="sd">    y : `numpy.ndarray`</span>
+<span class="sd">        y values.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    c : `numpy.ndarray`</span>
+<span class="sd">        spline coefficients.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">x</span></div>
 
+
+<div class="viewcode-block" id="create_func_inv">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.create_func_inv">[docs]</a>
 <span class="k">def</span> <span class="nf">create_func_inv</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to create a spline interpolated inverse function from the input x and y.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : `numpy.ndarray`</span>
+<span class="sd">        x values.</span>
+<span class="sd">    y : `numpy.ndarray`</span>
+<span class="sd">        y values.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    c : `numpy.ndarray`</span>
+<span class="sd">        spline coefficients.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">y</span>
+    <span class="k">return</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">y</span></div>
 
+
+<div class="viewcode-block" id="create_pdf">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.create_pdf">[docs]</a>
 <span class="k">def</span> <span class="nf">create_pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to create a spline interpolated normalized pdf from the input x and y.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : `numpy.ndarray`</span>
+<span class="sd">        x values.</span>
+<span class="sd">    y : `numpy.ndarray`</span>
+<span class="sd">        y values.   </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    c : `numpy.ndarray`</span>
+<span class="sd">        spline coefficients.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
@@ -512,9 +612,28 @@
     <span class="n">min_</span><span class="p">,</span> <span class="n">max_</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">norm</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">pdf_unorm</span><span class="p">,</span> <span class="n">min_</span><span class="p">,</span> <span class="n">max_</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">/</span> <span class="n">norm</span>
-    <span class="k">return</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">x</span></div>
 
+
+<div class="viewcode-block" id="create_inv_cdf_array">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.create_inv_cdf_array">[docs]</a>
 <span class="k">def</span> <span class="nf">create_inv_cdf_array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to create a spline interpolated inverse cdf from the input x and y.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : `numpy.ndarray`</span>
+<span class="sd">        x values.</span>
+<span class="sd">    y : `numpy.ndarray`</span>
+<span class="sd">        y values.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    c : `numpy.ndarray`</span>
+<span class="sd">        spline coefficients.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
@@ -526,23 +645,65 @@
     <span class="c1"># x = x[idx:]</span>
     <span class="c1"># cdf_values = np.insert(cdf_values, 0, 0)</span>
     <span class="c1"># x = np.insert(x, 0, x[idx-1])</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">cdf_values</span><span class="p">,</span> <span class="n">x</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">cdf_values</span><span class="p">,</span> <span class="n">x</span><span class="p">])</span></div>
 
+
+<div class="viewcode-block" id="create_conditioned_pdf">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.create_conditioned_pdf">[docs]</a>
 <span class="k">def</span> <span class="nf">create_conditioned_pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">conditioned_y</span><span class="p">,</span> <span class="n">pdf_func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to create a conditioned pdf from the input x and y.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : `numpy.ndarray`</span>
+<span class="sd">        x values.</span>
+<span class="sd">    conditioned_y : `numpy.ndarray`</span>
+<span class="sd">        conditioned y values.</span>
+<span class="sd">    pdf_func : `function`</span>
+<span class="sd">        function to calculate the pdf of x given y.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    list_ : `list`</span>
+<span class="sd">        list of pdfs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">list_</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">conditioned_y</span><span class="p">:</span>
         <span class="n">phi</span> <span class="o">=</span> <span class="n">pdf_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
         <span class="n">list_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">create_pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">phi</span><span class="p">))</span>
         
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">list_</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">list_</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="create_conditioned_inv_cdf_array">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.create_conditioned_inv_cdf_array">[docs]</a>
 <span class="k">def</span> <span class="nf">create_conditioned_inv_cdf_array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">conditioned_y</span><span class="p">,</span> <span class="n">pdf_func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to create a conditioned inv_cdf from the input x and y.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : `numpy.ndarray`</span>
+<span class="sd">        x values.</span>
+<span class="sd">    conditioned_y : `numpy.ndarray`</span>
+<span class="sd">        conditioned y values.</span>
+<span class="sd">    pdf_func : `function`</span>
+<span class="sd">        function to calculate the pdf of x given y.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    list_ : `list`</span>
+<span class="sd">        list of inv_cdfs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">list_</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">conditioned_y</span><span class="p">:</span>
         <span class="n">phi</span> <span class="o">=</span> <span class="n">pdf_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
         <span class="n">list_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">create_inv_cdf_array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">phi</span><span class="p">))</span>
         
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">list_</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">list_</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="interpolator_from_pickle">
 <a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.interpolator_from_pickle">[docs]</a>
@@ -551,6 +712,36 @@
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to decide which interpolator to use.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    param_dict_given : `dict`</span>
+<span class="sd">        dictionary of parameters.</span>
+<span class="sd">    directory : `str`</span>
+<span class="sd">        directory to store the interpolator.</span>
+<span class="sd">    sub_directory : `str`</span>
+<span class="sd">        sub-directory to store the interpolator.</span>
+<span class="sd">    name : `str`</span>
+<span class="sd">        name of the interpolator.</span>
+<span class="sd">    x : `numpy.ndarray`</span>
+<span class="sd">        x values.</span>
+<span class="sd">    pdf_func : `function`</span>
+<span class="sd">        function to calculate the pdf of x given y.</span>
+<span class="sd">    y : `numpy.ndarray`</span>
+<span class="sd">        y values.</span>
+<span class="sd">    conditioned_y : `numpy.ndarray`</span>
+<span class="sd">        conditioned y values.</span>
+<span class="sd">    dimension : `int`</span>
+<span class="sd">        dimension of the interpolator. Default is 1.</span>
+<span class="sd">    category : `str`</span>
+<span class="sd">        category of the function. Default is &quot;pdf&quot;.</span>
+<span class="sd">    create_new : `bool`</span>
+<span class="sd">        if True, create a new interpolator. Default is False.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    interpolator : `function`</span>
+<span class="sd">        interpolator function.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># check first whether the directory, subdirectory and pickle exist</span>
@@ -607,7 +798,25 @@
     <span class="n">interpolator_name</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Function to create the interpolator pickle file path for velocity dispersion.</span>
+<span class="sd">    Function to create the interpolator pickle file path.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    param_dict_given : `dict`</span>
+<span class="sd">        dictionary of parameters.</span>
+<span class="sd">    directory : `str`</span>
+<span class="sd">        directory to store the interpolator.</span>
+<span class="sd">    sub_directory : `str`</span>
+<span class="sd">        sub-directory to store the interpolator.</span>
+<span class="sd">    interpolator_name : `str`</span>
+<span class="sd">        name of the interpolator.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path_inv_cdf : `str`</span>
+<span class="sd">        path of the interpolator pickle file.</span>
+<span class="sd">    it_exist : `bool`</span>
+<span class="sd">        if True, the interpolator exists.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># check the dir &#39;interpolator&#39; exist</span>
@@ -654,7 +863,23 @@
 <a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.interpolator_pdf_conditioned">[docs]</a>
 <span class="k">def</span> <span class="nf">interpolator_pdf_conditioned</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">conditioned_y</span><span class="p">,</span> <span class="n">y_array</span><span class="p">,</span> <span class="n">interpolator_list</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Function to sample from the interpolator</span>
+<span class="sd">    Function to find the pdf interpolator coefficients from the conditioned y.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : `numpy.ndarray`</span>
+<span class="sd">        x values.</span>
+<span class="sd">    conditioned_y : `float`</span>
+<span class="sd">        conditioned y value.</span>
+<span class="sd">    y_array : `numpy.ndarray`</span>
+<span class="sd">        y values.</span>
+<span class="sd">    interpolator_list : `list`</span>
+<span class="sd">        list of interpolators.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    interpolator_list[idx](x) : `numpy.ndarray`</span>
+<span class="sd">        samples from the interpolator.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># find the index of z in zlist</span>
     <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">y_array</span><span class="p">,</span> <span class="n">conditioned_y</span><span class="p">)</span>
@@ -666,8 +891,23 @@
 <a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.interpolator_sampler_conditioned">[docs]</a>
 <span class="k">def</span> <span class="nf">interpolator_sampler_conditioned</span><span class="p">(</span><span class="n">conditioned_y</span><span class="p">,</span> <span class="n">y_array</span><span class="p">,</span> <span class="n">interpolator_list</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Function sampler with inverse cdf from the interpolator</span>
+<span class="sd">    Function to find sampler interpolator coefficients from the conditioned y.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    conditioned_y : `float`</span>
+<span class="sd">        conditioned y value.</span>
+<span class="sd">    y_array : `numpy.ndarray`</span>
+<span class="sd">        y values.</span>
+<span class="sd">    interpolator_list : `list`</span>
+<span class="sd">        list of interpolators.</span>
+<span class="sd">    size : `int`</span>
+<span class="sd">        number of samples.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="c1"># find the index of z in zlist</span>
     <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">y_array</span><span class="p">,</span> <span class="n">conditioned_y</span><span class="p">)</span>
     <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
@@ -675,7 +915,27 @@
 
 
 <span class="nd">@njit</span>
+<div class="viewcode-block" id="cubic_spline_interpolator">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.cubic_spline_interpolator">[docs]</a>
 <span class="k">def</span> <span class="nf">cubic_spline_interpolator</span><span class="p">(</span><span class="n">xnew</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to interpolate using cubic spline.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xnew : `numpy.ndarray`</span>
+<span class="sd">        new x values.</span>
+<span class="sd">    coefficients : `numpy.ndarray`</span>
+<span class="sd">        coefficients of the cubic spline.</span>
+<span class="sd">    x : `numpy.ndarray`</span>
+<span class="sd">        x values.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    result : `numpy.ndarray`</span>
+<span class="sd">        interpolated values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="c1"># Handling extrapolation</span>
     <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xnew</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="n">idx1</span> <span class="o">=</span> <span class="n">xnew</span> <span class="o">&lt;=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -691,19 +951,41 @@
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">coefficients</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
     <span class="c1">#result = a + b*dx + c*dx**2 + d*dx**3</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">d</span> <span class="o">+</span> <span class="n">c</span><span class="o">*</span><span class="n">dx</span> <span class="o">+</span> <span class="n">b</span><span class="o">*</span><span class="n">dx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">a</span><span class="o">*</span><span class="n">dx</span><span class="o">**</span><span class="mi">3</span>
-    <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
 
 <span class="nd">@njit</span>
+<div class="viewcode-block" id="inverse_transform_sampler">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.inverse_transform_sampler">[docs]</a>
 <span class="k">def</span> <span class="nf">inverse_transform_sampler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">cdf</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to sample from the inverse transform method.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    size : `int`</span>
+<span class="sd">        number of samples.</span>
+<span class="sd">    cdf : `numpy.ndarray`</span>
+<span class="sd">        cdf values.</span>
+<span class="sd">    x : `numpy.ndarray`</span>
+<span class="sd">        x values.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    samples : `numpy.ndarray`</span>
+<span class="sd">        samples from the cdf.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
     <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">cdf</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
     <span class="n">x1</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">cdf</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">cdf</span><span class="p">[</span><span class="n">idx</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">samples</span> <span class="o">=</span> <span class="n">y0</span> <span class="o">+</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">u</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">samples</span>
+    <span class="k">return</span> <span class="n">samples</span></div>
+
 
 <div class="viewcode-block" id="batch_handler">
 <a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.batch_handler">[docs]</a>
-<span class="k">def</span> <span class="nf">batch_handler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">sampling_routine</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">batch_handler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">sampling_routine</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">save_batch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to run the sampling in batches.</span>
@@ -749,7 +1031,7 @@
             <span class="n">track_batches</span> <span class="o">=</span> <span class="n">track_batches</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Batch no. </span><span class="si">{</span><span class="n">track_batches</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="c1"># new first batch with the frac_batches</span>
-            <span class="n">sampling_routine</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">frac_batches</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">output_jsonfile</span><span class="p">);</span>
+            <span class="n">sampling_routine</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">frac_batches</span><span class="p">,</span> <span class="n">save_batch</span><span class="o">=</span><span class="n">save_batch</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">output_jsonfile</span><span class="p">);</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># check where to resume from</span>
             <span class="k">try</span><span class="p">:</span>
@@ -761,14 +1043,14 @@
                 <span class="n">track_batches</span> <span class="o">=</span> <span class="n">track_batches</span> <span class="o">+</span> <span class="mi">1</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Batch no. </span><span class="si">{</span><span class="n">track_batches</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="c1"># new first batch with the frac_batches</span>
-                <span class="n">sampling_routine</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">frac_batches</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">output_jsonfile</span><span class="p">);</span>
+                <span class="n">sampling_routine</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">frac_batches</span><span class="p">,</span>  <span class="n">save_batch</span><span class="o">=</span><span class="n">save_batch</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">output_jsonfile</span><span class="p">);</span>
 
         <span class="c1"># ---------------------------------------------------#</span>
         <span class="n">min_</span><span class="p">,</span> <span class="n">max_</span> <span class="o">=</span> <span class="n">track_batches</span><span class="p">,</span> <span class="n">num_batches</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_</span><span class="p">,</span> <span class="n">max_</span><span class="p">):</span>
             <span class="n">track_batches</span> <span class="o">=</span> <span class="n">track_batches</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Batch no. </span><span class="si">{</span><span class="n">track_batches</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">sampling_routine</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+            <span class="n">sampling_routine</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">save_batch</span><span class="o">=</span><span class="n">save_batch</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
         <span class="c1"># ---------------------------------------------------#</span>
 
         <span class="k">return</span> <span class="kc">None</span></div>

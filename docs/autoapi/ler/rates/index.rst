@@ -40,6 +40,7 @@ Functions
    ler.rates.append_json
    ler.rates.get_param_from_json
    ler.rates.batch_handler
+   ler.rates.add_dict_values
    ler.rates.load_json
    ler.rates.append_json
    ler.rates.get_param_from_json
@@ -1127,7 +1128,7 @@ Functions
       :Returns:
 
           **theta_E** : `float`
-              Einstein radii of the lens galaxies in radian
+              Einstein radii of the lens galaxies
 
 
 
@@ -1246,7 +1247,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: append_json(file_name, dictionary, replace=False)
+.. py:function:: append_json(file_name, new_dictionary, old_dictionary=None, replace=False)
 
    
    Append and update a json file with a dictionary.
@@ -1257,7 +1258,7 @@ Functions
        **file_name** : `str`
            json file name for storing the parameters.
 
-       **dictionary** : `dict`
+       **new_dictionary** : `dict`
            dictionary to be appended to the json file.
 
        **replace** : `bool`, optional
@@ -1310,7 +1311,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: batch_handler(size, batch_size, sampling_routine, output_jsonfile, resume=False)
+.. py:function:: batch_handler(size, batch_size, sampling_routine, output_jsonfile, save_batch=True, resume=False)
 
    
    Function to run the sampling in batches.
@@ -1335,6 +1336,40 @@ Functions
            if True, it will resume the sampling from the last batch.
            default resume = False.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: add_dict_values(dict1, dict2)
+
+   
+   Adds the values of two dictionaries together.
+
+
+   :Parameters:
+
+       **dict1** : `dict`
+           dictionary to be added.
+
+       **dict2** : `dict`
+           dictionary to be added.
+
+   :Returns:
+
+       **dict1** : `dict`
+           dictionary with added values.
 
 
 
@@ -2106,7 +2141,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: unlensed_cbc_statistics(size=None, resume=False, output_jsonfile=None)
+   .. py:method:: unlensed_cbc_statistics(size=None, resume=False, save_batch=True, output_jsonfile=None)
 
       
       Function to generate unlensed GW source parameters. This function also stores the parameters in json file.
@@ -2121,6 +2156,9 @@ Functions
           **resume** : `bool`
               resume = False (default) or True.
               if True, the function will resume from the last batch.
+
+          **save_batch** : `bool`
+              if True, the function will save the parameters in batches. if False, the function will save all the parameters at the end of sampling. save_batch=False is faster.
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
@@ -2152,7 +2190,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: unlensed_sampling_routine(size, output_jsonfile, resume=False)
+   .. py:method:: unlensed_sampling_routine(size, output_jsonfile, resume=False, save_batch=True)
 
       
       Function to generate unlensed GW source parameters. This function also stores the parameters in json file.
@@ -2193,7 +2231,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: unlensed_rate(unlensed_param=None, snr_threshold=8.0, output_jsonfile=None, detectability_condition='step_function')
+   .. py:method:: unlensed_rate(unlensed_param=None, snr_threshold=8.0, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, threshold_snr_recalculation=7.0)
 
       
       Function to calculate the unlensed rate. This function also stores the parameters of the detectable events in json file.
@@ -2248,7 +2286,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lensed_cbc_statistics(size=None, resume=False, output_jsonfile=None)
+   .. py:method:: lensed_cbc_statistics(size=None, save_batch=True, resume=False, output_jsonfile=None)
 
       
       Function to generate lensed GW source parameters. This function also stores the parameters in json file.
@@ -2294,7 +2332,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lensed_sampling_routine(size, output_jsonfile, resume=False)
+   .. py:method:: lensed_sampling_routine(size, output_jsonfile, save_batch=True, resume=False)
 
       
       Function to generate lensed GW source parameters. This function also stores the parameters in json file.
@@ -2335,7 +2373,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lensed_rate(lensed_param=None, snr_threshold=[8.0, 8.0], num_img=[1, 1], output_jsonfile=None, nan_to_num=True, detectability_condition='step_function')
+   .. py:method:: lensed_rate(lensed_param=None, snr_threshold=[8.0, 8.0], num_img=[1, 1], output_jsonfile=None, nan_to_num=True, detectability_condition='step_function', snr_recalculation=False, threshold_snr_recalculation=[7.0, 7.0])
 
       
       Function to calculate the lensed rate. This function also stores the parameters of the detectable events in json file.
@@ -4112,7 +4150,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: append_json(file_name, dictionary, replace=False)
+.. py:function:: append_json(file_name, new_dictionary, old_dictionary=None, replace=False)
 
    
    Append and update a json file with a dictionary.
@@ -4123,7 +4161,7 @@ Functions
        **file_name** : `str`
            json file name for storing the parameters.
 
-       **dictionary** : `dict`
+       **new_dictionary** : `dict`
            dictionary to be appended to the json file.
 
        **replace** : `bool`, optional
@@ -4176,7 +4214,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: batch_handler(size, batch_size, sampling_routine, output_jsonfile, resume=False)
+.. py:function:: batch_handler(size, batch_size, sampling_routine, output_jsonfile, save_batch=True, resume=False)
 
    
    Function to run the sampling in batches.
@@ -4830,7 +4868,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: gw_cbc_statistics(size=None, resume=False, output_jsonfile=None)
+   .. py:method:: gw_cbc_statistics(size=None, resume=False, save_batch=True, output_jsonfile=None)
 
       
       Function to generate gw GW source parameters. This function also stores the parameters in json file.
@@ -4845,6 +4883,9 @@ Functions
           **resume** : `bool`
               resume = False (default) or True.
               if True, the function will resume from the last batch.
+
+          **save_batch** : `bool`
+              if True, the function will save the parameters in batches. if False, the function will save all the parameters at the end of sampling. save_batch=False is faster.
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
@@ -4876,7 +4917,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: gw_sampling_routine(size, output_jsonfile, resume=False)
+   .. py:method:: gw_sampling_routine(size, output_jsonfile, resume=False, save_batch=True)
 
       
       Function to generate gw GW source parameters. This function also stores the parameters in json file.
@@ -4917,7 +4958,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: gw_rate(gw_param=None, snr_threshold=8.0, output_jsonfile=None, detectability_condition='step_function')
+   .. py:method:: gw_rate(gw_param=None, snr_threshold=8.0, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, threshold_snr_recalculation=7.0)
 
       
       Function to calculate the gw rate. This function also stores the parameters of the detectable events in json file.

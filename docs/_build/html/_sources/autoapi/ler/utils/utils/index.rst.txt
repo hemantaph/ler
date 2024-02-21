@@ -28,19 +28,28 @@ Functions
 
 .. autoapisummary::
 
-   ler.utils.utils.update_dict
    ler.utils.utils.load_json
    ler.utils.utils.append_json
+   ler.utils.utils.add_dict_values
    ler.utils.utils.get_param_from_json
-   ler.utils.utils.dict_inside_dict_to_array
    ler.utils.utils.rejection_sample
+   ler.utils.utils.rejection_sample2d
    ler.utils.utils.add_dictionaries_together
    ler.utils.utils.trim_dictionary
+   ler.utils.utils.create_func_pdf_invcdf
    ler.utils.utils.create_conditioned_pdf_invcdf
+   ler.utils.utils.create_func
+   ler.utils.utils.create_func_inv
+   ler.utils.utils.create_pdf
+   ler.utils.utils.create_inv_cdf_array
+   ler.utils.utils.create_conditioned_pdf
+   ler.utils.utils.create_conditioned_inv_cdf_array
    ler.utils.utils.interpolator_from_pickle
    ler.utils.utils.interpolator_pickle_path
    ler.utils.utils.interpolator_pdf_conditioned
    ler.utils.utils.interpolator_sampler_conditioned
+   ler.utils.utils.cubic_spline_interpolator
+   ler.utils.utils.inverse_transform_sampler
    ler.utils.utils.batch_handler
 
 
@@ -51,7 +60,7 @@ Functions
    Bases: :py:obj:`json.JSONEncoder`
 
    
-   class for storing a numpy.ndarray or any nested-list composition as JSON file
+   Class for storing a numpy.ndarray or any nested-list composition as JSON file. This is required for dealing np.nan and np.inf.
 
 
    :Parameters:
@@ -102,29 +111,6 @@ Functions
           !! processed by numpydoc !!
 
 
-.. py:function:: update_dict(old, new)
-
-   
-   Update a dictionary with keys and values.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
 .. py:function:: load_json(file_name)
 
    
@@ -156,7 +142,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: append_json(file_name, dictionary, replace=False)
+.. py:function:: append_json(file_name, new_dictionary, old_dictionary=None, replace=False)
 
    
    Append and update a json file with a dictionary.
@@ -167,12 +153,46 @@ Functions
        **file_name** : `str`
            json file name for storing the parameters.
 
-       **dictionary** : `dict`
+       **new_dictionary** : `dict`
            dictionary to be appended to the json file.
 
        **replace** : `bool`, optional
            If True, replace the json file with the dictionary. Default is False.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: add_dict_values(dict1, dict2)
+
+   
+   Adds the values of two dictionaries together.
+
+
+   :Parameters:
+
+       **dict1** : `dict`
+           dictionary to be added.
+
+       **dict2** : `dict`
+           dictionary to be added.
+
+   :Returns:
+
+       **dict1** : `dict`
+           dictionary with added values.
 
 
 
@@ -220,13 +240,33 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: dict_inside_dict_to_array(dictionary)
+.. py:function:: rejection_sample(pdf, xmin, xmax, size=100, chunk_size=10000)
 
    
-   Function to convert a dictionary to an array.
+   Helper function for rejection sampling from a pdf with maximum and minimum arguments.
 
 
+   :Parameters:
 
+       **pdf** : `function`
+           pdf function.
+
+       **xmin** : `float`
+           minimum value of the pdf.
+
+       **xmax** : `float`
+           maximum value of the pdf.
+
+       **size** : `int`, optional
+           number of samples. Default is 100.
+
+       **chunk_size** : `int`, optional
+           chunk size for sampling. Default is 10000.
+
+   :Returns:
+
+       **x_sample** : `numpy.ndarray`
+           samples from the pdf.
 
 
 
@@ -243,20 +283,39 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: rejection_sample(pdf, xmin, xmax, size=100, chunk_size=10000)
+.. py:function:: rejection_sample2d(pdf, xmin, xmax, ymin, ymax, size=100, chunk_size=10000)
 
    
-   Helper function for rejection sampling from a pdf with maximum and minimum arguments.
-   Input parameters:
-       pdf: the pdf to sample from
-       xmin: the minimum argument of the pdf
-       xmax: the maximum argument of the pdf
-       size: the number of samples to draw
-   Output:
-       samples: the samples drawn from the pdf
+   Helper function for rejection sampling from a 2D pdf with maximum and minimum arguments.
 
 
+   :Parameters:
 
+       **pdf** : `function`
+           2D pdf function.
+
+       **xmin** : `float`
+           minimum value of the pdf in the x-axis.
+
+       **xmax** : `float`
+           maximum value of the pdf in the x-axis.
+
+       **ymin** : `float`
+           minimum value of the pdf in the y-axis.
+
+       **ymax** : `float`
+           maximum value of the pdf in the y-axis.
+
+       **size** : `int`, optional
+           number of samples. Default is 100.
+
+       **chunk_size** : `int`, optional
+           chunk size for sampling. Default is 10000.
+
+   :Returns:
+
+       **x_sample** : `numpy.ndarray`
+           samples from the pdf in the x-axis.
 
 
 
@@ -279,7 +338,18 @@ Functions
    Adds two dictionaries with the same keys together.
 
 
+   :Parameters:
 
+       **dictionary1** : `dict`
+           dictionary to be added.
+
+       **dictionary2** : `dict`
+           dictionary to be added.
+
+   :Returns:
+
+       **dictionary** : `dict`
+           dictionary with added values.
 
 
 
@@ -302,7 +372,61 @@ Functions
    Filters an event dictionary to only contain the size.
 
 
+   :Parameters:
 
+       **dictionary** : `dict`
+           dictionary to be trimmed.
+
+       **size** : `int`
+           size to trim the dictionary to.
+
+   :Returns:
+
+       **dictionary** : `dict`
+           trimmed dictionary.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: create_func_pdf_invcdf(x, y, category='function')
+
+   
+   Function to create a interpolated function, inverse function or inverse cdf from the input x and y.
+
+
+   :Parameters:
+
+       **x** : `numpy.ndarray`
+           x values.
+
+       **y** : `numpy.ndarray`
+           y values.
+
+       **category** : `str`, optional
+           category of the function. Default is "function". Other options are "function_inverse", "pdf" and "inv_cdf".
+
+   :Returns:
+
+       **pdf** : `pdf function`
+           interpolated pdf function.
+
+       **inv_pdf** : `function inverse`
+           interpolated inverse pdf function.
+
+       **inv_cdf** : `function`
+           interpolated inverse cdf.
 
 
 
@@ -328,7 +452,230 @@ Functions
    we consider parameter plane of x and y
 
 
+   :Parameters:
 
+       **x** : `numpy.ndarray`
+           x values.
+
+       **conditioned_y** : `numpy.ndarray`
+           conditioned y values.
+
+       **pdf_func** : `function`
+           function to calculate the pdf of x given y.
+
+       **category** : `str`, optional
+           category of the function. Default is "function". Other options are "function_inverse", "pdf" and "inv_cdf".
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: create_func(x, y)
+
+   
+   Function to create a spline interpolated function from the input x and y.
+
+
+   :Parameters:
+
+       **x** : `numpy.ndarray`
+           x values.
+
+       **y** : `numpy.ndarray`
+           y values.
+
+   :Returns:
+
+       **c** : `numpy.ndarray`
+           spline coefficients.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: create_func_inv(x, y)
+
+   
+   Function to create a spline interpolated inverse function from the input x and y.
+
+
+   :Parameters:
+
+       **x** : `numpy.ndarray`
+           x values.
+
+       **y** : `numpy.ndarray`
+           y values.
+
+   :Returns:
+
+       **c** : `numpy.ndarray`
+           spline coefficients.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: create_pdf(x, y)
+
+   
+   Function to create a spline interpolated normalized pdf from the input x and y.
+
+
+   :Parameters:
+
+       **x** : `numpy.ndarray`
+           x values.
+
+       **y** : `numpy.ndarray`
+           y values.
+
+   :Returns:
+
+       **c** : `numpy.ndarray`
+           spline coefficients.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: create_inv_cdf_array(x, y)
+
+   
+   Function to create a spline interpolated inverse cdf from the input x and y.
+
+
+   :Parameters:
+
+       **x** : `numpy.ndarray`
+           x values.
+
+       **y** : `numpy.ndarray`
+           y values.
+
+   :Returns:
+
+       **c** : `numpy.ndarray`
+           spline coefficients.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: create_conditioned_pdf(x, conditioned_y, pdf_func)
+
+   
+   Function to create a conditioned pdf from the input x and y.
+
+
+   :Parameters:
+
+       **x** : `numpy.ndarray`
+           x values.
+
+       **conditioned_y** : `numpy.ndarray`
+           conditioned y values.
+
+       **pdf_func** : `function`
+           function to calculate the pdf of x given y.
+
+   :Returns:
+
+       **list_** : `list`
+           list of pdfs.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: create_conditioned_inv_cdf_array(x, conditioned_y, pdf_func)
+
+   
+   Function to create a conditioned inv_cdf from the input x and y.
+
+
+   :Parameters:
+
+       **x** : `numpy.ndarray`
+           x values.
+
+       **conditioned_y** : `numpy.ndarray`
+           conditioned y values.
+
+       **pdf_func** : `function`
+           function to calculate the pdf of x given y.
+
+   :Returns:
+
+       **list_** : `list`
+           list of inv_cdfs.
 
 
 
@@ -351,7 +698,45 @@ Functions
    Function to decide which interpolator to use.
 
 
+   :Parameters:
 
+       **param_dict_given** : `dict`
+           dictionary of parameters.
+
+       **directory** : `str`
+           directory to store the interpolator.
+
+       **sub_directory** : `str`
+           sub-directory to store the interpolator.
+
+       **name** : `str`
+           name of the interpolator.
+
+       **x** : `numpy.ndarray`
+           x values.
+
+       **pdf_func** : `function`
+           function to calculate the pdf of x given y.
+
+       **y** : `numpy.ndarray`
+           y values.
+
+       **conditioned_y** : `numpy.ndarray`
+           conditioned y values.
+
+       **dimension** : `int`
+           dimension of the interpolator. Default is 1.
+
+       **category** : `str`
+           category of the function. Default is "pdf".
+
+       **create_new** : `bool`
+           if True, create a new interpolator. Default is False.
+
+   :Returns:
+
+       **interpolator** : `function`
+           interpolator function.
 
 
 
@@ -371,10 +756,30 @@ Functions
 .. py:function:: interpolator_pickle_path(param_dict_given, directory, sub_directory, interpolator_name)
 
    
-   Function to create the interpolator pickle file path for velocity dispersion.
+   Function to create the interpolator pickle file path.
 
 
+   :Parameters:
 
+       **param_dict_given** : `dict`
+           dictionary of parameters.
+
+       **directory** : `str`
+           directory to store the interpolator.
+
+       **sub_directory** : `str`
+           sub-directory to store the interpolator.
+
+       **interpolator_name** : `str`
+           name of the interpolator.
+
+   :Returns:
+
+       **path_inv_cdf** : `str`
+           path of the interpolator pickle file.
+
+       **it_exist** : `bool`
+           if True, the interpolator exists.
 
 
 
@@ -394,10 +799,27 @@ Functions
 .. py:function:: interpolator_pdf_conditioned(x, conditioned_y, y_array, interpolator_list)
 
    
-   Function to sample from the interpolator
+   Function to find the pdf interpolator coefficients from the conditioned y.
 
 
+   :Parameters:
 
+       **x** : `numpy.ndarray`
+           x values.
+
+       **conditioned_y** : `float`
+           conditioned y value.
+
+       **y_array** : `numpy.ndarray`
+           y values.
+
+       **interpolator_list** : `list`
+           list of interpolators.
+
+   :Returns:
+
+       **interpolator_list[idx](x)** : `numpy.ndarray`
+           samples from the interpolator.
 
 
 
@@ -417,10 +839,27 @@ Functions
 .. py:function:: interpolator_sampler_conditioned(conditioned_y, y_array, interpolator_list, size=1000)
 
    
-   Function sampler with inverse cdf from the interpolator
+   Function to find sampler interpolator coefficients from the conditioned y.
 
 
+   :Parameters:
 
+       **conditioned_y** : `float`
+           conditioned y value.
+
+       **y_array** : `numpy.ndarray`
+           y values.
+
+       **interpolator_list** : `list`
+           list of interpolators.
+
+       **size** : `int`
+           number of samples.
+
+   :Returns:
+
+
+           ..
 
 
 
@@ -437,7 +876,81 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: batch_handler(size, batch_size, sampling_routine, output_jsonfile, resume=False)
+.. py:function:: cubic_spline_interpolator(xnew, coefficients, x)
+
+   
+   Function to interpolate using cubic spline.
+
+
+   :Parameters:
+
+       **xnew** : `numpy.ndarray`
+           new x values.
+
+       **coefficients** : `numpy.ndarray`
+           coefficients of the cubic spline.
+
+       **x** : `numpy.ndarray`
+           x values.
+
+   :Returns:
+
+       **result** : `numpy.ndarray`
+           interpolated values.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: inverse_transform_sampler(size, cdf, x)
+
+   
+   Function to sample from the inverse transform method.
+
+
+   :Parameters:
+
+       **size** : `int`
+           number of samples.
+
+       **cdf** : `numpy.ndarray`
+           cdf values.
+
+       **x** : `numpy.ndarray`
+           x values.
+
+   :Returns:
+
+       **samples** : `numpy.ndarray`
+           samples from the cdf.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: batch_handler(size, batch_size, sampling_routine, output_jsonfile, save_batch=True, resume=False)
 
    
    Function to run the sampling in batches.

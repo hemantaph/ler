@@ -50,8 +50,9 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Unlensed_events.html">Unlensed events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -97,6 +98,7 @@
 <span class="sd">This module contains the LensGalaxyPopulation class, which is used to sample lens galaxy parameters, source parameters conditioned on the source being strongly lensed, image properties, and lensed SNRs. \n</span>
 <span class="sd">The class inherits from the CompactBinaryPopulation class, which is used to sample source parameters. \n</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 <span class="c1"># for multiprocessing</span>
@@ -362,7 +364,11 @@
                     <span class="n">n_image_i</span><span class="p">,</span>
                     <span class="n">determinant_i</span><span class="p">,</span>
                     <span class="n">trace_i</span><span class="p">,</span>
+                    <span class="n">e1_i</span><span class="p">,</span>
+                    <span class="n">e2_i</span><span class="p">,</span>
                     <span class="n">gamma_i</span><span class="p">,</span>
+                    <span class="n">gamma1_i</span><span class="p">,</span>
+                    <span class="n">gamma2_i</span><span class="p">,</span>
                     <span class="n">iter_i</span><span class="p">,</span>
                 <span class="p">)</span> <span class="o">=</span> <span class="n">result</span>
 
@@ -393,32 +399,53 @@
                 <span class="n">traces</span><span class="p">[</span><span class="n">iter_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span>
                 <span class="n">x_source</span><span class="p">[</span><span class="n">iter_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_source_i</span>
                 <span class="n">y_source</span><span class="p">[</span><span class="n">iter_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_source_i</span>
+                <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;e1&quot;</span><span class="p">][</span><span class="n">iter_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">e1_i</span>
+                <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;e2&quot;</span><span class="p">][</span><span class="n">iter_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">e2_i</span>
                 <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;gamma&quot;</span><span class="p">][</span><span class="n">iter_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">gamma_i</span>
+                <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;gamma1&quot;</span><span class="p">][</span><span class="n">iter_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">gamma1_i</span>
+                <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;gamma2&quot;</span><span class="p">][</span><span class="n">iter_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">gamma2_i</span>
 
         <span class="c1"># time-delays: convert to positive values</span>
         <span class="c1"># time-delays will be relative to the first arrived signal of an lensed event</span>
-        <span class="n">time_delays</span> <span class="o">=</span> <span class="n">time_delays</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">time_delays</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">]])</span><span class="o">.</span><span class="n">T</span>
-
+        <span class="n">time_delays</span> <span class="o">=</span> <span class="n">time_delays</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">time_delays</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">]])</span><span class="o">.</span><span class="n">T</span> <span class="c1"># this is alright if time delays are already sorted</span>
+        
         <span class="c1"># select only strongly lensed events are selected</span>
         <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">n_images</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">),</span> <span class="s2">&quot;There are events with no images!&quot;</span>
 
         <span class="c1"># image type classification (morse phase)</span>
         <span class="n">number_of_lensed_events</span> <span class="o">=</span> <span class="n">size</span>
         <span class="n">image_type</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">number_of_lensed_events</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span>
-        <span class="n">image_type</span><span class="p">[</span><span class="n">traces</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
-        <span class="n">image_type</span><span class="p">[</span><span class="n">traces</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="n">image_type</span><span class="p">[</span><span class="n">determinants</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="c1"># image_type[traces &lt; 0] = 3</span>
+        <span class="c1"># image_type[traces &gt; 0] = 1</span>
+        <span class="c1"># image_type[determinants &lt; 0] = 2</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_of_lensed_events</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_max_images</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">determinants</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">image_type</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+                <span class="k">elif</span> <span class="n">traces</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">image_type</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">elif</span> <span class="n">traces</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">image_type</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
 
         <span class="c1"># Return a dictionary with all of the lens information but also the BBH parameters from gw_param</span>
         <span class="n">image_parameters</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;n_images&quot;</span><span class="p">:</span> <span class="n">n_images</span><span class="p">,</span>
             <span class="s2">&quot;x0_image_positions&quot;</span><span class="p">:</span> <span class="n">x0_image_positions</span><span class="p">,</span>
             <span class="s2">&quot;x1_image_positions&quot;</span><span class="p">:</span> <span class="n">x1_image_positions</span><span class="p">,</span>
             <span class="s2">&quot;magnifications&quot;</span><span class="p">:</span> <span class="n">magnifications</span><span class="p">,</span>
             <span class="s2">&quot;time_delays&quot;</span><span class="p">:</span> <span class="n">time_delays</span><span class="p">,</span>
             <span class="s2">&quot;image_type&quot;</span><span class="p">:</span> <span class="n">image_type</span><span class="p">,</span>
         <span class="p">}</span>
+
+        <span class="c1">############ Important ############</span>
+        <span class="c1"># sorting wrt time delays</span>
+        <span class="n">idx_sort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">time_delays</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># sort each row</span>
+        <span class="c1"># idx_sort has the shape (number_of_lensed_events, n_max_images)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">image_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># sort each row</span>
+            <span class="n">image_parameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">idx_sort</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_of_lensed_events</span><span class="p">)])</span>
+        <span class="c1">####################################</span>
         <span class="n">lens_parameters</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">image_parameters</span><span class="p">)</span>
+        <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;n_images&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_images</span>
 
         <span class="k">return</span> <span class="n">lens_parameters</span></div>
 
@@ -511,6 +538,9 @@
             <span class="n">effective_luminosity_distance</span> <span class="o">=</span> <span class="n">luminosity_distance</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">magnifications</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
             <span class="p">)</span>
+            
+            <span class="c1"># check for nan values</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">effective_luminosity_distance</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">effective_geocent_time</span><span class="p">)</span>
 
             <span class="c1"># Each image has their own effective luminosity distance and effective geocent time</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">effective_luminosity_distance</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
@@ -541,8 +571,8 @@
                 <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_luminosity_distance&quot;</span><span class="p">][:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">effective_luminosity_distance</span>
                 <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_geocent_time&quot;</span><span class="p">][:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">effective_geocent_time</span>
 
-        <span class="k">del</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;luminosity_distance&quot;</span><span class="p">]</span>
-        <span class="k">del</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;geocent_time&quot;</span><span class="p">]</span>
+        <span class="c1"># del lensed_param[&quot;luminosity_distance&quot;]</span>
+        <span class="c1"># del lensed_param[&quot;geocent_time&quot;]</span>
 
         <span class="k">return</span> <span class="n">optimal_snrs</span><span class="p">,</span> <span class="n">lensed_param</span></div>
 </div>

@@ -50,9 +50,10 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Unlensed%20events.html">Unlensed events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed%20events.html">Lensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation2.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Unlensed_events.html">Unlensed events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed events</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul class="current">
@@ -70,7 +71,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#ler.image_properties.solve_lens_equation"><code class="docutils literal notranslate"><span class="pre">solve_lens_equation()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.image_properties.interpolator_from_pickle"><code class="docutils literal notranslate"><span class="pre">interpolator_from_pickle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.image_properties.cubic_spline_interpolator"><code class="docutils literal notranslate"><span class="pre">cubic_spline_interpolator()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.image_properties.ImageProperties"><code class="docutils literal notranslate"><span class="pre">ImageProperties</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.image_properties.axis_ratio_rayleigh"><code class="docutils literal notranslate"><span class="pre">axis_ratio_rayleigh()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">solve_lens_equation()</span></code></a></li>
 </ul>
 </li>
@@ -142,6 +145,12 @@
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.interpolator_from_pickle" title="ler.image_properties.interpolator_from_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolator_from_pickle</span></code></a>(param_dict_given, directory, ...)</p></td>
 <td><p>Function to decide which interpolator to use.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.cubic_spline_interpolator" title="ler.image_properties.cubic_spline_interpolator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cubic_spline_interpolator</span></code></a>(xnew, coefficients, x)</p></td>
+<td><p>Function to interpolate using cubic spline.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.axis_ratio_rayleigh" title="ler.image_properties.axis_ratio_rayleigh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_rayleigh</span></code></a>(sigma[, q_min, q_max])</p></td>
+<td><p>Function to sample axis ratio from rayleigh distribution with given velocity dispersion.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#id0" title="ler.image_properties.solve_lens_equation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_lens_equation</span></code></a>(lens_parameters)</p></td>
 <td><p>Function to solve the lens equation (min_image = 2)</p></td>
@@ -219,6 +228,64 @@ lens_parameters[10:] = lens_model_list : numpy array of lens models</p>
 <dt class="sig sig-object py" id="ler.image_properties.interpolator_from_pickle">
 <span class="sig-prename descclassname"><span class="pre">ler.image_properties.</span></span><span class="sig-name descname"><span class="pre">interpolator_from_pickle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_dict_given</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sub_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdf_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditioned_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pdf'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_new</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#interpolator_from_pickle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.interpolator_from_pickle" title="Link to this definition"></a></dt>
 <dd><p>Function to decide which interpolator to use.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>param_dict_given</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of parameters.</p>
+</dd>
+<dt><strong>directory</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>directory to store the interpolator.</p>
+</dd>
+<dt><strong>sub_directory</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>sub-directory to store the interpolator.</p>
+</dd>
+<dt><strong>name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>name of the interpolator.</p>
+</dd>
+<dt><strong>x</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>x values.</p>
+</dd>
+<dt><strong>pdf_func</strong><span class="classifier"><cite>function</cite></span></dt><dd><p>function to calculate the pdf of x given y.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>y values.</p>
+</dd>
+<dt><strong>conditioned_y</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>conditioned y values.</p>
+</dd>
+<dt><strong>dimension</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>dimension of the interpolator. Default is 1.</p>
+</dd>
+<dt><strong>category</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>category of the function. Default is “pdf”.</p>
+</dd>
+<dt><strong>create_new</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if True, create a new interpolator. Default is False.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>interpolator</strong><span class="classifier"><cite>function</cite></span></dt><dd><p>interpolator function.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.cubic_spline_interpolator">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.</span></span><span class="sig-name descname"><span class="pre">cubic_spline_interpolator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xnew</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coefficients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#cubic_spline_interpolator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.cubic_spline_interpolator" title="Link to this definition"></a></dt>
+<dd><p>Function to interpolate using cubic spline.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>xnew</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>new x values.</p>
+</dd>
+<dt><strong>coefficients</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>coefficients of the cubic spline.</p>
+</dd>
+<dt><strong>x</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>x values.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>interpolated values.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py class">
@@ -385,6 +452,26 @@ default: 4</p>
 </dd></dl>
 
 </section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.axis_ratio_rayleigh">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.</span></span><span class="sig-name descname"><span class="pre">axis_ratio_rayleigh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#axis_ratio_rayleigh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.axis_ratio_rayleigh" title="Link to this definition"></a></dt>
+<dd><p>Function to sample axis ratio from rayleigh distribution with given velocity dispersion.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>sigma</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>velocity dispersion of the lens galaxy</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>q</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>axis ratio of the lens galaxy</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
