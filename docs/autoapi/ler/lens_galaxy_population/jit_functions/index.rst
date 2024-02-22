@@ -15,7 +15,10 @@ Functions
 
 .. autoapisummary::
 
-   ler.lens_galaxy_population.jit_functions.lens_redshift_SDSS_catalogue
+   ler.lens_galaxy_population.jit_functions.axis_ratio_SIS
+   ler.lens_galaxy_population.jit_functions.phi
+   ler.lens_galaxy_population.jit_functions.phi_loc_bernardi
+   ler.lens_galaxy_population.jit_functions.phi_cut_SIE
    ler.lens_galaxy_population.jit_functions.axis_ratio_rayleigh
    ler.lens_galaxy_population.jit_functions.velocity_dispersion_z_dependent
    ler.lens_galaxy_population.jit_functions.lens_redshift_SDSS_catalogue
@@ -23,13 +26,126 @@ Functions
 
 
 
-.. py:function:: lens_redshift_SDSS_catalogue(zs)
+.. py:function:: axis_ratio_SIS(sigma)
 
    
-   Function to sample lens redshift from the SDSS catalogue.
+   Function to sample axis ratio from the SIS distribution with given velocity dispersion.
+
+
+   :Parameters:
+
+       **sigma** : `float: array`
+           velocity dispersion of the lens galaxy
+
+   :Returns:
+
+       **q** : `float: array`
+           axis ratio of the lens galaxy
 
 
 
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: phi(s, z, cosmology_h=0.7)
+
+   
+   Function to calculate the lens galaxy velocity dispersion function at redshift z.
+
+
+   :Parameters:
+
+       **s** : `float: array`
+           velocity dispersion of the lens galaxy
+
+       **z** : `float: array`
+           redshift of the lens galaxy
+
+       **cosmology_h** : `float`
+           Hubble constant
+
+   :Returns:
+
+       **result** : `float: array`
+           ..
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: phi_loc_bernardi(sigma, alpha=0.94, beta=1.85, phistar=0.02099, sigmastar=113.78, cosmology_h=0.7)
+
+   
+   Function to calculate the local universe velocity dispersion function. Bernardi et al. (2010).
+
+
+   :Parameters:
+
+       **sigma** : `float: array`
+           velocity dispersion of the lens galaxy
+
+       **alpha, beta, phistar, sigmastar** : `float`
+           parameters of the velocity dispersion function
+
+       **cosmology_h** : `float`
+           Hubble constant with respect to 100 km/s/Mpc
+
+   :Returns:
+
+       **philoc_** : `float: array`
+           ..
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: phi_cut_SIE(q)
+
+   
+   Function to calculate cross-section scaling factor for the SIE lens galaxy from SIS lens galaxy.
+
+
+   :Parameters:
+
+       **q** : `float: array`
+           axis ratio of the lens galaxy
+
+   :Returns:
+
+       **result** : `float: array`
+           scaling factor
 
 
 

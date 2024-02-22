@@ -73,7 +73,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="GW_equations.html">GW event sampling (Analytical formulation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html#Sampling-of-Source-Position">Sampling of Source Position</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
@@ -120,13 +121,13 @@
 <p><strong>Parameters Considered:</strong></p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(z_s\)</span>: Source redshift.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\theta\)</span>: Gravitational wave parameters.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\Theta\)</span>: Step function.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\theta\)</span>: Gravitational wave source properties. <span class="math notranslate nohighlight">\(m_1\)</span> (mass of the heavier one), <span class="math notranslate nohighlight">\(m_2\)</span> (mass of the lighter one), <span class="math notranslate nohighlight">\(D_l\)</span> (luminosity distance), <span class="math notranslate nohighlight">\(\iota\)</span> (inclination-angle), <span class="math notranslate nohighlight">\(\phi\)</span> (phase-of-coalescence), <span class="math notranslate nohighlight">\(\psi\)</span> (polarization-angle), <span class="math notranslate nohighlight">\(ra\)</span> (right-ascension), <span class="math notranslate nohighlight">\(dec\)</span> (declination), <span class="math notranslate nohighlight">\(t\)</span> (time-of-coalescence).</p></li>
 <li><p><span class="math notranslate nohighlight">\(\rho(z_s,\theta)\)</span>: Network optimal SNR.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\rho_{th}\)</span>: Threshold SNR.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\rho_{th}\)</span>: SNR threshold.</p></li>
 <li><p><span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span>: Normalized merger-rate distribution (source-frame).</p></li>
 <li><p><span class="math notranslate nohighlight">\(\mathcal{N}^U\)</span>: Normalizing factor.</p></li>
 <li><p><span class="math notranslate nohighlight">\(P\)</span>: Prior distribution.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta\)</span>: Detectability condition.</p></li>
 </ul>
 <p>Default cosmology: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7). But, it can be changed by the user at LeR initialization.</p>
 <section id="Compact-Binaries-Merger-Rate-Density">
@@ -207,10 +208,9 @@ R_U = \mathcal{N}^U\int dz_s R_o^U(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}]
 <li><p><strong>SNR Operator,</strong> <span class="math notranslate nohighlight">\(\mathbf{\Theta[\rho(z_s,\theta)-\rho_{th}]}\)</span><strong>:</strong> This is a step function that determines whether the signal-to-noise ratio (SNR) <span class="math notranslate nohighlight">\(\rho(z_s,\theta)\)</span> of an event exceeds the threshold SNR <span class="math notranslate nohighlight">\(\rho_{th}\)</span>. If <span class="math notranslate nohighlight">\(\rho(z_s,\theta) \geq \rho_{th}\)</span>, the event is considered detectable.</p></li>
 <li><p>The SNR threshold <span class="math notranslate nohighlight">\(\mathbf{\rho_{th}}\)</span> is typically chosen based on the sensitivity and design specifications of the gravitational wave detector. This strategy is valid as a proxy in the Gaussian noise regime.</p></li>
 <li><p><strong>Prior Distribution,</strong> <span class="math notranslate nohighlight">\(\mathbf{P(\theta)}\)</span><strong>:</strong> This normalized distribution represents the prior knowledge or assumptions about the distribution of gravitational wave parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p></li>
-<li><p><strong>Probability of Detection,</strong> <span class="math notranslate nohighlight">\(\mathbf{P_{\text{det}}}\)</span><strong>:</strong> To allow a smoother transition from detectable to non-detectable events at the SNR threshold, the probability of detection can be used in place of the SNR operator. This is based on the assumption that the matched-filter SNR follows a Gaussian distribution with a mean of <span class="math notranslate nohighlight">\(\rho_{\text{optimal}}\)</span> and a standard deviation of 1.</p></li>
 <li><p><strong>Normalized Merger-Rate Distribution,</strong> <span class="math notranslate nohighlight">\(\mathbf{R_o^U(z_s)}\)</span><strong>:</strong> This function represents the merger rate density (in the source frame) normalized with respect to the redshift <span class="math notranslate nohighlight">\(z_s\)</span>.</p></li>
 <li><p><strong>Gravitational Wave Parameters,</strong> <span class="math notranslate nohighlight">\(\mathbf{\theta}\)</span><strong>:</strong> The set of parameters includes the masses of the binary components (<span class="math notranslate nohighlight">\(m_1\)</span> and <span class="math notranslate nohighlight">\(m_2\)</span>), the inclination angle (<span class="math notranslate nohighlight">\(\iota\)</span>), the polarization angle (<span class="math notranslate nohighlight">\(\psi\)</span>), the right ascension (<span class="math notranslate nohighlight">\(ra\)</span>), the declination (<span class="math notranslate nohighlight">\(dec\)</span>), the phase of coalescence (<span class="math notranslate nohighlight">\(\phi_c\)</span>), and the time of coalescence (<span class="math notranslate nohighlight">\(t_c\)</span>).</p></li>
-<li><p><strong>Luminosity Distance,</strong> <span class="math notranslate nohighlight">\(\mathbf{D_l}\)</span><strong>:</strong> The luminosity distance is derived from the source redshift <span class="math notranslate nohighlight">\(z_s\)</span> and cosmological parameters, providing a measure of the distance to the source of the gravitational waves.</p></li>
+<li><p><strong>Luminosity Distance,</strong> <span class="math notranslate nohighlight">\(\mathbf{\mathcal{D}_L}\)</span><strong>:</strong> The luminosity distance is derived from the source redshift <span class="math notranslate nohighlight">\(z_s\)</span> and cosmological parameters, providing a measure of the distance to the source of the gravitational waves.</p></li>
 </ul>
 <p>The integration over <span class="math notranslate nohighlight">\(z_s\)</span> and <span class="math notranslate nohighlight">\(\theta\)</span> in the equation accounts for the contributions from all detectable events across different redshifts and with varying gravitational wave parameters. This comprehensive approach enables the estimation of the annual rate of detectable gravitational wave events, which is crucial for understanding the observational capabilities of gravitational wave detectors and planning future observational strategies.</p>
 <p>Note: Refer to the section <a class="reference external" href="https://gwsnr.readthedocs.io/en/latest/">GWSNR</a> for details on the calculation of the optimal signal-to-noise ratio (SNR).</p>

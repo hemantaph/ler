@@ -62,7 +62,8 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GW_equations.html">GW event sampling (Analytical formulation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html#Sampling-of-Source-Position">Sampling of Source Position</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
@@ -119,8 +120,8 @@
 <ul class="simple">
 <li><p><strong>Sampling of Lens Galaxies Attributes and Source Redshifts:</strong></p>
 <ul>
-<li><p>For lensed cases, the source redshift (<span class="math notranslate nohighlight">\(z_s\)</span>) is sampled under the strong lensing condition (SL) based on the precomputed probability of strong lensing with source at <span class="math notranslate nohighlight">\(z_s\)</span> (optical depth: <span class="math notranslate nohighlight">\(P\left(z_s|\text{SL}\right)\)</span>). This probability can be recalculated for specified configurations of lens galaxies, leveraging multiprocessing and njit functionalities for efficiency.</p></li>
-<li><p>The package uses the Elliptical Power Law with external shear (EPL+Shear) model for galaxy parameter (<span class="math notranslate nohighlight">\(\theta_L\)</span>) sampling, following <a class="reference external" href="https://arxiv.org/abs/2106.06303">Wierda et. al 2021</a>. Rejection sampling is applied to these samples based on whether the event is strongly lensed or not, <span class="math notranslate nohighlight">\(P\left(\theta_L|z_s,\text{SL}\right)\)</span>.</p></li>
+<li><p>For lensed cases, the source redshift (<span class="math notranslate nohighlight">\(z_s\)</span>) is sampled under the strong lensing condition (SL) based on the precomputed probability of strong lensing with source at <span class="math notranslate nohighlight">\(z_s\)</span> ( optical depth: <span class="math notranslate nohighlight">\(P\left(\text{SL}|z_s\right)\)</span> ). This probability can be recalculated for specified configurations of lens galaxies, leveraging multiprocessing and njit functionalities for efficiency.</p></li>
+<li><p>The package uses the Elliptical Power Law with external shear (EPL+Shear) model for galaxy parameter (<span class="math notranslate nohighlight">\(\theta_L\)</span>) sampling, following <a class="reference external" href="https://arxiv.org/abs/2106.06303">Wierda et. al 2021</a>. Rejection sampling is applied to these samples based on whether the event is strongly lensed or not, <span class="math notranslate nohighlight">\(P\left(\text{SL}|z_s,\theta_L\right)\)</span>.</p></li>
 </ul>
 </li>
 <li><p><strong>Generation of Image Properties:</strong></p>
@@ -165,7 +166,7 @@ R_L = \int & dz_s R_m^L(z_s) \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i,
 <ul class="simple">
 <li><p>The following plot generated using <code class="docutils literal notranslate"><span class="pre">LeR</span></code>. This considers O4 design sensitivity of the GW detectors.</p></li>
 </ul>
-<p align="center"><p><img alt="Your Logo" class="no-scaled-link" src="_images/zs_all.png" style="width: 100%;" /></p>
+<p align="center"><p><img alt="Your Logo" class="no-scaled-link" src="_images/zs_all.png" style="width: 80%;" /></p>
 </p></section>
 </section>
 

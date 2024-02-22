@@ -3,37 +3,24 @@ from numba import njit
 #from scipy.stats import rayleigh
 from ..utils import inverse_transform_sampler, cubic_spline_interpolator
 
-from lenstronomy.LensModel.Solver.epl_shear_solver import caustics_epl_shear
-from shapely.geometry import Polygon
-
-# def rjs_with_einstein_radius(self, param_dict):
-#     theta_E = param_dict["theta_E"]
-#     size = len(theta_E)
-#     theta_E_max = np.max(theta_E)  # maximum einstein radius
-#     u = np.random.uniform(0, theta_E_max**2, size=size)
-#     mask = u < theta_E**2
-
-#     # return the dictionary with the mask applied
-#     return {key: val[mask] for key, val in param_dict.items()}
-
-
 
 @njit
 def axis_ratio_SIS(sigma):
+    """
+    Function to sample axis ratio from the SIS distribution with given velocity dispersion.
+
+    Parameters
+    ----------
+    sigma : `float: array`
+        velocity dispersion of the lens galaxy
+
+    Returns
+    -------
+    q : `float: array`
+        axis ratio of the lens galaxy
+    """
+
     return np.ones(len(sigma))
-
-# sampler for the lens redshift
-@njit
-def lens_redshift_SDSS_catalogue(zs):
-    """
-    Function to sample lens redshift from the SDSS catalogue.
-    """
-
-    size = zs.size
-    r = np.random.uniform(0, 1, size=size)
-    # sample from inverse of cdf of the lens redshift distribution
-    # See the integral of Eq. A7 of https://arxiv.org/pdf/1807.07062.pdf (cdf)
-    return 10 * r**3 - 15 * r**4 + 6 * r**5
     
 @njit
 def gamma_(x):
@@ -56,6 +43,7 @@ def gamma_(x):
     
 @njit
 def cvdf_fit(log_vd, redshift):
+    # Coefficients for the fit. Use in the derivation velocity dispersion function (at local universe), Bernardi et al. (2010).
     this_vars = np.array([
         [7.39149763, 5.72940031, -1.12055245],
         [-6.86339338, -5.27327109, 1.10411386],
@@ -67,10 +55,12 @@ def cvdf_fit(log_vd, redshift):
 
 @njit
 def my_derivative(log_vd, redshift, dx):
+    # Derivative of the cvdf_fit function. Use in the derivation velocity dispersion function (at local universe), Bernardi et al. (2010).
     return 0.5 * (cvdf_fit(log_vd + dx, redshift) - cvdf_fit(log_vd - dx, redshift)) / dx
 
 @njit
 def pdf_phi_z_div_0(s, z):
+    # Derivation of the pdf of velocity dispersion function (at redshift z), Oguri et al. (2018b). This lacks the scaling factor.
     log_vd = np.log10(s)
     phi_sim_z = 10 ** cvdf_fit(log_vd, z) / s * my_derivative(log_vd, z, 1e-8)
     phi_sim_0 = 10 ** cvdf_fit(log_vd, 0) / s * my_derivative(log_vd, 0, 1e-8)
@@ -79,6 +69,22 @@ def pdf_phi_z_div_0(s, z):
 
 @njit
 def phi(s,z, cosmology_h=0.7):
+    """
+    Function to calculate the lens galaxy velocity dispersion function at redshift z.
+
+    Parameters
+    ----------
+    s : `float: array`
+        velocity dispersion of the lens galaxy
+    z : `float: array`
+        redshift of the lens galaxy
+    cosmology_h : `float`
+        Hubble constant
+
+    Returns
+    -------
+    result : `float: array`
+    """
 
     result = s**4*pdf_phi_z_div_0(s,z)*phi_loc_bernardi(sigma=s, cosmology_h=cosmology_h)
     # result[result < 0.] = 0.
@@ -86,13 +92,44 @@ def phi(s,z, cosmology_h=0.7):
 
 @njit
 def phi_loc_bernardi(sigma, alpha=0.94, beta=1.85, phistar=2.099e-2, sigmastar=113.78, cosmology_h=0.7):
+    """
+    Function to calculate the local universe velocity dispersion function. Bernardi et al. (2010).
+
+    Parameters
+    ----------
+    sigma : `float: array`
+        velocity dispersion of the lens galaxy
+    alpha, beta, phistar, sigmastar : `float`
+        parameters of the velocity dispersion function
+    cosmology_h : `float`
+        Hubble constant with respect to 100 km/s/Mpc
+
+    Returns
+    -------
+    philoc_ : `float: array`
+    """
+
     phistar = phistar * (cosmology_h / 0.7) ** 3  # Mpc**-3
     philoc_ = phistar*(sigma/sigmastar)**alpha * np.exp(-(sigma/sigmastar)**beta) * beta/gamma_(alpha/beta)/sigma
     return philoc_
 
-# elliptical lens galaxy
+# For elliptical lens galaxy
 @njit
 def phi_cut_SIE(q):
+    """
+    Function to calculate cross-section scaling factor for the SIE lens galaxy from SIS lens galaxy.
+
+    Parameters
+    ----------
+    q : `float: array`
+        axis ratio of the lens galaxy
+
+    Returns
+    -------
+    result : `float: array`
+        scaling factor
+    """
+
     n = len(q)
     result = np.empty(n)
     for i in range(n):
@@ -211,75 +248,6 @@ def lens_redshift_SDSS_catalogue(zs, splineDc, splineDcInv, u, cdf):
     lens_galaxy_Dc = cubic_spline_interpolator(zs, splineDc_coeff, splineDc_z_list) * r  # corresponding element-wise multiplication between 2 arrays
 
     return cubic_spline_interpolator(lens_galaxy_Dc, splineDcInv_coeff, splineDcInv_z_list)
-
-
-def phi_cut_epl_shear(e1, e2, gamma, gamma1, gamma2):
-
-    results = []
-    size = len(e1)  # size of the array
-    for i in range(size):
-
-        while True:
-            kwargs_lens = [
-                {
-                    "theta_E": 1.,
-                    "e1": e1[i],
-                    "e2": e2[i],
-                    "gamma": gamma[i],
-                    "center_x": 0.0,
-                    "center_y": 0.0,
-                },
-                {
-                    "gamma1": gamma1[i],
-                    "gamma2": gamma2[i],
-                    "ra_0": 0,
-                    "dec_0": 0,
-                },
-            ]
-            caustic_double_points = caustics_epl_shear(
-                kwargs_lens, return_which="double", maginf=-5000
-            )
-            caustic = np.logical_not(np.isnan(caustic_double_points).any())
-            # If there is a nan, caustic=False, draw a new gamma
-            if caustic:
-                break
-            else:
-                gamma[i] = np.random.normal(loc=2.0, scale=0.2, size=1)[0]
-
-        caustic_double = Polygon(caustic_double_points.T)
-        area = caustic_double.area
-
-        # kwargs_lens = [
-        #     {
-        #         "theta_E": 1.,
-        #         "e1": e1[i],
-        #         "e2": e2[i],
-        #         "gamma": gamma[i],
-        #         "center_x": 0.0,
-        #         "center_y": 0.0,
-        #     },
-        #     {
-        #         "gamma1": gamma1[i],
-        #         "gamma2": gamma2[i],
-        #         "ra_0": 0,
-        #         "dec_0": 0,
-        #     },
-        # ]
-
-        # caustic_double_points = caustics_epl_shear(
-        #             kwargs_lens, return_which="double", maginf=-5000
-        #         )
-
-        # try:
-        #     caustic_double = Polygon(caustic_double_points.T)
-        
-        #     area = caustic_double.area
-        # except:
-        #     print("\n",e1[i], e2[i], gamma[i], gamma1[i], gamma2[i])
-
-        results.append(np.round(area/np.pi, 3))
-
-    return np.array(results)
 
 @njit
 def bounded_normal_sample(size, mean, std, low, high):
