@@ -47,23 +47,13 @@ For more information and usage examples, please refer to the other sections of t
 
 **Detectable Gravitational Wave Event Rates:**
 
-\begin{equation*}
-\begin{split}
-R_L = \int & dz_s R_m^L(z_s) \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \, \\ 
-& \, P(\theta) P(\theta_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta d\theta_L dz_s 
-\end{split}
-\end{equation*}
+$$R_U = \int dz_s R_m^U(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\}$$
 
 * $R_m^L(z_s)$: strongly lensed source frame merger rate density in the co-moving volume at $z_s$, $\theta_L$: lens parameters, $\beta$: image properties, $\mu$: image magnification, $\Delta t$: image time delay, $\mathcal{O}$: logical OR operator applied across all $\Theta_i$ of the images, $\text{SL}$: strong lensing condition.
 
 **Detectable Lensed Gravitational Wave Event Rates:**
 
-\begin{equation*}
-\begin{split}
-R_L = \int & dz_s R_m^L(z_s) \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \, \\ 
-& \, P(\theta) P(\theta_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta d\theta_L dz_s 
-\end{split}
-\end{equation*}
+$$ R_L = \int dz_s R_m^L(z_s) \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) P(\theta) P(\theta_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta d\theta_L dz_s $$
 
 * $R_m^L(z_s)$: strongly lensed source frame merger rate density in the co-moving volume at $z_s$, $\theta_L$: lens parameters, $\beta$: image properties, $\mu$: image magnification, $\Delta t$: image time delay, $\mathcal{O}$: logical OR operator applied across all $\Theta_i$ of the images, $\text{SL}$: strong lensing condition.
 
