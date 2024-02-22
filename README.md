@@ -21,7 +21,7 @@ LeR is a Python package designed for the statistical simulation and forecasting 
 
 ## Sampling Gravitational Wave Source Properties:
 - The source's redshift ($z_s$) sampling distribution, $R_m^U(z_s)$, is derived from the merger rate density of compact binaries, which is based on the star formation rate. The code is designed for easy integration of future updates or user-specified distributions.
-- The sampling of both intrinsic and extrinsic parameters of GW sources, represented by $\theta_i$, utilizes the prior distributions ($P(\theta_i)$) available within the *gwcosmo* and *bilby* Python packages. Users can manually alter any relevant parameters as needed.
+- The sampling of both intrinsic and extrinsic parameters of GW sources, represented by $\theta_i$, utilizes the prior distributions ( $P\big(\theta_i\big)$ ) available within the `gwcosmo` and `bilby` Python packages. Users can manually alter any relevant parameters as needed.
 
 ## Lensing Related:
 - **Sampling of Lens Galaxies Attributes and Source Redshifts:**
@@ -30,17 +30,17 @@ LeR is a Python package designed for the statistical simulation and forecasting 
 
 - **Generation of Image Properties:**
     - Source position ($\beta$) is sampled from the caustic in the source plane.
-    - Sampled lens properties and source position are fed into *Lenstronomy* to generate image properties. This is the slowest part of the simulation, which LeR tackles through parallelization with multiprocessing.
+    - Sampled lens properties and source position are fed into `Lenstronomy` to generate image properties. This is the slowest part of the simulation, which LeR tackles through parallelization with multiprocessing.
     - Image properties like magnification ($\mu_i$) and time delay ($\Delta t_i$) modify the original source signal strength, affecting the signal-to-noise ratio (SNR) and our ability to detect.
 
 ## Calculation of Detectable Merger Rates Per Year:
 - The calculation of rates involves integration over simulated events that meet specific detection criteria, including computing SNRs ($\rho$) for each event or its lensed images and assessing them against a predetermined threshold ($\rho_{th}$).
-- SNR calculations are optimized using [*gwsnr*](https://github.com/hemantaph/gwsnr), leveraging interpolation, artificial neural networks, and multiprocessing for accuracy and speed.
+- SNR calculations are optimized using [gwsnr](https://github.com/hemantaph/gwsnr), leveraging interpolation, artificial neural networks, and multiprocessing for accuracy and speed.
 - Simulated events and rate results, along with input configurations, are systematically archived for easy access and future analysis. All interpolators used in the process are preserved for future applications.
 
 LeR is developed to meet the needs of both the LIGO-Virgo-KAGRA Scientific Collaboration and researchers in astrophysics. It is currently used in generating detectable lensing events and GW lensing rates for current and future detectors, contributing to the ongoing effort to detect lensed GWs, ([arXiv:2306.03827](https://arxiv.org/abs/2306.03827)). The package is designed with upgradability in mind to include additional statistics as required by related research.
 
-Key features of LeR include efficient sampling, optimized SNR calculations, and systematic archiving of results. It leverages array operations and linear algebra from the *numpy* library, interpolation methods from *scipy*, and parallel processing capabilities from Python's *multiprocessing* module, with performance further optimized using the `numba` library's Just-In-Time compilation.
+Key features of LeR include efficient sampling, optimized SNR calculations, and systematic archiving of results. It leverages array operations and linear algebra from the `numpy` library, interpolation methods from `scipy`, and parallel processing capabilities from Python's `multiprocessing` module, with performance further optimized using the `numba` library's Just-In-Time compilation.
 
 For more information and usage examples, please refer to the other sections of the documentation.
 <!-- [LeR documentation](https://arxiv.org/abs/2306.03827). -->
