@@ -49,7 +49,7 @@ For more information and usage examples, please refer to the other sections of t
 
 $$R_U = \int dz_s R_m^U(z_s) \; \Theta[\rho(z_s,\theta)-\rho_{th}] \; P(\theta) d\theta$$
 
-* $R_m^L(z_s)$: strongly lensed source frame merger rate density in the co-moving volume at $z_s$, $\theta_L$: lens parameters, $\beta$: image properties, $\mu$: image magnification, $\Delta t$: image time delay, $\mathcal{O}$: logical OR operator applied across all $\Theta_i$ of the images, $\text{SL}$: strong lensing condition.
+* $z_s$: GW source redshift, $R_m^U(z_s)$: source frame merger rate density in the co-moving volume at $z_s$, $\theta$: GW source parameters, $P$: probability distribution, $\rho$: SNR, $\rho_{th}$: SNR threshold, $\Theta$: Heaviside function to select detectable events.
 
 **Detectable Lensed Gravitational Wave Event Rates:**
 
