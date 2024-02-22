@@ -54,7 +54,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">GW event sampling (Analytical formulation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html#Sampling-of-Source-Position">Sampling of Source Position</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
@@ -74,23 +75,33 @@
 <li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.ImageProperties"><code class="docutils literal notranslate"><span class="pre">ImageProperties</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.add_dictionaries_together"><code class="docutils literal notranslate"><span class="pre">add_dictionaries_together()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.trim_dictionary"><code class="docutils literal notranslate"><span class="pre">trim_dictionary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.phi_cut_SIE"><code class="docutils literal notranslate"><span class="pre">phi_cut_SIE()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.velocity_dispersion_z_dependent"><code class="docutils literal notranslate"><span class="pre">velocity_dispersion_z_dependent()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.lens_redshift_SDSS_catalogue"><code class="docutils literal notranslate"><span class="pre">lens_redshift_SDSS_catalogue()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution"><code class="docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.interpolator_from_pickle"><code class="docutils literal notranslate"><span class="pre">interpolator_from_pickle()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.cubic_spline_interpolator"><code class="docutils literal notranslate"><span class="pre">cubic_spline_interpolator()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.inverse_transform_sampler"><code class="docutils literal notranslate"><span class="pre">inverse_transform_sampler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">phi_cut_SIE()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.axis_ratio_rayleigh"><code class="docutils literal notranslate"><span class="pre">axis_ratio_rayleigh()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id24"><code class="docutils literal notranslate"><span class="pre">axis_ratio_rayleigh()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id25"><code class="docutils literal notranslate"><span class="pre">inverse_transform_sampler()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id26"><code class="docutils literal notranslate"><span class="pre">cubic_spline_interpolator()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.optical_depth_sie2_mp"><code class="docutils literal notranslate"><span class="pre">optical_depth_sie2_mp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.axis_ratio_SIS"><code class="docutils literal notranslate"><span class="pre">axis_ratio_SIS()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.phi"><code class="docutils literal notranslate"><span class="pre">phi()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.phi_loc_bernardi"><code class="docutils literal notranslate"><span class="pre">phi_loc_bernardi()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5"><code class="docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id25"><code class="docutils literal notranslate"><span class="pre">phi_cut_SIE()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id26"><code class="docutils literal notranslate"><span class="pre">axis_ratio_rayleigh()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id27"><code class="docutils literal notranslate"><span class="pre">inverse_transform_sampler()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id28"><code class="docutils literal notranslate"><span class="pre">cubic_spline_interpolator()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id29"><code class="docutils literal notranslate"><span class="pre">lens_redshift_SDSS_catalogue()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id30"><code class="docutils literal notranslate"><span class="pre">axis_ratio_rayleigh()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id31"><code class="docutils literal notranslate"><span class="pre">velocity_dispersion_z_dependent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.optical_depth_sie2_mp"><code class="docutils literal notranslate"><span class="pre">optical_depth_sie2_mp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id29"><code class="docutils literal notranslate"><span class="pre">inverse_transform_sampler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id30"><code class="docutils literal notranslate"><span class="pre">cubic_spline_interpolator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id31"><code class="docutils literal notranslate"><span class="pre">axis_ratio_SIS()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id32"><code class="docutils literal notranslate"><span class="pre">phi()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id33"><code class="docutils literal notranslate"><span class="pre">phi_loc_bernardi()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id34"><code class="docutils literal notranslate"><span class="pre">phi_cut_SIE()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id35"><code class="docutils literal notranslate"><span class="pre">axis_ratio_rayleigh()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id36"><code class="docutils literal notranslate"><span class="pre">velocity_dispersion_z_dependent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id37"><code class="docutils literal notranslate"><span class="pre">lens_redshift_SDSS_catalogue()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.lens_galaxy_population.bounded_normal_sample"><code class="docutils literal notranslate"><span class="pre">bounded_normal_sample()</span></code></a></li>
 </ul>
 </li>
@@ -150,7 +161,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.CBCSourceParameterDistribution" title="ler.lens_galaxy_population.CBCSourceParameterDistribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code></a></p></td>
 <td><p>Class to generate a population of compact binaries. It helps sample all the intrinsic and extrinsic parameters of compact binaries. This daughter class inherits from <code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceRedshiftDistribution</span></code> class.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id4" title="ler.lens_galaxy_population.OpticalDepth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id5" title="ler.lens_galaxy_population.OpticalDepth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a></p></td>
 <td><p>Class to calculate the optical depth, velocity dispersion and axis-ratio of a lens galaxy population.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.ImageProperties" title="ler.lens_galaxy_population.ImageProperties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImageProperties</span></code></a></p></td>
@@ -159,7 +170,7 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code></a></p></td>
 <td><p>Class to sample lens galaxy parameters, source parameters conditioned on the source being strongly lensed, and image properties</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id4" title="ler.lens_galaxy_population.OpticalDepth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id5" title="ler.lens_galaxy_population.OpticalDepth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a></p></td>
 <td><p>Class to calculate the optical depth, velocity dispersion and axis-ratio of a lens galaxy population.</p></td>
 </tr>
 </tbody>
@@ -175,50 +186,80 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.trim_dictionary" title="ler.lens_galaxy_population.trim_dictionary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim_dictionary</span></code></a>(dictionary, size)</p></td>
 <td><p>Filters an event dictionary to only contain the size.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id31" title="ler.lens_galaxy_population.velocity_dispersion_z_dependent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_dispersion_z_dependent</span></code></a>(size, zl, zl_list, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id34" title="ler.lens_galaxy_population.phi_cut_SIE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_cut_SIE</span></code></a>(q)</p></td>
+<td><p>Function to calculate cross-section scaling factor for the SIE lens galaxy from SIS lens galaxy.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id36" title="ler.lens_galaxy_population.velocity_dispersion_z_dependent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_dispersion_z_dependent</span></code></a>(size, zl, zl_list, ...)</p></td>
 <td><p>Function to sample velocity dispersion from the interpolator</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id29" title="ler.lens_galaxy_population.lens_redshift_SDSS_catalogue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lens_redshift_SDSS_catalogue</span></code></a>(zs, splineDc, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id37" title="ler.lens_galaxy_population.lens_redshift_SDSS_catalogue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lens_redshift_SDSS_catalogue</span></code></a>(zs, splineDc, ...)</p></td>
 <td><p>Function to sample lens redshift from the SDSS catalogue.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.interpolator_from_pickle" title="ler.lens_galaxy_population.interpolator_from_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolator_from_pickle</span></code></a>(param_dict_given, directory, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.interpolator_from_pickle" title="ler.lens_galaxy_population.interpolator_from_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolator_from_pickle</span></code></a>(param_dict_given, directory, ...)</p></td>
 <td><p>Function to decide which interpolator to use.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id28" title="ler.lens_galaxy_population.cubic_spline_interpolator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cubic_spline_interpolator</span></code></a>(xnew, coefficients, x)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id30" title="ler.lens_galaxy_population.cubic_spline_interpolator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cubic_spline_interpolator</span></code></a>(xnew, coefficients, x)</p></td>
 <td><p>Function to interpolate using cubic spline.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id27" title="ler.lens_galaxy_population.inverse_transform_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform_sampler</span></code></a>(size, cdf, x)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id29" title="ler.lens_galaxy_population.inverse_transform_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform_sampler</span></code></a>(size, cdf, x)</p></td>
 <td><p>Function to sample from the inverse transform method.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id30" title="ler.lens_galaxy_population.axis_ratio_rayleigh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_rayleigh</span></code></a>(sigma[, q_min, q_max])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id34" title="ler.lens_galaxy_population.phi_cut_SIE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_cut_SIE</span></code></a>(q)</p></td>
+<td><p>Function to calculate cross-section scaling factor for the SIE lens galaxy from SIS lens galaxy.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id35" title="ler.lens_galaxy_population.axis_ratio_rayleigh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_rayleigh</span></code></a>(sigma[, q_min, q_max])</p></td>
 <td><p>Function to sample axis ratio from rayleigh distribution with given velocity dispersion.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id30" title="ler.lens_galaxy_population.axis_ratio_rayleigh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_rayleigh</span></code></a>(sigma[, q_min, q_max])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id31" title="ler.lens_galaxy_population.axis_ratio_SIS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_SIS</span></code></a>(sigma)</p></td>
+<td><p>Function to sample axis ratio from the SIS distribution with given velocity dispersion.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id32" title="ler.lens_galaxy_population.phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi</span></code></a>(s, z[, cosmology_h])</p></td>
+<td><p>Function to calculate the lens galaxy velocity dispersion function at redshift z.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id33" title="ler.lens_galaxy_population.phi_loc_bernardi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_loc_bernardi</span></code></a>(sigma[, alpha, beta, phistar, ...])</p></td>
+<td><p>Function to calculate the local universe velocity dispersion function. Bernardi et al. (2010).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id34" title="ler.lens_galaxy_population.phi_cut_SIE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_cut_SIE</span></code></a>(q)</p></td>
+<td><p>Function to calculate cross-section scaling factor for the SIE lens galaxy from SIS lens galaxy.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id35" title="ler.lens_galaxy_population.axis_ratio_rayleigh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_rayleigh</span></code></a>(sigma[, q_min, q_max])</p></td>
 <td><p>Function to sample axis ratio from rayleigh distribution with given velocity dispersion.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id27" title="ler.lens_galaxy_population.inverse_transform_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform_sampler</span></code></a>(size, cdf, x)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id29" title="ler.lens_galaxy_population.inverse_transform_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform_sampler</span></code></a>(size, cdf, x)</p></td>
 <td><p>Function to sample from the inverse transform method.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id28" title="ler.lens_galaxy_population.cubic_spline_interpolator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cubic_spline_interpolator</span></code></a>(xnew, coefficients, x)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id30" title="ler.lens_galaxy_population.cubic_spline_interpolator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cubic_spline_interpolator</span></code></a>(xnew, coefficients, x)</p></td>
 <td><p>Function to interpolate using cubic spline.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.optical_depth_sie2_mp" title="ler.lens_galaxy_population.optical_depth_sie2_mp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optical_depth_sie2_mp</span></code></a>(params)</p></td>
 <td><p>Function to calculate the optical depth for SIE lens with velocity dispersion distribution depending on redshift.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id27" title="ler.lens_galaxy_population.inverse_transform_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform_sampler</span></code></a>(size, cdf, x)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id29" title="ler.lens_galaxy_population.inverse_transform_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform_sampler</span></code></a>(size, cdf, x)</p></td>
 <td><p>Function to sample from the inverse transform method.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id28" title="ler.lens_galaxy_population.cubic_spline_interpolator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cubic_spline_interpolator</span></code></a>(xnew, coefficients, x)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id30" title="ler.lens_galaxy_population.cubic_spline_interpolator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cubic_spline_interpolator</span></code></a>(xnew, coefficients, x)</p></td>
 <td><p>Function to interpolate using cubic spline.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id29" title="ler.lens_galaxy_population.lens_redshift_SDSS_catalogue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lens_redshift_SDSS_catalogue</span></code></a>(zs, splineDc, ...)</p></td>
-<td><p>Function to sample lens redshift from the SDSS catalogue.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id31" title="ler.lens_galaxy_population.axis_ratio_SIS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_SIS</span></code></a>(sigma)</p></td>
+<td><p>Function to sample axis ratio from the SIS distribution with given velocity dispersion.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id30" title="ler.lens_galaxy_population.axis_ratio_rayleigh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_rayleigh</span></code></a>(sigma[, q_min, q_max])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id32" title="ler.lens_galaxy_population.phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi</span></code></a>(s, z[, cosmology_h])</p></td>
+<td><p>Function to calculate the lens galaxy velocity dispersion function at redshift z.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id33" title="ler.lens_galaxy_population.phi_loc_bernardi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_loc_bernardi</span></code></a>(sigma[, alpha, beta, phistar, ...])</p></td>
+<td><p>Function to calculate the local universe velocity dispersion function. Bernardi et al. (2010).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id34" title="ler.lens_galaxy_population.phi_cut_SIE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_cut_SIE</span></code></a>(q)</p></td>
+<td><p>Function to calculate cross-section scaling factor for the SIE lens galaxy from SIS lens galaxy.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id35" title="ler.lens_galaxy_population.axis_ratio_rayleigh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_rayleigh</span></code></a>(sigma[, q_min, q_max])</p></td>
 <td><p>Function to sample axis ratio from rayleigh distribution with given velocity dispersion.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id31" title="ler.lens_galaxy_population.velocity_dispersion_z_dependent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_dispersion_z_dependent</span></code></a>(size, zl, zl_list, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id36" title="ler.lens_galaxy_population.velocity_dispersion_z_dependent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_dispersion_z_dependent</span></code></a>(size, zl, zl_list, ...)</p></td>
 <td><p>Function to sample velocity dispersion from the interpolator</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id37" title="ler.lens_galaxy_population.lens_redshift_SDSS_catalogue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lens_redshift_SDSS_catalogue</span></code></a>(zs, splineDc, ...)</p></td>
+<td><p>Function to sample lens redshift from the SDSS catalogue.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.bounded_normal_sample" title="ler.lens_galaxy_population.bounded_normal_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounded_normal_sample</span></code></a>(size, mean, std, low, high)</p></td>
 <td><p>Function to sample from a normal distribution with bounds.</p></td>
@@ -1157,7 +1198,7 @@ default: 1238166018 + 31536000</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>values</strong><span class="classifier"><cite>numpy.ndarray</cite> (1D array of floats)</span></dt><dd><p>Array of uniformly distributed values in the range of [<a href="#id32"><span class="problematic" id="id33">min_</span></a>, <a href="#id34"><span class="problematic" id="id35">max_</span></a>]</p>
+<dt><strong>values</strong><span class="classifier"><cite>numpy.ndarray</cite> (1D array of floats)</span></dt><dd><p>Array of uniformly distributed values in the range of [<a href="#id38"><span class="problematic" id="id39">min_</span></a>, <a href="#id40"><span class="problematic" id="id41">max_</span></a>]</p>
 </dd>
 </dl>
 </dd>
@@ -1947,6 +1988,26 @@ default: 4</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.phi_cut_SIE">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">phi_cut_SIE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#phi_cut_SIE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.phi_cut_SIE" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate cross-section scaling factor for the SIE lens galaxy from SIS lens galaxy.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>q</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>axis ratio of the lens galaxy</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>scaling factor</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.velocity_dispersion_z_dependent">
 <span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">velocity_dispersion_z_dependent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vd_inv_cdf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#velocity_dispersion_z_dependent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.velocity_dispersion_z_dependent" title="Link to this definition"></a></dt>
 <dd><p>Function to sample velocity dispersion from the interpolator</p>
@@ -2125,7 +2186,7 @@ source being strongly lensed</p></td>
 <td><p>Function to sample gw source
 parameters</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id29" title="ler.lens_galaxy_population.lens_redshift_SDSS_catalogue"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lens_redshift_SDSS_catalogue()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id37" title="ler.lens_galaxy_population.lens_redshift_SDSS_catalogue"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lens_redshift_SDSS_catalogue()</span></code></a></p></td>
 <td><p>Function to sample lens
 redshifts, conditioned on the
 lens being strongly lensed</p></td>
@@ -2877,6 +2938,26 @@ e.g. param = dict(mean=2.0, std=0.2)</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">phi_cut_SIE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#phi_cut_SIE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate cross-section scaling factor for the SIE lens galaxy from SIS lens galaxy.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>q</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>axis ratio of the lens galaxy</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>scaling factor</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.axis_ratio_rayleigh">
 <span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">axis_ratio_rayleigh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#axis_ratio_rayleigh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.axis_ratio_rayleigh" title="Link to this definition"></a></dt>
 <dd><p>Function to sample axis ratio from rayleigh distribution with given velocity dispersion.</p>
@@ -2896,9 +2977,75 @@ e.g. param = dict(mean=2.0, std=0.2)</p>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.axis_ratio_SIS">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">axis_ratio_SIS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#axis_ratio_SIS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.axis_ratio_SIS" title="Link to this definition"></a></dt>
+<dd><p>Function to sample axis ratio from the SIS distribution with given velocity dispersion.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>sigma</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>velocity dispersion of the lens galaxy</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>q</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>axis ratio of the lens galaxy</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.phi">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology_h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#phi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.phi" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the lens galaxy velocity dispersion function at redshift z.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>s</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>velocity dispersion of the lens galaxy</p>
+</dd>
+<dt><strong>z</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>redshift of the lens galaxy</p>
+</dd>
+<dt><strong>cosmology_h</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Hubble constant</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><cite>float: array</cite></span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.phi_loc_bernardi">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">phi_loc_bernardi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.94</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phistar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02099</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmastar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">113.78</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology_h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#phi_loc_bernardi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.phi_loc_bernardi" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the local universe velocity dispersion function. Bernardi et al. (2010).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>sigma</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>velocity dispersion of the lens galaxy</p>
+</dd>
+<dt><strong>alpha, beta, phistar, sigmastar</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>parameters of the velocity dispersion function</p>
+</dd>
+<dt><strong>cosmology_h</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Hubble constant with respect to 100 km/s/Mpc</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>philoc_</strong><span class="classifier"><cite>float: array</cite></span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py class">
-<dt class="sig sig-object py" id="id4">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">OpticalDepth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_depth_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampler_priors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampler_priors_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./interpolator_pickle'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_new_interpolator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id5">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">OpticalDepth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_depth_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampler_priors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampler_priors_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./interpolator_pickle'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_new_interpolator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
 <dd><p>Class to calculate the optical depth, velocity dispersion and axis-ratio of a lens galaxy population.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2938,8 +3085,8 @@ default: “./interpolator_pickle”</p>
 </pre></div>
 </div>
 <dl class="py property">
-<dt class="sig sig-object py" id="id5">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">strong_lensing_optical_depth</span></span><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id6">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">strong_lensing_optical_depth</span></span><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
 <dd><p>Function to compute the strong lensing optical depth.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2964,8 +3111,8 @@ default: “./interpolator_pickle”</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id6">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sample_velocity_dispersion</span></span><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id7">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sample_velocity_dispersion</span></span><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
 <dd><p>Function to sample velocity dispersion. <cite>zl</cite> is required only if velocity dispersion sampler is redshift dependent.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2992,8 +3139,8 @@ default: “./interpolator_pickle”</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id7">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sample_axis_ratio</span></span><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id8">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sample_axis_ratio</span></span><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
 <dd><p>Function to sample axis ratio from rayleigh distribution with given velocity dispersion.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3018,26 +3165,26 @@ default: “./interpolator_pickle”</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id8">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_velocity_dispersion_list_and_its_params</span></span><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id9">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_velocity_dispersion_list_and_its_params</span></span><a class="headerlink" href="#id9" title="Link to this definition"></a></dt>
 <dd><p>Function to list all available velocity dispersion sampler and its parameters.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id9">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_axis_ratio_list_and_its_params</span></span><a class="headerlink" href="#id9" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id10">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_axis_ratio_list_and_its_params</span></span><a class="headerlink" href="#id10" title="Link to this definition"></a></dt>
 <dd><p>Function to list all available axis ratio sampler.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id10">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_optical_depth_list_and_its_params</span></span><a class="headerlink" href="#id10" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id11">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_optical_depth_list_and_its_params</span></span><a class="headerlink" href="#id11" title="Link to this definition"></a></dt>
 <dd><p>Function to list all available optical depth sampler.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id11">
-<span class="sig-name descname"><span class="pre">initialize_velocity_dispersion_sampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vd_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.initialize_velocity_dispersion_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id11" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id12">
+<span class="sig-name descname"><span class="pre">initialize_velocity_dispersion_sampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vd_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.initialize_velocity_dispersion_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id12" title="Link to this definition"></a></dt>
 <dd><p>Function to initialize velocity dispersion sampler</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3050,8 +3197,8 @@ default: “./interpolator_pickle”</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id12">
-<span class="sig-name descname"><span class="pre">initialize_optical_depth_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vd_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.initialize_optical_depth_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id12" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id13">
+<span class="sig-name descname"><span class="pre">initialize_optical_depth_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vd_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.initialize_optical_depth_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id13" title="Link to this definition"></a></dt>
 <dd><p>Function to initialize optical depth function.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3066,8 +3213,8 @@ default: “./interpolator_pickle”</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id13">
-<span class="sig-name descname"><span class="pre">axis_ratio_rayleigh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.axis_ratio_rayleigh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id13" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id14">
+<span class="sig-name descname"><span class="pre">axis_ratio_rayleigh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.axis_ratio_rayleigh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id14" title="Link to this definition"></a></dt>
 <dd><p>Function to sample axis ratio from rayleigh distribution with given velocity dispersion.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3096,8 +3243,8 @@ default: “./interpolator_pickle”</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id14">
-<span class="sig-name descname"><span class="pre">axis_ratio_padilla_strauss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.axis_ratio_padilla_strauss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id14" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id15">
+<span class="sig-name descname"><span class="pre">axis_ratio_padilla_strauss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.axis_ratio_padilla_strauss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id15" title="Link to this definition"></a></dt>
 <dd><p>Function to sample axis ratio using Padilla and Strauss 2008 distribution for axis ratio</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3126,8 +3273,8 @@ default: “./interpolator_pickle”</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id15">
-<span class="sig-name descname"><span class="pre">velocity_dispersion_gengamma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.32</span> <span class="pre">/</span> <span class="pre">2.67</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.67</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.velocity_dispersion_gengamma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id15" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id16">
+<span class="sig-name descname"><span class="pre">velocity_dispersion_gengamma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.32</span> <span class="pre">/</span> <span class="pre">2.67</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.67</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.velocity_dispersion_gengamma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id16" title="Link to this definition"></a></dt>
 <dd><p>Function to sample velocity dispersion from gengamma distribution</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3160,8 +3307,8 @@ e.g. param = dict(a=2.32 / 2.67, c=2.67)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id16">
-<span class="sig-name descname"><span class="pre">velocity_dispersion_bernardi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.velocity_dispersion_bernardi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id16" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id17">
+<span class="sig-name descname"><span class="pre">velocity_dispersion_bernardi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.velocity_dispersion_bernardi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id17" title="Link to this definition"></a></dt>
 <dd><p>Function to sample velocity dispersion from Bernardi et al. (2010). This uses inverse transform sampling.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3188,8 +3335,8 @@ e.g. param = dict(a=2.32 / 2.67, c=2.67)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id17">
-<span class="sig-name descname"><span class="pre">velocity_dispersion_ewoud</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.velocity_dispersion_ewoud"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id17" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id18">
+<span class="sig-name descname"><span class="pre">velocity_dispersion_ewoud</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.velocity_dispersion_ewoud"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id18" title="Link to this definition"></a></dt>
 <dd><p>Function to sample velocity dispersion (redshift dependent) from Wempe et al. (2022). This uses inverse transform sampling.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3218,8 +3365,8 @@ e.g. param = dict(a=2.32 / 2.67, c=2.67)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id18">
-<span class="sig-name descname"><span class="pre">cross_section_SIS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.cross_section_SIS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id18" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id19">
+<span class="sig-name descname"><span class="pre">cross_section_SIS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.cross_section_SIS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id19" title="Link to this definition"></a></dt>
 <dd><p>Function to compute the SIS cross-section</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3248,8 +3395,8 @@ e.g. param = dict(a=2.32 / 2.67, c=2.67)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id19">
-<span class="sig-name descname"><span class="pre">tau_zl_zs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.tau_zl_zs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id19" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id20">
+<span class="sig-name descname"><span class="pre">tau_zl_zs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.tau_zl_zs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id20" title="Link to this definition"></a></dt>
 <dd><p>Function to compute the optical depth for a given lens redshift and source redshift</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3276,8 +3423,8 @@ e.g. param = dict(a=2.32 / 2.67, c=2.67)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id20">
-<span class="sig-name descname"><span class="pre">optical_depth_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.optical_depth_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id20" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id21">
+<span class="sig-name descname"><span class="pre">optical_depth_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.optical_depth_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id21" title="Link to this definition"></a></dt>
 <dd><p>Function to compute the optical depth without multiprocessing. This is the integrated version of tau_zl_zs from z=0 to z=zs.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3302,8 +3449,8 @@ e.g. param = dict(a=2.32 / 2.67, c=2.67)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id21">
-<span class="sig-name descname"><span class="pre">optical_depth_multiprocessing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.optical_depth_multiprocessing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id21" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id22">
+<span class="sig-name descname"><span class="pre">optical_depth_multiprocessing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.optical_depth_multiprocessing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id22" title="Link to this definition"></a></dt>
 <dd><p>Function to compute the optical depth with multiprocessing. This is the integrated version of optical depth from z=0 to z=zs.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3328,8 +3475,8 @@ e.g. param = dict(a=2.32 / 2.67, c=2.67)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id22">
-<span class="sig-name descname"><span class="pre">optical_depth_SIS_haris</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.optical_depth_SIS_haris"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id22" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id23">
+<span class="sig-name descname"><span class="pre">optical_depth_SIS_haris</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.optical_depth_SIS_haris"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id23" title="Link to this definition"></a></dt>
 <dd><p>Function to compute the strong lensing optical depth (SIS).</p>
 <p>LambdaCDM(H0=70, Om0=0.3, Ode0=0.7) was used to derive the following equation. This is the analytic version of optical depth from z=0 to z=zs.</p>
 <dl class="field-list">
@@ -3355,8 +3502,8 @@ e.g. param = dict(a=2.32 / 2.67, c=2.67)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id23">
-<span class="sig-name descname"><span class="pre">create_lookup_table_fuction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_max</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.create_lookup_table_fuction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id23" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id24">
+<span class="sig-name descname"><span class="pre">create_lookup_table_fuction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_max</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/optical_depth.html#OpticalDepth.create_lookup_table_fuction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id24" title="Link to this definition"></a></dt>
 <dd><p>Functions to create lookup tables
 1. Redshift to co-moving distance.
 2. Co-moving distance to redshift.
@@ -3374,8 +3521,28 @@ e.g. param = dict(a=2.32 / 2.67, c=2.67)</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="id24">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">axis_ratio_rayleigh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#axis_ratio_rayleigh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id24" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id25">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">phi_cut_SIE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#phi_cut_SIE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id25" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate cross-section scaling factor for the SIE lens galaxy from SIS lens galaxy.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>q</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>axis ratio of the lens galaxy</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>scaling factor</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id26">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">axis_ratio_rayleigh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#axis_ratio_rayleigh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id26" title="Link to this definition"></a></dt>
 <dd><p>Function to sample axis ratio from rayleigh distribution with given velocity dispersion.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3387,75 +3554,6 @@ e.g. param = dict(a=2.32 / 2.67, c=2.67)</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
 <dt><strong>q</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>axis ratio of the lens galaxy</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="id25">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">inverse_transform_sampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#inverse_transform_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id25" title="Link to this definition"></a></dt>
-<dd><p>Function to sample from the inverse transform method.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of samples.</p>
-</dd>
-<dt><strong>cdf</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>cdf values.</p>
-</dd>
-<dt><strong>x</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>x values.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl>
-<dt><strong>samples</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>samples from the cdf.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="id26">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">cubic_spline_interpolator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xnew</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coefficients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#cubic_spline_interpolator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id26" title="Link to this definition"></a></dt>
-<dd><p>Function to interpolate using cubic spline.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>xnew</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>new x values.</p>
-</dd>
-<dt><strong>coefficients</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>coefficients of the cubic spline.</p>
-</dd>
-<dt><strong>x</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>x values.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl>
-<dt><strong>result</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>interpolated values.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.optical_depth_sie2_mp">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">optical_depth_sie2_mp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/mp.html#optical_depth_sie2_mp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.optical_depth_sie2_mp" title="Link to this definition"></a></dt>
-<dd><p>Function to calculate the optical depth for SIE lens with velocity dispersion distribution depending on redshift.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>params</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>list of parameters
-params[0] = zs (source redshift, float)
-params[1] = no (number density of lens galaxies, float)
-params[2] = vd_inv_cdf (velocity dispersion inverse cdf coefficients and redshift list, list). This vd_inv_cdf(s) of each redshift.
-params[3] = splineVcdz (differential comoving volume spline interpolator coefficients, list)
-params[4] = splineDa (angular diameter distance spline interpolator coefficients and redshift list, list)
-params[5] = idx (index to keep track of the operation, int)
-params[6] = zl_list (list of lens redshifts, list). This use for choosing the right vd_inv_cdf(s) for each lens redshifts.</p>
 </dd>
 </dl>
 </dd>
@@ -3511,8 +3609,205 @@ params[6] = zl_list (list of lens redshifts, list). This use for choosing the ri
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.optical_depth_sie2_mp">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">optical_depth_sie2_mp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/mp.html#optical_depth_sie2_mp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.optical_depth_sie2_mp" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the optical depth for SIE lens with velocity dispersion distribution depending on redshift.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>params</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>list of parameters
+params[0] = zs (source redshift, float)
+params[1] = no (number density of lens galaxies, float)
+params[2] = vd_inv_cdf (velocity dispersion inverse cdf coefficients and redshift list, list). This vd_inv_cdf(s) of each redshift.
+params[3] = splineVcdz (differential comoving volume spline interpolator coefficients, list)
+params[4] = splineDa (angular diameter distance spline interpolator coefficients and redshift list, list)
+params[5] = idx (index to keep track of the operation, int)
+params[6] = zl_list (list of lens redshifts, list). This use for choosing the right vd_inv_cdf(s) for each lens redshifts.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="id29">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">lens_redshift_SDSS_catalogue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splineDc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splineDcInv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#lens_redshift_SDSS_catalogue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id29" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">inverse_transform_sampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#inverse_transform_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id29" title="Link to this definition"></a></dt>
+<dd><p>Function to sample from the inverse transform method.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of samples.</p>
+</dd>
+<dt><strong>cdf</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>cdf values.</p>
+</dd>
+<dt><strong>x</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>x values.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>samples</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>samples from the cdf.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id30">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">cubic_spline_interpolator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xnew</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coefficients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#cubic_spline_interpolator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id30" title="Link to this definition"></a></dt>
+<dd><p>Function to interpolate using cubic spline.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>xnew</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>new x values.</p>
+</dd>
+<dt><strong>coefficients</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>coefficients of the cubic spline.</p>
+</dd>
+<dt><strong>x</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>x values.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>interpolated values.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id31">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">axis_ratio_SIS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#axis_ratio_SIS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id31" title="Link to this definition"></a></dt>
+<dd><p>Function to sample axis ratio from the SIS distribution with given velocity dispersion.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>sigma</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>velocity dispersion of the lens galaxy</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>q</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>axis ratio of the lens galaxy</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id32">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology_h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#phi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id32" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the lens galaxy velocity dispersion function at redshift z.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>s</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>velocity dispersion of the lens galaxy</p>
+</dd>
+<dt><strong>z</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>redshift of the lens galaxy</p>
+</dd>
+<dt><strong>cosmology_h</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Hubble constant</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><cite>float: array</cite></span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id33">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">phi_loc_bernardi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.94</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phistar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02099</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmastar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">113.78</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology_h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#phi_loc_bernardi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id33" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the local universe velocity dispersion function. Bernardi et al. (2010).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>sigma</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>velocity dispersion of the lens galaxy</p>
+</dd>
+<dt><strong>alpha, beta, phistar, sigmastar</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>parameters of the velocity dispersion function</p>
+</dd>
+<dt><strong>cosmology_h</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Hubble constant with respect to 100 km/s/Mpc</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>philoc_</strong><span class="classifier"><cite>float: array</cite></span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id34">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">phi_cut_SIE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#phi_cut_SIE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id34" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate cross-section scaling factor for the SIE lens galaxy from SIS lens galaxy.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>q</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>axis ratio of the lens galaxy</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>scaling factor</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id35">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">axis_ratio_rayleigh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#axis_ratio_rayleigh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id35" title="Link to this definition"></a></dt>
+<dd><p>Function to sample axis ratio from rayleigh distribution with given velocity dispersion.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>sigma</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>velocity dispersion of the lens galaxy</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>q</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>axis ratio of the lens galaxy</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id36">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">velocity_dispersion_z_dependent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vd_inv_cdf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#velocity_dispersion_z_dependent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id36" title="Link to this definition"></a></dt>
+<dd><p>Function to sample velocity dispersion from the interpolator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>size: int</strong></dt><dd><p>Number of samples to draw</p>
+</dd>
+<dt><strong>zl: `numpy.ndarray` (1D array of float of size=size)</strong></dt><dd><p>Redshift of the lens galaxy</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>samples: numpy.ndarray</dt><dd><p>Samples of velocity dispersion</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id37">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">lens_redshift_SDSS_catalogue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splineDc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splineDcInv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#lens_redshift_SDSS_catalogue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id37" title="Link to this definition"></a></dt>
 <dd><p>Function to sample lens redshift from the SDSS catalogue.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3532,48 +3827,6 @@ params[6] = zl_list (list of lens redshifts, list). This use for choosing the ri
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>zl: <cite>numpy.ndarray</cite> (1D array of float of size=size)</dt><dd><p>Redshift of the lens galaxy corresponding to the zs</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="id30">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">axis_ratio_rayleigh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#axis_ratio_rayleigh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id30" title="Link to this definition"></a></dt>
-<dd><p>Function to sample axis ratio from rayleigh distribution with given velocity dispersion.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>sigma</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>velocity dispersion of the lens galaxy</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl>
-<dt><strong>q</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>axis ratio of the lens galaxy</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="id31">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.</span></span><span class="sig-name descname"><span class="pre">velocity_dispersion_z_dependent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vd_inv_cdf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#velocity_dispersion_z_dependent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id31" title="Link to this definition"></a></dt>
-<dd><p>Function to sample velocity dispersion from the interpolator</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>size: int</strong></dt><dd><p>Number of samples to draw</p>
-</dd>
-<dt><strong>zl: `numpy.ndarray` (1D array of float of size=size)</strong></dt><dd><p>Redshift of the lens galaxy</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>samples: numpy.ndarray</dt><dd><p>Samples of velocity dispersion</p>
 </dd>
 </dl>
 </dd>

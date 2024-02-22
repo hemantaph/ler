@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lensed event rates &mdash; ler 0.3.1 documentation</title>
+  <title>Lensed gravitational wave event rates &mdash; ler 0.3.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -56,12 +56,15 @@
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GW_equations.html">GW event sampling (Analytical formulation)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Lensed event rates</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Detectable-lensed-events'-rate-in-a-year">Detectable lensed events’ rate in a year</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#SNR-operator">SNR operator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Lensed-BBH/BNS-merger-rate-distribution-wrt-z_s.">Lensed BBH/BNS merger rate distribution wrt <span class="math notranslate nohighlight">\(z_s\)</span>.</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Sampling-methods-for-lens-parameters">Sampling methods for lens parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Image-parameters">Image parameters</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Lensed gravitational wave event rates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Lensed-merger-rate-distribution-of-compact-binary-coalescences">Lensed merger rate distribution of compact binary coalescences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Annual-Rate-of-Detectable-Lensed-Gravitational-Wave-Events">Annual Rate of Detectable Lensed Gravitational Wave Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#SNR-Operator-for-Lensed-Gravitational-Wave-Events">SNR Operator for Lensed Gravitational Wave Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Sampling-Lens-Properties">Sampling Lens Properties</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#Sampling-of-Source-Position">Sampling of Source Position</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Calculation-of-Images-properties">Calculation of Images properties</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Montecarlo-integration-(lensed-events)">Montecarlo integration (lensed events)</a></li>
 </ul>
 </li>
@@ -97,7 +100,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Lensed event rates</li>
+      <li class="breadcrumb-item active">Lensed gravitational wave event rates</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/Lensed_events.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -107,39 +110,80 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Lensed-event-rates">
-<h1>Lensed event rates<a class="headerlink" href="#Lensed-event-rates" title="Link to this heading"></a></h1>
+  <section id="Lensed-gravitational-wave-event-rates">
+<h1>Lensed gravitational wave event rates<a class="headerlink" href="#Lensed-gravitational-wave-event-rates" title="Link to this heading"></a></h1>
+<p>This document outlines the default settings for calculating detectable lensed gravitational wave event rates (per year) in <a class="reference external" href="https://ler.readthedocs.io/en/latest/index.html">LeR</a>.</p>
 <p><strong>Notes:</strong></p>
 <ul class="simple">
-<li><p>for source properties and its distribution, refer to unlensed section</p></li>
-<li><p>LeR loosely follow lensed rate calculation from <a class="reference external" href="https://arxiv.org/pdf/2106.06303.pdf">WIERDA et al. 2021</a></p></li>
+<li><p>For details on source properties and their distributions, please refer to the section titled “Gravitational Wave Event Rates.”</p></li>
+<li><p>LeR’s calculation of lensed rates is loosely based on the methodology described in <a class="reference external" href="https://arxiv.org/pdf/2106.06303.pdf">WIERDA et al. 2021</a>.</p></li>
 </ul>
-<p><strong>Parameters in consideration:</strong> <span class="math notranslate nohighlight">\(\text{SL}\)</span>: Strong lensing, <span class="math notranslate nohighlight">\(z_L\)</span>: redshift of galaxy lens, <span class="math notranslate nohighlight">\(R_o^L\)</span>: merger rate distribution (optical depth applied), <span class="math notranslate nohighlight">\(\mathcal{O}\)</span>: detectability condition, <span class="math notranslate nohighlight">\(\theta_L\)</span>: lens parameters, <span class="math notranslate nohighlight">\(\beta\)</span>: source position, <span class="math notranslate nohighlight">\(\mu_i\)</span>: magnifications, <span class="math notranslate nohighlight">\(\Delta t_i\)</span>: time delays.</p>
-<section id="Detectable-lensed-events'-rate-in-a-year">
-<h2>Detectable lensed events’ rate in a year<a class="headerlink" href="#Detectable-lensed-events'-rate-in-a-year" title="Link to this heading"></a></h2>
+<p><strong>Parameters in Consideration:</strong></p>
 <ul class="simple">
-<li><p>Detectable lensed events’ rate in a year is given by</p></li>
+<li><p>Source properties:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(z_s\)</span>: Source redshift.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\theta\)</span>: Gravitational wave source parameters. <span class="math notranslate nohighlight">\(\theta \in \{\)</span> <span class="math notranslate nohighlight">\(m_1\)</span> (mass of the heavier one), <span class="math notranslate nohighlight">\(m_2\)</span> (mass of the lighter one), <span class="math notranslate nohighlight">\(\mathcal{D}_L\)</span> (luminosity distance), <span class="math notranslate nohighlight">\(\iota\)</span> (inclination-angle), <span class="math notranslate nohighlight">\(\phi\)</span> (phase-of-coalescence), <span class="math notranslate nohighlight">\(\psi\)</span> (polarization-angle), <span class="math notranslate nohighlight">\(ra\)</span> (right-ascension), <span class="math notranslate nohighlight">\(dec\)</span> (declination) <span class="math notranslate nohighlight">\(\}\)</span>, <span class="math notranslate nohighlight">\(t\)</span> (time-of-coalescence).</p></li>
+<li><p><span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span>: Normalized merger-rate distribution (source-frame).</p></li>
 </ul>
+</li>
+<li><p>Lensing related:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\text{SL}\)</span>: Strong lensing condition.</p></li>
+<li><p><span class="math notranslate nohighlight">\(z_L\)</span>: Redshift of the galaxy lens.</p></li>
+<li><p><span class="math notranslate nohighlight">\(R_o^L(z_s)\)</span>: Merger rate distribution with optical depth applied for lensed events.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{O}\)</span>: Detectability condition, determining whether an event is observable based on specific criteria.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\theta_L\)</span>: Parameters characterizing the lens galaxy. <span class="math notranslate nohighlight">\(\theta_L \in \{\)</span> <span class="math notranslate nohighlight">\(\sigma\)</span> (velocity-dispersion), <span class="math notranslate nohighlight">\(q\)</span> (axis-ratio), <span class="math notranslate nohighlight">\(\psi\)</span> (axis-rotation), <span class="math notranslate nohighlight">\(\gamma\)</span> (mass density spectral-index), <span class="math notranslate nohighlight">\([\gamma_1,\gamma_2]\)</span> (external-shear), <span class="math notranslate nohighlight">\([e_1,e_2]\)</span> (ellipticity), <span class="math notranslate nohighlight">\(\beta\)</span> (source position) <span class="math notranslate nohighlight">\(\}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta\)</span>: Position of the source in the source plane, relative to the lens.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mu_i\)</span>: Magnifications of the lensed images.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Delta t_i\)</span>: Time delays between the lensed images.</p></li>
+</ul>
+</li>
+<li><p>Others:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{N}^L\)</span>: Normalizing factor.</p></li>
+<li><p><span class="math notranslate nohighlight">\(P\)</span>: Prior distribution.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\rho(z_s,\theta,\mu_i,\Delta t_i)\)</span>: Network optimal SNR of <span class="math notranslate nohighlight">\(i^{th}\)</span> lensed image.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\rho_{th}\)</span>: SNR threshold.</p></li>
+</ul>
+</li>
+</ul>
+<p>Default cosmology: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7). But, it can be changed by the user at LeR initialization.</p>
+<section id="Lensed-merger-rate-distribution-of-compact-binary-coalescences">
+<h2>Lensed merger rate distribution of compact binary coalescences<a class="headerlink" href="#Lensed-merger-rate-distribution-of-compact-binary-coalescences" title="Link to this heading"></a></h2>
+<p>This is very similar to the unlensed merger rate distribution, but with the optical depth applied for lensed events. Optical depth (<span class="math notranslate nohighlight">\(\tau(z-s)=P(\text{SL}|z_s)\)</span>) is the probability that a source at redshift <span class="math notranslate nohighlight">\(z_s\)</span> is strongly lensed by a galaxy. The lensed merger rate distribution is given by:</p>
+<p><span class="math">\begin{equation}
+R_o^L(z_s) = \frac{1}{\mathcal{N}^L} \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tau(z_s) \tag{1}
+\end{equation}</span></p>
+<p>Where, the normalizing factor is given by:</p>
+<p><span class="math">\begin{equation}
+\mathcal{N}^L = \int_{z_{\text{min}}}^{z_{\text{max}}} dz_s \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tau(z_s)  \tag{2}
+\end{equation}</span></p>
+<p>Source redshifts for lensed case are sample from an astrophysical distribution, and rejection sample based on the optical depth. The plot below shows the comparision of the lensed and unlensed merger rate distributions.</p>
+</section>
+<section id="Annual-Rate-of-Detectable-Lensed-Gravitational-Wave-Events">
+<h2>Annual Rate of Detectable Lensed Gravitational Wave Events<a class="headerlink" href="#Annual-Rate-of-Detectable-Lensed-Gravitational-Wave-Events" title="Link to this heading"></a></h2>
+<p>The annual rate of detectable lensed gravitational wave events, denoted by <span class="math notranslate nohighlight">\(R_L\)</span>, quantifies the expected number of lensed events observable by gravitational wave detectors within a year. This rate is given by the following equation:</p>
 <p><span class="math">\begin{equation}
 \begin{split}
-R_L = \mathcal{N}^L \int & dz_s R_o^L(z_s) \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \, \\
+R_L = \mathcal{N}^L \int & dz_s R_o^L(z_s) \,\mathcal{O}_{\text{images}}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \, \\
 & \, P(\theta) P(\theta_L, z_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta dz_L d\theta_L dz_s
-\end{split}  \tag{1}
+\end{split}  \tag{3}
 \end{equation}</span></p>
+<p>Key aspects of this equation include:</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th})\)</span> is the detectability condition for lensed events</p></li>
-<li><p><span class="math notranslate nohighlight">\(P(\theta)\)</span>, <span class="math notranslate nohighlight">\(P(\theta_L, z_L|\text{SL},z_s)\)</span>, <span class="math notranslate nohighlight">\(P(\beta|\text{SL})\)</span> are the distributions of GW parameters, lens parameters, and source position for lensed events, respectively.</p></li>
-<li><p>They are considered normalized.</p></li>
-<li><p><span class="math notranslate nohighlight">\(R_o^L(z_s)\)</span> is the normalized merger-rate distribution for strong lensing case \begin{equation}</p></li>
-<li><p><span class="math notranslate nohighlight">\(\mathcal{N}^L\)</span> is the normalization factor for strong lensing case.</p></li>
+<li><p><strong>SNR Operator,</strong> <span class="math notranslate nohighlight">\(\mathbf{\mathcal{O}_{\text{images}}(z_s,\theta,\mu_i,\Delta t_i, \rho{th})}\)</span><strong>:</strong> This function determines whether the lensed GW event is detectable based on their signal-to-noise ratios (SNRs) of the images. It is a logical operator that assesses the observability of each lensed image. Refer to the next sub-section for more details.</p></li>
+<li><p><strong>Prior Distribution,</strong> <span class="math notranslate nohighlight">\(\mathbf{P(\theta)}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{P(\theta_L, z_L|\text{SL},z_s)}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{P(\beta|\text{SL})}\)</span>: These represent the probability distributions of the GW source parameters, lens parameters (including the lens redshift <span class="math notranslate nohighlight">\(z_L\)</span>), and source position, respectively, under the strong lensing condition (SL). The source position, <span class="math notranslate nohighlight">\(\beta\)</span>, denotes the angular position of the source in the source plane, relative to the lens’s center. These prior
+distributions of source and lens properties are assumed to be normalized.</p></li>
+<li><p><strong>Normalized Merger-Rate Distribution,</strong> <span class="math notranslate nohighlight">\(\mathbf{R_o^L(z_s)}\)</span>: This function represents the merger rate density of lensed GW events (in the source frame) normalized with respect to the redshift <span class="math notranslate nohighlight">\(z_s\)</span>. The normalization factor, <span class="math notranslate nohighlight">\(\mathcal{N}^L\)</span>, ensures that the integrated rate <span class="math notranslate nohighlight">\(R_L\)</span> is properly scaled.</p></li>
 </ul>
+<p>The calculation of <span class="math notranslate nohighlight">\(R_L\)</span> involves integration over the source redshift <span class="math notranslate nohighlight">\(z_s\)</span>, the GW source parameters <span class="math notranslate nohighlight">\(\theta\)</span>, the lens parameters <span class="math notranslate nohighlight">\(\theta_L\)</span> and lens redshift <span class="math notranslate nohighlight">\(z_L\)</span>, and the source position <span class="math notranslate nohighlight">\(\beta\)</span>. This integration accounts for the contributions from all detectable lensed events across different redshifts and parameter configurations, providing a comprehensive estimate of the annual rate of detectable lensed GW events.</p>
 </section>
-<section id="SNR-operator">
-<h2>SNR operator<a class="headerlink" href="#SNR-operator" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>For 2 image detectable (i.e. 2 super threshold events).</p></li>
-<li><p>SNR operator over all images follows,</p></li>
-</ul>
+<section id="SNR-Operator-for-Lensed-Gravitational-Wave-Events">
+<h2>SNR Operator for Lensed Gravitational Wave Events<a class="headerlink" href="#SNR-Operator-for-Lensed-Gravitational-Wave-Events" title="Link to this heading"></a></h2>
+<p>The SNR operator, denoted as <span class="math notranslate nohighlight">\(\mathcal{O}\)</span>, is used to determine the detectability of lensed gravitational wave (GW) events based on their signal-to-noise ratios (SNRs). By default, the operator is configured to assess the detectability of events with two lensed images, although this can be adjusted to accommodate events with three or four images. A lensed GW event is considered detectable if at least two of its images have SNRs that exceed a predefined threshold (<span class="math notranslate nohighlight">\(\rho_{th}\)</span>),
+referred to as two super-threshold events.</p>
+<p>SNR operator over all images is defined as follows:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) = \left\{
   \begin{array}{ c l }
@@ -148,43 +192,17 @@ R_L = \mathcal{N}^L \int & dz_s R_o^L(z_s) \,\mathcal{O}_{images}(z_s,\theta,\mu
   \end{array}
 \right.\end{split}\]</div>
 <p><span class="math">\begin{equation}
-\tag{2}
+\begin{split}
+\end{split}\tag{4}
 \end{equation}</span></p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\Theta\)</span> is the Heaviside step function.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\rho(z_s,\theta,\mu_i,\Delta t_i)\)</span> is the SNR of the <span class="math notranslate nohighlight">\(i_{\text{th}}\)</span> image.</p></li>
-</ul>
+<p>In this definition: * <span class="math notranslate nohighlight">\(\Theta\)</span> represents the Heaviside step function, which evaluates to 1 if its argument is greater than or equal to zero, and 0 otherwise. * <span class="math notranslate nohighlight">\(\rho(z_s,\theta,\mu_i,\Delta t_i)\)</span> is the SNR of the <span class="math notranslate nohighlight">\(i_{\text{th}}\)</span> image. When a GW signal is lensed, it splits into multiple images, each with altered properties. The effective luminosity distance for the <span class="math notranslate nohighlight">\(i_{\text{th}}\)</span> image is given by <span class="math notranslate nohighlight">\(\mathcal{D}_{L,i}^{eff} = \mathcal{D}_L / \sqrt{|\mu_i|}\)</span>,
+where <span class="math notranslate nohighlight">\(\mathcal{D}_L\)</span> is the original luminosity distance and <span class="math notranslate nohighlight">\(\mu_i\)</span> is the magnification of the image. Similarly, the effective geocentric time for the <span class="math notranslate nohighlight">\(i_{\text{th}}\)</span> image is <span class="math notranslate nohighlight">\(t_i^{eff} = t + \Delta t_i\)</span>, where <span class="math notranslate nohighlight">\(t\)</span> is the original time of arrival and <span class="math notranslate nohighlight">\(\Delta t_i\)</span> is the time delay of the image.</p>
+<p>This SNR operator plays a crucial role in the analysis of lensed GW events, as it helps to identify events that are sufficiently strong to be detected by GW observatories.</p>
 </section>
-<section id="Lensed-BBH/BNS-merger-rate-distribution-wrt-z_s.">
-<h2>Lensed BBH/BNS merger rate distribution wrt <span class="math notranslate nohighlight">\(z_s\)</span>.<a class="headerlink" href="#Lensed-BBH/BNS-merger-rate-distribution-wrt-z_s." title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>The merger rate distribution for lensed events (source frame) is given by,</p></li>
-</ul>
-<p><span class="math">\begin{equation}
-R(z_s) = \frac{\mathcal{R}_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tau(z_s) \tag{3}
-\end{equation}</span></p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\tau(z_s)\)</span> is the optical depth for strong lensing.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\mathcal{N}^L\)</span> is the normalizing factor of merger rate distribution (with strong lensing condition applied) wrt <span class="math notranslate nohighlight">\(z_s\)</span>.</p></li>
-</ul>
-<p><span class="math">\begin{equation}
-\mathcal{N}^L = \int_{z_{min}}^{z_{max}} dz_s \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tau(z_s)  \tag{4}
-\end{equation}</span></p>
-<ul class="simple">
-<li><p>Normalized merger rate distribution for lensed events wrt <span class="math notranslate nohighlight">\(z_s\)</span> is given by,</p></li>
-</ul>
-<p><span class="math">\begin{equation}
-R_o^L(z_s)= \frac{1}{\mathcal{N}^L}\frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tau(z_s)  \tag{5}
-\end{equation}</span></p>
-<ul class="simple">
-<li><p>Sampling of <span class="math notranslate nohighlight">\(z_s\)</span> is done through rejection sampling with the merger rate formula given above (lensing condition applied).</p></li>
-<li><p>Source param: <span class="math notranslate nohighlight">\(\theta \in \{m_1,m_2,D_l,\iota,\phi,\psi,ra,dec\}\)</span></p></li>
-<li><p>Lens param: <span class="math notranslate nohighlight">\(\theta_L \in \{\sigma \text{(velocity-dispersion)},\; q \text{(axis-ratio)},\; \psi \text{(axis-rotaion)},\; \gamma \text{(spectral-index)},\)</span><span class="math notranslate nohighlight">\(\; [\gamma_1,\gamma_2] \text{(external-shear)} \}\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(z_L\)</span> : redshift of the galaxy lens</p></li>
-<li><p>image param: <span class="math notranslate nohighlight">\(\{\beta \text{(source position)},\; \mu \text{(magnification)},\; dt \text{(time-delay)}\}\)</span></p></li>
-</ul>
-<section id="Sampling-methods-for-lens-parameters">
-<h3>Sampling methods for lens parameters<a class="headerlink" href="#Sampling-methods-for-lens-parameters" title="Link to this heading"></a></h3>
+<section id="Sampling-Lens-Properties">
+<h2>Sampling Lens Properties<a class="headerlink" href="#Sampling-Lens-Properties" title="Link to this heading"></a></h2>
+<p>In <code class="docutils literal notranslate"><span class="pre">LeR</span></code>, we consider elliptical galaxy lenses with a power-law mass-density distribution and external shear, also refer to as <strong>EPL+Shear</strong> lens. The sampling methods for the lens parameters are summarized in the following tables. Note that <span class="math notranslate nohighlight">\(D_l^c\)</span> and <span class="math notranslate nohighlight">\(D_s^c\)</span> are the comoving distances to the lens and source, respectively.</p>
+<p><strong>Table I: Lens Redshift and Physical Parameters</strong></p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameter</p></th>
@@ -194,83 +212,83 @@ R_o^L(z_s)= \frac{1}{\mathcal{N}^L}\frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tau
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\gamma_1,\gamma_2\)</span></p></td>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(z_l\)</span>: Lens redshift</p></td>
 <td><p>None</p></td>
-<td><p>Normal dist.</p></td>
-<td><p>[mu,sigma]=[0,0.05]</p></td>
+<td><p>1. <span class="math notranslate nohighlight">\(r\)</span> from <span class="math notranslate nohighlight">\(P(x)=30x^2(1-x)^2\)</span>2. Sacling: <span class="math notranslate nohighlight">\(D_l^c=r D_s^c\)</span>3. <span class="math notranslate nohighlight">\(D_l^c\rightarrow z_l\)</span> with
+default cosmology</p></td>
+<td><p>[0,<span class="math notranslate nohighlight">\(z_s\)</span>]</p></td>
 </tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\psi\)</span></p></td>
-<td><p>radian</p></td>
-<td><p>Uniform</p></td>
-<td><p>[<span class="math notranslate nohighlight">\(0\)</span>,<span class="math notranslate nohighlight">\(\pi\)</span>]</p></td>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\sigma\)</span>: velocity dispersion</p></td>
+<td><p>km s-1</p></td>
+<td><p><span class="math notranslate nohighlight">\(\pi(\sigma_l, z_l)=\phi(\sigma_l, z_l)\frac{dV(z_l)}{dz_l}\)</span>refer to <a class="reference external" href="https://arxiv.org/pdf/2204.08732.pdf">Wempe et al.
+2022</a></p></td>
+<td><p>[0,600]</p></td>
 </tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\gamma\)</span></p></td>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(q\)</span>: axis-ratio</p></td>
 <td><p>None</p></td>
-<td><p>Normal dist.</p></td>
-<td><p>[mu,sigma]=[2,0.2]</p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(z_L\)</span> from <span class="math notranslate nohighlight">\(D_L^c=r D_s^c\)</span></p></td>
-<td><p>None</p></td>
-<td></td>
-<td><p>[<span class="math notranslate nohighlight">\(z_{min}\)</span>,<span class="math notranslate nohighlight">\(z_{max}\)</span>]</p></td>
-</tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(r\)</span>as in<span class="math notranslate nohighlight">\(D_L^c=r D_s^c\)</span></p></td>
-<td><p>None</p></td>
-<td><p><span class="math notranslate nohighlight">\(P(x)=30x^2(1-x)^2\)</span></p></td>
-<td><p>[0,1]</p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\sigma\)</span> from<span class="math notranslate nohighlight">\(\sigma=a 161\)</span></p></td>
-<td><p><span class="math notranslate nohighlight">\(km\,s^{-1}\)</span></p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(a\)</span> as in <span class="math notranslate nohighlight">\(\sigma=a 161\)</span></p></td>
-<td><p>None</p></td>
-<td><p>gamma distribution</p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(q\)</span> from<span class="math notranslate nohighlight">\(q=1-b\)</span></p></td>
-<td><p>None</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(b\)</span> as in <span class="math notranslate nohighlight">\(q=1-b\)</span></p></td>
-<td><p>None</p></td>
-<td><p>Rayleigh distribution</p></td>
-<td><p><span class="math notranslate nohighlight">\(b&lt;0.8\)</span></p></td>
+<td><p>1. <span class="math notranslate nohighlight">\(b\)</span> from Rayleigh distribution,<span class="math notranslate nohighlight">\(P(b)=\frac{b}{s^2} \exp(-\frac{b^2}{2s^2})\)</span>where
+<span class="math notranslate nohighlight">\(s=0.38-0.09177a\)</span> and<span class="math notranslate nohighlight">\(a=\sigma/161\)</span>2. <span class="math notranslate nohighlight">\(q=1-b\)</span></p></td>
+<td><p>[0.2,1]</p></td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="Image-parameters">
-<h3>Image parameters<a class="headerlink" href="#Image-parameters" title="Link to this heading"></a></h3>
-<ul>
-<li><p>Einstein radius: <span class="math">\begin{equation}
-\theta_E = \frac{4\pi \sigma^2}{c^2}\frac{D_{Ls}}{D_s} \tag{7}
-\end{equation}</span></p></li>
-<li><p>Souce position in lens plane : <span class="math notranslate nohighlight">\(\beta = [x,y] = [\eta\,cos(\phi),\eta\,sin(\phi)]\)</span></p></li>
-<li><p>sampling methods:</p>
+<p>The cross-section (<span class="math notranslate nohighlight">\(\mathcal{S}\)</span>) of a SIE lens, along with the Einstein radius (<span class="math notranslate nohighlight">\(\theta_E\)</span>), is calculated using the following equations. <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> determines the probability of a source being lensed by a galaxy, and <span class="math notranslate nohighlight">\(\theta_E\)</span> is defined as the angular radius of the ring-like image (known as the Einstein ring) formed when a distant light source, a lensing galaxy, and an observer are perfectly aligned. In the equation, <span class="math notranslate nohighlight">\(D_{Ls}\)</span> and <span class="math notranslate nohighlight">\(D_s\)</span> are the angular
+diameter distances from the lens to the source and from the observer to the source, respectively, <span class="math notranslate nohighlight">\(c\)</span> is the speed of light. <span class="math notranslate nohighlight">\(\phi^{SIE}_{CUT}(q)\)</span> is derived from the expression given in <a class="reference external" href="https://iopscience.iop.org/article/10.3847/1538-4357/ac58f8">Fei Xu et al. 2022</a>.</p>
+<p><span class="math">\begin{equation}
+\begin{split}
+\mathcal{S}(\theta_E) &= \pi \theta_E^2 \frac{\phi^{SIE}_{CUT}(q)}{\pi}  \\
+\theta_E &= \frac{4\pi \sigma^2}{c^2}\frac{D_{Ls}}{D_s}
+\end{split}\tag{5}
+\end{equation}</span></p>
+<p>Lens parameters in Table I are rejection sampled based on the strong lensing condition. A value is sampled from Uniform[0, max(<span class="math notranslate nohighlight">\(\mathcal{S}\)</span>)] and is selected if it is less than <span class="math notranslate nohighlight">\(\mathcal{S}\)</span>.</p>
+<p><strong>Table II: Orientation, density and Shear Parameters</strong></p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameter</p></th>
 <th class="head"><p>unit</p></th>
 <th class="head"><p>sampling method</p></th>
+<th class="head"><p>range</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\eta\)</span></p></td>
-<td><p><span class="math notranslate nohighlight">\(\theta_E\)</span></p></td>
-<td><p>within caustic</p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\phi\)</span></p></td>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\phi\)</span>: axis-rotation-angle</p></td>
 <td><p>radian</p></td>
-<td><p>within caustic</p></td>
+<td><p>Uniform</p></td>
+<td><p>[0,2 <span class="math notranslate nohighlight">\(\pi\)</span>]</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\gamma\)</span>: mass density spectral-index</p></td>
+<td><p>None</p></td>
+<td><p>Normal dist.with mean=2, std=0.2</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\([\gamma_1,\gamma_2]\)</span>: external-shear</p></td>
+<td><p>None</p></td>
+<td><p>Normal dist.with mean=0, std=0.05</p></td>
+<td><p>None</p></td>
 </tr>
 </tbody>
 </table>
-</li>
-</ul>
+<p>The orientation angle (<span class="math notranslate nohighlight">\(\phi\)</span>) and axis ratio (<span class="math notranslate nohighlight">\(q\)</span>) are transformed into complex ellipticity moduli <span class="math notranslate nohighlight">\(e_1\)</span> and <span class="math notranslate nohighlight">\(e_2\)</span> as follows:</p>
+<p><span class="math">\begin{equation}
+\begin{split}
+e_1 &= \frac{1-q}{1+q} \cos(2\phi) \\
+e_2 &= \frac{1-q}{1+q} \sin(2\phi)
+\end{split}\tag{6}
+\end{equation}</span></p>
 </section>
+</section>
+<section id="Sampling-of-Source-Position">
+<h1>Sampling of Source Position<a class="headerlink" href="#Sampling-of-Source-Position" title="Link to this heading"></a></h1>
+<p>Source position (<span class="math notranslate nohighlight">\(\beta\)</span>) is sampled from a uniform distribution within the caustic region of the source plane. The caustic boundary is defined as the region in the source plane where the magnification of the lensed images is infinite. The caustic region is determined by the lens parameters and the source redshift. The caustic region is calculated using <code class="docutils literal notranslate"><span class="pre">Lenstronomy</span></code>. The following figure shows the source position and image positions in caustic region, <a class="reference external" href="https://www.researchgate.net/figure/Deployment-of-multiple-images-for-a-strong-elliptical-lens-a-Source-plane-view-with_fig2_41398875">img
+ref</a>. The image below illustrates the formation of multiple images by a strong elliptical lens. Panel (a) shows the view in the source plane, where different source positions are marked by colored dots, and the lines depict the lensing caustics. Panel (b) presents the view in the image plane as observed by an observer; here, the dotted lines represent critical
+lines corresponding to the given source distance. The colored multiple images in the image plane correspond to the varying positions of the source in the source plane. As the source moves closer to a caustic, the number of multiple images increases.</p>
+<p align="center"><p><img alt="Your Logo" class="no-scaled-link" src="_images/caustic.png" style="width: 80%;" /></p>
+</p><p>Souce position in lens plane : <span class="math notranslate nohighlight">\(\beta = [x,y] = [\eta\,cos(\phi),\eta\,sin(\phi)]\)</span>. Sampling methods is given in the following table.</p>
+<p><strong>Table III: Source Position Parameters</strong> |Parameter | unit | sampling method | | :-: | :-: | :-: | | <span class="math notranslate nohighlight">\(\eta\)</span> | <span class="math notranslate nohighlight">\(\theta_E\)</span> | within caustic | | <span class="math notranslate nohighlight">\(\phi\)</span> | radian | within caustic |</p>
+<section id="Calculation-of-Images-properties">
+<h2>Calculation of Images properties<a class="headerlink" href="#Calculation-of-Images-properties" title="Link to this heading"></a></h2>
+<p>The properties of the lensed images, such as the magnifications (<span class="math notranslate nohighlight">\(\mu_i\)</span>) and time delays (<span class="math notranslate nohighlight">\(\Delta t_i\)</span>), are calculated using the lens and source parameters. The magnification of the <span class="math notranslate nohighlight">\(i_{\text{th}}\)</span> image is given by <span class="math notranslate nohighlight">\(\mu_i = \frac{1}{det(A)}\)</span>, where <span class="math notranslate nohighlight">\(A\)</span> is the Jacobian matrix of the lens mapping. The time delay between the <span class="math notranslate nohighlight">\(i_{\text{th}}\)</span> image and the primary image is given by
+<span class="math notranslate nohighlight">\(\Delta t_i = \frac{1+z_L}{c} \frac{D_l^c D_s^c}{D_{ls}^c} \frac{1}{2} (|\beta-\beta_i|^2-\theta_E^2)\)</span>, where <span class="math notranslate nohighlight">\(\beta_i\)</span> is the position of the <span class="math notranslate nohighlight">\(i_{\text{th}}\)</span> image in the source plane. The primary image is the image with the smallest absolute value of the magnification. The time delay is calculated with respect to the primary image.</p>
 <section id="Montecarlo-integration-(lensed-events)">
 <h3>Montecarlo integration (lensed events)<a class="headerlink" href="#Montecarlo-integration-(lensed-events)" title="Link to this heading"></a></h3>
 <ul class="simple">

@@ -52,7 +52,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../GW_equations.html">GW event sampling (Analytical formulation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_events.html">Lensed gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_events.html#Sampling-of-Source-Position">Sampling of Source Position</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
@@ -101,27 +102,116 @@
 <h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id0" title="ler.lens_galaxy_population.jit_functions.lens_redshift_SDSS_catalogue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lens_redshift_SDSS_catalogue</span></code></a>(zs)</p></td>
-<td><p>Function to sample lens redshift from the SDSS catalogue.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.axis_ratio_SIS" title="ler.lens_galaxy_population.jit_functions.axis_ratio_SIS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_SIS</span></code></a>(sigma)</p></td>
+<td><p>Function to sample axis ratio from the SIS distribution with given velocity dispersion.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.axis_ratio_rayleigh" title="ler.lens_galaxy_population.jit_functions.axis_ratio_rayleigh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_rayleigh</span></code></a>(sigma[, q_min, q_max])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.phi" title="ler.lens_galaxy_population.jit_functions.phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi</span></code></a>(s, z[, cosmology_h])</p></td>
+<td><p>Function to calculate the lens galaxy velocity dispersion function at redshift z.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.phi_loc_bernardi" title="ler.lens_galaxy_population.jit_functions.phi_loc_bernardi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_loc_bernardi</span></code></a>(sigma[, alpha, beta, phistar, ...])</p></td>
+<td><p>Function to calculate the local universe velocity dispersion function. Bernardi et al. (2010).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.phi_cut_SIE" title="ler.lens_galaxy_population.jit_functions.phi_cut_SIE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_cut_SIE</span></code></a>(q)</p></td>
+<td><p>Function to calculate cross-section scaling factor for the SIE lens galaxy from SIS lens galaxy.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.axis_ratio_rayleigh" title="ler.lens_galaxy_population.jit_functions.axis_ratio_rayleigh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_rayleigh</span></code></a>(sigma[, q_min, q_max])</p></td>
 <td><p>Function to sample axis ratio from rayleigh distribution with given velocity dispersion.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.velocity_dispersion_z_dependent" title="ler.lens_galaxy_population.jit_functions.velocity_dispersion_z_dependent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_dispersion_z_dependent</span></code></a>(size, zl, zl_list, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.velocity_dispersion_z_dependent" title="ler.lens_galaxy_population.jit_functions.velocity_dispersion_z_dependent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_dispersion_z_dependent</span></code></a>(size, zl, zl_list, ...)</p></td>
 <td><p>Function to sample velocity dispersion from the interpolator</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id0" title="ler.lens_galaxy_population.jit_functions.lens_redshift_SDSS_catalogue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lens_redshift_SDSS_catalogue</span></code></a>(zs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.lens_redshift_SDSS_catalogue" title="ler.lens_galaxy_population.jit_functions.lens_redshift_SDSS_catalogue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lens_redshift_SDSS_catalogue</span></code></a>(zs, splineDc, ...)</p></td>
 <td><p>Function to sample lens redshift from the SDSS catalogue.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.bounded_normal_sample" title="ler.lens_galaxy_population.jit_functions.bounded_normal_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounded_normal_sample</span></code></a>(size, mean, std, low, high)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.bounded_normal_sample" title="ler.lens_galaxy_population.jit_functions.bounded_normal_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounded_normal_sample</span></code></a>(size, mean, std, low, high)</p></td>
 <td><p>Function to sample from a normal distribution with bounds.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py function">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.jit_functions.lens_redshift_SDSS_catalogue">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.jit_functions.</span></span><span class="sig-name descname"><span class="pre">lens_redshift_SDSS_catalogue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/jit_functions.html#lens_redshift_SDSS_catalogue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.jit_functions.lens_redshift_SDSS_catalogue" title="Link to this definition"></a></dt>
-<dd><p>Function to sample lens redshift from the SDSS catalogue.</p>
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.jit_functions.axis_ratio_SIS">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.jit_functions.</span></span><span class="sig-name descname"><span class="pre">axis_ratio_SIS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/jit_functions.html#axis_ratio_SIS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.jit_functions.axis_ratio_SIS" title="Link to this definition"></a></dt>
+<dd><p>Function to sample axis ratio from the SIS distribution with given velocity dispersion.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>sigma</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>velocity dispersion of the lens galaxy</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>q</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>axis ratio of the lens galaxy</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.jit_functions.phi">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.jit_functions.</span></span><span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology_h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/jit_functions.html#phi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.jit_functions.phi" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the lens galaxy velocity dispersion function at redshift z.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>s</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>velocity dispersion of the lens galaxy</p>
+</dd>
+<dt><strong>z</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>redshift of the lens galaxy</p>
+</dd>
+<dt><strong>cosmology_h</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Hubble constant</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><cite>float: array</cite></span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.jit_functions.phi_loc_bernardi">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.jit_functions.</span></span><span class="sig-name descname"><span class="pre">phi_loc_bernardi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.94</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phistar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02099</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmastar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">113.78</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology_h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/jit_functions.html#phi_loc_bernardi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.jit_functions.phi_loc_bernardi" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the local universe velocity dispersion function. Bernardi et al. (2010).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>sigma</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>velocity dispersion of the lens galaxy</p>
+</dd>
+<dt><strong>alpha, beta, phistar, sigmastar</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>parameters of the velocity dispersion function</p>
+</dd>
+<dt><strong>cosmology_h</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Hubble constant with respect to 100 km/s/Mpc</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>philoc_</strong><span class="classifier"><cite>float: array</cite></span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.jit_functions.phi_cut_SIE">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.jit_functions.</span></span><span class="sig-name descname"><span class="pre">phi_cut_SIE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/jit_functions.html#phi_cut_SIE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.jit_functions.phi_cut_SIE" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate cross-section scaling factor for the SIE lens galaxy from SIS lens galaxy.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>q</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>axis ratio of the lens galaxy</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>scaling factor</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -167,8 +257,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="id0">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.jit_functions.</span></span><span class="sig-name descname"><span class="pre">lens_redshift_SDSS_catalogue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splineDc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splineDcInv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/jit_functions.html#lens_redshift_SDSS_catalogue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.jit_functions.lens_redshift_SDSS_catalogue">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.jit_functions.</span></span><span class="sig-name descname"><span class="pre">lens_redshift_SDSS_catalogue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splineDc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splineDcInv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/jit_functions.html#lens_redshift_SDSS_catalogue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.jit_functions.lens_redshift_SDSS_catalogue" title="Link to this definition"></a></dt>
 <dd><p>Function to sample lens redshift from the SDSS catalogue.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
