@@ -25,8 +25,8 @@ LeR is a Python package designed for the statistical simulation and forecasting 
 
 ## Lensing Related:
 - **Sampling of Lens Galaxies Attributes and Source Redshifts:**
-    - For lensed cases, the source redshift ($z_s$) is sampled under the strong lensing condition (SL) based on the precomputed probability of strong lensing with source at $z_s$ (optical depth: $P(z_s|\text{SL})$). This probability can be recalculated for specified configurations of lens galaxies, leveraging multiprocessing and njit functionalities for efficiency.
-    - The package uses the Elliptical Power Law with external shear (EPL+Shear) model for galaxy parameter ($\theta_L$) sampling, following [Wierda et. al 2021](https://arxiv.org/abs/2106.06303). Rejection sampling is applied to these samples based on whether the event is strongly lensed or not, $P(\theta_L|z_s,\text{SL})$.
+    - For lensed cases, the source redshift ($z_s$) is sampled under the strong lensing condition (SL) based on the precomputed probability of strong lensing with source at $z_s$ (optical depth: $P\left(z_s|\text{SL}\right)$). This probability can be recalculated for specified configurations of lens galaxies, leveraging multiprocessing and njit functionalities for efficiency.
+    - The package uses the Elliptical Power Law with external shear (EPL+Shear) model for galaxy parameter ($\theta_L$) sampling, following [Wierda et. al 2021](https://arxiv.org/abs/2106.06303). Rejection sampling is applied to these samples based on whether the event is strongly lensed or not, $P\left(\theta_L|z_s,\text{SL}\right)$.
 
 - **Generation of Image Properties:**
     - Source position ($\beta$) is sampled from the caustic in the source plane.
@@ -42,8 +42,7 @@ LeR is developed to meet the needs of both the LIGO-Virgo-KAGRA Scientific Colla
 
 Key features of LeR include efficient sampling, optimized SNR calculations, and systematic archiving of results. It leverages array operations and linear algebra from the `numpy` library, interpolation methods from `scipy`, and parallel processing capabilities from Python's `multiprocessing` module, with performance further optimized using the `numba` library's Just-In-Time compilation.
 
-For more information and usage examples, please refer to the other sections of the documentation.
-<!-- [LeR documentation](https://arxiv.org/abs/2306.03827). -->
+For more information and usage examples, please refer to [LeR documentation](https://arxiv.org/abs/2306.03827).
 
 **Detectable Gravitational Wave Event Rates:**
 
