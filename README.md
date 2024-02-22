@@ -25,7 +25,7 @@ LeR is a Python package designed for the statistical simulation and forecasting 
 
 ## Lensing Related:
 - **Sampling of Lens Galaxies Attributes and Source Redshifts:**
-    - For lensed cases, the source redshift ($z_s$) is sampled under the strong lensing condition (SL) based on the precomputed probability of strong lensing with source at $z_s$ (optical depth: $P\left(\theta_L|z_s,\text{SL}\right)$ $P\left(z_s|\text{SL}\right)$). This probability can be recalculated for specified configurations of lens galaxies, leveraging multiprocessing and njit functionalities for efficiency.
+    - For lensed cases, the source redshift ($z_s$) is sampled under the strong lensing condition (SL) based on the precomputed probability of strong lensing with source at $z_s$ (optical depth: $P\left(\text{SL}|z_s\right)$). This probability can be recalculated for specified configurations of lens galaxies, leveraging multiprocessing and njit functionalities for efficiency.
     - The package uses the Elliptical Power Law with external shear (EPL+Shear) model for galaxy parameter ($\theta_L$) sampling, following [Wierda et. al 2021](https://arxiv.org/abs/2106.06303). Rejection sampling is applied to these samples based on whether the event is strongly lensed or not, $P\left(\theta_L|z_s,\text{SL}\right)$.
 
 - **Generation of Image Properties:**
