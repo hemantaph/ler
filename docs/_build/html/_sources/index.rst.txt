@@ -14,7 +14,7 @@ ler
 
 ``ler`` is a statistical based python package whose core function is to calculate detectable rates of gravitational waves events. Description available in `README.md <https://github.com/hemantaph/ler>`_.
 
-The code is available at `ler.github <https://github.com/hemantaph/ler>`_.
+The code is available at `github.ler <https://github.com/hemantaph/ler>`_.
 
 .. toctree::
    :maxdepth: 2
