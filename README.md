@@ -53,9 +53,9 @@ $$R_U = \int dz_s R_m^U(z_s) \; \Theta[\rho(z_s,\theta)-\rho_{th}] \; P(\theta) 
 
 **Detectable Lensed Gravitational Wave Event Rates:**
 
-$$ R_L = \int dz_s R_m^L(z_s) \, \text{$\mathcal{O}$}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) P(\theta) P(\theta_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta d\theta_L dz_s $$
+$$ R_L = \int dz_s R_m^L(z_s) \,O_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) P(\theta) P(\theta_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta d\theta_L dz_s $$
 
-* $R_m^L(z_s)$: strongly lensed source frame merger rate density in the co-moving volume at $z_s$, $\theta_L$: lens parameters, $\beta$: image properties, $\mu$: image magnification, $\Delta t$: image time delay, $\mathcal{O}$: logical OR operator applied across all $\Theta_i$ of the images, $\text{SL}$: strong lensing condition.
+* $R_m^L(z_s)$: strongly lensed source frame merger rate density in the co-moving volume at $z_s$, $\theta_L$: lens parameters, $\beta$: image properties, $\mu$: image magnification, $\Delta t$: image time delay, $O_{images}$: logical OR operator applied across all $\Theta_i$ of the images, $\text{SL}$: strong lensing condition.
 
 ## Distribution binary black hole (BBH) in terms of redshift.
 
