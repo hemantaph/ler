@@ -47,7 +47,7 @@ For more information and usage examples, please refer to the other sections of t
 
 **Detectable Gravitational Wave Event Rates:**
 
-$$R_U = \int dz_s R_m^U(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\}$$
+$$R_U = \int dz_s R_m^U(z_s) \; \Theta[\rho(z_s,\theta)-\rho_{th}] \; P(\theta) d\theta$$
 
 * $R_m^L(z_s)$: strongly lensed source frame merger rate density in the co-moving volume at $z_s$, $\theta_L$: lens parameters, $\beta$: image properties, $\mu$: image magnification, $\Delta t$: image time delay, $\mathcal{O}$: logical OR operator applied across all $\Theta_i$ of the images, $\text{SL}$: strong lensing condition.
 
@@ -61,7 +61,7 @@ $$ R_L = \int dz_s R_m^L(z_s) \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i
 
 * The following plot generated using `LeR`
 <p align="center">
-  <img src="_static/zs_all.png" alt="Your Logo" width="100%">
+  <img src="docs/_static/zs_all.png" alt="Your Logo" width="100%">
 </p>
 
 # Documentation
