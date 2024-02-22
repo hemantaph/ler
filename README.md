@@ -21,7 +21,7 @@ LeR is a Python package designed for the statistical simulation and forecasting 
 
 ## Sampling Gravitational Wave Source Properties:
 - The source's redshift ($z_s$) sampling distribution, $R_m^U(z_s)$, is derived from the merger rate density of compact binaries, which is based on the star formation rate. The code is designed for easy integration of future updates or user-specified distributions.
-- The sampling of both intrinsic and extrinsic parameters of GW sources, represented by $\theta_i$, utilizes the prior distributions ( $P\big(\theta_i\big)$ ) available within the `gwcosmo` and `bilby` Python packages. Users can manually alter any relevant parameters as needed.
+- The sampling of both intrinsic and extrinsic parameters of GW sources, represented by $\theta_i$, utilizes the prior distributions ( $P\left(\theta_i \right)$ ) available within the `gwcosmo` and `bilby` Python packages. Users can manually alter any relevant parameters as needed.
 
 ## Lensing Related:
 - **Sampling of Lens Galaxies Attributes and Source Redshifts:**
