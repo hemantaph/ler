@@ -91,9 +91,11 @@ def append_json(file_name, new_dictionary, old_dictionary=None, replace=False):
     elif replace:
         data = new_dictionary
     elif not os.path.exists(file_name):
-        # print(f" {file_name} file does not exist. Creating a new one...")
+        #print(f" {file_name} file does not exist. Creating a new one...")
         replace = True
+        data = new_dictionary
     else:
+        #print("getting data from file")
         with open(file_name, "r", encoding="utf-8") as f:
             data = json.load(f)
     # end = datetime.datetime.now()
@@ -111,6 +113,7 @@ def append_json(file_name, new_dictionary, old_dictionary=None, replace=False):
 
     # save the dictionary
     # start = datetime.datetime.now()
+    #print(data)
     with open(file_name, "w", encoding="utf-8") as write_file:
         json.dump(data, write_file, indent=4, cls=NumpyEncoder)
     # end = datetime.datetime.now()

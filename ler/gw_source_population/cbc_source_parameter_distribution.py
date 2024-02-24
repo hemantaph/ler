@@ -844,7 +844,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         param=None,
     ):
         """
-        Function to sample source mass1 and mass2 from bimodal distribution. Refer to Will M. Farr et al. 2020 Eqn. 6
+        Function to sample source mass1 and mass2 from bimodal distribution. Refer to Will M. Farr et al. 2020 Eqn. 6, https://arxiv.org/pdf/2005.00032.pdf .
 
         Parameters
         ----------

@@ -45,7 +45,7 @@ class GWRATES(CBCSourceParameterDistribution):
         The custom function should have input and output as given in GWSNR.snr method.
     json_file_names: `dict`
         names of the json files to strore the necessary parameters.
-        default json_file_names = {'ler_param': './LeR_params.json', 'gw_param': './gw_param.json', 'gw_param_detectable': './gw_param_detectable.json'}.\n
+        default json_file_names = {'ler_param': 'LeR_params.json', 'gw_param': 'gw_param.json', 'gw_param_detectable': 'gw_param_detectable.json'}.\n
     kwargs : `keyword arguments`
         Note : kwargs takes input for initializing the :class:`~ler.gw_source_population.CBCSourceParameterDistribution`, :meth:`~gwsnr_intialization`.
 
@@ -190,7 +190,8 @@ class GWRATES(CBCSourceParameterDistribution):
         cosmology=None,
         snr_finder="gwsnr",
         json_file_names=None,
-        directory="./interpolator_pickle",
+        interpolator_directory="./interpolator_pickle",
+        ler_directory="./ler_data",
         verbose=True,
         **kwargs,
     ):
@@ -202,10 +203,14 @@ class GWRATES(CBCSourceParameterDistribution):
         self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
         self.size = size
         self.batch_size = batch_size
-        self.json_file_names = dict(gwrates_param="./gwrates_params.json", gw_param="./gw_param.json", gw_param_detectable="./gw_param_detectable.json",)
+        self.json_file_names = dict(gwrates_param="gwrates_params.json", gw_param="gw_param.json", gw_param_detectable="gw_param_detectable.json",)
         if json_file_names:
             self.json_file_names.update(json_file_names)
-        self.directory = directory
+        self.interpolator_directory = interpolator_directory
+        self.ler_directory = ler_directory
+        # create directory if not exists
+        if not os.path.exists(ler_directory):
+            os.makedirs(ler_directory)
 
         def initialization():
             # initialization of parent class
@@ -242,7 +247,7 @@ class GWRATES(CBCSourceParameterDistribution):
         print("cosmology = ", self.cosmo)
         print("snr_finder = ", self.snr)
         print("json_file_names = ", self.json_file_names)
-        print("directory = ", self.directory)
+        print("interpolator_directory = ", self.interpolator_directory)
 
         print("\n GWRATES also takes CBCSourceParameterDistribution params as kwargs, as follows:")
         print("source_priors=", self.gw_param_sampler_dict["source_priors"])
@@ -374,7 +379,7 @@ class GWRATES(CBCSourceParameterDistribution):
             dictionary of gw GW source parameters.
         """
 
-        return get_param_from_json(self.json_file_names["gw_param"])
+        return get_param_from_json(self.ler_directory+"/"+self.json_file_names["gw_param"])
     
     @property
     def gw_param_detectable(self):
@@ -387,7 +392,7 @@ class GWRATES(CBCSourceParameterDistribution):
             dictionary of gw GW source parameters.
         """
 
-        return get_param_from_json(self.json_file_names["gw_param_detectable"])
+        return get_param_from_json(self.ler_directory+"/"+self.json_file_names["gw_param_detectable"])
 
     def class_initialization(self, params=None):
         """
@@ -417,7 +422,7 @@ class GWRATES(CBCSourceParameterDistribution):
             cosmology=self.cosmo,
             spin_zero=True,
             spin_precession=False,
-            directory=self.directory,
+            interpolator_directory=self.interpolator_directory,
             create_new_interpolator=False,
         )
         if params:
@@ -436,7 +441,7 @@ class GWRATES(CBCSourceParameterDistribution):
             cosmology=input_params["cosmology"],
             spin_zero=input_params["spin_zero"],
             spin_precession=input_params["spin_precession"],
-            directory=input_params["directory"],
+            directory=input_params["interpolator_directory"],
             create_new_interpolator=input_params["create_new_interpolator"],
         )
 
@@ -469,7 +474,7 @@ class GWRATES(CBCSourceParameterDistribution):
             snr_type="interpolation",
             psds=None,
             ifos=None,
-            interpolator_dir=self.directory,
+            interpolator_dir=self.interpolator_directory,
             create_new_interpolator=False,
             gwsnr_verbose=True,
             multiprocessing_verbose=True,
@@ -504,9 +509,11 @@ class GWRATES(CBCSourceParameterDistribution):
         self.snr = gwsnr.snr
         self.list_of_detectors = gwsnr.detector_list
         self.snr_bilby = gwsnr.compute_bilby_snr
+        self.snr_calculator_dict["mtot_max"] = gwsnr.mtot_max
+        self.snr_calculator_dict["psds"] = gwsnr.psds_list
         #self.pdet = gwsnr.pdet
 
-    def store_gwrates_params(self, output_jsonfile="./gwrates_params.json"):
+    def store_gwrates_params(self, output_jsonfile="gwrates_params.json"):
         """
         Function to store the all the necessary parameters. This is useful for reproducing the results. All the parameters stored are in string format to make it json compatible.
 
@@ -526,7 +533,7 @@ class GWRATES(CBCSourceParameterDistribution):
             cosmology=str(self.cosmo),
             snr_finder=str(self.snr),
             json_file_names=str(self.json_file_names),
-            directory=str(self.directory),
+            interpolator_directory=str(self.interpolator_directory),
         )
 
         # cbc params
@@ -544,7 +551,7 @@ class GWRATES(CBCSourceParameterDistribution):
             parameters_dict.update({"snr_calculator_dict": snr_calculator_dict})
 
             file_name = output_jsonfile
-            append_json(file_name, parameters_dict, replace=True)
+            append_json(self.ler_directory+"/"+file_name, parameters_dict, replace=True)
         except:
             # if snr_calculator is custom function
             pass
@@ -567,7 +574,7 @@ class GWRATES(CBCSourceParameterDistribution):
             if True, the function will save the parameters in batches. if False, the function will save all the parameters at the end of sampling. save_batch=False is faster.
         output_jsonfile : `str`
             json file name for storing the parameters.
-            default output_jsonfile = './gw_params.json'.
+            default output_jsonfile = 'gw_params.json'.
 
         Returns
         ----------
@@ -588,28 +595,40 @@ class GWRATES(CBCSourceParameterDistribution):
 
         # get json file name
         if output_jsonfile is None:
+            output_path = self.ler_directory+"/"+self.json_file_names["gw_param"]
             output_jsonfile = self.json_file_names["gw_param"]
         else:
             self.json_file_names["gw_param"] = output_jsonfile
+            output_path = self.ler_directory+"/"+output_jsonfile
         print(f"simulated gw params will be stored in {output_jsonfile}")
 
         # sampling in batches
-        self.dict_buffer = None
+        if resume and os.path.exists(output_path):
+            # get sample from json file
+            self.dict_buffer = get_param_from_json(output_path)
+        else:
+            self.dict_buffer = None
+
         batch_handler(
             size=size,
             batch_size=self.batch_size,
             sampling_routine=self.gw_sampling_routine,
-            output_jsonfile=output_jsonfile,
+            output_jsonfile=output_path,
             save_batch=save_batch,
             resume=resume,
         )
 
         if save_batch:
-            gw_param = get_param_from_json(output_jsonfile)
+            gw_param = get_param_from_json(output_path)
         else:
-            gw_param = self.dict_buffer.copy()
-            # store all params in json file
-            append_json(output_jsonfile, gw_param, replace=True)
+            # this if condition is required if there is nothing to save
+            if self.dict_buffer:
+                gw_param = self.dict_buffer.copy()
+                # store all params in json file
+                append_json(output_path, gw_param, replace=True)
+            else:
+                print(f"saving all gw_params in {output_path}...")
+                gw_param = get_param_from_json(output_path)
         self.dict_buffer = None  # save memory
 
         return gw_param
@@ -628,7 +647,7 @@ class GWRATES(CBCSourceParameterDistribution):
             if True, the function will resume from the last batch.
         output_jsonfile : `str`
             json file name for storing the parameters.
-            default output_jsonfile = './gw_params.json'.
+            default output_jsonfile = 'gw_params.json'.
 
         Returns
         ----------
@@ -654,7 +673,7 @@ class GWRATES(CBCSourceParameterDistribution):
                     self.dict_buffer[key] = np.concatenate((self.dict_buffer[key], value))
         else:
             # store all params in json file
-            append_json(file_name=output_jsonfile, new_dictionary=gw_param,  old_dictionary=self.dict_buffer, replace=not (resume))
+            self.dict_buffer = append_json(file_name=output_jsonfile, new_dictionary=gw_param,  old_dictionary=self.dict_buffer, replace=not (resume))
 
         return gw_param
 
@@ -680,7 +699,7 @@ class GWRATES(CBCSourceParameterDistribution):
             e.g. snr_threshold = 8.
         output_jsonfile : `str`
             json file name for storing the parameters of the detectable events.
-            default output_jsonfile = './gw_params_detectable.json'.
+            default output_jsonfile = 'gw_params_detectable.json'.
         detectability_condition : `str`
             detectability condition. 
             default detectability_condition = 'step_function'.
@@ -702,7 +721,7 @@ class GWRATES(CBCSourceParameterDistribution):
         """
         
         # call self.json_file_names["gwrates_param"] and for adding the final results
-        data = load_json(self.json_file_names["gwrates_param"])
+        data = load_json(self.ler_directory+"/"+self.json_file_names["gwrates_param"])
         
         # get gw params from json file if not provided
         if gw_param is None:
@@ -710,7 +729,7 @@ class GWRATES(CBCSourceParameterDistribution):
         if type(gw_param) == str:
             self.json_file_names["gw_param"] = gw_param
             print(f"getting gw_params from json file {gw_param}...")
-            gw_param = get_param_from_json(gw_param)
+            gw_param = get_param_from_json(self.ler_directory+"/"+gw_param)
         else:
             print("using provided gw_param dict...")
             # store all params in json file self.json_file_names["gw_param"]
@@ -758,8 +777,8 @@ class GWRATES(CBCSourceParameterDistribution):
         # The total rate R = norm <Theta(rho-rhoc)>
         total_rate = self.normalization_pdf_z * detectable_events / total_events
         print(f"total gw rate (yr^-1) (with step function): {total_rate}")
-        print(f"number of simulated unlensed detectable events: {detectable_events}")
-        print(f"number of all simulated unlensed events: {total_events}")
+        print(f"number of simulated gw detectable events: {detectable_events}")
+        print(f"number of all simulated gw events: {total_events}")
         
         # store all detectable params in json file
         for key, value in gw_param.items():
@@ -771,12 +790,12 @@ class GWRATES(CBCSourceParameterDistribution):
         else:
             self.json_file_names["gw_param_detectable"] = output_jsonfile
         print(f"storing detectable gw params in {output_jsonfile}")
-        append_json(output_jsonfile, gw_param, replace=True)
+        append_json(self.ler_directory+"/"+output_jsonfile, gw_param, replace=True)
 
         # write the results
         data['detectable_gw_rate_per_year'] = total_rate
         data["detectability_condition"] = detectability_condition
-        append_json(self.json_file_names["gwrates_param"], data, replace=True)
+        append_json(self.ler_directory+"/"+self.json_file_names["gwrates_param"], data, replace=True)
         
         return total_rate, gw_param
 
@@ -786,7 +805,9 @@ class GWRATES(CBCSourceParameterDistribution):
         batch_size=None,
         snr_threshold=8.0,
         resume=False,
-        output_jsonfile="./gw_params_n_detectable.json",
+        output_jsonfile="gw_params_n_detectable.json",
+        meta_data_file="meta_gw.json",
+        trim_to_size=True,
     ):
         """
         Function to select n gw detectable events.
@@ -804,7 +825,7 @@ class GWRATES(CBCSourceParameterDistribution):
             default resume = False.
         output_jsonfile : `str`
             json file name for storing the parameters.
-            default output_jsonfile = './gw_params_detectable.json'.
+            default output_jsonfile = 'gw_params_detectable.json'.
 
         Returns
         ----------
@@ -819,55 +840,88 @@ class GWRATES(CBCSourceParameterDistribution):
         >>> param_final = ler.selecting_n_gw_detectable_events(size=500)
         """
 
+        meta_data_path = self.ler_directory+"/"+meta_data_file
+        output_path = self.ler_directory+"/"+output_jsonfile
+        # del meta_data file
+        if os.path.exists(meta_data_path):
+            os.remove(meta_data_path)
+
         if batch_size is None:
             batch_size = self.batch_size
+        else:
+            self.batch_size = batch_size
 
         if not resume:
             n = 0  # iterator
+            events_total = 0
             try:
-                os.remove(output_jsonfile)
+                os.remove(output_path)
             except:
                 pass
         else:
-            # get sample size as nsamples from json file
-            param_final = get_param_from_json(output_jsonfile)
-            n = len(param_final["zs"])
-            del param_final
+            if os.path.exists(output_path):
+                # get sample size as nsamples from json file
+                param_final = get_param_from_json(output_path)
+                n = len(param_final["zs"])
+                events_total = n
+                del param_final
+            else:
+                n = 0
+                events_total = 0
 
-        buffer_file = "./gw_params_buffer.json"
+        buffer_file = self.ler_directory+"/"+"gw_params_buffer.json"
         print("collected number of events = ", n)
+
+        # loop until n samples are collected
         while n < size:
             # disable print statements
             with contextlib.redirect_stdout(None):
-                self.gw_sampling_routine(
-                    size=batch_size, output_jsonfile=buffer_file, resume=False
+                self.dict_buffer = None
+                gw_param = self.gw_sampling_routine(
+                    size=batch_size, output_jsonfile=buffer_file, save_batch=False, resume=False
                 )
 
-                # get gw params
-                gw_param = get_param_from_json(buffer_file)
+            # get snr
+            snr = gw_param["optimal_snr_net"]
+            # index of detectable events
+            idx = snr > snr_threshold
 
-                # get snr
-                snr = gw_param["optimal_snr_net"]
-                # index of detectable events
-                idx = snr > snr_threshold
+            # store all params in json file
+            for key, value in gw_param.items():
+                gw_param[key] = value[idx]
+            append_json(file_name=output_path, new_dictionary=gw_param, replace=False)
 
-                # store all params in json file
-                for key, value in gw_param.items():
-                    gw_param[key] = value[idx]
-                append_json(output_jsonfile, gw_param, replace=False)
+            n += np.sum(idx)
+            events_total += len(idx)                
+            total_rate = self.normalization_pdf_z * n / events_total
 
-                n += np.sum(idx)
+            if n>500:
+                # save json
+                append_json(file_name="test.json", new_dictionary=gw_param, replace=True)
+
+            # save meta data
+            meta_data = dict(events_total=[events_total], total_rate=[total_rate])
+            if os.path.exists(meta_data_path):
+                append_json(file_name=self.ler_directory+"/"+meta_data_file, new_dictionary=meta_data, replace=False)
+            else:
+                append_json(file_name=self.ler_directory+"/"+meta_data_file, new_dictionary=meta_data, replace=True)
+                
             print("collected number of events = ", n)
+            print("total number of events = ", events_total)
+            print(f"total gw rate (yr^-1): {total_rate}")
 
-        # trim the final param dictionary
-        print(f"trmming final result to size={size}")
-        param_final = get_param_from_json(output_jsonfile)
-        # trim the final param dictionary, randomly, without repeating
-        idx = np.random.choice(len(param_final["zs"]), size, replace=False)
-        for key, value in param_final.items():
-            param_final[key] = param_final[key][idx]
+        print(f"storing detectable gw params in {output_path}")
+
+        if trim_to_size:
+            # trim the final param dictionary
+            print(f"trmming final result to size={size}")
+            param_final = get_param_from_json(output_path)
+            # trim the final param dictionary, randomly, without repeating
+            #idx = np.random.choice(len(param_final["zs"]), size, replace=False)
+            for key, value in param_final.items():
+                param_final[key] = param_final[key][:size]
 
         # save the final param dictionary
-        append_json(output_jsonfile, param_final, replace=True)
+        append_json(output_path, param_final, replace=True)
 
         return param_final
