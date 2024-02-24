@@ -45,7 +45,7 @@ class LeR(LensGalaxyParameterDistribution):
         The custom function should have input and output as given in GWSNR.snr method.
     json_file_names: `dict`
         names of the json files to strore the necessary parameters.
-        default json_file_names = {'ler_param': './LeR_params.json', 'unlensed_param': './unlensed_param.json', 'unlensed_param_detectable': './unlensed_param_detectable.json'}.\n
+        default json_file_names = {'ler_param': 'ler_data/LeR_params.json', 'unlensed_param': 'ler_data/unlensed_param.json', 'unlensed_param_detectable': 'ler_data/unlensed_param_detectable.json'}.\n
     kwargs : `keyword arguments`
         Note : kwargs takes input for initializing the :class:`~ler.lens_galaxy_population.LensGalaxyParameterDistribution`, :meth:`~gwsnr_intialization`.
 
@@ -248,7 +248,7 @@ class LeR(LensGalaxyParameterDistribution):
         self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
         self.size = size
         self.batch_size = batch_size
-        self.json_file_names = dict(ler_param="./ler_params.json", unlensed_param="./unlensed_param.json", unlensed_param_detectable="./unlensed_param_detectable.json", lensed_param="./lensed_param.json", lensed_param_detectable="./lensed_param_detectable.json")
+        self.json_file_names = dict(ler_param="ler_data/ler_params.json", unlensed_param="ler_data/unlensed_param.json", unlensed_param_detectable="ler_data/unlensed_param_detectable.json", lensed_param="ler_data/lensed_param.json", lensed_param_detectable="ler_data/lensed_param_detectable.json")
         if json_file_names:
             self.json_file_names.update(json_file_names)
         self.directory = directory
@@ -619,9 +619,11 @@ class LeR(LensGalaxyParameterDistribution):
         self.snr = gwsnr.snr
         self.list_of_detectors = gwsnr.detector_list
         self.snr_bilby = gwsnr.compute_bilby_snr
+        self.snr_calculator_dict["mtot_max"] = gwsnr.mtot_max
+        self.snr_calculator_dict["psds"] = gwsnr.psds_list
         #self.pdet = gwsnr.pdet
 
-    def store_ler_params(self, output_jsonfile="./ler_params.json"):
+    def store_ler_params(self, output_jsonfile="ler_data/ler_params.json"):
         """
         Function to store the all the necessary parameters. This is useful for reproducing the results. All the parameters stored are in string format to make it json compatible.
 
@@ -682,7 +684,7 @@ class LeR(LensGalaxyParameterDistribution):
             if True, the function will save the parameters in batches. if False, the function will save all the parameters at the end of sampling. save_batch=False is faster.
         output_jsonfile : `str`
             json file name for storing the parameters.
-            default output_jsonfile = './unlensed_params.json'.
+            default output_jsonfile = 'ler_data/unlensed_params.json'.
 
         Returns
         ----------
@@ -709,7 +711,12 @@ class LeR(LensGalaxyParameterDistribution):
         print(f"unlensed params will be store in {output_jsonfile}")
 
         # sampling in batches
-        self.dict_buffer = None
+        if resume:
+            # get data from json
+            self.dict_buffer = get_param_from_json(output_jsonfile)
+        else:
+            self.dict_buffer = None
+
         batch_handler(
             size=size,
             batch_size=self.batch_size,
@@ -722,10 +729,15 @@ class LeR(LensGalaxyParameterDistribution):
         if save_batch:
             unlensed_param = get_param_from_json(output_jsonfile)
         else:
-            unlensed_param = self.dict_buffer.copy()
-            # save the last batch
-            print(f"saving all unlensed_params in {output_jsonfile}...")
-            append_json(output_jsonfile, unlensed_param, replace=True)
+            # this if condition is required if there is nothing to save
+            if self.dict_buffer:
+                unlensed_param = self.dict_buffer.copy()
+                # save the last batch
+                print(f"saving all unlensed_params in {output_jsonfile}...")
+                append_json(output_jsonfile, unlensed_param, replace=True)
+            else:
+                print("unlensed_params already sampled.")
+                unlensed_param = get_param_from_json(output_jsonfile)
         self.dict_buffer = None  # save memory
 
         return unlensed_param
@@ -744,7 +756,7 @@ class LeR(LensGalaxyParameterDistribution):
             if True, the function will resume from the last batch.
         output_jsonfile : `str`
             json file name for storing the parameters.
-            default output_jsonfile = './unlensed_params.json'.
+            default output_jsonfile = 'ler_data/unlensed_params.json'.
 
         Returns
         ----------
@@ -790,13 +802,13 @@ class LeR(LensGalaxyParameterDistribution):
         ----------
         unlensed_param : `dict` or `str`
             dictionary of GW source parameters or json file name.
-            default unlensed_param = './unlensed_params.json'.
+            default unlensed_param = 'ler_data/unlensed_params.json'.
         snr_threshold : `float`
             threshold for detection signal to noise ratio.
             e.g. snr_threshold = 8.
         output_jsonfile : `str`
             json file name for storing the parameters of the detectable events.
-            default output_jsonfile = './unlensed_params_detectable.json'.
+            default output_jsonfile = 'ler_data/unlensed_params_detectable.json'.
         detectability_condition : `str`
             detectability condition. 
             default detectability_condition = 'step_function'.
@@ -908,7 +920,7 @@ class LeR(LensGalaxyParameterDistribution):
             if True, the function will resume from the last batch.
         output_jsonfile : `str`
             json file name for storing the parameters.
-            default output_jsonfile = './lensed_params.json'.
+            default output_jsonfile = 'ler_data/lensed_params.json'.
 
         Returns
         ----------
@@ -935,7 +947,12 @@ class LeR(LensGalaxyParameterDistribution):
         print(f"lensed params will be store in {output_jsonfile}")
 
         # sampling in batches
-        self.dict_buffer = None
+        if resume:
+            # get the last batch
+            self.dict_buffer = get_param_from_json(output_jsonfile)
+        else:
+            self.dict_buffer = None
+
         batch_handler(
             size=size,
             batch_size=self.batch_size,
@@ -948,10 +965,14 @@ class LeR(LensGalaxyParameterDistribution):
         if save_batch:
             lensed_param = get_param_from_json(output_jsonfile)
         else:
-            lensed_param = self.dict_buffer.copy()
-            # save the last batch
-            print(f"saving all lensed params in {output_jsonfile}...")
-            append_json(output_jsonfile, lensed_param, replace=True)
+            if self.dict_buffer:
+                lensed_param = self.dict_buffer.copy()
+                # save the last batch
+                print(f"saving all lensed params in {output_jsonfile}...")
+                append_json(output_jsonfile, lensed_param, replace=True)
+            else:
+                print("lensed_params already sampled.")
+                lensed_param = get_param_from_json(output_jsonfile)
         self.dict_buffer = None
         return lensed_param
     
@@ -969,7 +990,7 @@ class LeR(LensGalaxyParameterDistribution):
             if True, the function will resume from the last batch.
         output_jsonfile : `str`
             json file name for storing the parameters.
-            default output_jsonfile = './lensed_params.json'.
+            default output_jsonfile = 'ler_data/lensed_params.json'.
 
         Returns
         ----------
@@ -1022,7 +1043,7 @@ class LeR(LensGalaxyParameterDistribution):
         ----------
         lensed_param : `dict` or `str`
             dictionary of GW source parameters or json file name.
-            default lensed_param = './lensed_params.json'.
+            default lensed_param = 'ler_data/lensed_params.json'.
         snr_threshold : `float`
             threshold for detection signal to noise ratio.
             default snr_threshold = [8.0,8.0].
@@ -1031,7 +1052,7 @@ class LeR(LensGalaxyParameterDistribution):
             default num_img = [1,1].
         output_jsonfile : `str`
             json file name for storing the parameters of the detectable events.
-            default output_jsonfile = './lensed_params_detectable.json'.
+            default output_jsonfile = 'ler_data/lensed_params_detectable.json'.
         nan_to_num : `bool`
             if True, nan values will be converted to 0.
             default nan_to_num = True.
@@ -1219,10 +1240,10 @@ class LeR(LensGalaxyParameterDistribution):
         data = load_json(self.json_file_names["ler_param"])
 
         try:
-            unlensed_rate = data["detectable_unlensed_rate_per_year"]
-            lensed_rate = data["detectable_lensed_rate_per_year"]
+            unlensed_rate = data['detectable_unlensed_rate_per_year']
+            lensed_rate = data['detectable_lensed_rate_per_year']
         except:
-            raise ValueError(f"unlensed_rate_step or lensed_rate_step not found in {self.json_file_names['ler_param']} json file. Exiting...")
+            raise ValueError(f"detectable_unlensed_rate_per_year or 'detectable_lensed_rate_per_year' not found in {self.json_file_names['ler_param']} json file. Exiting...")
         
         rate_ratio = unlensed_rate / lensed_rate
         # append the results
@@ -1255,22 +1276,22 @@ class LeR(LensGalaxyParameterDistribution):
         ----------
         unlensed_param : `dict` or `str`
             dictionary of GW source parameters or json file name.
-            default unlensed_param = './unlensed_params.json'.
+            default unlensed_param = 'ler_data/unlensed_params.json'.
         snr_threshold_unlensed : `float`
             threshold for detection signal to noise ratio.
             e.g. snr_threshold = 8.
         output_jsonfile_unlensed : `str`
             json file name for storing the parameters of the detectable events.
-            default output_jsonfile = './unlensed_params_detectable.json'.
+            default output_jsonfile = 'ler_data/unlensed_params_detectable.json'.
         lensed_param : `dict` or `str`
             dictionary of GW source parameters or json file name.
-            default lensed_param = './lensed_params.json'.
+            default lensed_param = 'ler_data/lensed_params.json'.
         snr_threshold_lensed : `float`
             threshold for detection signal to noise ratio.
             e.g. snr_threshold = 8.
         output_jsonfile_lensed : `str`
             json file name for storing the parameters of the detectable events.
-            default output_jsonfile = './lensed_params_detectable.json'.
+            default output_jsonfile = 'ler_data/lensed_params_detectable.json'.
         detectability_condition : `str`
             detectability condition. 
             default detectability_condition = 'step_function'.
@@ -1335,7 +1356,7 @@ class LeR(LensGalaxyParameterDistribution):
         batch_size=None,
         snr_threshold=8.0,
         resume=False,
-        output_jsonfile="./n_unlensed_param_detectable.json",
+        output_jsonfile="ler_data/n_unlensed_param_detectable.json",
         meta_data_file="meta_unlensed.json",
         event_batch_limit=500,
         trim_to_size=True,
@@ -1356,7 +1377,7 @@ class LeR(LensGalaxyParameterDistribution):
             default resume = False.
         output_jsonfile : `str`
             json file name for storing the parameters.
-            default output_jsonfile = './n_unlensed_params_detectable.json'.
+            default output_jsonfile = 'ler_data/n_unlensed_params_detectable.json'.
 
         Returns
         ----------
@@ -1394,14 +1415,15 @@ class LeR(LensGalaxyParameterDistribution):
                 n = 0
                 events_total = 0
 
-        buffer_file = "./unlensed_params_buffer.json"
+        buffer_file = "ler_data/unlensed_params_buffer.json"
         print("collected number of events = ", n)
         
         while n < size:
             # disable print statements
             with contextlib.redirect_stdout(None):
+                self.dict_buffer = None
                 unlensed_param = self.unlensed_sampling_routine(
-                    size=batch_size, output_jsonfile=buffer_file, resume=False
+                    size=batch_size, output_jsonfile=buffer_file, save_batch=False,resume=False
                 )
 
             # get snr
@@ -1415,7 +1437,7 @@ class LeR(LensGalaxyParameterDistribution):
             if np.sum(idx) < event_batch_limit:
                 for key, value in unlensed_param.items():
                     unlensed_param[key] = value[idx]
-                append_json(output_jsonfile, unlensed_param, replace=False)
+                append_json(file_name=output_jsonfile, new_dictionary=unlensed_param, replace=False)
 
                 n += np.sum(idx)
                 events_total += len(idx)                
@@ -1463,8 +1485,8 @@ class LeR(LensGalaxyParameterDistribution):
         num_img=2,
         resume=False,
         detectability_condition="step_function",
-        output_jsonfile="./n_lensed_params_detectable.json",
-        meta_data_file="./meta_lensed.json",
+        output_jsonfile="ler_data/n_lensed_params_detectable.json",
+        meta_data_file="ler_data/meta_lensed.json",
         event_batch_limit=500,
         trim_to_size=True,
         nan_to_num=False,
@@ -1538,11 +1560,12 @@ class LeR(LensGalaxyParameterDistribution):
         snr_threshold = snr_threshold[idx]
         num_img = num_img[idx]
 
-        buffer_file = "./lensed_params_buffer.json"
+        buffer_file = "ler_data/lensed_params_buffer.json"
         print("collected number of events = ", n)
         while n < size:
             # disable print statements
             with contextlib.redirect_stdout(None):
+                self.dict_buffer = None
                 lensed_param = self.lensed_sampling_routine(
                     size=self.batch_size, output_jsonfile=buffer_file, resume=False
                 )  # Dimensions are (size, n_max_images)
