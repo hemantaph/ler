@@ -589,18 +589,10 @@ class GWRATES(CBCSourceParameterDistribution):
         >>> param = ler.gw_cbc_statistics()
         """
 
-        # gw parameter sampling
-        if size is None:
-            size = self.size
-
-        # get json file name
-        if output_jsonfile is None:
-            output_path = self.ler_directory+"/"+self.json_file_names["gw_param"]
-            output_jsonfile = self.json_file_names["gw_param"]
-        else:
-            self.json_file_names["gw_param"] = output_jsonfile
-            output_path = self.ler_directory+"/"+output_jsonfile
-        print(f"simulated gw params will be stored in {output_jsonfile}")
+        size = size or self.size
+        output_jsonfile = output_jsonfile or self.json_file_names["gw_param"]
+        output_path = os.path.join(self.ler_directory, output_jsonfile)
+        print(f"Simulated GW params will be stored in {output_jsonfile}")
 
         # sampling in batches
         if resume and os.path.exists(output_path):
@@ -625,9 +617,10 @@ class GWRATES(CBCSourceParameterDistribution):
             if self.dict_buffer:
                 gw_param = self.dict_buffer.copy()
                 # store all params in json file
+                print(f"saving all gw_params in {output_path}...")
                 append_json(output_path, gw_param, replace=True)
             else:
-                print(f"saving all gw_params in {output_path}...")
+                print("unlensed_params already sampled.")
                 gw_param = get_param_from_json(output_path)
         self.dict_buffer = None  # save memory
 
@@ -684,7 +677,7 @@ class GWRATES(CBCSourceParameterDistribution):
         output_jsonfile=None,
         detectability_condition="step_function",
         snr_recalculation=False,
-        threshold_snr_recalculation=7.0,
+        threshold_snr_recalculation=6.0,
     ):
         """
         Function to calculate the gw rate. This function also stores the parameters of the detectable events in json file.
@@ -704,6 +697,11 @@ class GWRATES(CBCSourceParameterDistribution):
             detectability condition. 
             default detectability_condition = 'step_function'.
             other options are 'pdet'.
+        snr_recalculation : `bool`
+            if True, the SNR of centain events (snr>threshold_snr_recalculation)will be recalculate with 'inner product'. This is useful when the snr is calculated with 'ann' method.
+            default snr_recalculation = False.
+        threshold_snr_recalculation : `float`
+            threshold for recalculation of detection signal to noise ratio.
 
         Returns
         ----------
@@ -842,9 +840,6 @@ class GWRATES(CBCSourceParameterDistribution):
 
         meta_data_path = self.ler_directory+"/"+meta_data_file
         output_path = self.ler_directory+"/"+output_jsonfile
-        # del meta_data file
-        if os.path.exists(meta_data_path):
-            os.remove(meta_data_path)
 
         if batch_size is None:
             batch_size = self.batch_size
@@ -854,16 +849,16 @@ class GWRATES(CBCSourceParameterDistribution):
         if not resume:
             n = 0  # iterator
             events_total = 0
-            try:
+            if os.path.exists(output_path):
                 os.remove(output_path)
-            except:
-                pass
+            if os.path.exists(meta_data_path):
+                os.remove(meta_data_path)
         else:
             if os.path.exists(output_path):
                 # get sample size as nsamples from json file
                 param_final = get_param_from_json(output_path)
-                n = len(param_final["zs"])
-                events_total = n
+                n = load_json(meta_data_path)["detectable_events"][-1]
+                events_total = load_json(meta_data_path)["events_total"][-1]
                 del param_final
             else:
                 n = 0
@@ -871,7 +866,6 @@ class GWRATES(CBCSourceParameterDistribution):
 
         buffer_file = self.ler_directory+"/"+"gw_params_buffer.json"
         print("collected number of events = ", n)
-
         # loop until n samples are collected
         while n < size:
             # disable print statements
@@ -895,16 +889,12 @@ class GWRATES(CBCSourceParameterDistribution):
             events_total += len(idx)                
             total_rate = self.normalization_pdf_z * n / events_total
 
-            if n>500:
-                # save json
-                append_json(file_name="test.json", new_dictionary=gw_param, replace=True)
-
             # save meta data
-            meta_data = dict(events_total=[events_total], total_rate=[total_rate])
+            meta_data = dict(events_total=[events_total], detectable_events=[float(n)], total_rate=[total_rate])
             if os.path.exists(meta_data_path):
-                append_json(file_name=self.ler_directory+"/"+meta_data_file, new_dictionary=meta_data, replace=False)
+                append_json(file_name=meta_data_path, new_dictionary=meta_data, replace=False)
             else:
-                append_json(file_name=self.ler_directory+"/"+meta_data_file, new_dictionary=meta_data, replace=True)
+                append_json(file_name=meta_data_path, new_dictionary=meta_data, replace=True)
                 
             print("collected number of events = ", n)
             print("total number of events = ", events_total)
@@ -914,10 +904,9 @@ class GWRATES(CBCSourceParameterDistribution):
 
         if trim_to_size:
             # trim the final param dictionary
-            print(f"trmming final result to size={size}")
+            print(f"\n trmming final result to size={size}")
             param_final = get_param_from_json(output_path)
             # trim the final param dictionary, randomly, without repeating
-            #idx = np.random.choice(len(param_final["zs"]), size, replace=False)
             for key, value in param_final.items():
                 param_final[key] = param_final[key][:size]
 

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lensed gravitational wave event rates &mdash; ler 0.3.1 documentation</title>
+  <title>Lensed event rates &mdash; ler 0.3.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -28,7 +28,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Lensed event sampling (Analytical formulation)" href="Lensed_equations.html" />
-    <link rel="prev" title="GW event sampling (Analytical formulation)" href="GW_equations.html" /> 
+    <link rel="prev" title="Gravitational wave events sampling (Analytical formulation)" href="GW_equations.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,15 +55,13 @@
 <li class="toctree-l1"><a class="reference internal" href="Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GW_equations.html">GW event sampling (Analytical formulation)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Lensed gravitational wave event rates</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Lensed event rates</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Lensed-merger-rate-distribution-of-compact-binary-coalescences">Lensed merger rate distribution of compact binary coalescences</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Annual-Rate-of-Detectable-Lensed-Gravitational-Wave-Events">Annual Rate of Detectable Lensed Gravitational Wave Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#SNR-Operator-for-Lensed-Gravitational-Wave-Events">SNR Operator for Lensed Gravitational Wave Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Sampling-Lens-Properties">Sampling Lens Properties</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="#Sampling-of-Source-Position">Sampling of Source Position</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Sampling-of-Source-Position">Sampling of Source Position</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Calculation-of-Images-properties">Calculation of Images properties</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Montecarlo-integration-(lensed-events)">Montecarlo integration (lensed events)</a></li>
 </ul>
@@ -100,7 +98,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Lensed gravitational wave event rates</li>
+      <li class="breadcrumb-item active">Lensed event rates</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/Lensed_events.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -110,8 +108,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Lensed-gravitational-wave-event-rates">
-<h1>Lensed gravitational wave event rates<a class="headerlink" href="#Lensed-gravitational-wave-event-rates" title="Link to this heading"></a></h1>
+  <section id="Lensed-event-rates">
+<h1>Lensed event rates<a class="headerlink" href="#Lensed-event-rates" title="Link to this heading"></a></h1>
 <p>This document outlines the default settings for calculating detectable lensed gravitational wave event rates (per year) in <a class="reference external" href="https://ler.readthedocs.io/en/latest/index.html">LeR</a>.</p>
 <p><strong>Notes:</strong></p>
 <ul class="simple">
@@ -160,7 +158,8 @@ R_o^L(z_s) = \frac{1}{\mathcal{N}^L} \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \t
 \mathcal{N}^L = \int_{z_{\text{min}}}^{z_{\text{max}}} dz_s \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tau(z_s)  \tag{2}
 \end{equation}</span></p>
 <p>Source redshifts for lensed case are sample from an astrophysical distribution, and rejection sample based on the optical depth. The plot below shows the comparision of the lensed and unlensed merger rate distributions.</p>
-</section>
+<p align="center"><p>&lt;img src=”_static/zs_lensed.png” alt=”zs””&gt;</p>
+</p></section>
 <section id="Annual-Rate-of-Detectable-Lensed-Gravitational-Wave-Events">
 <h2>Annual Rate of Detectable Lensed Gravitational Wave Events<a class="headerlink" href="#Annual-Rate-of-Detectable-Lensed-Gravitational-Wave-Events" title="Link to this heading"></a></h2>
 <p>The annual rate of detectable lensed gravitational wave events, denoted by <span class="math notranslate nohighlight">\(R_L\)</span>, quantifies the expected number of lensed events observable by gravitational wave detectors within a year. This rate is given by the following equation:</p>
@@ -214,20 +213,20 @@ where <span class="math notranslate nohighlight">\(\mathcal{D}_L\)</span> is the
 <tbody>
 <tr class="row-even"><td><p><span class="math notranslate nohighlight">\(z_l\)</span>: Lens redshift</p></td>
 <td><p>None</p></td>
-<td><p>1. <span class="math notranslate nohighlight">\(r\)</span> from <span class="math notranslate nohighlight">\(P(x)=30x^2(1-x)^2\)</span>2. Sacling: <span class="math notranslate nohighlight">\(D_l^c=r D_s^c\)</span>3. <span class="math notranslate nohighlight">\(D_l^c\rightarrow z_l\)</span> with
-default cosmology</p></td>
+<td><p>(i) <span class="math notranslate nohighlight">\(r\)</span> from <span class="math notranslate nohighlight">\(P(x)=30x^2(1-x)^2\)</span> (ii) Sacling: <span class="math notranslate nohighlight">\(D_l^c=r D_s^c\)</span> (iii) <span class="math notranslate nohighlight">\(D_l^c\rightarrow z_l\)</span>
+with default cosmology</p></td>
 <td><p>[0,<span class="math notranslate nohighlight">\(z_s\)</span>]</p></td>
 </tr>
 <tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\sigma\)</span>: velocity dispersion</p></td>
-<td><p>km s-1</p></td>
-<td><p><span class="math notranslate nohighlight">\(\pi(\sigma_l, z_l)=\phi(\sigma_l, z_l)\frac{dV(z_l)}{dz_l}\)</span>refer to <a class="reference external" href="https://arxiv.org/pdf/2204.08732.pdf">Wempe et al.
+<td><p>km s^-1</p></td>
+<td><p><span class="math notranslate nohighlight">\(\pi(\sigma_l, z_l)=\phi(\sigma_l, z_l)\frac{dV(z_l)}{dz_l}\)</span> refer to <a class="reference external" href="https://arxiv.org/pdf/2204.08732.pdf">Wempe et al.
 2022</a></p></td>
 <td><p>[0,600]</p></td>
 </tr>
 <tr class="row-even"><td><p><span class="math notranslate nohighlight">\(q\)</span>: axis-ratio</p></td>
 <td><p>None</p></td>
-<td><p>1. <span class="math notranslate nohighlight">\(b\)</span> from Rayleigh distribution,<span class="math notranslate nohighlight">\(P(b)=\frac{b}{s^2} \exp(-\frac{b^2}{2s^2})\)</span>where
-<span class="math notranslate nohighlight">\(s=0.38-0.09177a\)</span> and<span class="math notranslate nohighlight">\(a=\sigma/161\)</span>2. <span class="math notranslate nohighlight">\(q=1-b\)</span></p></td>
+<td><p>(i) <span class="math notranslate nohighlight">\(b\)</span> from Rayleigh distribution, <span class="math notranslate nohighlight">\(P(b)=\frac{b}{s^2} \exp(-\frac{b^2}{2s^2})\)</span> where
+<span class="math notranslate nohighlight">\(s=0.38-0.09177a\)</span> and <span class="math notranslate nohighlight">\(a=\sigma/161\)</span> (ii) <span class="math notranslate nohighlight">\(q=1-b\)</span></p></td>
 <td><p>[0.2,1]</p></td>
 </tr>
 </tbody>
@@ -275,20 +274,40 @@ e_1 &= \frac{1-q}{1+q} \cos(2\phi) \\
 e_2 &= \frac{1-q}{1+q} \sin(2\phi)
 \end{split}\tag{6}
 \end{equation}</span></p>
-</section>
-</section>
+<p>Distribution of the lens parameters are shown in the following plots.</p>
+<p align="center"><p><img alt="zs params" class="no-scaled-link" src="_images/lens_params.png" style="width: 100%;" /></p>
+</p></section>
 <section id="Sampling-of-Source-Position">
-<h1>Sampling of Source Position<a class="headerlink" href="#Sampling-of-Source-Position" title="Link to this heading"></a></h1>
-<p>Source position (<span class="math notranslate nohighlight">\(\beta\)</span>) is sampled from a uniform distribution within the caustic region of the source plane. The caustic boundary is defined as the region in the source plane where the magnification of the lensed images is infinite. The caustic region is determined by the lens parameters and the source redshift. The caustic region is calculated using <code class="docutils literal notranslate"><span class="pre">Lenstronomy</span></code>. The following figure shows the source position and image positions in caustic region, <a class="reference external" href="https://www.researchgate.net/figure/Deployment-of-multiple-images-for-a-strong-elliptical-lens-a-Source-plane-view-with_fig2_41398875">img
-ref</a>. The image below illustrates the formation of multiple images by a strong elliptical lens. Panel (a) shows the view in the source plane, where different source positions are marked by colored dots, and the lines depict the lensing caustics. Panel (b) presents the view in the image plane as observed by an observer; here, the dotted lines represent critical
-lines corresponding to the given source distance. The colored multiple images in the image plane correspond to the varying positions of the source in the source plane. As the source moves closer to a caustic, the number of multiple images increases.</p>
-<p align="center"><p><img alt="Your Logo" class="no-scaled-link" src="_images/caustic.png" style="width: 80%;" /></p>
+<h2>Sampling of Source Position<a class="headerlink" href="#Sampling-of-Source-Position" title="Link to this heading"></a></h2>
+<p>The source position (<span class="math notranslate nohighlight">\(\beta\)</span>) is sampled uniformly from within and around the caustic region in the source plane. This region, which refer I will refer to as <code class="docutils literal notranslate"><span class="pre">caustic</span> <span class="pre">double</span></code>, is defined by the boundary within which a point source generates multiple images (two or more). The shape and size of this boundary depend on the lens parameters and the redshift of the source. The area in the source plane that results in the formation of multiple images is accurately determined using the
+Lenstronomy software.</p>
+<p>The animated figure below demonstrates how the source position and the resulting image positions vary within and around the caustic region, showcasing the process of multiple image formation by a elliptical lens. The megenta point indicates the varying position of the source within the source plane, and the orange points are the corresponding lensed image positions. The green line delineates the caustic boundary, the red line signify critical lines at the image plane, and blue shaded area is the
+<code class="docutils literal notranslate"><span class="pre">caustic</span> <span class="pre">double</span></code> region. As the source drifts closer to a caustic line and beyond, the observed number of multiple images correspondingly decreases, illustrating the dynamic nature of gravitational lensing.</p>
+<p align="center"><p><img alt="source position" class="no-scaled-link" src="_images/moving_source.gif" style="width: 80%;" /></p>
 </p><p>Souce position in lens plane : <span class="math notranslate nohighlight">\(\beta = [x,y] = [\eta\,cos(\phi),\eta\,sin(\phi)]\)</span>. Sampling methods is given in the following table.</p>
-<p><strong>Table III: Source Position Parameters</strong> |Parameter | unit | sampling method | | :-: | :-: | :-: | | <span class="math notranslate nohighlight">\(\eta\)</span> | <span class="math notranslate nohighlight">\(\theta_E\)</span> | within caustic | | <span class="math notranslate nohighlight">\(\phi\)</span> | radian | within caustic |</p>
+<p><strong>Table III: Source Position Parameters</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>unit</p></th>
+<th class="head"><p>sampling method</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(x\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\theta_E\)</span></p></td>
+<td><p>within the double caustic</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(y\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\theta_E\)</span></p></td>
+<td><p>within the double caustic</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="Calculation-of-Images-properties">
 <h2>Calculation of Images properties<a class="headerlink" href="#Calculation-of-Images-properties" title="Link to this heading"></a></h2>
-<p>The properties of the lensed images, such as the magnifications (<span class="math notranslate nohighlight">\(\mu_i\)</span>) and time delays (<span class="math notranslate nohighlight">\(\Delta t_i\)</span>), are calculated using the lens and source parameters. The magnification of the <span class="math notranslate nohighlight">\(i_{\text{th}}\)</span> image is given by <span class="math notranslate nohighlight">\(\mu_i = \frac{1}{det(A)}\)</span>, where <span class="math notranslate nohighlight">\(A\)</span> is the Jacobian matrix of the lens mapping. The time delay between the <span class="math notranslate nohighlight">\(i_{\text{th}}\)</span> image and the primary image is given by
-<span class="math notranslate nohighlight">\(\Delta t_i = \frac{1+z_L}{c} \frac{D_l^c D_s^c}{D_{ls}^c} \frac{1}{2} (|\beta-\beta_i|^2-\theta_E^2)\)</span>, where <span class="math notranslate nohighlight">\(\beta_i\)</span> is the position of the <span class="math notranslate nohighlight">\(i_{\text{th}}\)</span> image in the source plane. The primary image is the image with the smallest absolute value of the magnification. The time delay is calculated with respect to the primary image.</p>
+<p>The properties of the lensed images, such as the magnifications (<span class="math notranslate nohighlight">\(\mu_i\)</span>), time delays (<span class="math notranslate nohighlight">\(\Delta t_i\)</span>) and morse phase (<span class="math notranslate nohighlight">\(n_i\)</span>), are calculated using the lens and source parameters.</p>
 <section id="Montecarlo-integration-(lensed-events)">
 <h3>Montecarlo integration (lensed events)<a class="headerlink" href="#Montecarlo-integration-(lensed-events)" title="Link to this heading"></a></h3>
 <ul class="simple">
@@ -322,7 +341,7 @@ R_L &= \mathcal{N}^U \left< \,P_{det}^{max(\rho)_1} \,P_{det}^{max(\rho)_2} \,\r
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="GW_equations.html" class="btn btn-neutral float-left" title="GW event sampling (Analytical formulation)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="GW_equations.html" class="btn btn-neutral float-left" title="Gravitational wave events sampling (Analytical formulation)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="Lensed_equations.html" class="btn btn-neutral float-right" title="Lensed event sampling (Analytical formulation)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

@@ -28,7 +28,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="ler.rates" href="autoapi/ler/rates/index.html" />
-    <link rel="prev" title="Lensed gravitational wave event rates" href="Lensed_events.html" /> 
+    <link rel="prev" title="Lensed event rates" href="Lensed_events.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,9 +55,8 @@
 <li class="toctree-l1"><a class="reference internal" href="Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GW_equations.html">GW event sampling (Analytical formulation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html#Sampling-of-Source-Position">Sampling of Source Position</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Lensed event sampling (Analytical formulation)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Initial-setup">Initial setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Optical-depth">Optical depth</a><ul>
@@ -69,10 +68,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#Optical-depth-for-SIE-lens">Optical depth for SIE lens</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Rate-equation-(statistical-formulation)">Rate equation (statistical formulation)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#The-order-of-sampling-and-rate-calculation-steps-in-LeR-are-listed-below.">The order of sampling and rate calculation steps in LeR are listed below.</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#Rate-equation-(statistical-formulation)">Rate equation (statistical formulation)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#The-order-of-sampling-and-rate-calculation-steps-in-LeR-are-listed-below.">The order of sampling and rate calculation steps in LeR are listed below.</a></li>
 </ul>
 </li>
 </ul>
@@ -121,7 +118,7 @@
 <p>Note: I will interchangeably use terms like observable events and detectable events.</p>
 <p>Define all the parameters involved.</p>
 <ul class="simple">
-<li><p>Source parameters: <span class="math notranslate nohighlight">\(\theta \in \{\)</span> <span class="math notranslate nohighlight">\(m_1\)</span> (mass of the heavier one), <span class="math notranslate nohighlight">\(m_2\)</span> (mass of the lighter one), <span class="math notranslate nohighlight">\(D_l\)</span> (luminosity distance), <span class="math notranslate nohighlight">\(\iota\)</span> (inclination-angle), <span class="math notranslate nohighlight">\(\phi\)</span> (phase-of-coalescence), <span class="math notranslate nohighlight">\(\psi\)</span> (polarization-angle), <span class="math notranslate nohighlight">\(ra\)</span> (right-ascension), <span class="math notranslate nohighlight">\(dec\)</span> (declination) <span class="math notranslate nohighlight">\(\}\)</span></p></li>
+<li><p>Source parameters: <span class="math notranslate nohighlight">\(\theta \in \{\)</span> <span class="math notranslate nohighlight">\(m_1\)</span> (mass of the heavier one), <span class="math notranslate nohighlight">\(m_2\)</span> (mass of the lighter one), <span class="math notranslate nohighlight">\(\iota\)</span> (inclination-angle), <span class="math notranslate nohighlight">\(\phi\)</span> (phase-of-coalescence), <span class="math notranslate nohighlight">\(\psi\)</span> (polarization-angle), <span class="math notranslate nohighlight">\(ra\)</span> (right-ascension), <span class="math notranslate nohighlight">\(dec\)</span> (declination) <span class="math notranslate nohighlight">\(\}\)</span> and <span class="math notranslate nohighlight">\(z_s\)</span> : red-shift of the source.</p></li>
 <li><p>Lens parameters: <span class="math notranslate nohighlight">\(\theta_L \in \{\)</span> <span class="math notranslate nohighlight">\(\sigma\)</span> (velocity-dispersion), <span class="math notranslate nohighlight">\(q\)</span> (axis-ratio), <span class="math notranslate nohighlight">\(\psi\)</span> (axis-rotation), <span class="math notranslate nohighlight">\(\gamma\)</span> (spectral-index), <span class="math notranslate nohighlight">\([\gamma_1,\gamma_2]\)</span> (external-shear), <span class="math notranslate nohighlight">\([e_1,e_2]\)</span> (ellipticity), <span class="math notranslate nohighlight">\(\beta\)</span> (source position) <span class="math notranslate nohighlight">\(\}\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(z_L\)</span> : red-shift of the galaxy lens</p></li>
 <li><p>image param: <span class="math notranslate nohighlight">\(\{\)</span> <span class="math notranslate nohighlight">\(\mu_i\)</span> (magnification), <span class="math notranslate nohighlight">\(dt_i\)</span> (time-delay), <span class="math notranslate nohighlight">\(n_i\)</span> (morse-phase) <span class="math notranslate nohighlight">\(\}\)</span>. There is subscript <span class="math notranslate nohighlight">\(i\)</span> because there can be multiple images.</p></li>
@@ -260,21 +257,10 @@ P(SL|z_s) &=  \int_0^{z_s} \Phi_{SIE}(z_l) dz_l \\
 <p>The final equation of the observed rate of lensed events is shown below. Note that, <span class="math notranslate nohighlight">\(z_s\)</span> is sampled from its prior distribution and then rejection sampled with respect to optical depth.</p>
 <p><span class="math">\begin{equation}
 \begin{split}
-\mathcal{R}_L &= N_2 \bigg< P(obs|\theta, \theta_L, \beta, z_s, SL) \bigg>_{z_s\in P(z_s|SL), \theta\in P(\theta), \theta_L\in P(\theta_L|z_s, SL), \beta\in P(\beta|\theta_L, z_s, SL)} \\
-& \text{But in LeR implementation,} \\
-\mathcal{R}_L &= N_2 \bigg< P(obs|\theta, \theta_L, \beta, z_s, SL) \bigg>_{z_s\in P_1;\; \theta\in P_2;\; z_l,\sigma,q\in P_3;\; \beta,e_1,e_2,\gamma_1,\gamma_2,\gamma\in P_4}
+\mathcal{R}_L &= N_2 \bigg< P(obs|\theta, \theta_L, \beta, z_s, SL) \bigg>_{z_s\in P(z_s|SL), \theta\in P(\theta), \theta_L\in P(\theta_L|z_s, SL), \beta\in P(\beta|\theta_L, z_s, SL)}
 \end{split} \tag{13}
 \end{equation}</span></p>
 <p><span class="math notranslate nohighlight">\(P(obs|\theta, \theta_L, \beta, z_s, SL)\)</span> checks whether the event is detectable or not.</p>
-<p>Prior distributions are given below.</p>
-<p><span class="math">\begin{equation}
-\begin{split}
-P_1 &= P(z_s|SL) \\
-P_2 &= P(\theta) \\
-P_3 &= P(z_l,\sigma,q|z_s, SL) \\
-P_4 &= P(\beta,e_1,e_2,\gamma_1,\gamma_2,\gamma|\theta_L, z_s, SL)
-\end{split} \tag{14}
-\end{equation}</span></p>
 <p>Where the sampling priors can be further simplified as follows,</p>
 <p><span class="math">\begin{equation}
 \begin{split}
@@ -285,8 +271,9 @@ P(\beta|z_s, \theta_L, SL) &= P(SL|z_s, \theta_L, \beta)\, P(\beta|z_s, \theta_L
 \end{equation}</span></p>
 <p>This allows <span class="math notranslate nohighlight">\(z_s\)</span> to be sampled from the astrophysical prior, <span class="math notranslate nohighlight">\(P(z_s)\)</span>, and then later rejection sample with respect to optical depth, <span class="math notranslate nohighlight">\(P(SL|z_s)\)</span>. The same is the case for <span class="math notranslate nohighlight">\(\theta_L\)</span> (<span class="math notranslate nohighlight">\(z_l,\sigma,q\)</span>). The strong lensing condition is applied through rejection sampling with respect to <span class="math notranslate nohighlight">\(\phi^{SIE}_{CUT}(q)\)</span> (<span class="math notranslate nohighlight">\(\propto \theta_E^2\,\phi^{SIE}_{CUT}\)</span>). For the source position, <span class="math notranslate nohighlight">\(\beta\)</span>, it is sampled within the caustic and then checked whether it has 2 or
 more images or not.</p>
+</section>
 <section id="The-order-of-sampling-and-rate-calculation-steps-in-LeR-are-listed-below.">
-<h3>The order of sampling and rate calculation steps in LeR are listed below.<a class="headerlink" href="#The-order-of-sampling-and-rate-calculation-steps-in-LeR-are-listed-below." title="Link to this heading"></a></h3>
+<h2>The order of sampling and rate calculation steps in LeR are listed below.<a class="headerlink" href="#The-order-of-sampling-and-rate-calculation-steps-in-LeR-are-listed-below." title="Link to this heading"></a></h2>
 <ol class="arabic simple">
 <li><p>Sample <span class="math notranslate nohighlight">\(z_s\)</span> from <span class="math notranslate nohighlight">\(\frac{R(z_s)}{N_1}\)</span>. And apply rejection sampling with optical depth, <span class="math notranslate nohighlight">\(P(SL|z_s)\)</span>. Other source parameters are sampled separately, <span class="math notranslate nohighlight">\(P(\theta)\)</span>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(z_l\)</span> from <span class="math notranslate nohighlight">\(P(z_l|z_s)\)</span>.</p></li>
@@ -294,7 +281,8 @@ more images or not.</p>
 <li><p><span class="math notranslate nohighlight">\(q\)</span> from <span class="math notranslate nohighlight">\(P(q|\sigma)\)</span>.</p></li>
 <li><p>Calculation of Einstein radius and apply lensing condition to the sampled lens parameters, <span class="math notranslate nohighlight">\(P(SL|z_s, z_l, \sigma, q) \propto \theta_E^2\,\phi^{SIE}_{CUT}\)</span>.</p></li>
 <li><p>Other lens parameters (<span class="math notranslate nohighlight">\(e_1\)</span>, <span class="math notranslate nohighlight">\(e_2\)</span>, <span class="math notranslate nohighlight">\(\gamma_1\)</span>, <span class="math notranslate nohighlight">\(\gamma_2\)</span>, <span class="math notranslate nohighlight">\(\gamma\)</span>) are sampled independent of the SL condition, <span class="math notranslate nohighlight">\(P(e_1,e_2,\gamma_1,\gamma_2,\gamma)\)</span>. But, this will be rejection sampled later along with the image position.</p></li>
-<li><p>Draw image position, <span class="math notranslate nohighlight">\(\beta\)</span>, from within the caustic boundary and solve the lens equation. Accept it if it results in 2 or more images, otherwise resample <span class="math notranslate nohighlight">\(\beta\)</span>. Sometimes (once in 2-3 million), the 2 or more images condition cannot be satisfied, so resample <span class="math notranslate nohighlight">\(e_1,e_2,\gamma_1,\gamma_2,\gamma\)</span> again and repeat the process.</p></li>
+<li><p>Draw image position, <span class="math notranslate nohighlight">\(\beta\)</span>, from within the caustic boundary and solve the lens equation. Accept it if it results in 2 or more images, otherwise resample <span class="math notranslate nohighlight">\(\beta\)</span>.</p></li>
+<li><p>Sometimes (once in 100-200 thousand), the strong lensing condition cannot be satisfied. For these particular events, resample lens parameters and draw image positions, i.e. repeat steps 2-7.</p></li>
 <li><p>Calculate the magnification, <span class="math notranslate nohighlight">\(\mu_i\)</span>, time-delay, <span class="math notranslate nohighlight">\(dt_i\)</span> and morse phase, <span class="math notranslate nohighlight">\(n_i\)</span> for each of the lensed event.</p></li>
 <li><p>Modify the luminosity distance, <span class="math notranslate nohighlight">\(D_l\)</span> to <span class="math notranslate nohighlight">\(D_l^{eff}=D_l/\sqrt{|\mu_i|}\)</span>, and geocent_time to <span class="math notranslate nohighlight">\(t_{eff}=t_{geocent}+dt_i\)</span>.</p></li>
 <li><p>Calculate SNR with <a class="reference external" href="https://gwsnr.readthedocs.io/en/latest/">gwsnr</a></p></li>
@@ -303,13 +291,12 @@ more images or not.</p>
 </ol>
 </section>
 </section>
-</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Lensed_events.html" class="btn btn-neutral float-left" title="Lensed gravitational wave event rates" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Lensed_events.html" class="btn btn-neutral float-left" title="Lensed event rates" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="autoapi/ler/rates/index.html" class="btn btn-neutral float-right" title="ler.rates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

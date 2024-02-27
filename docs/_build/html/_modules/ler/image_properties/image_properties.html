@@ -51,9 +51,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">GW event sampling (Analytical formulation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html#Sampling-of-Source-Position">Sampling of Source Position</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
@@ -366,11 +365,6 @@
                     <span class="n">n_image_i</span><span class="p">,</span>
                     <span class="n">determinant_i</span><span class="p">,</span>
                     <span class="n">trace_i</span><span class="p">,</span>
-                    <span class="n">e1_i</span><span class="p">,</span>
-                    <span class="n">e2_i</span><span class="p">,</span>
-                    <span class="n">gamma_i</span><span class="p">,</span>
-                    <span class="n">gamma1_i</span><span class="p">,</span>
-                    <span class="n">gamma2_i</span><span class="p">,</span>
                     <span class="n">iter_i</span><span class="p">,</span>
                 <span class="p">)</span> <span class="o">=</span> <span class="n">result</span>
 
@@ -401,18 +395,13 @@
                 <span class="n">traces</span><span class="p">[</span><span class="n">iter_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span>
                 <span class="n">x_source</span><span class="p">[</span><span class="n">iter_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_source_i</span>
                 <span class="n">y_source</span><span class="p">[</span><span class="n">iter_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_source_i</span>
-                <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;e1&quot;</span><span class="p">][</span><span class="n">iter_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">e1_i</span>
-                <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;e2&quot;</span><span class="p">][</span><span class="n">iter_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">e2_i</span>
-                <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;gamma&quot;</span><span class="p">][</span><span class="n">iter_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">gamma_i</span>
-                <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;gamma1&quot;</span><span class="p">][</span><span class="n">iter_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">gamma1_i</span>
-                <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;gamma2&quot;</span><span class="p">][</span><span class="n">iter_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">gamma2_i</span>
 
         <span class="c1"># time-delays: convert to positive values</span>
         <span class="c1"># time-delays will be relative to the first arrived signal of an lensed event</span>
         <span class="n">time_delays</span> <span class="o">=</span> <span class="n">time_delays</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">time_delays</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">]])</span><span class="o">.</span><span class="n">T</span> <span class="c1"># this is alright if time delays are already sorted</span>
         
         <span class="c1"># select only strongly lensed events are selected</span>
-        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">n_images</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">),</span> <span class="s2">&quot;There are events with no images!&quot;</span>
+        <span class="c1"># assert np.all(n_images &gt;= 2), &quot;There are events with no images!&quot;</span>
 
         <span class="c1"># image type classification (morse phase)</span>
         <span class="n">number_of_lensed_events</span> <span class="o">=</span> <span class="n">size</span>
@@ -428,6 +417,8 @@
                     <span class="n">image_type</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
                 <span class="k">elif</span> <span class="n">traces</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">image_type</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">image_type</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
         <span class="c1"># Return a dictionary with all of the lens information but also the BBH parameters from gw_param</span>
         <span class="n">image_parameters</span> <span class="o">=</span> <span class="p">{</span>

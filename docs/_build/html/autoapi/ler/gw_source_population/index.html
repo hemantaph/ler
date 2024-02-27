@@ -53,9 +53,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">GW event sampling (Analytical formulation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html#Sampling-of-Source-Position">Sampling of Source Position</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
@@ -1641,7 +1640,7 @@ e.g. ‘BBH’, ‘BNS’, ‘NSBH’</p>
 </dd>
 <dt><strong>source_priors, source_priors_params</strong><span class="classifier"><cite>dict</cite>, <cite>dict</cite></span></dt><dd><p>Dictionary of prior sampler functions and its input parameters.
 Check for available priors and corresponding input parameters by running,
-&gt;&gt;&gt; from ler.gw_source_population import CompactBinaryPopulation
+&gt;&gt;&gt; from ler.gw_source_population import CBCSourceParameterDistribution
 &gt;&gt;&gt; cbc = CompactBinaryPopulation()
 &gt;&gt;&gt; cbc.available_gw_prior_list_and_its_params()
 # To check the current chosen priors and its parameters, run,
@@ -1812,7 +1811,7 @@ distribution</p></td>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_gw_prior_list_and_its_params</span></span><a class="headerlink" href="#ler.gw_source_population.CBCSourceParameterDistribution.available_gw_prior_list_and_its_params" title="Link to this definition"></a></dt>
 <dd><p>Dictionary with list all the available priors and it’s corresponding parameters. This is an immutable instance attribute.</p>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CompactBinaryPopulation</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceParameterDistribution</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CompactBinaryPopulation</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">priors</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">available_gw_prior_list_and_its_params</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">priors</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>  <span class="c1"># type of priors</span>
@@ -2440,7 +2439,7 @@ default: 0.0</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.gw_source_population.CBCSourceParameterDistribution.binary_masses_BNS_bimodal">
 <span class="sig-name descname"><span class="pre">binary_masses_BNS_bimodal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.643</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">muL</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.352</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaL</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">muR</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.88</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaR</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_new</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.binary_masses_BNS_bimodal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.CBCSourceParameterDistribution.binary_masses_BNS_bimodal" title="Link to this definition"></a></dt>
-<dd><p>Function to sample source mass1 and mass2 from bimodal distribution. Refer to Will M. Farr et al. 2020 Eqn. 6</p>
+<dd><p>Function to sample source mass1 and mass2 from bimodal distribution. Refer to Will M. Farr et al. 2020 Eqn. 6, <a class="reference external" href="https://arxiv.org/pdf/2005.00032.pdf">https://arxiv.org/pdf/2005.00032.pdf</a> .</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>

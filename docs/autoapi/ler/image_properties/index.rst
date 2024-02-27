@@ -106,7 +106,7 @@ Functions
 
    .. rubric:: Examples
 
-   >>> from ler.multiprocessing_routine import solve_lens_equation1
+   >>> from ler.image_properties.multiprocessing_routine import solve_lens_equation
    >>> import numpy as np
    >>> from multiprocessing import Pool
    >>> # lens parameters input contains 12 parameters [e1, e2, gamma, gamma1, gamma2, zl, zs, einstein_radius, iteration, lens_model_list]
@@ -522,7 +522,7 @@ Functions
 
    .. rubric:: Examples
 
-   >>> from ler.multiprocessing_routine import solve_lens_equation1
+   >>> from ler.image_properties.multiprocessing_routine import solve_lens_equation
    >>> import numpy as np
    >>> from multiprocessing import Pool
    >>> # lens parameters input contains 12 parameters [e1, e2, gamma, gamma1, gamma2, zl, zs, einstein_radius, iteration, lens_model_list]

@@ -24,7 +24,7 @@ Classes
 
 
 
-.. py:class:: LeR(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=25000, cosmology=None, snr_finder='gwsnr', json_file_names=None, directory='./interpolator_pickle', verbose=True, **kwargs)
+.. py:class:: LeR(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=25000, cosmology=None, snr_finder='gwsnr', json_file_names=None, interpolator_directory='./interpolator_pickle', ler_directory='./ler_data', verbose=True, **kwargs)
 
 
    Bases: :py:obj:`ler.lens_galaxy_population.LensGalaxyParameterDistribution`
@@ -67,7 +67,7 @@ Classes
 
        **json_file_names: `dict`**
            names of the json files to strore the necessary parameters.
-           default json_file_names = {'ler_param': './LeR_params.json', 'unlensed_param': './unlensed_param.json', 'unlensed_param_detectable': './unlensed_param_detectable.json'}.
+           default json_file_names = {'ler_param': 'LeR_params.json', 'unlensed_param': 'unlensed_param.json', 'unlensed_param_detectable': 'unlensed_param_detectable.json'}.
 
        **kwargs** : `keyword arguments`
            Note : kwargs takes input for initializing the :class:`~ler.lens_galaxy_population.LensGalaxyParameterDistribution`, :meth:`~gwsnr_intialization`.
@@ -548,12 +548,36 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:attribute:: directory
+   .. py:attribute:: interpolator_directory
 
       
       ``str``
 
       Directory to store the interpolators.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: ler_directory
+
+      
+      ``str``
+
+      Directory to store the parameters.
 
 
 
@@ -752,7 +776,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: store_ler_params(output_jsonfile='./ler_params.json')
+   .. py:method:: store_ler_params(output_jsonfile='ler_params.json')
 
       
       Function to store the all the necessary parameters. This is useful for reproducing the results. All the parameters stored are in string format to make it json compatible.
@@ -800,7 +824,7 @@ Classes
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
-              default output_jsonfile = './unlensed_params.json'.
+              default output_jsonfile = 'unlensed_params.json'.
 
       :Returns:
 
@@ -846,7 +870,7 @@ Classes
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
-              default output_jsonfile = './unlensed_params.json'.
+              default output_jsonfile = 'unlensed_params.json'.
 
       :Returns:
 
@@ -869,7 +893,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: unlensed_rate(unlensed_param=None, snr_threshold=8.0, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, threshold_snr_recalculation=7.0)
+   .. py:method:: unlensed_rate(unlensed_param=None, snr_threshold=8.0, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, threshold_snr_recalculation=6.0)
 
       
       Function to calculate the unlensed rate. This function also stores the parameters of the detectable events in json file.
@@ -879,7 +903,7 @@ Classes
 
           **unlensed_param** : `dict` or `str`
               dictionary of GW source parameters or json file name.
-              default unlensed_param = './unlensed_params.json'.
+              default unlensed_param = 'unlensed_params.json'.
 
           **snr_threshold** : `float`
               threshold for detection signal to noise ratio.
@@ -887,12 +911,19 @@ Classes
 
           **output_jsonfile** : `str`
               json file name for storing the parameters of the detectable events.
-              default output_jsonfile = './unlensed_params_detectable.json'.
+              default output_jsonfile = 'unlensed_params_detectable.json'.
 
           **detectability_condition** : `str`
               detectability condition.
               default detectability_condition = 'step_function'.
               other options are 'pdet'.
+
+          **snr_recalculation** : `bool`
+              if True, the SNR of centain events (snr>threshold_snr_recalculation)will be recalculate with 'inner product'. This is useful when the snr is calculated with 'ann' method.
+              default snr_recalculation = False.
+
+          **threshold_snr_recalculation** : `float`
+              threshold for recalculation of detection signal to noise ratio.
 
       :Returns:
 
@@ -942,7 +973,7 @@ Classes
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
-              default output_jsonfile = './lensed_params.json'.
+              default output_jsonfile = 'lensed_params.json'.
 
       :Returns:
 
@@ -988,7 +1019,7 @@ Classes
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
-              default output_jsonfile = './lensed_params.json'.
+              default output_jsonfile = 'lensed_params.json'.
 
       :Returns:
 
@@ -1011,7 +1042,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lensed_rate(lensed_param=None, snr_threshold=[8.0, 8.0], num_img=[1, 1], output_jsonfile=None, nan_to_num=True, detectability_condition='step_function', snr_recalculation=False, threshold_snr_recalculation=[7.0, 7.0])
+   .. py:method:: lensed_rate(lensed_param=None, snr_threshold=[8.0, 8.0], num_img=[1, 1], output_jsonfile=None, nan_to_num=True, detectability_condition='step_function', snr_recalculation=False, threshold_snr_recalculation=[6.0, 6.0])
 
       
       Function to calculate the lensed rate. This function also stores the parameters of the detectable events in json file.
@@ -1021,7 +1052,7 @@ Classes
 
           **lensed_param** : `dict` or `str`
               dictionary of GW source parameters or json file name.
-              default lensed_param = './lensed_params.json'.
+              default lensed_param = 'lensed_params.json'.
 
           **snr_threshold** : `float`
               threshold for detection signal to noise ratio.
@@ -1033,7 +1064,7 @@ Classes
 
           **output_jsonfile** : `str`
               json file name for storing the parameters of the detectable events.
-              default output_jsonfile = './lensed_params_detectable.json'.
+              default output_jsonfile = 'lensed_params_detectable.json'.
 
           **nan_to_num** : `bool`
               if True, nan values will be converted to 0.
@@ -1043,6 +1074,13 @@ Classes
               detectability condition.
               default detectability_condition = 'step_function'.
               other options are 'pdet'.
+
+          **snr_recalculation** : `bool`
+              if True, the SNR of centain events (snr>threshold_snr_recalculation)will be recalculate with 'inner product'. This is useful when the snr is calculated with 'ann' method.
+              default snr_recalculation = False.
+
+          **threshold_snr_recalculation** : `float`
+              threshold for recalculation of detection signal to noise ratio.
 
       :Returns:
 
@@ -1121,7 +1159,7 @@ Classes
 
           **unlensed_param** : `dict` or `str`
               dictionary of GW source parameters or json file name.
-              default unlensed_param = './unlensed_params.json'.
+              default unlensed_param = 'unlensed_params.json'.
 
           **snr_threshold_unlensed** : `float`
               threshold for detection signal to noise ratio.
@@ -1129,11 +1167,11 @@ Classes
 
           **output_jsonfile_unlensed** : `str`
               json file name for storing the parameters of the detectable events.
-              default output_jsonfile = './unlensed_params_detectable.json'.
+              default output_jsonfile = 'unlensed_params_detectable.json'.
 
           **lensed_param** : `dict` or `str`
               dictionary of GW source parameters or json file name.
-              default lensed_param = './lensed_params.json'.
+              default lensed_param = 'lensed_params.json'.
 
           **snr_threshold_lensed** : `float`
               threshold for detection signal to noise ratio.
@@ -1141,7 +1179,7 @@ Classes
 
           **output_jsonfile_lensed** : `str`
               json file name for storing the parameters of the detectable events.
-              default output_jsonfile = './lensed_params_detectable.json'.
+              default output_jsonfile = 'lensed_params_detectable.json'.
 
           **detectability_condition** : `str`
               detectability condition.
@@ -1181,7 +1219,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_unlensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, resume=False, output_jsonfile='./n_unlensed_param_detectable.json', meta_data_file='meta_unlensed.json', event_batch_limit=500, trim_to_size=True)
+   .. py:method:: selecting_n_unlensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, resume=False, output_jsonfile='n_unlensed_param_detectable.json', meta_data_file='meta_unlensed.json', trim_to_size=True)
 
       
       Function to select n unlensed detectable events.
@@ -1203,7 +1241,7 @@ Classes
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
-              default output_jsonfile = './n_unlensed_params_detectable.json'.
+              default output_jsonfile = 'n_unlensed_params_detectable.json'.
 
       :Returns:
 
@@ -1231,7 +1269,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_lensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, num_img=2, resume=False, detectability_condition='step_function', output_jsonfile='./n_lensed_params_detectable.json', meta_data_file='./meta_lensed.json', event_batch_limit=500, trim_to_size=True, nan_to_num=False)
+   .. py:method:: selecting_n_lensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, num_img=2, resume=False, detectability_condition='step_function', output_jsonfile='n_lensed_params_detectable.json', meta_data_file='meta_lensed.json', trim_to_size=True, nan_to_num=False)
 
       
       Function to select n lensed detectable events.

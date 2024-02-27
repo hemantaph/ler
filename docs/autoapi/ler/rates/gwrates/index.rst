@@ -24,7 +24,7 @@ Classes
 
 
 
-.. py:class:: GWRATES(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=25000, cosmology=None, snr_finder='gwsnr', json_file_names=None, directory='./interpolator_pickle', verbose=True, **kwargs)
+.. py:class:: GWRATES(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=25000, cosmology=None, snr_finder='gwsnr', json_file_names=None, interpolator_directory='./interpolator_pickle', ler_directory='./ler_data', verbose=True, **kwargs)
 
 
    Bases: :py:obj:`ler.gw_source_population.CBCSourceParameterDistribution`
@@ -67,7 +67,7 @@ Classes
 
        **json_file_names: `dict`**
            names of the json files to strore the necessary parameters.
-           default json_file_names = {'ler_param': './LeR_params.json', 'gw_param': './gw_param.json', 'gw_param_detectable': './gw_param_detectable.json'}.
+           default json_file_names = {'ler_param': 'LeR_params.json', 'gw_param': 'gw_param.json', 'gw_param_detectable': 'gw_param_detectable.json'}.
 
        **kwargs** : `keyword arguments`
            Note : kwargs takes input for initializing the :class:`~ler.gw_source_population.CBCSourceParameterDistribution`, :meth:`~gwsnr_intialization`.
@@ -610,7 +610,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: store_gwrates_params(output_jsonfile='./gwrates_params.json')
+   .. py:method:: store_gwrates_params(output_jsonfile='gwrates_params.json')
 
       
       Function to store the all the necessary parameters. This is useful for reproducing the results. All the parameters stored are in string format to make it json compatible.
@@ -658,7 +658,7 @@ Classes
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
-              default output_jsonfile = './gw_params.json'.
+              default output_jsonfile = 'gw_params.json'.
 
       :Returns:
 
@@ -704,7 +704,7 @@ Classes
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
-              default output_jsonfile = './gw_params.json'.
+              default output_jsonfile = 'gw_params.json'.
 
       :Returns:
 
@@ -727,7 +727,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: gw_rate(gw_param=None, snr_threshold=8.0, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, threshold_snr_recalculation=7.0)
+   .. py:method:: gw_rate(gw_param=None, snr_threshold=8.0, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, threshold_snr_recalculation=6.0)
 
       
       Function to calculate the gw rate. This function also stores the parameters of the detectable events in json file.
@@ -745,12 +745,19 @@ Classes
 
           **output_jsonfile** : `str`
               json file name for storing the parameters of the detectable events.
-              default output_jsonfile = './gw_params_detectable.json'.
+              default output_jsonfile = 'gw_params_detectable.json'.
 
           **detectability_condition** : `str`
               detectability condition.
               default detectability_condition = 'step_function'.
               other options are 'pdet'.
+
+          **snr_recalculation** : `bool`
+              if True, the SNR of centain events (snr>threshold_snr_recalculation)will be recalculate with 'inner product'. This is useful when the snr is calculated with 'ann' method.
+              default snr_recalculation = False.
+
+          **threshold_snr_recalculation** : `float`
+              threshold for recalculation of detection signal to noise ratio.
 
       :Returns:
 
@@ -781,7 +788,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_gw_detectable_events(size=100, batch_size=None, snr_threshold=8.0, resume=False, output_jsonfile='./gw_params_n_detectable.json')
+   .. py:method:: selecting_n_gw_detectable_events(size=100, batch_size=None, snr_threshold=8.0, resume=False, output_jsonfile='gw_params_n_detectable.json', meta_data_file='meta_gw.json', trim_to_size=True)
 
       
       Function to select n gw detectable events.
@@ -803,7 +810,7 @@ Classes
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
-              default output_jsonfile = './gw_params_detectable.json'.
+              default output_jsonfile = 'gw_params_detectable.json'.
 
       :Returns:
 
