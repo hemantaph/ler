@@ -27,7 +27,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="GW event sampling (Analytical formulation)" href="GW_equations.html" />
+    <link rel="next" title="Gravitational wave events sampling (Analytical formulation)" href="GW_equations.html" />
     <link rel="prev" title="Summary" href="Summary.html" /> 
 </head>
 
@@ -59,7 +59,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#Merger-Rate-Density-Formula">Merger Rate Density Formula</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Merger-Rate-Density-at-Source-Redshift">Merger Rate Density at Source Redshift</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Normalization-of-Merger-Rate-Distribution">Normalization of Merger Rate Distribution</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Sampling-Methods">Sampling Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Sampling-Method">Sampling Method</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#Annual-Rate-of-Detectable-Gravitational-Wave-Events">Annual Rate of Detectable Gravitational Wave Events</a></li>
@@ -72,9 +72,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#Statistical-Form-of-Detectable-Merger-Rate-(Monte-Carlo-Integration)">Statistical Form of Detectable Merger Rate (Monte Carlo Integration)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="GW_equations.html">GW event sampling (Analytical formulation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html#Sampling-of-Source-Position">Sampling of Source Position</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
@@ -146,7 +145,7 @@ effects.</p>
 <li><p>Where <span class="math notranslate nohighlight">\(z_s\)</span> is the redshift of the source.</p></li>
 <li><p>The local merger rate <span class="math notranslate nohighlight">\(\mathcal{R}_O\)</span> and fitting parameters <span class="math notranslate nohighlight">\(b_2\)</span>, <span class="math notranslate nohighlight">\(b_3\)</span>, and <span class="math notranslate nohighlight">\(b_4\)</span> are specific to each model.</p></li>
 </ul>
-<p>The following table provides the local merger rate <span class="math notranslate nohighlight">\(\mathcal{R}_O\)</span> for different compact binary models:</p>
+<p>The following table provides the local merger rate <span class="math notranslate nohighlight">\(\mathcal{R}_O\)</span> for different compact binary models (refer to <a class="reference external" href="https://journals.aps.org/prx/pdf/10.1103/PhysRevX.13.011048">GWTC-3 IV A</a>):</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Model</p></th>
@@ -191,8 +190,8 @@ R_o^U(z_s) = \frac{1}{\mathcal{N}^U} \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \t
 <p>Distribution of <span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span> wrt <span class="math notranslate nohighlight">\(z_s\)</span> is shown below for BBH.</p>
 <p align="center"><p><img alt="zs" src="_images/zs.png" /></p>
 </p></section>
-<section id="Sampling-Methods">
-<h3>Sampling Methods<a class="headerlink" href="#Sampling-Methods" title="Link to this heading"></a></h3>
+<section id="Sampling-Method">
+<h3>Sampling Method<a class="headerlink" href="#Sampling-Method" title="Link to this heading"></a></h3>
 <p>Sampling of the source redshift <span class="math notranslate nohighlight">\(z_s\)</span> is based on the inverse transform sampling method. An interpolation of the inverse cumulative distribution function (CDF) is created and stored for future use, making the sampling process faster and more efficient.</p>
 <p><strong>Note:</strong> The merger rate density models and parameters are subject to updates based on new observational data and theoretical developments.</p>
 </section>
@@ -414,7 +413,7 @@ R_U &= \mathcal{N}^U \left<  P_{\text{det}}(z_s,\theta)\right>_{z_s,\theta \in \
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="Summary.html" class="btn btn-neutral float-left" title="Summary" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="GW_equations.html" class="btn btn-neutral float-right" title="GW event sampling (Analytical formulation)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="GW_equations.html" class="btn btn-neutral float-right" title="Gravitational wave events sampling (Analytical formulation)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

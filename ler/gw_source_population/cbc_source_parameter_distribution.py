@@ -45,7 +45,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
     source_priors, source_priors_params : `dict`, `dict`
         Dictionary of prior sampler functions and its input parameters.
         Check for available priors and corresponding input parameters by running,
-        >>> from ler.gw_source_population import CompactBinaryPopulation
+        >>> from ler.gw_source_population import CBCSourceParameterDistribution
         >>> cbc = CompactBinaryPopulation()
         >>> cbc.available_gw_prior_list_and_its_params()
         # To check the current chosen priors and its parameters, run,
@@ -1092,7 +1092,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         Examples
         ----------
-        >>> from ler.gw_source_population import CompactBinaryPopulation
+        >>> from ler.gw_source_population import CBCSourceParameterDistribution
         >>> cbc = CompactBinaryPopulation()
         >>> priors = cbc.available_gw_prior_list_and_its_params
         >>> priors.keys()  # type of priors

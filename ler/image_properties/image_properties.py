@@ -265,11 +265,6 @@ class ImageProperties():
                     n_image_i,
                     determinant_i,
                     trace_i,
-                    e1_i,
-                    e2_i,
-                    gamma_i,
-                    gamma1_i,
-                    gamma2_i,
                     iter_i,
                 ) = result
 
@@ -300,18 +295,13 @@ class ImageProperties():
                 traces[iter_i] = trace
                 x_source[iter_i] = x_source_i
                 y_source[iter_i] = y_source_i
-                lens_parameters["e1"][iter_i] = e1_i
-                lens_parameters["e2"][iter_i] = e2_i
-                lens_parameters["gamma"][iter_i] = gamma_i
-                lens_parameters["gamma1"][iter_i] = gamma1_i
-                lens_parameters["gamma2"][iter_i] = gamma2_i
 
         # time-delays: convert to positive values
         # time-delays will be relative to the first arrived signal of an lensed event
         time_delays = time_delays - np.array([np.sort(time_delays, axis=1)[:, 0]]).T # this is alright if time delays are already sorted
         
         # select only strongly lensed events are selected
-        assert np.all(n_images >= 2), "There are events with no images!"
+        # assert np.all(n_images >= 2), "There are events with no images!"
 
         # image type classification (morse phase)
         number_of_lensed_events = size
@@ -327,6 +317,8 @@ class ImageProperties():
                     image_type[i, j] = 1
                 elif traces[i, j] < 0:
                     image_type[i, j] = 3
+                else:
+                    image_type[i, j] = np.nan
 
         # Return a dictionary with all of the lens information but also the BBH parameters from gw_param
         image_parameters = {

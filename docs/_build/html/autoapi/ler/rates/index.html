@@ -53,9 +53,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">GW event sampling (Analytical formulation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html#Sampling-of-Source-Position">Sampling of Source Position</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
@@ -1084,7 +1083,7 @@ default resume = False.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ler.rates.LeR">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.rates.</span></span><span class="sig-name descname"><span class="pre">LeR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">int(4)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BBH'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_finder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gwsnr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./interpolator_pickle'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.rates.</span></span><span class="sig-name descname"><span class="pre">LeR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">int(4)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BBH'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_finder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gwsnr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolator_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./interpolator_pickle'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ler_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./ler_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../lens_galaxy_population/index.html#ler.lens_galaxy_population.LensGalaxyParameterDistribution" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.LensGalaxyParameterDistribution</span></code></a></p>
 <p>Class to calculate both the rates of lensed and unlensed events. Please note that parameters of the simulated events are stored in json file but not as an attribute of the class. This saves RAM memory.</p>
 <dl class="field-list">
@@ -1115,7 +1114,7 @@ if ‘custom’, the SNR will be calculated using a custom function.
 The custom function should have input and output as given in GWSNR.snr method.</p>
 </dd>
 <dt><strong>json_file_names: `dict`</strong></dt><dd><p>names of the json files to strore the necessary parameters.
-default json_file_names = {‘ler_param’: ‘./LeR_params.json’, ‘unlensed_param’: ‘./unlensed_param.json’, ‘unlensed_param_detectable’: ‘./unlensed_param_detectable.json’}.</p>
+default json_file_names = {‘ler_param’: ‘LeR_params.json’, ‘unlensed_param’: ‘unlensed_param.json’, ‘unlensed_param_detectable’: ‘unlensed_param_detectable.json’}.</p>
 </dd>
 <dt><strong>kwargs</strong><span class="classifier"><cite>keyword arguments</cite></span></dt><dd><p>Note : kwargs takes input for initializing the <a class="reference internal" href="../lens_galaxy_population/index.html#ler.lens_galaxy_population.LensGalaxyParameterDistribution" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code></a>, <a class="reference internal" href="#ler.rates.LeR.gwsnr_intialization" title="ler.rates.LeR.gwsnr_intialization"><code class="xref py py-meth docutils literal notranslate"><span class="pre">gwsnr_intialization()</span></code></a>.</p>
 </dd>
@@ -1160,7 +1159,7 @@ default json_file_names = {‘ler_param’: ‘./LeR_params.json’, ‘unlensed
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.rates.LeR.json_file_names" title="ler.rates.LeR.json_file_names"><code class="xref py py-attr docutils literal notranslate"><span class="pre">json_file_names</span></code></a></p></td>
 <td><p><cite>dict</cite></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.rates.LeR.directory" title="ler.rates.LeR.directory"><code class="xref py py-attr docutils literal notranslate"><span class="pre">directory</span></code></a></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">directory</span></code></p></td>
 <td><p><cite>str</cite></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.rates.LeR.gw_param_sampler_dict" title="ler.rates.LeR.gw_param_sampler_dict"><code class="xref py py-attr docutils literal notranslate"><span class="pre">gw_param_sampler_dict</span></code></a></p></td>
@@ -1451,10 +1450,17 @@ optimal_snr_net : <cite>numpy.ndarray</cite> or <cite>float</cite></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="ler.rates.LeR.directory">
-<span class="sig-name descname"><span class="pre">directory</span></span><a class="headerlink" href="#ler.rates.LeR.directory" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="ler.rates.LeR.interpolator_directory">
+<span class="sig-name descname"><span class="pre">interpolator_directory</span></span><a class="headerlink" href="#ler.rates.LeR.interpolator_directory" title="Link to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
 <p>Directory to store the interpolators.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ler.rates.LeR.ler_directory">
+<span class="sig-name descname"><span class="pre">ler_directory</span></span><a class="headerlink" href="#ler.rates.LeR.ler_directory" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+<p>Directory to store the parameters.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1530,7 +1536,7 @@ optimal_snr_net : <cite>numpy.ndarray</cite> or <cite>float</cite></p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.LeR.store_ler_params">
-<span class="sig-name descname"><span class="pre">store_ler_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./ler_params.json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.store_ler_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.store_ler_params" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">store_ler_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ler_params.json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.store_ler_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.store_ler_params" title="Link to this definition"></a></dt>
 <dd><p>Function to store the all the necessary parameters. This is useful for reproducing the results. All the parameters stored are in string format to make it json compatible.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1558,7 +1564,7 @@ if True, the function will resume from the last batch.</p>
 <dt><strong>save_batch</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if True, the function will save the parameters in batches. if False, the function will save all the parameters at the end of sampling. save_batch=False is faster.</p>
 </dd>
 <dt><strong>output_jsonfile</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters.
-default output_jsonfile = ‘./unlensed_params.json’.</p>
+default output_jsonfile = ‘unlensed_params.json’.</p>
 </dd>
 </dl>
 </dd>
@@ -1592,7 +1598,7 @@ default size = 100000.</p>
 if True, the function will resume from the last batch.</p>
 </dd>
 <dt><strong>output_jsonfile</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters.
-default output_jsonfile = ‘./unlensed_params.json’.</p>
+default output_jsonfile = ‘unlensed_params.json’.</p>
 </dd>
 </dl>
 </dd>
@@ -1608,23 +1614,28 @@ unlensed_param.keys() = [‘zs’, ‘geocent_time’, ‘ra’, ‘dec’, ‘p
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.LeR.unlensed_rate">
-<span class="sig-name descname"><span class="pre">unlensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unlensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.unlensed_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.unlensed_rate" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">unlensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unlensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.unlensed_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.unlensed_rate" title="Link to this definition"></a></dt>
 <dd><p>Function to calculate the unlensed rate. This function also stores the parameters of the detectable events in json file.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>unlensed_param</strong><span class="classifier"><cite>dict</cite> or <cite>str</cite></span></dt><dd><p>dictionary of GW source parameters or json file name.
-default unlensed_param = ‘./unlensed_params.json’.</p>
+default unlensed_param = ‘unlensed_params.json’.</p>
 </dd>
 <dt><strong>snr_threshold</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>threshold for detection signal to noise ratio.
 e.g. snr_threshold = 8.</p>
 </dd>
 <dt><strong>output_jsonfile</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters of the detectable events.
-default output_jsonfile = ‘./unlensed_params_detectable.json’.</p>
+default output_jsonfile = ‘unlensed_params_detectable.json’.</p>
 </dd>
 <dt><strong>detectability_condition</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>detectability condition.
 default detectability_condition = ‘step_function’.
 other options are ‘pdet’.</p>
+</dd>
+<dt><strong>snr_recalculation</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if True, the SNR of centain events (snr&gt;threshold_snr_recalculation)will be recalculate with ‘inner product’. This is useful when the snr is calculated with ‘ann’ method.
+default snr_recalculation = False.</p>
+</dd>
+<dt><strong>threshold_snr_recalculation</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>threshold for recalculation of detection signal to noise ratio.</p>
 </dd>
 </dl>
 </dd>
@@ -1661,7 +1672,7 @@ default size = 100000.</p>
 if True, the function will resume from the last batch.</p>
 </dd>
 <dt><strong>output_jsonfile</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters.
-default output_jsonfile = ‘./lensed_params.json’.</p>
+default output_jsonfile = ‘lensed_params.json’.</p>
 </dd>
 </dl>
 </dd>
@@ -1695,7 +1706,7 @@ default size = 100000.</p>
 if True, the function will resume from the last batch.</p>
 </dd>
 <dt><strong>output_jsonfile</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters.
-default output_jsonfile = ‘./lensed_params.json’.</p>
+default output_jsonfile = ‘lensed_params.json’.</p>
 </dd>
 </dl>
 </dd>
@@ -1711,13 +1722,13 @@ lensed_param.keys() =</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.LeR.lensed_rate">
-<span class="sig-name descname"><span class="pre">lensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[8.0,</span> <span class="pre">8.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan_to_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[7.0,</span> <span class="pre">7.0]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.lensed_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.lensed_rate" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">lensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[8.0,</span> <span class="pre">8.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan_to_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[6.0,</span> <span class="pre">6.0]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.lensed_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.lensed_rate" title="Link to this definition"></a></dt>
 <dd><p>Function to calculate the lensed rate. This function also stores the parameters of the detectable events in json file.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>lensed_param</strong><span class="classifier"><cite>dict</cite> or <cite>str</cite></span></dt><dd><p>dictionary of GW source parameters or json file name.
-default lensed_param = ‘./lensed_params.json’.</p>
+default lensed_param = ‘lensed_params.json’.</p>
 </dd>
 <dt><strong>snr_threshold</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>threshold for detection signal to noise ratio.
 default snr_threshold = [8.0,8.0].</p>
@@ -1726,7 +1737,7 @@ default snr_threshold = [8.0,8.0].</p>
 default num_img = [1,1].</p>
 </dd>
 <dt><strong>output_jsonfile</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters of the detectable events.
-default output_jsonfile = ‘./lensed_params_detectable.json’.</p>
+default output_jsonfile = ‘lensed_params_detectable.json’.</p>
 </dd>
 <dt><strong>nan_to_num</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if True, nan values will be converted to 0.
 default nan_to_num = True.</p>
@@ -1734,6 +1745,11 @@ default nan_to_num = True.</p>
 <dt><strong>detectability_condition</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>detectability condition.
 default detectability_condition = ‘step_function’.
 other options are ‘pdet’.</p>
+</dd>
+<dt><strong>snr_recalculation</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if True, the SNR of centain events (snr&gt;threshold_snr_recalculation)will be recalculate with ‘inner product’. This is useful when the snr is calculated with ‘ann’ method.
+default snr_recalculation = False.</p>
+</dd>
+<dt><strong>threshold_snr_recalculation</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>threshold for recalculation of detection signal to noise ratio.</p>
 </dd>
 </dl>
 </dd>
@@ -1789,22 +1805,22 @@ It will get the unlensed_rate and lensed_rate from self.json_file_ler_param</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>unlensed_param</strong><span class="classifier"><cite>dict</cite> or <cite>str</cite></span></dt><dd><p>dictionary of GW source parameters or json file name.
-default unlensed_param = ‘./unlensed_params.json’.</p>
+default unlensed_param = ‘unlensed_params.json’.</p>
 </dd>
 <dt><strong>snr_threshold_unlensed</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>threshold for detection signal to noise ratio.
 e.g. snr_threshold = 8.</p>
 </dd>
 <dt><strong>output_jsonfile_unlensed</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters of the detectable events.
-default output_jsonfile = ‘./unlensed_params_detectable.json’.</p>
+default output_jsonfile = ‘unlensed_params_detectable.json’.</p>
 </dd>
 <dt><strong>lensed_param</strong><span class="classifier"><cite>dict</cite> or <cite>str</cite></span></dt><dd><p>dictionary of GW source parameters or json file name.
-default lensed_param = ‘./lensed_params.json’.</p>
+default lensed_param = ‘lensed_params.json’.</p>
 </dd>
 <dt><strong>snr_threshold_lensed</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>threshold for detection signal to noise ratio.
 e.g. snr_threshold = 8.</p>
 </dd>
 <dt><strong>output_jsonfile_lensed</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters of the detectable events.
-default output_jsonfile = ‘./lensed_params_detectable.json’.</p>
+default output_jsonfile = ‘lensed_params_detectable.json’.</p>
 </dd>
 <dt><strong>detectability_condition</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>detectability condition.
 default detectability_condition = ‘step_function’.
@@ -1835,7 +1851,7 @@ other options are ‘pdet’.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.LeR.selecting_n_unlensed_detectable_events">
-<span class="sig-name descname"><span class="pre">selecting_n_unlensed_detectable_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./n_unlensed_param_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_data_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'meta_unlensed.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_batch_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trim_to_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.selecting_n_unlensed_detectable_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.selecting_n_unlensed_detectable_events" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">selecting_n_unlensed_detectable_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'n_unlensed_param_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_data_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'meta_unlensed.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trim_to_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.selecting_n_unlensed_detectable_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.selecting_n_unlensed_detectable_events" title="Link to this definition"></a></dt>
 <dd><p>Function to select n unlensed detectable events.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1850,7 +1866,7 @@ e.g. snr_threshold = 8.</p>
 default resume = False.</p>
 </dd>
 <dt><strong>output_jsonfile</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters.
-default output_jsonfile = ‘./n_unlensed_params_detectable.json’.</p>
+default output_jsonfile = ‘n_unlensed_params_detectable.json’.</p>
 </dd>
 </dl>
 </dd>
@@ -1872,7 +1888,7 @@ param_final.keys() = [‘zs’, ‘geocent_time’, ‘ra’, ‘dec’, ‘phas
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.LeR.selecting_n_lensed_detectable_events">
-<span class="sig-name descname"><span class="pre">selecting_n_lensed_detectable_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./n_lensed_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_data_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./meta_lensed.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_batch_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trim_to_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan_to_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.selecting_n_lensed_detectable_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.selecting_n_lensed_detectable_events" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">selecting_n_lensed_detectable_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'n_lensed_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_data_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'meta_lensed.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trim_to_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan_to_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/ler.html#LeR.selecting_n_lensed_detectable_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.LeR.selecting_n_lensed_detectable_events" title="Link to this definition"></a></dt>
 <dd><p>Function to select n lensed detectable events.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1935,7 +1951,7 @@ e.g. ‘BBH’, ‘BNS’, ‘NSBH’</p>
 </dd>
 <dt><strong>source_priors, source_priors_params</strong><span class="classifier"><cite>dict</cite>, <cite>dict</cite></span></dt><dd><p>Dictionary of prior sampler functions and its input parameters.
 Check for available priors and corresponding input parameters by running,
-&gt;&gt;&gt; from ler.gw_source_population import CompactBinaryPopulation
+&gt;&gt;&gt; from ler.gw_source_population import CBCSourceParameterDistribution
 &gt;&gt;&gt; cbc = CompactBinaryPopulation()
 &gt;&gt;&gt; cbc.available_gw_prior_list_and_its_params()
 # To check the current chosen priors and its parameters, run,
@@ -2106,7 +2122,7 @@ distribution</p></td>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_gw_prior_list_and_its_params</span></span><a class="headerlink" href="#ler.rates.CBCSourceParameterDistribution.available_gw_prior_list_and_its_params" title="Link to this definition"></a></dt>
 <dd><p>Dictionary with list all the available priors and it’s corresponding parameters. This is an immutable instance attribute.</p>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CompactBinaryPopulation</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceParameterDistribution</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CompactBinaryPopulation</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">priors</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">available_gw_prior_list_and_its_params</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">priors</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>  <span class="c1"># type of priors</span>
@@ -2734,7 +2750,7 @@ default: 0.0</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.CBCSourceParameterDistribution.binary_masses_BNS_bimodal">
 <span class="sig-name descname"><span class="pre">binary_masses_BNS_bimodal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.643</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">muL</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.352</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaL</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">muR</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.88</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaR</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_new</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.binary_masses_BNS_bimodal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.CBCSourceParameterDistribution.binary_masses_BNS_bimodal" title="Link to this definition"></a></dt>
-<dd><p>Function to sample source mass1 and mass2 from bimodal distribution. Refer to Will M. Farr et al. 2020 Eqn. 6</p>
+<dd><p>Function to sample source mass1 and mass2 from bimodal distribution. Refer to Will M. Farr et al. 2020 Eqn. 6, <a class="reference external" href="https://arxiv.org/pdf/2005.00032.pdf">https://arxiv.org/pdf/2005.00032.pdf</a> .</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -3032,7 +3048,7 @@ default resume = False.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ler.rates.GWRATES">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.rates.</span></span><span class="sig-name descname"><span class="pre">GWRATES</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">int(4)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BBH'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_finder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gwsnr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./interpolator_pickle'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/gwrates.html#GWRATES"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.GWRATES" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.rates.</span></span><span class="sig-name descname"><span class="pre">GWRATES</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">int(4)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BBH'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_finder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gwsnr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolator_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./interpolator_pickle'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ler_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./ler_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/gwrates.html#GWRATES"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.GWRATES" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../gw_source_population/index.html#ler.gw_source_population.CBCSourceParameterDistribution" title="ler.gw_source_population.CBCSourceParameterDistribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ler.gw_source_population.CBCSourceParameterDistribution</span></code></a></p>
 <p>Class to calculate both the rates of lensed and gw events. Please note that parameters of the simulated events are stored in json file but not as an attribute of the class. This saves RAM memory.</p>
 <dl class="field-list">
@@ -3063,7 +3079,7 @@ if ‘custom’, the SNR will be calculated using a custom function.
 The custom function should have input and output as given in GWSNR.snr method.</p>
 </dd>
 <dt><strong>json_file_names: `dict`</strong></dt><dd><p>names of the json files to strore the necessary parameters.
-default json_file_names = {‘ler_param’: ‘./LeR_params.json’, ‘gw_param’: ‘./gw_param.json’, ‘gw_param_detectable’: ‘./gw_param_detectable.json’}.</p>
+default json_file_names = {‘ler_param’: ‘LeR_params.json’, ‘gw_param’: ‘gw_param.json’, ‘gw_param_detectable’: ‘gw_param_detectable.json’}.</p>
 </dd>
 <dt><strong>kwargs</strong><span class="classifier"><cite>keyword arguments</cite></span></dt><dd><p>Note : kwargs takes input for initializing the <a class="reference internal" href="../gw_source_population/index.html#ler.gw_source_population.CBCSourceParameterDistribution" title="ler.gw_source_population.CBCSourceParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code></a>, <a class="reference internal" href="#ler.rates.GWRATES.gwsnr_intialization" title="ler.rates.GWRATES.gwsnr_intialization"><code class="xref py py-meth docutils literal notranslate"><span class="pre">gwsnr_intialization()</span></code></a>.</p>
 </dd>
@@ -3338,7 +3354,7 @@ optimal_snr_net : <cite>numpy.ndarray</cite> or <cite>float</cite></p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.GWRATES.store_gwrates_params">
-<span class="sig-name descname"><span class="pre">store_gwrates_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gwrates_params.json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/gwrates.html#GWRATES.store_gwrates_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.GWRATES.store_gwrates_params" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">store_gwrates_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gwrates_params.json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/gwrates.html#GWRATES.store_gwrates_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.GWRATES.store_gwrates_params" title="Link to this definition"></a></dt>
 <dd><p>Function to store the all the necessary parameters. This is useful for reproducing the results. All the parameters stored are in string format to make it json compatible.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3366,7 +3382,7 @@ if True, the function will resume from the last batch.</p>
 <dt><strong>save_batch</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if True, the function will save the parameters in batches. if False, the function will save all the parameters at the end of sampling. save_batch=False is faster.</p>
 </dd>
 <dt><strong>output_jsonfile</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters.
-default output_jsonfile = ‘./gw_params.json’.</p>
+default output_jsonfile = ‘gw_params.json’.</p>
 </dd>
 </dl>
 </dd>
@@ -3400,7 +3416,7 @@ default size = 100000.</p>
 if True, the function will resume from the last batch.</p>
 </dd>
 <dt><strong>output_jsonfile</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters.
-default output_jsonfile = ‘./gw_params.json’.</p>
+default output_jsonfile = ‘gw_params.json’.</p>
 </dd>
 </dl>
 </dd>
@@ -3416,7 +3432,7 @@ gw_param.keys() = [‘zs’, ‘geocent_time’, ‘ra’, ‘dec’, ‘phase�
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.GWRATES.gw_rate">
-<span class="sig-name descname"><span class="pre">gw_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gw_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/gwrates.html#GWRATES.gw_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.GWRATES.gw_rate" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">gw_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gw_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/gwrates.html#GWRATES.gw_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.GWRATES.gw_rate" title="Link to this definition"></a></dt>
 <dd><p>Function to calculate the gw rate. This function also stores the parameters of the detectable events in json file.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3428,11 +3444,16 @@ default gw_param = self.json_file_names[“gw_param”]</p>
 e.g. snr_threshold = 8.</p>
 </dd>
 <dt><strong>output_jsonfile</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters of the detectable events.
-default output_jsonfile = ‘./gw_params_detectable.json’.</p>
+default output_jsonfile = ‘gw_params_detectable.json’.</p>
 </dd>
 <dt><strong>detectability_condition</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>detectability condition.
 default detectability_condition = ‘step_function’.
 other options are ‘pdet’.</p>
+</dd>
+<dt><strong>snr_recalculation</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if True, the SNR of centain events (snr&gt;threshold_snr_recalculation)will be recalculate with ‘inner product’. This is useful when the snr is calculated with ‘ann’ method.
+default snr_recalculation = False.</p>
+</dd>
+<dt><strong>threshold_snr_recalculation</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>threshold for recalculation of detection signal to noise ratio.</p>
 </dd>
 </dl>
 </dd>
@@ -3456,7 +3477,7 @@ gw_param.keys() = [‘zs’, ‘geocent_time’, ‘ra’, ‘dec’, ‘phase�
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.GWRATES.selecting_n_gw_detectable_events">
-<span class="sig-name descname"><span class="pre">selecting_n_gw_detectable_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./gw_params_n_detectable.json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/gwrates.html#GWRATES.selecting_n_gw_detectable_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.GWRATES.selecting_n_gw_detectable_events" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">selecting_n_gw_detectable_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gw_params_n_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_data_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'meta_gw.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trim_to_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/rates/gwrates.html#GWRATES.selecting_n_gw_detectable_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.GWRATES.selecting_n_gw_detectable_events" title="Link to this definition"></a></dt>
 <dd><p>Function to select n gw detectable events.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3471,7 +3492,7 @@ e.g. snr_threshold = 8.</p>
 default resume = False.</p>
 </dd>
 <dt><strong>output_jsonfile</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters.
-default output_jsonfile = ‘./gw_params_detectable.json’.</p>
+default output_jsonfile = ‘gw_params_detectable.json’.</p>
 </dd>
 </dl>
 </dd>

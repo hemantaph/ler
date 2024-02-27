@@ -1386,7 +1386,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:class:: LeR(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=25000, cosmology=None, snr_finder='gwsnr', json_file_names=None, directory='./interpolator_pickle', verbose=True, **kwargs)
+.. py:class:: LeR(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=25000, cosmology=None, snr_finder='gwsnr', json_file_names=None, interpolator_directory='./interpolator_pickle', ler_directory='./ler_data', verbose=True, **kwargs)
 
 
    Bases: :py:obj:`ler.lens_galaxy_population.LensGalaxyParameterDistribution`
@@ -1429,7 +1429,7 @@ Functions
 
        **json_file_names: `dict`**
            names of the json files to strore the necessary parameters.
-           default json_file_names = {'ler_param': './LeR_params.json', 'unlensed_param': './unlensed_param.json', 'unlensed_param_detectable': './unlensed_param_detectable.json'}.
+           default json_file_names = {'ler_param': 'LeR_params.json', 'unlensed_param': 'unlensed_param.json', 'unlensed_param_detectable': 'unlensed_param_detectable.json'}.
 
        **kwargs** : `keyword arguments`
            Note : kwargs takes input for initializing the :class:`~ler.lens_galaxy_population.LensGalaxyParameterDistribution`, :meth:`~gwsnr_intialization`.
@@ -1910,12 +1910,36 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:attribute:: directory
+   .. py:attribute:: interpolator_directory
 
       
       ``str``
 
       Directory to store the interpolators.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: ler_directory
+
+      
+      ``str``
+
+      Directory to store the parameters.
 
 
 
@@ -2114,7 +2138,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: store_ler_params(output_jsonfile='./ler_params.json')
+   .. py:method:: store_ler_params(output_jsonfile='ler_params.json')
 
       
       Function to store the all the necessary parameters. This is useful for reproducing the results. All the parameters stored are in string format to make it json compatible.
@@ -2162,7 +2186,7 @@ Functions
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
-              default output_jsonfile = './unlensed_params.json'.
+              default output_jsonfile = 'unlensed_params.json'.
 
       :Returns:
 
@@ -2208,7 +2232,7 @@ Functions
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
-              default output_jsonfile = './unlensed_params.json'.
+              default output_jsonfile = 'unlensed_params.json'.
 
       :Returns:
 
@@ -2231,7 +2255,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: unlensed_rate(unlensed_param=None, snr_threshold=8.0, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, threshold_snr_recalculation=7.0)
+   .. py:method:: unlensed_rate(unlensed_param=None, snr_threshold=8.0, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, threshold_snr_recalculation=6.0)
 
       
       Function to calculate the unlensed rate. This function also stores the parameters of the detectable events in json file.
@@ -2241,7 +2265,7 @@ Functions
 
           **unlensed_param** : `dict` or `str`
               dictionary of GW source parameters or json file name.
-              default unlensed_param = './unlensed_params.json'.
+              default unlensed_param = 'unlensed_params.json'.
 
           **snr_threshold** : `float`
               threshold for detection signal to noise ratio.
@@ -2249,12 +2273,19 @@ Functions
 
           **output_jsonfile** : `str`
               json file name for storing the parameters of the detectable events.
-              default output_jsonfile = './unlensed_params_detectable.json'.
+              default output_jsonfile = 'unlensed_params_detectable.json'.
 
           **detectability_condition** : `str`
               detectability condition.
               default detectability_condition = 'step_function'.
               other options are 'pdet'.
+
+          **snr_recalculation** : `bool`
+              if True, the SNR of centain events (snr>threshold_snr_recalculation)will be recalculate with 'inner product'. This is useful when the snr is calculated with 'ann' method.
+              default snr_recalculation = False.
+
+          **threshold_snr_recalculation** : `float`
+              threshold for recalculation of detection signal to noise ratio.
 
       :Returns:
 
@@ -2304,7 +2335,7 @@ Functions
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
-              default output_jsonfile = './lensed_params.json'.
+              default output_jsonfile = 'lensed_params.json'.
 
       :Returns:
 
@@ -2350,7 +2381,7 @@ Functions
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
-              default output_jsonfile = './lensed_params.json'.
+              default output_jsonfile = 'lensed_params.json'.
 
       :Returns:
 
@@ -2373,7 +2404,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lensed_rate(lensed_param=None, snr_threshold=[8.0, 8.0], num_img=[1, 1], output_jsonfile=None, nan_to_num=True, detectability_condition='step_function', snr_recalculation=False, threshold_snr_recalculation=[7.0, 7.0])
+   .. py:method:: lensed_rate(lensed_param=None, snr_threshold=[8.0, 8.0], num_img=[1, 1], output_jsonfile=None, nan_to_num=True, detectability_condition='step_function', snr_recalculation=False, threshold_snr_recalculation=[6.0, 6.0])
 
       
       Function to calculate the lensed rate. This function also stores the parameters of the detectable events in json file.
@@ -2383,7 +2414,7 @@ Functions
 
           **lensed_param** : `dict` or `str`
               dictionary of GW source parameters or json file name.
-              default lensed_param = './lensed_params.json'.
+              default lensed_param = 'lensed_params.json'.
 
           **snr_threshold** : `float`
               threshold for detection signal to noise ratio.
@@ -2395,7 +2426,7 @@ Functions
 
           **output_jsonfile** : `str`
               json file name for storing the parameters of the detectable events.
-              default output_jsonfile = './lensed_params_detectable.json'.
+              default output_jsonfile = 'lensed_params_detectable.json'.
 
           **nan_to_num** : `bool`
               if True, nan values will be converted to 0.
@@ -2405,6 +2436,13 @@ Functions
               detectability condition.
               default detectability_condition = 'step_function'.
               other options are 'pdet'.
+
+          **snr_recalculation** : `bool`
+              if True, the SNR of centain events (snr>threshold_snr_recalculation)will be recalculate with 'inner product'. This is useful when the snr is calculated with 'ann' method.
+              default snr_recalculation = False.
+
+          **threshold_snr_recalculation** : `float`
+              threshold for recalculation of detection signal to noise ratio.
 
       :Returns:
 
@@ -2483,7 +2521,7 @@ Functions
 
           **unlensed_param** : `dict` or `str`
               dictionary of GW source parameters or json file name.
-              default unlensed_param = './unlensed_params.json'.
+              default unlensed_param = 'unlensed_params.json'.
 
           **snr_threshold_unlensed** : `float`
               threshold for detection signal to noise ratio.
@@ -2491,11 +2529,11 @@ Functions
 
           **output_jsonfile_unlensed** : `str`
               json file name for storing the parameters of the detectable events.
-              default output_jsonfile = './unlensed_params_detectable.json'.
+              default output_jsonfile = 'unlensed_params_detectable.json'.
 
           **lensed_param** : `dict` or `str`
               dictionary of GW source parameters or json file name.
-              default lensed_param = './lensed_params.json'.
+              default lensed_param = 'lensed_params.json'.
 
           **snr_threshold_lensed** : `float`
               threshold for detection signal to noise ratio.
@@ -2503,7 +2541,7 @@ Functions
 
           **output_jsonfile_lensed** : `str`
               json file name for storing the parameters of the detectable events.
-              default output_jsonfile = './lensed_params_detectable.json'.
+              default output_jsonfile = 'lensed_params_detectable.json'.
 
           **detectability_condition** : `str`
               detectability condition.
@@ -2543,7 +2581,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_unlensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, resume=False, output_jsonfile='./n_unlensed_param_detectable.json', meta_data_file='meta_unlensed.json', event_batch_limit=500, trim_to_size=True)
+   .. py:method:: selecting_n_unlensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, resume=False, output_jsonfile='n_unlensed_param_detectable.json', meta_data_file='meta_unlensed.json', trim_to_size=True)
 
       
       Function to select n unlensed detectable events.
@@ -2565,7 +2603,7 @@ Functions
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
-              default output_jsonfile = './n_unlensed_params_detectable.json'.
+              default output_jsonfile = 'n_unlensed_params_detectable.json'.
 
       :Returns:
 
@@ -2593,7 +2631,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_lensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, num_img=2, resume=False, detectability_condition='step_function', output_jsonfile='./n_lensed_params_detectable.json', meta_data_file='./meta_lensed.json', event_batch_limit=500, trim_to_size=True, nan_to_num=False)
+   .. py:method:: selecting_n_lensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, num_img=2, resume=False, detectability_condition='step_function', output_jsonfile='n_lensed_params_detectable.json', meta_data_file='meta_lensed.json', trim_to_size=True, nan_to_num=False)
 
       
       Function to select n lensed detectable events.
@@ -2678,7 +2716,7 @@ Functions
        **source_priors, source_priors_params** : `dict`, `dict`
            Dictionary of prior sampler functions and its input parameters.
            Check for available priors and corresponding input parameters by running,
-           >>> from ler.gw_source_population import CompactBinaryPopulation
+           >>> from ler.gw_source_population import CBCSourceParameterDistribution
            >>> cbc = CompactBinaryPopulation()
            >>> cbc.available_gw_prior_list_and_its_params()
            # To check the current chosen priors and its parameters, run,
@@ -2881,7 +2919,7 @@ Functions
 
       .. rubric:: Examples
 
-      >>> from ler.gw_source_population import CompactBinaryPopulation
+      >>> from ler.gw_source_population import CBCSourceParameterDistribution
       >>> cbc = CompactBinaryPopulation()
       >>> priors = cbc.available_gw_prior_list_and_its_params
       >>> priors.keys()  # type of priors
@@ -3897,7 +3935,7 @@ Functions
    .. py:method:: binary_masses_BNS_bimodal(size, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3, resolution=500, create_new=False, get_attribute=False, param=None)
 
       
-      Function to sample source mass1 and mass2 from bimodal distribution. Refer to Will M. Farr et al. 2020 Eqn. 6
+      Function to sample source mass1 and mass2 from bimodal distribution. Refer to Will M. Farr et al. 2020 Eqn. 6, https://arxiv.org/pdf/2005.00032.pdf .
 
 
       :Parameters:
@@ -4336,7 +4374,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:class:: GWRATES(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=25000, cosmology=None, snr_finder='gwsnr', json_file_names=None, directory='./interpolator_pickle', verbose=True, **kwargs)
+.. py:class:: GWRATES(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=25000, cosmology=None, snr_finder='gwsnr', json_file_names=None, interpolator_directory='./interpolator_pickle', ler_directory='./ler_data', verbose=True, **kwargs)
 
 
    Bases: :py:obj:`ler.gw_source_population.CBCSourceParameterDistribution`
@@ -4379,7 +4417,7 @@ Functions
 
        **json_file_names: `dict`**
            names of the json files to strore the necessary parameters.
-           default json_file_names = {'ler_param': './LeR_params.json', 'gw_param': './gw_param.json', 'gw_param_detectable': './gw_param_detectable.json'}.
+           default json_file_names = {'ler_param': 'LeR_params.json', 'gw_param': 'gw_param.json', 'gw_param_detectable': 'gw_param_detectable.json'}.
 
        **kwargs** : `keyword arguments`
            Note : kwargs takes input for initializing the :class:`~ler.gw_source_population.CBCSourceParameterDistribution`, :meth:`~gwsnr_intialization`.
@@ -4922,7 +4960,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: store_gwrates_params(output_jsonfile='./gwrates_params.json')
+   .. py:method:: store_gwrates_params(output_jsonfile='gwrates_params.json')
 
       
       Function to store the all the necessary parameters. This is useful for reproducing the results. All the parameters stored are in string format to make it json compatible.
@@ -4970,7 +5008,7 @@ Functions
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
-              default output_jsonfile = './gw_params.json'.
+              default output_jsonfile = 'gw_params.json'.
 
       :Returns:
 
@@ -5016,7 +5054,7 @@ Functions
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
-              default output_jsonfile = './gw_params.json'.
+              default output_jsonfile = 'gw_params.json'.
 
       :Returns:
 
@@ -5039,7 +5077,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: gw_rate(gw_param=None, snr_threshold=8.0, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, threshold_snr_recalculation=7.0)
+   .. py:method:: gw_rate(gw_param=None, snr_threshold=8.0, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, threshold_snr_recalculation=6.0)
 
       
       Function to calculate the gw rate. This function also stores the parameters of the detectable events in json file.
@@ -5057,12 +5095,19 @@ Functions
 
           **output_jsonfile** : `str`
               json file name for storing the parameters of the detectable events.
-              default output_jsonfile = './gw_params_detectable.json'.
+              default output_jsonfile = 'gw_params_detectable.json'.
 
           **detectability_condition** : `str`
               detectability condition.
               default detectability_condition = 'step_function'.
               other options are 'pdet'.
+
+          **snr_recalculation** : `bool`
+              if True, the SNR of centain events (snr>threshold_snr_recalculation)will be recalculate with 'inner product'. This is useful when the snr is calculated with 'ann' method.
+              default snr_recalculation = False.
+
+          **threshold_snr_recalculation** : `float`
+              threshold for recalculation of detection signal to noise ratio.
 
       :Returns:
 
@@ -5093,7 +5138,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_gw_detectable_events(size=100, batch_size=None, snr_threshold=8.0, resume=False, output_jsonfile='./gw_params_n_detectable.json')
+   .. py:method:: selecting_n_gw_detectable_events(size=100, batch_size=None, snr_threshold=8.0, resume=False, output_jsonfile='gw_params_n_detectable.json', meta_data_file='meta_gw.json', trim_to_size=True)
 
       
       Function to select n gw detectable events.
@@ -5115,7 +5160,7 @@ Functions
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
-              default output_jsonfile = './gw_params_detectable.json'.
+              default output_jsonfile = 'gw_params_detectable.json'.
 
       :Returns:
 

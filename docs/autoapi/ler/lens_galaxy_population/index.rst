@@ -93,7 +93,7 @@ Functions
        **source_priors, source_priors_params** : `dict`, `dict`
            Dictionary of prior sampler functions and its input parameters.
            Check for available priors and corresponding input parameters by running,
-           >>> from ler.gw_source_population import CompactBinaryPopulation
+           >>> from ler.gw_source_population import CBCSourceParameterDistribution
            >>> cbc = CompactBinaryPopulation()
            >>> cbc.available_gw_prior_list_and_its_params()
            # To check the current chosen priors and its parameters, run,
@@ -296,7 +296,7 @@ Functions
 
       .. rubric:: Examples
 
-      >>> from ler.gw_source_population import CompactBinaryPopulation
+      >>> from ler.gw_source_population import CBCSourceParameterDistribution
       >>> cbc = CompactBinaryPopulation()
       >>> priors = cbc.available_gw_prior_list_and_its_params
       >>> priors.keys()  # type of priors
@@ -1312,7 +1312,7 @@ Functions
    .. py:method:: binary_masses_BNS_bimodal(size, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3, resolution=500, create_new=False, get_attribute=False, param=None)
 
       
-      Function to sample source mass1 and mass2 from bimodal distribution. Refer to Will M. Farr et al. 2020 Eqn. 6
+      Function to sample source mass1 and mass2 from bimodal distribution. Refer to Will M. Farr et al. 2020 Eqn. 6, https://arxiv.org/pdf/2005.00032.pdf .
 
 
       :Parameters:

@@ -51,9 +51,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">GW event sampling (Analytical formulation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html#Sampling-of-Source-Position">Sampling of Source Position</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
@@ -199,9 +198,11 @@
     <span class="k">elif</span> <span class="n">replace</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">new_dictionary</span>
     <span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
-        <span class="c1"># print(f&quot; {file_name} file does not exist. Creating a new one...&quot;)</span>
+        <span class="c1">#print(f&quot; {file_name} file does not exist. Creating a new one...&quot;)</span>
         <span class="n">replace</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">new_dictionary</span>
     <span class="k">else</span><span class="p">:</span>
+        <span class="c1">#print(&quot;getting data from file&quot;)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
     <span class="c1"># end = datetime.datetime.now()</span>
@@ -219,6 +220,7 @@
 
     <span class="c1"># save the dictionary</span>
     <span class="c1"># start = datetime.datetime.now()</span>
+    <span class="c1">#print(data)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">write_file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">NumpyEncoder</span><span class="p">)</span>
     <span class="c1"># end = datetime.datetime.now()</span>
@@ -989,74 +991,112 @@
 <a class="viewcode-back" href="../../../autoapi/ler/utils/utils/index.html#ler.gw_source_population.batch_handler">[docs]</a>
 <span class="k">def</span> <span class="nf">batch_handler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">sampling_routine</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">save_batch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to run the sampling in batches.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to run the sampling in batches.</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        size : `int`</span>
-<span class="sd">            number of samples.</span>
-<span class="sd">        batch_size : `int`</span>
-<span class="sd">            batch size.</span>
-<span class="sd">        sampling_routine : `function`</span>
-<span class="sd">            function to sample the parameters.</span>
-<span class="sd">            e.g. unlensed_sampling_routine() or lensed_sampling_routine()</span>
-<span class="sd">        output_jsonfile : `str`</span>
-<span class="sd">            name of the json file to store the parameters.</span>
-<span class="sd">        resume : `bool`</span>
-<span class="sd">            if True, it will resume the sampling from the last batch.</span>
-<span class="sd">            default resume = False.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        
-        
-        <span class="c1"># if size is multiple of batch_size</span>
-        <span class="k">if</span> <span class="n">size</span> <span class="o">%</span> <span class="n">batch_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">num_batches</span> <span class="o">=</span> <span class="n">size</span> <span class="o">//</span> <span class="n">batch_size</span>
-        <span class="c1"># if size is not multiple of batch_size</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">num_batches</span> <span class="o">=</span> <span class="n">size</span> <span class="o">//</span> <span class="n">batch_size</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    size : `int`</span>
+<span class="sd">        number of samples.</span>
+<span class="sd">    batch_size : `int`</span>
+<span class="sd">        batch size.</span>
+<span class="sd">    sampling_routine : `function`</span>
+<span class="sd">        function to sample the parameters.</span>
+<span class="sd">        e.g. unlensed_sampling_routine() or lensed_sampling_routine()</span>
+<span class="sd">    output_jsonfile : `str`</span>
+<span class="sd">        name of the json file to store the parameters.</span>
+<span class="sd">    resume : `bool`</span>
+<span class="sd">        if True, it will resume the sampling from the last batch.</span>
+<span class="sd">        default resume = False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># if size is multiple of batch_size</span>
+    <span class="k">if</span> <span class="n">size</span> <span class="o">%</span> <span class="n">batch_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">num_batches</span> <span class="o">=</span> <span class="n">size</span> <span class="o">//</span> <span class="n">batch_size</span>
+    <span class="c1"># if size is not multiple of batch_size</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">num_batches</span> <span class="o">=</span> <span class="n">size</span> <span class="o">//</span> <span class="n">batch_size</span> <span class="o">+</span> <span class="mi">1</span>
 
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;chosen batch size = </span><span class="si">{</span><span class="n">batch_size</span><span class="si">}</span><span class="s2"> with total size = </span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;There will be </span><span class="si">{</span><span class="n">num_batches</span><span class="si">}</span><span class="s2"> batche(s)&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;chosen batch size = </span><span class="si">{</span><span class="n">batch_size</span><span class="si">}</span><span class="s2"> with total size = </span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;There will be </span><span class="si">{</span><span class="n">num_batches</span><span class="si">}</span><span class="s2"> batche(s)&quot;</span><span class="p">)</span>
 
-        <span class="c1"># note frac_batches+(num_batches-1)*batch_size = size</span>
-        <span class="k">if</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="n">batch_size</span><span class="p">:</span>
-            <span class="n">frac_batches</span> <span class="o">=</span> <span class="n">size</span> <span class="o">-</span> <span class="p">(</span><span class="n">num_batches</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">batch_size</span>
-        <span class="c1"># if size is less than batch_size</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">frac_batches</span> <span class="o">=</span> <span class="n">size</span>
-        <span class="n">track_batches</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># to track the number of batches</span>
+    <span class="c1"># note frac_batches+(num_batches-1)*batch_size = size</span>
+    <span class="k">if</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="n">batch_size</span><span class="p">:</span>
+        <span class="n">frac_batches</span> <span class="o">=</span> <span class="n">size</span> <span class="o">-</span> <span class="p">(</span><span class="n">num_batches</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">batch_size</span>
+    <span class="c1"># if size is less than batch_size</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">frac_batches</span> <span class="o">=</span> <span class="n">size</span>
+    <span class="n">track_batches</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># to track the number of batches</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">resume</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">resume</span><span class="p">:</span>
+        <span class="n">track_batches</span> <span class="o">=</span> <span class="n">track_batches</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Batch no. </span><span class="si">{</span><span class="n">track_batches</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># new first batch with the frac_batches</span>
+        <span class="n">sampling_routine</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">frac_batches</span><span class="p">,</span> <span class="n">save_batch</span><span class="o">=</span><span class="n">save_batch</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">output_jsonfile</span><span class="p">);</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># check where to resume from</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;resuming from </span><span class="si">{</span><span class="n">output_jsonfile</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="n">track_batches</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="n">frac_batches</span><span class="p">)</span> <span class="o">//</span> <span class="n">batch_size</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="n">track_batches</span> <span class="o">=</span> <span class="n">track_batches</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Batch no. </span><span class="si">{</span><span class="n">track_batches</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="c1"># new first batch with the frac_batches</span>
-            <span class="n">sampling_routine</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">frac_batches</span><span class="p">,</span> <span class="n">save_batch</span><span class="o">=</span><span class="n">save_batch</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">output_jsonfile</span><span class="p">);</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># check where to resume from</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;resuming from </span><span class="si">{</span><span class="n">output_jsonfile</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-                    <span class="n">track_batches</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="n">frac_batches</span><span class="p">)</span> <span class="o">//</span> <span class="n">batch_size</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="n">track_batches</span> <span class="o">=</span> <span class="n">track_batches</span> <span class="o">+</span> <span class="mi">1</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Batch no. </span><span class="si">{</span><span class="n">track_batches</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                <span class="c1"># new first batch with the frac_batches</span>
-                <span class="n">sampling_routine</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">frac_batches</span><span class="p">,</span>  <span class="n">save_batch</span><span class="o">=</span><span class="n">save_batch</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">output_jsonfile</span><span class="p">);</span>
+            <span class="n">sampling_routine</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">frac_batches</span><span class="p">,</span>  <span class="n">save_batch</span><span class="o">=</span><span class="n">save_batch</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">output_jsonfile</span><span class="p">);</span>
 
-        <span class="c1"># ---------------------------------------------------#</span>
-        <span class="n">min_</span><span class="p">,</span> <span class="n">max_</span> <span class="o">=</span> <span class="n">track_batches</span><span class="p">,</span> <span class="n">num_batches</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_</span><span class="p">,</span> <span class="n">max_</span><span class="p">):</span>
-            <span class="n">track_batches</span> <span class="o">=</span> <span class="n">track_batches</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Batch no. </span><span class="si">{</span><span class="n">track_batches</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">sampling_routine</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">save_batch</span><span class="o">=</span><span class="n">save_batch</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
-        <span class="c1"># ---------------------------------------------------#</span>
+    <span class="c1"># ---------------------------------------------------#</span>
+    <span class="n">min_</span><span class="p">,</span> <span class="n">max_</span> <span class="o">=</span> <span class="n">track_batches</span><span class="p">,</span> <span class="n">num_batches</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_</span><span class="p">,</span> <span class="n">max_</span><span class="p">):</span>
+        <span class="n">track_batches</span> <span class="o">=</span> <span class="n">track_batches</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Batch no. </span><span class="si">{</span><span class="n">track_batches</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">sampling_routine</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">save_batch</span><span class="o">=</span><span class="n">save_batch</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+    <span class="c1"># ---------------------------------------------------#</span>
 
-        <span class="k">return</span> <span class="kc">None</span></div>
+    <span class="k">return</span> <span class="kc">None</span></div>
 
+
+<span class="c1"># def batch_handler(size, batch_size, sampling_routine, output_jsonfile, save_batch=True, resume=False):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Function to run the sampling in batches.</span>
+
+<span class="c1">#     Parameters</span>
+<span class="c1">#     ----------</span>
+<span class="c1">#     size : `int`</span>
+<span class="c1">#         number of samples.</span>
+<span class="c1">#     batch_size : `int`</span>
+<span class="c1">#         batch size.</span>
+<span class="c1">#     sampling_routine : `function`</span>
+<span class="c1">#         function to sample the parameters.</span>
+<span class="c1">#         e.g. unlensed_sampling_routine() or lensed_sampling_routine()</span>
+<span class="c1">#     output_jsonfile : `str`</span>
+<span class="c1">#         name of the json file to store the parameters.</span>
+<span class="c1">#     resume : `bool`</span>
+<span class="c1">#         if True, it will resume the sampling from the last batch.</span>
+<span class="c1">#         default resume = False.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+
+<span class="c1">#     num_batches = (size + batch_size - 1) // batch_size</span>
+<span class="c1">#     print(f&quot;Chosen batch size = {batch_size} with total size = {size}&quot;)</span>
+<span class="c1">#     print(f&quot;There will be {num_batches} batch(es)&quot;)</span>
+
+<span class="c1">#     if not resume:</span>
+<span class="c1">#         first_batch_size = size % batch_size or batch_size</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         with open(output_jsonfile, &quot;r&quot;, encoding=&quot;utf-8&quot;) as f:</span>
+<span class="c1">#             data = json.load(f)</span>
+<span class="c1">#             first_batch_size = len(data[&quot;zs&quot;]) % batch_size or batch_size</span>
+
+<span class="c1">#     for batch_num in range(1, num_batches + 1):</span>
+<span class="c1">#         print(f&quot;Batch no. {batch_num}&quot;)</span>
+<span class="c1">#         current_batch_size = first_batch_size if batch_num == 1 else batch_size</span>
+<span class="c1">#         sampling_routine(size=current_batch_size, output_jsonfile=output_jsonfile, resume=resume, save_batch=save_batch)</span>
+<span class="c1">#         resume = True  # Resume for subsequent batches</span>
+
+<span class="c1">#     return None</span>
 
 </pre></div>
 
