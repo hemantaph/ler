@@ -133,7 +133,7 @@
 <span class="sd">        default size = 100000.</span>
 <span class="sd">    batch_size : `int`</span>
 <span class="sd">        batch size for SNR calculation.</span>
-<span class="sd">        default batch_size = 25000.</span>
+<span class="sd">        default batch_size = 50000.</span>
 <span class="sd">        reduce the batch size if you are getting memory error.</span>
 <span class="sd">        recommended batch_size = 50000, if size = 1000000.</span>
 <span class="sd">    snr_finder : `str`</span>
@@ -151,7 +151,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    &gt;&gt;&gt; from ler.rates import LeR</span>
 <span class="sd">    &gt;&gt;&gt; ler = LeR()</span>
-<span class="sd">    &gt;&gt;&gt; ler.unlensed_cbc_statistics();</span>
+<span class="sd">    &gt;&gt;&gt; unlensed_params = ler.unlensed_cbc_statistics();</span>
 <span class="sd">    &gt;&gt;&gt; ler.unlensed_rate();</span>
 <span class="sd">        </span>
 <span class="sd">    Instance Attributes</span>
@@ -374,7 +374,7 @@
         <span class="n">z_max</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
         <span class="n">event_type</span><span class="o">=</span><span class="s2">&quot;BBH&quot;</span><span class="p">,</span>
         <span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span>
-        <span class="n">batch_size</span><span class="o">=</span><span class="mi">25000</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span>
         <span class="n">cosmology</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">snr_finder</span><span class="o">=</span><span class="s2">&quot;gwsnr&quot;</span><span class="p">,</span>
         <span class="n">json_file_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -687,6 +687,8 @@
             <span class="n">lens_functions</span><span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">lens_priors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">lens_priors_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">geocent_time_min</span><span class="o">=</span><span class="mf">1126259462.4</span><span class="p">,</span>
+            <span class="n">geocent_time_max</span><span class="o">=</span><span class="mf">1126259462.4</span><span class="o">+</span><span class="mi">365</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">3600</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span>
             <span class="n">source_priors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">source_priors_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">spin_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -710,6 +712,8 @@
             <span class="n">lens_functions</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_functions&quot;</span><span class="p">],</span>
             <span class="n">lens_priors</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_priors&quot;</span><span class="p">],</span>
             <span class="n">lens_priors_params</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_priors_params&quot;</span><span class="p">],</span>
+            <span class="n">geocent_time_min</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;geocent_time_min&quot;</span><span class="p">],</span>
+            <span class="n">geocent_time_max</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;geocent_time_max&quot;</span><span class="p">],</span>
             <span class="n">source_priors</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;source_priors&quot;</span><span class="p">],</span>
             <span class="n">source_priors_params</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;source_priors_params&quot;</span><span class="p">],</span>
             <span class="n">spin_zero</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;spin_zero&quot;</span><span class="p">],</span>
@@ -845,7 +849,7 @@
 <div class="viewcode-block" id="LeR.unlensed_cbc_statistics">
 <a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.LeR.unlensed_cbc_statistics">[docs]</a>
     <span class="k">def</span> <span class="nf">unlensed_cbc_statistics</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">save_batch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">save_batch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to generate unlensed GW source parameters. This function also stores the parameters in json file.</span>
@@ -879,6 +883,7 @@
 
         <span class="n">size</span> <span class="o">=</span> <span class="n">size</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
         <span class="n">output_jsonfile</span> <span class="o">=</span> <span class="n">output_jsonfile</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;unlensed_param&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;unlensed_param&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_jsonfile</span>
         <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unlensed params will be store in </span><span class="si">{</span><span class="n">output_jsonfile</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -1123,6 +1128,7 @@
 
         <span class="n">size</span> <span class="o">=</span> <span class="n">size</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
         <span class="n">output_jsonfile</span> <span class="o">=</span> <span class="n">output_jsonfile</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;lensed_param&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;lensed_param&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_jsonfile</span>
         <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;lensed params will be store in </span><span class="si">{</span><span class="n">output_jsonfile</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -1565,8 +1571,8 @@
         <span class="c1"># write the results</span>
         <span class="n">append_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;ler_param&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unlensed_rate: </span><span class="si">{</span><span class="n">unlensed_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;lensed_rate: </span><span class="si">{</span><span class="n">lensed_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unlensed_rate (per year): </span><span class="si">{</span><span class="n">unlensed_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;lensed_rate (per year): </span><span class="si">{</span><span class="n">lensed_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ratio: </span><span class="si">{</span><span class="n">rate_ratio</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">rate_ratio</span><span class="p">,</span> <span class="n">unlensed_param</span><span class="p">,</span> <span class="n">lensed_param</span></div>
