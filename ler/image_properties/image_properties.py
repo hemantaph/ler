@@ -119,7 +119,7 @@ class ImageProperties():
                  n_min_images=2, 
                  n_max_images=4,
                  geocent_time_min=1126259462.4,
-                 geocent_time_max=1126259462.4+365*24*3600*100,
+                 geocent_time_max=1126259462.4+365*24*3600*10,
                  lens_model_list=['EPL_NUMBA', 'SHEAR'],
                  cosmology=None,
                  spin_zero=True,
@@ -423,7 +423,7 @@ class ImageProperties():
             # get the effective time for each image type
             effective_geocent_time = geocent_time + time_delays[:, i]
             # choose only the events that are within the time range and also not nan
-            idx = (effective_geocent_time < self.geocent_time_max) & (effective_geocent_time > self.geocent_time_min)
+            idx = (effective_geocent_time <= self.geocent_time_max) & (effective_geocent_time >= self.geocent_time_min)
             # get the effective luminosity distance for each image type
             effective_luminosity_distance = luminosity_distance / np.sqrt(
                 np.abs(magnifications[:, i])
@@ -461,7 +461,7 @@ class ImageProperties():
                 lensed_param["effective_luminosity_distance"][:, i] = effective_luminosity_distance
                 lensed_param["effective_geocent_time"][:, i] = effective_geocent_time
 
-        # del lensed_param["luminosity_distance"]
-        # del lensed_param["geocent_time"]
+        lensed_param["luminosity_distance"]
+        lensed_param["geocent_time"]
 
         return optimal_snrs, lensed_param
