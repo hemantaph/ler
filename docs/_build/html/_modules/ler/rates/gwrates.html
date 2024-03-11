@@ -742,6 +742,7 @@
 
         <span class="n">size</span> <span class="o">=</span> <span class="n">size</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
         <span class="n">output_jsonfile</span> <span class="o">=</span> <span class="n">output_jsonfile</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;gw_param&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;gw_param&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_jsonfile</span>
         <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Simulated GW params will be stored in </span><span class="si">{</span><span class="n">output_jsonfile</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 

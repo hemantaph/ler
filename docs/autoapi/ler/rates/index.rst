@@ -1386,7 +1386,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:class:: LeR(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=25000, cosmology=None, snr_finder='gwsnr', json_file_names=None, interpolator_directory='./interpolator_pickle', ler_directory='./ler_data', verbose=True, **kwargs)
+.. py:class:: LeR(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=50000, cosmology=None, snr_finder='gwsnr', json_file_names=None, interpolator_directory='./interpolator_pickle', ler_directory='./ler_data', verbose=True, **kwargs)
 
 
    Bases: :py:obj:`ler.lens_galaxy_population.LensGalaxyParameterDistribution`
@@ -1417,7 +1417,7 @@ Functions
 
        **batch_size** : `int`
            batch size for SNR calculation.
-           default batch_size = 25000.
+           default batch_size = 50000.
            reduce the batch size if you are getting memory error.
            recommended batch_size = 50000, if size = 1000000.
 
@@ -1448,7 +1448,7 @@ Functions
 
    >>> from ler.rates import LeR
    >>> ler = LeR()
-   >>> ler.unlensed_cbc_statistics();
+   >>> unlensed_params = ler.unlensed_cbc_statistics();
    >>> ler.unlensed_rate();
 
    Instance Attributes
@@ -2165,7 +2165,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: unlensed_cbc_statistics(size=None, resume=False, save_batch=True, output_jsonfile=None)
+   .. py:method:: unlensed_cbc_statistics(size=None, resume=False, save_batch=False, output_jsonfile=None)
 
       
       Function to generate unlensed GW source parameters. This function also stores the parameters in json file.
