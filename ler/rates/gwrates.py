@@ -591,6 +591,7 @@ class GWRATES(CBCSourceParameterDistribution):
 
         size = size or self.size
         output_jsonfile = output_jsonfile or self.json_file_names["gw_param"]
+        self.json_file_names["gw_param"] = output_jsonfile
         output_path = os.path.join(self.ler_directory, output_jsonfile)
         print(f"Simulated GW params will be stored in {output_jsonfile}")
 

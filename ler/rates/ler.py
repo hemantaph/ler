@@ -35,7 +35,7 @@ class LeR(LensGalaxyParameterDistribution):
         default size = 100000.
     batch_size : `int`
         batch size for SNR calculation.
-        default batch_size = 25000.
+        default batch_size = 50000.
         reduce the batch size if you are getting memory error.
         recommended batch_size = 50000, if size = 1000000.
     snr_finder : `str`
@@ -53,7 +53,7 @@ class LeR(LensGalaxyParameterDistribution):
     ----------
     >>> from ler.rates import LeR
     >>> ler = LeR()
-    >>> ler.unlensed_cbc_statistics();
+    >>> unlensed_params = ler.unlensed_cbc_statistics();
     >>> ler.unlensed_rate();
         
     Instance Attributes
@@ -237,7 +237,7 @@ class LeR(LensGalaxyParameterDistribution):
         z_max=10.0,
         event_type="BBH",
         size=100000,
-        batch_size=25000,
+        batch_size=50000,
         cosmology=None,
         snr_finder="gwsnr",
         json_file_names=None,
@@ -530,6 +530,8 @@ class LeR(LensGalaxyParameterDistribution):
             lens_functions= None,
             lens_priors=None,
             lens_priors_params=None,
+            geocent_time_min=1126259462.4,
+            geocent_time_max=1126259462.4+365*24*3600*10,
             source_priors=None,
             source_priors_params=None,
             spin_zero=True,
@@ -553,6 +555,8 @@ class LeR(LensGalaxyParameterDistribution):
             lens_functions=input_params["lens_functions"],
             lens_priors=input_params["lens_priors"],
             lens_priors_params=input_params["lens_priors_params"],
+            geocent_time_min=input_params["geocent_time_min"],
+            geocent_time_max=input_params["geocent_time_max"],
             source_priors=input_params["source_priors"],
             source_priors_params=input_params["source_priors_params"],
             spin_zero=input_params["spin_zero"],
@@ -679,7 +683,7 @@ class LeR(LensGalaxyParameterDistribution):
             pass
 
     def unlensed_cbc_statistics(
-        self, size=None, resume=False, save_batch=True, output_jsonfile=None,
+        self, size=None, resume=False, save_batch=False, output_jsonfile=None,
     ):
         """
         Function to generate unlensed GW source parameters. This function also stores the parameters in json file.
@@ -713,6 +717,7 @@ class LeR(LensGalaxyParameterDistribution):
 
         size = size or self.size
         output_jsonfile = output_jsonfile or self.json_file_names["unlensed_param"]
+        self.json_file_names["unlensed_param"] = output_jsonfile
         output_path = os.path.join(self.ler_directory, output_jsonfile)
         print(f"unlensed params will be store in {output_jsonfile}")
 
@@ -948,6 +953,7 @@ class LeR(LensGalaxyParameterDistribution):
 
         size = size or self.size
         output_jsonfile = output_jsonfile or self.json_file_names["lensed_param"]
+        self.json_file_names["lensed_param"] = output_jsonfile
         output_path = os.path.join(self.ler_directory, output_jsonfile)
         print(f"lensed params will be store in {output_jsonfile}")
 
@@ -1378,8 +1384,8 @@ class LeR(LensGalaxyParameterDistribution):
         # write the results
         append_json(self.ler_directory+"/"+self.json_file_names["ler_param"], data, replace=True)
         
-        print(f"unlensed_rate: {unlensed_rate}")
-        print(f"lensed_rate: {lensed_rate}")
+        print(f"unlensed_rate (per year): {unlensed_rate}")
+        print(f"lensed_rate (per year): {lensed_rate}")
         print(f"ratio: {rate_ratio}")
 
         return rate_ratio, unlensed_param, lensed_param
