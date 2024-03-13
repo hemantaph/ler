@@ -531,7 +531,7 @@ class LeR(LensGalaxyParameterDistribution):
             lens_priors=None,
             lens_priors_params=None,
             geocent_time_min=1126259462.4,
-            geocent_time_max=1126259462.4+365*24*3600*10,
+            geocent_time_max=1126259462.4+365*24*3600*20,
             source_priors=None,
             source_priors_params=None,
             spin_zero=True,
