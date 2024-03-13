@@ -159,7 +159,7 @@ def solve_lens_equation(lens_parameters):
             sourcePos_y=y_source,
             kwargs_lens=kwargs_lens,
             solver="analytical",
-            magnification_limit=1.0 / 1000.0,
+            magnification_limit=1.0 / 100.0,
             arrival_time_sort=True,
         )
         nImages = len(x0_image_position)  # shows how many images

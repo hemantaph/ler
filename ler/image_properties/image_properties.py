@@ -119,7 +119,7 @@ class ImageProperties():
                  n_min_images=2, 
                  n_max_images=4,
                  geocent_time_min=1126259462.4,
-                 geocent_time_max=1126259462.4+365*24*3600*10,
+                 geocent_time_max=1126259462.4+365*24*3600*20,
                  lens_model_list=['EPL_NUMBA', 'SHEAR'],
                  cosmology=None,
                  spin_zero=True,
