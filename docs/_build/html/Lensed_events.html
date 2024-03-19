@@ -62,10 +62,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#SNR-Operator-for-Lensed-Gravitational-Wave-Events">SNR Operator for Lensed Gravitational Wave Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Sampling-Lens-Properties">Sampling Lens Properties</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Sampling-of-Source-Position">Sampling of Source Position</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Calculation-of-Images-properties">Calculation of Images properties</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Montecarlo-integration-(lensed-events)">Montecarlo integration (lensed events)</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#Calculation-of-Images-properties">Calculation of Images properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Statistical-Form-of-Detectable-Merger-Rate-of-lensed-events-(Monte-Carlo-Integration)">Statistical Form of Detectable Merger Rate of lensed events (Monte Carlo Integration)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
@@ -80,8 +78,8 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
 </ul>
 
         </div>
@@ -149,7 +147,7 @@
 <p>Default cosmology: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7). But, it can be changed by the user at LeR initialization.</p>
 <section id="Lensed-merger-rate-distribution-of-compact-binary-coalescences">
 <h2>Lensed merger rate distribution of compact binary coalescences<a class="headerlink" href="#Lensed-merger-rate-distribution-of-compact-binary-coalescences" title="Link to this heading"></a></h2>
-<p>This is very similar to the unlensed merger rate distribution, but with the optical depth applied for lensed events. Optical depth (<span class="math notranslate nohighlight">\(\tau(z-s)=P(\text{SL}|z_s)\)</span>) is the probability that a source at redshift <span class="math notranslate nohighlight">\(z_s\)</span> is strongly lensed by a galaxy. The lensed merger rate distribution is given by:</p>
+<p>This is very similar to the un-lensed merger rate distribution, but with the optical depth applied for lensed events. Optical depth (<span class="math notranslate nohighlight">\(\tau(z-s)=P(\text{SL}|z_s)\)</span>) is the probability that a source at redshift <span class="math notranslate nohighlight">\(z_s\)</span> is strongly lensed by a galaxy. The lensed merger rate distribution is given by:</p>
 <p><span class="math">\begin{equation}
 R_o^L(z_s) = \frac{1}{\mathcal{N}^L} \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tau(z_s) \tag{1}
 \end{equation}</span></p>
@@ -157,8 +155,8 @@ R_o^L(z_s) = \frac{1}{\mathcal{N}^L} \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \t
 <p><span class="math">\begin{equation}
 \mathcal{N}^L = \int_{z_{\text{min}}}^{z_{\text{max}}} dz_s \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tau(z_s)  \tag{2}
 \end{equation}</span></p>
-<p>Source redshifts for lensed case are sample from an astrophysical distribution, and rejection sample based on the optical depth. The plot below shows the comparision of the lensed and unlensed merger rate distributions.</p>
-<p align="center"><p>&lt;img src=”_static/zs_lensed.png” alt=”zs””&gt;</p>
+<p>Source redshifts for lensed case are sample from an astrophysical distribution, and rejection sample based on the optical depth. The plot below shows the comparision of the lensed and un-lensed merger rate distributions.</p>
+<p align="center"><p><img alt="zs" class="no-scaled-link" src="_images/zs_vs.png" style="width: 80%;" /></p>
 </p></section>
 <section id="Annual-Rate-of-Detectable-Lensed-Gravitational-Wave-Events">
 <h2>Annual Rate of Detectable Lensed Gravitational Wave Events<a class="headerlink" href="#Annual-Rate-of-Detectable-Lensed-Gravitational-Wave-Events" title="Link to this heading"></a></h2>
@@ -307,11 +305,15 @@ Lenstronomy software.</p>
 </section>
 <section id="Calculation-of-Images-properties">
 <h2>Calculation of Images properties<a class="headerlink" href="#Calculation-of-Images-properties" title="Link to this heading"></a></h2>
-<p>The properties of the lensed images, such as the magnifications (<span class="math notranslate nohighlight">\(\mu_i\)</span>), time delays (<span class="math notranslate nohighlight">\(\Delta t_i\)</span>) and morse phase (<span class="math notranslate nohighlight">\(n_i\)</span>), are calculated using the lens and source parameters.</p>
-<section id="Montecarlo-integration-(lensed-events)">
-<h3>Montecarlo integration (lensed events)<a class="headerlink" href="#Montecarlo-integration-(lensed-events)" title="Link to this heading"></a></h3>
+<p>The properties of the lensed images, such as the magnifications (<span class="math notranslate nohighlight">\(\mu_i\)</span>), time delays (<span class="math notranslate nohighlight">\(\Delta t_i\)</span>) and morse phase (<span class="math notranslate nohighlight">\(n_i\)</span>), are calculated using the lens and source parameters. This is achieved through <code class="docutils literal notranslate"><span class="pre">lenstronomy</span></code>’s lens equation solver. As of 19/03/2024, only EPL+Shear solver is available. For, SIE model solutions set <span class="math notranslate nohighlight">\(\gamma=2\)</span>, <span class="math notranslate nohighlight">\(\phi=0\)</span>, <span class="math notranslate nohighlight">\([\gamma_1,\gamma_2]=[0,0]\)</span>, and <span class="math notranslate nohighlight">\([e_1,e_2]=[0,0]\)</span>. NFW profile will be added in the future.</p>
+<p>Below is the plot for the distribution of time delays difference between the lensed images. <span class="math notranslate nohighlight">\(\Delta n=0\degree\)</span> correspond to either [type-I, type-I] or [type-II, type-II] lensed images. <span class="math notranslate nohighlight">\(\Delta n=90\degree\)</span> correspond to [type-I, type-II] lensed images. Time delays difference between uncorrelated un-lensed events follows a poisson distribution.</p>
+<p align="center"><p>&lt;img src=”_static/timedelays.png” alt=”zs””&gt;</p>
+</p></section>
+<section id="Statistical-Form-of-Detectable-Merger-Rate-of-lensed-events-(Monte-Carlo-Integration)">
+<h2>Statistical Form of Detectable Merger Rate of lensed events (Monte Carlo Integration)<a class="headerlink" href="#Statistical-Form-of-Detectable-Merger-Rate-of-lensed-events-(Monte-Carlo-Integration)" title="Link to this heading"></a></h2>
+<p>The detectable merger rate of lensed events, <span class="math notranslate nohighlight">\(R_L\)</span>, can be statistically estimated using Monte Carlo integration. This can be done using either a step function or the probability of detection (<span class="math notranslate nohighlight">\(P_{\text{det}}\)</span>).</p>
 <ul class="simple">
-<li><p>With step function.</p></li>
+<li><p><strong>With Step Function:</strong></p></li>
 </ul>
 <p><span class="math">\begin{equation}
 \begin{split}
@@ -320,7 +322,7 @@ R_L &= \mathcal{N}^U \left< \mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \r
 \end{split} \tag{8}
 \end{equation}</span></p>
 <ul class="simple">
-<li><p>With Pdet.</p></li>
+<li><p><strong>With :math:`P_{text{det}}`:</strong></p></li>
 </ul>
 <p><span class="math">\begin{equation}
 \begin{split}
@@ -328,12 +330,29 @@ R_L &= \mathcal{N}^U \left< \,P_{det}^{max(\rho)_1} \,P_{det}^{max(\rho)_2} \,\r
 &= \frac{\mathcal{N}^U}{N} \sum_i \,P_{det}^{max(\rho)_1} \,P_{det}^{max(\rho)_2}
 \end{split} \tag{9}
 \end{equation}</span></p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(max(\rho)_1\)</span> : <span class="math notranslate nohighlight">\(1^{st}\)</span> maximum SNR out of all the images for the given parameters {<span class="math notranslate nohighlight">\(z_s,z_L,\theta,\theta_L\)</span>}.</p></li>
-<li><p><span class="math notranslate nohighlight">\(max(\rho)_2\)</span> : <span class="math notranslate nohighlight">\(2^{st}\)</span> maximum SNR out of all the images for the given parameters {<span class="math notranslate nohighlight">\(z_s,z_L,\theta,\theta_L\)</span>}.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\rho_{th}\)</span> for <span class="math notranslate nohighlight">\(max(\rho)_2\)</span> can lower than that of <span class="math notranslate nohighlight">\(max(\rho)_1\)</span> if it is a subthreshhold search.</p></li>
-</ul>
-</section>
+<p>In both cases, the average is taken over a sample of <span class="math notranslate nohighlight">\((z_s, z_L, \theta, \theta_L)\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the total number of samples. The SNR operator <span class="math notranslate nohighlight">\(\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th})\)</span> evaluates to 1 if two of the images of the lensed GW event are detectable, and 0 otherwise. The probability of detection, <span class="math notranslate nohighlight">\(P_{\text{det}}\)</span>, provides a smoother transition from detectable to non-detectable events at the SNR threshold.</p>
+<p>The table below presents the merger rate values for two different detector configurations, considering spin-less systems for simplicity. The signal-to-noise ratio (SNR) operator is implemented using a step function with a threshold of 8, and the waveform approximant used is IMRPhenomD.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Detector Configuration</p></th>
+<th class="head"><p>BBH (un-lensed) Merger Rate (yr-1)</p></th>
+<th class="head"><p>BBH (lensed) Merger Rate (yr-1)</p></th>
+<th class="head"><p>Ratio</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>[L1, H1, V1] (O4)</p></td>
+<td><p>440.9</p></td>
+<td><p>1.1</p></td>
+<td><p>~400:1</p></td>
+</tr>
+<tr class="row-odd"><td><p>[A+, CE, ET] (3G)</p></td>
+<td><p>91843.6</p></td>
+<td><p>152.4</p></td>
+<td><p>~600:1</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 

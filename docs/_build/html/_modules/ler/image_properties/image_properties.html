@@ -65,8 +65,8 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
 </ul>
 
         </div>
@@ -217,7 +217,7 @@
                  <span class="n">n_min_images</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
                  <span class="n">n_max_images</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
                  <span class="n">geocent_time_min</span><span class="o">=</span><span class="mf">1126259462.4</span><span class="p">,</span>
-                 <span class="n">geocent_time_max</span><span class="o">=</span><span class="mf">1126259462.4</span><span class="o">+</span><span class="mi">365</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">3600</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span>
+                 <span class="n">geocent_time_max</span><span class="o">=</span><span class="mf">1126259462.4</span><span class="o">+</span><span class="mi">365</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">3600</span><span class="o">*</span><span class="mi">20</span><span class="p">,</span>
                  <span class="n">lens_model_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span>
                  <span class="n">cosmology</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">spin_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -445,7 +445,7 @@
 
 <div class="viewcode-block" id="ImageProperties.get_lensed_snrs">
 <a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/index.html#ler.image_properties.image_properties.ImageProperties.get_lensed_snrs">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_lensed_snrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snr_calculator</span><span class="p">,</span> <span class="n">list_of_detectors</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_lensed_snrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">list_of_detectors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">snr_calculator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pdet_calculator</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to calculate the signal to noise ratio for each image in each event.</span>
 
@@ -506,14 +506,27 @@
                 <span class="p">)</span>
         
         <span class="c1"># setting up snr dictionary</span>
-        <span class="n">optimal_snrs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">optimal_snrs</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">number_of_lensed_events</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-        <span class="p">)</span>
-        <span class="k">for</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">list_of_detectors</span><span class="p">:</span>
-            <span class="n">optimal_snrs</span><span class="p">[</span><span class="n">detector</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">result_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">snr_calculator</span><span class="p">:</span>
+            <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">number_of_lensed_events</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="p">)</span>
+        <span class="c1"># setting up pdet dictionary</span>
+        <span class="k">elif</span> <span class="n">pdet_calculator</span><span class="p">:</span>
+            <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">number_of_lensed_events</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;snr_calculator or pdet_calculator not given&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># if detector list are provided for snr or pdet calculation</span>
+        <span class="k">if</span> <span class="n">list_of_detectors</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">list_of_detectors</span><span class="p">:</span>
+                <span class="n">result_dict</span><span class="p">[</span><span class="n">detector</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">number_of_lensed_events</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="p">)</span>
+        
+        
 
         <span class="c1"># for updating the lensed_param</span>
         <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_luminosity_distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">number_of_lensed_events</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
@@ -538,36 +551,68 @@
             <span class="c1"># Each image has their own effective luminosity distance and effective geocent time</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">effective_luminosity_distance</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="c1"># Returns a dictionary</span>
-                <span class="n">optimal_snr</span> <span class="o">=</span> <span class="n">snr_calculator</span><span class="p">(</span>
-                    <span class="n">mass_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                    <span class="n">mass_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                    <span class="n">effective_luminosity_distance</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                    <span class="n">theta_jn</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                    <span class="n">psi</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                    <span class="n">phase</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                    <span class="n">effective_geocent_time</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                    <span class="n">ra</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                    <span class="n">dec</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                    <span class="n">a_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                    <span class="n">a_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                    <span class="n">tilt_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                    <span class="n">tilt_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                    <span class="n">phi_12</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                    <span class="n">phi_jl</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                    <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">snr_calculator</span><span class="p">:</span>
+                    <span class="n">optimal_snr</span> <span class="o">=</span> <span class="n">snr_calculator</span><span class="p">(</span>
+                        <span class="n">gw_param_dict</span><span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                            <span class="n">mass_1</span><span class="o">=</span><span class="n">mass_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">mass_2</span><span class="o">=</span><span class="n">mass_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">luminosity_distance</span><span class="o">=</span><span class="n">effective_luminosity_distance</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">theta_jn</span><span class="o">=</span><span class="n">theta_jn</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">psi</span><span class="o">=</span><span class="n">psi</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">phase</span><span class="o">=</span><span class="n">phase</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">geocent_time</span><span class="o">=</span><span class="n">effective_geocent_time</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">ra</span><span class="o">=</span><span class="n">ra</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">dec</span><span class="o">=</span><span class="n">dec</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">a_1</span><span class="o">=</span><span class="n">a_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">a_2</span><span class="o">=</span><span class="n">a_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">tilt_1</span><span class="o">=</span><span class="n">tilt_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">tilt_2</span><span class="o">=</span><span class="n">tilt_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">phi_12</span><span class="o">=</span><span class="n">phi_12</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">phi_jl</span><span class="o">=</span><span class="n">phi_jl</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                        <span class="p">),</span>
+                        <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimal_snr</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span>
 
-                <span class="n">optimal_snrs</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimal_snr</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span>
-                <span class="k">for</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">list_of_detectors</span><span class="p">:</span>
-                    <span class="n">optimal_snrs</span><span class="p">[</span><span class="n">detector</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimal_snr</span><span class="p">[</span><span class="n">detector</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">list_of_detectors</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">list_of_detectors</span><span class="p">:</span>
+                            <span class="n">result_dict</span><span class="p">[</span><span class="n">detector</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimal_snr</span><span class="p">[</span><span class="n">detector</span><span class="p">]</span>
+
+                <span class="k">elif</span> <span class="n">pdet_calculator</span><span class="p">:</span>
+                    <span class="n">pdet</span> <span class="o">=</span> <span class="n">pdet_calculator</span><span class="p">(</span>
+                        <span class="n">gw_param_dict</span><span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                            <span class="n">mass_1</span><span class="o">=</span><span class="n">mass_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">mass_2</span><span class="o">=</span><span class="n">mass_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">luminosity_distance</span><span class="o">=</span><span class="n">effective_luminosity_distance</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">theta_jn</span><span class="o">=</span><span class="n">theta_jn</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">psi</span><span class="o">=</span><span class="n">psi</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">phase</span><span class="o">=</span><span class="n">phase</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">geocent_time</span><span class="o">=</span><span class="n">effective_geocent_time</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">ra</span><span class="o">=</span><span class="n">ra</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">dec</span><span class="o">=</span><span class="n">dec</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">a_1</span><span class="o">=</span><span class="n">a_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">a_2</span><span class="o">=</span><span class="n">a_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">tilt_1</span><span class="o">=</span><span class="n">tilt_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">tilt_2</span><span class="o">=</span><span class="n">tilt_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">phi_12</span><span class="o">=</span><span class="n">phi_12</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">phi_jl</span><span class="o">=</span><span class="n">phi_jl</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                        <span class="p">),</span>
+                        <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdet</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">]</span>
+
+                    <span class="k">if</span> <span class="n">list_of_detectors</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">list_of_detectors</span><span class="p">:</span>
+                            <span class="n">result_dict</span><span class="p">[</span><span class="n">detector</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdet</span><span class="p">[</span><span class="n">detector</span><span class="p">]</span>
+                
 
                 <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_luminosity_distance&quot;</span><span class="p">][:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">effective_luminosity_distance</span>
                 <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_geocent_time&quot;</span><span class="p">][:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">effective_geocent_time</span>
 
-        <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;luminosity_distance&quot;</span><span class="p">]</span>
-        <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;geocent_time&quot;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;luminosity_distance&quot;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;geocent_time&quot;</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">optimal_snrs</span><span class="p">,</span> <span class="n">lensed_param</span></div>
+        <span class="k">return</span> <span class="n">result_dict</span><span class="p">,</span> <span class="n">lensed_param</span></div>
 </div>
 
 </pre></div>

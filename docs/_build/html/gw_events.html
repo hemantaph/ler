@@ -86,8 +86,8 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
 </ul>
 
         </div>
@@ -188,7 +188,7 @@ R(z_s) = \frac{\mathcal{R}_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tag{3}
 R_o^U(z_s) = \frac{1}{\mathcal{N}^U} \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tag{5}
 \end{equation}</span></p>
 <p>Distribution of <span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span> wrt <span class="math notranslate nohighlight">\(z_s\)</span> is shown below for BBH.</p>
-<p align="center"><p><img alt="zs" src="_images/zs.png" /></p>
+<p align="center"><p><img alt="zs" src="_images/merger_rate_bbh.png" /></p>
 </p></section>
 <section id="Sampling-Method">
 <h3>Sampling Method<a class="headerlink" href="#Sampling-Method" title="Link to this heading"></a></h3>
@@ -229,7 +229,7 @@ R_U = \mathcal{N}^U\int dz_s R_o^U(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}]
 <li><p><span class="math notranslate nohighlight">\(\delta_m\)</span>: Smoothing parameter for the transition between the power-law and Gaussian components.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\beta\)</span>: Exponent for the mass ratio distribution.</p></li>
 </ul>
-<p>For analytical expressions and details on the PowerLaw+Peak model, refer to the <a class="reference external" href="https://arxiv.org/pdf/2010.14533.pdf">GWTC-2 2021</a> (Appendix B3). The default values for the parameters are based on <a class="reference external" href="https://arxiv.org/pdf/2111.03604.pdf">GWTC-3 2021</a>. <a class="reference external" href="https://ler.readthedocs.io/en/latest/index.html">LeR</a> uses this model through <a class="reference external" href="https://lscsoft.docs.ligo.org/gwcosmo/">gwcosmo</a>.</p>
+<p>For analytical expressions and details on the PowerLaw+Peak model, refer to the <a class="reference external" href="https://arxiv.org/pdf/2010.14533.pdf">GWTC-2 2021</a> (Appendix B3). The default values for the parameters are based on <a class="reference external" href="https://arxiv.org/pdf/2111.03604.pdf">GWTC-3 2021</a> (page-23). <a class="reference external" href="https://ler.readthedocs.io/en/latest/index.html">LeR</a> uses this model through <a class="reference external" href="https://lscsoft.docs.ligo.org/gwcosmo/">gwcosmo</a>.</p>
 <p>Here is the default parameters and resultant distribution:</p>
 <table><tr><td><table class="docutils align-default">
 <thead>
@@ -382,7 +382,7 @@ R_U &= \mathcal{N}^U \left<  P_{\text{det}}(z_s,\theta)\right>_{z_s,\theta \in \
 &= \frac{\mathcal{N}^U}{N} \sum_i P_{\text{det}}(z_s^i,\theta_i)
 \end{split} \tag{7}
 \end{equation}</span></p>
-<p>In both cases, the average is taken over a sample of <span class="math notranslate nohighlight">\((z_s, \theta)\)</span> pairs, where <span class="math notranslate nohighlight">\(N\)</span> is the total number of samples. The step function <span class="math notranslate nohighlight">\(\Theta[\rho(z_s,\theta)-\rho_{th}]\)</span> evaluates to 1 if the SNR <span class="math notranslate nohighlight">\(\rho(z_s,\theta)\)</span> is above the threshold <span class="math notranslate nohighlight">\(\rho_{th}\)</span>, and 0 otherwise. The probability of detection, <span class="math notranslate nohighlight">\(P_{\text{det}}(z_s,\theta)\)</span>, provides a smoother transition from detectable to non-detectable events at the SNR threshold.</p>
+<p>In both cases, the average is taken over a sample of <span class="math notranslate nohighlight">\((z_s, \theta)\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the total number of samples. The step function <span class="math notranslate nohighlight">\(\Theta[\rho(z_s,\theta)-\rho_{th}]\)</span> evaluates to 1 if the SNR <span class="math notranslate nohighlight">\(\rho(z_s,\theta)\)</span> is above the threshold <span class="math notranslate nohighlight">\(\rho_{th}\)</span>, and 0 otherwise. The probability of detection, <span class="math notranslate nohighlight">\(P_{\text{det}}(z_s,\theta)\)</span>, provides a smoother transition from detectable to non-detectable events at the SNR threshold.</p>
 <p>The table below presents the merger rate values for two different detector configurations, considering spin-less systems for simplicity. The signal-to-noise ratio (SNR) operator is implemented using a step function with a threshold of 8, and the waveform approximant used is IMRPhenomD.</p>
 <table class="docutils align-default">
 <thead>

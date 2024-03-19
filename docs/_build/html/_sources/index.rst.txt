@@ -41,8 +41,8 @@ The code is available at `github.ler <https://github.com/hemantaph/ler>`_.
    :maxdepth: 2
    :caption: Examples:
    
-   rates/LeR complete examples
-   rates/GWRATES complete exmaples
+   examples/rates/LeR complete examples
+   examples/rates/GWRATES complete exmaples
 
 Indices and tables
 ==================
