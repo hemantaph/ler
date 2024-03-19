@@ -6,6 +6,10 @@
 .json
 **.json
 **/*.json
+**/**/*.json
+**/**/**/*.json
+**/**/**/**/*.json
+**/**/**/**/**/*.json
 
 # ignore pickle
 *.pickle
