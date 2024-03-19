@@ -12,6 +12,10 @@
 .pickle
 **.pickle
 **/*.pickle
+**/**/*.pickle
+**/**/**/*.pickle
+**/**/**/**/*.pickle
+**/**/**/**/**/*.pickle
 *.pkl
 .pkl
 **.pkl
