@@ -26,7 +26,7 @@ Classes
 
 
 
-.. py:class:: ImageProperties(npool=4, z_min=0.0, z_max=10, n_min_images=2, n_max_images=4, geocent_time_min=1126259462.4, geocent_time_max=1126259462.4 + 365 * 24 * 3600 * 10, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_pickle', create_new_interpolator=False)
+.. py:class:: ImageProperties(npool=4, z_min=0.0, z_max=10, n_min_images=2, n_max_images=4, geocent_time_min=1126259462.4, geocent_time_max=1126259462.4 + 365 * 24 * 3600 * 20, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_pickle', create_new_interpolator=False)
 
 
    
@@ -182,7 +182,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_lensed_snrs(snr_calculator, list_of_detectors, lensed_param)
+   .. py:method:: get_lensed_snrs(lensed_param, list_of_detectors=None, snr_calculator=None, pdet_calculator=None)
 
       
       Function to calculate the signal to noise ratio for each image in each event.

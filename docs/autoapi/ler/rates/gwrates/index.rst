@@ -24,7 +24,7 @@ Classes
 
 
 
-.. py:class:: GWRATES(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=25000, cosmology=None, snr_finder='gwsnr', json_file_names=None, interpolator_directory='./interpolator_pickle', ler_directory='./ler_data', verbose=True, **kwargs)
+.. py:class:: GWRATES(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=50000, cosmology=None, snr_finder=None, pdet_finder=None, list_of_detectors=None, json_file_names=None, interpolator_directory='./interpolator_pickle', ler_directory='./ler_data', verbose=True, **kwargs)
 
 
    Bases: :py:obj:`ler.gw_source_population.CBCSourceParameterDistribution`
@@ -637,7 +637,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: gw_cbc_statistics(size=None, resume=False, save_batch=True, output_jsonfile=None)
+   .. py:method:: gw_cbc_statistics(size=None, resume=False, save_batch=False, output_jsonfile=None)
 
       
       Function to generate gw GW source parameters. This function also stores the parameters in json file.

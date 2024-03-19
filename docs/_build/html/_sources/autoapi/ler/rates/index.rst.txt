@@ -1386,7 +1386,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:class:: LeR(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=50000, cosmology=None, snr_finder='gwsnr', json_file_names=None, interpolator_directory='./interpolator_pickle', ler_directory='./ler_data', verbose=True, **kwargs)
+.. py:class:: LeR(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=50000, cosmology=None, snr_finder=None, pdet_finder=None, list_of_detectors=None, json_file_names=None, interpolator_directory='./interpolator_pickle', ler_directory='./ler_data', verbose=True, **kwargs)
 
 
    Bases: :py:obj:`ler.lens_galaxy_population.LensGalaxyParameterDistribution`
@@ -1423,13 +1423,13 @@ Functions
 
        **snr_finder** : `str`
            default snr_finder = 'gwsnr'.
-           if 'gwsnr', the SNR will be calculated using the gwsnr package.
+           if None, the SNR will be calculated using the gwsnr package.
            if 'custom', the SNR will be calculated using a custom function.
            The custom function should have input and output as given in GWSNR.snr method.
 
        **json_file_names: `dict`**
            names of the json files to strore the necessary parameters.
-           default json_file_names = {'ler_param': 'LeR_params.json', 'unlensed_param': 'unlensed_param.json', 'unlensed_param_detectable': 'unlensed_param_detectable.json'}.
+           default json_file_names = {'ler_params': 'LeR_params.json', 'unlensed_param': 'unlensed_param.json', 'unlensed_param_detectable': 'unlensed_param_detectable.json'}.
 
        **kwargs** : `keyword arguments`
            Note : kwargs takes input for initializing the :class:`~ler.lens_galaxy_population.LensGalaxyParameterDistribution`, :meth:`~gwsnr_intialization`.
@@ -2317,7 +2317,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lensed_cbc_statistics(size=None, save_batch=True, resume=False, output_jsonfile=None)
+   .. py:method:: lensed_cbc_statistics(size=None, save_batch=False, resume=False, output_jsonfile=None)
 
       
       Function to generate lensed GW source parameters. This function also stores the parameters in json file.
@@ -4374,7 +4374,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:class:: GWRATES(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=25000, cosmology=None, snr_finder='gwsnr', json_file_names=None, interpolator_directory='./interpolator_pickle', ler_directory='./ler_data', verbose=True, **kwargs)
+.. py:class:: GWRATES(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=50000, cosmology=None, snr_finder=None, pdet_finder=None, list_of_detectors=None, json_file_names=None, interpolator_directory='./interpolator_pickle', ler_directory='./ler_data', verbose=True, **kwargs)
 
 
    Bases: :py:obj:`ler.gw_source_population.CBCSourceParameterDistribution`
@@ -4987,7 +4987,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: gw_cbc_statistics(size=None, resume=False, save_batch=True, output_jsonfile=None)
+   .. py:method:: gw_cbc_statistics(size=None, resume=False, save_batch=False, output_jsonfile=None)
 
       
       Function to generate gw GW source parameters. This function also stores the parameters in json file.

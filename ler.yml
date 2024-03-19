@@ -9,5 +9,5 @@ dependencies:
   - numba
   - bilby
   - pip:
-    - git+https://git.ligo.org/lscsoft/gwcosmo.git@v1.0.0
+    - ler
 prefix: $HOME/anaconda3/envs/ler
