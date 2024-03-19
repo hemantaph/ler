@@ -1213,7 +1213,6 @@ class LeR(LensGalaxyParameterDistribution):
             )
             lensed_param.update(snrs)
 
-        ##########################################
         if self.snr:
             if "optimal_snr_net" not in lensed_param:
                 raise ValueError("'optimal_snr_net' not in lensed parm dict provided")
@@ -1240,7 +1239,6 @@ class LeR(LensGalaxyParameterDistribution):
                 total_rate = self.normalization_pdf_z_lensed * np.sum(snr_hit)/total_events
                 print("total lensed rate (yr^-1) (with step function): {}".format(total_rate))
             
-            #######
             elif detectability_condition == "pdet":
                 print("given detectability_condition == 'pdet'")
                 # pdet dimension is (size, n_max_images)
@@ -1260,7 +1258,6 @@ class LeR(LensGalaxyParameterDistribution):
                 total_rate = self.normalization_pdf_z_lensed * np.sum(snr_hit)/total_events
                 print(f"total lensed rate (yr^-1) (with pdet function): {total_rate}")
 
-        #########
         elif self.pdet:
             # check if pdet is provided in lensed_param dict
             if "pdet_net" in lensed_param.keys():
@@ -1276,57 +1273,6 @@ class LeR(LensGalaxyParameterDistribution):
 
             else:
                 raise ValueError("'pdet_net' not in unlensed parm dict provided")
-
-        # from here, we focus on calculating the rate
-        ####################
-        # if detectability_condition == "step_function":
-        #     if "optimal_snr_net" in lensed_param.keys():
-        #         snr_param = lensed_param["optimal_snr_net"]
-        #         snr_param = -np.sort(-snr_param, axis=1)  # sort snr in descending order
-        #     else:
-        #         print("snr not provided in lensed_param dict. Exiting...")
-        #         return None
-        #     snr_hit = np.full(len(snr_param), True)  # boolean array to store the result of the threshold condition
-            
-        #     # for each row: choose a threshold and check if the number of images above threshold. Sum over the images. If sum is greater than num_img, then snr_hit = True 
-        #     j = 0
-        #     idx_max = 0
-        #     for i in range(len(snr_threshold)):
-        #         idx_max = idx_max + num_img[i]
-        #         snr_hit = snr_hit & (np.sum((snr_param[:,j:idx_max] > snr_threshold[i]), axis=1) >= num_img[i])
-        #         j = idx_max
-
-        #     # montecarlo integration
-        #     total_rate = self.normalization_pdf_z_lensed * np.sum(snr_hit)/total_events
-        #     print("total lensed rate (yr^-1) (with step function): {}".format(total_rate))
-        # ####################
-        # elif detectability_condition == "pdet":
-        #     # check if pdet is provided in lensed_param dict
-        #     if "pdet_net" in lensed_param.keys():
-        #         pdet = lensed_param["pdet_net"]
-        #         pdet = -np.sort(-pdet, axis=1)  # sort pdet in descending order
-        #         pdet = pdet[:,:np.sum(num_img)]  # use only num_img images
-        #     else:
-        #         if "optimal_snr_net" in lensed_param.keys():
-        #             # pdet dimension is (size, n_max_images)
-        #             snr_param = lensed_param["optimal_snr_net"]
-        #             snr_param = -np.sort(-snr_param, axis=1)  # sort snr in descending order
-
-        #             pdet = np.ones(np.shape(snr_param))
-        #             j = 0
-        #             idx_max = 0
-        #             for i in range(len(snr_threshold)):
-        #                 idx_max = idx_max + num_img[i]
-        #                 pdet[:,j:idx_max] = 1 - norm.cdf(snr_threshold[i] - snr_param[:,j:idx_max])
-        #                 j = idx_max
-        #         else:
-        #             print("pdet or optimal_snr_net not provided in lensed_param dict. Exiting...")
-        #             return None
-                
-        #     snr_hit = np.prod(pdet, axis=1)>0.5
-        #     # montecarlo integration
-        #     total_rate = self.normalization_pdf_z_lensed * np.sum(snr_hit)/total_events
-        #     print(f"total lensed rate (yr^-1) (with pdet function): {total_rate}")
 
         print(f"number of simulated lensed detectable events: {np.sum(snr_hit)}")
         print(f"number of simulated all lensed events: {total_events}")
