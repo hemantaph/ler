@@ -134,14 +134,14 @@
 <div class="math notranslate nohighlight">
 \[E_{\text{obs}}(\theta) = \frac{\epsilon_0}{4\pi D_L^2} \left(\frac{1}{1 + \left(\frac{\theta}{\theta_c}\right)^k}\right)\]</div>
 <ul class="simple">
-<li><p>Here, <span class="math notranslate nohighlight">\(E_{\text{obs}}(\theta)\)</span> is the observed energy, <span class="math notranslate nohighlight">\(\epsilon_0\)</span> is the energy per unit solid angle at the jet axis, <span class="math notranslate nohighlight">\(D_L\)</span> is the luminosity distance, <span class="math notranslate nohighlight">\(\theta\)</span> is the angular distance from the jet axis, <span class="math notranslate nohighlight">\(\theta_c\)</span> is the core angle of the jet, and <span class="math notranslate nohighlight">\(k\)</span> is the power-law index that determines how quickly the energy decreases with angle.</p></li>
+<li><p>Here, <span class="math notranslate nohighlight">\(E_{\text{obs}}(\theta)\)</span> is the observed energy, <span class="math notranslate nohighlight">\(\epsilon_0\)</span> is the energy per unit solid angle at the jet axis, <span class="math notranslate nohighlight">\(D_L\)</span> is the luminosity distance, <span class="math notranslate nohighlight">\(\theta\)</span> is the veiwing angle wrt the jet axis, <span class="math notranslate nohighlight">\(\theta_c\)</span> is the core angle of the jet, and <span class="math notranslate nohighlight">\(k\)</span> is the power-law index that determines how quickly the energy decreases with angle.</p></li>
 <li><p>I cosidered the core angle of the jet: <span class="math notranslate nohighlight">\(\theta_c = 5\)</span> deg. (this might be too much)</p></li>
 <li><p>So, probability of detection is given by:</p></li>
 </ul>
 <div class="math notranslate nohighlight">
-\[\begin{split}P_{det}(\theta,D_L) =  = \left\{
+\[\begin{split}P_{det}(\theta,D_L) = \left\{
   \begin{array}{ c l }
-    1 &amp; \text{if } \theta \le 5 \text{ deg and } D_L \le 46652 \text{ Mpc } (z\sim 3) \\
+    1 &amp; \text{if } \theta \le 5 \text{ deg and } D_L \le 46652 \text{ Mpc } (z\sim 5) \\
     1 &amp; \text{if } \frac{\text{a}}{4\pi D_L^2} \left(\frac{1}{1 + \left(\frac{\theta}{5}\right)^{\text{c}}}\right) \ge 1 \\
     0 &amp; \text{otherwise}
   \end{array}
@@ -162,7 +162,6 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler.rates</span> <span class="kn">import</span> <span class="n">LeR</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">json</span>
 </pre></div>
 </div>
 </div>
@@ -243,10 +242,11 @@ d_L = 46652.22297277721 Mpc
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pdet_grb</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">distance_cut</span><span class="o">=</span><span class="mi">46652</span><span class="p">,</span> <span class="n">duty_cycle</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">mask_duty_cycle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># distance_cut: z ~ 5</span>
+<span class="k">def</span> <span class="nf">pdet_grb</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">distance_cut</span><span class="o">=</span><span class="mi">46652</span><span class="p">,</span> <span class="n">duty_cycle</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">mask_duty_cycle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to calculate the probability of detection for a given angle and distance for GRB. Coefficients are based on 2 and 3 the following conditions,</span>
 
@@ -705,6 +705,7 @@ ratio: 996.3155678330854
 <h2>Rate calculation of GW with LeR<a class="headerlink" href="#Rate-calculation-of-GW-with-LeR" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>using internal snr_calculator function, with <a class="reference external" href="https://gwsnr.readthedocs.io/en/latest/">gwsnr</a> package.</p></li>
+<li><p>Sensitivity: O4 design sensitivity, [L1,H1,V1]</p></li>
 <li><p>for detection criteria of un-lensed BNS GW refer <a class="reference external" href="https://ler.readthedocs.io/en/latest/GW_events.html">here</a>, and for lensed BNS GW refer <a class="reference external" href="https://ler.readthedocs.io/en/latest/Lensed_events.html">here</a>.</p></li>
 </ul>
 <div class="nbinput nblast docutils container">
