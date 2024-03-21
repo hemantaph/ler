@@ -494,7 +494,6 @@ class ImageProperties():
                             phi_12=phi_12[idx],
                             phi_jl=phi_jl[idx],
                         ),
-                        output_jsonfile=False,
                     )
                     result_dict["pdet_net"][idx, i] = pdet["pdet_net"]
 

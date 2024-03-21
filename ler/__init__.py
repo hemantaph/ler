@@ -14,7 +14,7 @@ except RuntimeError:
 __author__ = 'hemanta_ph <hemantaphurailatpam@gmail.com>'
 
 # The version as used in the setup.py
-__version__ = "0.3.6"
+__version__ = "0.3.7"
 
 # add __file__
 import os
