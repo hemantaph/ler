@@ -67,6 +67,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/rates/grb%20detection%20rate.html">Calculation of detectable Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a></li>
 </ul>
 
         </div>
@@ -1394,7 +1395,6 @@
             <span class="p">)</span>
             <span class="n">lensed_param</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">snrs</span><span class="p">)</span>
 
-        <span class="c1">##########################################</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">snr</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;optimal_snr_net&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;optimal_snr_net&#39; not in lensed parm dict provided&quot;</span><span class="p">)</span>
@@ -1421,7 +1421,6 @@
                 <span class="n">total_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalization_pdf_z_lensed</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">snr_hit</span><span class="p">)</span><span class="o">/</span><span class="n">total_events</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;total lensed rate (yr^-1) (with step function): </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">total_rate</span><span class="p">))</span>
             
-            <span class="c1">#######</span>
             <span class="k">elif</span> <span class="n">detectability_condition</span> <span class="o">==</span> <span class="s2">&quot;pdet&quot;</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;given detectability_condition == &#39;pdet&#39;&quot;</span><span class="p">)</span>
                 <span class="c1"># pdet dimension is (size, n_max_images)</span>
@@ -1441,7 +1440,6 @@
                 <span class="n">total_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalization_pdf_z_lensed</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">snr_hit</span><span class="p">)</span><span class="o">/</span><span class="n">total_events</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;total lensed rate (yr^-1) (with pdet function): </span><span class="si">{</span><span class="n">total_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="c1">#########</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdet</span><span class="p">:</span>
             <span class="c1"># check if pdet is provided in lensed_param dict</span>
             <span class="k">if</span> <span class="s2">&quot;pdet_net&quot;</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -1457,57 +1455,6 @@
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;pdet_net&#39; not in unlensed parm dict provided&quot;</span><span class="p">)</span>
-
-        <span class="c1"># from here, we focus on calculating the rate</span>
-        <span class="c1">####################</span>
-        <span class="c1"># if detectability_condition == &quot;step_function&quot;:</span>
-        <span class="c1">#     if &quot;optimal_snr_net&quot; in lensed_param.keys():</span>
-        <span class="c1">#         snr_param = lensed_param[&quot;optimal_snr_net&quot;]</span>
-        <span class="c1">#         snr_param = -np.sort(-snr_param, axis=1)  # sort snr in descending order</span>
-        <span class="c1">#     else:</span>
-        <span class="c1">#         print(&quot;snr not provided in lensed_param dict. Exiting...&quot;)</span>
-        <span class="c1">#         return None</span>
-        <span class="c1">#     snr_hit = np.full(len(snr_param), True)  # boolean array to store the result of the threshold condition</span>
-            
-        <span class="c1">#     # for each row: choose a threshold and check if the number of images above threshold. Sum over the images. If sum is greater than num_img, then snr_hit = True </span>
-        <span class="c1">#     j = 0</span>
-        <span class="c1">#     idx_max = 0</span>
-        <span class="c1">#     for i in range(len(snr_threshold)):</span>
-        <span class="c1">#         idx_max = idx_max + num_img[i]</span>
-        <span class="c1">#         snr_hit = snr_hit &amp; (np.sum((snr_param[:,j:idx_max] &gt; snr_threshold[i]), axis=1) &gt;= num_img[i])</span>
-        <span class="c1">#         j = idx_max</span>
-
-        <span class="c1">#     # montecarlo integration</span>
-        <span class="c1">#     total_rate = self.normalization_pdf_z_lensed * np.sum(snr_hit)/total_events</span>
-        <span class="c1">#     print(&quot;total lensed rate (yr^-1) (with step function): {}&quot;.format(total_rate))</span>
-        <span class="c1"># ####################</span>
-        <span class="c1"># elif detectability_condition == &quot;pdet&quot;:</span>
-        <span class="c1">#     # check if pdet is provided in lensed_param dict</span>
-        <span class="c1">#     if &quot;pdet_net&quot; in lensed_param.keys():</span>
-        <span class="c1">#         pdet = lensed_param[&quot;pdet_net&quot;]</span>
-        <span class="c1">#         pdet = -np.sort(-pdet, axis=1)  # sort pdet in descending order</span>
-        <span class="c1">#         pdet = pdet[:,:np.sum(num_img)]  # use only num_img images</span>
-        <span class="c1">#     else:</span>
-        <span class="c1">#         if &quot;optimal_snr_net&quot; in lensed_param.keys():</span>
-        <span class="c1">#             # pdet dimension is (size, n_max_images)</span>
-        <span class="c1">#             snr_param = lensed_param[&quot;optimal_snr_net&quot;]</span>
-        <span class="c1">#             snr_param = -np.sort(-snr_param, axis=1)  # sort snr in descending order</span>
-
-        <span class="c1">#             pdet = np.ones(np.shape(snr_param))</span>
-        <span class="c1">#             j = 0</span>
-        <span class="c1">#             idx_max = 0</span>
-        <span class="c1">#             for i in range(len(snr_threshold)):</span>
-        <span class="c1">#                 idx_max = idx_max + num_img[i]</span>
-        <span class="c1">#                 pdet[:,j:idx_max] = 1 - norm.cdf(snr_threshold[i] - snr_param[:,j:idx_max])</span>
-        <span class="c1">#                 j = idx_max</span>
-        <span class="c1">#         else:</span>
-        <span class="c1">#             print(&quot;pdet or optimal_snr_net not provided in lensed_param dict. Exiting...&quot;)</span>
-        <span class="c1">#             return None</span>
-                
-        <span class="c1">#     snr_hit = np.prod(pdet, axis=1)&gt;0.5</span>
-        <span class="c1">#     # montecarlo integration</span>
-        <span class="c1">#     total_rate = self.normalization_pdf_z_lensed * np.sum(snr_hit)/total_events</span>
-        <span class="c1">#     print(f&quot;total lensed rate (yr^-1) (with pdet function): {total_rate}&quot;)</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;number of simulated lensed detectable events: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">snr_hit</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;number of simulated all lensed events: </span><span class="si">{</span><span class="n">total_events</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
