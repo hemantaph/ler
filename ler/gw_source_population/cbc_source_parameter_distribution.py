@@ -918,13 +918,13 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         # find inverse cdf
         inv_cdf = interpolator_from_pickle(
             param_dict_given=dict(
-                w=0.643,
-                muL=1.352,
-                sigmaL=0.08,
-                muR=1.88,
-                sigmaR=0.3,
-                mmin=1.0,
-                mmax=2.3,
+                w=w,
+                muL=muL,
+                sigmaL=sigmaL,
+                muR=muR,
+                sigmaR=sigmaR,
+                mmin=mmin,
+                mmax=mmax,
                 resolution=500,
             ),
             directory=self.directory,
