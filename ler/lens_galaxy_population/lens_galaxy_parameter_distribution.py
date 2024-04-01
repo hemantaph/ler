@@ -1173,7 +1173,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         """
 
         self._available_lens_functions = dict(
-            strong_lensing_condition=["rjs_with_cross_section_SIE", "rjs_with_cross_section_SIE"],
+            strong_lensing_condition=["rjs_with_cross_section_SIE", "rjs_with_cross_section_SIS"],
             optical_depth=["SIS", "optical_depth_SIS_haris","optical_depth_SIS_hemanta", "SIE", "optical_depth_SIE_hemanta"],
             param_sampler_type=["sample_all_routine"],
         )

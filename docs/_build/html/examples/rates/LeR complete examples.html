@@ -98,6 +98,22 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grb%20detection%20rate.html">Calculation of detectable Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ler%20bns%20example.html">LeR complete examples of BNS events (O4 design sensitivity)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rates_with_3G_detectors.html">With ANN snr (IMRphenomXPHM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source%20population/merger%20rate%20density%20evolution%20with%20redshift.html">Merger rate density evolution with redshift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source%20population/sample%20compact%20binary%20parameters.html">Sampling parameters for a compact binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source%20population/statistical%20study%20of%20cosmological%20friction.html">Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lens_parameters/sample%20lens%20parameters.html">Lens parameter distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optical_depth/validation_SIE.html">Optical depth SIE model validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optical_depth/validation_SIS.html">Validation of SIS model (Numerical vs Analytical)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html">data generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html#2-image-case">2-image case</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html#KDE">KDE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html#corner-plots">corner plots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html#magnification-plot">magnification plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html#Contour-plot">Contour plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html#4-image-case">4-image case</a></li>
 </ul>
 
         </div>
@@ -155,13 +171,167 @@
 <p><code class="docutils literal notranslate"><span class="pre">print(mp.cpu_count())</span></code></p>
 </li>
 </ul>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">create_new_interpolator</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">create_new_interpolator</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+z_to_luminosity_distance interpolator will be generated at ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_0.pickle
+differential_comoving_volume interpolator will be generated at ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_0.pickle
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+merger_rate_density_bbh_popI_II_oguri2018 interpolator will be generated at ./interpolator_pickle/merger_rate_density_bbh_popI_II_oguri2018/merger_rate_density_bbh_popI_II_oguri2018_0.pickle
+z_to_Dc interpolator will be generated at ./interpolator_pickle/z_to_Dc/z_to_Dc_0.pickle
+Dc_to_z interpolator will be generated at ./interpolator_pickle/Dc_to_z/Dc_to_z_0.pickle
+angular_diameter_distance interpolator will be generated at ./interpolator_pickle/angular_diameter_distance/angular_diameter_distance_0.pickle
+differential_comoving_volume interpolator will be generated at ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_1.pickle
+velocity_dispersion_ewoud interpolator will be generated at ./interpolator_pickle/velocity_dispersion_ewoud/velocity_dispersion_ewoud_0.pickle
+optical_depth_SIE_hemanta interpolator will be generated at ./interpolator_pickle/optical_depth_SIE_hemanta/optical_depth_SIE_hemanta_0.pickle
+Dl_to_z interpolator will be generated at ./interpolator_pickle/Dl_to_z/Dl_to_z_0.pickle
+psds not given. Choosing bilby&#39;s default psds
+npool:  4
+snr type:  interpolation
+waveform approximant:  IMRPhenomD
+sampling frequency:  2048.0
+minimum frequency (fmin):  20.0
+mtot=mass1+mass2
+min(mtot):  2.0
+max(mtot) (with the given fmin=20.0): 184.98599853446768
+detectors:  None
+min(ratio):  0.1
+max(ratio):  1.0
+mtot resolution:  500
+ratio resolution:  50
+interpolator directory:  ./interpolator_pickle
+Interpolator will be generated for L1 detector at ./interpolator_pickle/L1/partialSNR_dict_0.pickle
+Interpolator will be generated for H1 detector at ./interpolator_pickle/H1/partialSNR_dict_0.pickle
+Interpolator will be generated for V1 detector at ./interpolator_pickle/V1/partialSNR_dict_0.pickle
+Please be patient while the interpolator is generated
+Generating interpolator for [&#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;] detectors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+interpolation for each mass_ratios: 100%|███████████████████████████| 50/50 [04:18&lt;00:00,  5.17s/it]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+ LeR set up params:
+npool =  4
+z_min =  0.0
+z_max =  10.0
+event_type =  BBH
+size =  100000
+batch_size =  50000
+cosmology =  LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=None)
+snr_finder =  &lt;bound method GWSNR.snr of &lt;gwsnr.gwsnr.GWSNR object at 0x105ef93c0&gt;&gt;
+json_file_names =  {&#39;ler_params&#39;: &#39;ler_params.json&#39;, &#39;unlensed_param&#39;: &#39;unlensed_param.json&#39;, &#39;unlensed_param_detectable&#39;: &#39;unlensed_param_detectable.json&#39;, &#39;lensed_param&#39;: &#39;lensed_param.json&#39;, &#39;lensed_param_detectable&#39;: &#39;lensed_param_detectable.json&#39;}
+interpolator_directory =  ./interpolator_pickle
+ler_directory =  ./ler_data
+
+ LeR also takes CBCSourceParameterDistribution params as kwargs, as follows:
+source_priors= {&#39;merger_rate_density&#39;: &#39;merger_rate_density_bbh_popI_II_oguri2018&#39;, &#39;source_frame_masses&#39;: &#39;binary_masses_BBH_popI_II_powerlaw_gaussian&#39;, &#39;zs&#39;: &#39;sample_source_redshift&#39;, &#39;geocent_time&#39;: &#39;sampler_uniform&#39;, &#39;ra&#39;: &#39;sampler_uniform&#39;, &#39;dec&#39;: &#39;sampler_cosine&#39;, &#39;phase&#39;: &#39;sampler_uniform&#39;, &#39;psi&#39;: &#39;sampler_uniform&#39;, &#39;theta_jn&#39;: &#39;sampler_sine&#39;}
+source_priors_params= {&#39;merger_rate_density&#39;: {&#39;R0&#39;: 2.39e-08, &#39;b2&#39;: 1.6, &#39;b3&#39;: 2.0, &#39;b4&#39;: 30}, &#39;source_frame_masses&#39;: {&#39;mminbh&#39;: 4.98, &#39;mmaxbh&#39;: 112.5, &#39;alpha&#39;: 3.78, &#39;mu_g&#39;: 32.27, &#39;sigma_g&#39;: 3.88, &#39;lambda_peak&#39;: 0.03, &#39;delta_m&#39;: 4.8, &#39;beta&#39;: 0.81}, &#39;zs&#39;: None, &#39;geocent_time&#39;: {&#39;min_&#39;: 1238166018, &#39;max_&#39;: 1269702018}, &#39;ra&#39;: {&#39;min_&#39;: 0.0, &#39;max_&#39;: 6.283185307179586}, &#39;dec&#39;: None, &#39;phase&#39;: {&#39;min_&#39;: 0.0, &#39;max_&#39;: 6.283185307179586}, &#39;psi&#39;: {&#39;min_&#39;: 0.0, &#39;max_&#39;: 3.141592653589793}, &#39;theta_jn&#39;: None}
+spin_zero= True
+spin_precession= False
+create_new_interpolator= False
+
+ LeR also takes LensGalaxyParameterDistribution params as kwargs, as follows:
+lens_type =  epl_galaxy
+lens_functions =  {&#39;strong_lensing_condition&#39;: &#39;rjs_with_cross_section_SIE&#39;, &#39;optical_depth&#39;: &#39;optical_depth_SIE_hemanta&#39;, &#39;param_sampler_type&#39;: &#39;sample_all_routine&#39;}
+lens_priors =  {&#39;source_redshift_sl&#39;: &#39;strongly_lensed_source_redshifts&#39;, &#39;lens_redshift&#39;: &#39;lens_redshift_SDSS_catalogue&#39;, &#39;velocity_dispersion&#39;: &#39;velocity_dispersion_ewoud&#39;, &#39;axis_ratio&#39;: &#39;axis_ratio_rayleigh&#39;, &#39;axis_rotation_angle&#39;: &#39;axis_rotation_angle_uniform&#39;, &#39;shear&#39;: &#39;shear_norm&#39;, &#39;mass_density_spectral_index&#39;: &#39;mass_density_spectral_index_normal&#39;, &#39;source_parameters&#39;: &#39;sample_gw_parameters&#39;}
+lens_priors_params =  {&#39;source_redshift_sl&#39;: None, &#39;lens_redshift&#39;: None, &#39;velocity_dispersion&#39;: None, &#39;axis_ratio&#39;: {&#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0}, &#39;axis_rotation_angle&#39;: {&#39;phi_min&#39;: 0.0, &#39;phi_max&#39;: 6.283185307179586}, &#39;shear&#39;: {&#39;scale&#39;: 0.05}, &#39;mass_density_spectral_index&#39;: {&#39;mean&#39;: 2.0, &#39;std&#39;: 0.2}, &#39;source_parameters&#39;: None}
+
+ Image properties:
+n_min_images =  2
+n_max_images =  4
+geocent_time_min =  1126259462.4
+geocent_time_max =  1756979462.4
+lens_model_list =  [&#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;]
+
+ LeR also takes gwsnr.GWSNR params as kwargs, as follows:
+mtot_min =  2.0
+mtot_max =  184.98599853446768
+ratio_min =  0.1
+ratio_max =  1.0
+mtot_resolution =  500
+ratio_resolution =  50
+sampling_frequency =  2048.0
+waveform_approximant =  IMRPhenomD
+minimum_frequency =  20.0
+snr_type =  interpolation
+psds =  [PowerSpectralDensity(psd_file=&#39;None&#39;, asd_file=&#39;/Users/phurailatpamhemantakumar/anaconda3/envs/ler/lib/python3.10/site-packages/bilby/gw/detector/noise_curves/aLIGO_O4_high_asd.txt&#39;), PowerSpectralDensity(psd_file=&#39;None&#39;, asd_file=&#39;/Users/phurailatpamhemantakumar/anaconda3/envs/ler/lib/python3.10/site-packages/bilby/gw/detector/noise_curves/aLIGO_O4_high_asd.txt&#39;), PowerSpectralDensity(psd_file=&#39;None&#39;, asd_file=&#39;/Users/phurailatpamhemantakumar/anaconda3/envs/ler/lib/python3.10/site-packages/bilby/gw/detector/noise_curves/AdV_asd.txt&#39;)]
+ifos =  None
+interpolator_dir =  ./interpolator_pickle
+create_new_interpolator =  False
+gwsnr_verbose =  True
+multiprocessing_verbose =  True
+mtot_cut =  True
+
+ For reference, the chosen source parameters are listed below:
+merger_rate_density =  merger_rate_density_bbh_popI_II_oguri2018
+merger_rate_density_params =  {&#39;R0&#39;: 2.39e-08, &#39;b2&#39;: 1.6, &#39;b3&#39;: 2.0, &#39;b4&#39;: 30}
+source_frame_masses =  binary_masses_BBH_popI_II_powerlaw_gaussian
+source_frame_masses_params =  {&#39;mminbh&#39;: 4.98, &#39;mmaxbh&#39;: 112.5, &#39;alpha&#39;: 3.78, &#39;mu_g&#39;: 32.27, &#39;sigma_g&#39;: 3.88, &#39;lambda_peak&#39;: 0.03, &#39;delta_m&#39;: 4.8, &#39;beta&#39;: 0.81}
+geocent_time =  sampler_uniform
+geocent_time_params =  {&#39;min_&#39;: 1238166018, &#39;max_&#39;: 1269702018}
+ra =  sampler_uniform
+ra_params =  {&#39;min_&#39;: 0.0, &#39;max_&#39;: 6.283185307179586}
+dec =  sampler_cosine
+dec_params =  None
+phase =  sampler_uniform
+phase_params =  {&#39;min_&#39;: 0.0, &#39;max_&#39;: 6.283185307179586}
+psi =  sampler_uniform
+psi_params =  {&#39;min_&#39;: 0.0, &#39;max_&#39;: 3.141592653589793}
+theta_jn =  sampler_sine
+theta_jn_params =  None
+
+ For reference, the chosen lens related parameters and functions are listed below:
+lens_redshift =  lens_redshift_SDSS_catalogue
+lens_redshift_params =  None
+velocity_dispersion =  velocity_dispersion_ewoud
+velocity_dispersion_params =  None
+axis_ratio =  axis_ratio_rayleigh
+axis_ratio_params =  {&#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0}
+axis_rotation_angle =  axis_rotation_angle_uniform
+axis_rotation_angle_params =  {&#39;phi_min&#39;: 0.0, &#39;phi_max&#39;: 6.283185307179586}
+shear =  shear_norm
+shear_params =  {&#39;scale&#39;: 0.05}
+mass_density_spectral_index =  mass_density_spectral_index_normal
+mass_density_spectral_index_params =  {&#39;mean&#39;: 2.0, &#39;std&#39;: 0.2}
+Lens functions:
+strong_lensing_condition =  rjs_with_cross_section_SIE
+optical_depth =  optical_depth_SIE_hemanta
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
 </div>
 <section id="Simulation-of-the-GW-CBC-population-(unlensed).">
 <h3>Simulation of the GW CBC population (unlensed).<a class="headerlink" href="#Simulation-of-the-GW-CBC-population-(unlensed)." title="Link to this heading"></a></h3>
