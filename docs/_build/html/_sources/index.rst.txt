@@ -16,6 +16,9 @@ ler
 
 The code is available at `github.ler <https://github.com/hemantaph/ler>`_.
 
+| ``ler`` main developer: `Hemanta Ph. <https://newww.phy.cuhk.edu.hk/postgraduate/phurailatpam-hemantakumar>`_
+| ``ler`` developer and analyst: Harsh Narola, Anupreeta More, Ng Chung Yin (Leo), Justin Janquart, Chris Van Den Broeck, Otto Akseli HANNUKSELA
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
