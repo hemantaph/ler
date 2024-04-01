@@ -70,6 +70,22 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rates/grb%20detection%20rate.html">Calculation of detectable Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rates/ler%20bns%20example.html">LeR complete examples of BNS events (O4 design sensitivity)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rates/rates_with_3G_detectors.html">With ANN snr (IMRphenomXPHM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="merger%20rate%20density%20evolution%20with%20redshift.html">Merger rate density evolution with redshift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample%20compact%20binary%20parameters.html">Sampling parameters for a compact binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistical%20study%20of%20cosmological%20friction.html">Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lens_parameters/sample%20lens%20parameters.html">Lens parameter distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optical_depth/validation_SIE.html">Optical depth SIE model validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optical_depth/validation_SIS.html">Validation of SIS model (Numerical vs Analytical)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html">data generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html#2-image-case">2-image case</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html#KDE">KDE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html#corner-plots">corner plots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html#magnification-plot">magnification plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html#Contour-plot">Contour plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html#4-image-case">4-image case</a></li>
 </ul>
 
         </div>
@@ -142,7 +158,7 @@
 <li><p><span class="math notranslate nohighlight">\(\frac{1}{1+z_s}\)</span>: this factor takes care of the time dilation effect.</p></li>
 </ul>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -154,7 +170,7 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z_min</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -195,24 +211,24 @@
 </tr>
 </tbody>
 </table>
-</section>
-</section>
-<section id="BBH-pop-I/II-Oguri-et-al.-2018-model">
-<h1>BBH pop I/II Oguri et al. 2018 model<a class="headerlink" href="#BBH-pop-I/II-Oguri-et-al.-2018-model" title="Link to this heading"></a></h1>
-<p>cbc = CBCSourceRedshiftDistribution( z_min=z_min, z_max=z_max, merger_rate_density=”merger_rate_density_bbh_popI_II_oguri2018”, merger_rate_density_param=dict(R0=25.*1e-9, b2=1.6, b3=2.0, b4=30), )</p>
-</section>
-<section id="detector-frame">
-<h1>detector frame<a class="headerlink" href="#detector-frame" title="Link to this heading"></a></h1>
-<p>rate1_det = cbc.merger_rate_density(z)</p>
-</section>
-<section id="source-frame">
-<h1>source frame<a class="headerlink" href="#source-frame" title="Link to this heading"></a></h1>
-<p>rate1_src = cbc.pdf_z(z)</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> rate1_det = cbc.merger_rate_density(z)  # this is njit compiled function, and it is fast
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># initializing the class</span>
+<span class="c1"># BBH pop I/II Oguri et al. 2018 model</span>
+<span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceRedshiftDistribution</span><span class="p">(</span>
+    <span class="n">z_min</span><span class="o">=</span><span class="n">z_min</span><span class="p">,</span>
+    <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span>
+    <span class="n">merger_rate_density</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_bbh_popI_II_oguri2018&quot;</span><span class="p">,</span>
+    <span class="n">merger_rate_density_param</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">R0</span><span class="o">=</span><span class="mf">25.</span><span class="o">*</span><span class="mf">1e-9</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">b3</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">b4</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span>
+    <span class="p">)</span>
+
+<span class="c1"># detector frame</span>
+<span class="n">rate1_det</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+<span class="c1"># source frame</span>
+<span class="n">rate1_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">pdf_z</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -221,9 +237,12 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2.94 µs ± 7.62 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)
+z_to_luminosity_distance interpolator will be generated at ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_2.pickle
+differential_comoving_volume interpolator will be generated at ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_2.pickle
+merger_rate_density_bbh_popI_II_oguri2018 interpolator will be generated at ./interpolator_pickle/merger_rate_density_bbh_popI_II_oguri2018/merger_rate_density_bbh_popI_II_oguri2018_4.pickle
 </pre></div></div>
 </div>
+</section>
 <section id="Star-formation-rate">
 <h2>Star formation rate<a class="headerlink" href="#Star-formation-rate" title="Link to this heading"></a></h2>
 <ul class="simple">
@@ -235,7 +254,7 @@
 \psi(z) = 0.015 \frac{(1+z)^{2.7}}{1+[(1+z)/2.9]^{5.6}} \text{M}_\odot \text{yr}^{-1} \text{Mpc}^{-3} \tag{2}
 \end{equation}</span></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Star formation rate Madau &amp; Dickinson 2014</span>
@@ -259,9 +278,9 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-z_to_luminosity_distance interpolator will be loaded from ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_3.pickle
-differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_5.pickle
-star_formation_rate_madau_dickinson2014 interpolator will be loaded from ./interpolator_pickle/star_formation_rate_madau_dickinson2014/star_formation_rate_madau_dickinson2014_2.pickle
+z_to_luminosity_distance interpolator will be loaded from ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_2.pickle
+differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_2.pickle
+star_formation_rate_madau_dickinson2014 interpolator will be generated at ./interpolator_pickle/star_formation_rate_madau_dickinson2014/star_formation_rate_madau_dickinson2014_0.pickle
 </pre></div></div>
 </div>
 </section>
@@ -281,7 +300,7 @@ star_formation_rate_madau_dickinson2014 interpolator will be loaded from ./inter
 <li><p><span class="math notranslate nohighlight">\(n_o=19.2\times 10^{-9}\)</span>, <span class="math notranslate nohighlight">\(a_{III}=0.66\)</span>, <span class="math notranslate nohighlight">\(b_{III}=0.3\)</span>, <span class="math notranslate nohighlight">\(z_{III}=11.6\)</span></p></li>
 </ul>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pop III Ng et al. 2022</span>
@@ -304,9 +323,9 @@ star_formation_rate_madau_dickinson2014 interpolator will be loaded from ./inter
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-z_to_luminosity_distance interpolator will be loaded from ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_3.pickle
-differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_5.pickle
-merger_rate_density_bbh_popIII_ken2022 interpolator will be loaded from ./interpolator_pickle/merger_rate_density_bbh_popIII_ken2022/merger_rate_density_bbh_popIII_ken2022_3.pickle
+z_to_luminosity_distance interpolator will be loaded from ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_2.pickle
+differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_2.pickle
+merger_rate_density_bbh_popIII_ken2022 interpolator will be generated at ./interpolator_pickle/merger_rate_density_bbh_popIII_ken2022/merger_rate_density_bbh_popIII_ken2022_0.pickle
 </pre></div></div>
 </div>
 </section>
@@ -326,7 +345,7 @@ merger_rate_density_bbh_popIII_ken2022 interpolator will be loaded from ./interp
 <li><p><span class="math notranslate nohighlight">\(n_o=0.044\times 10^{-9}\)</span>, <span class="math notranslate nohighlight">\(t_o=13.786885302009708\)</span></p></li>
 </ul>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># primordial black holes Ng et al. 2022</span>
@@ -348,8 +367,8 @@ merger_rate_density_bbh_popIII_ken2022 interpolator will be loaded from ./interp
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-z_to_luminosity_distance interpolator will be loaded from ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_3.pickle
-differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_5.pickle
+z_to_luminosity_distance interpolator will be loaded from ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_2.pickle
+differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_2.pickle
 INFO:numba.core.transforms:finding looplift candidates
 </pre></div></div>
 </div>
@@ -358,7 +377,7 @@ INFO:numba.core.transforms:finding looplift candidates
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-merger_rate_density_bbh_primordial_ken2022 interpolator will be loaded from ./interpolator_pickle/merger_rate_density_bbh_primordial_ken2022/merger_rate_density_bbh_primordial_ken2022_0.pickle
+merger_rate_density_bbh_primordial_ken2022 interpolator will be generated at ./interpolator_pickle/merger_rate_density_bbh_primordial_ken2022/merger_rate_density_bbh_primordial_ken2022_0.pickle
 </pre></div></div>
 </div>
 <section id="Plots-and-comparison">
@@ -366,7 +385,7 @@ merger_rate_density_bbh_primordial_ken2022 interpolator will be loaded from ./in
 <section id="reproduction-of-Ng-et-al.-2022-Fig.-3">
 <h3>reproduction of Ng et al. 2022 <a class="reference external" href="https://arxiv.org/pdf/2204.11864.pdf">Fig. 3</a><a class="headerlink" href="#reproduction-of-Ng-et-al.-2022-Fig.-3" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># normalization factor is different</span>
@@ -393,14 +412,15 @@ merger_rate_density_bbh_primordial_ken2022 interpolator will be loaded from ./in
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/examples_source_population_merger_rate_density_model_comparision_16_0.png" src="../../_images/examples_source_population_merger_rate_density_model_comparision_16_0.png" />
+<img alt="../../_images/examples_source_population_merger_rate_density_model_comparision_15_0.png" src="../../_images/examples_source_population_merger_rate_density_model_comparision_15_0.png" />
 </div>
 </div>
 </section>
+</section>
 <section id="Merger-rate-density-(source-frame)">
-<h3>Merger rate density (source frame)<a class="headerlink" href="#Merger-rate-density-(source-frame)" title="Link to this heading"></a></h3>
+<h2>Merger rate density (source frame)<a class="headerlink" href="#Merger-rate-density-(source-frame)" title="Link to this heading"></a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the pdf of zs (source frame)</span>
@@ -425,10 +445,9 @@ merger_rate_density_bbh_primordial_ken2022 interpolator will be loaded from ./in
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/examples_source_population_merger_rate_density_model_comparision_18_0.png" src="../../_images/examples_source_population_merger_rate_density_model_comparision_18_0.png" />
+<img alt="../../_images/examples_source_population_merger_rate_density_model_comparision_17_0.png" src="../../_images/examples_source_population_merger_rate_density_model_comparision_17_0.png" />
 </div>
 </div>
-</section>
 </section>
 <section id="Conclusion">
 <h2>Conclusion<a class="headerlink" href="#Conclusion" title="Link to this heading"></a></h2>
@@ -444,7 +463,7 @@ these uncertainties and provide valuable insights into the formation and evoluti
 <li><p>Star formation rate (SFR) vs redshift</p></li>
 </ul>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot star formation rate distribution wrt redshift</span>
@@ -467,7 +486,7 @@ these uncertainties and provide valuable insights into the formation and evoluti
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/examples_source_population_merger_rate_density_model_comparision_21_0.png" src="../../_images/examples_source_population_merger_rate_density_model_comparision_21_0.png" />
+<img alt="../../_images/examples_source_population_merger_rate_density_model_comparision_20_0.png" src="../../_images/examples_source_population_merger_rate_density_model_comparision_20_0.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">

@@ -44,6 +44,17 @@ The code is available at `github.ler <https://github.com/hemantaph/ler>`_.
    examples/rates/LeR complete examples
    examples/rates/GWRATES complete exmaples
    examples/rates/grb detection rate
+   examples/rates/ler bns example
+   examples/rates/rates_with_3G_detectors
+   examples/source population/merger rate density evolution with redshift
+   examples/source population/sample compact binary parameters
+   examples/source population/sample compact binary parameters with redshift
+   examples/source population/statistical study of cosmological friction
+   examples/lens_parameters/sample lens parameters
+   examples/optical_depth/validation_SIE
+   examples/optical_depth/validation_SIS
+   examples/image_properties/dt_vs_dmu
+
 
 Indices and tables
 ==================

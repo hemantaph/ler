@@ -966,7 +966,8 @@ class OpticalDepth():
         Function to list all available axis ratio sampler.
         """
         self._available_axis_ratio_list_and_its_params = dict(
-            axis_ratio_rayleigh=None,
+            axis_ratio_rayleigh=dict(q_min=0.2, q_max=1.0),
+            axis_ratio_padilla_strauss=dict(q_min=0.2, q_max=1.0),
             axis_ratio_SIS=None,
         )
 
