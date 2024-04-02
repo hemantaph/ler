@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>data generation &mdash; ler 0.3.1 documentation</title>
+  <title>Study of Time delays and magnification of lensed gravitational waves. &mdash; ler 0.3.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -73,20 +73,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rates/grb%20detection%20rate.html">Calculation of detectable Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rates/ler%20bns%20example.html">LeR complete examples of BNS events (O4 design sensitivity)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rates/rates_with_3G_detectors.html">With ANN snr (IMRphenomXPHM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rates/rates_with_3G_detectors.html">Event Rates with 3G detectors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../source%20population/merger%20rate%20density%20evolution%20with%20redshift.html">Merger rate density evolution with redshift</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../source%20population/sample%20compact%20binary%20parameters.html">Sampling parameters for a compact binary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../source%20population/statistical%20study%20of%20cosmological%20friction.html">Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lens_parameters/sample%20lens%20parameters.html">Lens parameter distributions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../optical_depth/validation_SIE.html">Optical depth SIE model validation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../optical_depth/validation_SIS.html">Validation of SIS model (Numerical vs Analytical)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">data generation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#2-image-case">2-image case</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#KDE">KDE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#corner-plots">corner plots</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#magnification-plot">magnification plot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#Contour-plot">Contour plot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#4-image-case">4-image case</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Study of Time delays and magnification of lensed gravitational waves.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#data-generation">data generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#2-image-case">2-image case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#KDE">KDE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#corner-plots">corner plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magnification-plot">magnification plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Contour-plot">Contour plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#4-image-case">4-image case</a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -103,7 +106,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">data generation</li>
+      <li class="breadcrumb-item active">Study of Time delays and magnification of lensed gravitational waves.</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/examples/image_properties/dt_vs_dmu.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -113,7 +116,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="nbinput nblast docutils container">
+  <section id="Study-of-Time-delays-and-magnification-of-lensed-gravitational-waves.">
+<h1>Study of Time delays and magnification of lensed gravitational waves.<a class="headerlink" href="#Study-of-Time-delays-and-magnification-of-lensed-gravitational-waves." title="Link to this heading"></a></h1>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
@@ -127,7 +132,7 @@
 </div>
 </div>
 <section id="data-generation">
-<h1>data generation<a class="headerlink" href="#data-generation" title="Link to this heading"></a></h1>
+<h2>data generation<a class="headerlink" href="#data-generation" title="Link to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -268,7 +273,7 @@ storing detectable lensed params in ./ler_data/n_lensed_params_bbh_test.json
 </div>
 </section>
 <section id="2-image-case">
-<h1>2-image case<a class="headerlink" href="#2-image-case" title="Link to this heading"></a></h1>
+<h2>2-image case<a class="headerlink" href="#2-image-case" title="Link to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -345,12 +350,12 @@ dict_keys([&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;theta_
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/examples_image_properties_dt_vs_dmu_8_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_8_0.png" />
+<img alt="../../_images/examples_image_properties_dt_vs_dmu_9_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_9_0.png" />
 </div>
 </div>
 </section>
 <section id="KDE">
-<h1>KDE<a class="headerlink" href="#KDE" title="Link to this heading"></a></h1>
+<h2>KDE<a class="headerlink" href="#KDE" title="Link to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
@@ -391,12 +396,12 @@ dict_keys([&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;theta_
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/examples_image_properties_dt_vs_dmu_11_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_11_0.png" />
+<img alt="../../_images/examples_image_properties_dt_vs_dmu_12_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_12_0.png" />
 </div>
 </div>
 </section>
 <section id="corner-plots">
-<h1>corner plots<a class="headerlink" href="#corner-plots" title="Link to this heading"></a></h1>
+<h2>corner plots<a class="headerlink" href="#corner-plots" title="Link to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
@@ -472,7 +477,7 @@ dict_keys([&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;theta_
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/examples_image_properties_dt_vs_dmu_15_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_15_0.png" />
+<img alt="../../_images/examples_image_properties_dt_vs_dmu_16_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_16_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -499,7 +504,7 @@ dict_keys([&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;theta_
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/examples_image_properties_dt_vs_dmu_16_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_16_0.png" />
+<img alt="../../_images/examples_image_properties_dt_vs_dmu_17_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_17_0.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -541,7 +546,7 @@ dict_keys([&#39;zl&#39;, &#39;zs&#39;, &#39;sigma&#39;, &#39;q&#39;, &#39;theta_
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/examples_image_properties_dt_vs_dmu_18_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_18_0.png" />
+<img alt="../../_images/examples_image_properties_dt_vs_dmu_19_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_19_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -745,7 +750,7 @@ storing detectable unlensed params in ./ler_data/n_unlensed_params_bbh.json
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/examples_image_properties_dt_vs_dmu_22_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_22_0.png" />
+<img alt="../../_images/examples_image_properties_dt_vs_dmu_23_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_23_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -761,7 +766,7 @@ storing detectable unlensed params in ./ler_data/n_unlensed_params_bbh.json
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/examples_image_properties_dt_vs_dmu_23_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_23_0.png" />
+<img alt="../../_images/examples_image_properties_dt_vs_dmu_24_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_24_0.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -805,12 +810,12 @@ storing detectable unlensed params in ./ler_data/n_unlensed_params_bbh.json
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/examples_image_properties_dt_vs_dmu_25_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_25_0.png" />
+<img alt="../../_images/examples_image_properties_dt_vs_dmu_26_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_26_0.png" />
 </div>
 </div>
 </section>
 <section id="magnification-plot">
-<h1>magnification plot<a class="headerlink" href="#magnification-plot" title="Link to this heading"></a></h1>
+<h2>magnification plot<a class="headerlink" href="#magnification-plot" title="Link to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
@@ -872,12 +877,12 @@ array([7.18355283e-01, 7.87036153e-01, 9.49931412e-01, ...,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/examples_image_properties_dt_vs_dmu_29_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_29_0.png" />
+<img alt="../../_images/examples_image_properties_dt_vs_dmu_30_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_30_0.png" />
 </div>
 </div>
 </section>
 <section id="Contour-plot">
-<h1>Contour plot<a class="headerlink" href="#Contour-plot" title="Link to this heading"></a></h1>
+<h2>Contour plot<a class="headerlink" href="#Contour-plot" title="Link to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
 </pre></div>
@@ -964,7 +969,7 @@ array([7.18355283e-01, 7.87036153e-01, 9.49931412e-01, ...,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/examples_image_properties_dt_vs_dmu_34_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_34_0.png" />
+<img alt="../../_images/examples_image_properties_dt_vs_dmu_35_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_35_0.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -1018,7 +1023,7 @@ array([7.18355283e-01, 7.87036153e-01, 9.49931412e-01, ...,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/examples_image_properties_dt_vs_dmu_36_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_36_0.png" />
+<img alt="../../_images/examples_image_properties_dt_vs_dmu_37_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_37_0.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -1031,7 +1036,7 @@ array([7.18355283e-01, 7.87036153e-01, 9.49931412e-01, ...,
 </div>
 </section>
 <section id="4-image-case">
-<h1>4-image case<a class="headerlink" href="#4-image-case" title="Link to this heading"></a></h1>
+<h2>4-image case<a class="headerlink" href="#4-image-case" title="Link to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -1123,7 +1128,7 @@ array([7.18355283e-01, 7.87036153e-01, 9.49931412e-01, ...,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/examples_image_properties_dt_vs_dmu_43_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_43_0.png" />
+<img alt="../../_images/examples_image_properties_dt_vs_dmu_44_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_44_0.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -1194,7 +1199,7 @@ array([7.18355283e-01, 7.87036153e-01, 9.49931412e-01, ...,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/examples_image_properties_dt_vs_dmu_46_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_46_0.png" />
+<img alt="../../_images/examples_image_properties_dt_vs_dmu_47_0.png" src="../../_images/examples_image_properties_dt_vs_dmu_47_0.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -1205,6 +1210,7 @@ array([7.18355283e-01, 7.87036153e-01, 9.49931412e-01, ...,
 </pre></div>
 </div>
 </div>
+</section>
 </section>
 
 
