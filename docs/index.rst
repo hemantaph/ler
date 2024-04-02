@@ -15,7 +15,7 @@ ler
 ``ler`` is a statistical based python package whose core function is to calculate detectable rates of gravitational waves events. Description available in the `Summary <https://ler.readthedocs.io/en/latest/Summary.html>`_ section.
 
 | The code is available at `github.ler <https://github.com/hemantaph/ler>`_.
-| For reaching out to the developer, please raise issue in `github.ler.issue <https://github.com/hemantaph/ler/issues>'.
+| For reaching out to the developer, please raise issue in `github.ler.issue <https://github.com/hemantaph/ler/issues>`_.
 
 | ``ler`` main developer: `Hemanta Ph. <https://newww.phy.cuhk.edu.hk/postgraduate/phurailatpam-hemantakumar>`_
 | ``ler`` developer and analyst: Harsh Narola, Anupreeta More, Ng Chung Yin (Leo), Justin Janquart, Chris Van Den Broeck, Otto Akseli HANNUKSELA
