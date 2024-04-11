@@ -53,6 +53,7 @@ ler
    examples/source population/merger rate density evolution with redshift
    examples/source population/sample compact binary parameters
    examples/source population/sample compact binary parameters with redshift
+   examples/source population/statistical study of changing mass model params
    examples/source population/statistical study of cosmological friction
    examples/lens_parameters/sample lens parameters
    examples/optical_depth/validation_SIE
