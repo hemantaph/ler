@@ -915,7 +915,10 @@ class GWRATES(CBCSourceParameterDistribution):
             # save meta data
             meta_data = dict(events_total=[events_total], detectable_events=[float(n)], total_rate=[total_rate])
             if os.path.exists(meta_data_path):
-                append_json(file_name=meta_data_path, new_dictionary=meta_data, replace=False)
+                try:
+                    append_json(file_name=meta_data_path, new_dictionary=meta_data, replace=False)
+                except:
+                    append_json(file_name=meta_data_path, new_dictionary=meta_data, replace=True)
             else:
                 append_json(file_name=meta_data_path, new_dictionary=meta_data, replace=True)
                 
