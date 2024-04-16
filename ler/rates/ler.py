@@ -1699,7 +1699,10 @@ class LeR(LensGalaxyParameterDistribution):
                     lensed_param[key] = value[snr_hit]
 
             if os.path.exists(output_path):
-                append_json(output_path, lensed_param, replace=False)
+                try:
+                    append_json(output_path, lensed_param, replace=False)
+                except:
+                    append_json(output_path, lensed_param, replace=True)
             else:
                 append_json(output_path, lensed_param, replace=True)
 
