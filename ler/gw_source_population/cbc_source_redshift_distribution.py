@@ -242,9 +242,15 @@ class CBCSourceRedshiftDistribution(object):
         # create sampler using the pdf p(z)
         resolution = self.c_n_i["redshift_distribution"]["resolution"]
         create_new = self.c_n_i["redshift_distribution"]["create_new"]
+
+        # if callable(merger_rate_density):
+        #     merger_rate_density_name = merger_rate_density.__name__
+        # else:
+        #     merger_rate_density_name = merger_rate_density
+
         zs_inv_cdf = interpolator_from_pickle(
-                param_dict_given= dict(z_min=z_min, 
-                                       z_max=z_max, 
+                param_dict_given= dict(z_min=z_min,
+                                       z_max=z_max,
                                        cosmology=self.cosmo,
                                        event_type=event_type,
                                        merger_rate_density=merger_rate_density,
@@ -252,8 +258,8 @@ class CBCSourceRedshiftDistribution(object):
                                         resolution=resolution,
                                         ),
                 directory=directory,
-                sub_directory=merger_rate_density,
-                name=merger_rate_density,
+                sub_directory="merger_rate_density",
+                name="merger_rate_density",
                 x = np.linspace(z_min, z_max, resolution),
                 pdf_func= lambda z_: self.pdf_z(zs=z_, param=merger_rate_density_param),
                 conditioned_y=None,
