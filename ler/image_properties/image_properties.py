@@ -375,15 +375,13 @@ class ImageProperties():
 
         # Get the binary parameters
         number_of_lensed_events = len(magnifications)
-        mass_1, mass_2, luminosity_distance, theta_jn, psi, ra, dec, geocent_time, phase, a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl  = (
+        mass_1, mass_2, theta_jn, psi, ra, dec, phase, a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl  = (
             lensed_param["mass_1"],
             lensed_param["mass_2"],
-            lensed_param["luminosity_distance"],
             lensed_param["theta_jn"],
             lensed_param["psi"],
             lensed_param["ra"],
             lensed_param["dec"],
-            lensed_param["geocent_time"],
             lensed_param["phase"],
             np.zeros(size),
             np.zeros(size),
@@ -423,24 +421,45 @@ class ImageProperties():
                     np.ones((number_of_lensed_events, n_max_images)) * np.nan
                 )
         
-        
-
         # for updating the lensed_param
-        lensed_param["effective_luminosity_distance"] = np.ones((number_of_lensed_events, n_max_images)) * np.nan
-        lensed_param["effective_geocent_time"] = np.ones((number_of_lensed_events, n_max_images)) * np.nan
+        if "luminosity_distance" in lensed_param:
+            luminosity_distance = lensed_param["luminosity_distance"]
+            lensed_param["effective_luminosity_distance"] = np.ones((number_of_lensed_events, n_max_images)) * np.nan
+            dl_eff_present = False
+        elif "effective_luminosity_distance" in lensed_param:
+            dl_eff = lensed_param["effective_luminosity_distance"]
+            dl_eff_present = True
+        else:
+            raise ValueError("luminosity_distance or effective_luminosity_distance not given")
+        
+        if "geocent_time" in lensed_param:
+            geocent_time = lensed_param["geocent_time"]
+            lensed_param["effective_geocent_time"] = np.ones((number_of_lensed_events, n_max_images)) * np.nan
+            time_eff_present = False
+        elif "effective_geocent_time" in lensed_param:
+            time_eff = lensed_param["effective_geocent_time"]
+            time_eff_present = True
+        else:
+            raise ValueError("geocent_time or effective_geocent_time not given")
 
         # Get the optimal signal to noise ratios for each image
         # iterate over the image type (column)
         for i in range(n_max_images):
             
             # get the effective time for each image type
-            effective_geocent_time = geocent_time + time_delays[:, i]
+            if not time_eff_present:
+                effective_geocent_time = geocent_time + time_delays[:, i]
+            else:
+                effective_geocent_time = time_eff[:, i]
             # choose only the events that are within the time range and also not nan
             idx = (effective_geocent_time <= self.geocent_time_max) & (effective_geocent_time >= self.geocent_time_min)
             # get the effective luminosity distance for each image type
-            effective_luminosity_distance = luminosity_distance / np.sqrt(
-                np.abs(magnifications[:, i])
-            )
+            if not dl_eff_present:
+                effective_luminosity_distance = luminosity_distance / np.sqrt(
+                    np.abs(magnifications[:, i])
+                )
+            else:
+                effective_luminosity_distance = dl_eff[:, i]
             
             # check for nan values
             idx = idx & ~np.isnan(effective_luminosity_distance) & ~np.isnan(effective_geocent_time)
@@ -505,7 +524,9 @@ class ImageProperties():
                 lensed_param["effective_luminosity_distance"][:, i] = effective_luminosity_distance
                 lensed_param["effective_geocent_time"][:, i] = effective_geocent_time
 
-        del lensed_param["luminosity_distance"]
-        del lensed_param["geocent_time"]
+        if dl_eff_present:
+            del lensed_param["effective_luminosity_distance"]
+        if time_eff_present:
+            del lensed_param["effective_geocent_time"]
 
         return result_dict, lensed_param
