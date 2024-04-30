@@ -21,6 +21,26 @@
 **/**/**/**/*.h5
 **/**/**/**/**/*.h5
 
+# ignore gz
+*.gz
+.gz
+**.gz
+**/*.gz
+**/**/*.gz
+**/**/**/*.gz
+**/**/**/**/*.gz
+**/**/**/**/**/*.gz
+
+# ignore fits
+*.fits
+.fits
+**.fits
+**/*.fits
+**/**/*.fits
+**/**/**/*.fits
+**/**/**/**/*.fits
+**/**/**/**/**/*.fits
+
 # ignore pickle
 *.pickle
 .pickle
