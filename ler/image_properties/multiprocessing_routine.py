@@ -151,17 +151,34 @@ def solve_lens_equation(lens_parameters):
         # try:
         x_source, y_source = pointpats.random.poisson(caustic_double, size=1)
         # Solve the lens equation
-        (
-            x0_image_position,
-            x1_image_position,
-        ) = lens_eq_solver.image_position_from_source(
-            sourcePos_x=x_source,
-            sourcePos_y=y_source,
-            kwargs_lens=kwargs_lens,
-            solver="analytical",
-            magnification_limit=1.0 / 100.0,
-            arrival_time_sort=True,
-        )
+        try:  # this to catch this error: "ValueError: Signs are not different"
+            (
+                x0_image_position,
+                x1_image_position,
+            ) = lens_eq_solver.image_position_from_source(
+                sourcePos_x=x_source,
+                sourcePos_y=y_source,
+                kwargs_lens=kwargs_lens,
+                solver="analytical",
+                magnification_limit=1.0 / 100.0,
+                arrival_time_sort=True,
+            )
+        except:
+            print("Cannot calculate image positions, for the following lens parameters:")
+            print(lens_parameters, x_source, y_source, x0_image_position, x1_image_position)
+            return (
+                np.nan,
+                np.nan,
+                np.array([np.nan,np.nan]),
+                np.array([np.nan,np.nan]),
+                np.array([np.nan,np.nan]),
+                np.array([np.nan,np.nan]),
+                0,
+                np.array([np.nan,np.nan]),
+                np.array([np.nan,np.nan]),
+                iteration,
+            )
+
         nImages = len(x0_image_position)  # shows how many images
         if nImages >= n_min_images:
             strongly_lensed = True

@@ -139,7 +139,7 @@ def add_dict_values(dict1, dict2):
     data_key = dict1.keys()
     for key, value in dict2.items():
         if key in data_key:
-            dict1[key] = np.concatenate((dict1[key], value)).tolist()
+            dict1[key] = np.concatenate((dict1[key], value))
 
     return dict1
 

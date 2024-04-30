@@ -827,6 +827,55 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             mass_1_source, mass_2_source = model.sample(Nsample=size)
 
             return (mass_1_source, mass_2_source)
+        
+    def binary_masses_uniform(
+        self,
+        size,
+        m_min=1.0,
+        m_max=3.0,
+        get_attribute=False,
+        param=None,
+    ):
+        """
+        Function to sample source mass1 and mass2 from uniform distribution.
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+        m_min : `float`
+            Minimum mass of the BNS
+            default: 1.0
+        m_max : `float`
+            Maximum mass of the BNS
+            default: 3.0
+        get_attribute : `bool`
+            If True, return a sampler function with size as the only input where parameters are fixed to the given values.
+        param : `dict`
+            Allows to pass in above parameters as dict.
+            e.g. param = dict(m_min=1.0, m_max=3.0)
+
+        Returns
+        ----------
+        mass_1_source : `numpy.ndarray` (1D array of floats)
+            Array of mass1 in source frame (Msun)
+        mass_2_source : `numpy.ndarray` (1D array of floats)
+            Array of mass2 in source frame (Msun)
+
+        Examples
+        ----------
+        >>> from ler.gw_source_population import CBCSourceParameterDistribution
+        >>> cbc = CBCSourceParameterDistribution()
+        >>> m1_src, m2_src = cbc.binary_masses_uniform(size=1000)
+        """
+
+        if param:
+            m_min = param["m_min"]
+            m_max = param["m_max"]
+
+        if get_attribute:
+            return njit(lambda size: (np.random.uniform(m_min, m_max, size), np.random.uniform(m_min, m_max, size)))
+        return np.random.uniform(m_min, m_max, size), np.random.uniform(m_min, m_max, size)
 
     def binary_masses_BNS_bimodal(
         self,
