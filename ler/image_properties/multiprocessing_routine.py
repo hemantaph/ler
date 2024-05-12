@@ -164,8 +164,6 @@ def solve_lens_equation(lens_parameters):
                 arrival_time_sort=True,
             )
         except:
-            print("Cannot calculate image positions, for the following lens parameters:")
-            print(lens_parameters, x_source, y_source, x0_image_position, x1_image_position)
             return (
                 np.nan,
                 np.nan,
