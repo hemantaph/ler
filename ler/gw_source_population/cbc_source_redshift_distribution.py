@@ -219,11 +219,11 @@ class CBCSourceRedshiftDistribution(object):
         # if None is passed, use the default merger_rate_density_param
         if merger_rate_density_param is None and merger_rate_density== "merger_rate_density_bbh_popI_II_oguri2018":
             if self.event_type == "BBH":
-                R0 = 25 * 1e-9
+                R0 = 23.9 * 1e-9
             elif self.event_type == "BNS":
-                R0 = 170.0 * 1e-9
+                R0 = 150.5 * 1e-9
             elif self.event_type == "NSBH":
-                R0 = 27.0 * 1e-9
+                R0 = 45.0 * 1e-9
             else:
                 raise ValueError("event_type must be one of 'BBH', 'BNS', 'NSBH'")
             self.merger_rate_density_param = dict(R0=R0, b2=1.6, b3=2.0, b4=30)

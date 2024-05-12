@@ -1631,6 +1631,8 @@ class LeR(LensGalaxyParameterDistribution):
 
         meta_data_path = self.ler_directory+"/"+meta_data_file
         output_path = self.ler_directory+"/"+output_jsonfile
+        if meta_data_path==output_path:
+            raise ValueError("meta_data_file and output_jsonfile cannot be same.")
 
         if batch_size is None:
             batch_size = self.batch_size
