@@ -20,7 +20,7 @@ ler
 | ``ler`` main developer: `Hemanta Ph. <https://newww.phy.cuhk.edu.hk/postgraduate/phurailatpam-hemantakumar>`_
 | ``ler`` developer and analyst: Harsh Narola, Anupreeta More, Ng Chung Yin (Leo), Justin Janquart, Chris Van Den Broeck, Otto Akseli HANNUKSELA
 
-==================
+
 Glossary
 ==================
 
@@ -36,9 +36,11 @@ Glossary
       |
       *Animation showing the propagation of gravitational waves from inspiraling binary black holes.* 
       `Source <https://community.wolfram.com/groups/-/m/t/790989>`_ : Jeffrey Bryant, Wolfram|Alpha, LLC.
-      
+
       |
       Ripples in the fabric of space-time caused by some of the most violent and energetic processes in the Universe, such as merger of compact binaries (e.g., black holes and neutron stars) and supernovae explosions. Albert Einstein predicted the existence of gravitational waves in 1916 in his general theory of relativity, but it took a century to detect them directly. The first detection was made in 2015 by the LIGO and Virgo collaborations, which won the 2017 Nobel Prize in Physics. Gravitational waves are invisible, yet incredibly fast; they travel at the speed of light, squeezing and stretching anything in their path.
+      
+      |
 
    Lensing of gravitational waves
 
@@ -52,7 +54,10 @@ Glossary
       `Source <https://science.nasa.gov/universe/how-gravity-warps-light/>`_ : NASA, ESA, and Goddard Space Flight Center/K. Jackson.
 
       |
-      A process similar to the gravitational lensing of light, where gravitational waves emitted from distant astrophysical events are bent and splitted (strong-lensing case) into multiple images by the gravity of intervening massive objects, such as galaxy and galaxy cluster. This can magnify and change the arrival time of the gravitational waves. 
+      A process similar to the gravitational lensing of light, where gravitational waves emitted from distant astrophysical events are bent and splitted (strong-lensing case) into multiple images by the gravity of intervening massive objects, such as galaxy and galaxy cluster. This can magnify and change the arrival time of the gravitational waves.
+
+      |
+   
 
    Rate calculation and statistics
 
