@@ -30,7 +30,7 @@ Glossary
 
       .. image:: _static/gw.gif
          :align: left
-         :width: 60%
+         :width: 480px
          :alt: ler logo
 
       *Animation showing the propagation of gravitational waves from inspiraling binary black holes.* 
@@ -45,7 +45,7 @@ Glossary
 
       .. image:: _static/Light_Bending.gif
          :align: right
-         :width: 60%
+         :width: 480px
          :alt: ler logo
 
       *Animation showing the bending of light by a massive object.* 
@@ -61,7 +61,7 @@ Glossary
 
       .. image:: _static/merger_rate_bbh.png
          :align: left
-         :width: 60%
+         :width: 480px
          :alt: ler logo
       
       *Figure showing the merger rate density of binary black hole (BBH) mergers as a function of redshift.* 
