@@ -145,3 +145,11 @@ def setup(app):
     roles.register_local_role('orange_first', orange_first_letter)
     roles.register_local_role('red', red_role)
     roles.register_local_role('red_first', red_first_letter)
+
+# A string of reStructuredText that will be included at the end of every source 
+# file that is read.
+rst_epilog = """
+
+.. |pic2| image:: https://community.wolfram.com/c/portal/getImageAttachment?filename=ezgif.com-optimize%283%29.gif&userId=20103
+
+"""
