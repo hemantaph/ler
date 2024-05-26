@@ -50,6 +50,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
@@ -977,6 +978,58 @@
             <span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">Nsample</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
 
             <span class="k">return</span> <span class="p">(</span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="CBCSourceParameterDistribution.binary_masses_uniform">
+<a class="viewcode-back" href="../../../autoapi/ler/rates/index.html#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_uniform">[docs]</a>
+    <span class="k">def</span> <span class="nf">binary_masses_uniform</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">size</span><span class="p">,</span>
+        <span class="n">m_min</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">m_max</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span>
+        <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to sample source mass1 and mass2 from uniform distribution.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        size : `int`</span>
+<span class="sd">            Number of samples to draw</span>
+<span class="sd">        m_min : `float`</span>
+<span class="sd">            Minimum mass of the BNS</span>
+<span class="sd">            default: 1.0</span>
+<span class="sd">        m_max : `float`</span>
+<span class="sd">            Maximum mass of the BNS</span>
+<span class="sd">            default: 3.0</span>
+<span class="sd">        get_attribute : `bool`</span>
+<span class="sd">            If True, return a sampler function with size as the only input where parameters are fixed to the given values.</span>
+<span class="sd">        param : `dict`</span>
+<span class="sd">            Allows to pass in above parameters as dict.</span>
+<span class="sd">            e.g. param = dict(m_min=1.0, m_max=3.0)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mass_1_source : `numpy.ndarray` (1D array of floats)</span>
+<span class="sd">            Array of mass1 in source frame (Msun)</span>
+<span class="sd">        mass_2_source : `numpy.ndarray` (1D array of floats)</span>
+<span class="sd">            Array of mass2 in source frame (Msun)</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        ----------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.gw_source_population import CBCSourceParameterDistribution</span>
+<span class="sd">        &gt;&gt;&gt; cbc = CBCSourceParameterDistribution()</span>
+<span class="sd">        &gt;&gt;&gt; m1_src, m2_src = cbc.binary_masses_uniform(size=1000)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">param</span><span class="p">:</span>
+            <span class="n">m_min</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;m_min&quot;</span><span class="p">]</span>
+            <span class="n">m_max</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;m_max&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">m_min</span><span class="p">,</span> <span class="n">m_max</span><span class="p">,</span> <span class="n">size</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">m_min</span><span class="p">,</span> <span class="n">m_max</span><span class="p">,</span> <span class="n">size</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">m_min</span><span class="p">,</span> <span class="n">m_max</span><span class="p">,</span> <span class="n">size</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">m_min</span><span class="p">,</span> <span class="n">m_max</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CBCSourceParameterDistribution.binary_masses_BNS_bimodal">

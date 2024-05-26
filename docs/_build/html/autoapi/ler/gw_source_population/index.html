@@ -52,6 +52,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
@@ -110,6 +111,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/rates/rates_with_3G_detectors.html">Event Rates with 3G detectors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/source%20population/merger%20rate%20density%20evolution%20with%20redshift.html">Merger rate density evolution with redshift</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/source%20population/sample%20compact%20binary%20parameters.html">Sampling parameters for a compact binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/source%20population/statistical%20study%20of%20changing%20mass%20model%20params.html">Statistical study of changing Mass model paramter(s)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/source%20population/statistical%20study%20of%20cosmological%20friction.html">Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/lens_parameters/sample%20lens%20parameters.html">Lens parameter distributions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/optical_depth/validation_SIE.html">Optical depth SIE model validation</a></li>
@@ -2442,6 +2444,45 @@ default: 0.0</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceParameterDistribution</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceParameterDistribution</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m1_src</span><span class="p">,</span> <span class="n">m2_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">binary_masses_NSBH_broken_powerlaw</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.gw_source_population.CBCSourceParameterDistribution.binary_masses_uniform">
+<span class="sig-name descname"><span class="pre">binary_masses_uniform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.binary_masses_uniform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.CBCSourceParameterDistribution.binary_masses_uniform" title="Link to this definition"></a></dt>
+<dd><p>Function to sample source mass1 and mass2 from uniform distribution.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>Number of samples to draw</p>
+</dd>
+<dt><strong>m_min</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Minimum mass of the BNS
+default: 1.0</p>
+</dd>
+<dt><strong>m_max</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Maximum mass of the BNS
+default: 3.0</p>
+</dd>
+<dt><strong>get_attribute</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>If True, return a sampler function with size as the only input where parameters are fixed to the given values.</p>
+</dd>
+<dt><strong>param</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Allows to pass in above parameters as dict.
+e.g. param = dict(m_min=1.0, m_max=3.0)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>mass_1_source</strong><span class="classifier"><cite>numpy.ndarray</cite> (1D array of floats)</span></dt><dd><p>Array of mass1 in source frame (Msun)</p>
+</dd>
+<dt><strong>mass_2_source</strong><span class="classifier"><cite>numpy.ndarray</cite> (1D array of floats)</span></dt><dd><p>Array of mass2 in source frame (Msun)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceParameterDistribution</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceParameterDistribution</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m1_src</span><span class="p">,</span> <span class="n">m2_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">binary_masses_uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

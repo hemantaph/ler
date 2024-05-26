@@ -2255,7 +2255,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: unlensed_rate(unlensed_param=None, snr_threshold=8.0, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, threshold_snr_recalculation=6.0)
+   .. py:method:: unlensed_rate(unlensed_param=None, snr_threshold=8.0, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, snr_threshold_recalculation=5.5)
 
       
       Function to calculate the unlensed rate. This function also stores the parameters of the detectable events in json file.
@@ -2281,10 +2281,10 @@ Functions
               other options are 'pdet'.
 
           **snr_recalculation** : `bool`
-              if True, the SNR of centain events (snr>threshold_snr_recalculation)will be recalculate with 'inner product'. This is useful when the snr is calculated with 'ann' method.
+              if True, the SNR of centain events (snr>snr_threshold_recalculation)will be recalculate with 'inner product'. This is useful when the snr is calculated with 'ann' method.
               default snr_recalculation = False.
 
-          **threshold_snr_recalculation** : `float`
+          **snr_threshold_recalculation** : `float`
               threshold for recalculation of detection signal to noise ratio.
 
       :Returns:
@@ -2404,7 +2404,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lensed_rate(lensed_param=None, snr_threshold=[8.0, 8.0], num_img=[1, 1], output_jsonfile=None, nan_to_num=True, detectability_condition='step_function', snr_recalculation=False, threshold_snr_recalculation=[6.0, 6.0])
+   .. py:method:: lensed_rate(lensed_param=None, snr_threshold=[8.0, 8.0], num_img=[1, 1], output_jsonfile=None, nan_to_num=True, detectability_condition='step_function', snr_recalculation=False, snr_threshold_recalculation=[5.5, 5.5])
 
       
       Function to calculate the lensed rate. This function also stores the parameters of the detectable events in json file.
@@ -2438,10 +2438,10 @@ Functions
               other options are 'pdet'.
 
           **snr_recalculation** : `bool`
-              if True, the SNR of centain events (snr>threshold_snr_recalculation)will be recalculate with 'inner product'. This is useful when the snr is calculated with 'ann' method.
+              if True, the SNR of centain events (snr>snr_threshold_recalculation)will be recalculate with 'inner product'. This is useful when the snr is calculated with 'ann' method.
               default snr_recalculation = False.
 
-          **threshold_snr_recalculation** : `float`
+          **snr_threshold_recalculation** : `float`
               threshold for recalculation of detection signal to noise ratio.
 
       :Returns:
@@ -2581,7 +2581,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_unlensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, resume=False, output_jsonfile='n_unlensed_param_detectable.json', meta_data_file='meta_unlensed.json', trim_to_size=True)
+   .. py:method:: selecting_n_unlensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, resume=False, output_jsonfile='n_unlensed_param_detectable.json', meta_data_file='meta_unlensed.json', trim_to_size=True, snr_recalculation=False, snr_threshold_recalculation=5.5)
 
       
       Function to select n unlensed detectable events.
@@ -2631,7 +2631,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_lensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, num_img=2, resume=False, detectability_condition='step_function', output_jsonfile='n_lensed_params_detectable.json', meta_data_file='meta_lensed.json', trim_to_size=True, nan_to_num=False)
+   .. py:method:: selecting_n_lensed_detectable_events(size=100, batch_size=None, snr_threshold=[8.0, 8.0], num_img=[1, 1], resume=False, detectability_condition='step_function', output_jsonfile='n_lensed_params_detectable.json', meta_data_file='meta_lensed.json', trim_to_size=True, nan_to_num=False, snr_recalculation=False, snr_threshold_recalculation=[5.5, 5.5])
 
       
       Function to select n lensed detectable events.
@@ -3926,6 +3926,60 @@ Functions
       >>> from ler.gw_source_population import CBCSourceParameterDistribution
       >>> cbc = CBCSourceParameterDistribution()
       >>> m1_src, m2_src = cbc.binary_masses_NSBH_broken_powerlaw(size=1000)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: binary_masses_uniform(size, m_min=1.0, m_max=3.0, get_attribute=False, param=None)
+
+      
+      Function to sample source mass1 and mass2 from uniform distribution.
+
+
+      :Parameters:
+
+          **size** : `int`
+              Number of samples to draw
+
+          **m_min** : `float`
+              Minimum mass of the BNS
+              default: 1.0
+
+          **m_max** : `float`
+              Maximum mass of the BNS
+              default: 3.0
+
+          **get_attribute** : `bool`
+              If True, return a sampler function with size as the only input where parameters are fixed to the given values.
+
+          **param** : `dict`
+              Allows to pass in above parameters as dict.
+              e.g. param = dict(m_min=1.0, m_max=3.0)
+
+      :Returns:
+
+          **mass_1_source** : `numpy.ndarray` (1D array of floats)
+              Array of mass1 in source frame (Msun)
+
+          **mass_2_source** : `numpy.ndarray` (1D array of floats)
+              Array of mass2 in source frame (Msun)
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.gw_source_population import CBCSourceParameterDistribution
+      >>> cbc = CBCSourceParameterDistribution()
+      >>> m1_src, m2_src = cbc.binary_masses_uniform(size=1000)
 
 
 

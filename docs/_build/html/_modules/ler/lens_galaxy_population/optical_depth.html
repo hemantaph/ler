@@ -50,6 +50,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
@@ -348,8 +349,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">vd_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler_priors_params</span><span class="p">[</span><span class="s1">&#39;velocity_dispersion&#39;</span><span class="p">][</span><span class="s1">&#39;vd_min&#39;</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">vd_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler_priors_params</span><span class="p">[</span><span class="s1">&#39;velocity_dispersion&#39;</span><span class="p">][</span><span class="s1">&#39;vd_max&#39;</span><span class="p">]</span>
         <span class="k">except</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">vd_min</span> <span class="o">=</span> <span class="mf">0.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">vd_max</span> <span class="o">=</span> <span class="mf">600.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vd_min</span> <span class="o">=</span> <span class="mf">10.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vd_max</span> <span class="o">=</span> <span class="mf">350.</span>
 
         <span class="c1"># generating inverse cdf interpolator for velocity dispersion</span>
         <span class="n">param_dict_given_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">,</span> <span class="n">vd_min</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vd_min</span><span class="p">,</span> <span class="n">vd_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vd_max</span><span class="p">,</span> <span class="n">cosmology</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">vd_name</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span><span class="p">[</span><span class="s2">&quot;velocity_dispersion&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">])</span>
