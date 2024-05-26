@@ -26,6 +26,7 @@ ler
 
    Installation2
    Summary
+   code_overview
    GW_events
    GW_equations
    Lensed_events

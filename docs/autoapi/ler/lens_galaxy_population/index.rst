@@ -1309,6 +1309,60 @@ Functions
       ..
           !! processed by numpydoc !!
 
+   .. py:method:: binary_masses_uniform(size, m_min=1.0, m_max=3.0, get_attribute=False, param=None)
+
+      
+      Function to sample source mass1 and mass2 from uniform distribution.
+
+
+      :Parameters:
+
+          **size** : `int`
+              Number of samples to draw
+
+          **m_min** : `float`
+              Minimum mass of the BNS
+              default: 1.0
+
+          **m_max** : `float`
+              Maximum mass of the BNS
+              default: 3.0
+
+          **get_attribute** : `bool`
+              If True, return a sampler function with size as the only input where parameters are fixed to the given values.
+
+          **param** : `dict`
+              Allows to pass in above parameters as dict.
+              e.g. param = dict(m_min=1.0, m_max=3.0)
+
+      :Returns:
+
+          **mass_1_source** : `numpy.ndarray` (1D array of floats)
+              Array of mass1 in source frame (Msun)
+
+          **mass_2_source** : `numpy.ndarray` (1D array of floats)
+              Array of mass2 in source frame (Msun)
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.gw_source_population import CBCSourceParameterDistribution
+      >>> cbc = CBCSourceParameterDistribution()
+      >>> m1_src, m2_src = cbc.binary_masses_uniform(size=1000)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
    .. py:method:: binary_masses_BNS_bimodal(size, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3, resolution=500, create_new=False, get_attribute=False, param=None)
 
       

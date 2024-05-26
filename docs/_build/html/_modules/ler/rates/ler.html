@@ -50,6 +50,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
@@ -1004,7 +1005,7 @@
         <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">detectability_condition</span><span class="o">=</span><span class="s2">&quot;step_function&quot;</span><span class="p">,</span>
         <span class="n">snr_recalculation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">threshold_snr_recalculation</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+        <span class="n">snr_threshold_recalculation</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to calculate the unlensed rate. This function also stores the parameters of the detectable events in json file.</span>
@@ -1025,9 +1026,9 @@
 <span class="sd">            default detectability_condition = &#39;step_function&#39;.</span>
 <span class="sd">            other options are &#39;pdet&#39;.</span>
 <span class="sd">        snr_recalculation : `bool`</span>
-<span class="sd">            if True, the SNR of centain events (snr&gt;threshold_snr_recalculation)will be recalculate with &#39;inner product&#39;. This is useful when the snr is calculated with &#39;ann&#39; method.</span>
+<span class="sd">            if True, the SNR of centain events (snr&gt;snr_threshold_recalculation)will be recalculate with &#39;inner product&#39;. This is useful when the snr is calculated with &#39;ann&#39; method.</span>
 <span class="sd">            default snr_recalculation = False.</span>
-<span class="sd">        threshold_snr_recalculation : `float`</span>
+<span class="sd">        snr_threshold_recalculation : `float`</span>
 <span class="sd">            threshold for recalculation of detection signal to noise ratio.</span>
 
 <span class="sd">        Returns</span>
@@ -1068,7 +1069,7 @@
         <span class="k">if</span> <span class="n">snr_recalculation</span><span class="p">:</span>
             <span class="c1"># select only above centain snr threshold</span>
             <span class="n">param</span> <span class="o">=</span> <span class="n">unlensed_param</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span>
-            <span class="n">idx_detectable</span> <span class="o">=</span> <span class="n">param</span> <span class="o">&gt;</span> <span class="n">threshold_snr_recalculation</span>
+            <span class="n">idx_detectable</span> <span class="o">=</span> <span class="n">param</span> <span class="o">&gt;</span> <span class="n">snr_threshold_recalculation</span>
             <span class="c1"># reduce the size of the dict</span>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">unlensed_param</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">unlensed_param</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">idx_detectable</span><span class="p">]</span>
@@ -1107,7 +1108,7 @@
 
         <span class="c1"># store all detectable params in json file</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">unlensed_param</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">unlensed_param</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">idx_detectable</span><span class="p">]</span>
+            <span class="n">unlensed_param</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">value</span><span class="p">)[</span><span class="n">idx_detectable</span><span class="p">]</span>
 
         <span class="c1"># store all detectable params in json file</span>
         <span class="k">if</span> <span class="n">output_jsonfile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1293,7 +1294,7 @@
         <span class="n">nan_to_num</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">detectability_condition</span><span class="o">=</span><span class="s2">&quot;step_function&quot;</span><span class="p">,</span>
         <span class="n">snr_recalculation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">threshold_snr_recalculation</span><span class="o">=</span><span class="p">[</span><span class="mf">6.0</span><span class="p">,</span><span class="mf">6.0</span><span class="p">],</span>
+        <span class="n">snr_threshold_recalculation</span><span class="o">=</span><span class="p">[</span><span class="mf">5.5</span><span class="p">,</span><span class="mf">5.5</span><span class="p">],</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to calculate the lensed rate. This function also stores the parameters of the detectable events in json file.</span>
@@ -1320,9 +1321,9 @@
 <span class="sd">            default detectability_condition = &#39;step_function&#39;.</span>
 <span class="sd">            other options are &#39;pdet&#39;.</span>
 <span class="sd">        snr_recalculation : `bool`</span>
-<span class="sd">            if True, the SNR of centain events (snr&gt;threshold_snr_recalculation)will be recalculate with &#39;inner product&#39;. This is useful when the snr is calculated with &#39;ann&#39; method.</span>
+<span class="sd">            if True, the SNR of centain events (snr&gt;snr_threshold_recalculation)will be recalculate with &#39;inner product&#39;. This is useful when the snr is calculated with &#39;ann&#39; method.</span>
 <span class="sd">            default snr_recalculation = False.</span>
-<span class="sd">        threshold_snr_recalculation : `float`</span>
+<span class="sd">        snr_threshold_recalculation : `float`</span>
 <span class="sd">            threshold for recalculation of detection signal to noise ratio.</span>
 
 <span class="sd">        Returns</span>
@@ -1370,11 +1371,14 @@
         <span class="c1"># recalculate snr if required</span>
         <span class="c1"># this ensures that the snr is recalculated for the detectable events</span>
         <span class="c1"># with inner product</span>
+        <span class="c1">############################</span>
+        <span class="c1">#       for ANN SNR        #</span>
+        <span class="c1">############################</span>
         <span class="k">if</span> <span class="n">snr_recalculation</span><span class="p">:</span>
-            <span class="c1"># dealing with provided threshold_snr_recalculation</span>
-            <span class="n">threshold_snr_recalculation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">threshold_snr_recalculation</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">threshold_snr_recalculation</span><span class="p">)</span>
-            <span class="n">threshold_snr_recalculation</span> <span class="o">=</span> <span class="n">threshold_snr_recalculation</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="c1"># dealing with provided snr_threshold_recalculation</span>
+            <span class="n">snr_threshold_recalculation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">snr_threshold_recalculation</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">snr_threshold_recalculation</span><span class="p">)</span>
+            <span class="n">snr_threshold_recalculation</span> <span class="o">=</span> <span class="n">snr_threshold_recalculation</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
             <span class="n">num_img_recalculation</span> <span class="o">=</span> <span class="n">num_img</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
 
             <span class="c1"># check optimal_snr_net is provided in dict</span>
@@ -1388,9 +1392,9 @@
             <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">idx_max</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">total_events</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>  <span class="c1"># boolean array to store the result of the threshold condition</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">threshold_snr_recalculation</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">snr_threshold_recalculation</span><span class="p">)):</span>
                 <span class="n">idx_max</span> <span class="o">=</span> <span class="n">idx_max</span> <span class="o">+</span> <span class="n">num_img_recalculation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">snr_hit</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">snr_param</span><span class="p">[:,</span><span class="n">j</span><span class="p">:</span><span class="n">idx_max</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">threshold_snr_recalculation</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">num_img_recalculation</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">snr_hit</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">snr_param</span><span class="p">[:,</span><span class="n">j</span><span class="p">:</span><span class="n">idx_max</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">snr_threshold_recalculation</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">num_img_recalculation</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
                 <span class="n">j</span> <span class="o">=</span> <span class="n">idx_max</span>
 
             <span class="c1"># reduce the size of the dict</span>
@@ -1404,6 +1408,7 @@
                 <span class="n">lensed_param</span><span class="o">=</span><span class="n">lensed_param</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">lensed_param</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">snrs</span><span class="p">)</span>
+        <span class="c1">############################</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">snr</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;optimal_snr_net&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="p">:</span>
@@ -1645,6 +1650,8 @@
         <span class="n">output_jsonfile</span><span class="o">=</span><span class="s2">&quot;n_unlensed_param_detectable.json&quot;</span><span class="p">,</span>
         <span class="n">meta_data_file</span><span class="o">=</span><span class="s2">&quot;meta_unlensed.json&quot;</span><span class="p">,</span>
         <span class="n">trim_to_size</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">snr_recalculation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">snr_threshold_recalculation</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to select n unlensed detectable events.</span>
@@ -1714,6 +1721,22 @@
                     <span class="n">size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">buffer_file</span><span class="p">,</span> <span class="n">save_batch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">resume</span><span class="o">=</span><span class="kc">False</span>
                 <span class="p">)</span>
 
+            <span class="n">total_events_in_this_iteration</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unlensed_param</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">])</span>
+            <span class="c1">############################</span>
+            <span class="c1">#       for ANN SNR        #</span>
+            <span class="c1">############################</span>
+            <span class="k">if</span> <span class="n">snr_recalculation</span><span class="p">:</span>
+                <span class="c1"># select only above centain snr threshold</span>
+                <span class="n">param</span> <span class="o">=</span> <span class="n">unlensed_param</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span>
+                <span class="n">idx_detectable</span> <span class="o">=</span> <span class="n">param</span> <span class="o">&gt;</span> <span class="n">snr_threshold_recalculation</span>
+                <span class="c1"># reduce the size of the dict</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">unlensed_param</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">unlensed_param</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">idx_detectable</span><span class="p">]</span>
+                <span class="c1"># recalculate more accurate snrs </span>
+                <span class="n">snrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">snr_bilby</span><span class="p">(</span><span class="n">gw_param_dict</span><span class="o">=</span><span class="n">unlensed_param</span><span class="p">)</span>
+                <span class="n">unlensed_param</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">snrs</span><span class="p">)</span>
+            <span class="c1">############################</span>
+
             <span class="c1"># get snr</span>
             <span class="n">snr</span> <span class="o">=</span> <span class="n">unlensed_param</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span>
             <span class="c1"># index of detectable events</span>
@@ -1725,7 +1748,7 @@
             <span class="n">append_json</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span> <span class="n">new_dictionary</span><span class="o">=</span><span class="n">unlensed_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
             <span class="n">n</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
-            <span class="n">events_total</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>                
+            <span class="n">events_total</span> <span class="o">+=</span> <span class="n">total_events_in_this_iteration</span>              
             <span class="n">total_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalization_pdf_z</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="n">events_total</span>
 
             <span class="c1"># save meta data</span>
@@ -1749,8 +1772,10 @@
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">param_final</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">param_final</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">param_final</span><span class="p">[</span><span class="n">key</span><span class="p">][:</span><span class="n">size</span><span class="p">]</span>
 
-        <span class="c1"># save the final param dictionary</span>
-        <span class="n">append_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">param_final</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="c1"># save the final param dictionary</span>
+            <span class="n">append_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">param_final</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">param_final</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">param_final</span></div>
 
@@ -1761,14 +1786,16 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">snr_threshold</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
-        <span class="n">num_img</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">snr_threshold</span><span class="o">=</span><span class="p">[</span><span class="mf">8.0</span><span class="p">,</span><span class="mf">8.0</span><span class="p">],</span>
+        <span class="n">num_img</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
         <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">detectability_condition</span><span class="o">=</span><span class="s2">&quot;step_function&quot;</span><span class="p">,</span>
         <span class="n">output_jsonfile</span><span class="o">=</span><span class="s2">&quot;n_lensed_params_detectable.json&quot;</span><span class="p">,</span>
         <span class="n">meta_data_file</span><span class="o">=</span><span class="s2">&quot;meta_lensed.json&quot;</span><span class="p">,</span>
         <span class="n">trim_to_size</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">nan_to_num</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">snr_recalculation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">snr_threshold_recalculation</span><span class="o">=</span><span class="p">[</span><span class="mf">5.5</span><span class="p">,</span><span class="mf">5.5</span><span class="p">],</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to select n lensed detectable events.</span>
@@ -1809,6 +1836,8 @@
 
         <span class="n">meta_data_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">meta_data_file</span>
         <span class="n">output_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">output_jsonfile</span>
+        <span class="k">if</span> <span class="n">meta_data_path</span><span class="o">==</span><span class="n">output_path</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;meta_data_file and output_jsonfile cannot be same.&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">batch_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">batch_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
@@ -1852,6 +1881,47 @@
                 <span class="n">lensed_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lensed_sampling_routine</span><span class="p">(</span>
                     <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">buffer_file</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span>
                 <span class="p">)</span>  <span class="c1"># Dimensions are (size, n_max_images)</span>
+
+            <span class="n">total_events_in_this_iteration</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">])</span>
+            <span class="c1">############################</span>
+            <span class="c1">#       for ANN SNR        #</span>
+            <span class="c1">############################</span>
+            <span class="k">if</span> <span class="n">snr_recalculation</span><span class="p">:</span>
+                <span class="c1"># dealing with provided snr_threshold_recalculation</span>
+                <span class="n">snr_threshold_recalculation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">snr_threshold_recalculation</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">snr_threshold_recalculation</span><span class="p">)</span>
+                <span class="n">snr_threshold_recalculation</span> <span class="o">=</span> <span class="n">snr_threshold_recalculation</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                <span class="n">num_img_recalculation</span> <span class="o">=</span> <span class="n">num_img</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+                <span class="c1"># check optimal_snr_net is provided in dict</span>
+                <span class="n">snr_param</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">&quot;optimal_snr_net&quot;</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">snr_param</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="o">-</span><span class="n">snr_param</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># sort snr in descending order</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;optimal_snr_net not provided in lensed_param dict. Exiting...&quot;</span><span class="p">)</span>
+
+                <span class="c1"># for each row: choose a threshold and check if the number of images above threshold. Sum over the images. If sum is greater than num_img, then snr_hit = True </span>
+                <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">idx_max</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">snr_param</span><span class="p">),</span> <span class="kc">True</span><span class="p">)</span>  <span class="c1"># boolean array to store the result of the threshold condition</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">snr_th</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">snr_threshold_recalculation</span><span class="p">):</span>
+                    <span class="n">idx_max</span> <span class="o">=</span> <span class="n">idx_max</span> <span class="o">+</span> <span class="n">num_img_recalculation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+                    <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">snr_hit</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">snr_param</span><span class="p">[:,</span><span class="n">j</span><span class="p">:</span><span class="n">idx_max</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">snr_th</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">num_img_recalculation</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                    <span class="n">j</span> <span class="o">=</span> <span class="n">idx_max</span>
+
+                <span class="c1"># reduce the size of the dict</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">lensed_param</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">snr_hit</span><span class="p">]</span>
+                <span class="c1"># recalculate more accurate snrs</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;calculating snrs...&quot;</span><span class="p">)</span>
+                <span class="n">snrs</span><span class="p">,</span> <span class="n">lensed_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lensed_snrs</span><span class="p">(</span>
+                    <span class="n">snr_calculator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">snr_bilby</span><span class="p">,</span>
+                    <span class="n">list_of_detectors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">list_of_detectors</span><span class="p">,</span>
+                    <span class="n">lensed_param</span><span class="o">=</span><span class="n">lensed_param</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">lensed_param</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">snrs</span><span class="p">)</span>
+            <span class="c1">############################</span>
 
             <span class="k">if</span> <span class="n">detectability_condition</span> <span class="o">==</span> <span class="s2">&quot;step_function&quot;</span><span class="p">:</span>
                 <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">]),</span> <span class="kc">True</span><span class="p">)</span>  <span class="c1"># boolean array to store the result of the threshold condition</span>
@@ -1903,12 +1973,15 @@
                     <span class="n">lensed_param</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">snr_hit</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_path</span><span class="p">):</span>
-                <span class="n">append_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">append_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">append_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">append_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
             <span class="n">n</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">snr_hit</span><span class="p">)</span>
-            <span class="n">events_total</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">snr_hit</span><span class="p">)</span>
+            <span class="n">events_total</span> <span class="o">+=</span> <span class="n">total_events_in_this_iteration</span>
 
             <span class="c1"># save meta data</span>
             <span class="n">total_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalization_pdf_z_lensed</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="n">events_total</span>
@@ -1934,6 +2007,8 @@
 
             <span class="c1"># save the final param dictionary</span>
             <span class="n">append_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">param_final</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">param_final</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">param_final</span></div>
 </div>

@@ -50,6 +50,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
@@ -260,17 +261,32 @@
         <span class="c1"># try:</span>
         <span class="n">x_source</span><span class="p">,</span> <span class="n">y_source</span> <span class="o">=</span> <span class="n">pointpats</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">caustic_double</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="c1"># Solve the lens equation</span>
-        <span class="p">(</span>
-            <span class="n">x0_image_position</span><span class="p">,</span>
-            <span class="n">x1_image_position</span><span class="p">,</span>
-        <span class="p">)</span> <span class="o">=</span> <span class="n">lens_eq_solver</span><span class="o">.</span><span class="n">image_position_from_source</span><span class="p">(</span>
-            <span class="n">sourcePos_x</span><span class="o">=</span><span class="n">x_source</span><span class="p">,</span>
-            <span class="n">sourcePos_y</span><span class="o">=</span><span class="n">y_source</span><span class="p">,</span>
-            <span class="n">kwargs_lens</span><span class="o">=</span><span class="n">kwargs_lens</span><span class="p">,</span>
-            <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;analytical&quot;</span><span class="p">,</span>
-            <span class="n">magnification_limit</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">,</span>
-            <span class="n">arrival_time_sort</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>  <span class="c1"># this to catch this error: &quot;ValueError: Signs are not different&quot;</span>
+            <span class="p">(</span>
+                <span class="n">x0_image_position</span><span class="p">,</span>
+                <span class="n">x1_image_position</span><span class="p">,</span>
+            <span class="p">)</span> <span class="o">=</span> <span class="n">lens_eq_solver</span><span class="o">.</span><span class="n">image_position_from_source</span><span class="p">(</span>
+                <span class="n">sourcePos_x</span><span class="o">=</span><span class="n">x_source</span><span class="p">,</span>
+                <span class="n">sourcePos_y</span><span class="o">=</span><span class="n">y_source</span><span class="p">,</span>
+                <span class="n">kwargs_lens</span><span class="o">=</span><span class="n">kwargs_lens</span><span class="p">,</span>
+                <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;analytical&quot;</span><span class="p">,</span>
+                <span class="n">magnification_limit</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">,</span>
+                <span class="n">arrival_time_sort</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
+                <span class="n">iteration</span><span class="p">,</span>
+            <span class="p">)</span>
+
         <span class="n">nImages</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x0_image_position</span><span class="p">)</span>  <span class="c1"># shows how many images</span>
         <span class="k">if</span> <span class="n">nImages</span> <span class="o">&gt;=</span> <span class="n">n_min_images</span><span class="p">:</span>
             <span class="n">strongly_lensed</span> <span class="o">=</span> <span class="kc">True</span>
