@@ -28,7 +28,7 @@ Glossary
  
    Gravitational waves
 
-      .. image:: https://community.wolfram.com/c/portal/getImageAttachment?filename=ezgif.com-optimize%283%29.gif&userId=20103
+      .. image:: _static/gw.gif
          :align: left
          :width: 60%
          :alt: ler logo
@@ -39,12 +39,12 @@ Glossary
 
       |
       Ripples in the fabric of space-time caused by some of the most violent and energetic processes in the Universe, such as merger of compact binaries (e.g., black holes and neutron stars) and supernovae explosions. Albert Einstein predicted the existence of gravitational waves in 1916 in his general theory of relativity, but it took a century to detect them directly. The first detection was made in 2015 by the LIGO and Virgo collaborations, which won the 2017 Nobel Prize in Physics. Gravitational waves are invisible, yet incredibly fast; they travel at the speed of light, squeezing and stretching anything in their path.
-
+      
       |
 
    Lensing of gravitational waves
 
-      .. image:: https://science.nasa.gov/wp-content/uploads/2023/09/Light_Bending.gif?w=2048&format=webp
+      .. image:: _static/Light_Bending.gif
          :align: right
          :width: 60%
          :alt: ler logo
