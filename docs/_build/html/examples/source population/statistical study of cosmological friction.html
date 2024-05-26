@@ -11,6 +11,7 @@
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/nbsphinx-code-cells.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -29,7 +30,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Lens parameter distributions" href="../lens_parameters/sample%20lens%20parameters.html" />
-    <link rel="prev" title="Sampling parameters for a compact binary" href="sample%20compact%20binary%20parameters.html" /> 
+    <link rel="prev" title="Statistical study of changing Mass model paramter(s)" href="statistical%20study%20of%20changing%20mass%20model%20params.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,6 +56,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../Installation2.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Lensed_events.html">Lensed event rates</a></li>
@@ -74,9 +76,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rates/grb%20detection%20rate.html">Calculation of detectable Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rates/ler%20bns%20example.html">LeR complete examples of BNS events (O4 design sensitivity)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rates/rates_with_3G_detectors.html">With ANN snr (IMRphenomXPHM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rates/rates_with_3G_detectors.html">Event Rates with 3G detectors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="merger%20rate%20density%20evolution%20with%20redshift.html">Merger rate density evolution with redshift</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sample%20compact%20binary%20parameters.html">Sampling parameters for a compact binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistical%20study%20of%20changing%20mass%20model%20params.html">Statistical study of changing Mass model paramter(s)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Function-to-convert-from-luminosity-distance-to-redshift">Function to convert from luminosity distance to redshift</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Functional-form-of-change-in-the-luminosity-distance-due-to-cosmological-friction">Functional form of change in the luminosity distance due to cosmological friction</a></li>
@@ -101,13 +104,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../lens_parameters/sample%20lens%20parameters.html">Lens parameter distributions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../optical_depth/validation_SIE.html">Optical depth SIE model validation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../optical_depth/validation_SIS.html">Validation of SIS model (Numerical vs Analytical)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html">data generation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html#2-image-case">2-image case</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html#KDE">KDE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html#corner-plots">corner plots</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html#magnification-plot">magnification plot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html#Contour-plot">Contour plot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html#4-image-case">4-image case</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html">Study of Time delays and magnification of lensed gravitational waves.</a></li>
 </ul>
 
         </div>
@@ -1194,7 +1191,7 @@ INFO:matplotlib.mathtext:Substituting symbol M from STIXNonUnicode
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="sample%20compact%20binary%20parameters.html" class="btn btn-neutral float-left" title="Sampling parameters for a compact binary" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="statistical%20study%20of%20changing%20mass%20model%20params.html" class="btn btn-neutral float-left" title="Statistical study of changing Mass model paramter(s)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../lens_parameters/sample%20lens%20parameters.html" class="btn btn-neutral float-right" title="Lens parameter distributions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

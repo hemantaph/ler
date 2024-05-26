@@ -75,6 +75,9 @@ html_context = {"enable_plausible": ENABLE_PLAUSIBLE}
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+html_css_files = [
+    'custom.css',  # Add this line to include your custom CSS
+]
 
 # -- Configure autoapi -------------------------------------------------------
 autodoc_typehints = "signature"  # autoapi respects this
@@ -109,3 +112,36 @@ def skip_member(app, what, name, obj, skip, options):
 
 def setup(sphinx):
     sphinx.connect("autoapi-skip-member", skip_member)
+
+from docutils import nodes
+from docutils.parsers.rst import roles
+
+def orange_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    node = nodes.inline(rawtext, text, classes=["orange"])
+    return [node], []
+
+# def setup(app):
+#     roles.register_local_role('orange', orange_role)
+
+def orange_first_letter(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    # Create two nodes: one for the first letter with a class and one for the rest
+    first_letter = nodes.inline(rawtext, text[0], classes=["orange"])
+    rest = nodes.inline(rawtext, text[1:], classes=[])
+    return [first_letter, rest], []
+
+# for red
+def red_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    node = nodes.inline(rawtext, text, classes=["red"])
+    return [node], []
+
+def red_first_letter(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    # Create two nodes: one for the first letter with a class and one for the rest
+    first_letter = nodes.inline(rawtext, text[0], classes=["red"])
+    rest = nodes.inline(rawtext, text[1:], classes=[])
+    return [first_letter, rest], []
+
+def setup(app):
+    roles.register_local_role('orange', orange_role)
+    roles.register_local_role('orange_first', orange_first_letter)
+    roles.register_local_role('red', red_role)
+    roles.register_local_role('red_first', red_first_letter)
