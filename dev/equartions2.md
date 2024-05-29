@@ -29,48 +29,51 @@ $$
 
 Reparameterization:
   
-* $\theta \in \{m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, t_1, \alpha_1, \delta_1, m_{1,2}, m_{2,2}, d_{L,2}, \iota_2, t_1+\Delta t_2, \alpha_2, \delta_2\}$
+* $\theta \in \{m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, t_1, \alpha_1, \delta_1, m_{1,2}, m_{2,2}, d_{L,2}, \iota_2, t_2, \alpha_2, \delta_2\}$
 
 
+* $\theta \in \{m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, t_1, \alpha_1, \delta_1, m_{1,1}+\Delta m_{1,2}, m_{2,1}+\Delta m_{2,2}, d_{L,2}, \iota_2, t_1+\Delta t_2, \alpha_1+\Delta \alpha_2, \delta_1+\Delta \delta_2\}$
 
-* $\theta \in \{m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, t_1, \alpha_1, \delta_1, m_{1,1}+\Delta m_{1,2}, m_{2,1}+\Delta m_{2,2}, d_{L,2}, \iota_2, t_1+\Delta t_2, \alpha_2, \delta_2\}$
-
-* $\theta \in \{m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, t_1, \alpha_1, \delta_1, \Delta m_{1,2}, \Delta m_{2,2}, d_{L,2}, \iota_2, \Delta t_2, \alpha_2, \delta_2\}$
+* $\theta \in \{m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, t_1, \alpha_1, \delta_1, \Delta m_{1,2}, \Delta m_{2,2}, d_{L,2}, \iota_2, \Delta t_2, \Delta\alpha_2, \Delta\delta_2\}$
 
 Let's tackle each part of the integrand separately.
 
-$P_{astro}(\theta|H_L)$: astrophysical prior on the parameters with lensed hypothesis considered. This is for the detectable events. So, the selection effect is already taken into account. The distribution preserves the correlation between the parameters. But it doesn't take into account the correlation between the coalescence time, sky location, inclination angle and antenna pattern of the detector. So, the sky localization prior is independent of the other astrophysical priors.
+$P_{astro}(\theta|H_L)$: astrophysical prior on the parameters with lensed hypothesis considered. This is for the detectable events. So, the selection effect is already taken into account. The distribution preserves the correlation between the parameters. But it doesn't take into account the correlation between the coalescence time and sky location. 
 
 $$
 \begin{equation} 
 \begin{split}
 P_{astro}(\theta|H_L) &= P_{astro}(m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, t_1, \alpha_1, \delta_1, m_{1,2}, m_{2,2}, d_{L,2}, \iota_2, t_2, \alpha_2, \delta_2|H_L) \\ \nonumber
-&= P_{astro}(m_{1,2}, m_{2,2}| m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, t_1 d_{L,2}, \iota_2, t_2, H_L) \\ \nonumber 
-&\;\;\;\;\;\;\;\;\;P_{astro}(m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, t_1, d_{L,2}, \iota_2, t_1+\Delta t_2|H_L) \\ \nonumber
-&\;\;\;\;\;\;\;\;\;\;\;\;\;\; P_{astro}( \alpha_2, \delta_2 |\alpha_1, \delta_1, H_L) P_{astro}( \alpha_1, \delta_1 |H_L) \\ \nonumber
-&= P_{astro}(\Delta m_{1,2}, \Delta m_{2,2}, \Delta \iota_{2}| m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, t_1 d_{L,2}, t_2, H_L) \\ \nonumber
-&\;\;\;\;\;\;\;\;\;P_{astro}(m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, t_1, d_{L,2}, \Delta t_2|H_L) \\ \nonumber
-&\;\;\;\;\;\;\;\;\;\;\;\;\;\; P_{astro}( \Delta \alpha_2, \Delta \delta_2 |\alpha_1, \delta_1, H_L) P_{astro}( \alpha_1, \delta_1 |H_L) \\ \nonumber
-&= P_{astro}(0, 0, 0| m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, t_1 d_{L,2}, t_2, H_L) \\ \nonumber
-&\;\;\;\;\;\;\;\;\;P_{astro}(m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, t_1, d_{L,2}, \Delta t_2|H_L) \\ \nonumber
-&\;\;\;\;\;\;\;\;\;\;\;\;\;\; P_{astro}( 0, 0 |\alpha_1, \delta_1, H_L) P_{astro}( \alpha_1, \delta_1 |H_L) \\ \nonumber
-&= 1\times P_{astro}(m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, t_1, d_{L,2}, \Delta t_2|H_L)\times 1\times P_{astro}( \alpha_1, \delta_1 |H_L)\\ \nonumber
-&= P_{astro}(m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, t_1, d_{L,2}, \Delta t_2|H_L) P_{astro}( \alpha_1, \delta_1 |H_L) \\ \nonumber
-&= P_{astro}(m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, d_{L,2}, \Delta t_2|t_1, H_L) P_{astro}( \alpha_1, \delta_1 |H_L) P(t_1|H_L) \\ \nonumber
-&= P_{astro}(m_{1}, m_{2}, d_{L,1}, \iota, d_{L,2}, \Delta t_2|t_1, H_L) P_{astro}( \alpha, \delta |H_L) P(t_1) \\ \nonumber
+\\
+&= P_{astro}(m_{1,2}, m_{2,2}, \alpha_2, \delta_2, \iota_2| m_{1,1}, m_{2,1}, \alpha_1, \delta_1, \iota_1, d_{L,1}, d_{L,2}, t_1, t_2, H_L) \\ \nonumber
+&\;\;\;\;\;\;\;\;\;P_{astro}(m_{1,1}, m_{2,1}, \alpha_1, \delta_1, \iota_1, d_{L,1}, d_{L,2}, t_1, t_2|H_L) \\ \nonumber
+\\
+&= P_{astro}(\Delta m_{1,2}, \Delta m_{2,2}, \Delta \alpha_2, \Delta \delta_2, \Delta \iota_{2}| m_{1,1}, m_{2,1}, \alpha_1, \delta_1, \iota_1, d_{L,1}, d_{L,2}, t_1, t_1+\Delta t_2, H_L) \\ \nonumber
+&\;\;\;\;\;\;\;\;\;P_{astro}(m_{1,1}, m_{2,1}, \alpha_1, \delta_1, \iota_1, d_{L,1}, d_{L,2}, t_1, t_1+\Delta t_2|H_L) \\ \nonumber
+\\
+&= P_{astro}(0,0,0,0,0| m_{1,1}, m_{2,1}, \alpha_1, \delta_1, \iota_1, d_{L,1}, d_{L,2}, t_1,\Delta t_2, H_L) \\ \nonumber
+&\;\;\;\;\;\;\;\;\;P_{astro}(m_{1,1}, m_{2,1}, \alpha_1, \delta_1, \iota_1, d_{L,1}, d_{L,2}, t_1, \Delta t_2|H_L) \\ \nonumber
+\\
+&= 1\times P_{astro}(m_{1,1}, m_{2,1}, \alpha_1, \delta_1, \iota_1, d_{L,1}, d_{L,2}, t_1, \Delta t_2|H_L) \\ \nonumber
+\\
+&= P_{astro}(m_{1,1}, m_{2,1}, \alpha_1, \delta_1, \iota_1, d_{L,1}, d_{L,2}, \Delta t_2|H_L) P(t_1|H_L) \\ \nonumber
+\\
+&= P_{astro}(m_{1,1}, m_{2,1}, \alpha_1, \delta_1, \iota_1, d_{L,1}, d_{L,2}, \Delta t_2|H_L) P(t_1) \\ \nonumber
+\\
+&= P_{astro}(m_{1}, m_{2}, \alpha, \delta, \iota, d_{L,1}, d_{L,2}, \Delta t_2|H_L) P(t_1) \\ \nonumber
 \end{split}
 \end{equation}
 $$
 
-In the last step, I have considered $t_1$ is independent of the other parameters and lensing hypothesis. This prior is a uniform distribution over the observation time window.
+In the last step, I have considered $t_1$ is independent of the other parameters and lensing hypothesis. This prior is a uniform distribution over the observation time window. Since for the lensing events the parameters $[m_{1}, m_{2}, \alpha, \delta, \iota]$ are same for the images, I dropped the event index at the last step of the derivation.
 
-$P(\theta|d_1)$: Posterior distribution of the parameters given the data from the first GW event. Similar to what I have assumed previously, I will consider sky localization posterior independent of the other parameters.
+$P(\theta|d_1)$: Posterior distribution of the parameters given the data from the first GW event.
 
 $$
 \begin{equation} 
 \begin{split}
-P(\theta|d_1) &= P(m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, t_1, \alpha_1, \delta_1|d_1) \\ \nonumber
-&= P(m_{1,1}, m_{2,1}, d_{L,1}, \iota_1|t_1, d_1) P(\alpha_1, \delta_1|t_1, d_1) P(t_1|d_1) \\ \nonumber
+P(\theta|d_1) &= P(m_{1,1}, m_{2,1},\alpha_1, \delta_1, \iota_1, d_{L,1}, t_1|d_1) \\ \nonumber
+&= P(m_{1,1}, m_{2,1},\alpha_1, \delta_1, \iota_1, d_{L,1}|t_1, d_1) P(t_1|d_1) \\ \nonumber
 \end{split}
 \end{equation}
 $$
@@ -82,7 +85,7 @@ Therefore,
 $$
 \begin{equation} 
 \begin{split}
-P(\theta|d_1) &= P(m_{1,1}, m_{2,1}, d_{L,1}, \iota_1|T_1, d_1) P(\alpha_1, \delta_1|T_1, d_1) \\ \nonumber
+P(\theta|d_1) &= P(m_{1,1}, m_{2,1},\alpha_1, \delta_1, \iota_1, d_{L,1}|T_1, d_1) P(T_1) \\ \nonumber
 \end{split}
 \end{equation}
 $$
@@ -92,7 +95,7 @@ Similarly, for the second event,
 $$
 \begin{equation} 
 \begin{split}
-P(\theta|d_2) &= P(m_{1,2}, m_{2,2}, d_{L,2}, \iota_2|T_2, d_2) P(\alpha_2, \delta_2|T_2, d_2) \\ \nonumber
+P(\theta|d_2) &= P(m_{1,2}, m_{2,2},\alpha_2, \delta_2, \iota_2, d_{L,2}|T_2, d_2) P(T_2) \\ \nonumber
 \end{split}
 \end{equation}
 $$
@@ -102,8 +105,7 @@ And, $P_{astro}(\theta|H_L)$ now becomes,
 $$
 \begin{equation} 
 \begin{split}
-P_{astro}(\theta|H_L) &= P_{astro}(m_{1}, m_{2}, d_{L,1}, \iota, d_{L,2}, \Delta T_2|T_1, H_L) P( \alpha, \delta) P(T_1) \\ \nonumber
-P_{astro}(\theta|H_L) &= P_{astro}(m_{1}, m_{2}, d_{L,1}, \iota, d_{L,2}, \Delta T_2|H_L) P( \alpha, \delta) P(T_1) \\ \nonumber
+P_{astro}(\theta|H_L) &= P_{astro}(m_{1}, m_{2}, \alpha, \delta, \iota, d_{L,1}, d_{L,2}, \Delta T_2|H_L) P(T_1) \\ \nonumber
 \end{split}
 \end{equation}
 $$
@@ -115,19 +117,18 @@ Now, for the unlensed hypothesis,
 $$
 \begin{equation}
 \begin{split}
-P_{astro}(\theta|H_U) &= P_{astro}(m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, d_{L,1}, m_{1,2}, m_{2,2}, d_{L,2}, \iota_2, d_{L,2}, \Delta T_2|T_1, H_U) \\ \nonumber
-& P( \alpha_1, \delta_1) P( \alpha_2, \delta_2) P(T_1) \\ \nonumber
-&= P_{astro}(m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, d_{L,1}|T_1, H_U) \\
-& P_{astro}(m_{1,2}, m_{2,2}, d_{L,2}, \iota_2, d_{L,2}, \Delta T_2|T_1, H_U) \\ \nonumber
-& P( \alpha_1, \delta_1) P( \alpha_2, \delta_2) P(T_1) \\ \nonumber
-&= P_{astro}(m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, d_{L,1}|H_U) \\
-& P_{astro}(m_{1,2}, m_{2,2}, d_{L,2}, \iota_2, d_{L,2}, \Delta T_2|H_U) \\ \nonumber
-& P( \alpha_1, \delta_1) P( \alpha_2, \delta_2) P(T_1) \\ \nonumber
+P_{astro}(\theta|H_U) &= P_{astro}(m_{1,1}, m_{2,1}, \alpha_1, \delta_1, \iota_1, d_{L,1}, m_{1,2}, m_{2,2}, d_{L,2}, \iota_2, d_{L,2}, \Delta T_2|T_1, H_U) P(T_1) \\ \nonumber
+\\
+&= P_{astro}(m_{1,1}, m_{2,1}, \alpha_1, \delta_1, \iota_1, d_{L,1}|T_1, H_U) \\
+& P_{astro}(m_{1,2}, m_{2,2}, d_{L,2}, \iota_2, d_{L,2}, \Delta T_2|T_1, H_U) P(T_1) \\ \nonumber
+\\
+&= P_{astro}(m_{1,1}, m_{2,1}, \alpha_1, \delta_1, \iota_1, d_{L,1}|H_U) \\
+& P_{astro}(m_{1,2}, m_{2,2}, d_{L,2}, \iota_2, d_{L,2}, \Delta T_2|H_U) P(T_1) \\ \nonumber
 \end{split}
 \end{equation}
 $$
 
-$P(T_1)$ in $P_{astro}(\theta|H_L)$ and $P_{astro}(\theta|H_U)$ cancels out.
+$P(T_1)$ in $P_{astro}(\theta|H_L)$ and $P_{astro}(\theta|H_U)$ cancels out. Similarly, $P(T_1)$ and $P(T_2)$ in $P(\theta|d_1)$ and $P(\theta|d_2)$ cancels out between the numerator and denominator of the Bayes factor.
 
 $P_{pe}(\theta)$: Prior distribution of the parameters which was used in the parameter estimation to get the posterior distribution of the parameters, $P(\theta|d_1)$ and $P(\theta|d_2)$.
 
@@ -135,7 +136,7 @@ $$
 \begin{equation}
 \begin{split}
 P_{pe}(\theta) &= P_{pe}(m_{1}, m_{2}, d_{L}, \iota, t, \alpha, \delta)  \\ \nonumber
-&= P_{pe}(m_{1}, m_{2}) P_{pe}(d_{L}) P_{pe}(\iota) P_{pe}(t) P_{pe}(\alpha, \delta)  \\ \nonumber
+&= P_{pe}(m_{1}, m_{2}) P_{pe}(d_{L}) P_{pe}(\iota) P_{pe}(t) P_{pe}(\alpha) P_{pe}(\delta)  \\ \nonumber
 \end{split}
 \end{equation}
 $$
@@ -156,7 +157,13 @@ For $P_{pe}(\theta)$, I will consider the `bilby` prior for the masses, luminosi
 | $t_c$     | Second               | Uniform                | [$t_{\text{min}}$, $t_{\text{max}}$] |
 
 
-Putting all together,
+**Note**: For numerator the sampling will be done from a combine distribution of data1 and data2.
+
+$P_{astro}(\theta|H_L) = \frac{P_{astro}(\theta|H_L)}{(P(\theta'|d_2) \cup P(\theta'|d_2))}\times (P(\theta'|d_1) \cup P(\theta'|d_2))$
+
+$P_{astro}(\theta|H_L) = \frac{P_{astro}(m_{1}, m_{2}, \alpha, \delta, \iota, d_{L,1}, d_{L,2}, \Delta T_2|H_U)}{P_{comb}(m_{1}, m_{2}, \alpha, \delta, \iota, d_{L,1}, d_{L,2}|d_1, d_2)}P_{comb}(m_{1}, m_{2}, \alpha, \delta, \iota, d_{L,1}, d_{L,2}|d_1, d_2)$
+
+## Bayes factor
 
 $$
 \begin{equation}
@@ -165,16 +172,18 @@ $$
 {\int d\theta \frac{P(\theta|d_1)}{P_{pe}(\theta)} \frac{P(\theta|d_2)}{P_{pe}(\theta)} P_{astro}(\theta|H_U)} \\ \nonumber
 =& \Bigg[\\
 & \bigg< \\
-&P(m_{1,1}, m_{2,1}, d_{L,1}, \iota_1|T_1, d_1)\times P(\alpha_1, \delta_1|T_1, d_1)\times \\
-&\;P(m_{1,2}, m_{2,2}, d_{L,2}, \iota_2|T_2, d_2)\times P(\alpha_2, \delta_2|T_2, d_2) \div \\
-& \bigg(P_{pe}(m_{1}, m_{2}) P_{pe}(d_{L}) P_{pe}(\iota) P_{pe}(\alpha, \delta)\bigg)^2 \\
-&\bigg>_{ m_{1}, m_{2}, d_{L,1}, \iota, d_{L,2}, \Delta T_2\in P_{astro}(.|H_L),\; \alpha, \delta\in P(.)} \\
+&\;P(m_{1}, m_{2},\alpha, \delta, \iota, d_{L,1}|T_1, d_1)\times \\
+&\;P(m_{1}, m_{2},\alpha, \delta, \iota, d_{L,2}|T_2, d_2) \times \\
+&\; P_{astro}(m_{1}, m_{2}, \alpha, \delta, \iota, d_{L,1}, d_{L,2}, \Delta T_2|H_L) \div \\
+& \bigg(P_{pe}(m_{1}, m_{2}) P_{pe}(\alpha) P_{pe}(\delta) P_{pe}(\iota) P_{pe}(d_{L})\bigg)^2 \div \\
+&\; P_{comb}(m_{1}, m_{2}, \alpha, \delta, \iota, d_{L,1}, d_{L,2}|d_1, d_2) \\
+&\bigg>_{ m_{1}, m_{2}, d_{L,1}, \iota, d_{L,2}\in P_{comb}(.|d_1, d_2)} \\
 & \Bigg] \div \Bigg[\\
 & \bigg<\\
-& P(m_{1,1}, m_{2,1}, d_{L,1}, \iota_1|T_1, d_1)\times P(\alpha_1, \delta_1|T_1, d_1)\times \\
-&\;P(m_{1,2}, m_{2,2}, d_{L,2}, \iota_2|T_2, d_2)\times P(\alpha_2, \delta_2|T_2, d_2) \div \\
-& \bigg(P_{pe}(m_{1}, m_{2}) P_{pe}(d_{L}) P_{pe}(\iota) P_{pe}(\alpha, \delta)\bigg)^2 \\
-&\bigg>_{ m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, d_{L,1}\in P_{astro}(.|H_U),}\\&_{\; m_{1,2}, m_{2,2}, d_{L,2}, \iota_2, d_{L,2}, \Delta T_2\in P_{astro}(.|H_U),\; \alpha_1, \delta_1\in P(.),\; \alpha_2, \delta_2\in P(.)} \\
+&\; P_{astro}(m_{1,1}, m_{2,1}, \alpha_1, \delta_1, \iota_1, d_{L,1}|H_U)\times \\
+&\; P_{astro}(m_{1,2}, m_{2,2}, d_{L,2}, \iota_2, d_{L,2}, \Delta T_2|H_U) \div \\
+& \bigg(P_{pe}(m_{1}, m_{2}) P_{pe}(\alpha) P_{pe}(\delta) P_{pe}(\iota) P_{pe}(d_{L})\bigg)^2 \\
+&\bigg>_{ m_{1,1}, m_{2,1},\alpha_1, \delta_1, \iota_1, d_{L,1}\in P(.|T_1,d_1),}\\&_{\; m_{1,2}, m_{2,2},\alpha_2, \delta_2, \iota_2, d_{L,2}\in P(.|T_2,d_2)} \\
 & \Bigg]
 \end{split}
 \end{equation}
@@ -186,12 +195,12 @@ Multidimensional KDE needs to be constructed both for sampling and pdf evaluatio
 
 Priors:
 
-* $P_{astro}(m_{1}, m_{2}, d_{L,1}, d_{L,2}, \iota_2, \Delta T_2|H_L)$, $P_{astro}(m_{1,1}, m_{2,1}, d_{L,1}, \iota_1, d_{L,1}|H_U)$, $P_{astro}(m_{1,2}, m_{2,2}, d_{L,2}, \iota_2, d_{L,2}, \Delta T_2|H_U)$, $P(\alpha, \delta)$ are the considered priors for sampling the parameters.  
+* $P_{comb}(m_{1}, m_{2}, \alpha, \delta, \iota, d_{L,1}, d_{L,2}|d_1, d_2)$, $P(m_{1}, m_{2},\alpha, \delta, \iota, d_{L,1}|T_1, d_1)$, $P(m_{1}, m_{2},\alpha, \delta, \iota, d_{L,2}|T_2, d_2)$ are the considered priors for sampling the parameters.  
 
 PDF:
 
-* $P(m_{1,1}, m_{2,1}, d_{L,1}, \iota_1|T_1, d_1)$, $P(\alpha_1, \delta_1|T_1, d_1)$, $P(m_{1,2}, m_{2,2}, d_{L,2}, \iota_2|T_2, d_2)$, $P(\alpha_2, \delta_2|T_2, d_2)$, $P_{pe}(m_{1}, m_{2})$, $P_{pe}(d_{L})$, $P_{pe}(\iota)$, $P_{pe}(\alpha, \delta)$ are the considered pdfs for evaluating the Bayes factor.
+<!-- * $P(m_{1}, m_{2},\alpha, \delta, \iota, d_{L,1}|T_1, d_1)$, $P(m_{1}, m_{2},\alpha, \delta, \iota, d_{L,2}|T_2, d_2)$, $P_{astro}(m_{1}, m_{2}, \alpha, \delta, \iota, d_{L,1}, d_{L,2}, \Delta T_2|H_L)$, $$ are the considered pdfs for evaluating the Bayes factor.
 
 * $P(m_{1,1}, m_{2,1}, d_{L,1}, \iota_1|T_1, d_1)$, $P(\alpha_1, \delta_1|T_1, d_1)$, $P(m_{1,2}, m_{2,2}, d_{L,2}, \iota_2|T_2, d_2)$, $P(\alpha_2, \delta_2|T_2, d_2)$ are obtained from the posterior samples of the parameter estimation.
 
-* $P_{pe}(m_{1}, m_{2})$, $P_{pe}(d_{L})$, $P_{pe}(\iota)$, $P_{pe}(\alpha, \delta)$ are the considered priors used for the parameter estimation.
+* $P_{pe}(m_{1}, m_{2})$, $P_{pe}(d_{L})$, $P_{pe}(\iota)$, $P_{pe}(\alpha, \delta)$ are the considered priors used for the parameter estimation. -->
