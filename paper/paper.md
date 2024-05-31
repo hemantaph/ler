@@ -1,5 +1,5 @@
 ---
-title: '***ler***: A Python package for generating gravitational waves lensing rates and related statistics'
+title: '***ler*** : A Python package for generating gravitational waves lensing rates and related statistics'
 tags:
   - Python
   - astrophysics
