@@ -11,10 +11,10 @@ authors:
     orcid: 0000-0000-0000-0000
     # equal-contrib: true
     affiliation: "1"
-  - name: Harsh Narola
+  - name: Anupreeta More
     # equal-contrib: False
     affiliation: "2,3"
-  - name: Anupreeta More
+  - name: Harsh Narola
     # equal-contrib: False
     affiliation: "4,5"
   - name: Ng Chung Yin (Leo)
@@ -22,24 +22,25 @@ authors:
     affiliation: "1"
   - name: Justin Janquart
     # equal-contrib: False 
-    affiliation: "2,3"
+    affiliation: "4,5"
   - name: Chris Van Den Broeck
     # equal-contrib: False 
-    affiliation: "2,3"
+    affiliation: "4,5"
   - name: Otto Akseli HANNUKSELA 
     # equal-contrib: False 
     affiliation: "1"
 affiliations:
   - name: Department of Physics, The Chinese University of Hong Kong, Shatin, New Territories, Hong Kong
     index: 1
-  - name: Department of Physics, Utrecht University, Princetonplein 1, 3584 CC Utrecht, The Netherlands
-    index: 2
-  - name: Nikhef – National Institute for Subatomic Physics, Science Park, 1098 XG Amsterdam, The Netherlands
-    index: 3
   - name:  The Inter-University Centre for Astronomy and Astrophysics (IUCAA), Post Bag 4, Ganeshkhind, Pune 411007, India
-    index: 4
+    index: 2
   - name: Kavli Institute for the Physics and Mathematics of the Universe (IPMU), 5-1-5 Kashiwanoha, Kashiwa-shi, Chiba 277-8583, Japan
+    index: 3
+  - name: Department of Physics, Utrecht University, Princetonplein 1, 3584 CC Utrecht, The Netherlands
+    index: 4
+  - name: Nikhef – National Institute for Subatomic Physics, Science Park, 1098 XG Amsterdam, The Netherlands
     index: 5
+  
 date: 17 August 2023
 bibliography: paper.bib
 ---
