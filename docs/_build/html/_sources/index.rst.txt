@@ -17,6 +17,8 @@ ler
 | The code is available at `github.ler <https://github.com/hemantaph/ler>`_.
 | For reaching out to the developer, please raise issue in `github.ler.issue <https://github.com/hemantaph/ler/issues>`_.
 
+``ler`` is closely integarted with a gravitational waves SNR calculator package `gwsnr <https://gwsnr.readthedocs.io/en/latest/>`_.
+
 | ``ler`` main developer: `Hemanta Ph. <https://hemantaph.notion.site/Hemanta-Ph-b4c52e857d424c0db2a68f4e63d6097f>`_
 | ``ler`` developer and analyst: Harsh Narola, Anupreeta More, Ng Chung Yin (Leo), Justin Janquart, Chris Van Den Broeck, Otto Akseli HANNUKSELA
 
