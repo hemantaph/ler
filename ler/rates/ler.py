@@ -756,7 +756,7 @@ class LeR(LensGalaxyParameterDistribution):
             if self.dict_buffer:
                 unlensed_param = self.dict_buffer.copy()
                 # store all params in json file
-                print(f"saving all unlensed_params in {output_path}...")
+                print(f"saving all unlensed_params in {output_path} ")
                 append_json(output_path, unlensed_param, replace=True)
             else:
                 print("unlensed_params already sampled.")
@@ -1002,7 +1002,7 @@ class LeR(LensGalaxyParameterDistribution):
             if self.dict_buffer:
                 lensed_param = self.dict_buffer.copy()
                 # store all params in json file
-                print(f"saving all lensed_params in {output_path}...")
+                print(f"saving all lensed_params in {output_path} ")
                 append_json(output_path, lensed_param, replace=True)
             else:
                 print("lensed_params already sampled.")
@@ -1158,7 +1158,7 @@ class LeR(LensGalaxyParameterDistribution):
         if type(lensed_param) == str:
             self.json_file_names["lensed_param"] = lensed_param
             path_ = self.ler_directory+"/"+lensed_param
-            print(f"getting lensed_params from json file {path_}...")
+            print(f"getting lensed_params from json file {path_} ")
             lensed_param = get_param_from_json(self.ler_directory+"/"+lensed_param)
         else:
             print("using provided lensed_param dict...")
