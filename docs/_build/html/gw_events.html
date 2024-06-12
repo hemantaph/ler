@@ -59,9 +59,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Gravitational wave event rates</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Compact-Binaries-Merger-Rate-Density">Compact Binaries Merger Rate Density</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Merger-Rate-Density-Formula">Merger Rate Density Formula</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Merger-Rate-Density-at-Source-Redshift">Merger Rate Density at Source Redshift</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Normalization-of-Merger-Rate-Distribution">Normalization of Merger Rate Distribution</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Sampling-Method">Sampling Method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Normalized-redshift-distribution">Normalized redshift distribution</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#Annual-Rate-of-Detectable-Gravitational-Wave-Events">Annual Rate of Detectable Gravitational Wave Events</a></li>
@@ -94,6 +92,8 @@
 <li class="toctree-l1"><a class="reference internal" href="examples/rates/ler%20bns%20example.html">LeR complete examples of BNS events (O4 design sensitivity)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/rates/rates_with_3G_detectors.html">Event Rates with 3G detectors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/source%20population/merger%20rate%20density%20evolution%20with%20redshift.html">Merger rate density evolution with redshift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/merger%20rate%20density%20model%20comparision.html">Merger rate density model comparision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/merger%20rate%20density%20model%20comparision.html#Primordial-BBH-model,-Ng-et-al.-2022">Primordial BBH model, Ng et al. 2022</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/source%20population/sample%20compact%20binary%20parameters.html">Sampling parameters for a compact binary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/source%20population/statistical%20study%20of%20changing%20mass%20model%20params.html">Statistical study of changing Mass model paramter(s)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/source%20population/statistical%20study%20of%20cosmological%20friction.html">Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves</a></li>
@@ -130,13 +130,14 @@
   <section id="Gravitational-wave-event-rates">
 <h1>Gravitational wave event rates<a class="headerlink" href="#Gravitational-wave-event-rates" title="Link to this heading"></a></h1>
 <p>This document outlines the default settings for calculating detectable gravitational wave event rates (per year) in <a class="reference external" href="https://ler.readthedocs.io/en/latest/index.html">LeR</a>.</p>
+<p>Refer to documentation page on <a class="reference external" href="https://ler.readthedocs.io/en/latest/GW_equations.html">Analytical formulation</a> for the detailed derivation of the rate equation.</p>
 <p><strong>Parameters Considered:</strong></p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(z_s\)</span>: Source redshift.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\theta\)</span>: Gravitational wave source properties. <span class="math notranslate nohighlight">\(m_1\)</span> (mass of the heavier one), <span class="math notranslate nohighlight">\(m_2\)</span> (mass of the lighter one), <span class="math notranslate nohighlight">\(D_l\)</span> (luminosity distance), <span class="math notranslate nohighlight">\(\iota\)</span> (inclination-angle), <span class="math notranslate nohighlight">\(\phi\)</span> (phase-of-coalescence), <span class="math notranslate nohighlight">\(\psi\)</span> (polarization-angle), <span class="math notranslate nohighlight">\(ra\)</span> (right-ascension), <span class="math notranslate nohighlight">\(dec\)</span> (declination), <span class="math notranslate nohighlight">\(t\)</span> (time-of-coalescence).</p></li>
 <li><p><span class="math notranslate nohighlight">\(\rho(z_s,\theta)\)</span>: Network optimal SNR.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\rho_{th}\)</span>: SNR threshold.</p></li>
-<li><p><span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span>: Normalized merger-rate distribution (source-frame).</p></li>
+<li><p><span class="math notranslate nohighlight">\(R(z_s)\)</span>: Intrinsic merger-rate density distribution wrt redshift (source frame).</p></li>
 <li><p><span class="math notranslate nohighlight">\(\mathcal{N}^U\)</span>: Normalizing factor.</p></li>
 <li><p><span class="math notranslate nohighlight">\(P\)</span>: Prior distribution.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\Theta\)</span>: Detectability condition.</p></li>
@@ -150,7 +151,7 @@
 <h3>Merger Rate Density Formula<a class="headerlink" href="#Merger-Rate-Density-Formula" title="Link to this heading"></a></h3>
 <p>The default merger rate density in LeR follows the model presented in <a class="reference external" href="https://arxiv.org/pdf/2106.06303.pdf">WIERDA et al. 2021</a>. This model is a functional fit to the population I/II star merger-rate density, normalized to the local merger rate density. It extends from the M10 model to the Belczynski et al. (2017) model, which incorporates the metallicity dependence of the star formation rate, influenced by pair-instability supernova (PSN) and pair-instability pulsation supernova (PPSN)
 effects.</p>
-<p>The merger rate density in the detector frame is given by:</p>
+<p>The merger rate density in the source frame is given by:</p>
 <p><span class="math">\begin{equation}
 \mathcal{R}_m(z_s) = \frac{\mathcal{R}_O(b_4+1)e^{b_2 z_s}}{b_4+e^{b_3 z_s}} \text{Gpc}^{-3}\text{yr}^{-1} \tag{1}
 \end{equation}</span></p>
@@ -177,50 +178,42 @@ effects.</p>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="Merger-Rate-Density-at-Source-Redshift">
-<h3>Merger Rate Density at Source Redshift<a class="headerlink" href="#Merger-Rate-Density-at-Source-Redshift" title="Link to this heading"></a></h3>
-<p>The merger rate density at source redshift <span class="math notranslate nohighlight">\(z_s\)</span> in the source frame, denoted by <span class="math notranslate nohighlight">\(R(z_s)\)</span>, is given by:</p>
-<p><span class="math">\begin{equation}
-R(z_s) = \frac{\mathcal{R}_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tag{3}
-\end{equation}</span></p>
-<ul class="simple">
-<li><p>The factor <span class="math notranslate nohighlight">\((1+z_s)\)</span> in the denominator accounts for time dilation.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}\)</span> represents the differential comoving volume.</p></li>
-<li><p>This formula converts the merger rate density from the detector frame to the source frame.</p></li>
-</ul>
-</section>
-<section id="Normalization-of-Merger-Rate-Distribution">
-<h3>Normalization of Merger Rate Distribution<a class="headerlink" href="#Normalization-of-Merger-Rate-Distribution" title="Link to this heading"></a></h3>
-<p>The normalizing factor of the merger rate distribution with respect to <span class="math notranslate nohighlight">\(z_s\)</span>, denoted by <span class="math notranslate nohighlight">\(\mathcal{N}^U\)</span>, is given by:</p>
-<p><span class="math">\begin{equation}
-\mathcal{N}^U = \int_{z_{\text{min}}}^{z_{\text{max}}} dz_s \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tag{4}
-\end{equation}</span></p>
-<p>The normalized merger-rate distribution, <span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span>, is expressed as:</p>
-<p><span class="math">\begin{equation}
-R_o^U(z_s) = \frac{1}{\mathcal{N}^U} \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tag{5}
-\end{equation}</span></p>
-<p>Distribution of <span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span> wrt <span class="math notranslate nohighlight">\(z_s\)</span> is shown below for BBH.</p>
-<p align="center"><p><img alt="zs" src="_images/merger_rate_bbh.png" /></p>
-</p></section>
-<section id="Sampling-Method">
-<h3>Sampling Method<a class="headerlink" href="#Sampling-Method" title="Link to this heading"></a></h3>
-<p>Sampling of the source redshift <span class="math notranslate nohighlight">\(z_s\)</span> is based on the inverse transform sampling method. An interpolation of the inverse cumulative distribution function (CDF) is created and stored for future use, making the sampling process faster and more efficient.</p>
 <p><strong>Note:</strong> The merger rate density models and parameters are subject to updates based on new observational data and theoretical developments.</p>
 </section>
+<section id="Normalized-redshift-distribution">
+<h3>Normalized redshift distribution<a class="headerlink" href="#Normalized-redshift-distribution" title="Link to this heading"></a></h3>
+<p>Let the un-normalized redshift distribution given by,</p>
+<p><span class="math">\begin{equation}
+P_{\text{unorm}}(z_s) = \frac{\mathcal{R}_m(z_s)}{(1+z_s)} \frac{dV_c}{dz_s} \tag{2}
+\end{equation}</span></p>
+<p>where <span class="math notranslate nohighlight">\(dV_c/dz_s\)</span> is the comoving volume element and <span class="math notranslate nohighlight">\(\frac{1}{1+z_s}\)</span> is the time dilation factor.</p>
+<p>The normalizing factor <span class="math notranslate nohighlight">\(\mathcal{N}^U\)</span> can be calculated as,</p>
+<p><span class="math">\begin{equation}
+\mathcal{N}^U = \int_{z_{\text{min}}}^{z_{\text{max}}} P_{\text{unorm}}(z_s) dz_s = \int_{z_{\text{min}}}^{z_{\text{max}}} \frac{\mathcal{R}_m(z_s)}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \tag{3}
+\end{equation}</span></p>
+<p>where <span class="math notranslate nohighlight">\(z_{\text{min}}\)</span> and <span class="math notranslate nohighlight">\(z_{\text{max}}\)</span> are the minimum and maximum redshifts considered for the calculation. Now we can write the normalized redshift distribution as,</p>
+<p><span class="math">\begin{equation}
+P(z_s) = \frac{P_{\text{unorm}}(z_s)}{\mathcal{N}^U} \tag{4}
+\end{equation}</span></p>
+<p><span class="math notranslate nohighlight">\(P(z_s)\)</span> is the probability distribution of the source redshift <span class="math notranslate nohighlight">\(z_s\)</span> is shown below for BBH events. Find out more about sampling method <a href="#id1"><span class="problematic" id="id2">`here &lt;&gt;`__</span></a>.</p>
+<p align="center"><p><img alt="zs" src="_images/merger_rate_bbh.png" /></p>
+</p><!-- ### Sampling Method
+
+Sampling of the source redshift $z_s$ is based on the inverse transform sampling method. An interpolation of the inverse cumulative distribution function (CDF) is created and stored for future use, making the sampling process faster and more efficient. --></section>
 </section>
 <section id="Annual-Rate-of-Detectable-Gravitational-Wave-Events">
 <h2>Annual Rate of Detectable Gravitational Wave Events<a class="headerlink" href="#Annual-Rate-of-Detectable-Gravitational-Wave-Events" title="Link to this heading"></a></h2>
+<p>Refer to documentation page on <a class="reference external" href="https://ler.readthedocs.io/en/latest/GW_equations.html">Analytical formulation</a> for more details.</p>
 <p>Continuing from the discussion on Compact Binaries Merger Rate Density, we now focus on the annual rate of detectable gravitational wave events. This rate, denoted as <span class="math notranslate nohighlight">\(R_U\)</span>, quantifies the expected number of gravitational wave events that can be observed by detectors within a year. The expression for <span class="math notranslate nohighlight">\(R_U\)</span> is given by:</p>
 <p><span class="math">\begin{equation}
-R_U = \mathcal{N}^U\int dz_s R_o^U(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\} \tag{2}
+R_U = \mathcal{N}^U\int P(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\} dz_s \tag{2}
 \end{equation}</span></p>
 <p>Key aspects of this equation include:</p>
 <ul class="simple">
 <li><p><strong>SNR Operator,</strong> <span class="math notranslate nohighlight">\(\mathbf{\Theta[\rho(z_s,\theta)-\rho_{th}]}\)</span><strong>:</strong> This is a step function that determines whether the signal-to-noise ratio (SNR) <span class="math notranslate nohighlight">\(\rho(z_s,\theta)\)</span> of an event exceeds the threshold SNR <span class="math notranslate nohighlight">\(\rho_{th}\)</span>. If <span class="math notranslate nohighlight">\(\rho(z_s,\theta) \geq \rho_{th}\)</span>, the event is considered detectable.</p></li>
 <li><p>The SNR threshold <span class="math notranslate nohighlight">\(\mathbf{\rho_{th}}\)</span> is typically chosen based on the sensitivity and design specifications of the gravitational wave detector. This strategy is valid as a proxy in the Gaussian noise regime.</p></li>
 <li><p><strong>Prior Distribution,</strong> <span class="math notranslate nohighlight">\(\mathbf{P(\theta)}\)</span><strong>:</strong> This normalized distribution represents the prior knowledge or assumptions about the distribution of gravitational wave parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p></li>
-<li><p><strong>Normalized Merger-Rate Distribution,</strong> <span class="math notranslate nohighlight">\(\mathbf{R_o^U(z_s)}\)</span><strong>:</strong> This function represents the merger rate density (in the source frame) normalized with respect to the redshift <span class="math notranslate nohighlight">\(z_s\)</span>.</p></li>
+<li><p><strong>Normalized redshift distribution,</strong> <span class="math notranslate nohighlight">\(\mathbf{P(z_s)}\)</span><strong>:</strong> This represents the probability distribution of the source redshift <span class="math notranslate nohighlight">\(z_s\)</span>, as discussed in the previous section.</p></li>
 <li><p><strong>Gravitational Wave Parameters,</strong> <span class="math notranslate nohighlight">\(\mathbf{\theta}\)</span><strong>:</strong> The set of parameters includes the masses of the binary components (<span class="math notranslate nohighlight">\(m_1\)</span> and <span class="math notranslate nohighlight">\(m_2\)</span>), the inclination angle (<span class="math notranslate nohighlight">\(\iota\)</span>), the polarization angle (<span class="math notranslate nohighlight">\(\psi\)</span>), the right ascension (<span class="math notranslate nohighlight">\(ra\)</span>), the declination (<span class="math notranslate nohighlight">\(dec\)</span>), the phase of coalescence (<span class="math notranslate nohighlight">\(\phi_c\)</span>), and the time of coalescence (<span class="math notranslate nohighlight">\(t_c\)</span>).</p></li>
 <li><p><strong>Luminosity Distance,</strong> <span class="math notranslate nohighlight">\(\mathbf{\mathcal{D}_L}\)</span><strong>:</strong> The luminosity distance is derived from the source redshift <span class="math notranslate nohighlight">\(z_s\)</span> and cosmological parameters, providing a measure of the distance to the source of the gravitational waves.</p></li>
 </ul>

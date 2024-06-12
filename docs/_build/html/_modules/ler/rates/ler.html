@@ -73,6 +73,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/rates/ler%20bns%20example.html">LeR complete examples of BNS events (O4 design sensitivity)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/rates/rates_with_3G_detectors.html">Event Rates with 3G detectors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/source%20population/merger%20rate%20density%20evolution%20with%20redshift.html">Merger rate density evolution with redshift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/source%20population/merger%20rate%20density%20model%20comparision.html">Merger rate density model comparision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/source%20population/merger%20rate%20density%20model%20comparision.html#Primordial-BBH-model,-Ng-et-al.-2022">Primordial BBH model, Ng et al. 2022</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/source%20population/sample%20compact%20binary%20parameters.html">Sampling parameters for a compact binary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/source%20population/statistical%20study%20of%20changing%20mass%20model%20params.html">Statistical study of changing Mass model paramter(s)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/source%20population/statistical%20study%20of%20cosmological%20friction.html">Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves</a></li>
@@ -935,7 +937,7 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict_buffer</span><span class="p">:</span>
                 <span class="n">unlensed_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict_buffer</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
                 <span class="c1"># store all params in json file</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;saving all unlensed_params in </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;saving all unlensed_params in </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
                 <span class="n">append_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">unlensed_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unlensed_params already sampled.&quot;</span><span class="p">)</span>
@@ -1190,7 +1192,7 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict_buffer</span><span class="p">:</span>
                 <span class="n">lensed_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict_buffer</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
                 <span class="c1"># store all params in json file</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;saving all lensed_params in </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;saving all lensed_params in </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
                 <span class="n">append_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;lensed_params already sampled.&quot;</span><span class="p">)</span>
@@ -1352,7 +1354,7 @@
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;lensed_param&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lensed_param</span>
             <span class="n">path_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">lensed_param</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;getting lensed_params from json file </span><span class="si">{</span><span class="n">path_</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;getting lensed_params from json file </span><span class="si">{</span><span class="n">path_</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
             <span class="n">lensed_param</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">lensed_param</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using provided lensed_param dict...&quot;</span><span class="p">)</span>

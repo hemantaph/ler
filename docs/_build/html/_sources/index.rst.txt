@@ -104,6 +104,7 @@ Glossary
    examples/rates/ler bns example
    examples/rates/rates_with_3G_detectors
    examples/source population/merger rate density evolution with redshift
+   examples/source population/merger rate density model comparision
    examples/source population/sample compact binary parameters
    examples/source population/sample compact binary parameters with redshift
    examples/source population/statistical study of changing mass model params
