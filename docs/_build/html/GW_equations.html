@@ -133,8 +133,8 @@
 \begin{split}
 \mathcal{R}_U &amp;= \int_{z_{min}}^{z_{max}} \frac{d N^U_{obs}(z_s)}{d t} \\
 &amp;= \int_{z_{min}}^{z_{max}} \frac{d N^U_{obs}(z_s)}{d t \;dV_c} \frac{dV_c}{dz_s} dz_s \\
-&amp;= \int_{z_{min}}^{z_{max}} \frac{d N^U_{obs}(z_s)}{\left(d t/(1+z_s)\right) \;dV_c}\frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
-&amp;= \int_{z_{min}}^{z_{max}} \frac{d N^U_{obs}(z_s)}{d\tau \;dV_c}\frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s
+&amp;= \int_{z_{min}}^{z_{max}} \frac{d N^U_{obs}(z_s)}{\left(d t/(1+z_s)\right) \;dV_c}\frac{4\pi}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
+&amp;= \int_{z_{min}}^{z_{max}} \frac{d N^U_{obs}(z_s)}{d\tau \;dV_c}\frac{4\pi}{(1+z_s)} \frac{dV_c}{dz_s} dz_s
 \end{split} \tag{1}
 \end{equation}\end{split}\]</div>
 <p>Note that if <span class="math notranslate nohighlight">\(d\tau=dt/(1+z_s)\)</span> is considered the proper time and it can be converted from the time at detector frame <span class="math notranslate nohighlight">\(dt\)</span> using the time-dilation factor <span class="math notranslate nohighlight">\((1+z_s)\)</span>. Consequently, <span class="math notranslate nohighlight">\(\frac{d N^U_{obs}(z_s)}{d t \;dV_c}\)</span> and <span class="math notranslate nohighlight">\(\frac{d N^U_{obs}(z_s)}{d \tau \;dV_c}\)</span> are the observed merger rate density at detector-frame and source-frame respectively. We want to use the <span class="math notranslate nohighlight">\(R^U_{obs}(z_s)=\frac{d N^U_{obs}(z_s)}{d \tau \;dV_c}\)</span> for our analysis as most observational
@@ -143,8 +143,8 @@ papers and the output of theoretical predictions are in the source-frame. <span 
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{equation}
 \begin{split}
-\mathcal{R}_U &amp;= \int_{z_{min}}^{z_{max}} \frac{d N^U_{obs}(z_s)}{d \tau\;dV_c} \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
-&amp;= \int_{z_{min}}^{z_{max}} R^U_{obs}(z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s
+\mathcal{R}_U &amp;= \int_{z_{min}}^{z_{max}} \frac{d N^U_{obs}(z_s)}{d \tau\;dV_c} \frac{4\pi}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
+&amp;= \int_{z_{min}}^{z_{max}} R^U_{obs}(z_s) \frac{4\pi}{(1+z_s)} \frac{dV_c}{dz_s} dz_s
 \end{split} \tag{2}
 \end{equation}\end{split}\]</div>
 <p>Equation 2 is exactly same to the of equation A2 from <a class="reference external" href="https://arxiv.org/pdf/2106.06303.pdf">WIERDA et al. 2021</a>.</p>
@@ -152,8 +152,8 @@ papers and the output of theoretical predictions are in the source-frame. <span 
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{equation}
 \begin{split}
-\mathcal{R}_U &amp;= \int_{z_{min}}^{z_{max}} R^U_{obs}(z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
-&amp;= \int_{z_{min}}^{z_{max}} R(z_s) P(obs|z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
+\mathcal{R}_U &amp;= \int_{z_{min}}^{z_{max}} R^U_{obs}(z_s) \frac{4\pi}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
+&amp;= \int_{z_{min}}^{z_{max}} R(z_s) P(obs|z_s) \frac{4\pi}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
 \end{split} \tag{3.1}
 \end{equation}\end{split}\]</div>
 <div class="math notranslate nohighlight">
@@ -167,14 +167,14 @@ papers and the output of theoretical predictions are in the source-frame. <span 
 <div class="math notranslate nohighlight">
 \[\begin{equation}
 \begin{split}
-\mathcal{N}^U = \int_{z_{min}}^{z_{max}} R(z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s
+\mathcal{N}^U = \int_{z_{min}}^{z_{max}} R(z_s) \frac{4\pi}{(1+z_s)} \frac{dV_c}{dz_s} dz_s
 \end{split} \tag{3.4}
 \end{equation}\]</div>
 <p>Therefore,</p>
 <div class="math notranslate nohighlight">
 \[\begin{equation}
 \begin{split}
-P(z_s) = \frac{R(z_s)}{\mathcal{N}^U} \frac{1}{(1+z_s)} \frac{dV_c}{dz_s}
+P(z_s) = \frac{R(z_s)}{\mathcal{N}^U} \frac{4\pi}{(1+z_s)} \frac{dV_c}{dz_s}
 \end{split} \tag{3.5}
 \end{equation}\]</div>
 <p>This is done because we want to sample the red-shift values from this prior distribution, which later will be used in the monte-carlo integration to estimate the rate.</p>
