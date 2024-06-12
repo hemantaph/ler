@@ -57,12 +57,12 @@
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="code_overview.html">Code overview</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Gravitational wave event rates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Annual-Rate-of-Detectable-Gravitational-Wave-Events">Annual Rate of Detectable Gravitational Wave Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Compact-Binaries-Merger-Rate-Density">Compact Binaries Merger Rate Density</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Merger-Rate-Density-Formula">Merger Rate Density Formula</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Normalized-redshift-distribution">Normalized redshift distribution</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Annual-Rate-of-Detectable-Gravitational-Wave-Events">Annual Rate of Detectable Gravitational Wave Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Compact-binaries-mass-distribution">Compact binaries mass distribution</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#BBH-Mass-Distribution:-PowerLaw+Peak-Model">BBH Mass Distribution: PowerLaw+Peak Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#BNS-mass-distribution:-Bimodal-Gaussian-Model">BNS mass distribution: Bimodal Gaussian Model</a></li>
@@ -143,6 +143,25 @@
 <li><p><span class="math notranslate nohighlight">\(\Theta\)</span>: Detectability condition.</p></li>
 </ul>
 <p>Default cosmology: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7). But, it can be changed by the user at LeR initialization.</p>
+<section id="Annual-Rate-of-Detectable-Gravitational-Wave-Events">
+<h2>Annual Rate of Detectable Gravitational Wave Events<a class="headerlink" href="#Annual-Rate-of-Detectable-Gravitational-Wave-Events" title="Link to this heading"></a></h2>
+<p>Continuing from the discussion on Compact Binaries Merger Rate Density, we now focus on the annual rate of detectable gravitational wave events. This rate, denoted as <span class="math notranslate nohighlight">\(R_U\)</span>, quantifies the expected number of gravitational wave events that can be observed by detectors within a year. The expression for <span class="math notranslate nohighlight">\(R_U\)</span> is given by:</p>
+<p><span class="math">\begin{equation}
+R_U = \mathcal{N}^U\int P(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\} dz_s \tag{2}
+\end{equation}</span></p>
+<p>Key aspects of this equation include:</p>
+<ul class="simple">
+<li><p><strong>SNR Operator,</strong> <span class="math notranslate nohighlight">\(\mathbf{\Theta[\rho(z_s,\theta)-\rho_{th}]}\)</span><strong>:</strong> This is a step function that determines whether the signal-to-noise ratio (SNR) <span class="math notranslate nohighlight">\(\rho(z_s,\theta)\)</span> of an event exceeds the threshold SNR <span class="math notranslate nohighlight">\(\rho_{th}\)</span>. If <span class="math notranslate nohighlight">\(\rho(z_s,\theta) \geq \rho_{th}\)</span>, the event is considered detectable.</p></li>
+<li><p>The SNR threshold <span class="math notranslate nohighlight">\(\mathbf{\rho_{th}}\)</span> is typically chosen based on the sensitivity and design specifications of the gravitational wave detector. This strategy is valid as a proxy in the Gaussian noise regime.</p></li>
+<li><p><strong>Prior Distribution,</strong> <span class="math notranslate nohighlight">\(\mathbf{P(\theta)}\)</span><strong>:</strong> This normalized distribution represents the prior knowledge or assumptions about the distribution of gravitational wave parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p></li>
+<li><p><strong>Normalized redshift distribution,</strong> <span class="math notranslate nohighlight">\(\mathbf{P(z_s)}\)</span><strong>:</strong> This represents the probability distribution of the source redshift <span class="math notranslate nohighlight">\(z_s\)</span>, as discussed in the previous section.</p></li>
+<li><p><strong>Gravitational Wave Parameters,</strong> <span class="math notranslate nohighlight">\(\mathbf{\theta}\)</span><strong>:</strong> The set of parameters includes the masses of the binary components (<span class="math notranslate nohighlight">\(m_1\)</span> and <span class="math notranslate nohighlight">\(m_2\)</span>), the inclination angle (<span class="math notranslate nohighlight">\(\iota\)</span>), the polarization angle (<span class="math notranslate nohighlight">\(\psi\)</span>), the right ascension (<span class="math notranslate nohighlight">\(ra\)</span>), the declination (<span class="math notranslate nohighlight">\(dec\)</span>), the phase of coalescence (<span class="math notranslate nohighlight">\(\phi_c\)</span>), and the time of coalescence (<span class="math notranslate nohighlight">\(t_c\)</span>).</p></li>
+<li><p><strong>Luminosity Distance,</strong> <span class="math notranslate nohighlight">\(\mathbf{\mathcal{D}_L}\)</span><strong>:</strong> The luminosity distance is derived from the source redshift <span class="math notranslate nohighlight">\(z_s\)</span> and cosmological parameters, providing a measure of the distance to the source of the gravitational waves.</p></li>
+</ul>
+<p>The integration over <span class="math notranslate nohighlight">\(z_s\)</span> and <span class="math notranslate nohighlight">\(\theta\)</span> in the equation accounts for the contributions from all detectable events across different redshifts and with varying gravitational wave parameters. This comprehensive approach enables the estimation of the annual rate of detectable gravitational wave events, which is crucial for understanding the observational capabilities of gravitational wave detectors and planning future observational strategies.</p>
+<p>Note: Refer to the section <a class="reference external" href="https://gwsnr.readthedocs.io/en/latest/">GWSNR</a> for details on the calculation of the optimal signal-to-noise ratio (SNR).</p>
+<p><strong>Related parameter distributions and their dependencies are described in the following sections</strong></p>
+</section>
 <section id="Compact-Binaries-Merger-Rate-Density">
 <h2>Compact Binaries Merger Rate Density<a class="headerlink" href="#Compact-Binaries-Merger-Rate-Density" title="Link to this heading"></a></h2>
 <p>The merger rate density is a crucial parameter for understanding the population of compact binary mergers, including binary black holes (BBH), binary neutron stars (BNS), and neutron star-black hole (NSBH) systems. It quantifies the number of mergers occurring per unit volume per unit time. The merger rate density is typically expressed in units of <span class="math notranslate nohighlight">\(\text{Gpc}^{-3} \text{yr}^{-1}\)</span> and varies with redshift (<span class="math notranslate nohighlight">\(z\)</span>).</p>
@@ -153,7 +172,7 @@
 effects.</p>
 <p>The merger rate density in the source frame is given by:</p>
 <p><span class="math">\begin{equation}
-\mathcal{R}_m(z_s) = \frac{\mathcal{R}_O(b_4+1)e^{b_2 z_s}}{b_4+e^{b_3 z_s}} \text{Gpc}^{-3}\text{yr}^{-1} \tag{1}
+\mathcal{R}(z_s) = \frac{\mathcal{R}_O(b_4+1)e^{b_2 z_s}}{b_4+e^{b_3 z_s}} \text{Gpc}^{-3}\text{yr}^{-1} \tag{1}
 \end{equation}</span></p>
 <ul class="simple">
 <li><p>Where <span class="math notranslate nohighlight">\(z_s\)</span> is the redshift of the source.</p></li>
@@ -184,41 +203,22 @@ effects.</p>
 <h3>Normalized redshift distribution<a class="headerlink" href="#Normalized-redshift-distribution" title="Link to this heading"></a></h3>
 <p>Let the un-normalized redshift distribution given by,</p>
 <p><span class="math">\begin{equation}
-P_{\text{unorm}}(z_s) = \frac{\mathcal{R}_m(z_s)}{(1+z_s)} \frac{dV_c}{dz_s} \tag{2}
+P_{\text{unorm}}(z_s) = \frac{\mathcal{R}(z_s)}{(1+z_s)} \frac{dV_c}{dz_s} \tag{2}
 \end{equation}</span></p>
 <p>where <span class="math notranslate nohighlight">\(dV_c/dz_s\)</span> is the comoving volume element and <span class="math notranslate nohighlight">\(\frac{1}{1+z_s}\)</span> is the time dilation factor.</p>
 <p>The normalizing factor <span class="math notranslate nohighlight">\(\mathcal{N}^U\)</span> can be calculated as,</p>
 <p><span class="math">\begin{equation}
-\mathcal{N}^U = \int_{z_{\text{min}}}^{z_{\text{max}}} P_{\text{unorm}}(z_s) dz_s = \int_{z_{\text{min}}}^{z_{\text{max}}} \frac{\mathcal{R}_m(z_s)}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \tag{3}
+\mathcal{N}^U = \int_{z_{\text{min}}}^{z_{\text{max}}} P_{\text{unorm}}(z_s) dz_s = \int_{z_{\text{min}}}^{z_{\text{max}}} \frac{\mathcal{R}(z_s)}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \tag{3}
 \end{equation}</span></p>
 <p>where <span class="math notranslate nohighlight">\(z_{\text{min}}\)</span> and <span class="math notranslate nohighlight">\(z_{\text{max}}\)</span> are the minimum and maximum redshifts considered for the calculation. Now we can write the normalized redshift distribution as,</p>
 <p><span class="math">\begin{equation}
 P(z_s) = \frac{P_{\text{unorm}}(z_s)}{\mathcal{N}^U} \tag{4}
 \end{equation}</span></p>
-<p><span class="math notranslate nohighlight">\(P(z_s)\)</span> is the probability distribution of the source redshift <span class="math notranslate nohighlight">\(z_s\)</span> is shown below for BBH events. Find out more about sampling method <a href="#id1"><span class="problematic" id="id2">`here &lt;&gt;`__</span></a>.</p>
-<p align="center"><p><img alt="zs" src="_images/merger_rate_bbh.png" /></p>
-</p><!-- ### Sampling Method
+<p><span class="math notranslate nohighlight">\(P(z_s)\)</span> is the probability distribution of the source redshift <span class="math notranslate nohighlight">\(z_s\)</span>. It is shown below for BBH events along with the merger rate density (source frame). Find out more about sampling method <a href="#id1"><span class="problematic" id="id2">`here &lt;&gt;`__</span></a>.</p>
+<!-- ### Sampling Method
 
-Sampling of the source redshift $z_s$ is based on the inverse transform sampling method. An interpolation of the inverse cumulative distribution function (CDF) is created and stored for future use, making the sampling process faster and more efficient. --></section>
-</section>
-<section id="Annual-Rate-of-Detectable-Gravitational-Wave-Events">
-<h2>Annual Rate of Detectable Gravitational Wave Events<a class="headerlink" href="#Annual-Rate-of-Detectable-Gravitational-Wave-Events" title="Link to this heading"></a></h2>
-<p>Refer to documentation page on <a class="reference external" href="https://ler.readthedocs.io/en/latest/GW_equations.html">Analytical formulation</a> for more details.</p>
-<p>Continuing from the discussion on Compact Binaries Merger Rate Density, we now focus on the annual rate of detectable gravitational wave events. This rate, denoted as <span class="math notranslate nohighlight">\(R_U\)</span>, quantifies the expected number of gravitational wave events that can be observed by detectors within a year. The expression for <span class="math notranslate nohighlight">\(R_U\)</span> is given by:</p>
-<p><span class="math">\begin{equation}
-R_U = \mathcal{N}^U\int P(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\} dz_s \tag{2}
-\end{equation}</span></p>
-<p>Key aspects of this equation include:</p>
-<ul class="simple">
-<li><p><strong>SNR Operator,</strong> <span class="math notranslate nohighlight">\(\mathbf{\Theta[\rho(z_s,\theta)-\rho_{th}]}\)</span><strong>:</strong> This is a step function that determines whether the signal-to-noise ratio (SNR) <span class="math notranslate nohighlight">\(\rho(z_s,\theta)\)</span> of an event exceeds the threshold SNR <span class="math notranslate nohighlight">\(\rho_{th}\)</span>. If <span class="math notranslate nohighlight">\(\rho(z_s,\theta) \geq \rho_{th}\)</span>, the event is considered detectable.</p></li>
-<li><p>The SNR threshold <span class="math notranslate nohighlight">\(\mathbf{\rho_{th}}\)</span> is typically chosen based on the sensitivity and design specifications of the gravitational wave detector. This strategy is valid as a proxy in the Gaussian noise regime.</p></li>
-<li><p><strong>Prior Distribution,</strong> <span class="math notranslate nohighlight">\(\mathbf{P(\theta)}\)</span><strong>:</strong> This normalized distribution represents the prior knowledge or assumptions about the distribution of gravitational wave parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p></li>
-<li><p><strong>Normalized redshift distribution,</strong> <span class="math notranslate nohighlight">\(\mathbf{P(z_s)}\)</span><strong>:</strong> This represents the probability distribution of the source redshift <span class="math notranslate nohighlight">\(z_s\)</span>, as discussed in the previous section.</p></li>
-<li><p><strong>Gravitational Wave Parameters,</strong> <span class="math notranslate nohighlight">\(\mathbf{\theta}\)</span><strong>:</strong> The set of parameters includes the masses of the binary components (<span class="math notranslate nohighlight">\(m_1\)</span> and <span class="math notranslate nohighlight">\(m_2\)</span>), the inclination angle (<span class="math notranslate nohighlight">\(\iota\)</span>), the polarization angle (<span class="math notranslate nohighlight">\(\psi\)</span>), the right ascension (<span class="math notranslate nohighlight">\(ra\)</span>), the declination (<span class="math notranslate nohighlight">\(dec\)</span>), the phase of coalescence (<span class="math notranslate nohighlight">\(\phi_c\)</span>), and the time of coalescence (<span class="math notranslate nohighlight">\(t_c\)</span>).</p></li>
-<li><p><strong>Luminosity Distance,</strong> <span class="math notranslate nohighlight">\(\mathbf{\mathcal{D}_L}\)</span><strong>:</strong> The luminosity distance is derived from the source redshift <span class="math notranslate nohighlight">\(z_s\)</span> and cosmological parameters, providing a measure of the distance to the source of the gravitational waves.</p></li>
-</ul>
-<p>The integration over <span class="math notranslate nohighlight">\(z_s\)</span> and <span class="math notranslate nohighlight">\(\theta\)</span> in the equation accounts for the contributions from all detectable events across different redshifts and with varying gravitational wave parameters. This comprehensive approach enables the estimation of the annual rate of detectable gravitational wave events, which is crucial for understanding the observational capabilities of gravitational wave detectors and planning future observational strategies.</p>
-<p>Note: Refer to the section <a class="reference external" href="https://gwsnr.readthedocs.io/en/latest/">GWSNR</a> for details on the calculation of the optimal signal-to-noise ratio (SNR).</p>
+Sampling of the source redshift $z_s$ is based on the inverse transform sampling method. An interpolation of the inverse cumulative distribution function (CDF) is created and stored for future use, making the sampling process faster and more efficient. --><p align="center"><p><img alt="zs" src="_images/merger_rate_bbh_.png" /></p>
+</p></section>
 </section>
 <section id="Compact-binaries-mass-distribution">
 <h2>Compact binaries mass distribution<a class="headerlink" href="#Compact-binaries-mass-distribution" title="Link to this heading"></a></h2>
