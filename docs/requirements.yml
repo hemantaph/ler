@@ -1,4 +1,4 @@
-name: rtd38
+name: ler
 channels:
   - conda-forge
   - defaults
