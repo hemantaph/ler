@@ -4,21 +4,24 @@ $$
 \begin{equation}
 \begin{split}
 \mathcal{R}_U &= \int_{z_{min}}^{z_{max}} \frac{d N^U_{obs}(z_s)}{d t} \\
-&= \int_{z_{min}}^{z_{max}} \frac{d N^U_{obs}(z_s)}{d t \;dV_c} \frac{dV_c}{dz_s} dz_s \\
-&= \int_{z_{min}}^{z_{max}} \frac{d N^U_{obs}(z_s)}{\left(d t/(1+z_s)\right) \;dV_c}\frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
-&= \int_{z_{min}}^{z_{max}} \frac{d N^U_{obs}(z_s)}{d\tau \;dV_c}\frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s
+&= \int_{z_{min}}^{z_{max}} \frac{d^2 N^U_{obs}(z_s)}{d t \;d\mathcal{V}_c}  \frac{d\mathcal{V}_c}{d\Omega dz_s} d\Omega dz_s \\
+&= \int_{z_{min}}^{z_{max}} \frac{d^2 N^U_{obs}(z_s)}{\left(d t/(1+z_s)\right) \;d\mathcal{V}_c}\frac{1}{(1+z_s)}\frac{d\mathcal{V}_c}{d\Omega dz_s} d\Omega dz_s \\
+&= \int_{z_{min}}^{z_{max}} \frac{d^2 N^U_{obs}(z_s)}{d\tau \;d\mathcal{V}_c}\frac{1}{(1+z_s)} \frac{d\mathcal{V}_c}{d\Omega dz_s} d\Omega dz_s \\
+&= \int_{z_{min}}^{z_{max}} \frac{d^2 N^U_{obs}(z_s)}{d\tau \;d\mathcal{V}_c}\frac{1}{(1+z_s)} \frac{d\mathcal{V}_c}{d\Omega dz_s} \Bigg\{ \int_{all\; sky} d\Omega \Bigg\}dz_s \\
+&= \int_{z_{min}}^{z_{max}} \frac{d^2 N^U_{obs}(z_s)}{d\tau \;d\mathcal{V}_c}\frac{1}{(1+z_s)} \Bigg(\frac{d\mathcal{V}_c}{d\Omega dz_s} 4\pi \Bigg)dz_s \\
+&= \int_{z_{min}}^{z_{max}} \frac{d^2 N^U_{obs}(z_s)}{d\tau \;d\mathcal{V}_c}\frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
 \end{split} \tag{1} 
 \end{equation}
 $$
 
-Note that if $d\tau=dt/(1+z_s)$ is considered the proper time and it can be converted from the time at detector frame $dt$ using the time-dilation factor $(1+z_s)$. Consequently, $\frac{d N^U_{obs}(z_s)}{d t \;dV_c}$ and $\frac{d N^U_{obs}(z_s)}{d \tau \;dV_c}$ are the observed merger rate density at detector-frame and source-frame respectively. We want to use the $R^U_{obs}(z_s)=\frac{d N^U_{obs}(z_s)}{d \tau \;dV_c}$ for our analysis as most observational papers and the output of theoretical predictions are in the source-frame. $4\pi \frac{dV_c}{dz_s}dz_s$ is considered a spherical-shell volume element in co-moving coordinates at red-shift $z_s$. So, the rate expression simplifies to integrating $\text{density} \times \text{time dilation effect} over the shell volume element.
+Note that if $d\tau=dt/(1+z_s)$ is considered the proper time and it can be converted from the time at detector frame $dt$ using the time-dilation factor $(1+z_s)$. Consequently, $\frac{d^2 N^U_{obs}(z_s)}{d t \;d\mathcal{V}_c}$ and $\frac{d^2 N^U_{obs}(z_s)}{d \tau \;d\mathcal{V}_c}$ are the observed merger rate density at detector-frame and source-frame respectively. We want to use the $R^U_{obs}(z_s)=\frac{d^2 N^U_{obs}(z_s)}{d \tau \;d\mathcal{V}_c}$ for our analysis as most observational papers and the output of theoretical predictions are in the source-frame. $\frac{dV_c}{dz_s}dz_s$ is considered a spherical-shell volume element in co-moving coordinates at red-shift $z_s$. So, the rate expression simplifies to integrating (density) $\times$ (time dilation effect) over the shell volume element. For more information on the volume element refer to this [page]() of the documentation.
 
 Note: $\frac{dV_c}{dz_s}$ is the differential co-moving volume at red-shift $z_s$ and you can get the value by using `astropy` cosmology package for a given cosmology.
 
 $$
 \begin{equation}
 \begin{split}
-\mathcal{R}_U &= \int_{z_{min}}^{z_{max}} \frac{d N^U_{obs}(z_s)}{d \tau\;dV_c} \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
+\mathcal{R}_U &= \int_{z_{min}}^{z_{max}} \frac{d^2 N^U_{obs}(z_s)}{d \tau\;d\mathcal{V}_c} \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
 &= \int_{z_{min}}^{z_{max}} R^U_{obs}(z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s
 \end{split} \tag{2}
 \end{equation}

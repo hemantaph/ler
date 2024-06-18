@@ -492,7 +492,8 @@ class ImageProperties():
 
                     if list_of_detectors:
                         for detector in list_of_detectors:
-                            result_dict[detector][idx, i] = optimal_snr[detector]
+                            if detector in optimal_snr:
+                                result_dict[detector][idx, i] = optimal_snr[detector]
 
                 elif pdet_calculator:
                     pdet = pdet_calculator(
@@ -518,7 +519,8 @@ class ImageProperties():
 
                     if list_of_detectors:
                         for detector in list_of_detectors:
-                            result_dict[detector][idx, i] = pdet[detector]
+                            if detector in pdet:
+                                result_dict[detector][idx, i] = pdet[detector]
                 
 
                 lensed_param["effective_luminosity_distance"][:, i] = effective_luminosity_distance
