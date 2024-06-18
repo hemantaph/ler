@@ -1652,6 +1652,7 @@
         <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">output_jsonfile</span><span class="o">=</span><span class="s2">&quot;n_unlensed_param_detectable.json&quot;</span><span class="p">,</span>
         <span class="n">meta_data_file</span><span class="o">=</span><span class="s2">&quot;meta_unlensed.json&quot;</span><span class="p">,</span>
+        <span class="n">detectability_condition</span><span class="o">=</span><span class="s2">&quot;step_function&quot;</span><span class="p">,</span>
         <span class="n">trim_to_size</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">snr_recalculation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">snr_threshold_recalculation</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span>
@@ -1740,10 +1741,28 @@
                 <span class="n">unlensed_param</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">snrs</span><span class="p">)</span>
             <span class="c1">############################</span>
 
-            <span class="c1"># get snr</span>
-            <span class="n">snr</span> <span class="o">=</span> <span class="n">unlensed_param</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">snr</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;optimal_snr_net&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">unlensed_param</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;optimal_snr_net&#39; not in unlensed parm dict provided&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">detectability_condition</span> <span class="o">==</span> <span class="s2">&quot;step_function&quot;</span><span class="p">:</span>
+                    <span class="c1">#print(&quot;given detectability_condition == &#39;step_function&#39;&quot;)</span>
+                    <span class="n">param</span> <span class="o">=</span> <span class="n">unlensed_param</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span>
+                    <span class="n">threshold</span> <span class="o">=</span> <span class="n">snr_threshold</span>
+                <span class="k">elif</span> <span class="n">detectability_condition</span> <span class="o">==</span> <span class="s2">&quot;pdet&quot;</span><span class="p">:</span>
+                    <span class="c1"># print(&quot;given detectability_condition == &#39;pdet&#39;&quot;)</span>
+                    <span class="n">param</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">snr_threshold</span> <span class="o">-</span> <span class="n">unlensed_param</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">])</span>
+                    <span class="n">unlensed_param</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">param</span>
+                    <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.5</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdet</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;pdet_net&quot;</span> <span class="ow">in</span> <span class="n">unlensed_param</span><span class="p">:</span>
+                    <span class="c1">#print(&quot;given detectability_condition == &#39;pdet&#39;&quot;)</span>
+                    <span class="n">param</span> <span class="o">=</span> <span class="n">unlensed_param</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">]</span>
+                    <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.5</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;pdet_net&#39; not in unlensed parm dict provided&quot;</span><span class="p">)</span>
+
             <span class="c1"># index of detectable events</span>
-            <span class="n">idx</span> <span class="o">=</span> <span class="n">snr</span> <span class="o">&gt;</span> <span class="n">snr_threshold</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">param</span> <span class="o">&gt;</span> <span class="n">threshold</span>
 
             <span class="c1"># store all params in json file</span>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">unlensed_param</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>

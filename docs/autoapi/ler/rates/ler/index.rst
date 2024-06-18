@@ -1219,7 +1219,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_unlensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, resume=False, output_jsonfile='n_unlensed_param_detectable.json', meta_data_file='meta_unlensed.json', trim_to_size=True, snr_recalculation=False, snr_threshold_recalculation=5.5)
+   .. py:method:: selecting_n_unlensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, resume=False, output_jsonfile='n_unlensed_param_detectable.json', meta_data_file='meta_unlensed.json', detectability_condition='step_function', trim_to_size=True, snr_recalculation=False, snr_threshold_recalculation=5.5)
 
       
       Function to select n unlensed detectable events.
