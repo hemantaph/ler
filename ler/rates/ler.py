@@ -1447,6 +1447,7 @@ class LeR(LensGalaxyParameterDistribution):
         resume=False,
         output_jsonfile="n_unlensed_param_detectable.json",
         meta_data_file="meta_unlensed.json",
+        detectability_condition="step_function",
         trim_to_size=True,
         snr_recalculation=False,
         snr_threshold_recalculation=5.5,
@@ -1535,10 +1536,28 @@ class LeR(LensGalaxyParameterDistribution):
                 unlensed_param.update(snrs)
             ############################
 
-            # get snr
-            snr = unlensed_param["optimal_snr_net"]
+            if self.snr:
+                if "optimal_snr_net" not in unlensed_param:
+                    raise ValueError("'optimal_snr_net' not in unlensed parm dict provided")
+                if detectability_condition == "step_function":
+                    #print("given detectability_condition == 'step_function'")
+                    param = unlensed_param["optimal_snr_net"]
+                    threshold = snr_threshold
+                elif detectability_condition == "pdet":
+                    # print("given detectability_condition == 'pdet'")
+                    param = 1 - norm.cdf(snr_threshold - unlensed_param["optimal_snr_net"])
+                    unlensed_param["pdet_net"] = param
+                    threshold = 0.5
+            elif self.pdet:
+                if "pdet_net" in unlensed_param:
+                    #print("given detectability_condition == 'pdet'")
+                    param = unlensed_param["pdet_net"]
+                    threshold = 0.5
+                else:
+                    raise ValueError("'pdet_net' not in unlensed parm dict provided")
+
             # index of detectable events
-            idx = snr > snr_threshold
+            idx = param > threshold
 
             # store all params in json file
             for key, value in unlensed_param.items():
