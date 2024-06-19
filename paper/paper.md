@@ -59,21 +59,17 @@ Gravitational waves (GWs) are ripples in the fabric of space and time caused by 
 
 Obtaining precise outcomes in statistical analyses of this nature necessitates the utilization of large-scale sampling, often numbering in the millions. However, this process is computationally demanding. The $ler$ framework addresses this by employing innovative techniques to optimize the workflow and computation efficiency required for handling large-scale statistical analyses, essential for modeling detectable events and calculating rates. Its integration of modular statistical components enhances the framework's adaptability and extendability, thus proving to be an invaluable asset in the evolving field of gravitational wave research.
 
-<!-- The $ler$ framework employs innovative techniques to vectorize and parallelize the workflow efficiently. Additionally, it simplifies calculations through the utilization of interpolation and linear algebra. A further challenge entailed the seamless integration of disparate statistical components in a modular manner that facilitates adaptability, upgradability, and extendability. The $ler$ framework effectively addresses these complexities, offering user-friendly features that ensure seamless compatibility with other associated software packages. -->
-
-<!-- Obtaining precise outcomes in statistical analyses of this nature necessitates the utilization of large-scale sampling, often numbering in the millions. However, this process is computationally demanding. The ler framework employs innovative techniques to vectorize and parallelize the workflow efficiently. Additionally, it simplifies calculations through the utilization of interpolation and linear algebra. A further challenge entailed the seamless integration of disparate statistical components in a modular manner that facilitates adaptability, upgradability, and extendability. The ler framework effectively addresses these complexities, offering user-friendly features that ensure seamless compatibility with other associated software packages. -->
-
 ### Statement of need
 
 $ler$ is a statistical-based Python package specifically designed for computing detectable rates of both lensed and unlensed gravitational wave (GW) events, catering to the requirements of the LIGO-Virgo-KAGRA Scientific Collaboration and astrophysics research scholars. The core functionality of $ler$ intricately hinges upon the interplay of various components which include sampling the properties of compact-binary sources, lens galaxies characteristics, solving lens equations to derive properties of resultant images, and computing detectable GW rates. This comprehensive functionality builds on the leveraging of array operations and linear algebra from the *numpy* library, enhanced by interpolation methods from *scipy* and Python’s *multiprocessing* capabilities. Efficiency is further boosted by the *numba* library's Just-In-Time (*njit*) compilation, optimizing extensive numerical computations and employing the inverse transform sampling method to replace more cumbersome rejection sampling. The modular design of $ler$ not only optimizes speed and functionality but also ensures adaptability and upgradability, supporting the integration of additional statistics as research evolves. Currently, $ler$ is an important tool in generating simulated gravitational wave (GW) events—both lensed and unlensed—and provides astrophysically accurate distributions of event-related parameters for both detectable and non-detectable events. This functionality aids in event validation and enhances the forecasting of detection capabilities across various GW detectors to study such events. The architecture of the $ler$ API facilitates seamless compatibility with other software packages, allowing researchers to integrate and utilize its functionalities based on specific scientific requirements.
 
 ### Design and Structure
 
-The architecture of the $ler$ API is deliberately organized such that each distinct functionality holds its own significance in scientific research. Simultaneously, these functionalities seamlessly integrate and can be employed collectively based on specific research requirements. Key features of $ler$ and its dependencies can be summarized as follows:
+The architecture of the $ler$ API is deliberately organized such that each distinct functionality holds its own significance in scientific research. Simultaneously, these functionalities seamlessly integrate and can be employed collectively to accommodate diverse scientific objectives. Key features of $ler$ and its dependencies can be summarized as follows:
 
 - Sampling Gravitational Wave (GW) Source Properties:
-    * For the unlensed events, The sampling distribution $(\,R_m^U(z_s)\,)$ for the source's redshift $(\,z_s\,)$ is derived from the merger rate density of compact binaries, which, in turn, is based on the star formation rate. The code is meticulously designed to enable the straightforward integration of future updates or user-specified distributions of these sources.
-    * The process of sampling both intrinsic and extrinsic parameters of GW sources, represented by $\theta_i$, utilizes the prior distributions $(P(\theta_i))$ available within the *gwcosmo* and *bilby* Python packages. Before parameterizing the rate calculation, the software allows users the flexibility to manually alter any pertinent parameters as required. The said feature is employed when one doesn't specifically have a prior distribution for a particular parameter.
+    * For the unlensed events, The sampling distribution $(\,R_m(z_s)\,)$ for the source's redshift $(\,z_s\,)$ is derived from the merger rate density of compact binaries, which, in turn, is based on the star formation rate. The code is meticulously designed to enable the straightforward integration of future updates or user-specified distributions of these sources.
+    * The process of sampling both intrinsic and extrinsic parameters of GW sources, represented by $\theta$, utilizes the prior distributions $(P(\theta))$ available within the *gwcosmo* and *bilby* Python packages. Additionally, users have the option to initialize the package with custom distributions of their choosing.
 
 - Sampling of lens galaxies attributes and source red-shifts:
     * For lensed case, the source redshift $(z_s)$ is sampled under the strong lensing condition $(\text{SL})$, based on the precomputed probability of strong lensing with source at $z_s$ $(\text{optical depth: }P\left(\text{SL}|z_s\right)\,)$. This probability can be recalculated for specified configurations of lens galaxies, leveraging *multiprocessing* and *njit* functionalities for enhanced efficiency.
@@ -93,28 +89,24 @@ The architecture of the $ler$ API is deliberately organized such that each disti
 
 $\textbf{Detectable Unlensed rates:}$
 
-$$
 \begin{equation*}
 \begin{split}
 R_U = \int & dz_s \frac{dV_c}{dz_s}\frac{R_m(z_s)}{1+z_s}\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\}
 \end{split}
 \end{equation*}
-$$
 
 $z_s$: GW source redshift, $\frac{dV_c}{dz_s}$: Differential co-moving volume, $\frac{1}{1+z_s}$: Time dilation correction factor, $R_m(z_s)$: source frame merger rate density, $\theta$: GW source parameters, $P$: probability distribution, $\rho$: SNR, $\rho_{th}$: SNR threshold, $\Theta$: Heaviside function to select detectable GW events.
 
 $\textbf{Detectable Lensed rates:}$
 
-$$
 \begin{equation*}
 \begin{split}
 R_L = \int & dz_s \frac{dV_c}{dz_s}\tau(z_s)\frac{R_m(z_s)}{1+z_s} \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \, \\ 
 & \, P(\theta) P(\theta_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta d\theta_L dz_s 
 \end{split}
 \end{equation*}
-$$
 
-$\tau(z_s)$: Optical-depth of strong lensing, $\theta_L$: lens parameters, $\beta$: source position, $\mu$: image magnification, $\Delta t$: image time delay, $\mathcal{O}$: operator to select dectectable lensed GW events, $i$: index of images, $\text{SL}$: strong lensing condition.
+$\tau(z_s)$: Optical-depth of strong lensing, $\theta_L$: lens parameters, $\beta$: source position, $\mu$: image magnification, $\Delta t$: image time delay, $\mathcal{O}$: operator to select dectectable lensed GW events, $i$: index of images of a lensed event, $\text{SL}$: strong lensing condition.
 
 # Acknowledgements
 
