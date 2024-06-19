@@ -50,7 +50,7 @@ affiliations:
 Crta. Valldemossa km 7.5, E-07122 Palma, Spain
     index: 6
   
-date: 
+date: 19 June 2024
 bibliography: paper.bib
 ---
 
