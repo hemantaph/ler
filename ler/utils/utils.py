@@ -192,10 +192,11 @@ def rejection_sample(pdf, xmin, xmax, size=100, chunk_size=10000):
     x_sample = []
     while len(x_sample) < size:
         x_try = np.random.uniform(xmin, xmax, size=chunk_size)
+        pdf_x_try = pdf(x_try) # Calculate the pdf at the random x values
         y_try = np.random.uniform(0, ymax, size=chunk_size)
-        ymax = max(ymax, np.max(y_try))  # Update the maximum value of the pdf
+        ymax = max(ymax, np.max(pdf_x_try))  # Update the maximum value of the pdf
         # Add while retaining 1D shape of the list
-        x_sample += list(x_try[y_try < pdf(x_try)])
+        x_sample += list(x_try[y_try < pdf_x_try])
     # Transform the samples to a 1D numpy array
     x_sample = np.array(x_sample).flatten()
     # Return the correct number of samples
