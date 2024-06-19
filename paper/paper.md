@@ -46,8 +46,7 @@ affiliations:
     index: 4
   - name: Nikhef – National Institute for Subatomic Physics, Science Park, 1098 XG Amsterdam, The Netherlands
     index: 5
-  - name: Departament de F\'isica, Universitat de les Illes Balears, IAC3-IEEC,
-Crta. Valldemossa km 7.5, E-07122 Palma, Spain
+  - name: Departament de F\'isica, Universitat de les Illes Balears, IAC3-IEEC, Crta. Valldemossa km 7.5, E-07122 Palma, Spain
     index: 6
   
 date: 19 June 2024
