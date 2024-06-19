@@ -77,7 +77,7 @@ The architecture of the $ler$ API is deliberately organized such that each disti
 
 - Generation of image properties:
     * Source position $(\beta)$ is sampled from the caustic in the source plane.
-    * Sampled lens properties and source position is fed in *Lenstronomy* to generate properties of the images. This is the slowest part of the entire simulation, which $ler$ tackles through parallelization with multiprocessing.
+    * Sampled lens properties and source position is fed in *lenstronomy* to generate properties of the images. This is the slowest part of the entire simulation, which $ler$ tackles through parallelization with multiprocessing.
     * Image properties like magnification $(\mu_i)$ and time delay ($\Delta t_i$) modifies the original source signal strength, changing the signal-to-noise ratio SNR and our ability to detect.
 
 - Calculation of Detectable Merger Rates Per Year:
