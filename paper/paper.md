@@ -1,5 +1,5 @@
 ---
-title: '***ler*** : A Python package for generating gravitational waves lensing rates and related statistics'
+title: '***ler*** : LVK (LIGO-Virgo-KAGRA collaboration) Event (compact-binary mergers) Rate calculator and simulator'
 tags:
   - Python
   - astrophysics
@@ -50,19 +50,23 @@ affiliations:
 Crta. Valldemossa km 7.5, E-07122 Palma, Spain
     index: 6
   
-date: 17 August 2023
+date: 
 bibliography: paper.bib
 ---
 
-# Summary
+### Summary
 
-Gravitational waves (GWs) are ripples in the fabric of space and time caused by the acceleration of unevenly distributed mass or masses. Observable GWs are created especially during the violent cosmic events of merging compact binaries, such as 'binary black holes' (BBH), 'binary neutron stars' (BNS) and 'neutron star and black hole pair' (NSBH). GWs emitted by these events can be distorted or magnified by the gravitational fields of massive objects such as galaxies or galaxy clusters, a phenomenon known as gravitational lensing. Profound comprehension of gravitational lensing's impact on GW signals is imperative to their accurate interpretation and the extraction of astrophysical insights therein. For this purpose, statistical modelling of GWs lensing can provide valuable insights into the properties of the lensing objects and GW sources. Such statistics require accurate and efficient means to calculate the detectable lensing rates, which depend on up-to-date modelling and implementation of lens and source properties and its distribution. The outcomes of these computational analyses not only contribute to generating dependable forecasts but also play an important role in validating forthcoming lensing events [	arXiv:2306.03827 [gr-qc]](https://arxiv.org/abs/2306.03827).
+Gravitational waves (GWs) are ripples in the fabric of space and time caused by the acceleration of unevenly distributed mass or masses. Observable GWs are created especially during the violent cosmic events of merging compact binaries, such as 'binary black holes' (BBH), 'binary neutron stars' (BNS), and 'neutron star and black hole pair' (NSBH). GWs emitted by these events can be distorted or magnified by the gravitational fields of massive objects such as galaxies or galaxy clusters, a phenomenon known as gravitational lensing. Profound comprehension of gravitational lensing's impact on GW signals is imperative to their accurate interpretation and the extraction of astrophysical insights therein. For this purpose, statistical modeling of GWs lensing can provide valuable insights into the properties of the lensing objects and GW sources. Such statistics require accurate and efficient means to calculate the detectable lensing rates, which depend on up-to-date modeling and implementation of lens and source properties and their distribution. The outcomes of these computational analyses not only contribute to generating dependable forecasts but also play an important role in validating forthcoming lensing events.
 
-Obtaining precise outcomes in statistical analyses of this nature necessitates the utilization of large-scale sampling, often numbering in the millions. However, this process is computationally demanding. The ***ler*** framework employs innovative techniques to vectorize and parallelize the workflow efficiently. Additionally, it simplifies calculations through the utilization of interpolation and linear algebra. A further challenge entailed the seamless integration of disparate statistical components in a modular manner that facilitates adaptability, upgradability, and extendability. The ***ler*** framework effectively addresses these complexities, offering user-friendly features that ensure seamless compatibility with other associated software packages. 
+Obtaining precise outcomes in statistical analyses of this nature necessitates the utilization of large-scale sampling, often numbering in the millions. However, this process is computationally demanding. The ***ler*** framework employs innovative techniques to vectorize and parallelize the workflow efficiently. Additionally, it simplifies calculations through the utilization of interpolation and linear algebra. A further challenge entailed the seamless integration of disparate statistical components in a modular manner that facilitates adaptability, upgradability, and extendability. The ***ler*** framework effectively addresses these complexities, offering user-friendly features that ensure seamless compatibility with other associated software packages.
 
-# Statement of need
+### Statement of need
 
-***ler*** is a statistical-based Python package whose core function is designed for the computation of detectable rates pertaining to both lensed and unlensed gravitational wave (GW) events. This calculation intricately hinges upon the interplay of various components within the package, which can be categorized into four primary segments: *1.* Sampling the properties of compact-binary sources, *2.* Sampling the characteristics of lens galaxies, *3.* Solving the lens equations to derive the properties of the resultant images, and finally, *4.* Computing the rates of detectable GW events. The holistic functionality of the package is built upon leveraging array operations and linear algebra from the *numpy* library, complemented by interpolation methods from *scipy* and Python’s native *multiprocessing* capabilities. The software's efficiency is notably enhanced by the *numba* library's Just-In-Time (*njit*, n: no-python mode) compilation, which dynamically converts Python and NumPy code into machine code, thereby optimizing performance in numerical computations involving extensive loops and array operations. Predominantly, ***ler*** employs the inverse transform sampling method, utilizing interpolated inverse cumulative distribution functions (CDFs). This approach eschews the need for rejection sampling, which often requires numerous loops and the handling of relatively tedious probability density functions (PDFs) of the sampled parameters. The overall design of the package optimizes both speed and functionality while upholding user-friendliness. The architecture of the ***ler*** API is deliberately organized such that each distinct functionality holds its own significance in scientific research. Simultaneously, these functionalities seamlessly integrate and can be employed collectively based on specific research requirements. Key features of ***ler*** and its dependencies can be summarized as follows:
+***ler*** is a statistical-based Python package whose core function is designed for the computation of detectable rates pertaining to both lensed and unlensed gravitational wave (GW) events. The holistic functionality of the package is built upon leveraging array operations and linear algebra from the *numpy* library, complemented by interpolation methods from *scipy* and Python’s native *multiprocessing* capabilities. The software's efficiency is notably enhanced by the *numba* library's Just-In-Time (*njit*, n: no-python mode) compilation, which dynamically converts Python and NumPy code into machine code, thereby optimizing performance in numerical computations involving extensive loops and array operations. Predominantly, ***ler*** employs the inverse transform sampling method, utilizing interpolated inverse cumulative distribution functions (CDFs). This approach eschews the need for rejection sampling, which often requires numerous loops and the handling of relatively tedious probability density functions (PDFs) of the sampled parameters. The overall design of the package optimizes both speed and functionality while upholding user-friendliness. The ler software has been developed to cater to the requirements of both the LIGO-Virgo-KAGRA Scientific Collaboration and research scholars engaged in astrophysics studies. It is currently used in generating detectable lensing events and GW lensing rates with the available information on current and future detectors. The results will predict the capacity of various detectors to detect and study such lensing events. Statistics generated from ***ler*** will be used in event validation for the ongoing effort to detect lensed GWs. Lastly, ***ler*** was designed with upgradability in mind to include additional statistics as required by the related research.
+
+### Design and Structure
+
+The architecture of the ***ler*** API is deliberately organized such that each distinct functionality holds its own significance in scientific research. Simultaneously, these functionalities seamlessly integrate and can be employed collectively based on specific research requirements. Key features of ***ler*** and its dependencies can be summarized as follows:
 
 - Sampling Gravitational Wave (GW) Source Properties:
     * For the unlensed events, The sampling distribution $(\,R_m^U(z_s)\,)$ for the source's redshift $(\,z_s\,)$ is derived from the merger rate density of compact binaries, which, in turn, is based on the star formation rate. The code is meticulously designed to enable the straightforward integration of future updates or user-specified distributions of these sources.
@@ -82,11 +86,9 @@ Obtaining precise outcomes in statistical analyses of this nature necessitates t
     * SNR calculations are optimized using [*gwsnr*](https://github.com/hemantaph/gwsnr), leveraging interpolation and multiprocessing for accuracy and speed.
     * Simulated events and rate results, along with input configurations, are systematically archived for easy access and future analysis. Additionally, all interpolators used in the process are preserved for future applications.
 
-The ***ler*** software has been developed to cater to the requirements of both the LIGO-Virgo-KAGRA Scientific Collaboration and research scholars engaged in astrophysics studies. It is currently used in generating detectable lensing events and GW lensing rates with the available information on current and future detectors. The results will predict the capacity of various detectors to detect and study such lensing events. Statistics generated from ***ler*** will be used in event validation for the ongoing effort to detect lensed GWs. Lastly, ***ler*** was designed with upgradability in mind to include additional statistics as required by the related research.
-
 # Equations
 
-$\textbf{Detectable gravtational waves un-lensed rates:}$
+$\textbf{Detectable Unlensed rates:}$
 
 \begin{equation*}
 \begin{split}
@@ -96,7 +98,7 @@ R_U = \int & dz_s \frac{dV_c}{dz_s}\frac{R_m(z_s)}{1+z_s}\left\{\Theta[\rho(z_s,
 
 * $z_s$: GW source redshift, $\frac{dV_c}{dz_s}$: Differential co-moving volume, $\frac{1}{1+z_s}$: Time dilation correction factor, $R_m(z_s)$: source frame merger rate density, $\theta$: GW source parameters, $P$: probability distribution, $\rho$: SNR, $\rho_{th}$: SNR threshold, $\Theta$: Heaviside function to select detectable events.
 
-$\textbf{Detectable gravtational waves lensed rates:}$
+$\textbf{Detectable Lensed rates:}$
 
 \begin{equation*}
 \begin{split}
