@@ -67,8 +67,6 @@ Obtaining precise outcomes in statistical analyses of this nature necessitates t
 
 $ler$ is a statistical-based Python package specifically designed for computing detectable rates of both lensed and unlensed gravitational wave (GW) events, catering to the requirements of the LIGO-Virgo-KAGRA Scientific Collaboration and astrophysics research scholars. The core functionality of $ler$ intricately hinges upon the interplay of various components which include sampling the properties of compact-binary sources, lens galaxies characteristics, solving lens equations to derive properties of resultant images, and computing detectable GW rates. This comprehensive functionality builds on the leveraging of array operations and linear algebra from the *numpy* library, enhanced by interpolation methods from *scipy* and Python’s *multiprocessing* capabilities. Efficiency is further boosted by the *numba* library's Just-In-Time (*njit*) compilation, optimizing extensive numerical computations and employing the inverse transform sampling method to replace more cumbersome rejection sampling. The modular design of $ler$ not only optimizes speed and functionality but also ensures adaptability and upgradability, supporting the integration of additional statistics as research evolves. Currently, $ler$ is an important tool in generating simulated gravitational wave (GW) events—both lensed and unlensed—and provides astrophysically accurate distributions of event-related parameters for both detectable and non-detectable events. This functionality aids in event validation and enhances the forecasting of detection capabilities across various GW detectors to study such events. The architecture of the $ler$ API facilitates seamless compatibility with other software packages, allowing researchers to integrate and utilize its functionalities based on specific scientific requirements.
 
-<!-- $ler$ is a statistical-based Python package whose core function is designed for the computation of detectable rates pertaining to both lensed and unlensed gravitational wave (GW) events. The holistic functionality of the package is built upon leveraging array operations and linear algebra from the *numpy* library, complemented by interpolation methods from *scipy* and Python’s native *multiprocessing* capabilities. The software's efficiency is notably enhanced by the *numba* library's Just-In-Time (*njit*, n: no-python mode) compilation, which dynamically converts Python and NumPy code into machine code, thereby optimizing performance in numerical computations involving extensive loops and array operations. Predominantly, $ler$ employs the inverse transform sampling method, utilizing interpolated inverse cumulative distribution functions (CDFs). This approach eschews the need for rejection sampling, which often requires numerous loops and the handling of relatively tedious probability density functions (PDFs) of the sampled parameters. The overall design of the package optimizes both speed and functionality while upholding user-friendliness. The ler software has been developed to cater to the requirements of both the LIGO-Virgo-KAGRA Scientific Collaboration and research scholars engaged in astrophysics studies. It is currently used in generating detectable lensing events and GW lensing rates with the available information on current and future detectors. The results will predict the capacity of various detectors to detect and study such lensing events. Statistics generated from $ler$ will be used in event validation for the ongoing effort to detect lensed GWs. Lastly, $ler$ was designed with upgradability in mind to include additional statistics as required by the related research. -->
-
 ### Design and Structure
 
 The architecture of the $ler$ API is deliberately organized such that each distinct functionality holds its own significance in scientific research. Simultaneously, these functionalities seamlessly integrate and can be employed collectively based on specific research requirements. Key features of $ler$ and its dependencies can be summarized as follows:
@@ -95,24 +93,28 @@ The architecture of the $ler$ API is deliberately organized such that each disti
 
 $\textbf{Detectable Unlensed rates:}$
 
+$$
 \begin{equation*}
 \begin{split}
 R_U = \int & dz_s \frac{dV_c}{dz_s}\frac{R_m(z_s)}{1+z_s}\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\}
 \end{split}
 \end{equation*}
+$$
 
-* $z_s$: GW source redshift, $\frac{dV_c}{dz_s}$: Differential co-moving volume, $\frac{1}{1+z_s}$: Time dilation correction factor, $R_m(z_s)$: source frame merger rate density, $\theta$: GW source parameters, $P$: probability distribution, $\rho$: SNR, $\rho_{th}$: SNR threshold, $\Theta$: Heaviside function to select detectable events.
+$z_s$: GW source redshift, $\frac{dV_c}{dz_s}$: Differential co-moving volume, $\frac{1}{1+z_s}$: Time dilation correction factor, $R_m(z_s)$: source frame merger rate density, $\theta$: GW source parameters, $P$: probability distribution, $\rho$: SNR, $\rho_{th}$: SNR threshold, $\Theta$: Heaviside function to select detectable GW events.
 
 $\textbf{Detectable Lensed rates:}$
 
+$$
 \begin{equation*}
 \begin{split}
-R_L = \int & dz_s \frac{dV_c}{dz_s}\tau(z_s)\frac{R_m^L(z_s)}{1+z_s} \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \, \\ 
+R_L = \int & dz_s \frac{dV_c}{dz_s}\tau(z_s)\frac{R_m(z_s)}{1+z_s} \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \, \\ 
 & \, P(\theta) P(\theta_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta d\theta_L dz_s 
 \end{split}
 \end{equation*}
+$$
 
-* $\tau(z_s)$: Optical-depth of strong lensing, $\theta_L$: lens parameters, $\beta$: image properties, $\mu$: image magnification, $\Delta t$: image time delay, $\mathcal{O}$: logical OR operator applied across all $\Theta_i$ of the images, $\text{SL}$: strong lensing condition.
+$\tau(z_s)$: Optical-depth of strong lensing, $\theta_L$: lens parameters, $\beta$: source position, $\mu$: image magnification, $\Delta t$: image time delay, $\mathcal{O}$: operator to select dectectable lensed GW events, $i$: index of images, $\text{SL}$: strong lensing condition.
 
 # Acknowledgements
 
