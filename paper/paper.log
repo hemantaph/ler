@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.5.16)  20 JUN 2024 07:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.5.16)  20 JUN 2024 16:35
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -832,7 +832,7 @@ Package biblatex Warning: Load 'inputenc' before biblatex.
 
 \@quotelevel=\count454
 \@quotereset=\count455
-No file paper.aux.
+(./paper.aux)
 \openout1 = `paper.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 315.
@@ -853,7 +853,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 315.
 LaTeX Font Info:    ... okay on input line 315.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 315.
 LaTeX Font Info:    ... okay on input line 315.
-(/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+ (/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count456
 \scratchdimen=\dimen287
@@ -971,7 +971,7 @@ File: ts1cmss.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 <logo.png, id=16, 156.585pt x 59.9841pt>
 File: logo.png Graphic file (type png)
 <use logo.png>
-Package pdftex.def Info: logo.png  used on input line 427.
+Package pdftex.def Info: logo.png  used on input line 428.
 (pdftex.def)             Requested size: 156.4962pt x 59.95006pt.
 
 
@@ -986,7 +986,7 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 {/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc} <./logo.png>]
 File: logo.png Graphic file (type png)
 <use logo.png>
-Package pdftex.def Info: logo.png  used on input line 519.
+Package pdftex.def Info: logo.png  used on input line 518.
 (pdftex.def)             Requested size: 156.4962pt x 59.95006pt.
 
 
@@ -997,9 +997,161 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95413pt}.
 
 [2]
-/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:576: Undefined control sequence.
-l.576 \bibitem[\citeproctext
-                            ]{ref-Janquart2023}
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:533: LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.533 \begin{equation*}
+                       
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:537: Missing \endgroup inserted.
+<inserted text> 
+                \endgroup 
+l.537 \end{equation*}
+                     
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:538: LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.538 \]
+        
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:538: LaTeX Error: \begin{document} ended by \end{equation*}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.538 \]
+        
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:538: Missing $ inserted.
+<inserted text> 
+                $
+l.538 \]
+        
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:538: Display math should end with $$.
+<to be read again> 
+                   \endgroup 
+l.538 \]
+        
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:538: Extra \endgroup.
+<recently read> \endgroup 
+                          
+l.538 \]
+        
+Things are pretty mixed up, but I think the worst is over.
+
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:550: LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.550 \begin{equation*}
+                       
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:555: Missing \endgroup inserted.
+<inserted text> 
+                \endgroup 
+l.555 \end{equation*}
+                     
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:556: LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.556 \]
+        
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:556: LaTeX Error: \begin{document} ended by \end{equation*}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.556 \]
+        
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:556: Missing $ inserted.
+<inserted text> 
+                $
+l.556 \]
+        
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:556: Display math should end with $$.
+<to be read again> 
+                   \endgroup 
+l.556 \]
+        
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:556: Extra \endgroup.
+<recently read> \endgroup 
+                          
+l.556 \]
+        
+Things are pretty mixed up, but I think the worst is over.
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:586: Undefined control sequence.
+l.586 \bibitem[\citeproctext
+                            ]{ref-astropy}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
@@ -1007,54 +1159,26 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:583: LaTeX Error: Lonely \item--perhaps a missing list environment.
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:591: LaTeX Error: Lonely \item--perhaps a missing list environment.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.583 \bibitem[\citeproctext]{ref-Wempe2022}
-                                            
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Underfull \hbox (badness 10000) detected at line 583
-[][]
- []
-
-/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:583: Undefined control sequence.
-<write> ...\bibcite {ref-Wempe2022}{\citeproctext 
-                                                  }
-l.583 \bibitem[\citeproctext]{ref-Wempe2022}
-                                            
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:590: LaTeX Error: Lonely \item--perhaps a missing list environment.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.590 \bibitem[\citeproctext]{ref-Wierda2021}
+l.591 \bibitem[\citeproctext]{ref-Birrer2021}
                                              
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-Underfull \hbox (badness 10000) detected at line 590
+Underfull \hbox (badness 10000) detected at line 591
 [][]
  []
 
-/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:590: Undefined control sequence.
-<write> ...bibcite {ref-Wierda2021}{\citeproctext 
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:591: Undefined control sequence.
+<write> ...bibcite {ref-Birrer2021}{\citeproctext 
                                                   }
-l.590 \bibitem[\citeproctext]{ref-Wierda2021}
+l.591 \bibitem[\citeproctext]{ref-Birrer2021}
                                              
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1064,7 +1188,7 @@ and I'll forget about whatever was undefined.
 
 File: logo.png Graphic file (type png)
 <use logo.png>
-Package pdftex.def Info: logo.png  used on input line 596.
+Package pdftex.def Info: logo.png  used on input line 598.
 (pdftex.def)             Requested size: 156.4962pt x 59.95006pt.
 
 Package fancyhdr Warning: \headheight is too small (62.59596pt): 
@@ -1074,11 +1198,206 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95413pt}.
 
 [3]
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:598: LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.598 \bibitem[\citeproctext]{ref-gwcosmo}
+                                          
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) detected at line 598
+[][]
+ []
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:598: Undefined control sequence.
+<write> ...g \bibcite {ref-gwcosmo}{\citeproctext 
+                                                  }
+l.598 \bibitem[\citeproctext]{ref-gwcosmo}
+                                          
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:603: LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.603 \bibitem[\citeproctext]{ref-Janquart2023}
+                                               
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) detected at line 603
+[][]
+ []
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:603: Undefined control sequence.
+<write> ...bcite {ref-Janquart2023}{\citeproctext 
+                                                  }
+l.603 \bibitem[\citeproctext]{ref-Janquart2023}
+                                               
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:610: LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.610 \bibitem[\citeproctext]{ref-numba}
+                                        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) detected at line 610
+[][]
+ []
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:610: Undefined control sequence.
+<write> ...ing \bibcite {ref-numba}{\citeproctext 
+                                                  }
+l.610 \bibitem[\citeproctext]{ref-numba}
+                                        
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:615: LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.615 \bibitem[\citeproctext]{ref-numpy}
+                                        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) detected at line 615
+[][]
+ []
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:615: Undefined control sequence.
+<write> ...ing \bibcite {ref-numpy}{\citeproctext 
+                                                  }
+l.615 \bibitem[\citeproctext]{ref-numpy}
+                                        
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:620: LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.620 \bibitem[\citeproctext]{ref-scipy}
+                                        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) detected at line 620
+[][]
+ []
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:620: Undefined control sequence.
+<write> ...ing \bibcite {ref-scipy}{\citeproctext 
+                                                  }
+l.620 \bibitem[\citeproctext]{ref-scipy}
+                                        
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:626: LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.626 \bibitem[\citeproctext]{ref-Wempe2022}
+                                            
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) detected at line 626
+[][]
+ []
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:626: Undefined control sequence.
+<write> ...\bibcite {ref-Wempe2022}{\citeproctext 
+                                                  }
+l.626 \bibitem[\citeproctext]{ref-Wempe2022}
+                                            
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:633: LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.633 \bibitem[\citeproctext]{ref-Wierda2021}
+                                             
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) detected at line 633
+[][]
+ []
+
+/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex:633: Undefined control sequence.
+<write> ...bibcite {ref-Wierda2021}{\citeproctext 
+                                                  }
+l.633 \bibitem[\citeproctext]{ref-Wierda2021}
+                                             
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
 File: logo.png Graphic file (type png)
 <use logo.png>
-Package pdftex.def Info: logo.png  used on input line 599.
+Package pdftex.def Info: logo.png  used on input line 642.
 (pdftex.def)             Requested size: 156.4962pt x 59.95006pt.
-
 
 Package fancyhdr Warning: \headheight is too small (62.59596pt): 
 (fancyhdr)                Make it at least 63.5501pt, for example:
@@ -1116,18 +1435,18 @@ Package logreq Info: Writing requests to 'paper.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 34525 strings out of 474116
- 659910 string characters out of 5743682
+ 34544 strings out of 474116
+ 660134 string characters out of 5743682
  1952187 words of memory out of 5000000
- 56203 multiletter control sequences out of 15000+600000
- 588076 words of font info for 181 fonts, out of 8000000 for 9000
+ 56210 multiletter control sequences out of 15000+600000
+ 588600 words of font info for 186 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,17n,87p,1251b,859s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfsi0800.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfsi1000.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfss0800.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfss0900.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfss1000.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfss1728.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfsx0900.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfsx1000.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfsx1200.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfsx1440.pfb>
-Output written on paper.pdf (4 pages, 342346 bytes).
+Output written on paper.pdf (4 pages, 351879 bytes).
 PDF statistics:
- 161 PDF objects out of 1000 (max. 8388607)
- 111 compressed objects within 2 object streams
+ 167 PDF objects out of 1000 (max. 8388607)
+ 117 compressed objects within 2 object streams
  11 named destinations out of 1000 (max. 500000)
  55314 words of extra memory for PDF output out of 61914 (max. 10000000)
 
