@@ -303,9 +303,6 @@ INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/grffile/grffile.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/parskip/parskip.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/parskip/parskip.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/parskip/parskip.sty
-INPUT ./paper.aux
-INPUT ./paper.aux
-INPUT paper.aux
 OUTPUT paper.aux
 INPUT /usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 INPUT /usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
