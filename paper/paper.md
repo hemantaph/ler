@@ -89,26 +89,26 @@ The architecture of the $ler$ API is deliberately organized such that each disti
 
 $\textbf{Detectable Unlensed rates:}$
 
-$$
+<!-- $$ -->
 \begin{equation*}
 \begin{split}
 R_U = \int & dz_s \frac{dV_c}{dz_s}\frac{R_m(z_s)}{1+z_s}\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\}
 \end{split}
 \end{equation*}
-$$
+<!-- $$ -->
 
 $z_s$: GW source redshift, $\frac{dV_c}{dz_s}$: Differential co-moving volume, $\frac{1}{1+z_s}$: Time dilation correction factor, $R_m(z_s)$: source frame merger rate density, $\theta$: GW source parameters, $P$: probability distribution, $\rho$: SNR, $\rho_{th}$: SNR threshold, $\Theta$: Heaviside function to select detectable GW events.
 
 $\textbf{Detectable Lensed rates:}$
 
-$$
+<!-- $$ -->
 \begin{equation*}
 \begin{split}
 R_L = \int & dz_s \frac{dV_c}{dz_s}\tau(z_s)\frac{R_m(z_s)}{1+z_s} \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \, \\ 
 & \, P(\theta) P(\theta_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta d\theta_L dz_s 
 \end{split}
 \end{equation*}
-$$
+<!-- $$ -->
 
 $\tau(z_s)$: Optical-depth of strong lensing, $\theta_L$: lens parameters, $\beta$: source position, $\mu$: image magnification, $\Delta t$: image time delay, $\mathcal{O}$: operator to select dectectable lensed GW events, $i$: index of images of a lensed event, $\text{SL}$: strong lensing condition.
 
