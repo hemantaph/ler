@@ -221,16 +221,18 @@ class CBCSourceRedshiftDistribution(object):
             if self.event_type == "BBH":
                 R0 = 23.9 * 1e-9
             elif self.event_type == "BNS":
-                R0 = 150.5 * 1e-9
+                R0 = 105.5 * 1e-9
             elif self.event_type == "NSBH":
                 R0 = 45.0 * 1e-9
             else:
                 raise ValueError("event_type must be one of 'BBH', 'BNS', 'NSBH'")
-            self.merger_rate_density_param = dict(R0=R0, b2=1.6, b3=2.0, b4=30)
+            merger_rate_density_param = dict(R0=R0, b2=1.6, b3=2.0, b4=30)
+        self.merger_rate_density_param = merger_rate_density_param
+
 
         # To find the normalization constant of the pdf p(z)
         # merger_rate_density_src_frame is njit function and takes array as input but quad integrand function takes only float as input
-        merger_rate_density_src_frame = lambda z: self.merger_rate_density_src_frame(np.array([z]))[0]
+        merger_rate_density_src_frame = lambda z: self.merger_rate_density_src_frame(zs=np.array([z]), param=merger_rate_density_param)[0]
         # this normalization is important to find the correct pdf p(z)
         self.normalization_pdf_z = quad(
             merger_rate_density_src_frame,
@@ -380,6 +382,7 @@ class CBCSourceRedshiftDistribution(object):
             b3 = param["b3"]
             b4 = param["b4"]
 
+        #print(f"\nR0: {R0}\n")
         return merger_rate_density_bbh_popI_II_oguri2018(zs=zs, R0=R0, b2=b2, b3=b3, b4=b4)
     
     def star_formation_rate_madau_dickinson2014(self,
@@ -647,7 +650,7 @@ class CBCSourceRedshiftDistribution(object):
     
     @merger_rate_density.setter
     def merger_rate_density(self, merger_rate_density):
-        error_msg = ValueError(f"merger_rate_density must be one of {self.merger_rate_density_model_list}")
+        # error_msg = ValueError(f"merger_rate_density must be one of {self.merger_rate_density_model_list}")
         # check if it is a string
         if isinstance(merger_rate_density, str):
             try:
