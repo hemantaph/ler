@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber paper"] 1718833483.94834 "paper.bcf" "paper.bbl" "paper" 1718872682.08575 0
-  "paper.bcf" 1718872681.95628 107333 ebb3e9f2ae6bd06749ef69515635fe01 "pdflatex"
+["biber paper"] 1718833483.94834 "paper.bcf" "paper.bbl" "paper" 1718874377.62482 0
+  "paper.bcf" 1718874377.49783 107333 ebb3e9f2ae6bd06749ef69515635fe01 "pdflatex"
   (generated)
   "paper.bbl"
   "paper.blg"
   (rewritten before read)
-["pdflatex"] 1718872680.92401 "/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex" "paper.pdf" "paper" 1718872682.08604 2
-  "/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex" 1718872679.47953 25685 40602841475c0c280dec362c5414eb5c ""
+["pdflatex"] 1718874376.47604 "/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex" "paper.pdf" "paper" 1718874377.62515 2
+  "/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex" 1718874374.92093 25702 f7cf01803495ec2855eac247385e1c0d ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -236,10 +236,10 @@
   "/usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1715845637 8221425 d4734104d186f620d2226e1a82ba8fbd ""
   "/usr/local/texlive/2024/texmf.cnf" 1710266656 577 e590dabc9e28c5b61546e15f63eebcdf ""
   "logo.png" 1718832985.94417 98285 362704720fe7d823a3fcebfbb7af335e ""
-  "paper.aux" 1718872681.95497 1465 81729b889d930fdb535b79293d15f487 "pdflatex"
+  "paper.aux" 1718874377.49639 1465 df10509ee91e5acf6d4ae66676f1d2ea "pdflatex"
   "paper.bbl" 1718833508.14539 466 ee04f40f768daeed26442158e95aba61 "biber paper"
-  "paper.out" 1718872681.95548 671 90dc5f8c230b92c05b76aea2e5771e65 "pdflatex"
-  "paper.tex" 1718872679.47953 25685 40602841475c0c280dec362c5414eb5c ""
+  "paper.out" 1718874377.49706 671 90dc5f8c230b92c05b76aea2e5771e65 "pdflatex"
+  "paper.tex" 1718874374.92093 25702 f7cf01803495ec2855eac247385e1c0d ""
   (generated)
   "paper.aux"
   "paper.bcf"

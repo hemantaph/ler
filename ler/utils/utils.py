@@ -187,16 +187,24 @@ def rejection_sample(pdf, xmin, xmax, size=100, chunk_size=10000):
     """
     x = np.linspace(xmin, xmax, chunk_size)
     y = pdf(x)
+    # Maximum value of the pdf
     ymax = np.max(y)
+
     # Rejection sample in chunks
     x_sample = []
     while len(x_sample) < size:
         x_try = np.random.uniform(xmin, xmax, size=chunk_size)
         pdf_x_try = pdf(x_try) # Calculate the pdf at the random x values
+        # this is for comparing with the pdf value at x_try, will be used to accept or reject the sample
         y_try = np.random.uniform(0, ymax, size=chunk_size)
-        ymax = max(ymax, np.max(pdf_x_try))  # Update the maximum value of the pdf
+        
+        # Update the maximum value of the pdf
+        ymax = max(ymax, np.max(pdf_x_try))  
+        
+        # applying condition to accept the sample
         # Add while retaining 1D shape of the list
         x_sample += list(x_try[y_try < pdf_x_try])
+
     # Transform the samples to a 1D numpy array
     x_sample = np.array(x_sample).flatten()
     # Return the correct number of samples
@@ -234,6 +242,7 @@ def rejection_sample2d(pdf, xmin, xmax, ymin, ymax, size=100, chunk_size=10000):
     x = np.random.uniform(xmin, xmax, chunk_size)
     y = np.random.uniform(ymin, ymax, chunk_size)
     z = pdf(x, y)
+    # Maximum value of the pdf
     zmax = np.max(z)
 
     # Rejection sample in chunks
@@ -242,12 +251,15 @@ def rejection_sample2d(pdf, xmin, xmax, ymin, ymax, size=100, chunk_size=10000):
     while len(x_sample) < size:
         x_try = np.random.uniform(xmin, xmax, size=chunk_size)
         y_try = np.random.uniform(ymin, ymax, size=chunk_size)
-
+        pdf_xy_try = pdf(x_try, y_try)
+        # this is for comparing with the pdf value at x_try, will be used to accept or reject the sample
         z_try = np.random.uniform(0, zmax, size=chunk_size)
-        zmax = max(zmax, np.max(z_try))
+        
+        # Update the maximum value of the pdf
+        zmax = max(zmax, np.max(pdf_xy_try))
 
-        x_sample += list(x_try[z_try < pdf(x_try, y_try)])
-        y_sample += list(y_try[z_try < pdf(x_try, y_try)])
+        x_sample += list(x_try[z_try < pdf_xy_try])
+        y_sample += list(y_try[z_try < pdf_xy_try])
 
     # Transform the samples to a 1D numpy array
     x_sample = np.array(x_sample).flatten()

@@ -128,10 +128,10 @@
 \fancyhead[R]{}
 \renewcommand{\footrulewidth}{0.25pt}
 
-\fancyfoot[L]{\parbox[t]{0.98\headwidth}{\footnotesize{\sffamily D. Keitel, R. Tenorio, G. Ashton, R. Prix, (2021). \(ler\)
+\fancyfoot[L]{\parbox[t]{0.98\headwidth}{\footnotesize{\sffamily Phurailatpam Hemantakumar, Anupreeta More, Harsh Narola, Ng Chung Yin (Leo), Justin Janquart, Chris Van Den Broeck, Otto Akseli HANNUKSELA, Neha Singh, and David Keitel, (2024). \(ler\)
 : LVK (LIGO-Virgo-KAGRA collaboration) Event (compact-binary mergers)
 Rate calculator and
-simulator. \textit{Journal of Open Source Software}, 6(60), 3000. \url{https://doi.org/10.21105/joss.03000}}}}
+simulator. \textit{Journal of Open Source Software}, (), . \url{https://doi.org/10.xxxxxx/draft}}}}
 
 
 \fancyfoot[R]{\sffamily \thepage}
@@ -321,16 +321,16 @@ Spain}
   %\hrule
   \sffamily\small
 
-  {\bfseries DOI:} \href{https://doi.org/10.21105/joss.03000}{\color{linky}{10.21105/joss.03000}}
+  {\bfseries DOI:} \href{https://doi.org/10.xxxxxx/draft}{\color{linky}{10.xxxxxx/draft}}
 
   \vspace{2mm}
 
   {\bfseries Software}
   \begin{itemize}
     \setlength\itemsep{0em}
-    \item \href{https://github.com/openjournals/joss-reviews/issues/3000}{\color{linky}{Review}} \ExternalLink
-    \item \href{https://github.com/pyfstat/pyfstat}{\color{linky}{Repository}} \ExternalLink
-    \item \href{https://doi.org/10.5281/zenodo.4660591}{\color{linky}{Archive}} \ExternalLink
+    \item \href{}{\color{linky}{Review}} \ExternalLink
+    \item \href{https://github.com/hemantaph/ler}{\color{linky}{Repository}} \ExternalLink
+    \item \href{https://zenodo.org/badge/latestdoi/626733473}{\color{linky}{Archive}} \ExternalLink
   \end{itemize}
 
   \vspace{2mm}
@@ -339,18 +339,18 @@ Spain}
 
   \vspace{2mm}
 
-  {\bfseries Editor:} \href{https://danielskatz.org/}{Daniel S. Katz} \ExternalLink \\
+  {\bfseries Editor:} \href{}{Pending Editor} \ExternalLink \\
   \vspace{1mm}
     {\bfseries Reviewers:}
   \begin{itemize}
   \setlength\itemsep{0em}
-    \item \href{https://github.com/khanx169}{@khanx169}
-    \item \href{https://github.com/RobertRosca}{@RobertRosca}
+    \item \href{https://github.com/@Pending Reviewer}{@@Pending Reviewer}
+    \item \href{https://github.com/}{@}
     \end{itemize}
     \vspace{2mm}
 
-  {\bfseries Submitted:} 26 January 2021\\
-  {\bfseries Published:} 06 April 2021
+  {\bfseries Submitted:} 19 June 2024\\
+  {\bfseries Published:} 19 June 2024
 
   \vspace{2mm}
   {\bfseries License}\\
@@ -507,8 +507,8 @@ summarized as follows:
     \((\rho_{th})\).
   \item
     SNR calculations are optimized using
-    \href{https://github.com/hemantaph/gwsnr}{\emph{gwsnr}}, leveraging
-    interpolation and multiprocessing for accuracy and speed.
+    \href{https://gwsnr.readthedocs.io/en/latest/}{\emph{gwsnr}},
+    leveraging interpolation and multiprocessing for accuracy and speed.
   \item
     Simulated events and rate results, along with input configurations,
     are systematically archived for easy access and future analysis.
@@ -529,13 +529,11 @@ summarized as follows:
 
 \(\textbf{Detectable Unlensed rates:}\)
 
-\[
 \begin{equation*}
 \begin{split}
 R_U = \int & dz_s \frac{dV_c}{dz_s}\frac{R_m(z_s)}{1+z_s}\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\}
 \end{split}
 \end{equation*}
-\]
 
 \(z_s\): GW source redshift, \(\frac{dV_c}{dz_s}\): Differential
 co-moving volume, \(\frac{1}{1+z_s}\): Time dilation correction factor,
@@ -546,14 +544,12 @@ detectable GW events.
 
 \(\textbf{Detectable Lensed rates:}\)
 
-\[
 \begin{equation*}
 \begin{split}
 R_L = \int & dz_s \frac{dV_c}{dz_s}\tau(z_s)\frac{R_m(z_s)}{1+z_s} \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \, \\ 
 & \, P(\theta) P(\theta_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta d\theta_L dz_s 
 \end{split}
 \end{equation*}
-\]
 
 \(\tau(z_s)\): Optical-depth of strong lensing, \(\theta_L\): lens
 parameters, \(\beta\): source position, \(\mu\): image magnification,

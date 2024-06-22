@@ -19,9 +19,9 @@ JOURNALNAME="Journal of Open Source Software"
 PUBLISHED="19 June 2024"
 SUBMITTED="19 June 2024"
 PAPERURL=""
-EDITOR=""
+EDITOR="Pending Editor"
 EDITORURL=""
-REVIEWER1=""
+REVIEWER1="@Pending Reviewer"
 REVIEWER2=""
 
 # get JOSS template and logo
