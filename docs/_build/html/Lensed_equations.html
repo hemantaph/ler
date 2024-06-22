@@ -10,6 +10,7 @@
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="_static/nbsphinx-code-cells.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -62,10 +63,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Lensed event sampling (Analytical formulation)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Initial-setup">Initial setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Optical-depth">Optical depth</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Strong-lensing-probability-(where-does-it-come-from?)">Strong lensing probability (where does it come from?)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Taking-care-of-normalization">Taking care of normalization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Optical-depth-in-rate-equation">Optical depth in rate equation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#General-formulation-of-optical-depth-expression">General formulation of optical depth expression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#General-formulation">General formulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Optical-depth-for-Singular-isothermal-sphere-SIS-lens">Optical depth for Singular isothermal sphere SIS lens</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Optical-depth-for-SIS-lens">Optical depth for SIS lens</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Optical-depth-for-SIE-lens">Optical depth for SIE lens</a></li>
 </ul>
@@ -136,93 +135,159 @@
 <li><p>Source parameters: <span class="math notranslate nohighlight">\(\theta \in \{\)</span> <span class="math notranslate nohighlight">\(m_1\)</span> (mass of the heavier one), <span class="math notranslate nohighlight">\(m_2\)</span> (mass of the lighter one), <span class="math notranslate nohighlight">\(\iota\)</span> (inclination-angle), <span class="math notranslate nohighlight">\(\phi\)</span> (phase-of-coalescence), <span class="math notranslate nohighlight">\(\psi\)</span> (polarization-angle), <span class="math notranslate nohighlight">\(ra\)</span> (right-ascension), <span class="math notranslate nohighlight">\(dec\)</span> (declination) <span class="math notranslate nohighlight">\(\}\)</span> and <span class="math notranslate nohighlight">\(z_s\)</span> : red-shift of the source.</p></li>
 <li><p>Lens parameters: <span class="math notranslate nohighlight">\(\theta_L \in \{\)</span> <span class="math notranslate nohighlight">\(\sigma\)</span> (velocity-dispersion), <span class="math notranslate nohighlight">\(q\)</span> (axis-ratio), <span class="math notranslate nohighlight">\(\psi\)</span> (axis-rotation), <span class="math notranslate nohighlight">\(\gamma\)</span> (spectral-index), <span class="math notranslate nohighlight">\([\gamma_1,\gamma_2]\)</span> (external-shear), <span class="math notranslate nohighlight">\([e_1,e_2]\)</span> (ellipticity), <span class="math notranslate nohighlight">\(\beta\)</span> (source position) <span class="math notranslate nohighlight">\(\}\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(z_L\)</span> : red-shift of the galaxy lens</p></li>
-<li><p>image param: <span class="math notranslate nohighlight">\(\{\)</span> <span class="math notranslate nohighlight">\(\mu_i\)</span> (magnification), <span class="math notranslate nohighlight">\(dt_i\)</span> (time-delay), <span class="math notranslate nohighlight">\(n_i\)</span> (morse-phase) <span class="math notranslate nohighlight">\(\}\)</span>. There is subscript <span class="math notranslate nohighlight">\(i\)</span> because there can be multiple images.</p></li>
+<li><p>image properties: <span class="math notranslate nohighlight">\(\{\)</span> <span class="math notranslate nohighlight">\(\mu_i\)</span> (magnification), <span class="math notranslate nohighlight">\(dt_i\)</span> (time-delay), <span class="math notranslate nohighlight">\(n_i\)</span> (morse-phase) <span class="math notranslate nohighlight">\(\}\)</span>. There is subscript <span class="math notranslate nohighlight">\(i\)</span> because there can be multiple images.</p></li>
+<li><p><span class="math notranslate nohighlight">\(SL\)</span>: Strong lensing condition. It means the original gravitational wave signal is lensed and split into multiple images <span class="math notranslate nohighlight">\((\geq 2)\)</span>.</p></li>
 </ul>
-<p>Given <span class="math notranslate nohighlight">\(d N^L_{obs}(z_s)\)</span> is the number of lensed GW detectable events from sources at red-shift <span class="math notranslate nohighlight">\(z_s\)</span> in a spherical shell of thickness <span class="math notranslate nohighlight">\(d z_s\)</span>, then, let rate of lensing (number of lensed events happening per unit time) is given by,</p>
-<p><span class="math">\begin{equation}
+<p>Given <span class="math notranslate nohighlight">\(d N^L_{obs}(z_s)\)</span> is the number of lensed GW detectable events from sources at red-shift <span class="math notranslate nohighlight">\(z_s\)</span> in a spherical shell of thickness <span class="math notranslate nohighlight">\(d z_s\)</span>, then, the rate observing lensed GW events is given by,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
 \begin{split}
-\mathcal{R}_L &= \int_{z_{min}}^{z_{max}} \frac{d N^L_{obs}(z_s)}{d \tau} \\
-&= \int_{z_{min}}^{z_{max}} \frac{d N^L_{obs}(z_s)}{d \tau\;dV_c} \frac{dV_c}{dz_s} dz_s
+\mathcal{R}_L &amp;= \int_{z_{min}}^{z_{max}} \frac{d N^L_{obs}(z_s)}{d t} \\
+&amp;= \int_{z_{min}}^{z_{max}} \frac{d^2 N^L_{obs}(z_s)}{d t \;d\mathcal{V}_c}  \frac{d\mathcal{V}_c}{d\Omega dz_s} d\Omega dz_s \\
+&amp;= \int_{z_{min}}^{z_{max}} \frac{d^2 N^L_{obs}(z_s)}{\left(d t/(1+z_s)\right) \;d\mathcal{V}_c}\frac{1}{(1+z_s)}\frac{d\mathcal{V}_c}{d\Omega dz_s} d\Omega dz_s \\
+&amp;= \int_{z_{min}}^{z_{max}} \frac{d^2 N^L_{obs}(z_s)}{d\tau \;d\mathcal{V}_c}\frac{1}{(1+z_s)} \frac{d\mathcal{V}_c}{d\Omega dz_s} d\Omega dz_s \\
+&amp;= \int_{z_{min}}^{z_{max}} \frac{d^2 N^L_{obs}(z_s)}{d\tau \;d\mathcal{V}_c}\frac{1}{(1+z_s)} \frac{d\mathcal{V}_c}{d\Omega dz_s} \Bigg\{ \int_{all\; sky} d\Omega \Bigg\}dz_s \\
+&amp;= \int_{z_{min}}^{z_{max}} \frac{d^2 N^L_{obs}(z_s)}{d\tau \;d\mathcal{V}_c}\frac{1}{(1+z_s)} \Bigg(\frac{d\mathcal{V}_c}{d\Omega dz_s} 4\pi \Bigg)dz_s \\
+&amp;= \int_{z_{min}}^{z_{max}} \frac{d^2 N^L_{obs}(z_s)}{d\tau \;d\mathcal{V}_c}\frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
 \end{split} \tag{1}
-\end{equation}</span></p>
-<p><span class="math notranslate nohighlight">\(\frac{d N^L_{obs}(z_s)}{d \tau \;dV_c}\)</span> is the observed merger rate density at source-frame, and <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}\)</span> is the differential co-moving volume at red-shift <span class="math notranslate nohighlight">\(z_s\)</span>. After taking care of time-dilation, the expression looks,</p>
-<p><span class="math">\begin{equation}
+\end{equation}\end{split}\]</div>
+<p>Note: Reader should not confuse between lensed events and lensed images. Each lensed event can have multiple lensed images. These images can be detected as seperate GW signals. In case of un-lensed events, there is only one GW signal for each event.</p>
+<p>Note that if <span class="math notranslate nohighlight">\(d\tau=dt/(1+z_s)\)</span> is considered the proper time and it can be converted from the time at detector frame <span class="math notranslate nohighlight">\(dt\)</span> using the time-dilation factor <span class="math notranslate nohighlight">\((1+z_s)\)</span>. Consequently, <span class="math notranslate nohighlight">\(\frac{d^2 N^L_{obs}(z_s)}{d t \;d\mathcal{V}_c}\)</span> and <span class="math notranslate nohighlight">\(\frac{d^2 N^L_{obs}(z_s)}{d \tau \;d\mathcal{V}_c}\)</span> are the observed merger rate density at detector-frame and source-frame respectively. We want to use the <span class="math notranslate nohighlight">\(R^L_{obs}(z_s)=\frac{d^2 N^L_{obs}(z_s)}{d \tau \;d\mathcal{V}_c}\)</span> for
+our analysis as most observational papers and the output of theoretical predictions are in the source-frame. <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}dz_s\)</span> is considered a spherical-shell volume element in co-moving coordinates at red-shift <span class="math notranslate nohighlight">\(z_s\)</span>. So, the rate expression simplifies to integrating (density) <span class="math notranslate nohighlight">\(\times\)</span> (time dilation effect) over the shell volume element. For more information on the volume element refer to this <a href="#id1"><span class="problematic" id="id2">`page &lt;&gt;`__</span></a> of the documentation.</p>
+<p>Note: <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}\)</span> is the differential co-moving volume at red-shift <span class="math notranslate nohighlight">\(z_s\)</span> and you can get the value by using <code class="docutils literal notranslate"><span class="pre">astropy</span></code> cosmology package for a given cosmology.</p>
+<p>Now we have,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
 \begin{split}
-\mathcal{R}_L &= \int_{z_{min}}^{z_{max}} \frac{d N^L_{obs}(z_s)}{d t\;dV_c} \frac{1}{1+z_s} \frac{dV_c}{dz_s} dz_s \\
-&= \int_{z_{min}}^{z_{max}} R^L_{obs}(z_s) dz_s
+\mathcal{R}_L &amp;= \int_{z_{min}}^{z_{max}} \frac{d^2 N^L_{obs}(z_s)}{d \tau\;d\mathcal{V}_c} \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
+&amp;= \int_{z_{min}}^{z_{max}} R^L_{obs}(z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s
 \end{split} \tag{2}
-\end{equation}</span></p>
-<p>Observed merger rate density of lensed GW events at source red-shift <span class="math notranslate nohighlight">\(z_s\)</span> (detector-frame) is given by <span class="math notranslate nohighlight">\(R^L_{obs}(z_s) = \frac{d N^L_{obs}(z_s)}{d t\;dV_c}\)</span>. And, let <span class="math notranslate nohighlight">\(R(z_s)\)</span> be the rate of the merger of unlensed events (source frame) at <span class="math notranslate nohighlight">\(z_s\)</span>, regardless of whether it is detectable or not.</p>
-<p><span class="math">\begin{equation}
+\end{equation}\end{split}\]</div>
+<p>We want to re-write it in terms intrinsic merger rate distribution <span class="math notranslate nohighlight">\(R(z_s)\)</span>. <span class="math notranslate nohighlight">\(R(z_s)\)</span> is the merger rate density distribution regardless of whether the source is detectable or not.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
 \begin{split}
-\mathcal{R}_L &= \int_{z_{min}}^{z_{max}} R^L_{obs}(z_s) dz_s \\
-&= \int_{z_{min}}^{z_{max}} R(z_s) P(obs,SL|z_s) dz_s
+\mathcal{R}_L &amp;= \int_{z_{min}}^{z_{max}} R^L_{obs}(z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
+&amp;= \int_{z_{min}}^{z_{max}} R(z_s) P(obs, SL|z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
+&amp;= \int_{z_{min}}^{z_{max}} R(z_s) P(obs|z_s, SL) P(SL|z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
 \end{split} \tag{3}
-\end{equation}</span></p>
-<p><span class="math notranslate nohighlight">\(P(obs,SL|z_s)\)</span> is the probability of observing a strong lensing event at red-shift <span class="math notranslate nohighlight">\(z_s\)</span>.</p>
+\end{equation}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+\mathcal{R}_L &amp;= \mathcal{N}^L \int_{z_{min}}^{z_{max}} P(z_s| SL) P(obs|z_s, SL) dz_s \\
+\end{split} \tag{4}
+\end{equation}\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(P(obs|z_s, SL)\)</span> is the probability of observing a lensed GW event given that the source is at red-shift <span class="math notranslate nohighlight">\(z_s\)</span> and the signal is strongly lensed. Here, it is considered marginalized over all the gravitational wave parameters <span class="math notranslate nohighlight">\(\theta\)</span> (without <span class="math notranslate nohighlight">\(z_s\)</span>), lens related parameters <span class="math notranslate nohighlight">\(\theta_L\)</span>, lens redshifts <span class="math notranslate nohighlight">\(z_L\)</span> and possible source positions <span class="math notranslate nohighlight">\(\beta\)</span>, i.e.,
+<span class="math notranslate nohighlight">\(P(obs|z_s,SL) = \int_{\theta, \theta_L, z_l, \beta} d\theta\, d\theta_L\, dz_l\, d\beta\, P(obs|z_s, \theta, \theta_L, z_l, \beta, SL)\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(P(SL|z_s)\)</span> is the probability of strong lensing given that the source is at red-shift <span class="math notranslate nohighlight">\(z_s\)</span>. It is also called the optical depth of strong lensing. It is discussed in detail in the next section.</p>
+<p>In Eqn(4) the merger rate density becomes the prior distribution <span class="math notranslate nohighlight">\(P(z_s|SL)\)</span> for the lensed source redshift, and it is normalized over the red-shift range. So the normalizing factor is given by,</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+\begin{split}
+\mathcal{N}^L = \int_{z_{min}}^{z_{max}} R(z_s) P(SL|z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s
+\end{split} \tag{5}
+\end{equation}\]</div>
+<p>Therefore,</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+\begin{split}
+P(z_s|SL) = \frac{R(z_s)}{\mathcal{N}^L} P(SL|z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s}
+\end{split} \tag{6}
+\end{equation}\]</div>
+<p>This is done because we want to sample the red-shift values from this prior distribution, which later will be used in the monte-carlo integration to estimate the rate.</p>
+<p>Below I have included the Bayesian way of arriving at <span class="math notranslate nohighlight">\(P(z_s|SL)\)</span> expression.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+P(z_s|SL) &amp;= \frac{P(SL|z_s) P(z_s)}{P(SL)} \\
+&amp;= \frac{P(SL|z_s) P(z_s)}{\int_{z_{min}}^{z_{max}} R(z_s) P(SL|z_s) P(z_s) dz_s} \\
+&amp;= \frac{P(SL|z_s) P(z_s)}{\mathcal{N}^L} \\
+&amp;= \frac{R(z_s)}{\mathcal{N}^L} P(SL|z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s}
+\end{split} \tag{7}
+\end{equation}\end{split}\]</div>
+<p>In the above expression, I have used the redshift prior <span class="math notranslate nohighlight">\(P(z_s)\)</span> of unlensed events as given in Eqn(6) of <a class="reference external" href="https://ler.readthedocs.io/en/latest/GW_equations.html#Gravitational-wave-events-sampling-(Analytical-formulation)">Analytical formulation of the un-lensed event sampling</a>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+\begin{split}
+P(z_s) = \frac{R(z_s)}{\mathcal{N}^U} \frac{1}{(1+z_s)} \frac{dV_c}{dz_s}
+\end{split} \tag{8}
+\end{equation}\]</div>
+<p>Let’s re-write the integrand in rate expression in Eqn(4) so that it also become dependent on lens parameter <span class="math notranslate nohighlight">\(\theta_L\)</span>, lens redshift <span class="math notranslate nohighlight">\(z_l\)</span>, source position <span class="math notranslate nohighlight">\(\beta\)</span>, and othet GW parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+\mathcal{R}_L &amp;= \mathcal{N}^L \int_{z_{min}}^{z_{max}} P(z_s| SL)\, P(obs|z_s, SL)\, dz_s \\
+&amp; \text{consider } \int \rightarrow \int_{z_s}\int_{z_l}\int_{\beta}\int_{\theta}\int_{\theta_L} \\
+&amp;= \mathcal{N}^L \int P(z_s| SL)\, P(obs|z_s, \theta, \theta_L, z_l, \beta, SL) \\
+&amp;\;\; P(\theta)\, P(\theta_L|z_s, SL)\, P(z_l|z_s)\, P(\beta|z_s,z_l, \theta_L, SL) dz_s d\theta d\theta_L dz_l d\beta \\
+\end{split} \tag{9}
+\end{equation}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+\mathcal{R}_L &amp;=  \mathcal{N}^L \int \frac{R(z_s)}{\mathcal{N}^L} P(SL|z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s}\, P(obs|z_s, \theta, \theta_L, z_l, \beta, SL) \\
+&amp;\;\; P(\theta)\, P(\theta_L|z_s, SL)\, P(z_l|z_s)\, P(\beta|z_s,z_l, \theta_L, SL) dz_s d\theta d\theta_L dz_l d\beta \\
+\end{split} \tag{10}
+\end{equation}\end{split}\]</div>
 </section>
 <section id="Optical-depth">
 <h2>Optical depth<a class="headerlink" href="#Optical-depth" title="Link to this heading"></a></h2>
-<section id="Strong-lensing-probability-(where-does-it-come-from?)">
-<h3>Strong lensing probability (where does it come from?)<a class="headerlink" href="#Strong-lensing-probability-(where-does-it-come-from?)" title="Link to this heading"></a></h3>
-<p><span class="math">\begin{equation}
+<p><strong>Strong lensing probability (where does it come from?)</strong></p>
+<section id="General-formulation">
+<h3>General formulation<a class="headerlink" href="#General-formulation" title="Link to this heading"></a></h3>
+<p>Optical depth <span class="math notranslate nohighlight">\(P(SL|z_s)\)</span> is defined as the probability of a source being strongly lensed. One can also think of it as cross-section of the lensing, i.e..</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
 \begin{split}
-\mathcal{R}_L &= \int_{z_{min}}^{z_{max}} R(z_s) P(obs|z_s, SL) P(SL|z_s) dz_s
-\end{split} \tag{4}
-\end{equation}</span></p>
-<p>Probability of observing an event given that it is located at redshift <span class="math notranslate nohighlight">\(z_s\)</span> and it’s strongly lensed: <span class="math notranslate nohighlight">\(P(obs|z_s, SL)\)</span>. Strong lensing probability with source at redshift <span class="math notranslate nohighlight">\(z_s\)</span> (optical depth): <span class="math notranslate nohighlight">\(P(SL|z_s)\)</span>. Now, using Bayes’ theorem,</p>
-<p><span class="math">\begin{equation}
-\begin{split}
-P(SL|z_s) &= \frac{P(z_s|SL) P(SL)}{P(z_s)} \\
-P(z_s) P(SL|z_s) &= P(z_s|SL) P(SL) \\
-\frac{R(z_s)}{N_1} P(SL|z_s) &= P(z_s|SL) P(SL) \\
-P(SL|z_s) &= P(z_s|SL) P(SL) \frac{N_1}{R(z_s)}
-\end{split} \tag{5}
-\end{equation}</span></p>
-<p>Normalizing factor: <span class="math notranslate nohighlight">\(N_1 = \int_{z_{min}}^{z_{max}} R(z_s) dz_s\)</span>.</p>
-</section>
-<section id="Taking-care-of-normalization">
-<h3>Taking care of normalization<a class="headerlink" href="#Taking-care-of-normalization" title="Link to this heading"></a></h3>
-<p>Similarly, when lensing condition applied, let <span class="math notranslate nohighlight">\(N_2 = \int_{z_{min}}^{z_{max}} R(z_s) P(SL|z_s) dz_s\)</span>.</p>
-<p><span class="math">\begin{equation}
-\begin{split}
-P(SL) &= \int_{z_{min}}^{z_{max}} P(SL|z_s) P(z_s) dz_s \\
-&= \int_{z_{min}}^{z_{max}} P(SL|z_s) \frac{R(z_s)}{N_1} dz_s \\
-&= \frac{N_2}{N_1}
-\end{split} \tag{6}
-\end{equation}</span></p>
-<p>Now putting together, equation 5 becomes,</p>
-<p><span class="math">\begin{equation}
-\begin{split}
-\frac{R(z_s)}{N_1} P(SL|z_s) &= P(z_s|SL) \frac{N_2}{N_1} \\
-R(z_s) P(SL|z_s) &= N_2 P(z_s|SL)
-\end{split} \tag{7}
-\end{equation}</span></p>
-</section>
-<section id="Optical-depth-in-rate-equation">
-<h3>Optical depth in rate equation<a class="headerlink" href="#Optical-depth-in-rate-equation" title="Link to this heading"></a></h3>
-<p>Replace the above result in the integrand of Equation 4. This also takes care of the normalizing factor. Note that <span class="math notranslate nohighlight">\(P(z_s|SL)\)</span> is a normalized pdf of source red-shifts, <span class="math notranslate nohighlight">\(z_s\)</span>, conditioned on strong lensing.</p>
-<p><span class="math">\begin{equation}
-\begin{split}
-\mathcal{R}_L &= N_2 \int_{z_{min}}^{z_{max}} P(z_s|SL) P(obs|z_s, SL) dz_s \\
-& \text{consider } \int \rightarrow \int_{zl}\int_{\beta}\int_{\theta}\int_{\theta_L} \\
-\mathcal{R}_L &= N_2 \int P(z_s|SL) P(obs|\theta, \theta_L, \beta, z_s, SL) \\
-& \;\; P(\beta|\theta_L, z_s, SL) P(\theta_L|z_s, SL) P(\theta) d\beta d\theta d\theta_L dz_s
-\end{split} \tag{8}
-\end{equation}</span></p>
-<p>For <span class="math notranslate nohighlight">\(P(z_s|SL)= \frac{R(z_s)}{N_2} P(SL|z_s)\)</span>, from equation 7, I have considered ‘optical depth’ (<span class="math notranslate nohighlight">\(\tau(z_s) = P(SL|z_s)\)</span>) is a function of <span class="math notranslate nohighlight">\(z_s\)</span> only. Otherwise, we need to consider the cross-section (<span class="math notranslate nohighlight">\(P(SL|z_s, \theta_L)\)</span>) which will not be discussed here. Below shows how to get <span class="math notranslate nohighlight">\(P(SL|z_s)\)</span>, i.e., the probability of strong lensing of source at <span class="math notranslate nohighlight">\(z_s\)</span>. <span class="math notranslate nohighlight">\(dN(z_l)\)</span> is the number of galaxy lenses at red-shift <span class="math notranslate nohighlight">\(z_l\)</span> (in <span class="math notranslate nohighlight">\(d z_l\)</span>).</p>
-</section>
-<section id="General-formulation-of-optical-depth-expression">
-<h3>General formulation of optical depth expression<a class="headerlink" href="#General-formulation-of-optical-depth-expression" title="Link to this heading"></a></h3>
-<p><span class="math">\begin{equation}
-\begin{split}
-P(SL|z_s) &=  \int^{z_s}_0 \frac{P(SL|\theta_L, z_s)}{4\pi} dN(z_l) \\
-P(SL|z_s) &=  \int \frac{P(SL|z_s, z_l, \sigma, q)}{4\pi} \frac{dN(z_l)}{dz_l d\sigma dq} dz_l d\sigma dq \\
-P(SL|z_s) &=  \int \frac{P(SL|z_s, z_l, \sigma, q)}{4\pi} \frac{dN(z_l)}{dV_c d\sigma dq} \frac{dV_c}{dz_l} dz_l d\sigma dq \\
-& \text{writing the cross-section $P(SL|z_s, z_l, \sigma, q)$ as $\phi$} \\
-P(SL|z_s) &=  \int \frac{\phi}{4\pi} \frac{dN(z_l)}{dV_c d\sigma dq} \frac{dV_c}{dz_l} dz_l d\sigma dq \\
+&amp;\text{Optical-depth of a source at redshift }z_s\\
+&amp;\;\;=\frac{\text{Sum of small portions of the sky where lensing can happen}}{\text{Entire sky}}
 \end{split} \tag{9}
+\end{equation}\end{split}\]</div>
+<p>The numerator corresponds to relevant lensing area of all possible lensing galaxies present in the universe between the observer and the source. For a given source at red-shift <span class="math notranslate nohighlight">\(z_s\)</span>, the probability of strong lensing is given by <span class="math notranslate nohighlight">\(P(SL|z_s)\)</span>. And let there be a distribution of lenses <span class="math notranslate nohighlight">\(dN(z_l)\)</span> at red-shift <span class="math notranslate nohighlight">\(z_l\)</span> in a spherical shell of thickness <span class="math notranslate nohighlight">\(d z_l\)</span>. Then the probability of strong lensing is given by,</p>
+<p><span class="math">\begin{equation}
+\begin{split}
+P(SL|z_s) &=  \frac{1}{4\pi} \int^{z_s}_{z_l=0} P(SL|z_s) dN(z_l) \\
+\end{split} \tag{10}
 \end{equation}</span></p>
+<p>Let’s try to write the integrand in terms of number density. Consequently, we need to consider the integrand’s dependence on lens parameters <span class="math notranslate nohighlight">\(\theta_L\)</span> and lens redshift <span class="math notranslate nohighlight">\(z_l\)</span>. Now the Eqn(10) becomes,</p>
+<p><span class="math">\begin{equation}
+\begin{split}
+P(SL|z_s) &=  \frac{1}{4\pi} \int^{z_s}_{z_l=0} \int_{\theta_L} P(SL|z_s, z_l, \theta_L) \frac{d^2N(z_l)}{dV_c d\theta_L} \frac{dV_c}{dz_l} dz_l d\theta_L \\
+\end{split} \tag{11}
+\end{equation}</span></p>
+<p>The number density of lenses <span class="math notranslate nohighlight">\(d^3N(z_l)/dV_c dz_ld\theta_L\)</span> is the number of lenses per unit volume per unit red-shift per unit lens parameter. The lensing probability <span class="math notranslate nohighlight">\(P(SL|z_s, z_l, \theta_L)\)</span> is the probability of strong lensing given that the source is at red-shift <span class="math notranslate nohighlight">\(z_s\)</span>, the lens is at red-shift <span class="math notranslate nohighlight">\(z_l\)</span> and the lens parameters are <span class="math notranslate nohighlight">\(\theta_L\)</span>. The integral is over all possible lens red-shifts and lens parameters. The factor <span class="math notranslate nohighlight">\(1/4\pi\)</span> is the solid angle of the
+entire sky.</p>
+</section>
+<section id="Optical-depth-for-Singular-isothermal-sphere-SIS-lens">
+<h3>Optical depth for Singular isothermal sphere SIS lens<a class="headerlink" href="#Optical-depth-for-Singular-isothermal-sphere-SIS-lens" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>This is in reference to <a class="reference external" href="https://arxiv.org/abs/1807.07062">Haris et al. 2018</a>.</p></li>
+</ul>
+<p>Take <span class="math notranslate nohighlight">\(P(SL|z_s, z_l, \theta_L)\)</span> as <span class="math notranslate nohighlight">\(\phi_{\text{SIS}}=\pi \theta_E^2\)</span> (<span class="math notranslate nohighlight">\(\theta_E\)</span>: Einstein radius) and <span class="math notranslate nohighlight">\(\theta_L\in P(\sigma)\)</span>, where <span class="math notranslate nohighlight">\(\sigma\)</span> is the velocity dispersion of the lens. The probability of strong lensing for a SIS lens is given by,</p>
+<p><span class="math">\begin{equation}
+\begin{split}
+P(SL|z_s) &=  \frac{1}{4\pi} \int^{z_s}_{z_l=0} \int_{\sigma} P(SL|z_s, z_l, \sigma) \frac{d^2N(z_l)}{dV_c d\sigma} \frac{dV_c}{dz_l} dz_l d\sigma \\
+&=  \frac{1}{4\pi} \int^{z_s}_{z_l=0} \int_{\sigma} \phi_{\text{SIS}} \frac{d^2N(z_l)}{dV_c d\sigma} \frac{dV_c}{dz_l} dz_l d\sigma \\
+\end{split} \tag{12}
+\end{equation}</span></p>
+<p>Haris has considered the number density of the lens, <span class="math notranslate nohighlight">\(\frac{d^2N(z_l)}{dV_c d\sigma}=\,&lt;n&gt;_{\sigma\in P(\sigma)}\)</span> and the PDF of velocity dispersion, <span class="math notranslate nohighlight">\(P(\sigma)\)</span> is independent of <span class="math notranslate nohighlight">\(z_l\)</span>. Taking <span class="math notranslate nohighlight">\(&lt;n&gt;_{\sigma\in P(\sigma)}=n_o=8\times 10^{-3} h^3 Mpc^{-3}\)</span>, the optical depth becomes,</p>
+<p><span class="math">\begin{equation}
+\begin{split}
+P(SL|z_s) &=  \int \frac{\theta_E^2}{4} n_o P(\sigma) \frac{dV_c}{dz_l} dz_l d\sigma \\
+P(SL|z_s) &=  \int_0^{z_s} \Phi_{SIS}(z_s, z_l) dz_l \\
+& \text{where, $\Phi_{SIS}(z_s, z_l)= \int \frac{\theta_E^2}{4} n_o P(\sigma) \frac{dV_c}{dz_l}d\sigma$ }. \\
+& \;\; \Phi_{SIS}(z_s, z_l)= \left< \frac{\theta_E^2}{4} n_o \frac{dV_c}{dz_l}\right>_{\sigma\in P(\sigma)} \\
+\end{split} \tag{11}
+\end{equation}</span></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
 </section>
 <section id="Optical-depth-for-SIS-lens">
 <h3>Optical depth for SIS lens<a class="headerlink" href="#Optical-depth-for-SIS-lens" title="Link to this heading"></a></h3>
