@@ -361,16 +361,18 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span> <span class="o">==</span> <span class="s2">&quot;BBH&quot;</span><span class="p">:</span>
                 <span class="n">R0</span> <span class="o">=</span> <span class="mf">23.9</span> <span class="o">*</span> <span class="mf">1e-9</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span> <span class="o">==</span> <span class="s2">&quot;BNS&quot;</span><span class="p">:</span>
-                <span class="n">R0</span> <span class="o">=</span> <span class="mf">150.5</span> <span class="o">*</span> <span class="mf">1e-9</span>
+                <span class="n">R0</span> <span class="o">=</span> <span class="mf">105.5</span> <span class="o">*</span> <span class="mf">1e-9</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span> <span class="o">==</span> <span class="s2">&quot;NSBH&quot;</span><span class="p">:</span>
                 <span class="n">R0</span> <span class="o">=</span> <span class="mf">45.0</span> <span class="o">*</span> <span class="mf">1e-9</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;event_type must be one of &#39;BBH&#39;, &#39;BNS&#39;, &#39;NSBH&#39;&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_param</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">R0</span><span class="o">=</span><span class="n">R0</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">b3</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">b4</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+            <span class="n">merger_rate_density_param</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">R0</span><span class="o">=</span><span class="n">R0</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">b3</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">b4</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_param</span> <span class="o">=</span> <span class="n">merger_rate_density_param</span>
+
 
         <span class="c1"># To find the normalization constant of the pdf p(z)</span>
         <span class="c1"># merger_rate_density_src_frame is njit function and takes array as input but quad integrand function takes only float as input</span>
-        <span class="n">merger_rate_density_src_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_src_frame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">z</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">merger_rate_density_src_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_src_frame</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">z</span><span class="p">]),</span> <span class="n">param</span><span class="o">=</span><span class="n">merger_rate_density_param</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="c1"># this normalization is important to find the correct pdf p(z)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">normalization_pdf_z</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span>
             <span class="n">merger_rate_density_src_frame</span><span class="p">,</span>
@@ -528,6 +530,7 @@
             <span class="n">b3</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;b3&quot;</span><span class="p">]</span>
             <span class="n">b4</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;b4&quot;</span><span class="p">]</span>
 
+        <span class="c1">#print(f&quot;\nR0: {R0}\n&quot;)</span>
         <span class="k">return</span> <span class="n">merger_rate_density_bbh_popI_II_oguri2018</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span> <span class="n">R0</span><span class="o">=</span><span class="n">R0</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="n">b2</span><span class="p">,</span> <span class="n">b3</span><span class="o">=</span><span class="n">b3</span><span class="p">,</span> <span class="n">b4</span><span class="o">=</span><span class="n">b4</span><span class="p">)</span></div>
 
     
@@ -814,7 +817,7 @@
     
     <span class="nd">@merger_rate_density</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">merger_rate_density</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">merger_rate_density</span><span class="p">):</span>
-        <span class="n">error_msg</span> <span class="o">=</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;merger_rate_density must be one of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_model_list</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># error_msg = ValueError(f&quot;merger_rate_density must be one of {self.merger_rate_density_model_list}&quot;)</span>
         <span class="c1"># check if it is a string</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">merger_rate_density</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>

@@ -127,7 +127,7 @@
 <ul class="simple">
 <li><p>Source parameters: <span class="math notranslate nohighlight">\(\theta \in \{\)</span> <span class="math notranslate nohighlight">\(m_1\)</span> (mass of the heavier one), <span class="math notranslate nohighlight">\(m_2\)</span> (mass of the lighter one), <span class="math notranslate nohighlight">\(\iota\)</span> (inclination-angle), <span class="math notranslate nohighlight">\(\phi\)</span> (phase-of-coalescence), <span class="math notranslate nohighlight">\(\psi\)</span> (polarization-angle), <span class="math notranslate nohighlight">\(ra\)</span> (right-ascension), <span class="math notranslate nohighlight">\(dec\)</span> (declination) <span class="math notranslate nohighlight">\(\}\)</span> and <span class="math notranslate nohighlight">\(z_s\)</span> : red-shift of the source.</p></li>
 </ul>
-<p>Given <span class="math notranslate nohighlight">\(d N^U_{obs}(z_s)\)</span> is the number of detectable gravitational wave (GW) events from sources at red-shift <span class="math notranslate nohighlight">\(z_s\)</span>, then, rate of observing GW (number of such events happening per unit time) is given by,</p>
+<p>Given <span class="math notranslate nohighlight">\(d N^U_{obs}(z_s)\)</span> is the number of detectable gravitational wave (GW) events from sources at red-shift <span class="math notranslate nohighlight">\(z_s\)</span> in a spherical shell of thickness <span class="math notranslate nohighlight">\(d z_s\)</span>, then, the rate of observing GWs is given by,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{equation}
 \begin{split}
@@ -143,6 +143,7 @@
 <p>Note that if <span class="math notranslate nohighlight">\(d\tau=dt/(1+z_s)\)</span> is considered the proper time and it can be converted from the time at detector frame <span class="math notranslate nohighlight">\(dt\)</span> using the time-dilation factor <span class="math notranslate nohighlight">\((1+z_s)\)</span>. Consequently, <span class="math notranslate nohighlight">\(\frac{d^2 N^U_{obs}(z_s)}{d t \;d\mathcal{V}_c}\)</span> and <span class="math notranslate nohighlight">\(\frac{d^2 N^U_{obs}(z_s)}{d \tau \;d\mathcal{V}_c}\)</span> are the observed merger rate density at detector-frame and source-frame respectively. We want to use the <span class="math notranslate nohighlight">\(R^U_{obs}(z_s)=\frac{d^2 N^U_{obs}(z_s)}{d \tau \;d\mathcal{V}_c}\)</span> for
 our analysis as most observational papers and the output of theoretical predictions are in the source-frame. <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}dz_s\)</span> is considered a spherical-shell volume element in co-moving coordinates at red-shift <span class="math notranslate nohighlight">\(z_s\)</span>. So, the rate expression simplifies to integrating (density) <span class="math notranslate nohighlight">\(\times\)</span> (time dilation effect) over the shell volume element. For more information on the volume element refer to this <a href="#id1"><span class="problematic" id="id2">`page &lt;&gt;`__</span></a> of the documentation.</p>
 <p>Note: <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}\)</span> is the differential co-moving volume at red-shift <span class="math notranslate nohighlight">\(z_s\)</span> and you can get the value by using <code class="docutils literal notranslate"><span class="pre">astropy</span></code> cosmology package for a given cosmology.</p>
+<p>Now we have,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{equation}
 \begin{split}
@@ -151,34 +152,34 @@ our analysis as most observational papers and the output of theoretical predicti
 \end{split} \tag{2}
 \end{equation}\end{split}\]</div>
 <p>Equation 2 is exactly same to the of equation A2 from <a class="reference external" href="https://arxiv.org/pdf/2106.06303.pdf">WIERDA et al. 2021</a>.</p>
-<p>Now, we want to re-write it in terms intrinsic merger rate distribution <span class="math notranslate nohighlight">\(R(z_s)\)</span>. <span class="math notranslate nohighlight">\(R(z_s)\)</span> is the merger rate density distribution regardless of whether the source is detectable or not.</p>
+<p>We want to re-write it in terms intrinsic merger rate distribution <span class="math notranslate nohighlight">\(R(z_s)\)</span>. <span class="math notranslate nohighlight">\(R(z_s)\)</span> is the merger rate density distribution regardless of whether the source is detectable or not.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{equation}
 \begin{split}
 \mathcal{R}_U &amp;= \int_{z_{min}}^{z_{max}} R^U_{obs}(z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
 &amp;= \int_{z_{min}}^{z_{max}} R(z_s) P(obs|z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \\
-\end{split} \tag{3.1}
+\end{split} \tag{3}
 \end{equation}\end{split}\]</div>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{equation}
 \begin{split}
 \mathcal{R}_U &amp;= \mathcal{N}^U \int_{z_{min}}^{z_{max}} P(z_s) P(obs|z_s) dz_s \\
-\end{split} \tag{3.3}
+\end{split} \tag{4}
 \end{equation}\end{split}\]</div>
-<p><span class="math notranslate nohighlight">\(P(obs|z_s)\)</span> is the probability of observing a GW event at red-shift <span class="math notranslate nohighlight">\(z_s\)</span>. Here, it is considered marginalized over all the gravitational wave parameters except the red-shift, i.e., <span class="math notranslate nohighlight">\(P(obs|z_s) = \int_{\theta} d\theta P(obs|z_s, \theta) P(\theta)\)</span>.</p>
-<p>The merger rate density becomes the prior distribution <span class="math notranslate nohighlight">\(P(z_s)\)</span> for the red-shift and it is normalized over the red-shift range. So the normalizing factor is given by,</p>
+<p><span class="math notranslate nohighlight">\(P(obs|z_s)\)</span> is the probability of observing a GW event given that the source is at red-shift <span class="math notranslate nohighlight">\(z_s\)</span>. Here, it is considered marginalized over all the gravitational wave parameters except the red-shift, i.e., <span class="math notranslate nohighlight">\(P(obs|z_s) = \int_{\theta} d\theta P(obs|z_s, \theta) P(\theta)\)</span>.</p>
+<p>In Eqn(4) the merger rate density becomes the prior distribution <span class="math notranslate nohighlight">\(P(z_s)\)</span> for the red-shift, and it is normalized over the red-shift range. So the normalizing factor is given by,</p>
 <div class="math notranslate nohighlight">
 \[\begin{equation}
 \begin{split}
 \mathcal{N}^U = \int_{z_{min}}^{z_{max}} R(z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s
-\end{split} \tag{3.4}
+\end{split} \tag{5}
 \end{equation}\]</div>
 <p>Therefore,</p>
 <div class="math notranslate nohighlight">
 \[\begin{equation}
 \begin{split}
 P(z_s) = \frac{R(z_s)}{\mathcal{N}^U} \frac{1}{(1+z_s)} \frac{dV_c}{dz_s}
-\end{split} \tag{3.5}
+\end{split} \tag{6}
 \end{equation}\]</div>
 <p>This is done because we want to sample the red-shift values from this prior distribution, which later will be used in the monte-carlo integration to estimate the rate.</p>
 </section>
