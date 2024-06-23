@@ -59,9 +59,9 @@
 <li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Lensed event rates</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Lensed-merger-rate-distribution-of-compact-binary-coalescences">Lensed merger rate distribution of compact binary coalescences</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Annual-Rate-of-Detectable-Lensed-Gravitational-Wave-Events">Annual Rate of Detectable Lensed Gravitational Wave Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#SNR-Operator-for-Lensed-Gravitational-Wave-Events">SNR Operator for Lensed Gravitational Wave Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Redshift-distribution-of-lensed-GW-compact-binary-coalescences-(CBC)">Redshift distribution of lensed GW compact binary coalescences (CBC)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Sampling-Lens-Properties">Sampling Lens Properties</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Sampling-of-Source-Position">Sampling of Source Position</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Calculation-of-Images-properties">Calculation of Images properties</a></li>
@@ -160,36 +160,22 @@
 </li>
 </ul>
 <p>Default cosmology: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7). But, it can be changed by the user at LeR initialization.</p>
-<section id="Lensed-merger-rate-distribution-of-compact-binary-coalescences">
-<h2>Lensed merger rate distribution of compact binary coalescences<a class="headerlink" href="#Lensed-merger-rate-distribution-of-compact-binary-coalescences" title="Link to this heading"></a></h2>
-<p>This is very similar to the un-lensed merger rate distribution, but with the optical depth applied for lensed events. Optical depth (<span class="math notranslate nohighlight">\(\tau(z-s)=P(\text{SL}|z_s)\)</span>) is the probability that a source at redshift <span class="math notranslate nohighlight">\(z_s\)</span> is strongly lensed by a galaxy. The lensed merger rate distribution is given by:</p>
-<p><span class="math">\begin{equation}
-R_o^L(z_s) = \frac{1}{\mathcal{N}^L} \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tau(z_s) \tag{1}
-\end{equation}</span></p>
-<p>Where, the normalizing factor is given by:</p>
-<p><span class="math">\begin{equation}
-\mathcal{N}^L = \int_{z_{\text{min}}}^{z_{\text{max}}} dz_s \frac{R_m(z_s)}{1+z_s} \frac{dV_c}{dz_s} \tau(z_s)  \tag{2}
-\end{equation}</span></p>
-<p>Source redshifts for lensed case are sample from an astrophysical distribution, and rejection sample based on the optical depth. The plot below shows the comparision of the lensed and un-lensed merger rate distributions.</p>
-<p align="center"><p><img alt="zs" class="no-scaled-link" src="_images/zs_vs.png" style="width: 80%;" /></p>
-</p></section>
 <section id="Annual-Rate-of-Detectable-Lensed-Gravitational-Wave-Events">
 <h2>Annual Rate of Detectable Lensed Gravitational Wave Events<a class="headerlink" href="#Annual-Rate-of-Detectable-Lensed-Gravitational-Wave-Events" title="Link to this heading"></a></h2>
 <p>The annual rate of detectable lensed gravitational wave events, denoted by <span class="math notranslate nohighlight">\(R_L\)</span>, quantifies the expected number of lensed events observable by gravitational wave detectors within a year. This rate is given by the following equation:</p>
-<p><span class="math">\begin{equation}
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
 \begin{split}
-R_L = \mathcal{N}^L \int & dz_s R_o^L(z_s) \,\mathcal{O}_{\text{images}}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \, \\
-& \, P(\theta) P(\theta_L, z_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta dz_L d\theta_L dz_s
-\end{split}  \tag{3}
-\end{equation}</span></p>
+\mathcal{R}_L &amp;= \mathcal{N}^L \int P(z_s| SL)\, \mathcal{O}_{\text{images}}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \\
+&amp;\;\; P(\theta)\, P(\theta_L|z_l, z_s, SL)\, P(z_l|z_s)\, P(\beta|z_s,z_l, \theta_L, SL) dz_s d\theta d\theta_L dz_l d\beta \\
+\end{split} \tag{9}
+\end{equation}\end{split}\]</div>
 <p>Key aspects of this equation include:</p>
 <ul class="simple">
 <li><p><strong>SNR Operator,</strong> <span class="math notranslate nohighlight">\(\mathbf{\mathcal{O}_{\text{images}}(z_s,\theta,\mu_i,\Delta t_i, \rho{th})}\)</span><strong>:</strong> This function determines whether the lensed GW event is detectable based on their signal-to-noise ratios (SNRs) of the images. It is a logical operator that assesses the observability of each lensed image. Refer to the next sub-section for more details.</p></li>
-<li><p><strong>Prior Distribution,</strong> <span class="math notranslate nohighlight">\(\mathbf{P(\theta)}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{P(\theta_L, z_L|\text{SL},z_s)}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{P(\beta|\text{SL})}\)</span>: These represent the probability distributions of the GW source parameters, lens parameters (including the lens redshift <span class="math notranslate nohighlight">\(z_L\)</span>), and source position, respectively, under the strong lensing condition (SL). The source position, <span class="math notranslate nohighlight">\(\beta\)</span>, denotes the angular position of the source in the source plane, relative to the lens’s center. These prior
-distributions of source and lens properties are assumed to be normalized.</p></li>
-<li><p><strong>Normalized Merger-Rate Distribution,</strong> <span class="math notranslate nohighlight">\(\mathbf{R_o^L(z_s)}\)</span>: This function represents the merger rate density of lensed GW events (in the source frame) normalized with respect to the redshift <span class="math notranslate nohighlight">\(z_s\)</span>. The normalization factor, <span class="math notranslate nohighlight">\(\mathcal{N}^L\)</span>, ensures that the integrated rate <span class="math notranslate nohighlight">\(R_L\)</span> is properly scaled.</p></li>
+<li><p><strong>Prior Distribution,</strong> <span class="math notranslate nohighlight">\(P(z_s| SL)\)</span>, <span class="math notranslate nohighlight">\(P(\theta)\)</span>, <span class="math notranslate nohighlight">\(P(\theta_L|z_l, z_s, SL)\)</span>, <span class="math notranslate nohighlight">\(P(z_l|z_s)\)</span>, <span class="math notranslate nohighlight">\(P(\beta|z_s,z_l, \theta_L, SL)\)</span>:** These distributions represent the likelihood of the source redshift, source parameters, lens parameters, lens redshift, and source position, respectively. They are essential for characterizing the population of detectable lensed events.</p></li>
 </ul>
-<p>The calculation of <span class="math notranslate nohighlight">\(R_L\)</span> involves integration over the source redshift <span class="math notranslate nohighlight">\(z_s\)</span>, the GW source parameters <span class="math notranslate nohighlight">\(\theta\)</span>, the lens parameters <span class="math notranslate nohighlight">\(\theta_L\)</span> and lens redshift <span class="math notranslate nohighlight">\(z_L\)</span>, and the source position <span class="math notranslate nohighlight">\(\beta\)</span>. This integration accounts for the contributions from all detectable lensed events across different redshifts and parameter configurations, providing a comprehensive estimate of the annual rate of detectable lensed GW events.</p>
+<p>The calculation of <span class="math notranslate nohighlight">\(R_L\)</span> involves integration over the source redshift <span class="math notranslate nohighlight">\(z_s\)</span>, the GW source parameters <span class="math notranslate nohighlight">\(\theta\)</span>, the lens parameters <span class="math notranslate nohighlight">\(\theta_L\)</span> and lens redshift <span class="math notranslate nohighlight">\(z_l\)</span>, and the source position <span class="math notranslate nohighlight">\(\beta\)</span>. This integration accounts for the contributions from all detectable lensed events across different redshifts and parameter configurations, providing a comprehensive estimate of the annual rate of detectable lensed GW events.</p>
 </section>
 <section id="SNR-Operator-for-Lensed-Gravitational-Wave-Events">
 <h2>SNR Operator for Lensed Gravitational Wave Events<a class="headerlink" href="#SNR-Operator-for-Lensed-Gravitational-Wave-Events" title="Link to this heading"></a></h2>
@@ -211,6 +197,26 @@ referred to as two super-threshold events.</p>
 where <span class="math notranslate nohighlight">\(\mathcal{D}_L\)</span> is the original luminosity distance and <span class="math notranslate nohighlight">\(\mu_i\)</span> is the magnification of the image. Similarly, the effective geocentric time for the <span class="math notranslate nohighlight">\(i_{\text{th}}\)</span> image is <span class="math notranslate nohighlight">\(t_i^{eff} = t + \Delta t_i\)</span>, where <span class="math notranslate nohighlight">\(t\)</span> is the original time of arrival and <span class="math notranslate nohighlight">\(\Delta t_i\)</span> is the time delay of the image.</p>
 <p>This SNR operator plays a crucial role in the analysis of lensed GW events, as it helps to identify events that are sufficiently strong to be detected by GW observatories.</p>
 </section>
+<section id="Redshift-distribution-of-lensed-GW-compact-binary-coalescences-(CBC)">
+<h2>Redshift distribution of lensed GW compact binary coalescences (CBC)<a class="headerlink" href="#Redshift-distribution-of-lensed-GW-compact-binary-coalescences-(CBC)" title="Link to this heading"></a></h2>
+<p>This is very similar to the un-lensed events redshift distribution <span class="math notranslate nohighlight">\(P(z_s)\)</span>, but with the optical depth applied for lensed events. Optical depth (<span class="math notranslate nohighlight">\(\tau(z-s)=P(\text{SL}|z_s)\)</span>) is the probability that a source at redshift <span class="math notranslate nohighlight">\(z_s\)</span> is strongly lensed by a galaxy. The lensed redshift distribution is given by:</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+\begin{split}
+P(z_s|SL) = \frac{R(z_s)}{\mathcal{N}^L} P(SL|z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} \nonumber
+\end{split}
+\end{equation}\]</div>
+<p>R(z_s) is the merger rate distribution of CBC in the source frame.</p>
+<p>The normalizing factor is given by:</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+\begin{split}
+\mathcal{N}^L = \int_{z_{min}}^{z_{max}} R(z_s) P(SL|z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \nonumber
+\end{split}
+\end{equation}\]</div>
+<p>Source redshifts for lensed case are sample from an astrophysical distribution, and rejection sample based on the optical depth. The plot below shows the comparision of the lensed and un-lensed merger rate distributions.</p>
+<p align="center"><p><img alt="zs" class="no-scaled-link" src="_images/zs_vs.png" style="width: 80%;" /></p>
+</p></section>
 <section id="Sampling-Lens-Properties">
 <h2>Sampling Lens Properties<a class="headerlink" href="#Sampling-Lens-Properties" title="Link to this heading"></a></h2>
 <p>In <code class="docutils literal notranslate"><span class="pre">LeR</span></code>, we consider elliptical galaxy lenses with a power-law mass-density distribution and external shear, also refer to as <strong>EPL+Shear</strong> lens. The sampling methods for the lens parameters are summarized in the following tables. Note that <span class="math notranslate nohighlight">\(D_l^c\)</span> and <span class="math notranslate nohighlight">\(D_s^c\)</span> are the comoving distances to the lens and source, respectively.</p>
