@@ -10,7 +10,6 @@
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
-      <link rel="stylesheet" href="_static/nbsphinx-code-cells.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -62,10 +61,10 @@
 <li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Lensed event sampling (Analytical formulation)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Initial-setup">Initial setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#General-formulation-of-rate-equation.">General formulation of rate equation.</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Optical-depth">Optical depth</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#General-formulation">General formulation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Optical-depth-for-Singular-isothermal-sphere-SIS-lens">Optical depth for Singular isothermal sphere SIS lens</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Optical-depth-for-SIS-lens">Optical depth for SIS lens</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Optical-depth-for-SIE-lens">Optical depth for SIE lens</a></li>
 </ul>
 </li>
@@ -137,7 +136,45 @@
 <li><p><span class="math notranslate nohighlight">\(z_L\)</span> : red-shift of the galaxy lens</p></li>
 <li><p>image properties: <span class="math notranslate nohighlight">\(\{\)</span> <span class="math notranslate nohighlight">\(\mu_i\)</span> (magnification), <span class="math notranslate nohighlight">\(dt_i\)</span> (time-delay), <span class="math notranslate nohighlight">\(n_i\)</span> (morse-phase) <span class="math notranslate nohighlight">\(\}\)</span>. There is subscript <span class="math notranslate nohighlight">\(i\)</span> because there can be multiple images.</p></li>
 <li><p><span class="math notranslate nohighlight">\(SL\)</span>: Strong lensing condition. It means the original gravitational wave signal is lensed and split into multiple images <span class="math notranslate nohighlight">\((\geq 2)\)</span>.</p></li>
+<li><p>Distance representation of lens object and source object will be in terms of redshifts (<span class="math notranslate nohighlight">\(z_l\)</span> and <span class="math notranslate nohighlight">\(z_s\)</span>).</p></li>
 </ul>
+<p>Montecarlo integration: Given a function <span class="math notranslate nohighlight">\(f(\theta)\)</span> and normalized probability distribution function PDF <span class="math notranslate nohighlight">\(P(\theta)\)</span>, then,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+\int f(\theta) P(\theta) d\theta &amp;\approx \frac{1}{N} \sum_{i=1}^{N} f(\theta_i) \nonumber \\
+&amp;\approx \left&lt; f(\theta) \right&gt;_{\theta \in P(\theta)}
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\theta_i\)</span> are samples drawn from <span class="math notranslate nohighlight">\(P(\theta)\)</span>.</p>
+</section>
+<section id="General-formulation-of-rate-equation.">
+<h2>General formulation of rate equation.<a class="headerlink" href="#General-formulation-of-rate-equation." title="Link to this heading"></a></h2>
+<p>What we need to find is the number of lensed gravitational events that are detectable by the detector in a given time interval (1 year). Forget about lensing and detection for a moment. If we want to know the total number of compact binary coalescence (CBC) events then we can write it as,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+\text{Rate of CBC events at redshift }z_s &amp;= \frac{\text{Number CBC events at redshift }z_s}{\text{Time}} \nonumber \\
+&amp;= \text{Merger rate density at }z_s\times \text{Volume at }z_s \\
+\end{split}
+\end{equation}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+&amp;\text{Rate of CBC events in the entire observable universe} \nonumber \\
+&amp;\;\;\;= \sum_{z_{min}}^{z_{max}} \text{Rate of CBC events at redshift }z_s \nonumber \\
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>Similarly, we can write the rate of lensed detectable events as,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+&amp;\text{Rate of detectable lensed events} \nonumber \\
+&amp;\;\;\;= \sum_{z_{min}}^{z_{max}} \text{observable rate density at }z_s\text{ which are also lensed}\times \text{Volume at }z_s
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>Merger rate density at <span class="math notranslate nohighlight">\(z_s\)</span> is known.</p>
+<p>Let’s try to formulate it with proper mathematics</p>
 <p>Given <span class="math notranslate nohighlight">\(d N^L_{obs}(z_s)\)</span> is the number of lensed GW detectable events from sources at red-shift <span class="math notranslate nohighlight">\(z_s\)</span> in a spherical shell of thickness <span class="math notranslate nohighlight">\(d z_s\)</span>, then, the rate observing lensed GW events is given by,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{equation}
@@ -220,15 +257,36 @@ P(z_s) = \frac{R(z_s)}{\mathcal{N}^U} \frac{1}{(1+z_s)} \frac{dV_c}{dz_s}
 \mathcal{R}_L &amp;= \mathcal{N}^L \int_{z_{min}}^{z_{max}} P(z_s| SL)\, P(obs|z_s, SL)\, dz_s \\
 &amp; \text{consider } \int \rightarrow \int_{z_s}\int_{z_l}\int_{\beta}\int_{\theta}\int_{\theta_L} \\
 &amp;= \mathcal{N}^L \int P(z_s| SL)\, P(obs|z_s, \theta, \theta_L, z_l, \beta, SL) \\
-&amp;\;\; P(\theta)\, P(\theta_L|z_s, SL)\, P(z_l|z_s)\, P(\beta|z_s,z_l, \theta_L, SL) dz_s d\theta d\theta_L dz_l d\beta \\
+&amp;\;\; P(\theta)\, P(\theta_L|z_l, z_s, SL)\, P(z_l|z_s)\, P(\beta|z_s,z_l, \theta_L, SL) dz_s d\theta d\theta_L dz_l d\beta \\
 \end{split} \tag{9}
 \end{equation}\end{split}\]</div>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{equation}
 \begin{split}
-\mathcal{R}_L &amp;=  \mathcal{N}^L \int \frac{R(z_s)}{\mathcal{N}^L} P(SL|z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s}\, P(obs|z_s, \theta, \theta_L, z_l, \beta, SL) \\
-&amp;\;\; P(\theta)\, P(\theta_L|z_s, SL)\, P(z_l|z_s)\, P(\beta|z_s,z_l, \theta_L, SL) dz_s d\theta d\theta_L dz_l d\beta \\
+\mathcal{R}_L &amp;=  \mathcal{N}^L \int \frac{R(z_s)}{\mathcal{N}^L} P(SL|z_s) \frac{1}{(1+z_s)} \frac{dV_c}{dz_s}\, P(obs|z_s, \theta, \theta_L, z_l, \beta, SL)  \\
+&amp;\;\; P(\theta)\, P(\theta_L|z_l, z_s, SL)\, P(z_l|z_s, SL)\, P(\beta|z_s,z_l, \theta_L, SL) dz_s d\theta d\theta_L dz_l d\beta \\
 \end{split} \tag{10}
+\end{equation}\end{split}\]</div>
+<p>Eqn(10) is the complete expression for the rate of lensed detectable events.</p>
+<p>In arriving at Eqn(9) I have used the following relations,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+P(z_s|SL)\, P(obs|z_s, SL) &amp;= \int_{z_l}\int_{\beta}\int_{\theta}\int_{\theta_L} P(z_s, z_l, \beta, \theta, \theta_L|SL)\, P(obs|z_s, \theta, \theta_L, z_l, \beta, SL) d\theta d\theta_L dz_l d\beta \nonumber \\
+P(z_s, z_l, \beta, \theta, \theta_L|SL) &amp;= P(\theta) P(z_s, z_l, \beta, \theta_L|SL) \\
+P(z_s, z_l, \beta, \theta_L|SL) &amp;= P(\beta|z_s,z_l, \theta_L, SL) P(z_s, z_l, \theta_L|SL) \\
+P(z_s, z_l, \theta_L|SL) &amp;= P(z_l, \theta_L|z_s, SL) P(z_s|SL) \\
+P(z_l, \theta_L|z_s, SL) &amp;= P(\theta_L|z_s, z_l, SL) P(z_l|z_s, SL) \\
+&amp;= P(\theta_L|z_l, z_s, SL) P(z_l|z_s, SL) \\
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>Therefore,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+&amp;P(z_s|SL)\, P(obs|z_s, SL) = \nonumber \\
+&amp;\;\;\; \int_{z_l}\int_{\beta}\int_{\theta}\int_{\theta_L} P(z_s|SL) P(\theta) P(\theta_L|z_l, z_s, SL)\, P(z_l|z_s, SL)\, P(\beta|z_s,z_l, \theta_L, SL) d\theta d\theta_L dz_l d\beta
+\end{split}
 \end{equation}\end{split}\]</div>
 </section>
 <section id="Optical-depth">
@@ -261,10 +319,8 @@ entire sky.</p>
 </section>
 <section id="Optical-depth-for-Singular-isothermal-sphere-SIS-lens">
 <h3>Optical depth for Singular isothermal sphere SIS lens<a class="headerlink" href="#Optical-depth-for-Singular-isothermal-sphere-SIS-lens" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>This is in reference to <a class="reference external" href="https://arxiv.org/abs/1807.07062">Haris et al. 2018</a>.</p></li>
-</ul>
-<p>Take <span class="math notranslate nohighlight">\(P(SL|z_s, z_l, \theta_L)\)</span> as <span class="math notranslate nohighlight">\(\phi_{\text{SIS}}=\pi \theta_E^2\)</span> (<span class="math notranslate nohighlight">\(\theta_E\)</span>: Einstein radius) and <span class="math notranslate nohighlight">\(\theta_L\in P(\sigma)\)</span>, where <span class="math notranslate nohighlight">\(\sigma\)</span> is the velocity dispersion of the lens. The probability of strong lensing for a SIS lens is given by,</p>
+<p>This is in reference to <a class="reference external" href="https://arxiv.org/abs/1807.07062">Haris et al. 2018</a>.</p>
+<p>Take <span class="math notranslate nohighlight">\(P(SL|z_s, z_l, \theta_L)\)</span> as <span class="math notranslate nohighlight">\(\phi_{\text{SIS}}=\pi \theta_E^2\)</span> (<span class="math notranslate nohighlight">\(\theta_E\)</span>: Einstein radius) and <span class="math notranslate nohighlight">\(\theta_L\in \{\sigma\}\)</span>, where <span class="math notranslate nohighlight">\(\sigma\)</span> is the velocity dispersion of the lens. The probability of strong lensing for a SIS lens is given by,</p>
 <p><span class="math">\begin{equation}
 \begin{split}
 P(SL|z_s) &=  \frac{1}{4\pi} \int^{z_s}_{z_l=0} \int_{\sigma} P(SL|z_s, z_l, \sigma) \frac{d^2N(z_l)}{dV_c d\sigma} \frac{dV_c}{dz_l} dz_l d\sigma \\
@@ -280,38 +336,11 @@ P(SL|z_s) &=  \int_0^{z_s} \Phi_{SIS}(z_s, z_l) dz_l \\
 & \;\; \Phi_{SIS}(z_s, z_l)= \left< \frac{\theta_E^2}{4} n_o \frac{dV_c}{dz_l}\right>_{\sigma\in P(\sigma)} \\
 \end{split} \tag{11}
 \end{equation}</span></p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
-</section>
-<section id="Optical-depth-for-SIS-lens">
-<h3>Optical depth for SIS lens<a class="headerlink" href="#Optical-depth-for-SIS-lens" title="Link to this heading"></a></h3>
-<p>Consider the SIS case of <a class="reference external" href="https://arxiv.org/abs/1807.07062">Haris et al. 2018</a>. Take <span class="math notranslate nohighlight">\(\phi\)</span> as <span class="math notranslate nohighlight">\(\phi_{SIS}\)</span>.</p>
-<p><span class="math">\begin{equation}
-\begin{split}
-P(SL|z_s) &=  \int \frac{\phi_{SIS}}{4\pi} \frac{dN(z_l)}{dV_c d\sigma} \frac{dV_c}{dz_l} dz_l d\sigma \\
-P(SL|z_s) &=  \int \frac{\pi \theta_E^2}{4\pi} \big< n \big>_{\sigma\in P(\sigma)} P(\sigma) \frac{dV_c}{dz_l} dz_l d\sigma
-\end{split} \tag{10}
-\end{equation}</span></p>
-<p>The cross-section of the SIS lens is <span class="math notranslate nohighlight">\(\pi \theta_E^2\)</span>, where <span class="math notranslate nohighlight">\(\theta_E\)</span> is the Einstein radius. Haris has considered the number density of the lens, <span class="math notranslate nohighlight">\(&lt;n&gt;_{\sigma\in P(\sigma)}\)</span> and the PDF of velocity dispersion, <span class="math notranslate nohighlight">\(P(\sigma)\)</span> is independent of <span class="math notranslate nohighlight">\(z_l\)</span>. Take <span class="math notranslate nohighlight">\(&lt;n&gt;_{\sigma\in P(\sigma)}=n_o=8\times 10^{-3} h^3 Mpc^{-3}\)</span>.</p>
-<p><span class="math">\begin{equation}
-\begin{split}
-P(SL|z_s) &=  \int \frac{\theta_E^2}{4} n_o P(\sigma) \frac{dV_c}{dz_l} dz_l d\sigma \\
-P(SL|z_s) &=  \int_0^{z_s} \Phi_{SIS}(z_l) dz_l \\
-& \text{where, $\Phi_{SIS}(z_l)= \int \frac{\theta_E^2}{4} n_o P(\sigma) \frac{dV_c}{dz_l}d\sigma$ }. \\
-& \;\; \Phi_{SIS}(z_l)= \left< \frac{\theta_E^2}{4} n_o \frac{dV_c}{dz_l}\right>_{\sigma\in P(\sigma)} \\
-& \text{Note: $\theta_E$ and $\frac{dV_c}{dz_l}$ are functions of $z_l$.}
-\end{split} \tag{11}
-\end{equation}</span></p>
 </section>
 <section id="Optical-depth-for-SIE-lens">
 <h3>Optical depth for SIE lens<a class="headerlink" href="#Optical-depth-for-SIE-lens" title="Link to this heading"></a></h3>
-<p>Consider the SIE case with <span class="math notranslate nohighlight">\(\sigma\)</span> distribution dependent on <span class="math notranslate nohighlight">\(z_l\)</span>. The expression for optical depth reads,</p>
+<p>Take <span class="math notranslate nohighlight">\(P(SL|z_s, z_l, \theta_L)\)</span> as <span class="math notranslate nohighlight">\(\phi_{\text{SIE}}=\phi_{\text{SIS}}\frac{\phi_{\text{CUT}}^{\text{SIE}}(q)}{\pi}\)</span> and <span class="math notranslate nohighlight">\(\theta_L\in \{\sigma, q\}\)</span>, where <span class="math notranslate nohighlight">\(\sigma\)</span> is the velocity dispersion and <span class="math notranslate nohighlight">\(q\)</span> is the axis-ratio. <span class="math notranslate nohighlight">\(\phi^{SIE}_{CUT}(q)\)</span> is derive from the expression given in <a class="reference external" href="https://iopscience.iop.org/article/10.3847/1538-4357/ac58f8">Fei Xu et al. 2022</a>.</p>
+<p>The probability of strong lensing for a SIE lens is given by,</p>
 <p><span class="math">\begin{equation}
 \begin{split}
 P(SL|z_s) &=  \int \frac{\phi_{SIE}}{4\pi} \frac{dN(z_l)}{dV_c d\sigma dq} \frac{dV_c}{dz_l} dz_l d\sigma dq \\
@@ -329,24 +358,23 @@ P(SL|z_s) &=  \int_0^{z_s} \Phi_{SIE}(z_l) dz_l \\
 & \;\;  \Phi_{SIE}(z_l)= \left< \frac{\phi_{SIS}}{4\pi} \frac{\phi^{SIE}_{CUT}(q)}{\pi} n_o \frac{dV_c}{dz_l} \right>_{q\in P(q|\sigma), \sigma\in P(\sigma)}
 \end{split} \tag{12b}
 \end{equation}</span></p>
-<p><span class="math notranslate nohighlight">\(\phi^{SIE}_{CUT}(q)\)</span> is derive from the expression given in <a class="reference external" href="https://iopscience.iop.org/article/10.3847/1538-4357/ac58f8">Fei Xu et al. 2022</a>.</p>
 </section>
 </section>
 <section id="Rate-equation-(statistical-formulation)">
 <h2>Rate equation (statistical formulation)<a class="headerlink" href="#Rate-equation-(statistical-formulation)" title="Link to this heading"></a></h2>
-<p>The final equation of the observed rate of lensed events is shown below. Note that, <span class="math notranslate nohighlight">\(z_s\)</span> is sampled from its prior distribution and then rejection sampled with respect to optical depth.</p>
+<p>The final equation of the observed rate of lensed events is shown below in terms of the sampling priors.</p>
 <p><span class="math">\begin{equation}
 \begin{split}
-\mathcal{R}_L &= N_2 \bigg< P(obs|\theta, \theta_L, \beta, z_s, SL) \bigg>_{z_s\in P(z_s|SL), \theta\in P(\theta), \theta_L\in P(\theta_L|z_s, SL), \beta\in P(\beta|\theta_L, z_s, SL)}
+\mathcal{R}_L &= \mathcal{N}^L \bigg< P(obs|z_s, \theta, \theta_L, z_l, \beta, SL) \bigg>_{z_s\in P(z_s|SL), z_l\in P(z_l|z_s,SL), \theta\in P(\theta), \theta_L\in P(\theta_L|z_l, z_s, SL), \beta\in P(\beta|z_s,z_l, \theta_L, SL)}
 \end{split} \tag{13}
 \end{equation}</span></p>
-<p><span class="math notranslate nohighlight">\(P(obs|\theta, \theta_L, \beta, z_s, SL)\)</span> checks whether the event is detectable or not.</p>
-<p>Where the sampling priors can be further simplified as follows,</p>
+<p><span class="math notranslate nohighlight">\(P(obs|z\theta, \theta_L, \beta, z_s, SL)\)</span> checks whether the event is detectable or not. The condition of detectability is that two or more images of a lensed event should be detected.</p>
+<p>The sampling priors can be further simplified as follows,</p>
 <p><span class="math">\begin{equation}
 \begin{split}
-P(z_s|SL) &= P(SL|z_s)\,P(z_s) \\
-P(\theta_L|z_s, SL) &= P(SL|z_s, \theta_L)\, P(\theta_L|z_s) \\
-P(\beta|z_s, \theta_L, SL) &= P(SL|z_s, \theta_L, \beta)\, P(\beta|z_s, \theta_L)
+P(z_s|SL) &\propto P(SL|z_s)\,P(z_s) \\
+P(\theta_L|z_l, z_s, SL) &\propto P(SL|z_l, z_s, \theta_L)\, P(\theta_L|z_l, z_s) \\
+P(\beta|z_s,z_l, \theta_L, SL) &\propto P(SL|z_s, \theta_L, \beta)\, P(\beta|z_s,z_l, \theta_L)
 \end{split} \tag{15}
 \end{equation}</span></p>
 <p>This allows <span class="math notranslate nohighlight">\(z_s\)</span> to be sampled from the astrophysical prior, <span class="math notranslate nohighlight">\(P(z_s)\)</span>, and then later rejection sample with respect to optical depth, <span class="math notranslate nohighlight">\(P(SL|z_s)\)</span>. The same is the case for <span class="math notranslate nohighlight">\(\theta_L\)</span> (<span class="math notranslate nohighlight">\(z_l,\sigma,q\)</span>). The strong lensing condition is applied through rejection sampling with respect to <span class="math notranslate nohighlight">\(\phi^{SIE}_{CUT}(q)\)</span> (<span class="math notranslate nohighlight">\(\propto \theta_E^2\,\phi^{SIE}_{CUT}\)</span>). For the source position, <span class="math notranslate nohighlight">\(\beta\)</span>, it is sampled within the caustic and then checked whether it has 2 or
@@ -355,9 +383,9 @@ more images or not.</p>
 <section id="The-order-of-sampling-and-rate-calculation-steps-in-LeR-are-listed-below.">
 <h2>The order of sampling and rate calculation steps in LeR are listed below.<a class="headerlink" href="#The-order-of-sampling-and-rate-calculation-steps-in-LeR-are-listed-below." title="Link to this heading"></a></h2>
 <ol class="arabic simple">
-<li><p>Sample <span class="math notranslate nohighlight">\(z_s\)</span> from <span class="math notranslate nohighlight">\(\frac{R(z_s)}{N_1}\)</span>. And apply rejection sampling with optical depth, <span class="math notranslate nohighlight">\(P(SL|z_s)\)</span>. Other source parameters are sampled separately, <span class="math notranslate nohighlight">\(P(\theta)\)</span>.</p></li>
+<li><p>Sample <span class="math notranslate nohighlight">\(z_s\)</span> from <span class="math notranslate nohighlight">\(P(z_s)\)</span>. And apply rejection sampling with optical depth, <span class="math notranslate nohighlight">\(P(SL|z_s)\)</span>. Other source parameters are sampled separately, <span class="math notranslate nohighlight">\(P(\theta)\)</span>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(z_l\)</span> from <span class="math notranslate nohighlight">\(P(z_l|z_s)\)</span>.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\sigma\)</span> together from <span class="math notranslate nohighlight">\(P(\sigma|z_l, SL)\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma\)</span> together from <span class="math notranslate nohighlight">\(P(\sigma|z_l)\)</span>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(q\)</span> from <span class="math notranslate nohighlight">\(P(q|\sigma)\)</span>.</p></li>
 <li><p>Calculation of Einstein radius and apply lensing condition to the sampled lens parameters, <span class="math notranslate nohighlight">\(P(SL|z_s, z_l, \sigma, q) \propto \theta_E^2\,\phi^{SIE}_{CUT}\)</span>.</p></li>
 <li><p>Other lens parameters (<span class="math notranslate nohighlight">\(e_1\)</span>, <span class="math notranslate nohighlight">\(e_2\)</span>, <span class="math notranslate nohighlight">\(\gamma_1\)</span>, <span class="math notranslate nohighlight">\(\gamma_2\)</span>, <span class="math notranslate nohighlight">\(\gamma\)</span>) are sampled independent of the SL condition, <span class="math notranslate nohighlight">\(P(e_1,e_2,\gamma_1,\gamma_2,\gamma)\)</span>. But, this will be rejection sampled later along with the image position.</p></li>
