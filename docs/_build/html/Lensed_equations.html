@@ -285,7 +285,8 @@ P(z_l, \theta_L|z_s, SL) &amp;= P(\theta_L|z_s, z_l, SL) P(z_l|z_s, SL) \\
 \[\begin{split}\begin{equation}
 \begin{split}
 &amp;P(z_s|SL)\, P(obs|z_s, SL) = \nonumber \\
-&amp;\;\;\; \int_{z_l}\int_{\beta}\int_{\theta}\int_{\theta_L} P(z_s|SL) P(\theta) P(\theta_L|z_l, z_s, SL)\, P(z_l|z_s, SL)\, P(\beta|z_s,z_l, \theta_L, SL) d\theta d\theta_L dz_l d\beta
+&amp;\;\;\; \int_{z_l}\int_{\beta}\int_{\theta}\int_{\theta_L} P(obs|z_s, \theta, \theta_L, z_l, \beta, SL) \nonumber \\
+&amp;\;\;\; P(z_s|SL) P(\theta) P(\theta_L|z_l, z_s, SL)\, P(z_l|z_s, SL)\, P(\beta|z_s,z_l, \theta_L, SL) d\theta d\theta_L dz_l d\beta
 \end{split}
 \end{equation}\end{split}\]</div>
 </section>
