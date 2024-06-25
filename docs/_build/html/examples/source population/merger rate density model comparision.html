@@ -91,7 +91,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#reproduction-of-Ng-et-al.-2022-Fig.-3">reproduction of Ng et al. 2022 Fig. 3</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Merger-rate-density-(source-frame)">Merger rate density (source frame)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Merger-rate-density-(detector-frame)">Merger rate density (detector frame)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Conclusion">Conclusion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Bonus-plot">Bonus plot</a></li>
 </ul>
@@ -170,12 +170,12 @@
 <div class="math notranslate nohighlight">
 \[R(z_s) = \frac{\mathcal{R}_m(z_s)}{1+z_s} \frac{dV_c}{dz_s}\]</div>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\mathcal{R}_m(z_s)\)</span>: detector frame merger rate density at source redshift <span class="math notranslate nohighlight">\(z_s\)</span>.</p></li>
-<li><p>co-moving volume : <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{R}_m(z_s)\)</span>: Source frame merger rate density at source redshift <span class="math notranslate nohighlight">\(z_s\)</span>.</p></li>
+<li><p>Differential co-moving volume : <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}\)</span>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\frac{1}{1+z_s}\)</span>: this factor takes care of the time dilation effect.</p></li>
 </ul>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -187,7 +187,7 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z_min</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -200,13 +200,13 @@
 <section id="BBH/BNS-pop-I/II-Oguri-et-al.-2018-model">
 <h2>BBH/BNS pop I/II Oguri et al. 2018 model<a class="headerlink" href="#BBH/BNS-pop-I/II-Oguri-et-al.-2018-model" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>LeR default Merger rate follows <a class="reference external" href="https://arxiv.org/pdf/2106.06303.pdf">WIERDA et al. 2021</a>.</p></li>
+<li><p>LeR default meerger rate density distribution follows <a class="reference external" href="https://arxiv.org/pdf/2106.06303.pdf">WIERDA et al. 2021</a>.</p></li>
 <li><p>It is a functional fit to the population I/II star merger-rate density normalized to the local merger- rate density following Oguri (2018).</p></li>
 <li><p>This model follows from the M10 model to the Belczynski et al. (2017), which is arrived from Madau &amp; Dickinson (2014) with the inclusion of the metallicity dependence of the star formation rate, which is bassically the effect related to pair-instability supernova (PSN) and pair-instability pulsation supernova (PPSN).</p></li>
 </ul>
 <p><span class="math">\begin{equation}
 \mathcal{R}_m(z_s) = \frac{\mathcal{R}_O(b_4+1)e^{b_2 z_s}}{b_4+e^{b_3 z_s}} \text{Gpc}^{-3}\text{yr}^{-1} \tag{1}
-\end{equation}</span> * <span class="math notranslate nohighlight">\(z_s\)</span>: redshift of source * <span class="math notranslate nohighlight">\(\mathcal{R}\)</span>: local mergerrate. <span class="math notranslate nohighlight">\(\mathcal{R}=23.9^{+14.3}_{-8.6}\text{Gpc}^{-3}\text{yr}^{-1}=23.9^{+14.3}_{-8.6} \times 10^{-9}\text{Mpc}^{-3}\text{yr}^{-1}\)</span> * fitting parameters: <span class="math notranslate nohighlight">\(b_2=1.6\)</span>, <span class="math notranslate nohighlight">\(b_3=2.1\)</span>, <span class="math notranslate nohighlight">\(b_4=30\)</span></p>
+\end{equation}</span> * <span class="math notranslate nohighlight">\(z_s\)</span>: redshift of source * <span class="math notranslate nohighlight">\(\mathcal{R}_O\)</span>: local merger rate density. <span class="math notranslate nohighlight">\(\mathcal{R}_O=23.9^{+14.3}_{-8.6}\text{Gpc}^{-3}\text{yr}^{-1}=23.9^{+14.3}_{-8.6} \times 10^{-9}\text{Mpc}^{-3}\text{yr}^{-1}\)</span> * fitting parameters: <span class="math notranslate nohighlight">\(b_2=1.6\)</span>, <span class="math notranslate nohighlight">\(b_3=2.1\)</span>, <span class="math notranslate nohighlight">\(b_4=30\)</span></p>
 <ul class="simple">
 <li><p>with results from <a class="reference external" href="https://journals.aps.org/prx/pdf/10.1103/PhysRevX.13.011048">GWTC-3 Section IV.A</a>:</p></li>
 </ul>
@@ -229,7 +229,7 @@
 </tbody>
 </table>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># initializing the class</span>
@@ -241,11 +241,11 @@
     <span class="n">merger_rate_density_param</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">R0</span><span class="o">=</span><span class="mf">25.</span><span class="o">*</span><span class="mf">1e-9</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">b3</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">b4</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span>
     <span class="p">)</span>
 
-<span class="c1"># detector frame</span>
-<span class="n">rate1_det</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-
 <span class="c1"># source frame</span>
-<span class="n">rate1_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">pdf_z</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="n">rate1_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="c1"># detector frame</span>
+<span class="c1"># normalised to 1</span>
+<span class="n">rate1_det</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">pdf_z</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -254,9 +254,9 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-z_to_luminosity_distance interpolator will be generated at ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_2.pickle
-differential_comoving_volume interpolator will be generated at ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_2.pickle
-merger_rate_density_bbh_popI_II_oguri2018 interpolator will be generated at ./interpolator_pickle/merger_rate_density_bbh_popI_II_oguri2018/merger_rate_density_bbh_popI_II_oguri2018_4.pickle
+z_to_luminosity_distance interpolator will be loaded from ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_2.pickle
+differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_2.pickle
+merger_rate_density interpolator will be loaded from ./interpolator_pickle/merger_rate_density/merger_rate_density_0.pickle
 </pre></div></div>
 </div>
 </section>
@@ -271,7 +271,7 @@ merger_rate_density_bbh_popI_II_oguri2018 interpolator will be generated at ./in
 \psi(z) = 0.015 \frac{(1+z)^{2.7}}{1+[(1+z)/2.9]^{5.6}} \text{M}_\odot \text{yr}^{-1} \text{Mpc}^{-3} \tag{2}
 \end{equation}</span></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Star formation rate Madau &amp; Dickinson 2014</span>
@@ -282,11 +282,11 @@ merger_rate_density_bbh_popI_II_oguri2018 interpolator will be generated at ./in
     <span class="n">merger_rate_density_param</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">af</span><span class="o">=</span><span class="mf">2.7</span><span class="p">,</span> <span class="n">bf</span><span class="o">=</span><span class="mf">5.6</span><span class="p">,</span> <span class="n">cf</span><span class="o">=</span><span class="mf">2.9</span><span class="p">),</span>
     <span class="p">)</span>
 
-<span class="c1"># detector frame</span>
-<span class="n">rate2_det</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 <span class="c1"># source frame</span>
+<span class="n">rate2_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="c1"># detector frame</span>
 <span class="c1"># normalised to 1</span>
-<span class="n">rate2_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">pdf_z</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="n">rate2_det</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">pdf_z</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -297,7 +297,7 @@ merger_rate_density_bbh_popI_II_oguri2018 interpolator will be generated at ./in
 <div class="highlight"><pre>
 z_to_luminosity_distance interpolator will be loaded from ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_2.pickle
 differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_2.pickle
-star_formation_rate_madau_dickinson2014 interpolator will be generated at ./interpolator_pickle/star_formation_rate_madau_dickinson2014/star_formation_rate_madau_dickinson2014_0.pickle
+merger_rate_density interpolator will be loaded from ./interpolator_pickle/merger_rate_density/merger_rate_density_1.pickle
 </pre></div></div>
 </div>
 </section>
@@ -317,7 +317,7 @@ star_formation_rate_madau_dickinson2014 interpolator will be generated at ./inte
 <li><p><span class="math notranslate nohighlight">\(n_o=19.2\times 10^{-9}\)</span>, <span class="math notranslate nohighlight">\(a_{III}=0.66\)</span>, <span class="math notranslate nohighlight">\(b_{III}=0.3\)</span>, <span class="math notranslate nohighlight">\(z_{III}=11.6\)</span></p></li>
 </ul>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pop III Ng et al. 2022</span>
@@ -327,11 +327,11 @@ star_formation_rate_madau_dickinson2014 interpolator will be generated at ./inte
     <span class="n">merger_rate_density</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_bbh_popIII_ken2022&quot;</span>
     <span class="p">)</span>
 
-<span class="c1"># detector frame</span>
-<span class="n">rate3_det</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 <span class="c1"># source frame</span>
+<span class="n">rate3_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="c1"># detector frame</span>
 <span class="c1"># normalised to 1</span>
-<span class="n">rate3_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">pdf_z</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="n">rate3_det</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">pdf_z</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -342,7 +342,7 @@ star_formation_rate_madau_dickinson2014 interpolator will be generated at ./inte
 <div class="highlight"><pre>
 z_to_luminosity_distance interpolator will be loaded from ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_2.pickle
 differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_2.pickle
-merger_rate_density_bbh_popIII_ken2022 interpolator will be generated at ./interpolator_pickle/merger_rate_density_bbh_popIII_ken2022/merger_rate_density_bbh_popIII_ken2022_0.pickle
+merger_rate_density interpolator will be loaded from ./interpolator_pickle/merger_rate_density/merger_rate_density_2.pickle
 </pre></div></div>
 </div>
 </section>
@@ -362,7 +362,7 @@ merger_rate_density_bbh_popIII_ken2022 interpolator will be generated at ./inter
 <li><p><span class="math notranslate nohighlight">\(n_o=0.044\times 10^{-9}\)</span>, <span class="math notranslate nohighlight">\(t_o=13.786885302009708\)</span></p></li>
 </ul>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># primordial black holes Ng et al. 2022</span>
@@ -371,30 +371,22 @@ merger_rate_density_bbh_popIII_ken2022 interpolator will be generated at ./inter
         <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span>
         <span class="n">merger_rate_density</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_bbh_primordial_ken2022&quot;</span><span class="p">)</span>
 
-<span class="c1"># detector frame</span>
-<span class="n">rate4_det</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="c1"># source frame</span>
+<span class="n">rate4_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 <span class="c1"># source frame</span>
 <span class="c1"># normalised to 1</span>
-<span class="n">rate4_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">pdf_z</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="n">rate4_det</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">pdf_z</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-z_to_luminosity_distance interpolator will be loaded from ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_2.pickle
-differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_2.pickle
-INFO:numba.core.transforms:finding looplift candidates
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-merger_rate_density_bbh_primordial_ken2022 interpolator will be generated at ./interpolator_pickle/merger_rate_density_bbh_primordial_ken2022/merger_rate_density_bbh_primordial_ken2022_0.pickle
+z_to_luminosity_distance interpolator will be loaded from ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_2.pickle
+differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_2.pickle
+merger_rate_density interpolator will be loaded from ./interpolator_pickle/merger_rate_density/merger_rate_density_3.pickle
 </pre></div></div>
 </div>
 <section id="Plots-and-comparison">
@@ -402,16 +394,16 @@ merger_rate_density_bbh_primordial_ken2022 interpolator will be generated at ./i
 <section id="reproduction-of-Ng-et-al.-2022-Fig.-3">
 <h3>reproduction of Ng et al. 2022 <a class="reference external" href="https://arxiv.org/pdf/2204.11864.pdf">Fig. 3</a><a class="headerlink" href="#reproduction-of-Ng-et-al.-2022-Fig.-3" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># normalization factor is different</span>
-<span class="c1"># plot the merger rate density (detector frame)</span>
+<span class="c1"># plot the merger rate density (source frame)</span>
 <span class="c1"># factor 1e9 is to convert to Gpc^-3 yr^-1 from Mpc^-3 yr^-1</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">rate1_det</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;BBH popI/II Oguri&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">rate3_det</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C1&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Pop III Ken2022&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">rate4_det</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C2&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Primordial BBH Ken2022&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">rate1_src</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;BBH popI/II Oguri&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">rate3_src</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C1&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Pop III Ken2022&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">rate4_src</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C2&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Primordial BBH Ken2022&quot;</span><span class="p">)</span>
 <span class="c1"># labels</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\frac</span><span class="si">{dR}{dz}</span><span class="s2"> (Gpc^{-3} yr^{-1})$&quot;</span><span class="p">)</span>
@@ -420,7 +412,7 @@ merger_rate_density_bbh_primordial_ken2022 interpolator will be generated at ./i
 <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e2</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Merger rate density (detector frame)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Merger rate density (source frame)&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <br/></pre></div>
 </div>
@@ -434,18 +426,18 @@ merger_rate_density_bbh_primordial_ken2022 interpolator will be generated at ./i
 </div>
 </section>
 </section>
-<section id="Merger-rate-density-(source-frame)">
-<h2>Merger rate density (source frame)<a class="headerlink" href="#Merger-rate-density-(source-frame)" title="Link to this heading"></a></h2>
+<section id="Merger-rate-density-(detector-frame)">
+<h2>Merger rate density (detector frame)<a class="headerlink" href="#Merger-rate-density-(detector-frame)" title="Link to this heading"></a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the pdf of zs (source frame)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the pdf of zs (detector frame)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">rate2_src</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;SFR Madau &amp; Dickinson&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">rate1_src</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C1&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;BBH popI/II Oguri2018&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">rate3_src</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C2&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Pop III Ken2022&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">rate4_src</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C3&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Primordial BH Ken2022&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">rate2_det</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;SFR Madau &amp; Dickinson&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">rate1_det</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C1&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;BBH popI/II Oguri2018&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">rate3_det</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C2&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Pop III Ken2022&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">rate4_det</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C3&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Primordial BH Ken2022&quot;</span><span class="p">)</span>
 <span class="c1"># labels</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;pdf&quot;</span><span class="p">)</span>
@@ -453,7 +445,7 @@ merger_rate_density_bbh_primordial_ken2022 interpolator will be generated at ./i
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Merger rate density (source frame)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Merger rate density (detector frame)&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -465,6 +457,9 @@ merger_rate_density_bbh_primordial_ken2022 interpolator will be generated at ./i
 <img alt="../../_images/examples_source_population_merger_rate_density_model_comparision_17_0.png" src="../../_images/examples_source_population_merger_rate_density_model_comparision_17_0.png" />
 </div>
 </div>
+<ul class="simple">
+<li><p>You can see there is a delay in the BBH pop I/II merger peak compared to the SFR peak. This is due to the delay in the formation of BBHs compared to the formation of stars.</p></li>
+</ul>
 </section>
 <section id="Conclusion">
 <h2>Conclusion<a class="headerlink" href="#Conclusion" title="Link to this heading"></a></h2>
@@ -477,24 +472,21 @@ these uncertainties and provide valuable insights into the formation and evoluti
 <section id="Bonus-plot">
 <h2>Bonus plot<a class="headerlink" href="#Bonus-plot" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Star formation rate (SFR) vs redshift</p></li>
+<li><p>Star formation rate source frame (SFR) vs redshift</p></li>
 </ul>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot star formation rate distribution wrt redshift</span>
-<span class="n">zs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">cbc</span><span class="o">.</span><span class="n">star_formation_rate_madau_dickinson2014</span><span class="p">(</span><span class="n">zs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;detector frame&quot;</span><span class="p">)</span>
-<span class="c1"># plt.plot(zs, cbc.merger_rate_density_src_frame(zs)/(1+zs) * cbc.differential_comoving_volume(zs), color=&#39;C1&#39;, linestyle=&#39;-&#39;, alpha=0.5, label=&quot;source frame&quot;)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">rate2_src</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;SFR Madau &amp; Dickinson&quot;</span><span class="p">)</span>
 <span class="c1"># labels</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\frac{d\rho_{\star}}</span><span class="si">{dz}</span><span class="s2"> (M_{\odot} yr^{-1} Mpc^{-3})$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;P(z)&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Star formation rate&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Star formation rate (source frame)&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -503,7 +495,23 @@ these uncertainties and provide valuable insights into the formation and evoluti
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/examples_source_population_merger_rate_density_model_comparision_20_0.png" src="../../_images/examples_source_population_merger_rate_density_model_comparision_20_0.png" />
+<img alt="../../_images/examples_source_population_merger_rate_density_model_comparision_21_0.png" src="../../_images/examples_source_population_merger_rate_density_model_comparision_21_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">

@@ -471,7 +471,7 @@ Functions
    |                                     | and its parameters               |
    +-------------------------------------+----------------------------------+
    |:attr:`~sample_source_redshift`      | Function to sample source        |
-   |                                     | redshifts (source frame)         |
+   |                                     | redshifts                        |
    +-------------------------------------+----------------------------------+
 
    Instance Methods
@@ -490,7 +490,7 @@ Functions
    |:meth:`~pdf_z`                       | Function to compute the pdf      |
    |                                     | p(z)                             |
    +-------------------------------------+----------------------------------+
-   |:meth:`~merger_rate_density_src_frame`                                  |
+   |:meth:`~merger_rate_density_detector_frame`                                  |
    +-------------------------------------+----------------------------------+
    |                                     | Function to compute the merger   |
    |                                     | rate density (source frame)      |
@@ -882,7 +882,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: merger_rate_density_src_frame(zs, param=None)
+   .. py:method:: merger_rate_density_detector_frame(zs, param=None)
 
       
       Function to compute the merger rate density (source frame). The output is in source frame and is unnormalized.
@@ -917,7 +917,7 @@ Functions
 
       >>> from ler.gw_source_population import SourceGalaxyPopulationModel
       >>> cbc = SourceGalaxyPopulationModel()
-      >>> rate_density = cbc.merger_rate_density_src_frame(zs=0.1)
+      >>> rate_density = cbc.merger_rate_density_detector_frame(zs=0.1)
 
 
 
@@ -1367,7 +1367,7 @@ Functions
    |                                     | and its parameters               |
    +-------------------------------------+----------------------------------+
    |:attr:`~sample_source_redshift`      | Function to sample source        |
-   |                                     | redshifts (source frame)         |
+   |                                     | redshifts                        |
    +-------------------------------------+----------------------------------+
 
    Instance Methods
@@ -1386,7 +1386,7 @@ Functions
    |:meth:`~pdf_z`                       | Function to compute the pdf      |
    |                                     | p(z)                             |
    +-------------------------------------+----------------------------------+
-   |:meth:`~merger_rate_density_src_frame`                                  |
+   |:meth:`~merger_rate_density_detector_frame`                                  |
    +-------------------------------------+----------------------------------+
    |                                     | Function to compute the merger   |
    |                                     | rate density (source frame)      |
@@ -1778,7 +1778,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: merger_rate_density_src_frame(zs, param=None)
+   .. py:method:: merger_rate_density_detector_frame(zs, param=None)
 
       
       Function to compute the merger rate density (source frame). The output is in source frame and is unnormalized.
@@ -1813,7 +1813,7 @@ Functions
 
       >>> from ler.gw_source_population import SourceGalaxyPopulationModel
       >>> cbc = SourceGalaxyPopulationModel()
-      >>> rate_density = cbc.merger_rate_density_src_frame(zs=0.1)
+      >>> rate_density = cbc.merger_rate_density_detector_frame(zs=0.1)
 
 
 

@@ -143,7 +143,7 @@ def star_formation_rate_madau_dickinson2014(
     return 0.015 * (1 + zs) ** af / (1 + ((1 + zs) / cf) ** bf)
 
 
-@jit
+# @jit
 def merger_rate_density_bbh_primordial_ken2022(
         zs, cosmology=cosmo, n0=0.044 * 1e-9, t0=13.786885302009708
     ):
