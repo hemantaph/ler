@@ -306,7 +306,7 @@ P(z_l, \theta_L|z_s, SL) &amp;= P(\theta_L|z_s, z_l, SL) P(z_l|z_s, SL) \\
 <p>The numerator corresponds to relevant lensing area of all possible lensing galaxies present in the universe between the observer and the source. For a given source at red-shift <span class="math notranslate nohighlight">\(z_s\)</span>, the probability of strong lensing is given by <span class="math notranslate nohighlight">\(P(SL|z_s)\)</span>. And let there be a distribution of lenses <span class="math notranslate nohighlight">\(dN(z_l)\)</span> at red-shift <span class="math notranslate nohighlight">\(z_l\)</span> in a spherical shell of thickness <span class="math notranslate nohighlight">\(d z_l\)</span>. Then the probability of strong lensing is given by,</p>
 <p><span class="math">\begin{equation}
 \begin{split}
-P(SL|z_s) &=  \frac{1}{4\pi} \int^{z_s}_{z_l=0} P(SL|z_s) dN(z_l) \\
+P(SL|z_s) &=  \frac{1}{4\pi} \int^{z_s}_{z_l=0} P(SL|z_s, z_l) dN(z_l) \\
 \end{split} \tag{10}
 \end{equation}</span></p>
 <p>Let’s try to write the integrand in terms of number density. Consequently, we need to consider the integrand’s dependence on lens parameters <span class="math notranslate nohighlight">\(\theta_L\)</span> and lens redshift <span class="math notranslate nohighlight">\(z_l\)</span>. Now the Eqn(10) becomes,</p>

@@ -86,7 +86,7 @@ class CBCSourceRedshiftDistribution(object):
     |                                     | and its parameters               |
     +-------------------------------------+----------------------------------+
     |:attr:`~sample_source_redshift`      | Function to sample source        |
-    |                                     | redshifts (source frame)         |
+    |                                     | redshifts                        |
     +-------------------------------------+----------------------------------+
 
     Instance Methods
@@ -104,7 +104,7 @@ class CBCSourceRedshiftDistribution(object):
     |:meth:`~pdf_z`                       | Function to compute the pdf      |
     |                                     | p(z)                             |
     +-------------------------------------+----------------------------------+
-    |:meth:`~merger_rate_density_src_frame`                                  |
+    |:meth:`~merger_rate_density_detector_frame`                                  |
     +-------------------------------------+----------------------------------+
     |                                     | Function to compute the merger   |
     |                                     | rate density (source frame)      |
@@ -231,11 +231,11 @@ class CBCSourceRedshiftDistribution(object):
 
 
         # To find the normalization constant of the pdf p(z)
-        # merger_rate_density_src_frame is njit function and takes array as input but quad integrand function takes only float as input
-        merger_rate_density_src_frame = lambda z: self.merger_rate_density_src_frame(zs=np.array([z]), param=merger_rate_density_param)[0]
+        # merger_rate_density_detector_frame is njit function and takes array as input but quad integrand function takes only float as input
+        merger_rate_density_detector_frame = lambda z: self.merger_rate_density_detector_frame(zs=np.array([z]), param=merger_rate_density_param)[0]
         # this normalization is important to find the correct pdf p(z)
         self.normalization_pdf_z = quad(
-            merger_rate_density_src_frame,
+            merger_rate_density_detector_frame,
             z_min,
             z_max
         )[0]
@@ -299,9 +299,9 @@ class CBCSourceRedshiftDistribution(object):
         >>> pdf = cbc.pdf_z(zs=0.1)
         """
 
-        return self.merger_rate_density_src_frame(zs=zs,param=param)/self.normalization_pdf_z
+        return self.merger_rate_density_detector_frame(zs=zs,param=param)/self.normalization_pdf_z
 
-    def merger_rate_density_src_frame(self, zs, param=None):
+    def merger_rate_density_detector_frame(self, zs, param=None):
         """
         Function to compute the merger rate density (source frame). The output is in source frame and is unnormalized.
 
@@ -324,7 +324,7 @@ class CBCSourceRedshiftDistribution(object):
         ----------
         >>> from ler.gw_source_population import SourceGalaxyPopulationModel
         >>> cbc = SourceGalaxyPopulationModel()
-        >>> rate_density = cbc.merger_rate_density_src_frame(zs=0.1)
+        >>> rate_density = cbc.merger_rate_density_detector_frame(zs=0.1)
         """
 
         zs = np.array([zs]).reshape(-1)

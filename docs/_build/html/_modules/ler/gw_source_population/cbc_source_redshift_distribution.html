@@ -199,7 +199,7 @@
 <span class="sd">    |                                     | and its parameters               |</span>
 <span class="sd">    +-------------------------------------+----------------------------------+</span>
 <span class="sd">    |:attr:`~sample_source_redshift`      | Function to sample source        |</span>
-<span class="sd">    |                                     | redshifts (source frame)         |</span>
+<span class="sd">    |                                     | redshifts                        |</span>
 <span class="sd">    +-------------------------------------+----------------------------------+</span>
 
 <span class="sd">    Instance Methods</span>
@@ -217,7 +217,7 @@
 <span class="sd">    |:meth:`~pdf_z`                       | Function to compute the pdf      |</span>
 <span class="sd">    |                                     | p(z)                             |</span>
 <span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:meth:`~merger_rate_density_src_frame`                                  |</span>
+<span class="sd">    |:meth:`~merger_rate_density_detector_frame`                                  |</span>
 <span class="sd">    +-------------------------------------+----------------------------------+</span>
 <span class="sd">    |                                     | Function to compute the merger   |</span>
 <span class="sd">    |                                     | rate density (source frame)      |</span>
@@ -371,11 +371,11 @@
 
 
         <span class="c1"># To find the normalization constant of the pdf p(z)</span>
-        <span class="c1"># merger_rate_density_src_frame is njit function and takes array as input but quad integrand function takes only float as input</span>
-        <span class="n">merger_rate_density_src_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_src_frame</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">z</span><span class="p">]),</span> <span class="n">param</span><span class="o">=</span><span class="n">merger_rate_density_param</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># merger_rate_density_detector_frame is njit function and takes array as input but quad integrand function takes only float as input</span>
+        <span class="n">merger_rate_density_detector_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_detector_frame</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">z</span><span class="p">]),</span> <span class="n">param</span><span class="o">=</span><span class="n">merger_rate_density_param</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="c1"># this normalization is important to find the correct pdf p(z)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">normalization_pdf_z</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span>
-            <span class="n">merger_rate_density_src_frame</span><span class="p">,</span>
+            <span class="n">merger_rate_density_detector_frame</span><span class="p">,</span>
             <span class="n">z_min</span><span class="p">,</span>
             <span class="n">z_max</span>
         <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
@@ -441,12 +441,12 @@
 <span class="sd">        &gt;&gt;&gt; pdf = cbc.pdf_z(zs=0.1)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_src_frame</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span><span class="n">param</span><span class="o">=</span><span class="n">param</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">normalization_pdf_z</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_detector_frame</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span><span class="n">param</span><span class="o">=</span><span class="n">param</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">normalization_pdf_z</span></div>
 
 
-<div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_src_frame">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_src_frame">[docs]</a>
-    <span class="k">def</span> <span class="nf">merger_rate_density_src_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_detector_frame">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_detector_frame">[docs]</a>
+    <span class="k">def</span> <span class="nf">merger_rate_density_detector_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to compute the merger rate density (source frame). The output is in source frame and is unnormalized.</span>
 
@@ -469,7 +469,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        &gt;&gt;&gt; from ler.gw_source_population import SourceGalaxyPopulationModel</span>
 <span class="sd">        &gt;&gt;&gt; cbc = SourceGalaxyPopulationModel()</span>
-<span class="sd">        &gt;&gt;&gt; rate_density = cbc.merger_rate_density_src_frame(zs=0.1)</span>
+<span class="sd">        &gt;&gt;&gt; rate_density = cbc.merger_rate_density_detector_frame(zs=0.1)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">zs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">zs</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
