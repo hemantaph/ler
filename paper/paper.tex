@@ -397,12 +397,13 @@ available in \(ler\)
 
 \section{Statement of need}\label{statement-of-need}
 
-\(ler\) is a statistical-based Python package specifically designed for
-computing detectable rates of both lensed and unlensed gravitational
-wave (GW) events, catering to the requirements of the LIGO-Virgo-KAGRA
-Scientific Collaboration and astrophysics research scholars. The core
-functionality of \(ler\) intricately hinges upon the interplay of
-various components which include sampling the properties of
+\(ler\) is a statistics-based Python package specifically designed for
+computing detectable rates of both lensed and unlensed GW events,
+catering to the requirements of the LIGO-Virgo-KAGRA Scientific
+Collaboration (The LIGO Scientific Collaboration et al. 2015) (Acernese
+et al. 2014) (Akutsu et al. 2020) and astrophysics research scholars.
+The core functionality of \(ler\) intricately hinges upon the interplay
+of various components which include sampling the properties of
 compact-binary sources, lens galaxies characteristics, solving lens
 equations to derive properties of resultant images, and computing
 detectable GW rates. This comprehensive functionality builds on the
@@ -416,15 +417,15 @@ the inverse transform sampling method to replace more cumbersome
 rejection sampling. The modular design of \(ler\) not only optimizes
 speed and functionality but also ensures adaptability and upgradability,
 supporting the integration of additional statistics as research evolves.
-Currently, \(ler\) is an important tool in generating simulated
-gravitational wave (GW) events---both lensed and unlensed---and provides
-astrophysically accurate distributions of event-related parameters for
-both detectable and non-detectable events. This functionality aids in
-event validation and enhances the forecasting of detection capabilities
-across various GW detectors to study such events. The architecture of
-the \(ler\) API facilitates seamless compatibility with other software
-packages, allowing researchers to integrate and utilize its
-functionalities based on specific scientific requirements.
+Currently, \(ler\) is an important tool in generating simulated GW
+events---both lensed and unlensed---and provides astrophysically
+accurate distributions of event-related parameters for both detectable
+and non-detectable events. This functionality aids in event validation
+and enhances the forecasting of detection capabilities across various GW
+detectors to study such events. The architecture of the \(ler\) API
+facilitates seamless compatibility with other software packages,
+allowing researchers to integrate and utilize its functionalities based
+on specific scientific requirements.
 
 \section{Design and Structure}\label{design-and-structure}
 
@@ -438,7 +439,7 @@ summarized as follows:
 \begin{itemize}
 \tightlist
 \item
-  Sampling Gravitational Wave (GW) Source Properties:
+  Sampling GW Source Properties:
 
   \begin{itemize}
   \tightlist
@@ -579,6 +580,19 @@ No.~PHY-0757058 and No.~PHY-0823459.
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-VIRGO2015}
+Acernese, F, M Agathos, K Agatsuma, D Aisa, N Allemandou, A Allocca, J
+Amarni, et al. 2014. {``Advanced Virgo: A Second-Generation
+Interferometric Gravitational Wave Detector.''} \emph{Classical and
+Quantum Gravity} 32 (2): 024001.
+\url{https://doi.org/10.1088/0264-9381/32/2/024001}.
+
+\bibitem[\citeproctext]{ref-KAGRA2021}
+Akutsu, T, M Ando, K Arai, Y Arai, S Araki, A Araya, N Aritomi, et al.
+2020. {``{Overview of KAGRA: Detector design and construction
+history}.''} \emph{Progress of Theoretical and Experimental Physics}
+2021 (5): 05A101. \url{https://doi.org/10.1093/ptep/ptaa125}.
+
 \bibitem[\citeproctext]{ref-Ashton2019}
 Ashton, Gregory, Moritz Hübner, Paul D. Lasky, Colm Talbot, Kendall
 Ackley, Sylvia Biscoveanu, Qi Chu, et al. 2019. {``Bilby: A
@@ -619,6 +633,12 @@ Inc. \url{https://numba.pydata.org/}.
 NumPy Community. 2022. {``NumPy: A Fundamental Package for Scientific
 Computing with Python.''} \emph{NumPy Website}. NumPy.
 \url{https://numpy.org/}.
+
+\bibitem[\citeproctext]{ref-LIGO2015}
+The LIGO Scientific Collaboration, J Aasi, B P Abbott, R Abbott, T
+Abbott, M R Abernathy, K Ackley, et al. 2015. {``Advanced LIGO.''}
+\emph{Classical and Quantum Gravity} 32 (7): 074001.
+\url{https://doi.org/10.1088/0264-9381/32/7/074001}.
 
 \bibitem[\citeproctext]{ref-scipy}
 Virtanen, Pauli, Ralf Gommers, Travis E. Oliphant, Matt Haberland, Tyler
