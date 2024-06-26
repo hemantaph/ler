@@ -81,7 +81,7 @@ The architecture of the $ler$ API is deliberately organized such that each disti
 
 - Calculation of Detectable Merger Rates Per Year:
     * The calculation of rates necessitates integration over simulated events that meet specific detection criteria. This process includes computing SNRs $(\rho)$ for each event or its lensed images, followed by an assessment against a predetermined threshold(s) $(\rho_{th})$.
-    * SNR calculations are optimized using [*gwsnr*](https://gwsnr.readthedocs.io/en/latest/), leveraging interpolation and multiprocessing for accuracy and speed.
+    * SNR calculations are optimized using [*gwsnr*](https://gwsnr.readthedocs.io/en/latest/) python package, leveraging interpolation and multiprocessing for accuracy and speed.
     * Simulated events and rate results, along with input configurations, are systematically archived for easy access and future analysis. Additionally, all interpolators used in the process are preserved for future applications.
     * Most cosmology-related calculations within the *ler* package are performed using the *astropy* library [@astropy]. The default cosmological model is LambdaCDM ($H_0=70,\, \Omega_m=0.3,\, \Omega_\Lambda=0.7$); however, users have the flexibility to employ any cosmology available in *astropy*. All internal calculations in *ler* will then be based on the user-selected cosmological model.
 
