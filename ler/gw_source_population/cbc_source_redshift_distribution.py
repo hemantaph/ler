@@ -107,7 +107,7 @@ class CBCSourceRedshiftDistribution(object):
     |:meth:`~merger_rate_density_detector_frame`                                  |
     +-------------------------------------+----------------------------------+
     |                                     | Function to compute the merger   |
-    |                                     | rate density (source frame)      |
+    |                                     | rate density (detector frame)    |
     +-------------------------------------+----------------------------------+
     |:meth:`~create_lookup_table`         | Function to create a lookup      |
     |                                     | table for the differential       |
@@ -275,7 +275,7 @@ class CBCSourceRedshiftDistribution(object):
 
     def pdf_z(self, zs, param=None):
         """
-        Function to compute the pdf p(z). The output is in source frame and is normalized.
+        Function to compute the pdf p(z). The output is in detector frame and is normalized.
 
         Parameters
         ----------
@@ -303,7 +303,7 @@ class CBCSourceRedshiftDistribution(object):
 
     def merger_rate_density_detector_frame(self, zs, param=None):
         """
-        Function to compute the merger rate density (source frame). The output is in source frame and is unnormalized.
+        Function to compute the merger rate density (detector frame). The output is in detector frame and is unnormalized.
 
         Parameters
         ----------
@@ -318,7 +318,7 @@ class CBCSourceRedshiftDistribution(object):
         ----------
         rate_density : `numpy.ndarray`
             1D array of floats
-            merger rate density (source frame) (Mpc^-3 yr^-1)
+            merger rate density (detector frame) (Mpc^-3 yr^-1)
 
         Examples
         ----------
@@ -341,7 +341,7 @@ class CBCSourceRedshiftDistribution(object):
         zs, R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30, param=None
     ):
         """
-        Function to compute the merger rate density (PopI/PopII). Reference: Oguri et al. (2018). The output is in detector frame and is unnormalized.
+        Function to compute the merger rate density (PopI/PopII). Reference: Oguri et al. (2018). The output is in source frame and is unnormalized.
 
         Parameters
         ----------
@@ -604,7 +604,7 @@ class CBCSourceRedshiftDistribution(object):
     @property
     def sample_source_redshift(self):
         """
-        Function to sample source redshifts (source frame) between z_min and z_max from the source galaxy population
+        Function to sample source redshifts (detector frame) between z_min and z_max from the detector galaxy population
 
         Parameters
         ----------
