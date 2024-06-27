@@ -294,7 +294,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         # To find the normalization constant of the pdf p(z)
         # this under the assumption that the event is strongly lensed
         # Define the merger-rate density function
-        pdf_unnormalized_ = lambda z: self.merger_rate_density_src_frame(np.array([z]), param=self.merger_rate_density_param) * self.strong_lensing_optical_depth(np.array([z]))
+        pdf_unnormalized_ = lambda z: self.merger_rate_density_detector_frame(np.array([z]), param=self.merger_rate_density_param) * self.strong_lensing_optical_depth(np.array([z]))
         pdf_unnormalized = lambda z: pdf_unnormalized_(z)[0]
 
         self.normalization_pdf_z_lensed = quad(
