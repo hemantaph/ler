@@ -493,7 +493,7 @@ Functions
    |:meth:`~merger_rate_density_detector_frame`                                  |
    +-------------------------------------+----------------------------------+
    |                                     | Function to compute the merger   |
-   |                                     | rate density (source frame)      |
+   |                                     | rate density (detector frame)    |
    +-------------------------------------+----------------------------------+
    |:meth:`~create_lookup_table`         | Function to create a lookup      |
    |                                     | table for the differential       |
@@ -530,7 +530,7 @@ Functions
    .. py:property:: sample_source_redshift
 
       
-      Function to sample source redshifts (source frame) between z_min and z_max from the source galaxy population
+      Function to sample source redshifts (detector frame) between z_min and z_max from the detector galaxy population
 
 
       :Parameters:
@@ -843,7 +843,7 @@ Functions
    .. py:method:: pdf_z(zs, param=None)
 
       
-      Function to compute the pdf p(z). The output is in source frame and is normalized.
+      Function to compute the pdf p(z). The output is in detector frame and is normalized.
 
 
       :Parameters:
@@ -885,7 +885,7 @@ Functions
    .. py:method:: merger_rate_density_detector_frame(zs, param=None)
 
       
-      Function to compute the merger rate density (source frame). The output is in source frame and is unnormalized.
+      Function to compute the merger rate density (detector frame). The output is in detector frame and is unnormalized.
 
 
       :Parameters:
@@ -902,7 +902,7 @@ Functions
 
           **rate_density** : `numpy.ndarray`
               1D array of floats
-              merger rate density (source frame) (Mpc^-3 yr^-1)
+              merger rate density (detector frame) (Mpc^-3 yr^-1)
 
 
 
@@ -927,7 +927,7 @@ Functions
    .. py:method:: merger_rate_density_bbh_popI_II_oguri2018(zs, R0=23.9 * 1e-09, b2=1.6, b3=2.0, b4=30, param=None)
 
       
-      Function to compute the merger rate density (PopI/PopII). Reference: Oguri et al. (2018). The output is in detector frame and is unnormalized.
+      Function to compute the merger rate density (PopI/PopII). Reference: Oguri et al. (2018). The output is in source frame and is unnormalized.
 
 
       :Parameters:
@@ -1389,7 +1389,7 @@ Functions
    |:meth:`~merger_rate_density_detector_frame`                                  |
    +-------------------------------------+----------------------------------+
    |                                     | Function to compute the merger   |
-   |                                     | rate density (source frame)      |
+   |                                     | rate density (detector frame)    |
    +-------------------------------------+----------------------------------+
    |:meth:`~create_lookup_table`         | Function to create a lookup      |
    |                                     | table for the differential       |
@@ -1426,7 +1426,7 @@ Functions
    .. py:property:: sample_source_redshift
 
       
-      Function to sample source redshifts (source frame) between z_min and z_max from the source galaxy population
+      Function to sample source redshifts (detector frame) between z_min and z_max from the detector galaxy population
 
 
       :Parameters:
@@ -1739,7 +1739,7 @@ Functions
    .. py:method:: pdf_z(zs, param=None)
 
       
-      Function to compute the pdf p(z). The output is in source frame and is normalized.
+      Function to compute the pdf p(z). The output is in detector frame and is normalized.
 
 
       :Parameters:
@@ -1781,7 +1781,7 @@ Functions
    .. py:method:: merger_rate_density_detector_frame(zs, param=None)
 
       
-      Function to compute the merger rate density (source frame). The output is in source frame and is unnormalized.
+      Function to compute the merger rate density (detector frame). The output is in detector frame and is unnormalized.
 
 
       :Parameters:
@@ -1798,7 +1798,7 @@ Functions
 
           **rate_density** : `numpy.ndarray`
               1D array of floats
-              merger rate density (source frame) (Mpc^-3 yr^-1)
+              merger rate density (detector frame) (Mpc^-3 yr^-1)
 
 
 
@@ -1823,7 +1823,7 @@ Functions
    .. py:method:: merger_rate_density_bbh_popI_II_oguri2018(zs, R0=23.9 * 1e-09, b2=1.6, b3=2.0, b4=30, param=None)
 
       
-      Function to compute the merger rate density (PopI/PopII). Reference: Oguri et al. (2018). The output is in detector frame and is unnormalized.
+      Function to compute the merger rate density (PopI/PopII). Reference: Oguri et al. (2018). The output is in source frame and is unnormalized.
 
 
       :Parameters:
