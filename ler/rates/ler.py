@@ -1580,15 +1580,39 @@ class LeR(LensGalaxyParameterDistribution):
             print(f"total unlensed rate (yr^-1): {total_rate}")
 
         print(f"storing detectable unlensed params in {output_path}")
+        print(f"storing meta data in {meta_data_path}")
 
         if trim_to_size:
             # trim the final param dictionary
             print(f"\n trmming final result to size={size}")
             param_final = get_param_from_json(output_path)
+            # randomly select size number of samples
+            len_ = len(list(param_final.values())[0])
+            idx = np.random.choice(len_, size, replace=False)
             # trim the final param dictionary, randomly, without repeating
             for key, value in param_final.items():
-                param_final[key] = param_final[key][:size]
+                param_final[key] = value[idx]
 
+            # change meta data
+            meta_data = load_json(meta_data_path)
+            old_events_total = meta_data["events_total"][-1]
+            old_detectable_events = meta_data["detectable_events"][-1]
+
+            # adjust the meta data
+            # following is to keep rate the same
+            new_events_total = np.round(size*old_events_total/old_detectable_events)
+            new_total_rate = self.normalization_pdf_z * size / new_events_total
+            meta_data["events_total"][-1] = new_events_total
+            meta_data["detectable_events"][-1] = size
+            meta_data["total_rate"][-1] = new_total_rate
+
+
+            print("collected number of detectable events = ", size)
+            print("total number of events = ", new_events_total)
+            print(f"total unlensed rate (yr^-1): {new_total_rate}")
+
+            # save the meta data
+            append_json(meta_data_path, meta_data, replace=True)
             # save the final param dictionary
             append_json(output_path, param_final, replace=True)
         else:
@@ -1805,20 +1829,43 @@ class LeR(LensGalaxyParameterDistribution):
             else:
                 append_json(meta_data_path, meta_data, replace=True)
 
-            print("collected number of events = ", n)
+            print("collected number of detectable events = ", n)
             print("total number of events = ", events_total)
             print(f"total lensed rate (yr^-1): {total_rate}")
 
         print(f"storing detectable lensed params in {output_path}")
+        print(f"storing meta data in {meta_data_path}")
 
         if trim_to_size:
             # trim the final param dictionary
             print(f"\n trmming final result to size={size}")
             param_final = get_param_from_json(output_path)
+            # randomly select size number of samples
+            len_ = len(list(param_final.values())[0])
+            idx = np.random.choice(len_, size, replace=False)
             # trim the final param dictionary
             for key, value in param_final.items():
-                param_final[key] = param_final[key][:size]
+                param_final[key] = value[idx]
 
+            # change meta data
+            meta_data = load_json(meta_data_path)
+            old_events_total = meta_data["events_total"][-1]
+            old_detectable_events = meta_data["detectable_events"][-1]
+
+            # adjust the meta data
+            # following is to keep rate the same
+            new_events_total = np.round(size * old_events_total/old_detectable_events)
+            new_total_rate = self.normalization_pdf_z_lensed * size / new_events_total
+            meta_data["events_total"][-1] = new_events_total
+            meta_data["detectable_events"][-1] = size
+            meta_data["total_rate"][-1] = new_total_rate
+
+            print("collected number of detectable events = ", size)
+            print("total number of events = ", new_events_total)
+            print(f"total unlensed rate (yr^-1): {new_total_rate}")
+
+            # save the meta data
+            append_json(meta_data_path, meta_data, replace=True)
             # save the final param dictionary
             append_json(output_path, param_final, replace=True)
         else:
