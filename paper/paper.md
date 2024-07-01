@@ -1,5 +1,5 @@
 ---
-title: '$ler$ : LVK (LIGO-Virgo-KAGRA collaboration) Event (compact-binary mergers) Rate calculator and simulator'
+title: '$ler$ : LVK (LIGO-Virgo-KAGRA collaboration) event (compact-binary mergers) rate calculator and simulator'
 tags:
   - Python
   - astrophysics
@@ -22,19 +22,19 @@ authors:
     affiliation: "1"
   - name: Justin Janquart
     # equal-contrib: False 
-    affiliation: "4,5"
+    affiliation: "4,5,6,7"
   - name: Chris Van Den Broeck
     # equal-contrib: False 
     affiliation: "4,5"
-  - name: Otto Akseli HANNUKSELA 
+  - name: Otto Akseli Hannukkala
     # equal-contrib: False 
     affiliation: "1"
   - name: Neha Singh
     # equal-contrib: False
-    affiliation: "6"
+    affiliation: "8"
   - name: David Keitel
     # equal-contrib: False
-    affiliation: "6"
+    affiliation: "8"
 affiliations:
   - name: Department of Physics, The Chinese University of Hong Kong, Shatin, New Territories, Hong Kong
     index: 1
@@ -46,8 +46,12 @@ affiliations:
     index: 4
   - name: Nikhef – National Institute for Subatomic Physics, Science Park, 1098 XG Amsterdam, The Netherlands
     index: 5
-  - name: Departament de F\'isica, Universitat de les Illes Balears, IAC3-IEEC, Crta. Valldemossa km 7.5, E-07122 Palma, Spain
+  - name: Center for Cosmology, Particle Physics and Phenomenology - CP3, Universit\'e Catholique de Louvain, Louvain-La-Neuve, B-1348, Belgium
     index: 6
+  - name: Royal Observatory of Belgium, Avenue Circulaire, 3, 1180 Uccle, Belgium
+    index: 7
+  - name: Departament de F\'isica, Universitat de les Illes Balears, IAC3-IEEC, Crta. Valldemossa km 7.5, E-07122 Palma, Spain
+    index: 8
 date: 19 June 2024
 bibliography: paper.bib
 ---
