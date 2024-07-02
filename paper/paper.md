@@ -30,9 +30,11 @@ authors:
     # equal-contrib: False 
     affiliation: "1"
   - name: Neha Singh
+    orcid: 0000-0002-1135-3456 
     # equal-contrib: False
     affiliation: "8"
   - name: David Keitel
+    orcid: 0000-0002-2824-626X
     # equal-contrib: False
     affiliation: "8"
 affiliations:
@@ -58,7 +60,7 @@ bibliography: paper.bib
 
 # Summary
 
-Gravitational waves (GWs) are ripples in the fabric of space and time caused by the acceleration of unevenly distributed mass or masses. Observable GWs are created especially during the violent cosmic events of merging compact binaries, such as 'binary black holes' (BBH), 'binary neutron stars' (BNS), and 'neutron star and black hole pair' (NSBH). GWs emitted by these events can be distorted or magnified by the gravitational fields of massive objects such as galaxies or galaxy clusters, a phenomenon known as gravitational lensing. Profound comprehension of gravitational lensing's impact on GW signals is imperative to their accurate interpretation and the extraction of astrophysical insights therein. For this purpose, statistical modelling of GWs lensing can provide valuable insights into the properties of the lensing objects and GW sources. Such statistics require accurate and efficient means to calculate the detectable lensing rates, which depend on up-to-date modeling and implementation of lens and source properties and their distribution. The outcomes of these computational analyses not only contribute to generating dependable forecasts but also play an important role in validating forthcoming lensing events [@Janquart2023].
+Gravitational waves (GWs) are ripples in the fabric of space and time caused by the acceleration of unevenly distributed mass or masses. Observable GWs are created especially during the violent cosmic events of merging compact binaries, such as 'binary black holes' (BBHs), 'binary neutron stars' (BNSs), and 'neutron star and black hole pair' (NSBHs). GWs emitted by these events can be distorted or magnified by the gravitational fields of massive objects such as galaxies or galaxy clusters, a phenomenon known as gravitational lensing. Profound comprehension of gravitational lensing's impact on GW signals is imperative to their accurate interpretation and the extraction of astrophysical insights therein. For this purpose, statistical modelling of GWs lensing can provide valuable insights into the properties of the lensing objects and GW sources. Such statistics require accurate and efficient means to calculate the detectable lensing rates, which depend on up-to-date modeling and implementation of lens and source properties and their distribution. The outcomes of these computational analyses not only contribute to generating dependable forecasts but also play an important role in validating forthcoming lensing events [@Janquart2023].
 
 Obtaining precise outcomes in statistical analyses of this nature necessitates the utilization of large-scale sampling, often numbering in the millions. However, this process is computationally demanding. The $ler$ framework addresses this by employing innovative techniques to optimize the workflow and computation efficiency required for handling large-scale statistical analyses, essential for modeling detectable events and calculating rates. Its integration of modular statistical components enhances the framework's adaptability and extendability, thus proving to be an invaluable asset in the evolving field of gravitational wave research. Detailed description, source code, and examples are available in $ler$ [documentation](https://ler.readthedocs.io/en/latest/).
 
@@ -70,20 +72,20 @@ $ler$ is a statistics-based Python package specifically designed for computing d
 
 The architecture of the $ler$ API is deliberately organized such that each distinct functionality holds its own significance in scientific research. Simultaneously, these functionalities seamlessly integrate and can be employed collectively to accommodate diverse scientific objectives. Key features of $ler$ and its dependencies can be summarized as follows:
 
-- Sampling GW Source Properties:
-    * For the unlensed events, The sampling distribution $(\,R_m(z_s)\,)$ for the source's redshift $(\,z_s\,)$ is derived from the merger rate density of compact binaries, which, in turn, is based on the star formation rate. The code is meticulously designed to enable the straightforward integration of future updates or user-specified distributions of these sources.
+- Sampling GW source properties:
+    * For the unlensed events, the sampling distribution $(\,R_m(z_s)\,)$ for the source's redshift $(\,z_s\,)$ is derived from the merger rate density of compact binaries, which, in turn, is based on the star formation rate. The code is meticulously designed to enable the straightforward integration of future updates or user-specified distributions of these sources.
     * Intrinsic and extrinsic parameters $(\theta)$ of GW sources are sampled using prior distributions $(P(\theta))$ from the gwcosmo [@gwcosmo] and bilby [@Ashton2019] packages, with options for users to input custom distributions.
 
-- Sampling of lens galaxies attributes and source red-shifts:
-    * For lensed case, the source redshift $(z_s)$ is sampled under the strong lensing condition $(\text{SL})$, based on the precomputed probability of strong lensing with source at $z_s$ $(\text{optical depth: }P\left(\text{SL}|z_s\right) \text{ or }\tau(z_s)\,)$. This probability can be recalculated for specified configurations of lens galaxies, leveraging *multiprocessing* and *njit* functionalities for enhanced efficiency.
-    * The package utilizes the Elliptical Power Law with external shear (EPL+Shear) model [@Wempe2022] for galaxy parameters $(\theta_L)$ sampling, following @Wierda2021. Rejection sampling is applied on the above samples on condition that whether the event is strongly lensed or not, $P\left(\text{SL}|z_s,\theta_L\right)$.
+- Sampling of lens galaxy attributes and source red-shifts:
+    * For the lensed case, the source redshift $(z_s)$ is sampled under the strong lensing condition $(\text{SL})$, based on the precomputed probability of strong lensing with a source at $z_s$ $(\text{optical depth: }P\left(\text{SL}|z_s\right) \text{ or }\tau(z_s)\,)$. This probability can be recalculated for specified configurations of lens galaxies, leveraging *multiprocessing* and *njit* functionalities for enhanced efficiency.
+    * The package utilizes the Elliptical Power Law with external shear (EPL+Shear) model [@Wempe2022] for galaxy parameters $(\theta_L)$ sampling, following @Wierda2021. Rejection sampling is applied on the above samples depending on whether the event is strongly lensed or not, $P\left(\text{SL}|z_s,\theta_L\right)$.
 
 - Generation of image properties:
-    * Source position $(\beta)$ is sampled from the caustic in the source plane.
-    * Sampled lens properties and source position is fed in *lenstronomy* [@Birrer2021] to generate properties of the images. This is the slowest part of the entire simulation, which $ler$ tackles through parallelization with multiprocessing.
-    * Image properties like magnification $(\mu_i)$ and time delay ($\Delta t_i$) modifies the original source signal strength, changing the signal-to-noise ratio SNR and our ability to detect.
+    * The source position $(\beta)$ is sampled from the caustic in the source plane.
+    * Sampled lens properties and source positions are fed to *lenstronomy* [@Birrer2021] to generate properties of the images. This is the slowest part of the entire simulation, which $ler$ tackles through parallelization with multiprocessing.
+    * Image properties like magnification $(\mu_i)$ and time delay ($\Delta t_i$) modify the original source signal strength, changing the signal-to-noise ratio (SNR) and our ability to detect.
 
-- Calculation of Detectable Merger Rates Per Year:
+- Calculation of detectable merger rates per year:
     * The calculation of rates necessitates integration over simulated events that meet specific detection criteria. This process includes computing SNRs $(\rho)$ for each event or its lensed images, followed by an assessment against a predetermined threshold(s) $(\rho_{th})$.
     * SNR calculations are optimized using [*gwsnr*](https://gwsnr.readthedocs.io/en/latest/) python package, leveraging interpolation and multiprocessing for accuracy and speed.
     * Simulated events and rate results, along with input configurations, are systematically archived for easy access and future analysis. Additionally, all interpolators used in the process are preserved for future applications.
