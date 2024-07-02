@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.5.16)  2 JUL 2024 04:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.5.16)  3 JUL 2024 02:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1029,24 +1029,24 @@ Package biblatex Warning: Load 'inputenc' before biblatex.
 (./paper.aux)
 \openout1 = `paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 320.
-LaTeX Font Info:    ... okay on input line 320.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 320.
-LaTeX Font Info:    ... okay on input line 320.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 320.
-LaTeX Font Info:    ... okay on input line 320.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 320.
-LaTeX Font Info:    ... okay on input line 320.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 320.
-LaTeX Font Info:    ... okay on input line 320.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 320.
-LaTeX Font Info:    ... okay on input line 320.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 320.
-LaTeX Font Info:    ... okay on input line 320.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 320.
-LaTeX Font Info:    ... okay on input line 320.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 320.
-LaTeX Font Info:    ... okay on input line 320.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 319.
+LaTeX Font Info:    ... okay on input line 319.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 319.
+LaTeX Font Info:    ... okay on input line 319.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 319.
+LaTeX Font Info:    ... okay on input line 319.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 319.
+LaTeX Font Info:    ... okay on input line 319.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 319.
+LaTeX Font Info:    ... okay on input line 319.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 319.
+LaTeX Font Info:    ... okay on input line 319.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 319.
+LaTeX Font Info:    ... okay on input line 319.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 319.
+LaTeX Font Info:    ... okay on input line 319.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 319.
+LaTeX Font Info:    ... okay on input line 319.
 
 (/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -1070,7 +1070,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package hyperref Info: Link coloring ON on input line 320.
+Package hyperref Info: Link coloring ON on input line 319.
 
 (./paper.out) (./paper.out)
 \@outlinefile=\write5
@@ -1094,8 +1094,8 @@ Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'paper.bbl' found.
 
 (./paper.bbl)
-Package biblatex Info: Reference section=0 on input line 320.
-Package biblatex Info: Reference segment=0 on input line 320.
+Package biblatex Info: Reference section=0 on input line 319.
+Package biblatex Info: Reference segment=0 on input line 319.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -1131,19 +1131,19 @@ Package biblatex Info: Reference segment=0 on input line 320.
 * \@reversemargintrue
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Redefining \microtypecontext on input line 320.
-Package microtype Info: Applying patch `item' on input line 320.
-Package microtype Info: Applying patch `toc' on input line 320.
-Package microtype Info: Applying patch `eqnum' on input line 320.
-Package microtype Info: Applying patch `footnote' on input line 320.
-Package microtype Info: Applying patch `verbatim' on input line 320.
+LaTeX Info: Redefining \microtypecontext on input line 319.
+Package microtype Info: Applying patch `item' on input line 319.
+Package microtype Info: Applying patch `toc' on input line 319.
+Package microtype Info: Applying patch `eqnum' on input line 319.
+Package microtype Info: Applying patch `footnote' on input line 319.
+Package microtype Info: Applying patch `verbatim' on input line 319.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 320.
+LaTeX Info: Redefining \showhyphens on input line 319.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -1155,7 +1155,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
 (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 321
+LaTeX Font Info:    Trying to load font information for U+msa on input line 320
 .
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -1164,7 +1164,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/local/texlive/2024/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 321
+LaTeX Font Info:    Trying to load font information for U+msb on input line 320
 .
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1174,23 +1174,23 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Trying to load font information for TS1+cmss on input line 
-321.
+320.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/base/ts1cmss.fd
 File: ts1cmss.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
 
-Package hyperref Warning: Suppressing link with empty target on input line 366.
+Package hyperref Warning: Suppressing link with empty target on input line 365.
 
 
 
-Package hyperref Warning: Suppressing link with empty target on input line 366.
+Package hyperref Warning: Suppressing link with empty target on input line 365.
 
 
 <logo.png, id=37, 156.585pt x 59.9841pt>
 File: logo.png Graphic file (type png)
 <use logo.png>
-Package pdftex.def Info: logo.png  used on input line 434.
+Package pdftex.def Info: logo.png  used on input line 433.
 (pdftex.def)             Requested size: 156.4962pt x 59.95006pt.
 
 Package fancyhdr Warning: \headheight is too small (62.59596pt): 
@@ -1208,7 +1208,7 @@ al/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/local
 >]
 File: logo.png Graphic file (type png)
 <use logo.png>
-Package pdftex.def Info: logo.png  used on input line 515.
+Package pdftex.def Info: logo.png  used on input line 514.
 (pdftex.def)             Requested size: 156.4962pt x 59.95006pt.
 
 
@@ -1220,35 +1220,11 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95413pt}.
 
 [2]
-! Undefined control sequence.
-l.589 \bibitem[\citeproctext
-                            ]{ref-VIRGO2015}
-? 
-
-! LaTeX Error: Lonely \item--perhaps a missing list environment.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.596 \bibitem[\citeproctext]{ref-KAGRA2021}
-                                            
-? 
-
-Underfull \hbox (badness 10000) detected at line 596
-[][]
- []
-
-! Undefined control sequence.
-<write> ...\bibcite {ref-KAGRA2021}{\citeproctext 
-                                                  }
-l.596 \bibitem[\citeproctext]{ref-KAGRA2021}
-                                            
-? 
 File: logo.png Graphic file (type png)
 <use logo.png>
-Package pdftex.def Info: logo.png  used on input line 597.
+Package pdftex.def Info: logo.png  used on input line 594.
 (pdftex.def)             Requested size: 156.4962pt x 59.95006pt.
+
 
 Package fancyhdr Warning: \headheight is too small (62.59596pt): 
 (fancyhdr)                Make it at least 63.5501pt, for example:
@@ -1258,6 +1234,10 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95413pt}.
 
 [3]
+! Undefined control sequence.
+l.600 \bibitem[\citeproctext
+                            ]{ref-VIRGO2015}
+? 
 
 ! LaTeX Error: Lonely \item--perhaps a missing list environment.
 
@@ -1265,18 +1245,39 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.602 \bibitem[\citeproctext]{ref-Ashton2019}
+l.607 \bibitem[\citeproctext]{ref-KAGRA2021}
+                                            
+? 
+
+Underfull \hbox (badness 10000) detected at line 607
+[][]
+ []
+
+! Undefined control sequence.
+<write> ...\bibcite {ref-KAGRA2021}{\citeproctext 
+                                                  }
+l.607 \bibitem[\citeproctext]{ref-KAGRA2021}
+                                            
+? 
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.613 \bibitem[\citeproctext]{ref-Ashton2019}
                                              
 ? 
 
-Underfull \hbox (badness 10000) detected at line 602
+Underfull \hbox (badness 10000) detected at line 613
 [][]
  []
 
 ! Undefined control sequence.
 <write> ...bibcite {ref-Ashton2019}{\citeproctext 
                                                   }
-l.602 \bibitem[\citeproctext]{ref-Ashton2019}
+l.613 \bibitem[\citeproctext]{ref-Ashton2019}
                                              
 ? 
 
@@ -1286,18 +1287,18 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.609 \bibitem[\citeproctext]{ref-astropy}
+l.620 \bibitem[\citeproctext]{ref-astropy}
                                           
 ? 
 
-Underfull \hbox (badness 10000) detected at line 609
+Underfull \hbox (badness 10000) detected at line 620
 [][]
  []
 
 ! Undefined control sequence.
 <write> ...g \bibcite {ref-astropy}{\citeproctext 
                                                   }
-l.609 \bibitem[\citeproctext]{ref-astropy}
+l.620 \bibitem[\citeproctext]{ref-astropy}
                                           
 ? 
 
@@ -1307,18 +1308,18 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.614 \bibitem[\citeproctext]{ref-Birrer2021}
+l.625 \bibitem[\citeproctext]{ref-Birrer2021}
                                              
 ? 
 
-Underfull \hbox (badness 10000) detected at line 614
+Underfull \hbox (badness 10000) detected at line 625
 [][]
  []
 
 ! Undefined control sequence.
 <write> ...bibcite {ref-Birrer2021}{\citeproctext 
                                                   }
-l.614 \bibitem[\citeproctext]{ref-Birrer2021}
+l.625 \bibitem[\citeproctext]{ref-Birrer2021}
                                              
 ? 
 
@@ -1328,18 +1329,18 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.621 \bibitem[\citeproctext]{ref-gwcosmo}
+l.632 \bibitem[\citeproctext]{ref-gwcosmo}
                                           
 ? 
 
-Underfull \hbox (badness 10000) detected at line 621
+Underfull \hbox (badness 10000) detected at line 632
 [][]
  []
 
 ! Undefined control sequence.
 <write> ...g \bibcite {ref-gwcosmo}{\citeproctext 
                                                   }
-l.621 \bibitem[\citeproctext]{ref-gwcosmo}
+l.632 \bibitem[\citeproctext]{ref-gwcosmo}
                                           
 ? 
 
@@ -1349,18 +1350,18 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.626 \bibitem[\citeproctext]{ref-Janquart2023}
+l.637 \bibitem[\citeproctext]{ref-Janquart2023}
                                                
 ? 
 
-Underfull \hbox (badness 10000) detected at line 626
+Underfull \hbox (badness 10000) detected at line 637
 [][]
  []
 
 ! Undefined control sequence.
 <write> ...bcite {ref-Janquart2023}{\citeproctext 
                                                   }
-l.626 \bibitem[\citeproctext]{ref-Janquart2023}
+l.637 \bibitem[\citeproctext]{ref-Janquart2023}
                                                
 ? 
 
@@ -1370,18 +1371,18 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.633 \bibitem[\citeproctext]{ref-numba}
+l.644 \bibitem[\citeproctext]{ref-numba}
                                         
 ? 
 
-Underfull \hbox (badness 10000) detected at line 633
+Underfull \hbox (badness 10000) detected at line 644
 [][]
  []
 
 ! Undefined control sequence.
 <write> ...ing \bibcite {ref-numba}{\citeproctext 
                                                   }
-l.633 \bibitem[\citeproctext]{ref-numba}
+l.644 \bibitem[\citeproctext]{ref-numba}
                                         
 ? 
 
@@ -1391,49 +1392,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.638 \bibitem[\citeproctext]{ref-numpy}
-                                        
-? 
-
-Underfull \hbox (badness 10000) detected at line 638
-[][]
- []
-
-! Undefined control sequence.
-<write> ...ing \bibcite {ref-numpy}{\citeproctext 
-                                                  }
-l.638 \bibitem[\citeproctext]{ref-numpy}
-                                        
-? 
-
-! LaTeX Error: Lonely \item--perhaps a missing list environment.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.643 \bibitem[\citeproctext]{ref-LIGO2015}
-                                           
-? 
-
-Underfull \hbox (badness 10000) detected at line 643
-[][]
- []
-
-! Undefined control sequence.
-<write> ... \bibcite {ref-LIGO2015}{\citeproctext 
-                                                  }
-l.643 \bibitem[\citeproctext]{ref-LIGO2015}
-                                           
-? 
-
-! LaTeX Error: Lonely \item--perhaps a missing list environment.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.649 \bibitem[\citeproctext]{ref-scipy}
+l.649 \bibitem[\citeproctext]{ref-numpy}
                                         
 ? 
 
@@ -1442,9 +1401,9 @@ Underfull \hbox (badness 10000) detected at line 649
  []
 
 ! Undefined control sequence.
-<write> ...ing \bibcite {ref-scipy}{\citeproctext 
+<write> ...ing \bibcite {ref-numpy}{\citeproctext 
                                                   }
-l.649 \bibitem[\citeproctext]{ref-scipy}
+l.649 \bibitem[\citeproctext]{ref-numpy}
                                         
 ? 
 
@@ -1454,18 +1413,60 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.655 \bibitem[\citeproctext]{ref-Wempe2022}
+l.654 \bibitem[\citeproctext]{ref-LIGO2015}
+                                           
+? 
+
+Underfull \hbox (badness 10000) detected at line 654
+[][]
+ []
+
+! Undefined control sequence.
+<write> ... \bibcite {ref-LIGO2015}{\citeproctext 
+                                                  }
+l.654 \bibitem[\citeproctext]{ref-LIGO2015}
+                                           
+? 
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.660 \bibitem[\citeproctext]{ref-scipy}
+                                        
+? 
+
+Underfull \hbox (badness 10000) detected at line 660
+[][]
+ []
+
+! Undefined control sequence.
+<write> ...ing \bibcite {ref-scipy}{\citeproctext 
+                                                  }
+l.660 \bibitem[\citeproctext]{ref-scipy}
+                                        
+? 
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.666 \bibitem[\citeproctext]{ref-Wempe2022}
                                             
 ? 
 
-Underfull \hbox (badness 10000) detected at line 655
+Underfull \hbox (badness 10000) detected at line 666
 [][]
  []
 
 ! Undefined control sequence.
 <write> ...\bibcite {ref-Wempe2022}{\citeproctext 
                                                   }
-l.655 \bibitem[\citeproctext]{ref-Wempe2022}
+l.666 \bibitem[\citeproctext]{ref-Wempe2022}
                                             
 ? 
 
@@ -1475,23 +1476,23 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.662 \bibitem[\citeproctext]{ref-Wierda2021}
+l.673 \bibitem[\citeproctext]{ref-Wierda2021}
                                              
 ? 
 
-Underfull \hbox (badness 10000) detected at line 662
+Underfull \hbox (badness 10000) detected at line 673
 [][]
  []
 
 ! Undefined control sequence.
 <write> ...bibcite {ref-Wierda2021}{\citeproctext 
                                                   }
-l.662 \bibitem[\citeproctext]{ref-Wierda2021}
+l.673 \bibitem[\citeproctext]{ref-Wierda2021}
                                              
 ? 
 File: logo.png Graphic file (type png)
 <use logo.png>
-Package pdftex.def Info: logo.png  used on input line 671.
+Package pdftex.def Info: logo.png  used on input line 682.
 (pdftex.def)             Requested size: 156.4962pt x 59.95006pt.
 
 Package fancyhdr Warning: \headheight is too small (62.59596pt): 
@@ -1513,11 +1514,11 @@ Package logreq Info: Writing requests to 'paper.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 34566 strings out of 474116
- 660235 string characters out of 5743682
+ 34570 strings out of 474116
+ 660275 string characters out of 5743682
  1952187 words of memory out of 5000000
  56221 multiletter control sequences out of 15000+600000
- 588972 words of font info for 190 fonts, out of 8000000 for 9000
+ 589181 words of font info for 192 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,17n,87p,1194b,858s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
@@ -1539,7 +1540,7 @@ texmf-dist/fonts/type1/public/cm-super/sfsx0900.pfb></usr/local/texlive/2024/te
 xmf-dist/fonts/type1/public/cm-super/sfsx1000.pfb></usr/local/texlive/2024/texm
 f-dist/fonts/type1/public/cm-super/sfsx1200.pfb></usr/local/texlive/2024/texmf-
 dist/fonts/type1/public/cm-super/sfsx1440.pfb>
-Output written on paper.pdf (4 pages, 352156 bytes).
+Output written on paper.pdf (4 pages, 353259 bytes).
 PDF statistics:
  189 PDF objects out of 1000 (max. 8388607)
  139 compressed objects within 2 object streams
