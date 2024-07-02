@@ -312,9 +312,8 @@ Science Park, 1098 XG Amsterdam, The Netherlands}
 Louvain-La-Neuve, B-1348, Belgium}
       \affil[7]{Royal Observatory of Belgium, Avenue Circulaire, 3, 1180
 Uccle, Belgium}
-      \affil[8]{Departament de F\textquotesingle isica, Universitat de
-les Illes Balears, IAC3-IEEC, Crta. Valldemossa km 7.5, E-07122 Palma,
-Spain}
+      \affil[8]{Departament de Física, Universitat de les Illes Balears,
+IAC3-IEEC, Crta. Valldemossa km 7.5, E-07122 Palma, Spain}
   \date{\vspace{-7ex}}
 
 \begin{document}
@@ -370,10 +369,10 @@ Spain}
 Gravitational waves (GWs) are ripples in the fabric of space and time
 caused by the acceleration of unevenly distributed mass or masses.
 Observable GWs are created especially during the violent cosmic events
-of merging compact binaries, such as `binary black holes' (BBH), `binary
-neutron stars' (BNS), and `neutron star and black hole pair' (NSBH). GWs
-emitted by these events can be distorted or magnified by the
-gravitational fields of massive objects such as galaxies or galaxy
+of merging compact binaries, such as `binary black holes' (BBHs),
+`binary neutron stars' (BNSs), and `neutron star and black hole pair'
+(NSBHs). GWs emitted by these events can be distorted or magnified by
+the gravitational fields of massive objects such as galaxies or galaxy
 clusters, a phenomenon known as gravitational lensing. Profound
 comprehension of gravitational lensing's impact on GW signals is
 imperative to their accurate interpretation and the extraction of
@@ -444,12 +443,12 @@ summarized as follows:
 \begin{itemize}
 \tightlist
 \item
-  Sampling GW Source Properties:
+  Sampling GW source properties:
 
   \begin{itemize}
   \tightlist
   \item
-    For the unlensed events, The sampling distribution
+    For the unlensed events, the sampling distribution
     \((\,R_m(z_s)\,)\) for the source's redshift \((\,z_s\,)\) is
     derived from the merger rate density of compact binaries, which, in
     turn, is based on the star formation rate. The code is meticulously
@@ -462,14 +461,14 @@ summarized as follows:
     with options for users to input custom distributions.
   \end{itemize}
 \item
-  Sampling of lens galaxies attributes and source red-shifts:
+  Sampling of lens galaxy attributes and source red-shifts:
 
   \begin{itemize}
   \tightlist
   \item
-    For lensed case, the source redshift \((z_s)\) is sampled under the
-    strong lensing condition \((\text{SL})\), based on the precomputed
-    probability of strong lensing with source at \(z_s\)
+    For the lensed case, the source redshift \((z_s)\) is sampled under
+    the strong lensing condition \((\text{SL})\), based on the
+    precomputed probability of strong lensing with a source at \(z_s\)
     \((\text{optical depth: }P\left(\text{SL}|z_s\right) \text{ or }\tau(z_s)\,)\).
     This probability can be recalculated for specified configurations of
     lens galaxies, leveraging \emph{multiprocessing} and \emph{njit}
@@ -478,8 +477,8 @@ summarized as follows:
     The package utilizes the Elliptical Power Law with external shear
     (EPL+Shear) model (Wempe et al. 2022) for galaxy parameters
     \((\theta_L)\) sampling, following Wierda et al. (2021). Rejection
-    sampling is applied on the above samples on condition that whether
-    the event is strongly lensed or not,
+    sampling is applied on the above samples depending on whether the
+    event is strongly lensed or not,
     \(P\left(\text{SL}|z_s,\theta_L\right)\).
   \end{itemize}
 \item
@@ -488,20 +487,20 @@ summarized as follows:
   \begin{itemize}
   \tightlist
   \item
-    Source position \((\beta)\) is sampled from the caustic in the
+    The source position \((\beta)\) is sampled from the caustic in the
     source plane.
   \item
-    Sampled lens properties and source position is fed in
+    Sampled lens properties and source positions are fed to
     \emph{lenstronomy} (Birrer et al. 2021) to generate properties of
     the images. This is the slowest part of the entire simulation, which
     \(ler\) tackles through parallelization with multiprocessing.
   \item
     Image properties like magnification \((\mu_i)\) and time delay
-    (\(\Delta t_i\)) modifies the original source signal strength,
-    changing the signal-to-noise ratio SNR and our ability to detect.
+    (\(\Delta t_i\)) modify the original source signal strength,
+    changing the signal-to-noise ratio (SNR) and our ability to detect.
   \end{itemize}
 \item
-  Calculation of Detectable Merger Rates Per Year:
+  Calculation of detectable merger rates per year:
 
   \begin{itemize}
   \tightlist
@@ -579,7 +578,19 @@ for their support. The authors also recognize the contributions of
 individuals who added empirical depth to this work. Appreciation is
 conveyed for the computational resources provided by the LIGO
 Laboratory, supported by National Science Foundation Grants
-No.~PHY-0757058 and No.~PHY-0823459.
+No.~PHY-0757058 and No.~PHY-0823459. N. Singh and D. Keitel are
+supported by Universitat de les Illes Balears (UIB); the Spanish Agencia
+Estatal de Investigación grants CNS2022-135440, PID2022-138626NB-I00,
+RED2022-134204-E, RED2022-134411-T, funded by
+MICIU/AEI/10.13039/501100011033, the European Union
+NextGenerationEU/PRTR, and the ERDF/EU; and the Comunitat Autònoma de
+les Illes Balears through the Direcció General de Recerca, Innovació I
+Transformació Digital with funds from the Tourist Stay Tax Law
+(PDR2020/11 - ITS2017-006) as well as through the Conselleria
+d'Economia, Hisenda i Innovació with grant numbers SINCO2022/6719
+(European Union NextGenerationEU/PRTR-C17.I1) and SINCO2022/18146
+(co-financed by the European Union and FEDER Operational Program
+2021-2027 of the Balearic Islands).
 
 \section*{References}\label{references}
 \addcontentsline{toc}{section}{References}
