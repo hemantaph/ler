@@ -10,19 +10,18 @@ REVIEW=""
 ARCHIVEDOI="https://zenodo.org/badge/latestdoi/626733473"
 FORMATTEDDOI="10.xxxxxx/draft"
 YEAR="2024"
-TITLE="$ler$ : LVK (LIGO-Virgo-KAGRA collaboration) Event (compact-binary mergers) Rate calculator and simulator"
-AUTHOR="Phurailatpam Hemantakumar, Anupreeta More, Harsh Narola, Ng Chung Yin (Leo), Justin Janquart, Chris Van Den Broeck, Otto Akseli HANNUKSELA, Neha Singh, and David Keitel"
-ISSUE=""
-VOLUME=""
-PAGE=""
+TITLE="$ler$ : LVK (LIGO-Virgo-KAGRA collaboration) event (compact-binary mergers) rate calculator and simulator"
+AUTHOR="Hemantakumar Phurailatpam , Anupreeta More, Harsh Narola, Ng Chung Yin (Leo), Justin Janquart, Chris Van Den Broeck, Otto Akseli Hannukkala, Neha Singh, and David Keitel"
+ISSUE="Pending"
+VOLUME="Pending"
+PAGE="Pending"
 JOURNALNAME="Journal of Open Source Software"
-PUBLISHED="19 June 2024"
-SUBMITTED="19 June 2024"
-PAPERURL=""
+PUBLISHED="3rd July 2024"
+SUBMITTED="3rd July 2024"
+PAPERURL="Pending"
 EDITOR="Pending Editor"
 EDITORURL=""
-REVIEWER1="@Pending Reviewer"
-REVIEWER2=""
+REVIEWER1="Pending Reviewer"
 
 # get JOSS template and logo
 latex.template logo.png:
@@ -34,7 +33,7 @@ ifdef PREPRINT
   SUBMITBIT="Submitted to The "
 else
   LOGO=logo.png
-  SUBMITBIT=""
+  SUBMITBIT="Pending"
 endif
 
 

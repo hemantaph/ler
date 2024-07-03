@@ -1,6 +1,7 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.3)  4 JUL 2024 03:21
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.3)  3 JUL 2024 19:18
 entering extended mode
  restricted \write18 enabled.
+ file:line:error style messages enabled.
  %&-line parsing enabled.
 **paper.tex
 (./paper.tex
@@ -686,7 +687,7 @@ Enter file name:
 \bibdata{paper.bib}
 (./paper.bbl
 
-! LaTeX Error: Missing 'biblatex' package.
+./paper.bbl:16: LaTeX Error: Missing 'biblatex' package.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -697,7 +698,7 @@ l.16   {}
 ? 
 )
 
-! LaTeX Error: Command \seqinsert undefined.
+./paper.tex:42: LaTeX Error: Command \seqinsert undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -728,7 +729,7 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@dimlist=\toks38
 )
 
-! LaTeX Error: Command \bibfont undefined.
+./paper.tex:102: LaTeX Error: Command \bibfont undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -737,12 +738,12 @@ Type  H <return>  for immediate help.
 l.102 \renewcommand{\bibfont}
                              {\small \sffamily}
 ? 
-! Undefined control sequence.
+./paper.tex:107: Undefined control sequence.
 l.107 \titleformat
                   {\section}
 ? 
 
-! LaTeX Error: Missing \begin{document}.
+./paper.tex:107: LaTeX Error: Missing \begin{document}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -751,21 +752,21 @@ Type  H <return>  for immediate help.
 l.107 \titleformat{\section
                            }
 ? 
-! Argument of \@xdblarg has an extra }.
+./paper.tex:107: Argument of \@xdblarg has an extra }.
 <inserted text> 
                 \par 
 l.107 \titleformat{\section}
                             
 ? 
 Runaway argument?
-! Paragraph ended before \@xdblarg was complete.
+./paper.tex:107: Paragraph ended before \@xdblarg was complete.
 <to be read again> 
                    \par 
 l.107 \titleformat{\section}
                             
 ? 
 
-! LaTeX Error: Missing \begin{document}.
+./paper.tex:109: LaTeX Error: Missing \begin{document}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -774,25 +775,25 @@ Type  H <return>  for immediate help.
 l.109   {}{0
             pt}{}
 ? 
-! Undefined control sequence.
+./paper.tex:110: Undefined control sequence.
 l.110 \titleformat
                   {\subsection}
 ? 
-! Argument of \@xdblarg has an extra }.
+./paper.tex:110: Argument of \@xdblarg has an extra }.
 <inserted text> 
                 \par 
 l.110 \titleformat{\subsection}
                                
 ? 
 Runaway argument?
-! Paragraph ended before \@xdblarg was complete.
+./paper.tex:110: Paragraph ended before \@xdblarg was complete.
 <to be read again> 
                    \par 
 l.110 \titleformat{\subsection}
                                
 ? 
 
-! LaTeX Error: Missing \begin{document}.
+./paper.tex:112: LaTeX Error: Missing \begin{document}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -801,25 +802,25 @@ Type  H <return>  for immediate help.
 l.112   {}{0
             pt}{}
 ? 
-! Undefined control sequence.
+./paper.tex:113: Undefined control sequence.
 l.113 \titleformat
                   {\subsubsection}
 ? 
-! Argument of \@xdblarg has an extra }.
+./paper.tex:113: Argument of \@xdblarg has an extra }.
 <inserted text> 
                 \par 
 l.113 \titleformat{\subsubsection}
                                   
 ? 
 Runaway argument?
-! Paragraph ended before \@xdblarg was complete.
+./paper.tex:113: Paragraph ended before \@xdblarg was complete.
 <to be read again> 
                    \par 
 l.113 \titleformat{\subsubsection}
                                   
 ? 
 
-! LaTeX Error: Missing \begin{document}.
+./paper.tex:115: LaTeX Error: Missing \begin{document}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -828,18 +829,18 @@ Type  H <return>  for immediate help.
 l.115   {}{0
             pt}{}
 ? 
-! Undefined control sequence.
+./paper.tex:116: Undefined control sequence.
 l.116 \titleformat
                   *{\paragraph}
 ? 
-! Argument of \@xdblarg has an extra }.
+./paper.tex:116: Argument of \@xdblarg has an extra }.
 <inserted text> 
                 \par 
 l.116 \titleformat*{\paragraph}
                                
 ? 
 Runaway argument?
-! Paragraph ended before \@xdblarg was complete.
+./paper.tex:116: Paragraph ended before \@xdblarg was complete.
 <to be read again> 
                    \par 
 l.116 \titleformat*{\paragraph}
@@ -858,12 +859,12 @@ Package: fancyhdr 2022/11/09 v4.1 Extensive control of page headers and footers
 \f@nch@O@olf=\skip66
 \f@nch@O@orf=\skip67
 )
-! Undefined control sequence.
+./paper.tex:147: Undefined control sequence.
 l.147 \newtcolorbox
                    {repobox}
 ? 
 
-! LaTeX Error: Missing \begin{document}.
+./paper.tex:147: LaTeX Error: Missing \begin{document}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -879,7 +880,7 @@ arc=2pt, left=6pt,
  []
 
 
-! LaTeX Error: Command \AB@affilsepx undefined.
+./paper.tex:185: LaTeX Error: Command \AB@affilsepx undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -889,7 +890,7 @@ l.185 \renewcommand\AB@affilsepx
                                 { \protect\Affilfont}
 ? 
 
-! LaTeX Error: Command \AB@affilnote undefined.
+./paper.tex:187: LaTeX Error: Command \AB@affilnote undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -899,7 +900,7 @@ l.187 \renewcommand\AB@affilnote
                                 [1]{{\bfseries #1}\hspace{3pt}}
 ? 
 
-! LaTeX Error: Command \affil undefined.
+./paper.tex:188: LaTeX Error: Command \affil undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -909,7 +910,7 @@ l.188 \renewcommand{\affil}
                            [2][]%
 ? 
 
-! LaTeX Error: Command \Authfont undefined.
+./paper.tex:210: LaTeX Error: Command \Authfont undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -919,7 +920,7 @@ l.210 \renewcommand\Authfont
                             {\sffamily\bfseries}
 ? 
 
-! LaTeX Error: Command \Affilfont undefined.
+./paper.tex:211: LaTeX Error: Command \Affilfont undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -928,19 +929,19 @@ Type  H <return>  for immediate help.
 l.211 \renewcommand\Affilfont
                              {\sffamily\small\mdseries}
 ? 
-! Undefined control sequence.
+./paper.tex:212: Undefined control sequence.
 <argument> \affilsep 
                      
 l.212 \setlength{\affilsep}{1em}
                                 
 ? 
-! Missing number, treated as zero.
+./paper.tex:213: Missing number, treated as zero.
 <to be read again> 
                    \scan_stop: 
 l.213 
       
 ? 
-! Illegal unit of measure (pt inserted).
+./paper.tex:213: Illegal unit of measure (pt inserted).
 <to be read again> 
                    \scan_stop: 
 l.213 
@@ -1004,7 +1005,7 @@ line 40.
 Package: parskip 2021-03-14 v2.0h non-zero parskip adjustments
 )
 
-! LaTeX Error: Missing \begin{document}.
+./paper.tex:290: LaTeX Error: Missing \begin{document}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1013,14 +1014,14 @@ Type  H <return>  for immediate help.
 l.290         \author[1
                        ]{Hemantakumar Phurailatpam}
 ? 
-! Undefined control sequence.
+./paper.tex:301: Undefined control sequence.
 \\affil [#1]#2->\newaffiltrue 
                               \let \AB@blk@and \AB@pand \if \relax #1\relax ...
 l.301 Kong, Shatin, New Territories, Hong Kong}
                                                
 ? 
 
-! LaTeX Error: No counter 'Maxaffil' defined.
+./paper.tex:301: LaTeX Error: No counter 'Maxaffil' defined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1029,50 +1030,50 @@ Type  H <return>  for immediate help.
 l.301 Kong, Shatin, New Territories, Hong Kong}
                                                
 ? 
-! Undefined control sequence.
+./paper.tex:301: Undefined control sequence.
 \\affil ...@temptokena =\expandafter {\AB@authors 
                                                   }{\def \\{\protect \\\prot...
 l.301 Kong, Shatin, New Territories, Hong Kong}
                                                
 ? 
-! Undefined control sequence.
+./paper.tex:301: Undefined control sequence.
 \\affil ...\AB@authors {\the \@temptokena \AB@las 
                                                   \AB@au@str \protect \\[\af...
 l.301 Kong, Shatin, New Territories, Hong Kong}
                                                
 ? 
-! Undefined control sequence.
+./paper.tex:301: Undefined control sequence.
 \\affil ... {\the \@temptokena \AB@las \AB@au@str 
                                                   \protect \\[\affilsep ]\pr...
 l.301 Kong, Shatin, New Territories, Hong Kong}
                                                
 ? 
-! Undefined control sequence.
+./paper.tex:301: Undefined control sequence.
 \\affil ...B@las \AB@au@str \protect \\[\affilsep 
                                                   ]\protect \Affilfont \AB@t...
 l.301 Kong, Shatin, New Territories, Hong Kong}
                                                
 ? 
-! Undefined control sequence.
+./paper.tex:301: Undefined control sequence.
 \\affil ...emptokena =\expandafter {\AB@affillist 
                                                   }\xdef \AB@affillist {\the...
 l.301 Kong, Shatin, New Territories, Hong Kong}
                                                
 ? 
-! Undefined control sequence.
+./paper.tex:301: Undefined control sequence.
 \\affil ...illist {\the \@temptokena \AB@affilsep 
                                                   \AB@affilnote {\AB@note }\...
 l.301 Kong, Shatin, New Territories, Hong Kong}
                                                
 ? 
-! Undefined control sequence.
+./paper.tex:303: Undefined control sequence.
 \\affil [#1]#2->\newaffiltrue 
                               \let \AB@blk@and \AB@pand \if \relax #1\relax ...
 l.303 ...t Bag 4, Ganeshkhind, Pune 411007, India}
                                                   
 ? 
 
-! LaTeX Error: No counter 'Maxaffil' defined.
+./paper.tex:303: LaTeX Error: No counter 'Maxaffil' defined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1081,20 +1082,20 @@ Type  H <return>  for immediate help.
 l.303 ...t Bag 4, Ganeshkhind, Pune 411007, India}
                                                   
 ? 
-! Undefined control sequence.
+./paper.tex:303: Undefined control sequence.
 \\affil ...B@las \AB@au@str \protect \\[\affilsep 
                                                   ]\protect \Affilfont \AB@t...
 l.303 ...t Bag 4, Ganeshkhind, Pune 411007, India}
                                                   
 ? 
-! Undefined control sequence.
+./paper.tex:305: Undefined control sequence.
 \\affil [#1]#2->\newaffiltrue 
                               \let \AB@blk@and \AB@pand \if \relax #1\relax ...
 l.305 ...noha, Kashiwa-shi, Chiba 277-8583, Japan}
                                                   
 ? 
 
-! LaTeX Error: No counter 'Maxaffil' defined.
+./paper.tex:305: LaTeX Error: No counter 'Maxaffil' defined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1103,20 +1104,20 @@ Type  H <return>  for immediate help.
 l.305 ...noha, Kashiwa-shi, Chiba 277-8583, Japan}
                                                   
 ? 
-! Undefined control sequence.
+./paper.tex:305: Undefined control sequence.
 \\affil ...B@las \AB@au@str \protect \\[\affilsep 
                                                   ]\protect \Affilfont \AB@t...
 l.305 ...noha, Kashiwa-shi, Chiba 277-8583, Japan}
                                                   
 ? 
-! Undefined control sequence.
+./paper.tex:307: Undefined control sequence.
 \\affil [#1]#2->\newaffiltrue 
                               \let \AB@blk@and \AB@pand \if \relax #1\relax ...
 l.307 ...lein 1, 3584 CC Utrecht, The Netherlands}
                                                   
 ? 
 
-! LaTeX Error: No counter 'Maxaffil' defined.
+./paper.tex:307: LaTeX Error: No counter 'Maxaffil' defined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1125,20 +1126,20 @@ Type  H <return>  for immediate help.
 l.307 ...lein 1, 3584 CC Utrecht, The Netherlands}
                                                   
 ? 
-! Undefined control sequence.
+./paper.tex:307: Undefined control sequence.
 \\affil ...B@las \AB@au@str \protect \\[\affilsep 
                                                   ]\protect \Affilfont \AB@t...
 l.307 ...lein 1, 3584 CC Utrecht, The Netherlands}
                                                   
 ? 
-! Undefined control sequence.
+./paper.tex:309: Undefined control sequence.
 \\affil [#1]#2->\newaffiltrue 
                               \let \AB@blk@and \AB@pand \if \relax #1\relax ...
 l.309 ...Park, 1098 XG Amsterdam, The Netherlands}
                                                   
 ? 
 
-! LaTeX Error: No counter 'Maxaffil' defined.
+./paper.tex:309: LaTeX Error: No counter 'Maxaffil' defined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1147,20 +1148,20 @@ Type  H <return>  for immediate help.
 l.309 ...Park, 1098 XG Amsterdam, The Netherlands}
                                                   
 ? 
-! Undefined control sequence.
+./paper.tex:309: Undefined control sequence.
 \\affil ...B@las \AB@au@str \protect \\[\affilsep 
                                                   ]\protect \Affilfont \AB@t...
 l.309 ...Park, 1098 XG Amsterdam, The Netherlands}
                                                   
 ? 
-! Undefined control sequence.
+./paper.tex:312: Undefined control sequence.
 \\affil [#1]#2->\newaffiltrue 
                               \let \AB@blk@and \AB@pand \if \relax #1\relax ...
 l.312 Louvain-La-Neuve, B-1348, Belgium}
                                         
 ? 
 
-! LaTeX Error: No counter 'Maxaffil' defined.
+./paper.tex:312: LaTeX Error: No counter 'Maxaffil' defined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1169,20 +1170,20 @@ Type  H <return>  for immediate help.
 l.312 Louvain-La-Neuve, B-1348, Belgium}
                                         
 ? 
-! Undefined control sequence.
+./paper.tex:312: Undefined control sequence.
 \\affil ...B@las \AB@au@str \protect \\[\affilsep 
                                                   ]\protect \Affilfont \AB@t...
 l.312 Louvain-La-Neuve, B-1348, Belgium}
                                         
 ? 
-! Undefined control sequence.
+./paper.tex:314: Undefined control sequence.
 \\affil [#1]#2->\newaffiltrue 
                               \let \AB@blk@and \AB@pand \if \relax #1\relax ...
 l.314 Uccle, Belgium}
                      
 ? 
 
-! LaTeX Error: No counter 'Maxaffil' defined.
+./paper.tex:314: LaTeX Error: No counter 'Maxaffil' defined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1191,20 +1192,20 @@ Type  H <return>  for immediate help.
 l.314 Uccle, Belgium}
                      
 ? 
-! Undefined control sequence.
+./paper.tex:314: Undefined control sequence.
 \\affil ...B@las \AB@au@str \protect \\[\affilsep 
                                                   ]\protect \Affilfont \AB@t...
 l.314 Uccle, Belgium}
                      
 ? 
-! Undefined control sequence.
+./paper.tex:316: Undefined control sequence.
 \\affil [#1]#2->\newaffiltrue 
                               \let \AB@blk@and \AB@pand \if \relax #1\relax ...
 l.316 ...Valldemossa km 7.5, E-07122 Palma, Spain}
                                                   
 ? 
 
-! LaTeX Error: No counter 'Maxaffil' defined.
+./paper.tex:316: LaTeX Error: No counter 'Maxaffil' defined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1213,7 +1214,7 @@ Type  H <return>  for immediate help.
 l.316 ...Valldemossa km 7.5, E-07122 Palma, Spain}
                                                   
 ? 
-! Undefined control sequence.
+./paper.tex:316: Undefined control sequence.
 \\affil ...B@las \AB@au@str \protect \\[\affilsep 
                                                   ]\protect \Affilfont \AB@t...
 l.316 ...Valldemossa km 7.5, E-07122 Palma, Spain}
@@ -1225,7 +1226,8 @@ ef
 File: l3backend-pdftex.def 2024-02-20 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count318
 \l__pdf_internal_box=\box67
-) (./paper.aux)
+)
+No file paper.aux.
 \openout1 = `paper.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 319.
@@ -1246,7 +1248,6 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 319.
 LaTeX Font Info:    ... okay on input line 319.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 319.
 LaTeX Font Info:    ... okay on input line 319.
-
 (/usr/local/texlive/2024basic/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count319
@@ -1272,7 +1273,6 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 Package hyperref Info: Link coloring ON on input line 319.
- (./paper.out) (./paper.out)
 \@outlinefile=\write4
 \openout4 = `paper.out'.
 
@@ -1334,13 +1334,13 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `cmss' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-! Undefined control sequence.
+./paper.tex:320: Undefined control sequence.
 \maketitle ...}} {\end {flushleft}} \AB@maketitle 
                                                   }
 l.320 \maketitle
                 
 ? 
-! Undefined control sequence.
+./paper.tex:365: Undefined control sequence.
 \href #1#2->\IfBeginWith 
                          {#1}{https://doi.org}{\href@Urllike {#1}{#2}}{\href...
 l.365 }
@@ -1378,7 +1378,7 @@ LaTeX Font Info:    Trying to load font information for TS1+cmss on input line
 (/usr/local/texlive/2024basic/texmf-dist/tex/latex/base/ts1cmss.fd
 File: ts1cmss.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
-! Undefined control sequence.
+./paper.tex:365: Undefined control sequence.
 \href #1#2->\IfBeginWith 
                          {#1}{https://doi.org}{\href@Urllike {#1}{#2}}{\href...
 l.365 }
@@ -1397,7 +1397,7 @@ Overfull \hbox (6.99435pt too wide) in paragraph at lines 365--365
 \T1/cmss/m/n/9 (-20) https://doi.org$[][]$[][]Review[] 
  []
 
-! Undefined control sequence.
+./paper.tex:365: Undefined control sequence.
 \href #1#2->\IfBeginWith 
                          {#1}{https://doi.org}{\href@Urllike {#1}{#2}}{\href...
 l.365 }
@@ -1409,7 +1409,7 @@ Overfull \hbox (167.63307pt too wide) in paragraph at lines 365--365
 ][][][][][]Repository[][][] 
  []
 
-! Undefined control sequence.
+./paper.tex:365: Undefined control sequence.
 \href #1#2->\IfBeginWith 
                          {#1}{https://doi.org}{\href@Urllike {#1}{#2}}{\href...
 l.365 }
@@ -1421,7 +1421,7 @@ Overfull \hbox (191.37862pt too wide) in paragraph at lines 365--365
 g[][]$[][]$[][][][][][]Archive[][][] 
  []
 
-! Undefined control sequence.
+./paper.tex:365: Undefined control sequence.
 \href #1#2->\IfBeginWith 
                          {#1}{https://doi.org}{\href@Urllike {#1}{#2}}{\href...
 l.365 }
@@ -1440,23 +1440,23 @@ Overfull \hbox (12.39111pt too wide) in paragraph at lines 365--365
 \T1/cmss/m/n/9 (-20) https://doi.org$PendingEditor$Pending 
  []
 
-! Undefined control sequence.
+./paper.tex:365: Undefined control sequence.
 \href #1#2->\IfBeginWith 
                          {#1}{https://doi.org}{\href@Urllike {#1}{#2}}{\href...
 l.365 }
        
 ? 
 
-Overfull \hbox (5.04814pt too wide) in paragraph at lines 365--365
-\T1/cmss/m/n/9 (-20) https://github.com/Pending 
+Overfull \hbox (11.08998pt too wide) in paragraph at lines 365--365
+\T1/cmss/m/n/9 (-20) https://github.com/@Pending 
  []
 
 
-Overfull \hbox (59.87125pt too wide) in paragraph at lines 365--365
-\T1/cmss/m/n/9 (-20) https://doi.org[][]$@PendingReviewer$[][][][]@Pending 
+Overfull \hbox (3.11427pt too wide) in paragraph at lines 365--365
+\T1/cmss/m/n/9 (-20) PendingReviewer$[][][][]@@Pending 
  []
 
-! Undefined control sequence.
+./paper.tex:365: Undefined control sequence.
 \href #1#2->\IfBeginWith 
                          {#1}{https://doi.org}{\href@Urllike {#1}{#2}}{\href...
 l.365 }
@@ -1467,7 +1467,7 @@ Overfull \hbox (43.27744pt too wide) in paragraph at lines 365--365
 \T1/cmss/m/n/9 (-20) https://github.com/https://doi.org[][]$@$[][][][]@[][]  
  []
 
-! Undefined control sequence.
+./paper.tex:365: Undefined control sequence.
 \href #1#2->\IfBeginWith 
                          {#1}{https://doi.org}{\href@Urllike {#1}{#2}}{\href...
 l.365 }
@@ -1479,7 +1479,7 @@ Overfull \hbox (152.49303pt too wide) in paragraph at lines 365--365
 g[][]$[][]$[][][][][][]CC 
  []
 
-! Undefined control sequence.
+./paper.tex:400: Undefined control sequence.
 \href #1#2->\IfBeginWith 
                          {#1}{https://doi.org}{\href@Urllike {#1}{#2}}{\href...
 l.400 ...readthedocs.io/en/latest/}{documentation}
@@ -1501,8 +1501,8 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 [1
 
 {/usr/local/texlive/2024basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
-! pdfTeX error (font expansion): auto expansion is only possible with scalable 
-fonts.
+./paper.tex:433: pdfTeX error (font expansion): auto expansion is only possible
+ with scalable fonts.
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.433 
@@ -1515,11 +1515,11 @@ and I'll forget about whatever was undefined.
 
  
 Here is how much of TeX's memory you used:
- 24604 strings out of 475567
- 454053 string characters out of 5777890
+ 24596 strings out of 475567
+ 453949 string characters out of 5777890
  1952187 words of memory out of 5000000
- 46268 multiletter control sequences out of 15000+600000
+ 46266 multiletter control sequences out of 15000+600000
  575896 words of font info for 118 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
  84i,15n,87p,1002b,822s stack positions out of 10000i,1000n,20000p,200000b,200000s
-!  ==> Fatal error occurred, no output PDF file produced!
+./paper.tex:433:  ==> Fatal error occurred, no output PDF file produced!

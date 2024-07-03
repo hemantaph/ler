@@ -601,7 +601,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
                 size=size)
 
             # sample gravitional waves source parameter
-            param = dict(zs=np.array(zs))
+            param = dict(zs=lens_parameters["zs"])
             if samplers_params["source_parameters"]:
                 param.update(self.sample_gw_parameters(size=size))
             gw_param = self.sample_source_parameters(size=size, param=param)
