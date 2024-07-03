@@ -167,13 +167,13 @@
 \[\begin{split}\begin{equation}
 \begin{split}
 \mathcal{R}_L &amp;= \mathcal{N}^L \int P(z_s| SL)\, \mathcal{O}_{\text{images}}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \\
-&amp;\;\; P(\theta)\, P(\theta_L|z_l, z_s, SL)\, P(z_l|z_s)\, P(\beta|z_s,z_l, \theta_L, SL) dz_s d\theta d\theta_L dz_l d\beta \\
+&amp;\;\; P(\theta)\, P(\theta_L|z_l, z_s, SL)\, P(z_l|z_s, SL)\, P(\beta|z_s,z_l, \theta_L, SL) dz_s d\theta d\theta_L dz_l d\beta \\
 \end{split} \tag{9}
 \end{equation}\end{split}\]</div>
 <p>Key aspects of this equation include:</p>
 <ul class="simple">
 <li><p><strong>SNR Operator,</strong> <span class="math notranslate nohighlight">\(\mathbf{\mathcal{O}_{\text{images}}(z_s,\theta,\mu_i,\Delta t_i, \rho{th})}\)</span><strong>:</strong> This function determines whether the lensed GW event is detectable based on their signal-to-noise ratios (SNRs) of the images. It is a logical operator that assesses the observability of each lensed image. Refer to the next sub-section for more details.</p></li>
-<li><p><strong>Prior Distribution,</strong> <span class="math notranslate nohighlight">\(P(z_s| SL)\)</span>, <span class="math notranslate nohighlight">\(P(\theta)\)</span>, <span class="math notranslate nohighlight">\(P(\theta_L|z_l, z_s, SL)\)</span>, <span class="math notranslate nohighlight">\(P(z_l|z_s)\)</span>, <span class="math notranslate nohighlight">\(P(\beta|z_s,z_l, \theta_L, SL)\)</span>:** These distributions represent the likelihood of the source redshift, source parameters, lens parameters, lens redshift, and source position, respectively. They are essential for characterizing the population of detectable lensed events.</p></li>
+<li><p><strong>Prior Distribution,</strong> <span class="math notranslate nohighlight">\(P(z_s| SL)\)</span>, <span class="math notranslate nohighlight">\(P(\theta)\)</span>, <span class="math notranslate nohighlight">\(P(\theta_L|z_l, z_s, SL)\)</span>, <span class="math notranslate nohighlight">\(P(z_l|z_s, SL)\)</span>, <span class="math notranslate nohighlight">\(P(\beta|z_s,z_l, \theta_L, SL)\)</span>:** These distributions represent the likelihood of the source redshift, source parameters, lens parameters, lens redshift, and source position, respectively. They are essential for characterizing the population of detectable lensed events.</p></li>
 </ul>
 <p>The calculation of <span class="math notranslate nohighlight">\(R_L\)</span> involves integration over the source redshift <span class="math notranslate nohighlight">\(z_s\)</span>, the GW source parameters <span class="math notranslate nohighlight">\(\theta\)</span>, the lens parameters <span class="math notranslate nohighlight">\(\theta_L\)</span> and lens redshift <span class="math notranslate nohighlight">\(z_l\)</span>, and the source position <span class="math notranslate nohighlight">\(\beta\)</span>. This integration accounts for the contributions from all detectable lensed events across different redshifts and parameter configurations, providing a comprehensive estimate of the annual rate of detectable lensed GW events.</p>
 </section>
