@@ -74,11 +74,11 @@ The architecture of the $ler$ API is deliberately organized such that each disti
 
 - Sampling GW source properties:
     * For the unlensed events, the sampling distribution $(\,R_m(z_s)\,)$ for the source's redshift $(\,z_s\,)$ is derived from the merger rate density of compact binaries, which, in turn, is based on the star formation rate. The code is meticulously designed to enable the straightforward integration of future updates or user-specified distributions of these sources.
-    * Intrinsic and extrinsic parameters $(\theta)$ of GW sources are sampled using prior distributions $(P(\theta))$ from the gwcosmo [@gwcosmo] and bilby [@Ashton2019] packages, with options for users to input custom distributions.
+    * Intrinsic and extrinsic parameters $(\theta)$ of GW sources are sampled using prior distributions $(P(\theta))$ from the *gwcosmo* [@gwcosmo] and *bilby* [@Ashton2019] packages, with options for users to input custom distributions.
 
 - Sampling of lens galaxy attributes and source red-shifts:
     * For the lensed case, the source redshift $(z_s)$ is sampled under the strong lensing condition $(\text{SL})$, based on the precomputed probability of strong lensing with a source at $z_s$ $(\text{optical depth: }P\left(\text{SL}|z_s\right) \text{ or }\tau(z_s)\,)$. This probability can be recalculated for specified configurations of lens galaxies, leveraging *multiprocessing* and *njit* functionalities for enhanced efficiency.
-    * The package utilizes the Elliptical Power Law with external shear (EPL+Shear) model [@Wempe2022] for galaxy parameters $(\theta_L)$ sampling, following @Wierda2021. Rejection sampling is applied on the above samples depending on whether the event is strongly lensed or not, $P\left(\text{SL}|z_s,\theta_L\right)$.
+    * Following @Wierda2021, the package utilizes the Elliptical Power Law with external shear (EPL+Shear) model [@Wempe2022] for  sampling the galaxy parameters $(\theta_L)$. Rejection sampling is applied on the above samples depending on whether the event is strongly lensed or not, $P\left(\text{SL}|z_s,\theta_L\right)$.
 
 - Generation of image properties:
     * The source position $(\beta)$ is sampled from the caustic in the source plane.
