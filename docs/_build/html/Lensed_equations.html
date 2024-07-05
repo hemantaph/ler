@@ -312,7 +312,7 @@ P(SL|z_s) &=  \frac{1}{4\pi} \int^{z_s}_{z_l=0} P(SL|z_s, z_l) dN(z_l) \\
 <p>Let’s try to write the integrand in terms of number density. Consequently, we need to consider the integrand’s dependence on lens parameters <span class="math notranslate nohighlight">\(\theta_L\)</span> and lens redshift <span class="math notranslate nohighlight">\(z_l\)</span>. Now the Eqn(10) becomes,</p>
 <p><span class="math">\begin{equation}
 \begin{split}
-P(SL|z_s) &=  \frac{1}{4\pi} \int^{z_s}_{z_l=0} \int_{\theta_L} P(SL|z_s, z_l, \theta_L) \frac{d^2N(z_l)}{dV_c d\theta_L} \frac{dV_c}{dz_l} dz_l d\theta_L \\
+P(SL|z_s) &=  \frac{1}{4\pi} \int^{z_s}_{z_l=0} \int_{\theta_L} P(SL|z_s, z_l, \theta_L) \frac{d^2N(z_l, \theta_L)}{dV_c d\theta_L} \frac{dV_c}{dz_l} dz_l d\theta_L \\
 \end{split} \tag{11}
 \end{equation}</span></p>
 <p>The number density of lenses <span class="math notranslate nohighlight">\(d^3N(z_l)/dV_c dz_ld\theta_L\)</span> is the number of lenses per unit volume per unit red-shift per unit lens parameter. The lensing probability <span class="math notranslate nohighlight">\(P(SL|z_s, z_l, \theta_L)\)</span> is the probability of strong lensing given that the source is at red-shift <span class="math notranslate nohighlight">\(z_s\)</span>, the lens is at red-shift <span class="math notranslate nohighlight">\(z_l\)</span> and the lens parameters are <span class="math notranslate nohighlight">\(\theta_L\)</span>. The integral is over all possible lens red-shifts and lens parameters. The factor <span class="math notranslate nohighlight">\(1/4\pi\)</span> is the solid angle of the
@@ -324,11 +324,11 @@ entire sky.</p>
 <p>Take <span class="math notranslate nohighlight">\(P(SL|z_s, z_l, \theta_L)\)</span> as <span class="math notranslate nohighlight">\(\phi_{\text{SIS}}=\pi \theta_E^2\)</span> (<span class="math notranslate nohighlight">\(\theta_E\)</span>: Einstein radius) and <span class="math notranslate nohighlight">\(\theta_L\in \{\sigma\}\)</span>, where <span class="math notranslate nohighlight">\(\sigma\)</span> is the velocity dispersion of the lens. The probability of strong lensing for a SIS lens is given by,</p>
 <p><span class="math">\begin{equation}
 \begin{split}
-P(SL|z_s) &=  \frac{1}{4\pi} \int^{z_s}_{z_l=0} \int_{\sigma} P(SL|z_s, z_l, \sigma) \frac{d^2N(z_l)}{dV_c d\sigma} \frac{dV_c}{dz_l} dz_l d\sigma \\
-&=  \frac{1}{4\pi} \int^{z_s}_{z_l=0} \int_{\sigma} \phi_{\text{SIS}} \frac{d^2N(z_l)}{dV_c d\sigma} \frac{dV_c}{dz_l} dz_l d\sigma \\
+P(SL|z_s) &=  \frac{1}{4\pi} \int^{z_s}_{z_l=0} \int_{\sigma} P(SL|z_s, z_l, \sigma) \frac{d^2N(z_l, \sigma)}{dV_c d\sigma} \frac{dV_c}{dz_l} dz_l d\sigma \\
+&=  \frac{1}{4\pi} \int^{z_s}_{z_l=0} \int_{\sigma} \phi_{\text{SIS}} \frac{d^2N(z_l, \sigma)}{dV_c d\sigma} \frac{dV_c}{dz_l} dz_l d\sigma \\
 \end{split} \tag{12}
 \end{equation}</span></p>
-<p>Haris has considered the number density of the lens, <span class="math notranslate nohighlight">\(\frac{d^2N(z_l)}{dV_c d\sigma}=\,&lt;n&gt;_{\sigma\in P(\sigma)}\)</span> and the PDF of velocity dispersion, <span class="math notranslate nohighlight">\(P(\sigma)\)</span> is independent of <span class="math notranslate nohighlight">\(z_l\)</span>. Taking <span class="math notranslate nohighlight">\(&lt;n&gt;_{\sigma\in P(\sigma)}=n_o=8\times 10^{-3} h^3 Mpc^{-3}\)</span>, the optical depth becomes,</p>
+<p>Haris has considered the number density of the lens, <span class="math notranslate nohighlight">\(\frac{d^2N(z_l, \sigma)}{dV_c d\sigma}=\,&lt;n&gt;_{\sigma\in P(\sigma)} P(\sigma)\)</span> where <span class="math notranslate nohighlight">\(P(\sigma)\)</span> is the PDF of velocity dispersion. Taking <span class="math notranslate nohighlight">\(&lt;n&gt;_{\sigma\in P(\sigma)}=n_o=8\times 10^{-3} h^3 Mpc^{-3}\)</span>, the optical depth becomes,</p>
 <p><span class="math">\begin{equation}
 \begin{split}
 P(SL|z_s) &=  \int \frac{\theta_E^2}{4} n_o P(\sigma) \frac{dV_c}{dz_l} dz_l d\sigma \\

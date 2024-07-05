@@ -2753,6 +2753,7 @@ Functions
            List of spline coefficients for the inverse of comoving distance and redshifts
 
        **u: `numpy.ndarray` (1D array of float of size=size)**
+           corresponding x values wrt to the cdf values
            e.g. u = np.linspace(0, 1, 500)
 
        **cdf: `numpy.ndarray` (1D array of float of size=size)**
@@ -5443,6 +5444,7 @@ Functions
            List of spline coefficients for the inverse of comoving distance and redshifts
 
        **u: `numpy.ndarray` (1D array of float of size=size)**
+           corresponding x values wrt to the cdf values
            e.g. u = np.linspace(0, 1, 500)
 
        **cdf: `numpy.ndarray` (1D array of float of size=size)**
