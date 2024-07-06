@@ -1,7 +1,7 @@
-PWD /Users/phurailatpamhemantakumar/phd/mypackages/ler/paper
+PWD /Users/phurailatpamhemantakumar/phd/mypackages/ler/arxiv
 INPUT /opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/web2c/texmf.cnf
 INPUT /opt/homebrew/Cellar/texlive/20240312/share/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT /Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex
+INPUT /Users/phurailatpamhemantakumar/phd/mypackages/ler/arxiv/paper.tex
 OUTPUT paper.log
 INPUT /opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/tex/latex/base/article.cls
 INPUT /opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/tex/latex/base/article.cls
@@ -315,8 +315,14 @@ INPUT /opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/tex/latex/latexconf
 INPUT /opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 INPUT /opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 INPUT /opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/tex/latex/graphics/color.sty
-OUTPUT paper.out
+INPUT ./paper.out
+INPUT ./paper.out
+INPUT paper.out
+INPUT paper.out
 OUTPUT paper.pdf
+INPUT ./paper.out
+INPUT ./paper.out
+OUTPUT paper.out
 INPUT /opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/tex/latex/biblatex/lbx/english.lbx
 INPUT /opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/tex/latex/biblatex/lbx/english.lbx
 INPUT /opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/tex/latex/biblatex/lbx/english.lbx
@@ -427,6 +433,7 @@ INPUT ./logo.png
 INPUT paper.aux
 INPUT ./paper.out
 INPUT ./paper.out
+INPUT paper.run.xml
 OUTPUT paper.run.xml
 INPUT /opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
 INPUT /opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb

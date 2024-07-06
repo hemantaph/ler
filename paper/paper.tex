@@ -456,9 +456,10 @@ summarized as follows:
     or user-specified distributions of these sources.
   \item
     Intrinsic and extrinsic parameters \((\theta)\) of GW sources are
-    sampled using prior distributions \((P(\theta))\) from the gwcosmo
-    (gwcosmo Contributors 2022) and bilby (Ashton et al. 2019) packages,
-    with options for users to input custom distributions.
+    sampled using prior distributions \((P(\theta))\) from the
+    \emph{gwcosmo} (gwcosmo Contributors 2022) and \emph{bilby} (Ashton
+    et al. 2019) packages, with options for users to input custom
+    distributions.
   \end{itemize}
 \item
   Sampling of lens galaxy attributes and source red-shifts:
@@ -474,9 +475,9 @@ summarized as follows:
     lens galaxies, leveraging \emph{multiprocessing} and \emph{njit}
     functionalities for enhanced efficiency.
   \item
-    The package utilizes the Elliptical Power Law with external shear
-    (EPL+Shear) model (Wempe et al. 2022) for galaxy parameters
-    \((\theta_L)\) sampling, following Wierda et al. (2021). Rejection
+    Following Wierda et al. (2021), the package utilizes the Elliptical
+    Power Law with external shear (EPL+Shear) model (Wempe et al. 2022)
+    for sampling the galaxy parameters \((\theta_L)\). Rejection
     sampling is applied on the above samples depending on whether the
     event is strongly lensed or not,
     \(P\left(\text{SL}|z_s,\theta_L\right)\).
