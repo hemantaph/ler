@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber paper"] 1718833483.94834 "paper.bcf" "paper.bbl" "paper" 1720083591.93294 0
-  "paper.bcf" 1720083591.79663 107333 ebb3e9f2ae6bd06749ef69515635fe01 "pdflatex"
+["biber paper"] 1720084883.81736 "paper.bcf" "paper.bbl" "paper" 1720084929.1044 0
+  "paper.bcf" 1720084928.98323 107333 ebb3e9f2ae6bd06749ef69515635fe01 "pdflatex"
   (generated)
   "paper.bbl"
   "paper.blg"
   (rewritten before read)
-["pdflatex"] 1720083590.78244 "/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex" "paper.pdf" "paper" 1720083591.93325 2
-  "/Users/phurailatpamhemantakumar/phd/mypackages/ler/paper/paper.tex" 1720083589.22107 28668 37af7b817d35b5c9bdf95434e26b72f4 ""
+["pdflatex"] 1720084927.97998 "/Users/phurailatpamhemantakumar/phd/mypackages/ler/arxiv/paper.tex" "paper.pdf" "paper" 1720084929.10472 0
+  "/Users/phurailatpamhemantakumar/phd/mypackages/ler/arxiv/paper.tex" 1720084880.81352 28640 234a74517c25a93eddacb1a965159b2e ""
   "/opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1710106625 2971 def0b6c1f0b107b3b936def894055589 ""
   "/opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1710106625 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/fonts/map/fontname/texfonts.map" 1710106625 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -235,10 +235,11 @@
   "/opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/web2c/texmf.cnf" 1710106625 41652 e14926ab86fde7902cad99d9eeaa5ca5 ""
   "/opt/homebrew/Cellar/texlive/20240312/share/texmf-var/web2c/pdftex/pdflatex.fmt" 1710106625 8221866 9aed0a1b2ac5e8bec4cefaf91f11118a ""
   "logo.png" 1718832985.94417 98285 362704720fe7d823a3fcebfbb7af335e ""
-  "paper.aux" 1720083591.79512 1601 bea6a8cc07338cb26c615a079b71dc46 "pdflatex"
-  "paper.bbl" 1718833508.14539 466 ee04f40f768daeed26442158e95aba61 "biber paper"
-  "paper.out" 1720083591.79582 671 90dc5f8c230b92c05b76aea2e5771e65 "pdflatex"
-  "paper.tex" 1720083589.22107 28668 37af7b817d35b5c9bdf95434e26b72f4 ""
+  "paper.aux" 1720084928.98197 1206 10d8def2d006212571769b57bd86388a "pdflatex"
+  "paper.bbl" 1720084926.77974 466 ee04f40f768daeed26442158e95aba61 "biber paper"
+  "paper.out" 1720084928.98246 671 90dc5f8c230b92c05b76aea2e5771e65 "pdflatex"
+  "paper.run.xml" 1720084928.98388 2307 c22358aad3ef1ebeecfd3408afd5cc6d "pdflatex"
+  "paper.tex" 1720084880.81352 28640 234a74517c25a93eddacb1a965159b2e ""
   (generated)
   "paper.aux"
   "paper.bcf"
