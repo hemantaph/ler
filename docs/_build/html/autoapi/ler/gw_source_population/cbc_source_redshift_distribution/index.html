@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ler.gw_source_population.cbc_source_redshift_distribution &mdash; ler 0.3.1 documentation</title>
@@ -173,7 +173,7 @@ default: None/dict(R0=25 * 1e-9, b2=1.6, b3=2.0, b4=30)</p>
 default: ‘./interpolator_pickle’</p>
 </dd>
 <dt><strong>create_new_interpolator</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>Dictionary of interpolator creation parameters
-default: None/dict(redshift_distribution=dict(create_new=False, resolution=500), z_to_luminosity_distance=dict(create_new=False, resolution=500), differential_comoving_volume=dict(create_new=False, resolution=500))</p>
+default: None/dict(redshift_distribution=dict(create_new=False, resolution=1000), z_to_luminosity_distance=dict(create_new=False, resolution=1000), differential_comoving_volume=dict(create_new=False, resolution=1000))</p>
 </dd>
 </dl>
 </dd>
@@ -324,7 +324,7 @@ Source redshifts</p>
 <span class="sig-name descname"><span class="pre">c_n_i</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.c_n_i"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.c_n_i" title="Link to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>c_n_i stands for ‘create new interpolator’. Dictionary of interpolator creation parameters.</p>
-<p>e.g. dict(redshift_distribution=dict(create_new=False, resolution=500), z_to_luminosity_distance=dict(create_new=False, resolution=500), differential_comoving_volume=dict(create_new=False, resolution=500))</p>
+<p>e.g. dict(redshift_distribution=dict(create_new=False, resolution=1000), z_to_luminosity_distance=dict(create_new=False, resolution=1000), differential_comoving_volume=dict(create_new=False, resolution=1000))</p>
 </dd></dl>
 
 <dl class="py attribute">
