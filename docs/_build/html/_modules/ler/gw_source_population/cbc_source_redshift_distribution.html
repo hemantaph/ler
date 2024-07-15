@@ -166,7 +166,7 @@
 <span class="sd">        default: &#39;./interpolator_pickle&#39;</span>
 <span class="sd">    create_new_interpolator : `dict`</span>
 <span class="sd">        Dictionary of interpolator creation parameters</span>
-<span class="sd">        default: None/dict(redshift_distribution=dict(create_new=False, resolution=500), z_to_luminosity_distance=dict(create_new=False, resolution=500), differential_comoving_volume=dict(create_new=False, resolution=500))</span>
+<span class="sd">        default: None/dict(redshift_distribution=dict(create_new=False, resolution=1000), z_to_luminosity_distance=dict(create_new=False, resolution=1000), differential_comoving_volume=dict(create_new=False, resolution=1000))</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    ----------</span>
@@ -301,7 +301,7 @@
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``dict`` \n</span>
 <span class="sd">    c_n_i stands for &#39;create new interpolator&#39;. Dictionary of interpolator creation parameters. \n</span>
-<span class="sd">    e.g. dict(redshift_distribution=dict(create_new=False, resolution=500), z_to_luminosity_distance=dict(create_new=False, resolution=500), differential_comoving_volume=dict(create_new=False, resolution=500))</span>
+<span class="sd">    e.g. dict(redshift_distribution=dict(create_new=False, resolution=1000), z_to_luminosity_distance=dict(create_new=False, resolution=1000), differential_comoving_volume=dict(create_new=False, resolution=1000))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CBCSourceRedshiftDistribution.normalization_pdf_z">
@@ -347,7 +347,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span> <span class="o">=</span> <span class="n">cosmology</span> <span class="k">if</span> <span class="n">cosmology</span> <span class="k">else</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
         <span class="c1"># setting up the interpolator creation parameters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">redshift_distribution</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span> <span class="n">z_to_luminosity_distance</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span> <span class="n">differential_comoving_volume</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">))</span>
+            <span class="n">redshift_distribution</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">1000</span><span class="p">),</span> <span class="n">z_to_luminosity_distance</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">1000</span><span class="p">),</span> <span class="n">differential_comoving_volume</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">1000</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">create_new_interpolator</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">c_n_i</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">create_new_interpolator</span><span class="p">)</span>
         <span class="c1"># creating of interpolators for redshift dependent quantities</span>
