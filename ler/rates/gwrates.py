@@ -3,10 +3,10 @@
 This module contains the main class for calculating the rates of detectable gravitational waves events. The class inherits the :class:`~ler.gw_source_population.CBCSourceParameterDistribution` class for source parameters sampling and uses `gwsnr` package for SNR calculation. 
 """
 
-import contextlib
 import os
 import warnings
 warnings.filterwarnings("ignore")
+import contextlib
 import numpy as np
 from scipy.stats import norm
 from astropy.cosmology import LambdaCDM

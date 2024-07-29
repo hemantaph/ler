@@ -186,25 +186,25 @@ class OpticalDepth():
 
         self.directory = directory
         self.c_n_i = dict(
-            velocity_dispersion=dict(create_new=False, resolution=500),
-            axis_ratio=dict(create_new=False, resolution=500),
-            optical_depth=dict(create_new=False, resolution=100),
-            z_to_Dc=dict(create_new=False, resolution=500),
-            Dc_to_z=dict(create_new=False, resolution=500),
-            angular_diameter_distance=dict(create_new=False, resolution=500),
-            differential_comoving_volume=dict(create_new=False, resolution=500),
+            velocity_dispersion=dict(create_new=False, resolution=1000),
+            axis_ratio=dict(create_new=False, resolution=1000),
+            optical_depth=dict(create_new=False, resolution=200),
+            z_to_Dc=dict(create_new=False, resolution=1000),
+            Dc_to_z=dict(create_new=False, resolution=1000),
+            angular_diameter_distance=dict(create_new=False, resolution=1000),
+            differential_comoving_volume=dict(create_new=False, resolution=1000),
         )
         if isinstance(create_new_interpolator, dict):
             self.c_n_i.update(create_new_interpolator)
         elif create_new_interpolator is True:
             self.c_n_i = dict(
-                velocity_dispersion=dict(create_new=True, resolution=500),
-                axis_ratio=dict(create_new=True, resolution=500),
-                optical_depth=dict(create_new=True, resolution=100),
-                z_to_Dc=dict(create_new=True, resolution=500),
-                Dc_to_z=dict(create_new=True, resolution=500),
-                angular_diameter_distance=dict(create_new=True, resolution=500),
-                differential_comoving_volume=dict(create_new=True, resolution=500),
+                velocity_dispersion=dict(create_new=True, resolution=1000),
+                axis_ratio=dict(create_new=True, resolution=1000),
+                optical_depth=dict(create_new=True, resolution=200),
+                z_to_Dc=dict(create_new=True, resolution=1000),
+                Dc_to_z=dict(create_new=True, resolution=1000),
+                angular_diameter_distance=dict(create_new=True, resolution=1000),
+                differential_comoving_volume=dict(create_new=True, resolution=1000),
             )
 
         vd_name = self.sampler_priors["velocity_dispersion"]  # velocity dispersion sampler name

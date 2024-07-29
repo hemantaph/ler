@@ -315,6 +315,12 @@ INPUT /opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/tex/latex/latexconf
 INPUT /opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 INPUT /opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 INPUT /opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/tex/latex/graphics/color.sty
+INPUT ./paper.out
+INPUT ./paper.out
+INPUT paper.out
+INPUT paper.out
+INPUT ./paper.out
+INPUT ./paper.out
 OUTPUT paper.out
 OUTPUT paper.pdf
 INPUT /opt/homebrew/Cellar/texlive/20240312/share/texmf-dist/tex/latex/biblatex/lbx/english.lbx

@@ -26,7 +26,7 @@ authors:
   - name: Chris Van Den Broeck
     # equal-contrib: False 
     affiliation: "4,5"
-  - name: Otto Akseli Hannukkala
+  - name: Otto Akseli Hannuksela
     # equal-contrib: False 
     affiliation: "1"
   - name: Neha Singh

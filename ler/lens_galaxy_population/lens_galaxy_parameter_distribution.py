@@ -233,31 +233,31 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         self.directory = directory
         # initialize the interpolator's parameters
         self.create_new_interpolator = dict(
-            redshift_distribution=dict(create_new=False, resolution=500),
-            z_to_luminosity_distance=dict(create_new=False, resolution=500),
-            velocity_dispersion=dict(create_new=False, resolution=500),
-            axis_ratio=dict(create_new=False, resolution=500),
-            optical_depth=dict(create_new=False, resolution=100),
-            z_to_Dc=dict(create_new=False, resolution=500),
-            Dc_to_z=dict(create_new=False, resolution=500),
-            angular_diameter_distance=dict(create_new=False, resolution=500),
-            differential_comoving_volume=dict(create_new=False, resolution=500),
-            Dl_to_z=dict(create_new=False, resolution=500),
+            redshift_distribution=dict(create_new=False, resolution=1000),
+            z_to_luminosity_distance=dict(create_new=False, resolution=1000),
+            velocity_dispersion=dict(create_new=False, resolution=1000),
+            axis_ratio=dict(create_new=False, resolution=1000),
+            optical_depth=dict(create_new=False, resolution=200),
+            z_to_Dc=dict(create_new=False, resolution=1000),
+            Dc_to_z=dict(create_new=False, resolution=1000),
+            angular_diameter_distance=dict(create_new=False, resolution=1000),
+            differential_comoving_volume=dict(create_new=False, resolution=1000),
+            Dl_to_z=dict(create_new=False, resolution=1000),
         )
         if isinstance(create_new_interpolator, dict):
             self.create_new_interpolator.update(create_new_interpolator)
         elif create_new_interpolator is True:
             self.create_new_interpolator = dict(
-                redshift_distribution=dict(create_new=True, resolution=500),
-                z_to_luminosity_distance=dict(create_new=True, resolution=500),
-                velocity_dispersion=dict(create_new=True, resolution=500),
-                axis_ratio=dict(create_new=True, resolution=500),
-                optical_depth=dict(create_new=True, resolution=100),
-                z_to_Dc=dict(create_new=True, resolution=500),
-                Dc_to_z=dict(create_new=True, resolution=500),
-                angular_diameter_distance=dict(create_new=True, resolution=500),
-                differential_comoving_volume=dict(create_new=True, resolution=500),
-                Dl_to_z=dict(create_new=True, resolution=500),
+                redshift_distribution=dict(create_new=True, resolution=1000),
+                z_to_luminosity_distance=dict(create_new=True, resolution=1000),
+                velocity_dispersion=dict(create_new=True, resolution=1000),
+                axis_ratio=dict(create_new=True, resolution=1000),
+                optical_depth=dict(create_new=True, resolution=200),
+                z_to_Dc=dict(create_new=True, resolution=1000),
+                Dc_to_z=dict(create_new=True, resolution=1000),
+                angular_diameter_distance=dict(create_new=True, resolution=1000),
+                differential_comoving_volume=dict(create_new=True, resolution=1000),
+                Dl_to_z=dict(create_new=True, resolution=1000),
             )
 
         # dealing with prior functions and categorization

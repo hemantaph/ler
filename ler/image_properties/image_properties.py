@@ -67,7 +67,7 @@ class ImageProperties():
         default: "./interpolator_pickle"
     create_new_interpolator : `dict`
         dictionary to create new interpolator pickle files
-        default: dict(Dl_to_z=dict(create_new=False, resolution=500))
+        default: dict(Dl_to_z=dict(create_new=False, resolution=1000))
 
     Examples
     --------
@@ -140,13 +140,13 @@ class ImageProperties():
         
         # initialize the interpolator's parameters
         self.create_new_interpolator = dict(
-            Dl_to_z=dict(create_new=False, resolution=500),
+            Dl_to_z=dict(create_new=False, resolution=1000),
         )
         if isinstance(create_new_interpolator, dict):
             self.create_new_interpolator.update(create_new_interpolator)
         elif create_new_interpolator is True:
             self.create_new_interpolator = dict(
-                Dl_to_z=dict(create_new=True, resolution=500)
+                Dl_to_z=dict(create_new=True, resolution=1000)
             )
 
         resolution = self.create_new_interpolator["Dl_to_z"]["resolution"]

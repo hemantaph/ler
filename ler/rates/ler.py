@@ -15,7 +15,7 @@ from ..utils import load_json, append_json, get_param_from_json, batch_handler, 
 
 
 class LeR(LensGalaxyParameterDistribution):
-    """Class to calculate both the rates of lensed and unlensed events. Please note that parameters of the simulated events are stored in json file but not as an attribute of the class. This saves RAM memory. 
+    """Class to sample of lensed and unlensed events and calculate it's rates. Please note that parameters of the simulated events are stored in json file but not as an attribute of the class. This saves RAM memory. 
 
     Parameters
     ----------
@@ -29,25 +29,54 @@ class LeR(LensGalaxyParameterDistribution):
     z_max : `float`
         maximum redshift.
         default z_max = 10.
-        for popI_II, popIII, primordial, BNS z_max = 10., 40., 40., 2. respectively.
+        for popI_II, popIII, primordial, BNS z_max = 10., 40., 40., 5. respectively.
+    event_type : `str`
+        type of event to generate.
+        default event_type = 'BBH'. Other options are 'BNS', 'NSBH'.
     size : `int`
         number of samples for sampling.
-        default size = 100000.
+        default size = 100000. To get stable rates, size should be large (>=1e6).
     batch_size : `int`
         batch size for SNR calculation.
         default batch_size = 50000.
         reduce the batch size if you are getting memory error.
-        recommended batch_size = 50000, if size = 1000000.
-    snr_finder : `str`
+        recommended batch_size = 200000, if size = 1000000.
+    cosmology : `astropy.cosmology`
+        cosmology to use for the calculation.
+        default cosmology = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7).
+    snr_finder : `str` or `function`
         default snr_finder = 'gwsnr'.
         if None, the SNR will be calculated using the gwsnr package.
-        if 'custom', the SNR will be calculated using a custom function.
-        The custom function should have input and output as given in GWSNR.snr method.
+        if custom snr finder function is provided, the SNR will be calculated using a custom function. The custom function should follow the following signature:
+        def snr_finder(gw_param_dict):
+            ...
+            return optimal_snr_dict
+        where optimal_snr_dict.keys = ['optimal_snr_net']. Refer to `gwsnr` package's GWSNR.snr attribute for more details.
+    pdet_finder : `function`
+        default pdet_finder = None.
+        The rate calculation uses either the pdet_finder or the snr_finder to calculate the detectable events. The custom pdet finder function should follow the following signature:
+        def pdet_finder(gw_param_dict):
+            ...
+            return pdet_net_dict
+        where pdet_net_dict.keys = ['pdet_net']. For example uses, refer to [GRB pdet example](https://ler.readthedocs.io/en/latest/examples/rates/grb%20detection%20rate.html).
+    list_of_detectors : `list`
+        list of detectors.
+        default list_of_detectors = ['H1', 'L1', 'V1']. This is used for lensed SNR calculation wrt to the detectors. Provide 'None' if you only need net SNR/Pdet. Refer to ImageProperties.get_lensed_snrs for more details.
     json_file_names: `dict`
         names of the json files to strore the necessary parameters.
-        default json_file_names = {'ler_params': 'LeR_params.json', 'unlensed_param': 'unlensed_param.json', 'unlensed_param_detectable': 'unlensed_param_detectable.json'}.\n
+        default json_file_names = {'ler_params': 'LeR_params.json', 'unlensed_param': 'unlensed_param.json', 'unlensed_param_detectable': 'unlensed_param_detectable.json'}.
+    interpolator_directory : `str`
+        directory to store the interpolators.
+        default interpolator_directory = './interpolator_pickle'. This is used for storing the various interpolators related to `ler` and `gwsnr` package.
+    ler_directory : `str`
+        directory to store the parameters.
+        default ler_directory = './ler_data'. This is used for storing the parameters of the simulated events.
+    verbose : `bool`
+        default verbose = True.
+        if True, the function will print all chosen parameters.
+        Choose False to prevent anything from printing.
     kwargs : `keyword arguments`
-        Note : kwargs takes input for initializing the :class:`~ler.lens_galaxy_population.LensGalaxyParameterDistribution`, :meth:`~gwsnr_intialization`.
+        Note : kwargs takes input for initializing the :class:`~ler.lens_galaxy_population.LensGalaxyParameterDistribution`, :class:`~ler.gw_source_population.CBCSourceParameterDistribution`, `~ler.gw_source_population.CBCSourceRedshiftDistribution` and :class:`~ler.image_properties.ImageProperties` classes.
 
     Examples
     ----------
@@ -55,6 +84,9 @@ class LeR(LensGalaxyParameterDistribution):
     >>> ler = LeR()
     >>> unlensed_params = ler.unlensed_cbc_statistics();
     >>> ler.unlensed_rate();
+    >>> lensed_params = ler.lensed_cbc_statistics();
+    >>> ler.lensed_rate();
+    >>> ler.rate_ratio();
         
     Instance Attributes
     ----------
@@ -62,6 +94,8 @@ class LeR(LensGalaxyParameterDistribution):
     +-------------------------------------+----------------------------------+
     | Atrributes                          | Type                             |
     +=====================================+==================================+
+    |:attr:`~npool`                       | `int`                            |
+    +-------------------------------------+----------------------------------+
     |:attr:`~z_min`                       | `float`                          |
     +-------------------------------------+----------------------------------+
     |:attr:`~z_max`                       | `float`                          |
@@ -76,7 +110,11 @@ class LeR(LensGalaxyParameterDistribution):
     +-------------------------------------+----------------------------------+
     |:attr:`~json_file_names`             | `dict`                           |
     +-------------------------------------+----------------------------------+
-    |:attr:`~directory`                   | `str`                            |
+    |:attr:`~interpolator_directory`      | `str`                            |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~ler_directory`               | `str`                            |
+    +-------------------------------------+----------------------------------+
+    |:attr:`~gwsnr`                       | `bool`                           |
     +-------------------------------------+----------------------------------+
     |:attr:`~gw_param_sampler_dict`       | `dict`                           |
     +-------------------------------------+----------------------------------+
@@ -108,59 +146,70 @@ class LeR(LensGalaxyParameterDistribution):
     |:meth:`~snr`                         | Function to get the snr with the |
     |                                     | given parameters.                |
     +-------------------------------------+----------------------------------+
+    |:meth:`~snr_bilby`                   | Function to get the snr with the |
+    |                                     | given parameters using inner-    |
+    |                                     | product method.                  |
+    +-------------------------------------+----------------------------------+
+    |:meth:`~pdet`                        | Function to get the pdet with    |
+    |                                     | the given parameters.            |
+    +-------------------------------------+----------------------------------+
     |:meth:`~store_ler_params`            | Function to store the all the    |
     |                                     | necessary parameters.            |
     +-------------------------------------+----------------------------------+
     |:meth:`~unlensed_cbc_statistics`     | Function to generate unlensed    |
-    |                                     | GW source parameters.            |
+    |                                     | GW source parameters in batches. |
     +-------------------------------------+----------------------------------+
     |:meth:`~unlensed_sampling_routine`   | Function to generate unlensed    |
-    |                                     | GW source parameters.            |
+    |                                     | GW source parameters. It stores  |
+    |                                     | the parameters of the generated  |
+    |                                     | events in a json file.           |
     +-------------------------------------+----------------------------------+
     |:meth:`~unlensed_rate`               | Function to calculate the        |
-    |                                     | unlensed rate.                   |
-    +-------------------------------------+----------------------------------+
-    |:meth:`~selecting_n_unlensed_detectable_events`                         |
-    +-------------------------------------+----------------------------------+
-    |                                     | Function to select n unlensed    |
-    |                                     | detectable events.               |
+    |                                     | unlensed rate. It also stores    |
+    |                                     | the parameters of the detectable |
+    |                                     | unlesed events in a json file.   |
     +-------------------------------------+----------------------------------+
     |:meth:`~lensed_cbc_statistics`       | Function to generate lensed      |
     |                                     | GW source parameters.            |
     +-------------------------------------+----------------------------------+
     |:meth:`~lensed_sampling_routine`     | Function to generate lensed      |
-    |                                     | GW source parameters.            |
+    |                                     | GW source parameters. It stores  |
+    |                                     | the parameters of the generated  |
+    |                                     | events in a json file.           |
     +-------------------------------------+----------------------------------+
     |:meth:`~lensed_rate`                 | Function to calculate the        |
-    |                                     | lensed rate.                     |
+    |                                     | lensed rate. It also stores the  |
+    |                                     | parameters of the detectable     |
+    |                                     | lensed events in a json file.    |
     +-------------------------------------+----------------------------------+
     |:meth:`~rate_ratio`                  | Function to calculate the rate   |
-    |                                     | ratio.                           |
+    |                                     | ratio between lensed and         |
+    |                                     | unlensed events.                 |
     +-------------------------------------+----------------------------------+
     |:meth:`~rate_comparision_with_rate_calculation                          |
     +-------------------------------------+----------------------------------+
-    |                                     | Function to compare the rates    |
-    |                                     | calculated using LeR between     |
-    |                                     | unlensed and lensed events.      |
+    |                                     | Function to calculate rates for  |
+    |                                     | unleesed and lensed events and   |
+    |                                     | compare it with the rate. It also|
+    |                                     | stores the parameters of the     |
+    |                                     | detectable events in a json file.|
     +-------------------------------------+----------------------------------+
-    |:meth:`~param_plot`                  | Function to plot the             |
-    |                                     | distribution of various          |
-    |                                     | parameters.                      |
+    |:meth:`~selecting_n_unlensed_detectable_events`                         |
     +-------------------------------------+----------------------------------+
-    |:meth:`~relative_mu_dt_lensed`       | Function to calculate the        |
-    |                                     | relative magnification and       |
-    |                                     | relative time-delay of lensed    |
-    |                                     | events.                          |
+    |                                     | Function to select n unlensed    |
+    |                                     | detectable events. It stores the |
+    |                                     | parameters of the detectable     |
+    |                                     | unlesed events in a json file.   |
     +-------------------------------------+----------------------------------+
-    |:meth:`~relative_mu_dt_unlensed`     | Function to calculate the        |
-    |                                     | relative magnification and       |
-    |                                     | relative time-delay of unlensed  |
-    |                                     | events.                          |
+    |:meth:`~selecting_n_lensed_detectable_events`                           |
     +-------------------------------------+----------------------------------+
-    |:meth:`~ mu_vs_dt_plot`              | Function to plot the             |
-    |                                     | relative magnification vs        |
-    |                                     | relative time-delay.             |
+    |                                     | Function to select n lensed      |
+    |                                     | detectable events. It stores the |
+    |                                     | parameters of the detectable     |
+    |                                     | lensed events in a json file.    |
     +-------------------------------------+----------------------------------+
+
+    Note: `LeR` class also inherits all the instances from the :class:`~ler.lens_galaxy_population.LensGalaxyParameterDistribution` class. Please refer to the :class:`~ler.lens_galaxy_population.LensGalaxyParameterDistribution` class for more details.
     """
 
     # Attributes
@@ -351,7 +400,7 @@ class LeR(LensGalaxyParameterDistribution):
             print("gwsnr_verbose = ", self.snr_calculator_dict["gwsnr_verbose"])
             print("multiprocessing_verbose = ", self.snr_calculator_dict["multiprocessing_verbose"])
             print("mtot_cut = ", self.snr_calculator_dict["mtot_cut"])
-        del self.gwsnr
+        # del self.gwsnr
 
         print("\n For reference, the chosen source parameters are listed below:")
         print(f"merger_rate_density = '{self.gw_param_samplers['merger_rate_density']}'")
