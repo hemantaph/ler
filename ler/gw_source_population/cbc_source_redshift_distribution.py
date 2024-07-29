@@ -53,7 +53,7 @@ class CBCSourceRedshiftDistribution(object):
         default: './interpolator_pickle'
     create_new_interpolator : `dict`
         Dictionary of interpolator creation parameters
-        default: None/dict(redshift_distribution=dict(create_new=False, resolution=500), z_to_luminosity_distance=dict(create_new=False, resolution=500), differential_comoving_volume=dict(create_new=False, resolution=500))
+        default: None/dict(redshift_distribution=dict(create_new=False, resolution=1000), z_to_luminosity_distance=dict(create_new=False, resolution=1000), differential_comoving_volume=dict(create_new=False, resolution=1000))
 
     Examples
     ----------
@@ -170,7 +170,7 @@ class CBCSourceRedshiftDistribution(object):
     c_n_i = None
     """``dict`` \n
     c_n_i stands for 'create new interpolator'. Dictionary of interpolator creation parameters. \n
-    e.g. dict(redshift_distribution=dict(create_new=False, resolution=500), z_to_luminosity_distance=dict(create_new=False, resolution=500), differential_comoving_volume=dict(create_new=False, resolution=500))
+    e.g. dict(redshift_distribution=dict(create_new=False, resolution=1000), z_to_luminosity_distance=dict(create_new=False, resolution=1000), differential_comoving_volume=dict(create_new=False, resolution=1000))
     """
 
     normalization_pdf_z = None
@@ -207,7 +207,7 @@ class CBCSourceRedshiftDistribution(object):
         self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
         # setting up the interpolator creation parameters
         self.c_n_i = dict(
-            redshift_distribution=dict(create_new=False, resolution=500), z_to_luminosity_distance=dict(create_new=False, resolution=500), differential_comoving_volume=dict(create_new=False, resolution=500))
+            redshift_distribution=dict(create_new=False, resolution=1000), z_to_luminosity_distance=dict(create_new=False, resolution=1000), differential_comoving_volume=dict(create_new=False, resolution=1000))
         if create_new_interpolator:
             self.c_n_i.update(create_new_interpolator)
         # creating of interpolators for redshift dependent quantities

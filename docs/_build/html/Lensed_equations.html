@@ -254,9 +254,20 @@ P(z_s) = \frac{R(z_s)}{\mathcal{N}^U} \frac{1}{(1+z_s)} \frac{dV_c}{dz_s}
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{equation}
 \begin{split}
-\mathcal{R}_L &amp;= \mathcal{N}^L \int_{z_{min}}^{z_{max}} P(z_s| SL)\, P(obs|z_s, SL)\, dz_s \\
-&amp; \text{consider } \int \rightarrow \int_{z_s}\int_{z_l}\int_{\beta}\int_{\theta}\int_{\theta_L} \\
-&amp;= \mathcal{N}^L \int P(z_s| SL)\, P(obs|z_s, \theta, \theta_L, z_l, \beta, SL) \\
+\mathcal{R}_L &amp;= \mathcal{N}^L \int_{z_{min}}^{z_{max}} P(z_s| SL)\, P(obs|z_s, SL)\, dz_s \\ \nonumber
+\text{where,}&amp; \\
+P(obs|z_s, SL) &amp;= \int_{\theta, \theta_L, z_l, \beta} P(obs|z_s, \theta, \theta_L, z_l, \beta, SL) \\
+&amp;\;\; P(\theta, \theta_L, z_l, \beta|z_s, SL) d\theta\, d\theta_L\, dz_l\, d\beta \\
+\text{and,}&amp; \\
+P(\theta, \theta_L, z_l, \beta|z_s, SL) &amp;= P(\theta) P(\theta_L, z_l, \beta|z_s, SL) \\
+&amp;= P(\theta) P(\beta|\theta_L, z_l, z_s, SL) P(\theta_L, z_l|z_s, SL) \\
+&amp;= P(\theta) P(\beta|\theta_L, z_l, z_s, SL) P(\theta_L|z_l, z_s, SL) P(z_l|z_s, SL)
+\end{split}
+\end{equation}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+\mathcal{R}_L &amp;= \mathcal{N}^L \int P(z_s| SL)\, P(obs|z_s, \theta, \theta_L, z_l, \beta, SL) \\
 &amp;\;\; P(\theta)\, P(\theta_L|z_l, z_s, SL)\, P(z_l|z_s)\, P(\beta|z_s,z_l, \theta_L, SL) dz_s d\theta d\theta_L dz_l d\beta \\
 \end{split} \tag{9}
 \end{equation}\end{split}\]</div>

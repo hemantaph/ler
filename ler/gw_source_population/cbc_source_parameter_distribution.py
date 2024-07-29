@@ -291,27 +291,21 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             event_type, source_priors, source_priors_params
         )
 
-        if self.gw_param_samplers["zs"] == "sample_source_redshift":
-            # initialize the SourceGalaxyPopulationModel mother class
-            # for redshift distribution
-            # instance attribute sample_source_redshift is initialized here
-            super().__init__(
-                z_min=z_min,
-                z_max=z_max,
-                event_type=event_type,
-                merger_rate_density=self.gw_param_samplers["merger_rate_density"],
-                merger_rate_density_param=self.gw_param_samplers_params[
-                    "merger_rate_density"
-                ],
-                cosmology=cosmology,
-                directory=directory,
-                create_new_interpolator=self.create_new_interpolator,
-            )
-        else:
-            # if you already have the redshift distribution function, you can pass it in.
-            # super class will not be initialized anymore,
-            # get z_to_luminosity_distance
-            self.lookup_table_luminosity_distance(z_min, z_max, directory)
+        # initialize the SourceGalaxyPopulationModel mother class
+        # for redshift distribution
+        # instance attribute sample_source_redshift is initialized here
+        super().__init__(
+            z_min=z_min,
+            z_max=z_max,
+            event_type=event_type,
+            merger_rate_density=self.gw_param_samplers["merger_rate_density"],
+            merger_rate_density_param=self.gw_param_samplers_params[
+                "merger_rate_density"
+            ],
+            cosmology=cosmology,
+            directory=directory,
+            create_new_interpolator=self.create_new_interpolator,
+        )
 
         # initializing samplers
         # it goes through the setter functions and assign the sampler functions

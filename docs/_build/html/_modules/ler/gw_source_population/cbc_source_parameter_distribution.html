@@ -425,27 +425,21 @@
             <span class="n">event_type</span><span class="p">,</span> <span class="n">source_priors</span><span class="p">,</span> <span class="n">source_priors_params</span>
         <span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;sample_source_redshift&quot;</span><span class="p">:</span>
-            <span class="c1"># initialize the SourceGalaxyPopulationModel mother class</span>
-            <span class="c1"># for redshift distribution</span>
-            <span class="c1"># instance attribute sample_source_redshift is initialized here</span>
-            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-                <span class="n">z_min</span><span class="o">=</span><span class="n">z_min</span><span class="p">,</span>
-                <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span>
-                <span class="n">event_type</span><span class="o">=</span><span class="n">event_type</span><span class="p">,</span>
-                <span class="n">merger_rate_density</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">],</span>
-                <span class="n">merger_rate_density_param</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span>
-                    <span class="s2">&quot;merger_rate_density&quot;</span>
-                <span class="p">],</span>
-                <span class="n">cosmology</span><span class="o">=</span><span class="n">cosmology</span><span class="p">,</span>
-                <span class="n">directory</span><span class="o">=</span><span class="n">directory</span><span class="p">,</span>
-                <span class="n">create_new_interpolator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># if you already have the redshift distribution function, you can pass it in.</span>
-            <span class="c1"># super class will not be initialized anymore,</span>
-            <span class="c1"># get z_to_luminosity_distance</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">lookup_table_luminosity_distance</span><span class="p">(</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="n">directory</span><span class="p">)</span>
+        <span class="c1"># initialize the SourceGalaxyPopulationModel mother class</span>
+        <span class="c1"># for redshift distribution</span>
+        <span class="c1"># instance attribute sample_source_redshift is initialized here</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">z_min</span><span class="o">=</span><span class="n">z_min</span><span class="p">,</span>
+            <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span>
+            <span class="n">event_type</span><span class="o">=</span><span class="n">event_type</span><span class="p">,</span>
+            <span class="n">merger_rate_density</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">],</span>
+            <span class="n">merger_rate_density_param</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span>
+                <span class="s2">&quot;merger_rate_density&quot;</span>
+            <span class="p">],</span>
+            <span class="n">cosmology</span><span class="o">=</span><span class="n">cosmology</span><span class="p">,</span>
+            <span class="n">directory</span><span class="o">=</span><span class="n">directory</span><span class="p">,</span>
+            <span class="n">create_new_interpolator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="c1"># initializing samplers</span>
         <span class="c1"># it goes through the setter functions and assign the sampler functions</span>

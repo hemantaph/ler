@@ -69,6 +69,19 @@ def load_json(file_name):
 
     return param
 
+def save_json(file_name, param):
+    """Save a dictionary as a json file.
+
+    Parameters
+    ----------
+    file_name : `str`
+        json file name for storing the parameters.
+    param : `dict`
+        dictionary to be saved as a json file.
+    """
+    with open(file_name, "w", encoding="utf-8") as write_file:
+        json.dump(param, write_file)
+
 def append_json(file_name, new_dictionary, old_dictionary=None, replace=False):
     """Append and update a json file with a dictionary.
 
@@ -237,7 +250,6 @@ def rejection_sample2d(pdf, xmin, xmax, ymin, ymax, size=100, chunk_size=10000):
     x_sample : `numpy.ndarray`
         samples from the pdf in the x-axis.
     """
-    chunk_size = 10000
 
     x = np.random.uniform(xmin, xmax, chunk_size)
     y = np.random.uniform(ymin, ymax, chunk_size)
