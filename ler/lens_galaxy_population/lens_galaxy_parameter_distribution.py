@@ -242,7 +242,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             Dc_to_z=dict(create_new=False, resolution=1000),
             angular_diameter_distance=dict(create_new=False, resolution=1000),
             differential_comoving_volume=dict(create_new=False, resolution=1000),
-            Dl_to_z=dict(create_new=False, resolution=1000),
+            luminosity_distance_to_z=dict(create_new=False, resolution=1000),
         )
         if isinstance(create_new_interpolator, dict):
             self.create_new_interpolator.update(create_new_interpolator)
@@ -257,7 +257,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
                 Dc_to_z=dict(create_new=True, resolution=1000),
                 angular_diameter_distance=dict(create_new=True, resolution=1000),
                 differential_comoving_volume=dict(create_new=True, resolution=1000),
-                Dl_to_z=dict(create_new=True, resolution=1000),
+                luminosity_distance_to_z=dict(create_new=True, resolution=1000),
             )
 
         # dealing with prior functions and categorization

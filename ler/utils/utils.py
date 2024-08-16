@@ -83,14 +83,23 @@ def save_json(file_name, param):
         json.dump(param, write_file)
 
 def append_json(file_name, new_dictionary, old_dictionary=None, replace=False):
-    """Append and update a json file with a dictionary.
+    """
+    Append (values with corresponding keys) and update a json file with a dictionary. There are four options:
+
+    1. If old_dictionary is provided, the values of the new dictionary will be appended to the old dictionary and save in the 'file_name' json file.
+    2. If replace is True, replace the json file (with the 'file_name') content with the new_dictionary.
+    3. If the file does not exist, create a new one with the new_dictionary.
+    4. If none of the above, append the new dictionary to the content of the json file.
 
     Parameters
     ----------
     file_name : `str`
-        json file name for storing the parameters.
+        json file name for storing the parameters. 
     new_dictionary : `dict`
         dictionary to be appended to the json file.
+    old_dictionary : `dict`, optional
+        If provided the values of the new dictionary will be appended to the old dictionary and save in the 'file_name' json file. 
+        Default is None.
     replace : `bool`, optional
         If True, replace the json file with the dictionary. Default is False.
 

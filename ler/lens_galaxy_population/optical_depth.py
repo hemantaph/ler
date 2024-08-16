@@ -176,7 +176,7 @@ class OpticalDepth():
         if sampler_priors:
             self.sampler_priors.update(sampler_priors)
         self.sampler_priors_params = dict(
-            velocity_dispersion=dict(vd_min=0., vd_max=600.),
+            velocity_dispersion=dict(vd_min=0., vd_max=350.),
             axis_ratio=dict(q_min=0.2, q_max=1.),
         )
         if sampler_priors_params:
@@ -239,6 +239,7 @@ class OpticalDepth():
         except:
             self.vd_min = 10.
             self.vd_max = 350.
+            self.sampler_priors_params['velocity_dispersion']=dict(vd_min=self.vd_min, vd_max=self.vd_max)
 
         # generating inverse cdf interpolator for velocity dispersion
         param_dict_given_ = dict(z_min=self.z_min, z_max=self.z_max, vd_min=self.vd_min, vd_max=self.vd_max, cosmology=self.cosmo, name=vd_name, resolution=self.c_n_i["velocity_dispersion"]["resolution"])
