@@ -92,13 +92,14 @@ Functions
    .. rubric:: Examples
 
    >>> import matplotlib.pyplot as plt
+   >>> from ler.utils import param_plot
    >>> from ler.rates import LeR
-   >>> ler = LeR()
+   >>> ler = LeR(verbose=False)
    >>> param = ler.unlensed_cbc_statistics();
    >>> rate, param_detectable = ler.unlensed_rate()
    >>> plt.figure(figsize=(6, 4))
-   >>> ler.param_plot(param_name='zs', param_dict=param, plot_label='all events')
-   >>> ler.param_plot(param_name='zs', param_dict=param_detectable, plot_label='detectable events')
+   >>> param_plot(param_name='zs', param_dict=param, plot_label='all events')
+   >>> param_plot(param_name='zs', param_dict=param_detectable, plot_label='detectable events')
    >>> plt.xlabel('source redshift')
    >>> plt.ylabel('probability density')
    >>> plt.title('source redshift distribution')
@@ -110,7 +111,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: relative_mu_dt_unlensed(param, size=100)
+.. py:function:: relative_mu_dt_unlensed(param, size=100, randomize=True)
 
    
    Function to generate relative magnification vs time delay difference for unlensed samples.
@@ -122,13 +123,21 @@ Functions
            dictionary of unlensed GW source parameters.
            unlensed_param.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time']
 
+       **size** : `int`
+           number of samples.
+           default size = 100.
+
+       **randomize** : `bool`
+           if True, it will randomize the samples.
+           default randomize = True.
+
    :Returns:
 
        **dmu** : `float.array`
-           relative magnification.
+           relative magnification: abs(mu2/mu1) or abs(dl1/dl2)**2.
 
        **dt** : `float.array`
-           relative time delay.
+           relative time delay: abs(t1-t2) in days.
 
 
 
@@ -145,39 +154,13 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: relative_mu_dt_lensed(lensed_param, snr_threshold=[8.0, 8.0])
+.. py:function:: relative_mu_dt_lensed(lensed_param, snr_threshold=[8.0, 8.0], classification_type='morse_phase')
 
    
    Function to classify the lensed images wrt to the morse phase difference.
 
 
-   :Parameters:
 
-       **lensed_param** : `dict`
-           dictionary of lensed GW source parameters, lens galaxy parameters and image paramters.
-           lensed_param.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl',
-           'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source',
-           'luminosity_distance', 'theta_jn', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
-           'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces',
-           'determinants', 'image_type', 'weights', 'optimal_snr_net', 'L1', 'H1', 'V1']
-
-       **snr_threshold** : `float`
-           threshold for detection signal to noise ratio.
-           e.g. snr_threshold = [8.,8.] or [8.,6.] for subthreshold
-
-   :Returns:
-
-       **mu_rel0** : `float.array`
-           relative magnification for 0 degree phase difference.
-
-       **dt_rel0** : `float.array`
-           relative time delay for 0 degree phase difference.
-
-       **mu_rel90** : `float.array`
-           relative magnification for 90 degree phase difference.
-
-       **dt_rel90** : `float.array`
-           relative time delay for 90 degree phase difference.
 
 
 
@@ -194,7 +177,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: mu_vs_dt_plot(x_array, y_array, savefig=False, ax=None, colors='blue', linestyles='-', origin='upper', alpha=0.6, extent=[0.01, 500.0, 0.01, 100.0], contour_levels=[0.1, 0.4, 0.68, 0.95])
+.. py:function:: mu_vs_dt_plot(x_array, y_array, xscale='log10', yscale='log10', savefig=False, linestyles='-', origin='upper', alpha=0.6, extent=None, contour_levels=[10, 40, 68, 95], colors=['blue', 'blue', 'blue', 'blue', 'blue'])
 
    
    Function to generate 2D KDE and plot the relative magnification vs time delay difference for lensed samples.
@@ -249,10 +232,6 @@ Functions
            contour levels of the plot.
            default contour_levels = [0.10,0.40,0.68,0.95] which corresponds to 1,2,3,4 sigma.
 
-   :Returns:
-
-       None
-           ..
 
 
 
@@ -263,6 +242,33 @@ Functions
 
 
 
+   .. rubric:: Examples
+
+   >>> import numpy as np
+   >>> import matplotlib.pyplot as plt
+   >>> from ler.utils import param_plot, mu_vs_dt_plot, get_param_from_json, relative_mu_dt_unlensed, relative_mu_dt_lensed
+   >>> # get the parameters. For data generation, refer to the 'LeR complete example' in the documentation.
+   >>> unlensed_param = get_param_from_json('ler_data/unlensed_param.json')
+   >>> unlensed_param_detectable = get_param_from_json('ler_data/unlensed_param_detectable.json')
+   >>> lensed_param = get_param_from_json('ler_data/lensed_param.json')
+   >>> lensed_param_detectable = get_param_from_json('ler_data/lensed_param_detectable.json')
+   >>> # get the relative mu and dt
+   >>> ans = relative_mu_dt_lensed(lensed_param_detectable)
+   >>> dmu, dt = relative_mu_dt_unlensed(unlensed_param_detectable, size=1000, randomize=True)
+   >>> # plot
+   >>> plt.figure(figsize=(4, 4))
+   >>> mu_vs_dt_plot(ans['dt_rel90'], ans['mu_rel90'], colors='b')
+   >>> mu_vs_dt_plot(ans['dt_rel0'], ans['mu_rel0'], colors='g')
+   >>> mu_vs_dt_plot(dt, dmu, colors='r')
+   >>> # Create proxy artists for legend
+   >>> proxy1 = plt.Line2D([0], [0], linestyle='-', color='b', label=r'Lensed ($\Delta \phi=90$)')
+   >>> proxy2 = plt.Line2D([0], [0], linestyle='-', color='g', label=r'Lensed ($\Delta \phi=0$)')
+   >>> proxy3 = plt.Line2D([0], [0], linestyle='-', color='r', label=r'Unlensed')
+   >>> plt.legend(handles=[proxy1, proxy2, proxy3])
+   >>> plt.xlim(-5, 2.5)
+   >>> plt.ylim(-2.5, 2.5)
+   >>> plt.grid(alpha=0.4)
+   >>> plt.show()
 
 
 

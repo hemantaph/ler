@@ -13,7 +13,7 @@ if python_version < (3, 10):
 
 setup(
     name="ler",
-    version="0.3.8",
+    version="0.4.0",
     description="Gravitational waves Lensing Rates",
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -26,11 +26,11 @@ setup(
     install_requires=[
         "setuptools>=65.5.0",
         "matplotlib>=3.4.2",
-        "pycbc>=1.18.0",
+        "pycbc>=2.0.4",
         "numpy>=1.18",
         "numba>=0.57.1",
         "bilby>=1.0.2",
-        "gwsnr>=0.2.0",
+        "gwsnr>=0.3.2",
         "scipy<1.14.0",
         "lenstronomy>=1.10.4",
         "astropy>=5.1",

@@ -63,13 +63,14 @@ def param_plot(
     Examples
     ----------
     >>> import matplotlib.pyplot as plt
+    >>> from ler.utils import param_plot
     >>> from ler.rates import LeR
-    >>> ler = LeR()
+    >>> ler = LeR(verbose=False)
     >>> param = ler.unlensed_cbc_statistics();
     >>> rate, param_detectable = ler.unlensed_rate()
     >>> plt.figure(figsize=(6, 4))
-    >>> ler.param_plot(param_name='zs', param_dict=param, plot_label='all events')
-    >>> ler.param_plot(param_name='zs', param_dict=param_detectable, plot_label='detectable events')
+    >>> param_plot(param_name='zs', param_dict=param, plot_label='all events')
+    >>> param_plot(param_name='zs', param_dict=param_detectable, plot_label='detectable events')
     >>> plt.xlabel('source redshift')
     >>> plt.ylabel('probability density')
     >>> plt.title('source redshift distribution')
@@ -102,7 +103,7 @@ def param_plot(
         plt.plot(x, kde(x), label=plot_label+" kde")
     plt.legend()
 
-def relative_mu_dt_unlensed(param, size=100):
+def relative_mu_dt_unlensed(param, size=100, randomize=True):
     """
     Function to generate relative magnification vs time delay difference for unlensed samples.
 
@@ -111,249 +112,291 @@ def relative_mu_dt_unlensed(param, size=100):
     param : `dict`
         dictionary of unlensed GW source parameters.
         unlensed_param.keys() = ['m1', 'm2', 'z', 'snr', 'theta_jn', 'ra', 'dec', 'psi', 'phase', 'geocent_time']
+    size : `int`
+        number of samples.
+        default size = 100.
+    randomize : `bool`
+        if True, it will randomize the samples.
+        default randomize = True.
 
     Returns
     ----------
     dmu : `float.array`
-        relative magnification.
+        relative magnification: abs(mu2/mu1) or abs(dl1/dl2)**2.
     dt : `float.array`
-        relative time delay.
-
+        relative time delay: abs(t1-t2) in days.
     """
 
     t = param["geocent_time"]
     mu = param["luminosity_distance"]
-
     len_ = len(t)
-    t_ = []
-    mu_ = []
-    while len(t_) < size:
-        idx1 = np.random.choice(np.arange(0,len_), size, replace=False)
-        idx2 = np.random.choice(np.arange(0,len_), size, replace=False)
-        t_.append(t[idx2] - t[idx1])
-        mu_.append(mu[idx2] / mu[idx1])
+    # randomize it
+    if randomize:
+        idx_ = np.random.permutation(len_)
+        t = t[idx_]
+        mu = mu[idx_]
+        
+    # Ensure enough unique pairs can be formed
+    if size > (len(t) * (len(t) - 1)) // 2:
+        raise ValueError(f"size should be less than the number of unique pairs {len(t) * (len(t) - 1) // 2}")
 
-    dt = np.abs(np.array(t_)) / (60 * 60 * 24)  # in days
-    dmu = np.sqrt(np.abs(np.array(mu_)))
+    # Generate unique pairs
+    # find idx1 and idx2
+    idx1 = np.array([])
+    idx2 = np.array([])
+    while len(idx1) < size:
+        idx1_ = np.random.choice(len_, size=size, replace=True)
+        idx2_ = np.random.choice(len_, size=size, replace=True)
+        idx1 = np.concatenate((idx1, idx1_))
+        idx2 = np.concatenate((idx2, idx2_))
+        idx = np.where(idx1 != idx2)[0]
+        idx1 = idx1[idx]
+        idx2 = idx2[idx]
+    idx1 = idx1[:size].astype(int)
+    idx2 = idx2[:size].astype(int)
 
-    return (dmu, dt)
+    dt = abs(t[idx1] - t[idx2]) / (60 * 60 * 24)  # in days
+    dmu = abs(mu[idx1]/mu[idx2])**2
 
-def relative_mu_dt_lensed(lensed_param, snr_threshold=[8.0, 8.0]):
+    return dmu, dt
+
+def relative_mu_dt_lensed(
+    lensed_param, 
+    snr_threshold=[8.0, 8.0], 
+    classification_type='morse_phase'
+    ):
     """
     Function to classify the lensed images wrt to the morse phase difference.
 
-    Parameters
-    ----------
-    lensed_param : `dict`
-        dictionary of lensed GW source parameters, lens galaxy parameters and image paramters.
-        lensed_param.keys() = ['zl', 'zs', 'sigma', 'q', 'e1', 'e2', 'gamma1', 'gamma2', 'Dl',
-        'Ds', 'Dls', 'theta_E', 'gamma', 'mass_1', 'mass_2', 'mass_1_source', 'mass_2_source',
-        'luminosity_distance', 'theta_jn', 'psi', 'phase', 'geocent_time', 'ra', 'dec', 'n_images',
-        'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'traces',
-        'determinants', 'image_type', 'weights', 'optimal_snr_net', 'L1', 'H1', 'V1']
-    snr_threshold : `float`
-        threshold for detection signal to noise ratio.
-        e.g. snr_threshold = [8.,8.] or [8.,6.] for subthreshold
-
-    Returns
-    ----------
-    mu_rel0 : `float.array`
-        relative magnification for 0 degree phase difference.
-    dt_rel0 : `float.array`
-        relative time delay for 0 degree phase difference.
-    mu_rel90 : `float.array`
-        relative magnification for 90 degree phase difference.
-    dt_rel90 : `float.array`
-        relative time delay for 90 degree phase difference.
+    
     """
 
     # get magnifications, time_delays and snr
-    mu = np.nan_to_num(lensed_param["magnifications"])
-    dt = np.nan_to_num(lensed_param["time_delays"])
-    snr = np.nan_to_num(lensed_param["optimal_snr_net"])
+    mu = lensed_param["magnifications"]
+    dt = lensed_param["time_delays"]
+    snr = lensed_param["optimal_snr_net"]
+    image_type = lensed_param["image_type"]
 
-    # for 0 degree phase difference
-    # get the index of the image which cross the threshold
-    # get snr_threshold sorted first in descending order
-    snr_threshold = -np.sort(-np.array(snr_threshold))
-    # for type I
-    snr1 = -np.sort(-snr[:, [0, 1]], axis=1)
-    # for type II
-    snr2 = -np.sort(-snr[:, [2, 3]], axis=1)
+    # pair images wrt to image_type
+    if classification_type == 'morse_phase':
+        dt_rel0 = []
+        mu_rel0 = []
+        dt_rel90 = []
+        mu_rel90 = []
+        for i in range(len(image_type)):
+            if image_type[i,0]==image_type[i,1]:
+                # snr check
+                # below will also take care of the nan values
+                if snr[i,0]>snr_threshold[0] and snr[i,1]>snr_threshold[1]:
+                    dt_rel0.append(abs(dt[i,1]-dt[i,0])/ (60 * 60 * 24))
+                    mu_rel0.append(abs(mu[i,1]/mu[i,0]))
+            else:
+                if snr[i,0]>snr_threshold[0] and snr[i,1]>snr_threshold[1]:
+                    dt_rel90.append(abs(dt[i,1]-dt[i,0])/ (60 * 60 * 24))
+                    mu_rel90.append(abs(mu[i,1]/mu[i,0]))
+            if image_type[i,0]==image_type[i,2]:
+                # snr check
+                # below will also take care of the nan values
+                if snr[i,0]>snr_threshold[0] and snr[i,2]>snr_threshold[1]:
+                    dt_rel0.append(abs(dt[i,2]-dt[i,0])/ (60 * 60 * 24))
+                    mu_rel0.append(abs(mu[i,2]/mu[i,0]))
+            else:
+                if snr[i,0]>snr_threshold[0] and snr[i,2]>snr_threshold[1]:
+                    dt_rel90.append(abs(dt[i,2]-dt[i,0])/ (60 * 60 * 24))
+                    mu_rel90.append(abs(mu[i,2]/mu[i,0]))
+            if image_type[i,0]==image_type[i,3]:
+                # snr check
+                # below will also take care of the nan values
+                if snr[i,0]>snr_threshold[0] and snr[i,3]>snr_threshold[1]:
+                    dt_rel0.append(abs(dt[i,3]-dt[i,0])/ (60 * 60 * 24))
+                    mu_rel0.append(abs(mu[i,3]/mu[i,0]))
+            else:
+                if snr[i,0]>snr_threshold[0] and snr[i,3]>snr_threshold[1]:
+                    dt_rel90.append(abs(dt[i,3]-dt[i,0])/ (60 * 60 * 24))
+                    mu_rel90.append(abs(mu[i,3]/mu[i,0]))
+            if image_type[i,1]==image_type[i,2]:
+                # snr check
+                # below will also take care of the nan values
+                if snr[i,1]>snr_threshold[0] and snr[i,2]>snr_threshold[1]:
+                    dt_rel0.append(abs(dt[i,2]-dt[i,1])/ (60 * 60 * 24))
+                    mu_rel0.append(abs(mu[i,2]/mu[i,1]))
+            else:
+                if snr[i,1]>snr_threshold[0] and snr[i,2]>snr_threshold[1]:
+                    dt_rel90.append(abs(dt[i,2]-dt[i,1])/ (60 * 60 * 24))
+                    mu_rel90.append(abs(mu[i,2]/mu[i,1]))
+            if image_type[i,1]==image_type[i,3]:
+                # snr check
+                # below will also take care of the nan values
+                if snr[i,1]>snr_threshold[0] and snr[i,3]>snr_threshold[1]:
+                    dt_rel0.append(abs(dt[i,3]-dt[i,1])/ (60 * 60 * 24))
+                    mu_rel0.append(abs(mu[i,3]/mu[i,1]))
+            else:
+                if snr[i,1]>snr_threshold[0] and snr[i,3]>snr_threshold[1]:
+                    dt_rel90.append(abs(dt[i,3]-dt[i,1])/ (60 * 60 * 24))
+                    mu_rel90.append(abs(mu[i,3]/mu[i,1]))
+            if image_type[i,2]==image_type[i,3]:
+                # snr check
+                # below will also take care of the nan values
+                if snr[i,2]>snr_threshold[0] and snr[i,3]>snr_threshold[1]:
+                    dt_rel0.append(abs(dt[i,3]-dt[i,2])/ (60 * 60 * 24))
+                    mu_rel0.append(abs(mu[i,3]/mu[i,2]))
+            else:
+                if snr[i,2]>snr_threshold[0] and snr[i,3]>snr_threshold[1]:
+                    dt_rel90.append(abs(dt[i,3]-dt[i,2])/ (60 * 60 * 24))
+                    mu_rel90.append(abs(mu[i,3]/mu[i,2]))
 
-    # checking for zero values
-    # check for threshold condition
-    idx1, idx2 = [], []
-    for i in range(len(snr)):
-        if (
-            any(x != 0.0 for x in snr1[i])
-            and snr1[i][0] > snr_threshold[0]
-            and snr1[i][1] > snr_threshold[1]
-        ):
-            idx1.append(i)
-        if (
-            any(x != 0.0 for x in snr2[i])
-            and snr2[i][0] > snr_threshold[0]
-            and snr2[i][1] > snr_threshold[1]
-        ):
-            idx2.append(i)
+        return {
+            "dt_rel0": np.array(dt_rel0), "mu_rel0": np.array(mu_rel0),
+            "dt_rel90": np.array(dt_rel90), "mu_rel90": np.array(mu_rel90),
+        }
 
-    # combine magnifications and time_delays
-    mu_ = np.concatenate((mu[idx1][:, [0, 1]], mu[idx2][:, [2, 3]]), axis=0)
-    dt_ = np.concatenate((dt[idx1][:, [0, 1]], dt[idx2][:, [2, 3]]), axis=0) / (
-        60 * 60 * 24
-    )  # to days
+    if classification_type == 'arrival_time':
+        print('classification_type = arrival_time')
+        print('make sure that the images are sorted wrt to arrival time')
+        print('direct output from "ler" should be sorted')
+        dt_12, dt_13, dt_14, dt_23, dt_24, dt_34 = [], [], [], [], [], []
+        mu_12, mu_13, mu_14, mu_23, mu_24, mu_34 = [], [], [], [], [], []
 
-    # relative magnification
-    mu_rel0 = np.abs(mu_[:, 1] / mu_[:, 0])
-    # relative time delay
-    dt_rel0 = np.abs(dt_[:, 1] - dt_[:, 0])
+        for i in range(len(image_type)):
+            if snr[i,0]>snr_threshold[0] and snr[i,1]>snr_threshold[1]:
+                dt_12.append(abs(dt[i,1]-dt[i,0])/ (60 * 60 * 24))
+                mu_12.append(abs(mu[i,1]/mu[i,0]))
+            if snr[i,0]>snr_threshold[0] and snr[i,2]>snr_threshold[1]:
+                dt_13.append(abs(dt[i,2]-dt[i,0])/ (60 * 60 * 24))
+                mu_13.append(abs(mu[i,2]/mu[i,0]))
+            if snr[i,0]>snr_threshold[0] and snr[i,3]>snr_threshold[1]:
+                dt_14.append(abs(dt[i,3]-dt[i,0])/ (60 * 60 * 24))
+                mu_14.append(abs(mu[i,3]/mu[i,0]))
+            if snr[i,1]>snr_threshold[0] and snr[i,2]>snr_threshold[1]:
+                dt_23.append(abs(dt[i,2]-dt[i,1])/ (60 * 60 * 24))
+                mu_23.append(abs(mu[i,2]/mu[i,1]))
+            if snr[i,1]>snr_threshold[0] and snr[i,3]>snr_threshold[1]:
+                dt_24.append(abs(dt[i,3]-dt[i,1])/ (60 * 60 * 24))
+                mu_24.append(abs(mu[i,3]/mu[i,1]))
+            if snr[i,2]>snr_threshold[0] and snr[i,3]>snr_threshold[1]:
+                dt_34.append(abs(dt[i,3]-dt[i,2])/ (60 * 60 * 24))
+                mu_34.append(abs(mu[i,3]/mu[i,2]))
 
-    # for 90 degree phase difference
-    # for type I
-    snr1 = -np.sort(-snr[:, [0, 2]], axis=1)
-    # for type II
-    snr2 = -np.sort(-snr[:, [1, 3]], axis=1)
-
-    # checking for zero values
-    # check for threshold condition
-    idx1, idx2 = [], []
-    for i in range(len(snr)):
-        if (
-            any(x != 0.0 for x in snr1[i])
-            and snr1[i][0] > snr_threshold[0]
-            and snr1[i][1] > snr_threshold[1]
-        ):
-            idx1.append(i)
-        if (
-            any(x != 0.0 for x in snr2[i])
-            and snr2[i][0] > snr_threshold[0]
-            and snr2[i][1] > snr_threshold[1]
-        ):
-            idx2.append(i)
-
-    # combine magnifications and time_delays
-    mu_ = np.concatenate((mu[idx1][:, [0, 2]], mu[idx2][:, [1, 3]]), axis=0)
-    dt_ = np.concatenate((dt[idx1][:, [0, 2]], dt[idx2][:, [1, 3]]), axis=0) / (
-        60 * 60 * 24
-    )  # in days
-
-    # relative magnification
-    mu_rel90 = np.abs(mu_[:, 1] / mu_[:, 0])
-    # relative time delay
-    dt_rel90 = np.abs(dt_[:, 1] - dt_[:, 0])
-
-    return (mu_rel0, dt_rel0, mu_rel90, dt_rel90)
+        return {
+            "dt_12": np.array(dt_12), "mu_12": np.array(mu_12),
+            "dt_13": np.array(dt_13), "mu_13": np.array(mu_13),
+            "dt_14": np.array(dt_14), "mu_14": np.array(mu_14),
+            "dt_23": np.array(dt_23), "mu_23": np.array(mu_23),
+            "dt_24": np.array(dt_24), "mu_24": np.array(mu_24),
+            "dt_34": np.array(dt_34), "mu_34": np.array(mu_34),
+        }
 
 def mu_vs_dt_plot(
     x_array,
     y_array,
-    savefig=False,
-    ax=None,
-    colors="blue",
-    linestyles="-",
-    origin="upper",
+    xscale = 'log10',
+    yscale = 'log10',
     alpha=0.6,
-    extent=[1e-2, 5e2, 1e-2, 1e2],
-    contour_levels=[0.10, 0.40, 0.68, 0.95],
+    extent=None,
+    contour_levels=[10, 40, 68, 95],
+    colors=['blue', 'blue', 'blue', 'blue', 'blue'],
 ):
     """
-    Function to generate 2D KDE and plot the relative magnification vs time delay difference for lensed samples.
+        Function to generate 2D KDE and plot the relative magnification vs time delay difference for lensed samples.
 
-    Parameters
-    ----------
-    x_array : `float.array`
-        x array.
-    y_array : `float.array`
-        y array.
-    xlabel : `str`
-        x label.
-    ylabel : `str`
-        y label.
-    title : `str`
-        title.
-    savefig : `bool`
-        if True, it will save the figure.
-        default savefig = False.
-    ax : `matplotlib.axes`
-        matplotlib axes.
-        default ax = None.
-    colors : `str`
-        color of the plot.
-        default colors = 'blue'.
-    linestyles : `str`
-        linestyle of the plot.
-        default linestyles = '-'.
-    origin : `str`
-        origin of the plot.
-        default origin = 'upper'.
-    alpha : `float`
-        alpha of the plot.
-        default alpha = 0.6.
-    extent : `list`
-        extent of the plot.
-        default extent = [1e-2,5e2,1e-2,1e2].
-    contour_levels : `list`
-        contour levels of the plot.
-        default contour_levels = [0.10,0.40,0.68,0.95] which corresponds to 1,2,3,4 sigma.
+        Parameters
+        ----------
+        x_array : `float.array`
+            x array.
+        y_array : `float.array`
+            y array.
+        xscale : `str`
+            x-axis scale.
+            default xscale = 'log10'. other options: 'log', None.
+        yscale : `str`
+            y-axis scale.
+            default yscale = 'log10'. other options: 'log', None.
+        alpha : `float`
+            transparency of the contour plot.
+            default alpha = 0.6.
+        extent : `list`
+            extent of the plot.
+            default extent = None. It will consider the full range of x_array and y_array.
+        contour_levels : `list`
+            levels for contour plot.
+            default contour_levels = [10, 40, 68, 95].
+        colors : `str`
+            colors for contour plot.
+            default colors = ['blue', 'blue', 'blue', 'blue', 'blue'].
 
-    Returns
-    ----------
-    None
-
+        Examples
+        ----------
+        >>> import numpy as np
+        >>> import matplotlib.pyplot as plt
+        >>> from ler.utils import param_plot, mu_vs_dt_plot, get_param_from_json, relative_mu_dt_unlensed, relative_mu_dt_lensed
+        >>> # get the parameters. For data generation, refer to the 'LeR complete example' in the documentation. 
+        >>> unlensed_param = get_param_from_json('ler_data/unlensed_param.json')
+        >>> unlensed_param_detectable = get_param_from_json('ler_data/unlensed_param_detectable.json')
+        >>> lensed_param = get_param_from_json('ler_data/lensed_param.json')
+        >>> lensed_param_detectable = get_param_from_json('ler_data/lensed_param_detectable.json')
+        >>> # get the relative mu and dt
+        >>> ans = relative_mu_dt_lensed(lensed_param_detectable)
+        >>> dmu, dt = relative_mu_dt_unlensed(unlensed_param_detectable, size=1000, randomize=True)
+        >>> # plot
+        >>> plt.figure(figsize=(4, 4))
+        >>> mu_vs_dt_plot(ans['dt_rel90'], ans['mu_rel90'], colors='b')
+        >>> mu_vs_dt_plot(ans['dt_rel0'], ans['mu_rel0'], colors='g')
+        >>> mu_vs_dt_plot(dt, dmu, colors='r')
+        >>> # Create proxy artists for legend
+        >>> proxy1 = plt.Line2D([0], [0], linestyle='-', color='b', label=r'Lensed ($\Delta \phi=90$)')
+        >>> proxy2 = plt.Line2D([0], [0], linestyle='-', color='g', label=r'Lensed ($\Delta \phi=0$)')
+        >>> proxy3 = plt.Line2D([0], [0], linestyle='-', color='r', label=r'Unlensed')
+        >>> plt.legend(handles=[proxy1, proxy2, proxy3], loc='upper left')
+        >>> plt.xlim(-5, 2.5)
+        >>> plt.ylim(-2.5, 2.5)
+        >>> plt.grid(alpha=0.4)
+        >>> plt.show()
     """
+
+    x_min = min(x_array)
+    x_max = max(x_array)
+    y_min = min(y_array)
+    y_max = max(y_array)
+
     # applying cutt-off
-    idx = (
-        (x_array > extent[0])
-        & (x_array < extent[1])
-        & (y_array > extent[2])
-        & (y_array < extent[3])
-    )
-    x_array = x_array[idx]
-    y_array = y_array[idx]
+    if extent:
+        x_min, x_max, y_min, y_max = extent
+        x_array = x_array[(x_array >= x_min) & (x_array <= x_max)]
+        y_array = y_array[(y_array >= y_min) & (y_array <= y_max)]
+        
+    # convert to log scale
+    if xscale == 'log10':
+        x_array = np.log10(x_array)
+        x_min = np.log10(x_min)
+        x_max = np.log10(x_max)
+    if yscale == 'log10':
+        y_array = np.log10(y_array)
+        y_min = np.log10(y_min)
+        y_max = np.log10(y_max)
+    if xscale == 'log':
+        x_array = np.log(x_array)
+        x_min = np.log(x_min)
+        x_max = np.log(x_max)
+    if yscale == 'log':
+        y_array = np.log(y_array)
+        y_min = np.log(y_min)
+        y_max = np.log(y_max)
 
-    xu = np.log10(x_array)
-    yu = np.log10(y_array)
+    # Perform a kernel density estimation (KDE)
+    xy = np.vstack([x_array, y_array])
+    kde = gaussian_kde(xy)(xy)
 
-    xmin = np.log10(1e-2)
-    xmax = np.log10(5e2)
-    ymin = np.log10(1e-2)
-    ymax = np.log10(1e2)
+    # Define the levels for contour as percentiles of the density
+    levels = np.percentile(kde, [10, 40, 68, 95])
 
-    xx, yy = np.mgrid[xmin:xmax:100j, ymin:ymax:100j]
-    positions = np.vstack([xx.ravel(), yy.ravel()])
-    values = np.vstack([xu, yu])
-    kernel = gaussian_kde(values)
-    ff = np.reshape(kernel(positions).T, xx.shape)
+    # Create a grid for contour plot
+    xgrid = np.linspace(x_min, x_max, 1000)
+    ygrid = np.linspace(y_min, y_max, 1000)
+    X1, Y1 = np.meshgrid(xgrid, ygrid)
+    Z1 = gaussian_kde(xy)(np.vstack([X1.ravel(), Y1.ravel()])).reshape(X1.shape)
 
-    zsort = -np.sort(-ff.flatten())
+    if isinstance(colors, str):
+        colors = [colors] * len(contour_levels)
 
-    cumz = np.cumsum(zsort) / np.sum(zsort)
-    spl = interp1d(cumz, zsort, kind="cubic", fill_value="extrapolate")
-
-    levels = []
-    for i in contour_levels:
-        levels.append(spl(i))
-    levels = np.array(levels)[::-1]
-
-    ax.contour(
-        np.rot90(ff),
-        levels,
-        colors=colors,
-        linestyles=linestyles,
-        origin=origin,
-        alpha=alpha,
-        extent=np.log10(extent),
-    )
-
-    # labels
-    ax.xlabel(r"$log_{10}\Delta t$ (days)")
-    ax.ylabel(r"$\Delta log_{10}\mu$")
-    ax.title(r"relative magnification vs relative time delay")
-
-    # save figure
-    if savefig:
-        ax.savefig("mu_vs_dt.png", dpi=300, bbox_inches="tight")
-
-    return None
+    plt.contour(X1, Y1, Z1, levels=levels, colors=colors, alpha=alpha)
     

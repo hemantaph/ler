@@ -29,6 +29,7 @@ Functions
 .. autoapisummary::
 
    ler.utils.utils.load_json
+   ler.utils.utils.save_json
    ler.utils.utils.append_json
    ler.utils.utils.add_dict_values
    ler.utils.utils.get_param_from_json
@@ -142,11 +143,45 @@ Functions
    ..
        !! processed by numpydoc !!
 
+.. py:function:: save_json(file_name, param)
+
+   
+   Save a dictionary as a json file.
+
+
+   :Parameters:
+
+       **file_name** : `str`
+           json file name for storing the parameters.
+
+       **param** : `dict`
+           dictionary to be saved as a json file.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:function:: append_json(file_name, new_dictionary, old_dictionary=None, replace=False)
 
    
-   Append and update a json file with a dictionary.
+   Append (values with corresponding keys) and update a json file with a dictionary. There are four options:
 
+   1. If old_dictionary is provided, the values of the new dictionary will be appended to the old dictionary and save in the 'file_name' json file.
+   2. If replace is True, replace the json file (with the 'file_name') content with the new_dictionary.
+   3. If the file does not exist, create a new one with the new_dictionary.
+   4. If none of the above, append the new dictionary to the content of the json file.
 
    :Parameters:
 
@@ -155,6 +190,10 @@ Functions
 
        **new_dictionary** : `dict`
            dictionary to be appended to the json file.
+
+       **old_dictionary** : `dict`, optional
+           If provided the values of the new dictionary will be appended to the old dictionary and save in the 'file_name' json file.
+           Default is None.
 
        **replace** : `bool`, optional
            If True, replace the json file with the dictionary. Default is False.

@@ -67,7 +67,7 @@ class ImageProperties():
         default: "./interpolator_pickle"
     create_new_interpolator : `dict`
         dictionary to create new interpolator pickle files
-        default: dict(Dl_to_z=dict(create_new=False, resolution=1000))
+        default: dict(luminosity_distance_to_z=dict(create_new=False, resolution=1000))
 
     Examples
     --------
@@ -140,22 +140,22 @@ class ImageProperties():
         
         # initialize the interpolator's parameters
         self.create_new_interpolator = dict(
-            Dl_to_z=dict(create_new=False, resolution=1000),
+            luminosity_distance_to_z=dict(create_new=False, resolution=1000),
         )
         if isinstance(create_new_interpolator, dict):
             self.create_new_interpolator.update(create_new_interpolator)
         elif create_new_interpolator is True:
             self.create_new_interpolator = dict(
-                Dl_to_z=dict(create_new=True, resolution=1000)
+                luminosity_distance_to_z=dict(create_new=True, resolution=1000)
             )
 
-        resolution = self.create_new_interpolator["Dl_to_z"]["resolution"]
-        create_new = self.create_new_interpolator["Dl_to_z"]["create_new"]
+        resolution = self.create_new_interpolator["luminosity_distance_to_z"]["resolution"]
+        create_new = self.create_new_interpolator["luminosity_distance_to_z"]["create_new"]
         spline1 = interpolator_from_pickle(
             param_dict_given= dict(z_min=z_min, z_max=z_max, cosmology=self.cosmo, resolution=resolution),
             directory=directory,
-            sub_directory="Dl_to_z",
-            name="Dl_to_z",
+            sub_directory="luminosity_distance_to_z",
+            name="luminosity_distance_to_z",
             x = np.linspace(z_min, z_max, resolution),
             pdf_func= lambda z_: cosmo.luminosity_distance(z_).value, 
             conditioned_y=None, 
@@ -163,7 +163,7 @@ class ImageProperties():
             category="function_inverse",
             create_new=create_new,
         )
-        self.Dl_to_z = njit(lambda z_: cubic_spline_interpolator(z_, spline1[0], spline1[1]))
+        self.luminosity_distance_to_z = njit(lambda z_: cubic_spline_interpolator(z_, spline1[0], spline1[1]))
 
     def image_properties(
             self,
