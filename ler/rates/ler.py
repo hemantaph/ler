@@ -11,7 +11,7 @@ import numpy as np
 from scipy.stats import norm
 from astropy.cosmology import LambdaCDM
 from ..lens_galaxy_population import LensGalaxyParameterDistribution
-from ..utils import load_json, append_json, get_param_from_json, batch_handler, add_dict_values
+from ..utils import load_json, append_json, get_param_from_json, batch_handler
 
 
 class LeR(LensGalaxyParameterDistribution):
