@@ -9,39 +9,39 @@ tags:
 authors:
   - name: Hemantakumar Phurailatpam
     orcid: 0000-0002-0471-3724
-    equal-contrib: False
+    # equal-contrib: True
     affiliation: "1"
   - name: Anupreeta More
-    equal-contrib: False
+    # equal-contrib: False
     orcid: 0000-0001-7714-7076
-    equal-contrib: False
+    # equal-contrib: False
     affiliation: "2,3"
   - name: Harsh Narola
     orcid: 0000-0001-9161-7919
-    equal-contrib: False
+    # equal-contrib: False
     affiliation: "4,5"
   - name: Ng Chung Yin (Leo)
-    equal-contrib: False 
+    # equal-contrib: False 
     affiliation: "1"
   - name: Justin Janquart
     orcid: 0000-0003-2888-7152
-    equal-contrib: False 
+    # equal-contrib: False 
     affiliation: "4,5,6,7"
   - name: Chris Van Den Broeck
     orcid: 0000-0001-6800-4006
-    equal-contrib: False 
+    # equal-contrib: False 
     affiliation: "4,5"
   - name: Otto Akseli Hannuksela
     orcid: 0000-0002-3887-7137
-    equal-contrib: False 
+    # equal-contrib: False 
     affiliation: "1"
   - name: Neha Singh
     orcid: 0000-0002-1135-3456 
-    equal-contrib: False
+    # equal-contrib: False
     affiliation: "8"
   - name: David Keitel
     orcid: 0000-0002-2824-626X
-    equal-contrib: False
+    # equal-contrib: False
     affiliation: "8"
 affiliations:
   - name: Department of Physics, The Chinese University of Hong Kong, Shatin, New Territories, Hong Kong
