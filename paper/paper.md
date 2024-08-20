@@ -9,7 +9,7 @@ tags:
 authors:
   - name: Hemantakumar Phurailatpam
     orcid: 0000-0002-0471-3724
-    equal-contrib: true
+    equal-contrib: False
     affiliation: "1"
   - name: Anupreeta More
     equal-contrib: False
