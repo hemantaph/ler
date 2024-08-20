@@ -143,25 +143,25 @@ def append_json(file_name, new_dictionary, old_dictionary=None, replace=False):
 
     return data
 
-def add_dict_values(dict1, dict2):
-    """Adds the values of two dictionaries together.
+# def add_dict_values(dict1, dict2):
+#     """Adds the values of two dictionaries together.
     
-    Parameters
-    ----------
-    dict1 : `dict`
-        dictionary to be added.
-    dict2 : `dict`
-        dictionary to be added.
+#     Parameters
+#     ----------
+#     dict1 : `dict`
+#         dictionary to be added.
+#     dict2 : `dict`
+#         dictionary to be added.
 
-    Returns
-    ----------
-    dict1 : `dict`
-        dictionary with added values.
-    """
-    data_key = dict1.keys()
-    for key, value in dict2.items():
-        if key in data_key:
-            dict1[key] = np.concatenate((dict1[key], value))
+#     Returns
+#     ----------
+#     dict1 : `dict`
+#         dictionary with added values.
+#     """
+#     data_key = dict1.keys()
+#     for key, value in dict2.items():
+#         if key in data_key:
+#             dict1[key] = np.concatenate((dict1[key], value))
 
     return dict1
 
@@ -370,9 +370,9 @@ def create_func_pdf_invcdf(x, y, category="function"):
     Parameters
     ----------
     x : `numpy.ndarray`
-        x values.
+        x values. This has to sorted in ascending order.
     y : `numpy.ndarray`
-        y values.
+        y values. Corresponding to the x values.
     category : `str`, optional
         category of the function. Default is "function". Other options are "function_inverse", "pdf" and "inv_cdf".
 
