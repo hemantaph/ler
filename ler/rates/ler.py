@@ -792,6 +792,10 @@ class LeR(LensGalaxyParameterDistribution):
             gwsnr_verbose=False,
             multiprocessing_verbose=True,
             mtot_cut=True,
+            pdet=False,
+            snr_th=8.0,
+            snr_th_net=8.0,
+            ann_path_dict=None,
         )
         # if self.event_type == "BNS":
         #     input_params["mtot_max"]= 18.
@@ -819,6 +823,10 @@ class LeR(LensGalaxyParameterDistribution):
                     gwsnr_verbose=input_params["gwsnr_verbose"],
                     multiprocessing_verbose=input_params["multiprocessing_verbose"],
                     mtot_cut=input_params["mtot_cut"],
+                    pdet=input_params["pdet"],
+                    snr_th=input_params["snr_th"],
+                    snr_th_net=input_params["snr_th_net"],
+                    ann_path_dict=input_params["ann_path_dict"],
                 )
 
         self.snr = gwsnr.snr
@@ -909,35 +917,15 @@ class LeR(LensGalaxyParameterDistribution):
         output_path = os.path.join(self.ler_directory, output_jsonfile)
         print(f"unlensed params will be store in {output_path}")
 
-        # sampling in batches
-        if resume and os.path.exists(output_path):
-            # get sample from json file
-            self.dict_buffer = get_param_from_json(output_path)
-        else:
-            self.dict_buffer = None
-
-        batch_handler(
+        unlensed_param = batch_handler(
             size=size,
             batch_size=self.batch_size,
             sampling_routine=self.unlensed_sampling_routine,
             output_jsonfile=output_path,
             save_batch=save_batch,
             resume=resume,
+            param_name="unlensed parameters",
         )
-
-        if save_batch:
-            unlensed_param = get_param_from_json(output_path)
-        else:
-            # this if condition is required if there is nothing to save
-            if self.dict_buffer:
-                unlensed_param = self.dict_buffer.copy()
-                # store all params in json file
-                print(f"saving all unlensed_params in {output_path} ")
-                append_json(output_path, unlensed_param, replace=True)
-            else:
-                print("unlensed_params already sampled.")
-                unlensed_param = get_param_from_json(output_path)
-        self.dict_buffer = None  # save memory
 
         return unlensed_param
     
@@ -977,17 +965,6 @@ class LeR(LensGalaxyParameterDistribution):
             print("calculating pdet...")
             pdet = self.pdet(gw_param_dict=unlensed_param)
             unlensed_param.update(pdet)
-
-        # adding batches
-        if not save_batch:
-            if self.dict_buffer is None:
-                self.dict_buffer = unlensed_param
-            else:
-                for key, value in unlensed_param.items():
-                    self.dict_buffer[key] = np.concatenate((self.dict_buffer[key], value))
-        else:
-            # store all params in json file
-            self.dict_buffer = append_json(file_name=output_jsonfile, new_dictionary=unlensed_param,  old_dictionary=self.dict_buffer, replace=not (resume))
 
         return unlensed_param
 
@@ -1323,35 +1300,15 @@ class LeR(LensGalaxyParameterDistribution):
         output_path = os.path.join(self.ler_directory, output_jsonfile)
         print(f"lensed params will be store in {output_path}")
 
-        # sampling in batches
-        if resume and os.path.exists(output_path):
-            # get sample from json file
-            self.dict_buffer = get_param_from_json(output_path)
-        else:
-            self.dict_buffer = None
-
-        batch_handler(
+        lensed_param = batch_handler(
             size=size,
             batch_size=self.batch_size,
             sampling_routine=self.lensed_sampling_routine,
             output_jsonfile=output_path,
             save_batch=save_batch,
             resume=resume,
+            param_name="lensed parameters",
         )
-
-        if save_batch:
-            lensed_param = get_param_from_json(output_path)
-        else:
-            # this if condition is required if there is nothing to save
-            if self.dict_buffer:
-                lensed_param = self.dict_buffer.copy()
-                # store all params in json file
-                print(f"saving all lensed_params in {output_path} ")
-                append_json(output_path, lensed_param, replace=True)
-            else:
-                print("lensed_params already sampled.")
-                lensed_param = get_param_from_json(output_path)
-        self.dict_buffer = None  # save memory
 
         return lensed_param
     
@@ -1382,6 +1339,8 @@ class LeR(LensGalaxyParameterDistribution):
         print("sampling lensed params...")
         lensed_param = {}
 
+        # Some of the sample lensed events may not satisfy the strong lensing condition
+        # In that case, we will resample those events and replace the values with the corresponding indices
         while True:
             # get lensed params
             lensed_param_ = self.sample_lens_parameters(size=size)
@@ -1424,17 +1383,6 @@ class LeR(LensGalaxyParameterDistribution):
                 pdet_calculator=self.pdet,
             )
             lensed_param.update(pdet)
-
-        # adding batches
-        if not save_batch:
-            if self.dict_buffer is None:
-                self.dict_buffer = lensed_param
-            else:
-                for key, value in lensed_param.items():
-                    self.dict_buffer[key] = np.concatenate((self.dict_buffer[key], value))
-        else:
-            # store all params in json file
-            self.dict_buffer = append_json(file_name=output_jsonfile, new_dictionary=lensed_param,  old_dictionary=self.dict_buffer, replace=not (resume))
 
         return lensed_param
 
@@ -1893,7 +1841,7 @@ class LeR(LensGalaxyParameterDistribution):
         """
 
         # initial setup
-        n, events_total, output_path, meta_data_path, buffer_file = self._initial_setup_for_n_event_selection(meta_data_file, output_jsonfile, resume, batch_size)
+        n, events_total, output_path, meta_data_path, buffer_file, batch_size = self._initial_setup_for_n_event_selection(meta_data_file, output_jsonfile, resume, batch_size)
 
         # loop until n samples are collected
         while n < size:
@@ -2021,7 +1969,7 @@ class LeR(LensGalaxyParameterDistribution):
         """
 
         # initial setup
-        n, events_total, output_path, meta_data_path, buffer_file = self._initial_setup_for_n_event_selection(meta_data_file, output_jsonfile, resume, batch_size)
+        n, events_total, output_path, meta_data_path, buffer_file, batch_size = self._initial_setup_for_n_event_selection(meta_data_file, output_jsonfile, resume, batch_size)
 
         # re-analyse the provided snr_threshold and num_img
         snr_threshold, num_img = self._check_snr_threshold_lensed(snr_threshold, num_img)
@@ -2136,7 +2084,7 @@ class LeR(LensGalaxyParameterDistribution):
         buffer_file = "params_buffer.json"
         print("collected number of detectable events = ", n)
 
-        return n, events_total, output_path, meta_data_path, buffer_file
+        return n, events_total, output_path, meta_data_path, buffer_file, batch_size
 
     def _trim_results_to_size(self, size, output_path, meta_data_path, param_type="unlensed"):
         """

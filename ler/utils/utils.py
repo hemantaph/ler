@@ -125,7 +125,7 @@ def append_json(file_name, new_dictionary, old_dictionary=None, replace=False):
 
     # start = datetime.datetime.now()
     if not replace:
-        data = add_dict_values(data, new_dictionary)
+        data = add_dictionaries_together(data, new_dictionary)
         # data_key = data.keys()
         # for key, value in new_dictionary.items():
         #     if key in data_key:
@@ -853,8 +853,7 @@ def inverse_transform_sampler(size, cdf, x):
     samples = y0 + (y1 - y0) * (u - x0) / (x1 - x0)
     return samples
 
-def batch_handler(size, batch_size, sampling_routine, output_jsonfile, save_batch=True, resume=False,
-    ):
+def batch_handler(size, batch_size, sampling_routine, output_jsonfile, save_batch=True, resume=False, param_name='parameters'):
     """
     Function to run the sampling in batches.
 
@@ -865,14 +864,28 @@ def batch_handler(size, batch_size, sampling_routine, output_jsonfile, save_batc
     batch_size : `int`
         batch size.
     sampling_routine : `function`
-        function to sample the parameters.
-        e.g. unlensed_sampling_routine() or lensed_sampling_routine()
+        sampling function. It should have 'size' as input and return a dictionary.
     output_jsonfile : `str`
-        name of the json file to store the parameters.
-    resume : `bool`
-        if True, it will resume the sampling from the last batch.
-        default resume = False.
+        json file name for storing the parameters.
+    save_batch : `bool`, optional
+        if True, save sampled parameters in each iteration. Default is True.
+    resume : `bool`, optional
+        if True, resume sampling from the last batch. Default is False.
+    param_name : `str`, optional
+        name of the parameter. Default is 'parameters'.
+
+    Returns
+    ----------
+    dict_buffer : `dict`
+        dictionary of parameters.
     """
+
+    # sampling in batches
+    if resume and os.path.exists(output_jsonfile):
+        # get sample from json file
+        dict_buffer = get_param_from_json(output_jsonfile)
+    else:
+        dict_buffer = None
     
     # if size is multiple of batch_size
     if size % batch_size == 0:
@@ -895,69 +908,90 @@ def batch_handler(size, batch_size, sampling_routine, output_jsonfile, save_batc
     track_batches = 0  # to track the number of batches
 
     if not resume:
-        track_batches = track_batches + 1
-        print(f"Batch no. {track_batches}")
-        # new first batch with the frac_batches
-        sampling_routine(size=frac_batches, save_batch=save_batch, output_jsonfile=output_jsonfile);
+        # create new first batch with the frac_batches
+        track_batches, dict_buffer = create_batch_params(sampling_routine, frac_batches, dict_buffer, save_batch, output_jsonfile, track_batches=track_batches)
     else:
         # check where to resume from
+        # identify the last batch and assign current batch number
+        # try-except is added to avoid the error when the file does not exist or if the file is empty or corrupted or does not have the required key.
         try:
             print(f"resuming from {output_jsonfile}")
-            with open(output_jsonfile, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                track_batches = (len(data["zs"]) - frac_batches) // batch_size + 1
+            len_ = len(list(dict_buffer.values())[0])
+            track_batches = (len_ - frac_batches) // batch_size + 1
         except:
-            track_batches = track_batches + 1
-            print(f"Batch no. {track_batches}")
-            # new first batch with the frac_batches
-            sampling_routine(size=frac_batches,  save_batch=save_batch, output_jsonfile=output_jsonfile);
+            # create new first batch with the frac_batches
+            track_batches, dict_buffer = create_batch_params(sampling_routine, frac_batches, dict_buffer, save_batch, output_jsonfile, track_batches=track_batches)
 
-    # ---------------------------------------------------#
+    # loop over the remaining batches
     min_, max_ = track_batches, num_batches
-    for i in range(min_, max_):
-        track_batches = track_batches + 1
-        print(f"Batch no. {track_batches}")
-        sampling_routine(size=batch_size, save_batch=save_batch, output_jsonfile=output_jsonfile, resume=True);
-    # ---------------------------------------------------#
+    # print(f"min_ = {min_}, max_ = {max_}")
+    save_param = False
+    if min_ == max_:
+        print(f"{param_name} already sampled.")
+    elif min_ > max_:
+        len_ = len(list(dict_buffer.values())[0])
+        print(f"existing {param_name} size is {len_} is more than the required size={size}. It will be trimmed.")
+        dict_buffer = trim_dictionary(dict_buffer, size)
+        save_param = True
+    else:
+        for i in range(min_, max_):
+            _, dict_buffer = create_batch_params(sampling_routine, batch_size, dict_buffer, save_batch, output_jsonfile, track_batches=i, resume=True)
 
-    return None
+        if save_batch:
+            # if save_batch=True, then dict_buffer is only the last batch
+            dict_buffer = get_param_from_json(output_jsonfile)
+        else:  # dont save in batches
+            # this if condition is required if there is nothing to save
+            save_param = True
+    
+    if save_param:
+        # store all params in json file
+        print(f"saving all {param_name} in {output_jsonfile} ")
+        append_json(output_jsonfile, dict_buffer, replace=True)
 
-# def batch_handler(size, batch_size, sampling_routine, output_jsonfile, save_batch=True, resume=False):
-#     """
-#     Function to run the sampling in batches.
+    return dict_buffer
 
-#     Parameters
-#     ----------
-#     size : `int`
-#         number of samples.
-#     batch_size : `int`
-#         batch size.
-#     sampling_routine : `function`
-#         function to sample the parameters.
-#         e.g. unlensed_sampling_routine() or lensed_sampling_routine()
-#     output_jsonfile : `str`
-#         name of the json file to store the parameters.
-#     resume : `bool`
-#         if True, it will resume the sampling from the last batch.
-#         default resume = False.
-#     """
+def create_batch_params(sampling_routine, frac_batches, dict_buffer, save_batch, output_jsonfile, track_batches, resume=False):
+    """
+    Helper function to batch_handler. It create batch parameters and store in a dictionary.
 
-#     num_batches = (size + batch_size - 1) // batch_size
-#     print(f"Chosen batch size = {batch_size} with total size = {size}")
-#     print(f"There will be {num_batches} batch(es)")
+    Parameters
+    ----------
+    sampling_routine : `function`
+        sampling function. It should have 'size' as input and return a dictionary.
+    frac_batches : `int`
+        batch size.
+    dict_buffer : `dict`
+        dictionary of parameters.
+    save_batch : `bool`
+        if True, save sampled parameters in each iteration.
+    output_jsonfile : `str`
+        json file name for storing the parameters.
+    track_batches : `int`
+        track the number of batches.
+    resume : `bool`, optional
+        if True, resume sampling from the last batch. Default is False.
 
-#     if not resume:
-#         first_batch_size = size % batch_size or batch_size
-#     else:
-#         with open(output_jsonfile, "r", encoding="utf-8") as f:
-#             data = json.load(f)
-#             first_batch_size = len(data["zs"]) % batch_size or batch_size
+    Returns
+    ----------
+    track_batches : `int`
+        track the number of batches.
+    """
 
-#     for batch_num in range(1, num_batches + 1):
-#         print(f"Batch no. {batch_num}")
-#         current_batch_size = first_batch_size if batch_num == 1 else batch_size
-#         sampling_routine(size=current_batch_size, output_jsonfile=output_jsonfile, resume=resume, save_batch=save_batch)
-#         resume = True  # Resume for subsequent batches
+    track_batches = track_batches + 1
+    print(f"Batch no. {track_batches}")
+    param = sampling_routine(size=frac_batches, save_batch=save_batch, output_jsonfile=output_jsonfile, resume=resume)
 
-#     return None
+    # adding batches and hold it in the buffer attribute.
+    if not save_batch:
+        # in the new batch (new sampling run), dict_buffer will be None
+        if dict_buffer is None:
+            dict_buffer = param
+        else:
+            for key, value in param.items():
+                dict_buffer[key] = np.concatenate((dict_buffer[key], value))
+    else:
+        # store all params in json file
+        dict_buffer = append_json(file_name=output_jsonfile, new_dictionary=param,  old_dictionary=dict_buffer, replace=not (resume))
 
+    return track_batches, dict_buffer
