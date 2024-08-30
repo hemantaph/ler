@@ -37,6 +37,6 @@ setup(
         "tqdm>=4.64.1",
         "pointpats>=2.3",
         "shapely>=2.0.1",
-        "gwcosmo",
+        "gwcosmo==2.1.0",
     ],
 )
