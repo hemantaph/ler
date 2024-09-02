@@ -177,7 +177,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: mu_vs_dt_plot(x_array, y_array, xscale='log10', yscale='log10', savefig=False, linestyles='-', origin='upper', alpha=0.6, extent=None, contour_levels=[10, 40, 68, 95], colors=['blue', 'blue', 'blue', 'blue', 'blue'])
+.. py:function:: mu_vs_dt_plot(x_array, y_array, xscale='log10', yscale='log10', alpha=0.6, extent=None, contour_levels=[10, 40, 68, 95], colors=['blue', 'blue', 'blue', 'blue', 'blue'])
 
    
    Function to generate 2D KDE and plot the relative magnification vs time delay difference for lensed samples.
@@ -191,46 +191,29 @@ Functions
        **y_array** : `float.array`
            y array.
 
-       **xlabel** : `str`
-           x label.
+       **xscale** : `str`
+           x-axis scale.
+           default xscale = 'log10'. other options: 'log', None.
 
-       **ylabel** : `str`
-           y label.
-
-       **title** : `str`
-           title.
-
-       **savefig** : `bool`
-           if True, it will save the figure.
-           default savefig = False.
-
-       **ax** : `matplotlib.axes`
-           matplotlib axes.
-           default ax = None.
-
-       **colors** : `str`
-           color of the plot.
-           default colors = 'blue'.
-
-       **linestyles** : `str`
-           linestyle of the plot.
-           default linestyles = '-'.
-
-       **origin** : `str`
-           origin of the plot.
-           default origin = 'upper'.
+       **yscale** : `str`
+           y-axis scale.
+           default yscale = 'log10'. other options: 'log', None.
 
        **alpha** : `float`
-           alpha of the plot.
+           transparency of the contour plot.
            default alpha = 0.6.
 
        **extent** : `list`
            extent of the plot.
-           default extent = [1e-2,5e2,1e-2,1e2].
+           default extent = None. It will consider the full range of x_array and y_array.
 
        **contour_levels** : `list`
-           contour levels of the plot.
-           default contour_levels = [0.10,0.40,0.68,0.95] which corresponds to 1,2,3,4 sigma.
+           levels for contour plot.
+           default contour_levels = [10, 40, 68, 95].
+
+       **colors** : `str`
+           colors for contour plot.
+           default colors = ['blue', 'blue', 'blue', 'blue', 'blue'].
 
 
 
@@ -264,7 +247,7 @@ Functions
    >>> proxy1 = plt.Line2D([0], [0], linestyle='-', color='b', label=r'Lensed ($\Delta \phi=90$)')
    >>> proxy2 = plt.Line2D([0], [0], linestyle='-', color='g', label=r'Lensed ($\Delta \phi=0$)')
    >>> proxy3 = plt.Line2D([0], [0], linestyle='-', color='r', label=r'Unlensed')
-   >>> plt.legend(handles=[proxy1, proxy2, proxy3])
+   >>> plt.legend(handles=[proxy1, proxy2, proxy3], loc='upper left')
    >>> plt.xlim(-5, 2.5)
    >>> plt.ylim(-2.5, 2.5)
    >>> plt.grid(alpha=0.4)

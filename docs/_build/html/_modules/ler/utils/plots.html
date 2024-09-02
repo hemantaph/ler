@@ -413,9 +413,6 @@
     <span class="n">y_array</span><span class="p">,</span>
     <span class="n">xscale</span> <span class="o">=</span> <span class="s1">&#39;log10&#39;</span><span class="p">,</span>
     <span class="n">yscale</span> <span class="o">=</span> <span class="s1">&#39;log10&#39;</span><span class="p">,</span>
-    <span class="n">savefig</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">linestyles</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span>
-    <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;upper&quot;</span><span class="p">,</span>
     <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
     <span class="n">extent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">contour_levels</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span>
@@ -430,36 +427,24 @@
 <span class="sd">            x array.</span>
 <span class="sd">        y_array : `float.array`</span>
 <span class="sd">            y array.</span>
-<span class="sd">        xlabel : `str`</span>
-<span class="sd">            x label.</span>
-<span class="sd">        ylabel : `str`</span>
-<span class="sd">            y label.</span>
-<span class="sd">        title : `str`</span>
-<span class="sd">            title.</span>
-<span class="sd">        savefig : `bool`</span>
-<span class="sd">            if True, it will save the figure.</span>
-<span class="sd">            default savefig = False.</span>
-<span class="sd">        ax : `matplotlib.axes`</span>
-<span class="sd">            matplotlib axes.</span>
-<span class="sd">            default ax = None.</span>
-<span class="sd">        colors : `str`</span>
-<span class="sd">            color of the plot.</span>
-<span class="sd">            default colors = &#39;blue&#39;.</span>
-<span class="sd">        linestyles : `str`</span>
-<span class="sd">            linestyle of the plot.</span>
-<span class="sd">            default linestyles = &#39;-&#39;.</span>
-<span class="sd">        origin : `str`</span>
-<span class="sd">            origin of the plot.</span>
-<span class="sd">            default origin = &#39;upper&#39;.</span>
+<span class="sd">        xscale : `str`</span>
+<span class="sd">            x-axis scale.</span>
+<span class="sd">            default xscale = &#39;log10&#39;. other options: &#39;log&#39;, None.</span>
+<span class="sd">        yscale : `str`</span>
+<span class="sd">            y-axis scale.</span>
+<span class="sd">            default yscale = &#39;log10&#39;. other options: &#39;log&#39;, None.</span>
 <span class="sd">        alpha : `float`</span>
-<span class="sd">            alpha of the plot.</span>
+<span class="sd">            transparency of the contour plot.</span>
 <span class="sd">            default alpha = 0.6.</span>
 <span class="sd">        extent : `list`</span>
 <span class="sd">            extent of the plot.</span>
-<span class="sd">            default extent = [1e-2,5e2,1e-2,1e2].</span>
+<span class="sd">            default extent = None. It will consider the full range of x_array and y_array.</span>
 <span class="sd">        contour_levels : `list`</span>
-<span class="sd">            contour levels of the plot.</span>
-<span class="sd">            default contour_levels = [0.10,0.40,0.68,0.95] which corresponds to 1,2,3,4 sigma.</span>
+<span class="sd">            levels for contour plot.</span>
+<span class="sd">            default contour_levels = [10, 40, 68, 95].</span>
+<span class="sd">        colors : `str`</span>
+<span class="sd">            colors for contour plot.</span>
+<span class="sd">            default colors = [&#39;blue&#39;, &#39;blue&#39;, &#39;blue&#39;, &#39;blue&#39;, &#39;blue&#39;].</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        ----------</span>
@@ -483,7 +468,7 @@
 <span class="sd">        &gt;&gt;&gt; proxy1 = plt.Line2D([0], [0], linestyle=&#39;-&#39;, color=&#39;b&#39;, label=r&#39;Lensed ($\Delta \phi=90$)&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; proxy2 = plt.Line2D([0], [0], linestyle=&#39;-&#39;, color=&#39;g&#39;, label=r&#39;Lensed ($\Delta \phi=0$)&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; proxy3 = plt.Line2D([0], [0], linestyle=&#39;-&#39;, color=&#39;r&#39;, label=r&#39;Unlensed&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; plt.legend(handles=[proxy1, proxy2, proxy3])</span>
+<span class="sd">        &gt;&gt;&gt; plt.legend(handles=[proxy1, proxy2, proxy3], loc=&#39;upper left&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; plt.xlim(-5, 2.5)</span>
 <span class="sd">        &gt;&gt;&gt; plt.ylim(-2.5, 2.5)</span>
 <span class="sd">        &gt;&gt;&gt; plt.grid(alpha=0.4)</span>
@@ -535,13 +520,7 @@
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">colors</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">contour_levels</span><span class="p">)</span>
 
-    <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">Y1</span><span class="p">,</span> <span class="n">Z1</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
-
-    <span class="c1"># save figure</span>
-    <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;mu_vs_dt.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="kc">None</span></div>
+    <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">Y1</span><span class="p">,</span> <span class="n">Z1</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span></div>
 
     
 </pre></div>

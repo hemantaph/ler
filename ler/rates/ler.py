@@ -6,6 +6,8 @@ This module contains the main class for calculating the rates of detectable grav
 import os
 import warnings
 warnings.filterwarnings("ignore")
+import logging
+logging.getLogger('numexpr.utils').setLevel(logging.ERROR)
 import contextlib
 import numpy as np
 from scipy.stats import norm
@@ -2066,6 +2068,8 @@ class LeR(LensGalaxyParameterDistribution):
         if not resume:
             n = 0  # iterator
             events_total = 0
+            # the following file will be removed if it exists
+            print(f"removing {output_path} and {meta_data_path} if they exist")
             if os.path.exists(output_path):
                 os.remove(output_path)
             if os.path.exists(meta_data_path):

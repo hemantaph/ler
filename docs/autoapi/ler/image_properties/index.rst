@@ -284,7 +284,7 @@ Functions
 
        **create_new_interpolator** : `dict`
            dictionary to create new interpolator pickle files
-           default: dict(Dl_to_z=dict(create_new=False, resolution=1000))
+           default: dict(luminosity_distance_to_z=dict(create_new=False, resolution=1000))
 
 
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gravitational wave event rates &mdash; ler 0.3.1 documentation</title>
@@ -365,6 +365,51 @@ p(m) = wN (\mu_L, \sigma_L) + (1 − w)N (\mu_R, \sigma_R)
 <td><p>Second</p></td>
 <td><p>Uniform (one year)</p></td>
 <td><p>[<span class="math notranslate nohighlight">\(t_{\text{min}}\)</span>, <span class="math notranslate nohighlight">\(t_{\text{max}}\)</span>]</p></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal notranslate"><span class="pre">ler</span></code> by default consider non-spinning sources. However, spin parameters can be included in <code class="docutils literal notranslate"><span class="pre">ler</span></code> initialization as given in the <a class="reference external" href="https://ler.readthedocs.io/en/latest/examples/rates/LeR%20complete%20examples.html#Custom-functions">example</a>. Below is the default sampling method for the related parameters.</p>
+<p><strong>Case I:</strong> Aligned-spins sources (<span class="math notranslate nohighlight">\(a_1,\,a_2\)</span>: Dimensionless spin parameter for the more and less massive object respectively.)</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Unit</p></th>
+<th class="head"><p>Sampling Method</p></th>
+<th class="head"><p>Range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(a_1, a_2\)</span></p></td>
+<td><p>None</p></td>
+<td><p>Uniform</p></td>
+<td><p>[-0.8, 0.8]</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Case II:</strong> Precessing sources (<span class="math notranslate nohighlight">\(a_1,\,a_2\)</span>: Dimensionless spin parameter for the more and less massive object respectively; <span class="math notranslate nohighlight">\(\theta_1,\,\theta_2\)</span>: Tilt angle of the spin with respect to the orbital angular momentum; <span class="math notranslate nohighlight">\(\phi_{12}\)</span>: Azimuthal angle between the spins; <span class="math notranslate nohighlight">\(\phi_{jl}\)</span>: Azimuthal angle between the total angular momentum and the orbital angular momentum.)</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Unit</p></th>
+<th class="head"><p>Sampling Method</p></th>
+<th class="head"><p>Range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(a_1, a_2\)</span></p></td>
+<td><p>None</p></td>
+<td><p>Uniform</p></td>
+<td><p>[0.0, 0.8]</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\theta_1, \theta_2\)</span></p></td>
+<td><p>Radian</p></td>
+<td><p>Sine</p></td>
+<td><p>[0, <span class="math notranslate nohighlight">\(\pi\)</span>]</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\phi_{12}, \phi_{jl}\)</span></p></td>
+<td><p>Radian</p></td>
+<td><p>Uniform</p></td>
+<td><p>[0, <span class="math notranslate nohighlight">\(2\pi\)</span>]</p></td>
 </tr>
 </tbody>
 </table>

@@ -36,7 +36,6 @@ Functions
    ler.utils.load_json
    ler.utils.save_json
    ler.utils.append_json
-   ler.utils.add_dict_values
    ler.utils.get_param_from_json
    ler.utils.rejection_sample
    ler.utils.rejection_sample2d
@@ -57,6 +56,7 @@ Functions
    ler.utils.cubic_spline_interpolator
    ler.utils.inverse_transform_sampler
    ler.utils.batch_handler
+   ler.utils.create_batch_params
    ler.utils.get_param_from_json
    ler.utils.param_plot
    ler.utils.relative_mu_dt_unlensed
@@ -208,40 +208,6 @@ Functions
        **replace** : `bool`, optional
            If True, replace the json file with the dictionary. Default is False.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: add_dict_values(dict1, dict2)
-
-   
-   Adds the values of two dictionaries together.
-
-
-   :Parameters:
-
-       **dict1** : `dict`
-           dictionary to be added.
-
-       **dict2** : `dict`
-           dictionary to be added.
-
-   :Returns:
-
-       **dict1** : `dict`
-           dictionary with added values.
 
 
 
@@ -458,10 +424,10 @@ Functions
    :Parameters:
 
        **x** : `numpy.ndarray`
-           x values.
+           x values. This has to sorted in ascending order.
 
        **y** : `numpy.ndarray`
-           y values.
+           y values. Corresponding to the x values.
 
        **category** : `str`, optional
            category of the function. Default is "function". Other options are "function_inverse", "pdf" and "inv_cdf".
@@ -999,7 +965,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: batch_handler(size, batch_size, sampling_routine, output_jsonfile, save_batch=True, resume=False)
+.. py:function:: batch_handler(size, batch_size, sampling_routine, output_jsonfile, save_batch=True, resume=False, param_name='parameters')
 
    
    Function to run the sampling in batches.
@@ -1014,16 +980,73 @@ Functions
            batch size.
 
        **sampling_routine** : `function`
-           function to sample the parameters.
-           e.g. unlensed_sampling_routine() or lensed_sampling_routine()
+           sampling function. It should have 'size' as input and return a dictionary.
 
        **output_jsonfile** : `str`
-           name of the json file to store the parameters.
+           json file name for storing the parameters.
 
-       **resume** : `bool`
-           if True, it will resume the sampling from the last batch.
-           default resume = False.
+       **save_batch** : `bool`, optional
+           if True, save sampled parameters in each iteration. Default is True.
 
+       **resume** : `bool`, optional
+           if True, resume sampling from the last batch. Default is False.
+
+       **param_name** : `str`, optional
+           name of the parameter. Default is 'parameters'.
+
+   :Returns:
+
+       **dict_buffer** : `dict`
+           dictionary of parameters.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: create_batch_params(sampling_routine, frac_batches, dict_buffer, save_batch, output_jsonfile, track_batches, resume=False)
+
+   
+   Helper function to batch_handler. It create batch parameters and store in a dictionary.
+
+
+   :Parameters:
+
+       **sampling_routine** : `function`
+           sampling function. It should have 'size' as input and return a dictionary.
+
+       **frac_batches** : `int`
+           batch size.
+
+       **dict_buffer** : `dict`
+           dictionary of parameters.
+
+       **save_batch** : `bool`
+           if True, save sampled parameters in each iteration.
+
+       **output_jsonfile** : `str`
+           json file name for storing the parameters.
+
+       **track_batches** : `int`
+           track the number of batches.
+
+       **resume** : `bool`, optional
+           if True, resume sampling from the last batch. Default is False.
+
+   :Returns:
+
+       **track_batches** : `int`
+           track the number of batches.
 
 
 
@@ -1221,7 +1244,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: mu_vs_dt_plot(x_array, y_array, xscale='log10', yscale='log10', savefig=False, linestyles='-', origin='upper', alpha=0.6, extent=None, contour_levels=[10, 40, 68, 95], colors=['blue', 'blue', 'blue', 'blue', 'blue'])
+.. py:function:: mu_vs_dt_plot(x_array, y_array, xscale='log10', yscale='log10', alpha=0.6, extent=None, contour_levels=[10, 40, 68, 95], colors=['blue', 'blue', 'blue', 'blue', 'blue'])
 
    
    Function to generate 2D KDE and plot the relative magnification vs time delay difference for lensed samples.
@@ -1235,46 +1258,29 @@ Functions
        **y_array** : `float.array`
            y array.
 
-       **xlabel** : `str`
-           x label.
+       **xscale** : `str`
+           x-axis scale.
+           default xscale = 'log10'. other options: 'log', None.
 
-       **ylabel** : `str`
-           y label.
-
-       **title** : `str`
-           title.
-
-       **savefig** : `bool`
-           if True, it will save the figure.
-           default savefig = False.
-
-       **ax** : `matplotlib.axes`
-           matplotlib axes.
-           default ax = None.
-
-       **colors** : `str`
-           color of the plot.
-           default colors = 'blue'.
-
-       **linestyles** : `str`
-           linestyle of the plot.
-           default linestyles = '-'.
-
-       **origin** : `str`
-           origin of the plot.
-           default origin = 'upper'.
+       **yscale** : `str`
+           y-axis scale.
+           default yscale = 'log10'. other options: 'log', None.
 
        **alpha** : `float`
-           alpha of the plot.
+           transparency of the contour plot.
            default alpha = 0.6.
 
        **extent** : `list`
            extent of the plot.
-           default extent = [1e-2,5e2,1e-2,1e2].
+           default extent = None. It will consider the full range of x_array and y_array.
 
        **contour_levels** : `list`
-           contour levels of the plot.
-           default contour_levels = [0.10,0.40,0.68,0.95] which corresponds to 1,2,3,4 sigma.
+           levels for contour plot.
+           default contour_levels = [10, 40, 68, 95].
+
+       **colors** : `str`
+           colors for contour plot.
+           default colors = ['blue', 'blue', 'blue', 'blue', 'blue'].
 
 
 
@@ -1308,7 +1314,7 @@ Functions
    >>> proxy1 = plt.Line2D([0], [0], linestyle='-', color='b', label=r'Lensed ($\Delta \phi=90$)')
    >>> proxy2 = plt.Line2D([0], [0], linestyle='-', color='g', label=r'Lensed ($\Delta \phi=0$)')
    >>> proxy3 = plt.Line2D([0], [0], linestyle='-', color='r', label=r'Unlensed')
-   >>> plt.legend(handles=[proxy1, proxy2, proxy3])
+   >>> plt.legend(handles=[proxy1, proxy2, proxy3], loc='upper left')
    >>> plt.xlim(-5, 2.5)
    >>> plt.ylim(-2.5, 2.5)
    >>> plt.grid(alpha=0.4)
