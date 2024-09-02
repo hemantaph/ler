@@ -6,6 +6,8 @@ The class inherits from the CompactBinaryPopulation class, which is used to samp
 
 import warnings
 warnings.filterwarnings("ignore")
+import logging
+logging.getLogger('numexpr.utils').setLevel(logging.ERROR)
 # for multiprocessing
 from multiprocessing import Pool
 from tqdm import tqdm

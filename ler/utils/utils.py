@@ -315,13 +315,22 @@ def add_dictionaries_together(dictionary1, dictionary2):
     if dictionary1.keys() != dictionary2.keys():
         raise ValueError("The dictionaries have different keys.")
     for key in dictionary1.keys():
-        # Check if the item is an ndarray
-        if isinstance(dictionary1[key], np.ndarray):
-            dictionary[key] = np.concatenate((dictionary1[key], dictionary2[key]))
-        elif isinstance(dictionary1[key], list):
-            dictionary[key] = dictionary1[key] + dictionary2[key]
-        # Check if the item is a nested dictionary
-        elif isinstance(dictionary1[key], dict):
+        value1 = dictionary1[key]
+        value2 = dictionary2[key]
+        bool1 = isinstance(value1, np.ndarray) and isinstance(value2, np.ndarray)
+        bool2 = isinstance(value1, list) and isinstance(value2, list)
+        bool3 = isinstance(value1, np.ndarray) and isinstance(value2, list)
+        bool4 = isinstance(value1, list) and isinstance(value2, np.ndarray)
+        bool4 = bool4 or bool3
+        bool5 = isinstance(value1, dict) and isinstance(value2, dict)
+
+        if bool1:
+            dictionary[key] = np.concatenate((value1, value2))
+        elif bool2:
+            dictionary[key] = value1 + value2
+        elif bool4:
+            dictionary[key] = np.concatenate((np.array(value1), np.array(value2)))
+        elif bool5:
             dictionary[key] = add_dictionaries_together(
                 dictionary1[key], dictionary2[key]
             )

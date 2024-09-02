@@ -109,7 +109,7 @@ Functions
            default: True
 
        **spin_precession** : `bool`
-           If spin_zero=True and spin_precession=True, spin parameters are sampled for precessing binaries.
+           If spin_zero=False and spin_precession=True, spin parameters are sampled for precessing binaries.
            if spin_zero=True and spin_precession=False, spin parameters are sampled for aligned/anti-aligned spin binaries.
            default: False
 
@@ -2460,7 +2460,7 @@ Functions
 
        **create_new_interpolator** : `dict`
            dictionary to create new interpolator pickle files
-           default: dict(Dl_to_z=dict(create_new=False, resolution=1000))
+           default: dict(luminosity_distance_to_z=dict(create_new=False, resolution=1000))
 
 
 

@@ -244,7 +244,7 @@ default randomize = True.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.utils.plots.mu_vs_dt_plot">
-<span class="sig-prename descclassname"><span class="pre">ler.utils.plots.</span></span><span class="sig-name descname"><span class="pre">mu_vs_dt_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'log10'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'log10'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savefig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linestyles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'upper'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contour_levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[10,</span> <span class="pre">40,</span> <span class="pre">68,</span> <span class="pre">95]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['blue',</span> <span class="pre">'blue',</span> <span class="pre">'blue',</span> <span class="pre">'blue',</span> <span class="pre">'blue']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/plots.html#mu_vs_dt_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.plots.mu_vs_dt_plot" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.utils.plots.</span></span><span class="sig-name descname"><span class="pre">mu_vs_dt_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'log10'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'log10'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contour_levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[10,</span> <span class="pre">40,</span> <span class="pre">68,</span> <span class="pre">95]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['blue',</span> <span class="pre">'blue',</span> <span class="pre">'blue',</span> <span class="pre">'blue',</span> <span class="pre">'blue']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/plots.html#mu_vs_dt_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.plots.mu_vs_dt_plot" title="Link to this definition"></a></dt>
 <dd><p>Function to generate 2D KDE and plot the relative magnification vs time delay difference for lensed samples.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -253,35 +253,23 @@ default randomize = True.</p>
 </dd>
 <dt><strong>y_array</strong><span class="classifier"><cite>float.array</cite></span></dt><dd><p>y array.</p>
 </dd>
-<dt><strong>xlabel</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>x label.</p>
+<dt><strong>xscale</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>x-axis scale.
+default xscale = ‘log10’. other options: ‘log’, None.</p>
 </dd>
-<dt><strong>ylabel</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>y label.</p>
+<dt><strong>yscale</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>y-axis scale.
+default yscale = ‘log10’. other options: ‘log’, None.</p>
 </dd>
-<dt><strong>title</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>title.</p>
-</dd>
-<dt><strong>savefig</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if True, it will save the figure.
-default savefig = False.</p>
-</dd>
-<dt><strong>ax</strong><span class="classifier"><cite>matplotlib.axes</cite></span></dt><dd><p>matplotlib axes.
-default ax = None.</p>
-</dd>
-<dt><strong>colors</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>color of the plot.
-default colors = ‘blue’.</p>
-</dd>
-<dt><strong>linestyles</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>linestyle of the plot.
-default linestyles = ‘-‘.</p>
-</dd>
-<dt><strong>origin</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>origin of the plot.
-default origin = ‘upper’.</p>
-</dd>
-<dt><strong>alpha</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>alpha of the plot.
+<dt><strong>alpha</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>transparency of the contour plot.
 default alpha = 0.6.</p>
 </dd>
 <dt><strong>extent</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>extent of the plot.
-default extent = [1e-2,5e2,1e-2,1e2].</p>
+default extent = None. It will consider the full range of x_array and y_array.</p>
 </dd>
-<dt><strong>contour_levels</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>contour levels of the plot.
-default contour_levels = [0.10,0.40,0.68,0.95] which corresponds to 1,2,3,4 sigma.</p>
+<dt><strong>contour_levels</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>levels for contour plot.
+default contour_levels = [10, 40, 68, 95].</p>
+</dd>
+<dt><strong>colors</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>colors for contour plot.
+default colors = [‘blue’, ‘blue’, ‘blue’, ‘blue’, ‘blue’].</p>
 </dd>
 </dl>
 </dd>
@@ -307,7 +295,7 @@ default contour_levels = [0.10,0.40,0.68,0.95] which corresponds to 1,2,3,4 sigm
 <span class="gp">&gt;&gt;&gt; </span><span class="n">proxy1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;Lensed ($\Delta \phi=90$)&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">proxy2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;Lensed ($\Delta \phi=0$)&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">proxy3</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;Unlensed&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="p">[</span><span class="n">proxy1</span><span class="p">,</span> <span class="n">proxy2</span><span class="p">,</span> <span class="n">proxy3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="p">[</span><span class="n">proxy1</span><span class="p">,</span> <span class="n">proxy2</span><span class="p">,</span> <span class="n">proxy3</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>

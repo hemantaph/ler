@@ -1175,7 +1175,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: unlensed_rate(unlensed_param=None, snr_threshold=8.0, pdet_threshold=0.5, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, snr_threshold_recalculation=5.5)
+   .. py:method:: unlensed_rate(unlensed_param=None, snr_threshold=8.0, pdet_threshold=0.5, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, snr_threshold_recalculation=[4, 20])
 
       
       Function to calculate the unlensed rate. This function also stores the parameters of the detectable events in json file. There are two conditions for detectability: 'step_function' and 'pdet'.
@@ -1212,8 +1212,9 @@ Classes
               if True, the SNR of centain events (snr>snr_threshold_recalculation)will be recalculate with 'inner-product' method. This is useful when the snr is calculated with 'ann' method of `gwsnr`.
               default snr_recalculation = False.
 
-          **snr_threshold_recalculation** : `float`
-              threshold for recalculation of detection signal to noise ratio.
+          **snr_threshold_recalculation** : `list`
+              lower and upper threshold for recalculation of detection signal to noise ratio.
+              default snr_threshold_recalculation = [4, 20].
 
       :Returns:
 
@@ -1377,7 +1378,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lensed_rate(lensed_param=None, snr_threshold=[8.0, 8.0], pdet_threshold=0.5, num_img=[1, 1], output_jsonfile=None, nan_to_num=True, detectability_condition='step_function', snr_recalculation=False, snr_threshold_recalculation=[5.5, 5.5])
+   .. py:method:: lensed_rate(lensed_param=None, snr_threshold=[8.0, 8.0], pdet_threshold=0.5, num_img=[1, 1], output_jsonfile=None, nan_to_num=True, detectability_condition='step_function', snr_recalculation=False, snr_threshold_recalculation=[[4, 4], [20, 20]])
 
       
       Function to calculate the lensed rate. This function also stores the parameters of the detectable events in json file. There are two conditions for detectability: 'step_function' and 'pdet'.
@@ -1422,9 +1423,9 @@ Classes
               if True, the SNR of centain events (snr>snr_threshold_recalculation)will be recalculate with 'inner-product' method. This is useful when the snr is calculated with 'ann' method of `gwsnr`.
               default snr_recalculation = False.
 
-          **snr_threshold_recalculation** : `float`
-              threshold for recalculation of detection signal to noise ratio.
-              default snr_threshold_recalculation = [5.5,5.5].
+          **snr_threshold_recalculation** : `list`
+              lower and upper threshold for recalculation of detection signal to noise ratio.
+              default snr_threshold_recalculation = [[4,4], [20,20]].
 
       :Returns:
 
@@ -1569,7 +1570,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_unlensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, pdet_threshold=0.5, resume=False, output_jsonfile='n_unlensed_param_detectable.json', meta_data_file='meta_unlensed.json', detectability_condition='step_function', trim_to_size=True, snr_recalculation=False, snr_threshold_recalculation=5.5)
+   .. py:method:: selecting_n_unlensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, pdet_threshold=0.5, resume=False, output_jsonfile='n_unlensed_param_detectable.json', meta_data_file='meta_unlensed.json', detectability_condition='step_function', trim_to_size=True, snr_recalculation=False, snr_threshold_recalculation=[4, 12])
 
       
       Function to generate n unlensed detectable events. This fuction samples the unlensed parameters and save only the detectable events in json file. It also records metadata in the JSON file, which includes the total number of events and the cumulative rate of events. This functionality is particularly useful for generating a fixed or large number of detectable events until the event rates stabilize.
@@ -1618,9 +1619,9 @@ Classes
               if True, the SNR of centain events (snr>snr_threshold_recalculation)will be recalculate with 'inner-product' method. This is useful when the snr is calculated with 'ann' method of `gwsnr`.
               default snr_recalculation = False.
 
-          **snr_threshold_recalculation** : `float`
-              threshold for recalculation of detection signal to noise ratio.
-              default snr_threshold_recalculation = 5.5.
+          **snr_threshold_recalculation** : `list`
+              lower and upper threshold for recalculation of detection signal to noise ratio.
+              default snr_threshold_recalculation = [4, 12].
 
       :Returns:
 
@@ -1647,7 +1648,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_lensed_detectable_events(size=100, batch_size=None, snr_threshold=[8.0, 8.0], pdet_threshold=0.5, num_img=[1, 1], resume=False, detectability_condition='step_function', output_jsonfile='n_lensed_params_detectable.json', meta_data_file='meta_lensed.json', trim_to_size=True, nan_to_num=False, snr_recalculation=False, snr_threshold_recalculation=[5.5, 5.5])
+   .. py:method:: selecting_n_lensed_detectable_events(size=100, batch_size=None, snr_threshold=[8.0, 8.0], pdet_threshold=0.5, num_img=[1, 1], resume=False, detectability_condition='step_function', output_jsonfile='n_lensed_params_detectable.json', meta_data_file='meta_lensed.json', trim_to_size=True, nan_to_num=False, snr_recalculation=False, snr_threshold_recalculation=[[4, 4], [12, 12]])
 
       
       Function to generate n lensed detectable events. This fuction only samples the lensed parameters and save only the detectable events in json file. It also records metadata in the JSON file, which includes the total number of events and the cumulative rate of events. This functionality is particularly useful for generating a fixed or large number of detectable events until the event rates stabilize.
@@ -1704,9 +1705,9 @@ Classes
               if True, the SNR of centain events (snr>snr_threshold_recalculation)will be recalculate with 'inner-product' method. This is useful when the snr is calculated with 'ann' method of `gwsnr`.
               default snr_recalculation = False.
 
-          **snr_threshold_recalculation** : `float`
-              threshold for recalculation of detection signal to noise ratio.
-              default snr_threshold_recalculation = [5.5,5.5].
+          **snr_threshold_recalculation** : `list`
+              lower and upper threshold for recalculation of detection signal to noise ratio.
+              default snr_threshold_recalculation = [[4,4], [12,12]].
 
       :Returns:
 

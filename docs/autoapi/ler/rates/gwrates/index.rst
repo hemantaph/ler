@@ -86,7 +86,7 @@ Classes
 
        **json_file_names: `dict`**
            names of the json files to strore the necessary parameters.
-           default json_file_names = {'gwrates_param':'gwrates_params.json', 'gw_param': 'gw_param.json', 'gw_param_detectable': 'gw_param_detectable.json'}.
+           default json_file_names = {'gwrates_params':'gwrates_params.json', 'gw_param': 'gw_param.json', 'gw_param_detectable': 'gw_param_detectable.json'}.
 
        **interpolator_directory** : `str`
            directory to store the interpolators.
@@ -897,7 +897,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: gw_rate(gw_param=None, snr_threshold=8.0, pdet_threshold=0.5, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, snr_threshold_recalculation=5.5)
+   .. py:method:: gw_rate(gw_param=None, snr_threshold=8.0, pdet_threshold=0.5, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, snr_threshold_recalculation=[4, 20])
 
       
       Function to calculate the GW rate. This function also stores the parameters of the detectable events in json file. There are two conditions for detectability: 'step_function' and 'pdet'.
@@ -934,8 +934,9 @@ Classes
               if True, the SNR of centain events (snr>snr_threshold_recalculation)will be recalculate with 'inner-product' method. This is useful when the snr is calculated with 'ann' method.
               default snr_recalculation = False.
 
-          **threshold_snr_recalculation** : `float`
-              threshold for recalculation of detection signal to noise ratio.
+          **snr_threshold_recalculation** : `list`
+              lower and upper threshold for recalculation of detection signal to noise ratio.
+              default snr_threshold_recalculation = [4, 20].
 
       :Returns:
 
@@ -1008,7 +1009,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_gw_detectable_events(size=100, batch_size=None, snr_threshold=8.0, pdet_threshold=0.5, resume=False, output_jsonfile='gw_params_n_detectable.json', meta_data_file='meta_gw.json', detectability_condition='step_function', trim_to_size=True, snr_recalculation=False, snr_threshold_recalculation=5.5)
+   .. py:method:: selecting_n_gw_detectable_events(size=100, batch_size=None, snr_threshold=8.0, pdet_threshold=0.5, resume=False, output_jsonfile='gw_params_n_detectable.json', meta_data_file='meta_gw.json', detectability_condition='step_function', trim_to_size=True, snr_recalculation=False, snr_threshold_recalculation=[4, 12])
 
       
       Function to generate n GW detectable events. This fuction samples the GW parameters and save only the detectable events in json file. It also records metadata in the JSON file, which includes the total number of events and the cumulative rate of events. This functionality is particularly useful for generating a fixed or large number of detectable events until the event rates stabilize.
@@ -1057,9 +1058,9 @@ Classes
               if True, the SNR of centain events (snr>snr_threshold_recalculation)will be recalculate with 'inner-product' method. This is useful when the snr is calculated with 'ann' method of `gwsnr`.
               default snr_recalculation = False.
 
-          **snr_threshold_recalculation** : `float`
-              threshold for recalculation of detection signal to noise ratio.
-              default snr_threshold_recalculation = 5.5.
+          **snr_threshold_recalculation** : `list`
+              lower and upper threshold for recalculation of detection signal to noise ratio.
+              default snr_threshold_recalculation = [4, 12].
 
       :Returns:
 
