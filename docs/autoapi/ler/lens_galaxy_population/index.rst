@@ -110,7 +110,7 @@ Functions
 
        **spin_precession** : `bool`
            If spin_zero=False and spin_precession=True, spin parameters are sampled for precessing binaries.
-           if spin_zero=True and spin_precession=False, spin parameters are sampled for aligned/anti-aligned spin binaries.
+           if spin_zero=False and spin_precession=False, spin parameters are sampled for aligned/anti-aligned spin binaries.
            default: False
 
        **directory** : `str`
