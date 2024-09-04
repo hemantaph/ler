@@ -16,6 +16,12 @@ from ..lens_galaxy_population import LensGalaxyParameterDistribution
 from ..utils import load_json, append_json, get_param_from_json, batch_handler
 
 
+# # multiprocessing guard code
+# def main():
+#     obj = LeR()
+
+# if __name__ == '__main__':
+
 class LeR(LensGalaxyParameterDistribution):
     """Class to sample of lensed and unlensed events and calculate it's rates. Please note that parameters of the simulated events are stored in json file but not as an attribute of the class. This saves RAM memory. 
 
