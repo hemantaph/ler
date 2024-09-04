@@ -1,4 +1,4 @@
-name: ler
+name: ler2
 channels:
   - conda-forge
   - defaults
