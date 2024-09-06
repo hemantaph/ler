@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Installation &mdash; ler 0.3.1 documentation</title>
@@ -26,7 +26,9 @@
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Summary" href="Summary.html" />
+    <link rel="prev" title="Welcome to ler’s documentation!" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,8 +51,12 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="Installation2.html">Installation</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ler-for-development">ler for development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-of-numba-with-conda">Installation of numba with conda</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
@@ -101,7 +107,7 @@
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Installation</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/Installation.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -113,28 +119,28 @@
 <h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>For package development and contribution refer here (<a class="reference internal" href="#development"><span class="std std-ref">gwsnr for development</span></a>).</p>
+<p>For arm64 architecture processor (e.g. apple silicon) you might need to install some specific dependencies with conda (<a class="reference internal" href="#dependencies"><span class="std std-ref">Installation of numba with conda</span></a>). For package development and contribution refer here (<a class="reference internal" href="#development"><span class="std std-ref">ler for development</span></a>). There can be error related to multiprocessing on either arm64 or x86_64 architecture. This can be resolved by using <cite>main()</cite> function as shown in this <a class="reference external" href="https://github.com/hemantaph/ler/blob/main/examples/rates/LeR_short_example.py">example</a>.</p>
 </div>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-cGlw" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-cGlw" name="cGlw" role="tab" tabindex="0">pip</button></div><div aria-labelledby="tab-0-cGlw" class="sphinx-tabs-panel code-tab group-tab" id="panel-0-cGlw" name="cGlw" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install gwsnr</span>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-cGlw" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-cGlw" name="cGlw" role="tab" tabindex="0">pip</button></div><div aria-labelledby="tab-0-cGlw" class="sphinx-tabs-panel code-tab group-tab" id="panel-0-cGlw" name="cGlw" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install ler</span>
 </pre></div>
 </div>
 </div></div>
-<p>This will also install the dependencies needed by the lastest <code class="docutils literal notranslate"><span class="pre">gwsnr</span></code> version.</p>
-<section id="gwsnr-for-development">
-<span id="development"></span><h2>gwsnr for development<a class="headerlink" href="#gwsnr-for-development" title="Link to this heading"></a></h2>
-<p>To install <code class="docutils literal notranslate"><span class="pre">gwsnr</span></code> for development purposes use <a class="reference external" href="https://github.com/hemantaph/gwsnr/">github.gwsnr</a>. Use conda environment to avoid dependency error.</p>
+<p>This will also install the dependencies needed by the lastest <code class="docutils literal notranslate"><span class="pre">ler</span></code> version.</p>
+<section id="ler-for-development">
+<span id="development"></span><h2>ler for development<a class="headerlink" href="#ler-for-development" title="Link to this heading"></a></h2>
+<p>To install <code class="docutils literal notranslate"><span class="pre">ler</span></code> for development purposes use <a class="reference external" href="https://github.com/hemantaph/ler/">github.ler</a>. Use conda environment to avoid dependency error.</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-d2l0aCBuZXcgY29uZGEgZW52" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-d2l0aCBuZXcgY29uZGEgZW52" name="d2l0aCBuZXcgY29uZGEgZW52" role="tab" tabindex="0">with new conda env</button><button aria-controls="panel-1-ZXhpc3RpbmcgY29uZGEgZW52" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-ZXhpc3RpbmcgY29uZGEgZW52" name="ZXhpc3RpbmcgY29uZGEgZW52" role="tab" tabindex="-1">existing conda env</button></div><div aria-labelledby="tab-1-d2l0aCBuZXcgY29uZGEgZW52" class="sphinx-tabs-panel code-tab group-tab" id="panel-1-d2l0aCBuZXcgY29uZGEgZW52" name="d2l0aCBuZXcgY29uZGEgZW52" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/hemantaph/gwsnr.git</span>
-<span class="go">cd gwsnr</span>
-<span class="go">conda env create -f gwsnr.yml</span>
-<span class="go">conda activate gwsnr</span>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-d2l0aCBuZXcgY29uZGEgZW52" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-d2l0aCBuZXcgY29uZGEgZW52" name="d2l0aCBuZXcgY29uZGEgZW52" role="tab" tabindex="0">with new conda env</button><button aria-controls="panel-1-ZXhpc3RpbmcgY29uZGEgZW52" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-ZXhpc3RpbmcgY29uZGEgZW52" name="ZXhpc3RpbmcgY29uZGEgZW52" role="tab" tabindex="-1">existing conda env</button></div><div aria-labelledby="tab-1-d2l0aCBuZXcgY29uZGEgZW52" class="sphinx-tabs-panel code-tab group-tab" id="panel-1-d2l0aCBuZXcgY29uZGEgZW52" name="d2l0aCBuZXcgY29uZGEgZW52" role="tabpanel" tabindex="0"><div class="highlight-Console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/hemantaph/ler.git</span>
+<span class="go">cd ler</span>
+<span class="go">conda env create -f ler.yml</span>
+<span class="go">conda activate ler</span>
 <span class="go">pip install -e .</span>
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-1-ZXhpc3RpbmcgY29uZGEgZW52" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-1-ZXhpc3RpbmcgY29uZGEgZW52" name="ZXhpc3RpbmcgY29uZGEgZW52" role="tabpanel" tabindex="0"><div class="highlight-with notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/hemantaph/gwsnr.git
-cd gwsnr
-conda env update --file gwsnr.yml
+</div><div aria-labelledby="tab-1-ZXhpc3RpbmcgY29uZGEgZW52" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-1-ZXhpc3RpbmcgY29uZGEgZW52" name="ZXhpc3RpbmcgY29uZGEgZW52" role="tabpanel" tabindex="0"><div class="highlight-with notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/hemantaph/ler.git
+cd ler
+conda env update --file ler.yml
 pip install -e .
 </pre></div>
 </div>
@@ -151,7 +157,10 @@ pip install -e .
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to ler’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Summary.html" class="btn btn-neutral float-right" title="Summary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
