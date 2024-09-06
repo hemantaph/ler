@@ -4,7 +4,7 @@ Installation
 
 .. note::
 
-    For arm64 architecture processor (e.g. apple silicon) you might need to install some of the dependencies with conda (:ref:`dependencies`). For package development and contribution refer here (:ref:`development`).
+    For arm64 architecture processor (e.g. apple silicon) you might need to install some specific dependencies with conda (:ref:`dependencies`). For package development and contribution refer here (:ref:`development`). There can be error related to multiprocessing on either arm64 or x86_64 architecture. This can be resolved by using `main()` function as shown in this `example <https://github.com/hemantaph/ler/blob/main/examples/rates/LeR_short_example.py>`_. 
 
 .. tabs::
         
