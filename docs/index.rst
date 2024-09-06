@@ -76,7 +76,7 @@ Glossary
    :maxdepth: 2
    :caption: Contents:
 
-   Installations
+   Installation2
    Summary
    code_overview
    GW_events
