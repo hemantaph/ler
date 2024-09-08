@@ -317,6 +317,10 @@ def add_dictionaries_together(dictionary1, dictionary2):
     for key in dictionary1.keys():
         value1 = dictionary1[key]
         value2 = dictionary2[key]
+
+        # check if the value is empty
+        bool0 = len(value1) == 0 or len(value2) == 0
+        # check if the value is an ndarray or a list
         bool1 = isinstance(value1, np.ndarray) and isinstance(value2, np.ndarray)
         bool2 = isinstance(value1, list) and isinstance(value2, list)
         bool3 = isinstance(value1, np.ndarray) and isinstance(value2, list)
@@ -324,7 +328,14 @@ def add_dictionaries_together(dictionary1, dictionary2):
         bool4 = bool4 or bool3
         bool5 = isinstance(value1, dict) and isinstance(value2, dict)
 
-        if bool1:
+        if bool0:
+            if len(value1) == 0 and len(value2) == 0:
+                dictionary[key] = np.array([])
+            elif len(value1) != 0 and len(value2) == 0:
+                dictionary[key] = np.array(value1)
+            elif len(value1) == 0 and len(value2) != 0:
+                dictionary[key] = np.array(value2)
+        elif bool1:
             dictionary[key] = np.concatenate((value1, value2))
         elif bool2:
             dictionary[key] = value1 + value2
