@@ -49,7 +49,7 @@ extensions = [
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.ipynb_checkpoints','.ipynb', "venv", ".*"]
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.ipynb_checkpoints','.ipynb', "venv", ".*", '**.ipynb_checkpoints', '**/*.ipynb_checkpoints', '**/**/*.ipynb_checkpoints', '**/**/**/*.ipynb_checkpoints']
 autodoc_member_order = 'bysource'
 numpydoc_show_class_members = False
 autoapi_add_toctree_entry = False
