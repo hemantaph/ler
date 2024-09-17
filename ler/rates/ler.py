@@ -488,7 +488,7 @@ class LeR(LensGalaxyParameterDistribution):
         Function to print all the parameters.
         """
         # print all relevant functions and sampler priors
-        print("\n LeR set up params:")
+        print("\n # LeR set up params:")
         print(f'npool = {self.npool},')
         print(f'z_min = {self.z_min},')
         print(f'z_max = {self.z_max},')
@@ -501,23 +501,23 @@ class LeR(LensGalaxyParameterDistribution):
         if self.pdet:
             print(f'pdet_finder = {self.pdet},')
         print(f'json_file_names = {self.json_file_names},')
-        print(f'interpolator_directory = {self.interpolator_directory},')
-        print(f'ler_directory = {self.ler_directory},')
+        print(f"interpolator_directory = '{self.interpolator_directory}',")
+        print(f"ler_directory = '{self.ler_directory}',")
 
-        print("\n LeR also takes CBCSourceParameterDistribution class params as kwargs, as follows:")
+        print("\n # LeR also takes CBCSourceParameterDistribution class params as kwargs, as follows:")
         print(f"source_priors = {self.gw_param_sampler_dict['source_priors']},")
         print(f"source_priors_params = {self.gw_param_sampler_dict['source_priors_params']},")
         print(f"spin_zero = {self.gw_param_sampler_dict['spin_zero']},")
         print(f"spin_precession = {self.gw_param_sampler_dict['spin_precession']},")
         print(f"create_new_interpolator = {self.gw_param_sampler_dict['create_new_interpolator']},")
         
-        print("\n LeR also takes LensGalaxyParameterDistribution class params as kwargs, as follows:")
+        print("\n # LeR also takes LensGalaxyParameterDistribution class params as kwargs, as follows:")
         print(f"lens_type = '{self.gw_param_sampler_dict['lens_type']}',")
         print(f"lens_functions = {self.gw_param_sampler_dict['lens_functions']},")
         print(f"lens_priors = {self.gw_param_sampler_dict['lens_priors']},")
         print(f"lens_priors_params = {self.gw_param_sampler_dict['lens_priors_params']},")
         
-        print("\n LeR also takes ImageProperties class params as kwargs, as follows:")
+        print("\n # LeR also takes ImageProperties class params as kwargs, as follows:")
         print(f"n_min_images = {self.n_min_images},")
         print(f"n_max_images = {self.n_max_images},")
         print(f"geocent_time_min = {self.geocent_time_min},")
@@ -525,7 +525,7 @@ class LeR(LensGalaxyParameterDistribution):
         print(f"lens_model_list = {self.lens_model_list},")
         
         if self.gwsnr:
-            print("\n LeR also takes gwsnr.GWSNR params as kwargs, as follows:")
+            print("\n # LeR also takes gwsnr.GWSNR params as kwargs, as follows:")
             print(f"mtot_min = {self.snr_calculator_dict['mtot_min']},")
             print(f"mtot_max = {self.snr_calculator_dict['mtot_max']},")
             print(f"ratio_min = {self.snr_calculator_dict['ratio_min']},")
@@ -539,7 +539,6 @@ class LeR(LensGalaxyParameterDistribution):
             print(f"psds = {self.snr_calculator_dict['psds']},")
             print(f"ifos = {self.snr_calculator_dict['ifos']},")
             print(f"interpolator_dir = '{self.snr_calculator_dict['interpolator_dir']}',")
-            print(f"create_new_interpolator = {self.snr_calculator_dict['create_new_interpolator']},")
             print(f"gwsnr_verbose = {self.snr_calculator_dict['gwsnr_verbose']},")
             print(f"multiprocessing_verbose = {self.snr_calculator_dict['multiprocessing_verbose']},")
             print(f"mtot_cut = {self.snr_calculator_dict['mtot_cut']},")
@@ -720,6 +719,7 @@ class LeR(LensGalaxyParameterDistribution):
         # initialization of LensGalaxyParameterDistribution class
         # it also initializes the CBCSourceParameterDistribution and ImageProperties classes
         input_params = dict(
+            # LensGalaxyParameterDistribution class params
             z_min=self.z_min,
             z_max=self.z_max,
             cosmology=self.cosmo,
@@ -728,8 +728,13 @@ class LeR(LensGalaxyParameterDistribution):
             lens_functions= None,
             lens_priors=None,
             lens_priors_params=None,
+            # ImageProperties class params
+            n_min_images=2, 
+            n_max_images=4,
             geocent_time_min=1126259462.4,
             geocent_time_max=1126259462.4+365*24*3600*20,
+            lens_model_list=['EPL_NUMBA', 'SHEAR'],
+            # CBCSourceParameterDistribution class params
             source_priors=None,
             source_priors_params=None,
             spin_zero=True,
@@ -753,8 +758,11 @@ class LeR(LensGalaxyParameterDistribution):
             lens_functions=input_params["lens_functions"],
             lens_priors=input_params["lens_priors"],
             lens_priors_params=input_params["lens_priors_params"],
+            n_min_images=input_params["n_min_images"],
+            n_max_images=input_params["n_max_images"],
             geocent_time_min=input_params["geocent_time_min"],
             geocent_time_max=input_params["geocent_time_max"],
+            lens_model_list=input_params["lens_model_list"],
             source_priors=input_params["source_priors"],
             source_priors_params=input_params["source_priors_params"],
             spin_zero=input_params["spin_zero"],
@@ -1403,6 +1411,8 @@ class LeR(LensGalaxyParameterDistribution):
         output_jsonfile=None,
         nan_to_num=True,
         detectability_condition="step_function",
+        combine_image_snr=False,
+        snr_cut_for_combine_image_snr=4.0,
         snr_recalculation=False,
         snr_threshold_recalculation=[[4,4], [20,20]],
     ):
@@ -1475,7 +1485,8 @@ class LeR(LensGalaxyParameterDistribution):
         if snr_recalculation:
             lensed_param = self._recalculate_snr_lensed(lensed_param, snr_threshold_recalculation, num_img, total_events)
 
-        snr_hit = self._find_detectable_index_lensed(lensed_param, snr_threshold, pdet_threshold, num_img, detectability_condition)
+        # find index of detectable events
+        snr_hit = self._find_detectable_index_lensed(lensed_param, snr_threshold, pdet_threshold, num_img, detectability_condition, combine_image_snr=combine_image_snr, snr_cut_for_combine_image_snr=snr_cut_for_combine_image_snr)
 
         # montecarlo integration
         total_rate = self.rate_function(np.sum(snr_hit), total_events, param_type="lensed")
@@ -1575,7 +1586,7 @@ class LeR(LensGalaxyParameterDistribution):
 
         return lensed_param
 
-    def _find_detectable_index_lensed(self, lensed_param, snr_threshold, pdet_threshold, num_img, detectability_condition):
+    def _find_detectable_index_lensed(self, lensed_param, snr_threshold, pdet_threshold, num_img, detectability_condition, combine_image_snr=False, snr_cut_for_combine_image_snr=4.0):
         """
         Helper function to find the index of detectable events based on SNR or p_det.
 
@@ -1611,18 +1622,24 @@ class LeR(LensGalaxyParameterDistribution):
             snr_param = -np.sort(-snr_param, axis=1)  # sort snr in descending order
             snr_hit = np.full(len(snr_param), True)  # boolean array to store the result of the threshold condition
 
-            # for each row: choose a threshold and check if the number of images above threshold. Sum over the images. If sum is greater than num_img, then snr_hit = True 
-            # algorithm: 
-            # i) consider snr_threshold=[8,6] and num_img=[2,1] and first row of snr_param[0]=[12,8,6,1]. Note that the snr_param is sorted in descending order.
-            # ii) for loop runs wrt snr_threshold. idx_max = idx_max + num_img[i]
-            # iii) First iteration: snr_threshold=8 and num_img=2. In snr_param, column index 0 and 1 (i.e. 0:num_img[0]) are considered. The sum of snr_param[0, 0:2] > 8 is checked. If True, then snr_hit = True. 
-            # v) Second iteration: snr_threshold=6 and num_img=1. In snr_param, column index 2 (i.e. num_img[0]:num_img[1]) is considered. The sum of snr_param[0, 0:1] > 6 is checked. If True, then snr_hit = True.
-            j = 0
-            idx_max = 0
-            for i, snr_th in enumerate(snr_threshold):
-                idx_max = idx_max + num_img[i]
-                snr_hit = snr_hit & (np.sum((snr_param[:,j:idx_max] > snr_th), axis=1) >= num_img[i])
-                j = idx_max
+            if not combine_image_snr:
+                # for each row: choose a threshold and check if the number of images above threshold. Sum over the images. If sum is greater than num_img, then snr_hit = True 
+                # algorithm: 
+                # i) consider snr_threshold=[8,6] and num_img=[2,1] and first row of snr_param[0]=[12,8,6,1]. Note that the snr_param is sorted in descending order.
+                # ii) for loop runs wrt snr_threshold. idx_max = idx_max + num_img[i]
+                # iii) First iteration: snr_threshold=8 and num_img=2. In snr_param, column index 0 and 1 (i.e. 0:num_img[0]) are considered. The sum of snr_param[0, 0:2] > 8 is checked. If True, then snr_hit = True. 
+                # v) Second iteration: snr_threshold=6 and num_img=1. In snr_param, column index 2 (i.e. num_img[0]:num_img[1]) is considered. The sum of snr_param[0, 0:1] > 6 is checked. If True, then snr_hit = True.
+                j = 0
+                idx_max = 0
+                for i, snr_th in enumerate(snr_threshold):
+                    idx_max = idx_max + num_img[i]
+                    snr_hit = snr_hit & (np.sum((snr_param[:,j:idx_max] > snr_th), axis=1) >= num_img[i])
+                    j = idx_max
+            else:
+                # sqrt of the the sum of the squares of the snr of the images
+                snr_param[snr_param<snr_cut_for_combine_image_snr] = 0.0 # images with snr below snr_cut_for_combine_image_snr are not considered 
+                snr_param = np.sqrt(np.sum(snr_param[:,:np.sum(num_img)]**2, axis=1))
+                snr_hit = snr_param >= snr_threshold[0]
                 
         elif detectability_condition == "pdet":
             if "pdet_net" not in lensed_param:
@@ -1661,6 +1678,8 @@ class LeR(LensGalaxyParameterDistribution):
         lensed_param=None,
         snr_threshold_lensed=[8.0,8.0],
         num_img=[1,1],
+        combine_image_snr=False,
+        snr_cut_for_combine_image_snr=4.0,
         output_jsonfile_lensed=None,
         nan_to_num=True,
         detectability_condition="step_function",
@@ -1735,6 +1754,8 @@ class LeR(LensGalaxyParameterDistribution):
             output_jsonfile=output_jsonfile_lensed,
             nan_to_num=nan_to_num,
             detectability_condition=detectability_condition,
+            combine_image_snr=combine_image_snr,
+            snr_cut_for_combine_image_snr=snr_cut_for_combine_image_snr,
         )
         # calculate rate ratio
         rate_ratio = self.rate_ratio()
@@ -1909,6 +1930,8 @@ class LeR(LensGalaxyParameterDistribution):
         snr_threshold=[8.0,8.0],
         pdet_threshold=0.5,
         num_img=[1,1],
+        combine_image_snr=False,
+        snr_cut_for_combine_image_snr=4.0,
         resume=False,
         detectability_condition="step_function",
         output_jsonfile="n_lensed_params_detectable.json",
@@ -1997,7 +2020,7 @@ class LeR(LensGalaxyParameterDistribution):
             if snr_recalculation:
                 lensed_param = self._recalculate_snr_lensed(lensed_param, snr_threshold_recalculation, num_img, total_events_in_this_iteration)
 
-            snr_hit = self._find_detectable_index_lensed(lensed_param, snr_threshold, pdet_threshold, num_img, detectability_condition)
+            snr_hit = self._find_detectable_index_lensed(lensed_param, snr_threshold, pdet_threshold, num_img, detectability_condition, combine_image_snr=combine_image_snr, snr_cut_for_combine_image_snr=snr_cut_for_combine_image_snr)
                     
             # store all params in json file
             self._save_detectable_params(output_jsonfile, lensed_param, snr_hit, key_file_name="n_lensed_detectable_events", nan_to_num=nan_to_num, verbose=False, replace_jsonfile=False)

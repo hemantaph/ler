@@ -374,6 +374,8 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             lens_model_list=["EPL_NUMBA", "SHEAR"],
         )
         input_params_image.update(params)
+
+        print("input_params_image", input_params_image)
         ImageProperties.__init__(
             self,
             npool=self.npool,
