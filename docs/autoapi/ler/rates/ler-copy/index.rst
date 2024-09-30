@@ -228,7 +228,7 @@ Classes
    |                                     | ratio between lensed and         |
    |                                     | unlensed events.                 |
    +-------------------------------------+----------------------------------+
-   |:meth:`~rate_comparision_with_rate_calculation                          |
+   |:meth:`~rate_comparison_with_rate_calculation                          |
    +-------------------------------------+----------------------------------+
    |                                     | Function to calculate rates for  |
    |                                     | unleesed and lensed events and   |
@@ -1433,7 +1433,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: rate_comparision_with_rate_calculation(unlensed_param=None, snr_threshold_unlensed=8.0, output_jsonfile_unlensed=None, lensed_param=None, snr_threshold_lensed=[8.0, 8.0], num_img=[1, 1], output_jsonfile_lensed=None, nan_to_num=True, detectability_condition='step_function')
+   .. py:method:: rate_comparison_with_rate_calculation(unlensed_param=None, snr_threshold_unlensed=8.0, output_jsonfile_unlensed=None, lensed_param=None, snr_threshold_lensed=[8.0, 8.0], num_img=[1, 1], output_jsonfile_lensed=None, nan_to_num=True, detectability_condition='step_function')
 
       
       Function to calculate the unlensed and lensed rate and compare by computing the ratio. This function also stores the parameters of the detectable events in json file. If you use this function, you do not need to call the functions unlensed_rate and lensed_rate separately.
@@ -1504,7 +1504,7 @@ Classes
       >>> ler = LeR()
       >>> ler.unlensed_cbc_statistics();
       >>> ler.lensed_cbc_statistics();
-      >>> rate_ratio, unlensed_param, lensed_param = ler.rate_comparision_with_rate_calculation()
+      >>> rate_ratio, unlensed_param, lensed_param = ler.rate_comparison_with_rate_calculation()
 
 
 

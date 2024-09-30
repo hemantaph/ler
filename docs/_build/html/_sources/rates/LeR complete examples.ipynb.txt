@@ -318,7 +318,7 @@
    "source": [
     "* if you want to compare the rates, and compare it at the same time, run the following command.\n",
     "\n",
-    "    ```rate_ratio, unlensed_param_detectable, lensed_param_detectable =ler.rate_comparision_with_rate_calculation()```"
+    "    ```rate_ratio, unlensed_param_detectable, lensed_param_detectable =ler.rate_comparison_with_rate_calculation()```"
    ]
   },
   {
@@ -908,7 +908,7 @@
     "# For individual rate computation, use\n",
     "# >>> ler.unlensed_rate();\n",
     "# >>> ler.lensed_rate();\n",
-    "rate_ratio, unlensed_param_detectable, lensed_param_detectable =ler.rate_comparision_with_rate_calculation(\n",
+    "rate_ratio, unlensed_param_detectable, lensed_param_detectable =ler.rate_comparison_with_rate_calculation(\n",
     "    unlensed_param='./new_unlensed_params.json',\n",
     "    snr_threshold_unlensed=8.0,\n",
     "    lensed_param='./new_lensed_params.json',\n",

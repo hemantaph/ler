@@ -76,6 +76,23 @@ class LeR(LensGalaxyParameterDistribution):
     interpolator_directory : `str`
         directory to store the interpolators.
         default interpolator_directory = './interpolator_pickle'. This is used for storing the various interpolators related to `ler` and `gwsnr` package.
+    create_new_interpolator : `bool` or `dict`
+        default create_new_interpolator = False.
+        if True, the all interpolators (including `gwsnr`'s)will be created again.
+        if False, the interpolators will be loaded from the interpolator_directory if they exist.
+        if dict, you can specify which interpolators to create new. Complete example (change any of them to True), create_new_interpolator = create_new_interpolator = dict(
+            redshift_distribution=dict(create_new=False, resolution=1000),
+            z_to_luminosity_distance=dict(create_new=False, resolution=1000),
+            velocity_dispersion=dict(create_new=False, resolution=1000),
+            axis_ratio=dict(create_new=False, resolution=1000),
+            optical_depth=dict(create_new=False, resolution=200),
+            z_to_Dc=dict(create_new=False, resolution=1000),
+            Dc_to_z=dict(create_new=False, resolution=1000),
+            angular_diameter_distance=dict(create_new=False, resolution=1000),
+            differential_comoving_volume=dict(create_new=False, resolution=1000),
+            Dl_to_z=dict(create_new=False, resolution=1000),
+            gwsnr=False,
+        )
     ler_directory : `str`
         directory to store the parameters.
         default ler_directory = './ler_data'. This is used for storing the parameters of the simulated events.
@@ -194,7 +211,7 @@ class LeR(LensGalaxyParameterDistribution):
     |                                     | ratio between lensed and         |
     |                                     | unlensed events.                 |
     +-------------------------------------+----------------------------------+
-    |:meth:`~rate_comparision_with_rate_calculation                          |
+    |:meth:`~rate_comparison_with_rate_calculation                          |
     +-------------------------------------+----------------------------------+
     |                                     | Function to calculate rates for  |
     |                                     | unleesed and lensed events and   |
@@ -437,6 +454,7 @@ class LeR(LensGalaxyParameterDistribution):
         list_of_detectors=None,
         json_file_names=None,
         interpolator_directory="./interpolator_pickle",
+        create_new_interpolator=False,
         ler_directory="./ler_data",
         verbose=True,
         **kwargs,
@@ -453,6 +471,7 @@ class LeR(LensGalaxyParameterDistribution):
         if json_file_names:
             self.json_file_names.update(json_file_names)
         self.interpolator_directory = interpolator_directory
+        kwargs["create_new_interpolator"] = create_new_interpolator
         self.ler_directory = ler_directory
         # create directory if not exists
         if not os.path.exists(ler_directory):
@@ -820,6 +839,21 @@ class LeR(LensGalaxyParameterDistribution):
                 if key in input_params:
                     input_params[key] = value
         self.snr_calculator_dict = input_params
+
+        # dealing with create_new_interpolator param
+        if isinstance(input_params["create_new_interpolator"], bool):
+            pass
+        elif isinstance(input_params["create_new_interpolator"], dict):
+            # check input_params["gwsnr"] exists
+            if "gwsnr" in input_params["create_new_interpolator"]:
+                if isinstance(input_params["create_new_interpolator"]["gwsnr"], bool):
+                    input_params["create_new_interpolator"] = input_params["create_new_interpolator"]["gwsnr"]
+                else:
+                    raise ValueError("create_new_interpolator['gwsnr'] should be a boolean.")
+            else:
+                raise ValueError("create_new_interpolator should be a boolean or a dictionary with 'gwsnr' key.")
+
+        # initialization of GWSNR class
         gwsnr = GWSNR(
                     npool=input_params["npool"],
                     mtot_min=input_params["mtot_min"],
@@ -835,7 +869,7 @@ class LeR(LensGalaxyParameterDistribution):
                     psds=input_params["psds"],
                     ifos=input_params["ifos"],
                     interpolator_dir=input_params["interpolator_dir"],
-                    # create_new_interpolator=input_params["create_new_interpolator"],
+                    create_new_interpolator=input_params["create_new_interpolator"],
                     gwsnr_verbose=input_params["gwsnr_verbose"],
                     multiprocessing_verbose=input_params["multiprocessing_verbose"],
                     mtot_cut=input_params["mtot_cut"],
@@ -910,7 +944,7 @@ class LeR(LensGalaxyParameterDistribution):
             resume = False (default) or True.
             if True, the function will resume from the last batch.
         save_batch : `bool`
-            if True, the function will save the parameters in batches. if False, the function will save all the parameters at the end of sampling. save_batch=False is faster.
+            if True, the function will save the parameters in batches. if False (default), the function will save all the parameters at the end of sampling. save_batch=False is faster.
         output_jsonfile : `str`
             json file name for storing the parameters.
             default output_jsonfile = 'unlensed_params.json'. Note that this file will be stored in the self.ler_directory.
@@ -1670,7 +1704,7 @@ class LeR(LensGalaxyParameterDistribution):
 
         return snr_hit
 
-    def rate_comparision_with_rate_calculation(
+    def rate_comparison_with_rate_calculation(
         self,
         unlensed_param=None,
         snr_threshold_unlensed=8.0,
@@ -1733,7 +1767,7 @@ class LeR(LensGalaxyParameterDistribution):
         >>> ler = LeR()
         >>> ler.unlensed_cbc_statistics();
         >>> ler.lensed_cbc_statistics();
-        >>> rate_ratio, unlensed_param, lensed_param = ler.rate_comparision_with_rate_calculation()
+        >>> rate_ratio, unlensed_param, lensed_param = ler.rate_comparison_with_rate_calculation()
         """
 
         # call json_file_ler_param and add the results

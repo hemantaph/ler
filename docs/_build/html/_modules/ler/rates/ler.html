@@ -189,6 +189,23 @@
 <span class="sd">    interpolator_directory : `str`</span>
 <span class="sd">        directory to store the interpolators.</span>
 <span class="sd">        default interpolator_directory = &#39;./interpolator_pickle&#39;. This is used for storing the various interpolators related to `ler` and `gwsnr` package.</span>
+<span class="sd">    create_new_interpolator : `bool` or `dict`</span>
+<span class="sd">        default create_new_interpolator = False.</span>
+<span class="sd">        if True, the all interpolators (including `gwsnr`&#39;s)will be created again.</span>
+<span class="sd">        if False, the interpolators will be loaded from the interpolator_directory if they exist.</span>
+<span class="sd">        if dict, you can specify which interpolators to create new. Complete example (change any of them to True), create_new_interpolator = create_new_interpolator = dict(</span>
+<span class="sd">            redshift_distribution=dict(create_new=False, resolution=1000),</span>
+<span class="sd">            z_to_luminosity_distance=dict(create_new=False, resolution=1000),</span>
+<span class="sd">            velocity_dispersion=dict(create_new=False, resolution=1000),</span>
+<span class="sd">            axis_ratio=dict(create_new=False, resolution=1000),</span>
+<span class="sd">            optical_depth=dict(create_new=False, resolution=200),</span>
+<span class="sd">            z_to_Dc=dict(create_new=False, resolution=1000),</span>
+<span class="sd">            Dc_to_z=dict(create_new=False, resolution=1000),</span>
+<span class="sd">            angular_diameter_distance=dict(create_new=False, resolution=1000),</span>
+<span class="sd">            differential_comoving_volume=dict(create_new=False, resolution=1000),</span>
+<span class="sd">            Dl_to_z=dict(create_new=False, resolution=1000),</span>
+<span class="sd">            gwsnr=False,</span>
+<span class="sd">        )</span>
 <span class="sd">    ler_directory : `str`</span>
 <span class="sd">        directory to store the parameters.</span>
 <span class="sd">        default ler_directory = &#39;./ler_data&#39;. This is used for storing the parameters of the simulated events.</span>
@@ -307,7 +324,7 @@
 <span class="sd">    |                                     | ratio between lensed and         |</span>
 <span class="sd">    |                                     | unlensed events.                 |</span>
 <span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:meth:`~rate_comparision_with_rate_calculation                          |</span>
+<span class="sd">    |:meth:`~rate_comparison_with_rate_calculation                          |</span>
 <span class="sd">    +-------------------------------------+----------------------------------+</span>
 <span class="sd">    |                                     | Function to calculate rates for  |</span>
 <span class="sd">    |                                     | unleesed and lensed events and   |</span>
@@ -604,6 +621,7 @@
         <span class="n">list_of_detectors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">json_file_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">interpolator_directory</span><span class="o">=</span><span class="s2">&quot;./interpolator_pickle&quot;</span><span class="p">,</span>
+        <span class="n">create_new_interpolator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">ler_directory</span><span class="o">=</span><span class="s2">&quot;./ler_data&quot;</span><span class="p">,</span>
         <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
@@ -620,6 +638,7 @@
         <span class="k">if</span> <span class="n">json_file_names</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">json_file_names</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">interpolator_directory</span> <span class="o">=</span> <span class="n">interpolator_directory</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">create_new_interpolator</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span> <span class="o">=</span> <span class="n">ler_directory</span>
         <span class="c1"># create directory if not exists</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">ler_directory</span><span class="p">):</span>
@@ -657,7 +676,7 @@
 <span class="sd">        Function to print all the parameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># print all relevant functions and sampler priors</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> LeR set up params:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> # LeR set up params:&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;npool = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">npool</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;z_min = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;z_max = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
@@ -670,23 +689,23 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdet</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;pdet_finder = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pdet</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;json_file_names = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;interpolator_directory = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolator_directory</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ler_directory = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;interpolator_directory = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolator_directory</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ler_directory = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> LeR also takes CBCSourceParameterDistribution class params as kwargs, as follows:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> # LeR also takes CBCSourceParameterDistribution class params as kwargs, as follows:&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;source_priors = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s1">&#39;source_priors&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;source_priors_params = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s1">&#39;source_priors_params&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;spin_zero = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s1">&#39;spin_zero&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;spin_precession = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s1">&#39;spin_precession&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;create_new_interpolator = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s1">&#39;create_new_interpolator&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> LeR also takes LensGalaxyParameterDistribution class params as kwargs, as follows:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> # LeR also takes LensGalaxyParameterDistribution class params as kwargs, as follows:&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;lens_type = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s1">&#39;lens_type&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;lens_functions = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s1">&#39;lens_functions&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;lens_priors = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s1">&#39;lens_priors&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;lens_priors_params = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s1">&#39;lens_priors_params&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> LeR also takes ImageProperties class params as kwargs, as follows:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> # LeR also takes ImageProperties class params as kwargs, as follows:&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;n_min_images = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_min_images</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;n_max_images = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;geocent_time_min = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">geocent_time_min</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
@@ -694,7 +713,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;lens_model_list = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_model_list</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gwsnr</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> LeR also takes gwsnr.GWSNR params as kwargs, as follows:&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> # LeR also takes gwsnr.GWSNR params as kwargs, as follows:&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mtot_min = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s1">&#39;mtot_min&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mtot_max = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s1">&#39;mtot_max&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ratio_min = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s1">&#39;ratio_min&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
@@ -708,7 +727,6 @@
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;psds = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s1">&#39;psds&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ifos = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s1">&#39;ifos&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;interpolator_dir = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s1">&#39;interpolator_dir&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;create_new_interpolator = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s1">&#39;create_new_interpolator&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;gwsnr_verbose = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s1">&#39;gwsnr_verbose&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;multiprocessing_verbose = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s1">&#39;multiprocessing_verbose&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mtot_cut = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s1">&#39;mtot_cut&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
@@ -895,6 +913,7 @@
         <span class="c1"># initialization of LensGalaxyParameterDistribution class</span>
         <span class="c1"># it also initializes the CBCSourceParameterDistribution and ImageProperties classes</span>
         <span class="n">input_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="c1"># LensGalaxyParameterDistribution class params</span>
             <span class="n">z_min</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="p">,</span>
             <span class="n">z_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">,</span>
             <span class="n">cosmology</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="p">,</span>
@@ -903,8 +922,13 @@
             <span class="n">lens_functions</span><span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">lens_priors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">lens_priors_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="c1"># ImageProperties class params</span>
+            <span class="n">n_min_images</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+            <span class="n">n_max_images</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
             <span class="n">geocent_time_min</span><span class="o">=</span><span class="mf">1126259462.4</span><span class="p">,</span>
             <span class="n">geocent_time_max</span><span class="o">=</span><span class="mf">1126259462.4</span><span class="o">+</span><span class="mi">365</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">3600</span><span class="o">*</span><span class="mi">20</span><span class="p">,</span>
+            <span class="n">lens_model_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span>
+            <span class="c1"># CBCSourceParameterDistribution class params</span>
             <span class="n">source_priors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">source_priors_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">spin_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -928,8 +952,11 @@
             <span class="n">lens_functions</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_functions&quot;</span><span class="p">],</span>
             <span class="n">lens_priors</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_priors&quot;</span><span class="p">],</span>
             <span class="n">lens_priors_params</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_priors_params&quot;</span><span class="p">],</span>
+            <span class="n">n_min_images</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;n_min_images&quot;</span><span class="p">],</span>
+            <span class="n">n_max_images</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;n_max_images&quot;</span><span class="p">],</span>
             <span class="n">geocent_time_min</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;geocent_time_min&quot;</span><span class="p">],</span>
             <span class="n">geocent_time_max</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;geocent_time_max&quot;</span><span class="p">],</span>
+            <span class="n">lens_model_list</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_model_list&quot;</span><span class="p">],</span>
             <span class="n">source_priors</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;source_priors&quot;</span><span class="p">],</span>
             <span class="n">source_priors_params</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;source_priors_params&quot;</span><span class="p">],</span>
             <span class="n">spin_zero</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;spin_zero&quot;</span><span class="p">],</span>
@@ -990,6 +1017,21 @@
                 <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">input_params</span><span class="p">:</span>
                     <span class="n">input_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span> <span class="o">=</span> <span class="n">input_params</span>
+
+        <span class="c1"># dealing with create_new_interpolator param</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="c1"># check input_params[&quot;gwsnr&quot;] exists</span>
+            <span class="k">if</span> <span class="s2">&quot;gwsnr&quot;</span> <span class="ow">in</span> <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">][</span><span class="s2">&quot;gwsnr&quot;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+                    <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">][</span><span class="s2">&quot;gwsnr&quot;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;create_new_interpolator[&#39;gwsnr&#39;] should be a boolean.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;create_new_interpolator should be a boolean or a dictionary with &#39;gwsnr&#39; key.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># initialization of GWSNR class</span>
         <span class="n">gwsnr</span> <span class="o">=</span> <span class="n">GWSNR</span><span class="p">(</span>
                     <span class="n">npool</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;npool&quot;</span><span class="p">],</span>
                     <span class="n">mtot_min</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;mtot_min&quot;</span><span class="p">],</span>
@@ -1005,7 +1047,7 @@
                     <span class="n">psds</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;psds&quot;</span><span class="p">],</span>
                     <span class="n">ifos</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;ifos&quot;</span><span class="p">],</span>
                     <span class="n">interpolator_dir</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;interpolator_dir&quot;</span><span class="p">],</span>
-                    <span class="c1"># create_new_interpolator=input_params[&quot;create_new_interpolator&quot;],</span>
+                    <span class="n">create_new_interpolator</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">],</span>
                     <span class="n">gwsnr_verbose</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;gwsnr_verbose&quot;</span><span class="p">],</span>
                     <span class="n">multiprocessing_verbose</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;multiprocessing_verbose&quot;</span><span class="p">],</span>
                     <span class="n">mtot_cut</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;mtot_cut&quot;</span><span class="p">],</span>
@@ -1086,7 +1128,7 @@
 <span class="sd">            resume = False (default) or True.</span>
 <span class="sd">            if True, the function will resume from the last batch.</span>
 <span class="sd">        save_batch : `bool`</span>
-<span class="sd">            if True, the function will save the parameters in batches. if False, the function will save all the parameters at the end of sampling. save_batch=False is faster.</span>
+<span class="sd">            if True, the function will save the parameters in batches. if False (default), the function will save all the parameters at the end of sampling. save_batch=False is faster.</span>
 <span class="sd">        output_jsonfile : `str`</span>
 <span class="sd">            json file name for storing the parameters.</span>
 <span class="sd">            default output_jsonfile = &#39;unlensed_params.json&#39;. Note that this file will be stored in the self.ler_directory.</span>
@@ -1605,6 +1647,8 @@
         <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">nan_to_num</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">detectability_condition</span><span class="o">=</span><span class="s2">&quot;step_function&quot;</span><span class="p">,</span>
+        <span class="n">combine_image_snr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">snr_cut_for_combine_image_snr</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span>
         <span class="n">snr_recalculation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">snr_threshold_recalculation</span><span class="o">=</span><span class="p">[[</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">]],</span>
     <span class="p">):</span>
@@ -1677,7 +1721,8 @@
         <span class="k">if</span> <span class="n">snr_recalculation</span><span class="p">:</span>
             <span class="n">lensed_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recalculate_snr_lensed</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">,</span> <span class="n">snr_threshold_recalculation</span><span class="p">,</span> <span class="n">num_img</span><span class="p">,</span> <span class="n">total_events</span><span class="p">)</span>
 
-        <span class="n">snr_hit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_detectable_index_lensed</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">,</span> <span class="n">snr_threshold</span><span class="p">,</span> <span class="n">pdet_threshold</span><span class="p">,</span> <span class="n">num_img</span><span class="p">,</span> <span class="n">detectability_condition</span><span class="p">)</span>
+        <span class="c1"># find index of detectable events</span>
+        <span class="n">snr_hit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_detectable_index_lensed</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">,</span> <span class="n">snr_threshold</span><span class="p">,</span> <span class="n">pdet_threshold</span><span class="p">,</span> <span class="n">num_img</span><span class="p">,</span> <span class="n">detectability_condition</span><span class="p">,</span> <span class="n">combine_image_snr</span><span class="o">=</span><span class="n">combine_image_snr</span><span class="p">,</span> <span class="n">snr_cut_for_combine_image_snr</span><span class="o">=</span><span class="n">snr_cut_for_combine_image_snr</span><span class="p">)</span>
 
         <span class="c1"># montecarlo integration</span>
         <span class="n">total_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_function</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">snr_hit</span><span class="p">),</span> <span class="n">total_events</span><span class="p">,</span> <span class="n">param_type</span><span class="o">=</span><span class="s2">&quot;lensed&quot;</span><span class="p">)</span>
@@ -1778,7 +1823,7 @@
 
         <span class="k">return</span> <span class="n">lensed_param</span>
 
-    <span class="k">def</span> <span class="nf">_find_detectable_index_lensed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">snr_threshold</span><span class="p">,</span> <span class="n">pdet_threshold</span><span class="p">,</span> <span class="n">num_img</span><span class="p">,</span> <span class="n">detectability_condition</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_find_detectable_index_lensed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">snr_threshold</span><span class="p">,</span> <span class="n">pdet_threshold</span><span class="p">,</span> <span class="n">num_img</span><span class="p">,</span> <span class="n">detectability_condition</span><span class="p">,</span> <span class="n">combine_image_snr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">snr_cut_for_combine_image_snr</span><span class="o">=</span><span class="mf">4.0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper function to find the index of detectable events based on SNR or p_det.</span>
 
@@ -1814,18 +1859,24 @@
             <span class="n">snr_param</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="o">-</span><span class="n">snr_param</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># sort snr in descending order</span>
             <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">snr_param</span><span class="p">),</span> <span class="kc">True</span><span class="p">)</span>  <span class="c1"># boolean array to store the result of the threshold condition</span>
 
-            <span class="c1"># for each row: choose a threshold and check if the number of images above threshold. Sum over the images. If sum is greater than num_img, then snr_hit = True </span>
-            <span class="c1"># algorithm: </span>
-            <span class="c1"># i) consider snr_threshold=[8,6] and num_img=[2,1] and first row of snr_param[0]=[12,8,6,1]. Note that the snr_param is sorted in descending order.</span>
-            <span class="c1"># ii) for loop runs wrt snr_threshold. idx_max = idx_max + num_img[i]</span>
-            <span class="c1"># iii) First iteration: snr_threshold=8 and num_img=2. In snr_param, column index 0 and 1 (i.e. 0:num_img[0]) are considered. The sum of snr_param[0, 0:2] &gt; 8 is checked. If True, then snr_hit = True. </span>
-            <span class="c1"># v) Second iteration: snr_threshold=6 and num_img=1. In snr_param, column index 2 (i.e. num_img[0]:num_img[1]) is considered. The sum of snr_param[0, 0:1] &gt; 6 is checked. If True, then snr_hit = True.</span>
-            <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">idx_max</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">snr_th</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">snr_threshold</span><span class="p">):</span>
-                <span class="n">idx_max</span> <span class="o">=</span> <span class="n">idx_max</span> <span class="o">+</span> <span class="n">num_img</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">snr_hit</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">snr_param</span><span class="p">[:,</span><span class="n">j</span><span class="p">:</span><span class="n">idx_max</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">snr_th</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">num_img</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-                <span class="n">j</span> <span class="o">=</span> <span class="n">idx_max</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">combine_image_snr</span><span class="p">:</span>
+                <span class="c1"># for each row: choose a threshold and check if the number of images above threshold. Sum over the images. If sum is greater than num_img, then snr_hit = True </span>
+                <span class="c1"># algorithm: </span>
+                <span class="c1"># i) consider snr_threshold=[8,6] and num_img=[2,1] and first row of snr_param[0]=[12,8,6,1]. Note that the snr_param is sorted in descending order.</span>
+                <span class="c1"># ii) for loop runs wrt snr_threshold. idx_max = idx_max + num_img[i]</span>
+                <span class="c1"># iii) First iteration: snr_threshold=8 and num_img=2. In snr_param, column index 0 and 1 (i.e. 0:num_img[0]) are considered. The sum of snr_param[0, 0:2] &gt; 8 is checked. If True, then snr_hit = True. </span>
+                <span class="c1"># v) Second iteration: snr_threshold=6 and num_img=1. In snr_param, column index 2 (i.e. num_img[0]:num_img[1]) is considered. The sum of snr_param[0, 0:1] &gt; 6 is checked. If True, then snr_hit = True.</span>
+                <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">idx_max</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">snr_th</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">snr_threshold</span><span class="p">):</span>
+                    <span class="n">idx_max</span> <span class="o">=</span> <span class="n">idx_max</span> <span class="o">+</span> <span class="n">num_img</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">snr_hit</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">snr_param</span><span class="p">[:,</span><span class="n">j</span><span class="p">:</span><span class="n">idx_max</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">snr_th</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">num_img</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                    <span class="n">j</span> <span class="o">=</span> <span class="n">idx_max</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># sqrt of the the sum of the squares of the snr of the images</span>
+                <span class="n">snr_param</span><span class="p">[</span><span class="n">snr_param</span><span class="o">&lt;</span><span class="n">snr_cut_for_combine_image_snr</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># images with snr below snr_cut_for_combine_image_snr are not considered </span>
+                <span class="n">snr_param</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">snr_param</span><span class="p">[:,:</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">num_img</span><span class="p">)]</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+                <span class="n">snr_hit</span> <span class="o">=</span> <span class="n">snr_param</span> <span class="o">&gt;=</span> <span class="n">snr_threshold</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 
         <span class="k">elif</span> <span class="n">detectability_condition</span> <span class="o">==</span> <span class="s2">&quot;pdet&quot;</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;pdet_net&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="p">:</span>
@@ -1856,9 +1907,9 @@
 
         <span class="k">return</span> <span class="n">snr_hit</span>
 
-<div class="viewcode-block" id="LeR.rate_comparision_with_rate_calculation">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.LeR.rate_comparision_with_rate_calculation">[docs]</a>
-    <span class="k">def</span> <span class="nf">rate_comparision_with_rate_calculation</span><span class="p">(</span>
+<div class="viewcode-block" id="LeR.rate_comparison_with_rate_calculation">
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.LeR.rate_comparison_with_rate_calculation">[docs]</a>
+    <span class="k">def</span> <span class="nf">rate_comparison_with_rate_calculation</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">unlensed_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">snr_threshold_unlensed</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
@@ -1866,6 +1917,8 @@
         <span class="n">lensed_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">snr_threshold_lensed</span><span class="o">=</span><span class="p">[</span><span class="mf">8.0</span><span class="p">,</span><span class="mf">8.0</span><span class="p">],</span>
         <span class="n">num_img</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">combine_image_snr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">snr_cut_for_combine_image_snr</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span>
         <span class="n">output_jsonfile_lensed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">nan_to_num</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">detectability_condition</span><span class="o">=</span><span class="s2">&quot;step_function&quot;</span><span class="p">,</span>
@@ -1919,7 +1972,7 @@
 <span class="sd">        &gt;&gt;&gt; ler = LeR()</span>
 <span class="sd">        &gt;&gt;&gt; ler.unlensed_cbc_statistics();</span>
 <span class="sd">        &gt;&gt;&gt; ler.lensed_cbc_statistics();</span>
-<span class="sd">        &gt;&gt;&gt; rate_ratio, unlensed_param, lensed_param = ler.rate_comparision_with_rate_calculation()</span>
+<span class="sd">        &gt;&gt;&gt; rate_ratio, unlensed_param, lensed_param = ler.rate_comparison_with_rate_calculation()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># call json_file_ler_param and add the results</span>
@@ -1940,6 +1993,8 @@
             <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">output_jsonfile_lensed</span><span class="p">,</span>
             <span class="n">nan_to_num</span><span class="o">=</span><span class="n">nan_to_num</span><span class="p">,</span>
             <span class="n">detectability_condition</span><span class="o">=</span><span class="n">detectability_condition</span><span class="p">,</span>
+            <span class="n">combine_image_snr</span><span class="o">=</span><span class="n">combine_image_snr</span><span class="p">,</span>
+            <span class="n">snr_cut_for_combine_image_snr</span><span class="o">=</span><span class="n">snr_cut_for_combine_image_snr</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="c1"># calculate rate ratio</span>
         <span class="n">rate_ratio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_ratio</span><span class="p">()</span>
@@ -2123,6 +2178,8 @@
         <span class="n">snr_threshold</span><span class="o">=</span><span class="p">[</span><span class="mf">8.0</span><span class="p">,</span><span class="mf">8.0</span><span class="p">],</span>
         <span class="n">pdet_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
         <span class="n">num_img</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">combine_image_snr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">snr_cut_for_combine_image_snr</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span>
         <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">detectability_condition</span><span class="o">=</span><span class="s2">&quot;step_function&quot;</span><span class="p">,</span>
         <span class="n">output_jsonfile</span><span class="o">=</span><span class="s2">&quot;n_lensed_params_detectable.json&quot;</span><span class="p">,</span>
@@ -2211,7 +2268,7 @@
             <span class="k">if</span> <span class="n">snr_recalculation</span><span class="p">:</span>
                 <span class="n">lensed_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recalculate_snr_lensed</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">,</span> <span class="n">snr_threshold_recalculation</span><span class="p">,</span> <span class="n">num_img</span><span class="p">,</span> <span class="n">total_events_in_this_iteration</span><span class="p">)</span>
 
-            <span class="n">snr_hit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_detectable_index_lensed</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">,</span> <span class="n">snr_threshold</span><span class="p">,</span> <span class="n">pdet_threshold</span><span class="p">,</span> <span class="n">num_img</span><span class="p">,</span> <span class="n">detectability_condition</span><span class="p">)</span>
+            <span class="n">snr_hit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_detectable_index_lensed</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">,</span> <span class="n">snr_threshold</span><span class="p">,</span> <span class="n">pdet_threshold</span><span class="p">,</span> <span class="n">num_img</span><span class="p">,</span> <span class="n">detectability_condition</span><span class="p">,</span> <span class="n">combine_image_snr</span><span class="o">=</span><span class="n">combine_image_snr</span><span class="p">,</span> <span class="n">snr_cut_for_combine_image_snr</span><span class="o">=</span><span class="n">snr_cut_for_combine_image_snr</span><span class="p">)</span>
                     
             <span class="c1"># store all params in json file</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_save_detectable_params</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">snr_hit</span><span class="p">,</span> <span class="n">key_file_name</span><span class="o">=</span><span class="s2">&quot;n_lensed_detectable_events&quot;</span><span class="p">,</span> <span class="n">nan_to_num</span><span class="o">=</span><span class="n">nan_to_num</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">replace_jsonfile</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>

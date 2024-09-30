@@ -35,7 +35,7 @@ Classes
 
    
    Class to generate a population of source galaxies.
-   This class is inherited by :class:`~ler.ler.CompactBinaryPopulation` and :class:`~ler.ler.LensGalaxyParameterDistribution` class.
+   This class is inherited by :class:`~ler.ler.CBCSourceParameterDistribution` and :class:`~ler.ler.LensGalaxyParameterDistribution` class.
 
 
    :Parameters:

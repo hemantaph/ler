@@ -125,7 +125,7 @@
 <span id="ler-lens-galaxy-population-lens-galaxy-parameter-distribution"></span><h1><a class="reference internal" href="#module-ler.lens_galaxy_population.lens_galaxy_parameter_distribution" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_galaxy_parameter_distribution</span></code></a><a class="headerlink" href="#module-ler.lens_galaxy_population.lens_galaxy_parameter_distribution" title="Link to this heading"></a></h1>
 <p>This module contains the LensGalaxyPopulation class, which is used to sample lens galaxy parameters, source parameters conditioned on the source being strongly lensed.</p>
 <p>The class inherits from the ImageProperties class, which is used calculate image properties (magnification, timedelays, source position, image position, morse phase).</p>
-<p>Either the class takes in initialized CompactBinaryPopulation class as input or inherits the CompactBinaryPopulation class with default params (if no input)</p>
+<p>Either the class takes in initialized CBCSourceParameterDistribution class as input or inherits the CBCSourceParameterDistribution class with default params (if no input)</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <section id="classes">
@@ -526,8 +526,8 @@ normal distribution</p></td>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.cbc_pop">
 <span class="sig-name descname"><span class="pre">cbc_pop</span></span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.cbc_pop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.cbc_pop" title="Link to this definition"></a></dt>
-<dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">CompactBinaryPopulation</span></code> class</p>
-<p>This is an already initialized class that contains a function (CompactBinaryPopulation.sample_gw_parameters) that actually samples the source parameters.</p>
+<dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code> class</p>
+<p>This is an already initialized class that contains a function (CBCSourceParameterDistribution.sample_gw_parameters) that actually samples the source parameters.</p>
 </dd></dl>
 
 <dl class="py attribute">

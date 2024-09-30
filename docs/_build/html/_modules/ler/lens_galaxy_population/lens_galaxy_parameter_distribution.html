@@ -113,7 +113,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module contains the LensGalaxyPopulation class, which is used to sample lens galaxy parameters, source parameters conditioned on the source being strongly lensed. \n</span>
 <span class="sd">The class inherits from the ImageProperties class, which is used calculate image properties (magnification, timedelays, source position, image position, morse phase). \n</span>
-<span class="sd">Either the class takes in initialized CompactBinaryPopulation class as input or inherits the CompactBinaryPopulation class with default params (if no input) \n</span>
+<span class="sd">Either the class takes in initialized CBCSourceParameterDistribution class as input or inherits the CBCSourceParameterDistribution class with default params (if no input) \n</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -297,8 +297,8 @@
 <a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/lens_galaxy_parameter_distribution/index.html#ler.lens_galaxy_population.LensGalaxyParameterDistribution.cbc_pop">[docs]</a>
     <span class="n">cbc_pop</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;:class:`~CompactBinaryPopulation` class\n</span>
-<span class="sd">    This is an already initialized class that contains a function (CompactBinaryPopulation.sample_gw_parameters) that actually samples the source parameters. </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;:class:`~CBCSourceParameterDistribution` class\n</span>
+<span class="sd">    This is an already initialized class that contains a function (CBCSourceParameterDistribution.sample_gw_parameters) that actually samples the source parameters. </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="LensGalaxyParameterDistribution.z_min">
@@ -446,7 +446,7 @@
 <span class="sd">            dictionary of parameters to initialize the parent classes</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># initialization of CompactBinaryPopulation class</span>
+        <span class="c1"># initialization of CBCSourceParameterDistribution class</span>
         <span class="c1"># it also initializes the CBCSourceRedshiftDistribution class</span>
         <span class="c1"># list of relevant initialized instances,</span>
         <span class="c1"># 1. self.sample_source_redshift</span>
@@ -507,6 +507,8 @@
             <span class="n">lens_model_list</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;EPL_NUMBA&quot;</span><span class="p">,</span> <span class="s2">&quot;SHEAR&quot;</span><span class="p">],</span>
         <span class="p">)</span>
         <span class="n">input_params_image</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;input_params_image&quot;</span><span class="p">,</span> <span class="n">input_params_image</span><span class="p">)</span>
         <span class="n">ImageProperties</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">npool</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">npool</span><span class="p">,</span>
@@ -782,7 +784,7 @@
         <span class="k">def</span> <span class="nf">zs_function</span><span class="p">(</span><span class="n">zs_sl</span><span class="p">):</span>
             <span class="c1"># get zs</span>
             <span class="c1"># self.sample_source_redshifts from CBCSourceRedshiftDistribution class</span>
-            <span class="n">zs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_zs</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>  <span class="c1"># this function is from CompactBinaryPopulation class</span>
+            <span class="n">zs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_zs</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>  <span class="c1"># this function is from CBCSourceParameterDistribution class</span>
             <span class="c1"># put strong lensing condition with optical depth</span>
             <span class="n">tau</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">strong_lensing_optical_depth</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span>
             <span class="n">tau_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">strong_lensing_optical_depth</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">z_max</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># tau increases with z</span>

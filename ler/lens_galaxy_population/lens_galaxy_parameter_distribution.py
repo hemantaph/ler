@@ -2,7 +2,7 @@
 """
 This module contains the LensGalaxyPopulation class, which is used to sample lens galaxy parameters, source parameters conditioned on the source being strongly lensed. \n
 The class inherits from the ImageProperties class, which is used calculate image properties (magnification, timedelays, source position, image position, morse phase). \n
-Either the class takes in initialized CompactBinaryPopulation class as input or inherits the CompactBinaryPopulation class with default params (if no input) \n
+Either the class takes in initialized CBCSourceParameterDistribution class as input or inherits the CBCSourceParameterDistribution class with default params (if no input) \n
 """
 
 import warnings
@@ -181,8 +181,8 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
 
     # Attributes
     cbc_pop = None
-    """:class:`~CompactBinaryPopulation` class\n
-    This is an already initialized class that contains a function (CompactBinaryPopulation.sample_gw_parameters) that actually samples the source parameters. 
+    """:class:`~CBCSourceParameterDistribution` class\n
+    This is an already initialized class that contains a function (CBCSourceParameterDistribution.sample_gw_parameters) that actually samples the source parameters. 
     """
 
     z_min = None
@@ -313,7 +313,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             dictionary of parameters to initialize the parent classes
         """
 
-        # initialization of CompactBinaryPopulation class
+        # initialization of CBCSourceParameterDistribution class
         # it also initializes the CBCSourceRedshiftDistribution class
         # list of relevant initialized instances,
         # 1. self.sample_source_redshift
@@ -639,7 +639,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         def zs_function(zs_sl):
             # get zs
             # self.sample_source_redshifts from CBCSourceRedshiftDistribution class
-            zs = self.sample_zs(size)  # this function is from CompactBinaryPopulation class
+            zs = self.sample_zs(size)  # this function is from CBCSourceParameterDistribution class
             # put strong lensing condition with optical depth
             tau = self.strong_lensing_optical_depth(zs)
             tau_max = self.strong_lensing_optical_depth(np.array([z_max]))[0] # tau increases with z

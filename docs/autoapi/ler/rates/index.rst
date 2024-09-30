@@ -527,9 +527,9 @@ Functions
    .. py:attribute:: cbc_pop
 
       
-      :class:`~CompactBinaryPopulation` class
+      :class:`~CBCSourceParameterDistribution` class
 
-      This is an already initialized class that contains a function (CompactBinaryPopulation.sample_gw_parameters) that actually samples the source parameters.
+      This is an already initialized class that contains a function (CBCSourceParameterDistribution.sample_gw_parameters) that actually samples the source parameters.
 
 
 
@@ -1367,7 +1367,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:class:: LeR(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=50000, cosmology=None, snr_finder=None, pdet_finder=None, list_of_detectors=None, json_file_names=None, interpolator_directory='./interpolator_pickle', ler_directory='./ler_data', verbose=True, **kwargs)
+.. py:class:: LeR(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=50000, cosmology=None, snr_finder=None, pdet_finder=None, list_of_detectors=None, json_file_names=None, interpolator_directory='./interpolator_pickle', create_new_interpolator=False, ler_directory='./ler_data', verbose=True, **kwargs)
 
 
    Bases: :py:obj:`ler.lens_galaxy_population.LensGalaxyParameterDistribution`
@@ -1438,6 +1438,24 @@ Functions
        **interpolator_directory** : `str`
            directory to store the interpolators.
            default interpolator_directory = './interpolator_pickle'. This is used for storing the various interpolators related to `ler` and `gwsnr` package.
+
+       **create_new_interpolator** : `bool` or `dict`
+           default create_new_interpolator = False.
+           if True, the all interpolators (including `gwsnr`'s)will be created again.
+           if False, the interpolators will be loaded from the interpolator_directory if they exist.
+           if dict, you can specify which interpolators to create new. Complete example (change any of them to True), create_new_interpolator = create_new_interpolator = dict(
+               redshift_distribution=dict(create_new=False, resolution=1000),
+               z_to_luminosity_distance=dict(create_new=False, resolution=1000),
+               velocity_dispersion=dict(create_new=False, resolution=1000),
+               axis_ratio=dict(create_new=False, resolution=1000),
+               optical_depth=dict(create_new=False, resolution=200),
+               z_to_Dc=dict(create_new=False, resolution=1000),
+               Dc_to_z=dict(create_new=False, resolution=1000),
+               angular_diameter_distance=dict(create_new=False, resolution=1000),
+               differential_comoving_volume=dict(create_new=False, resolution=1000),
+               Dl_to_z=dict(create_new=False, resolution=1000),
+               gwsnr=False,
+           )
 
        **ler_directory** : `str`
            directory to store the parameters.
@@ -1571,7 +1589,7 @@ Functions
    |                                     | ratio between lensed and         |
    |                                     | unlensed events.                 |
    +-------------------------------------+----------------------------------+
-   |:meth:`~rate_comparision_with_rate_calculation                          |
+   |:meth:`~rate_comparison_with_rate_calculation                          |
    +-------------------------------------+----------------------------------+
    |                                     | Function to calculate rates for  |
    |                                     | unleesed and lensed events and   |
@@ -2444,7 +2462,7 @@ Functions
               if True, the function will resume from the last batch.
 
           **save_batch** : `bool`
-              if True, the function will save the parameters in batches. if False, the function will save all the parameters at the end of sampling. save_batch=False is faster.
+              if True, the function will save the parameters in batches. if False (default), the function will save all the parameters at the end of sampling. save_batch=False is faster.
 
           **output_jsonfile** : `str`
               json file name for storing the parameters.
@@ -2721,7 +2739,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lensed_rate(lensed_param=None, snr_threshold=[8.0, 8.0], pdet_threshold=0.5, num_img=[1, 1], output_jsonfile=None, nan_to_num=True, detectability_condition='step_function', snr_recalculation=False, snr_threshold_recalculation=[[4, 4], [20, 20]])
+   .. py:method:: lensed_rate(lensed_param=None, snr_threshold=[8.0, 8.0], pdet_threshold=0.5, num_img=[1, 1], output_jsonfile=None, nan_to_num=True, detectability_condition='step_function', combine_image_snr=False, snr_cut_for_combine_image_snr=4.0, snr_recalculation=False, snr_threshold_recalculation=[[4, 4], [20, 20]])
 
       
       Function to calculate the lensed rate. This function also stores the parameters of the detectable events in json file. There are two conditions for detectability: 'step_function' and 'pdet'.
@@ -2799,7 +2817,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: rate_comparision_with_rate_calculation(unlensed_param=None, snr_threshold_unlensed=8.0, output_jsonfile_unlensed=None, lensed_param=None, snr_threshold_lensed=[8.0, 8.0], num_img=[1, 1], output_jsonfile_lensed=None, nan_to_num=True, detectability_condition='step_function')
+   .. py:method:: rate_comparison_with_rate_calculation(unlensed_param=None, snr_threshold_unlensed=8.0, output_jsonfile_unlensed=None, lensed_param=None, snr_threshold_lensed=[8.0, 8.0], num_img=[1, 1], combine_image_snr=False, snr_cut_for_combine_image_snr=4.0, output_jsonfile_lensed=None, nan_to_num=True, detectability_condition='step_function')
 
       
       Function to calculate the unlensed and lensed rate and compare by computing the ratio. This function also stores the parameters of the detectable events in json file. If you use this function, you do not need to call the functions unlensed_rate and lensed_rate separately.
@@ -2870,7 +2888,7 @@ Functions
       >>> ler = LeR()
       >>> ler.unlensed_cbc_statistics();
       >>> ler.lensed_cbc_statistics();
-      >>> rate_ratio, unlensed_param, lensed_param = ler.rate_comparision_with_rate_calculation()
+      >>> rate_ratio, unlensed_param, lensed_param = ler.rate_comparison_with_rate_calculation()
 
 
 
@@ -2991,7 +3009,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_lensed_detectable_events(size=100, batch_size=None, snr_threshold=[8.0, 8.0], pdet_threshold=0.5, num_img=[1, 1], resume=False, detectability_condition='step_function', output_jsonfile='n_lensed_params_detectable.json', meta_data_file='meta_lensed.json', trim_to_size=True, nan_to_num=False, snr_recalculation=False, snr_threshold_recalculation=[[4, 4], [12, 12]])
+   .. py:method:: selecting_n_lensed_detectable_events(size=100, batch_size=None, snr_threshold=[8.0, 8.0], pdet_threshold=0.5, num_img=[1, 1], combine_image_snr=False, snr_cut_for_combine_image_snr=4.0, resume=False, detectability_condition='step_function', output_jsonfile='n_lensed_params_detectable.json', meta_data_file='meta_lensed.json', trim_to_size=True, nan_to_num=False, snr_recalculation=False, snr_threshold_recalculation=[[4, 4], [12, 12]])
 
       
       Function to generate n lensed detectable events. This fuction only samples the lensed parameters and save only the detectable events in json file. It also records metadata in the JSON file, which includes the total number of events and the cumulative rate of events. This functionality is particularly useful for generating a fixed or large number of detectable events until the event rates stabilize.
@@ -3105,7 +3123,7 @@ Functions
            Dictionary of prior sampler functions and its input parameters.
            Check for available priors and corresponding input parameters by running,
            >>> from ler.gw_source_population import CBCSourceParameterDistribution
-           >>> cbc = CompactBinaryPopulation()
+           >>> cbc = CBCSourceParameterDistribution()
            >>> cbc.available_gw_prior_list_and_its_params()
            # To check the current chosen priors and its parameters, run,
            >>> print("default priors=",cbc.gw_param_samplers)
@@ -3151,7 +3169,7 @@ Functions
 
    Instance Attributes
    ----------
-   CompactBinaryPopulation has the following instance attributes:
+   CBCSourceParameterDistribution has the following instance attributes:
 
    +-------------------------------------+----------------------------------+
    | Atrributes                          | Type                             |
@@ -3189,7 +3207,7 @@ Functions
 
    Instance Methods
    ----------
-   CompactBinaryPopulation has the following instance methods:
+   CBCSourceParameterDistribution has the following instance methods:
 
    +-------------------------------------+----------------------------------+
    | Methods                             | Type                             |
@@ -3308,7 +3326,7 @@ Functions
       .. rubric:: Examples
 
       >>> from ler.gw_source_population import CBCSourceParameterDistribution
-      >>> cbc = CompactBinaryPopulation()
+      >>> cbc = CBCSourceParameterDistribution()
       >>> priors = cbc.available_gw_prior_list_and_its_params
       >>> priors.keys()  # type of priors
       dict_keys(['merger_rate_density', 'source_frame_masses', 'spin', 'geocent_time', 'ra', 'phase', 'psi', 'theta_jn'])
