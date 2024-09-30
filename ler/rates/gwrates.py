@@ -84,7 +84,7 @@ class GWRATES(CBCSourceParameterDistribution):
         
     Instance Attributes
     ----------
-    LeR class has the following attributes, \n
+    LeR class has the following attributes:\n
     +-------------------------------------+----------------------------------+
     | Atrributes                          | Type                             |
     +=====================================+==================================+
@@ -121,7 +121,7 @@ class GWRATES(CBCSourceParameterDistribution):
 
     Instance Methods
     ----------
-    LeR class has the following methods, \n
+    LeR class has the following methods:\n
     +-------------------------------------+----------------------------------+
     | Methods                             | Description                      |
     +=====================================+==================================+

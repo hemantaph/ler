@@ -148,7 +148,7 @@ Classes
 
    Instance Attributes
    ----------
-   LeR class has the following attributes,
+   LeR class has the following attributes:
 
    +-------------------------------------+----------------------------------+
    | Atrributes                          | Type                             |
@@ -192,7 +192,7 @@ Classes
 
    Instance Methods
    ----------
-   LeR class has the following methods,
+   LeR class has the following methods:
 
    +-------------------------------------+----------------------------------+
    | Methods                             | Description                      |
@@ -246,7 +246,7 @@ Classes
    |                                     | ratio between lensed and         |
    |                                     | unlensed events.                 |
    +-------------------------------------+----------------------------------+
-   |:meth:`~rate_comparison_with_rate_calculation                          |
+   |:meth:`~rate_comparison_with_rate_calculation`                          |
    +-------------------------------------+----------------------------------+
    |                                     | Function to calculate rates for  |
    |                                     | unleesed and lensed events and   |

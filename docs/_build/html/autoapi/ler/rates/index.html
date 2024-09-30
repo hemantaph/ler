@@ -1191,7 +1191,7 @@ Choose False to prevent anything from printing.</p>
 </div>
 <section id="id1">
 <h4>Instance Attributes<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
-<p>LeR class has the following attributes,</p>
+<p>LeR class has the following attributes:</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Atrributes</p></th>
@@ -1258,7 +1258,103 @@ Choose False to prevent anything from printing.</p>
 </section>
 <section id="id2">
 <h4>Instance Methods<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
-<p>LeR class has the following methods,</p>
+<p>LeR class has the following methods:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Methods</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="ler-copy/index.html#LeR.class_initialization" title="LeR.class_initialization"><code class="xref py py-meth docutils literal notranslate"><span class="pre">class_initialization()</span></code></a></p></td>
+<td><p>Function to initialize the
+parent classes</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ler-copy/index.html#LeR.gwsnr_intialization" title="LeR.gwsnr_intialization"><code class="xref py py-meth docutils literal notranslate"><span class="pre">gwsnr_intialization()</span></code></a></p></td>
+<td><p>Function to initialize the
+gwsnr class</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ler-copy/index.html#LeR.snr" title="LeR.snr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">snr()</span></code></a></p></td>
+<td><p>Function to get the snr with the
+given parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">snr_bilby()</span></code></p></td>
+<td><p>Function to get the snr with the
+given parameters using inner-
+product method.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">pdet()</span></code></p></td>
+<td><p>Function to get the pdet with
+the given parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ler-copy/index.html#LeR.store_ler_params" title="LeR.store_ler_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">store_ler_params()</span></code></a></p></td>
+<td><p>Function to store the all the
+necessary parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ler-copy/index.html#LeR.unlensed_cbc_statistics" title="LeR.unlensed_cbc_statistics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">unlensed_cbc_statistics()</span></code></a></p></td>
+<td><p>Function to generate unlensed
+GW source parameters in batches.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ler-copy/index.html#LeR.unlensed_sampling_routine" title="LeR.unlensed_sampling_routine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">unlensed_sampling_routine()</span></code></a></p></td>
+<td><p>Function to generate unlensed
+GW source parameters. It stores
+the parameters of the generated
+events in a json file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ler-copy/index.html#LeR.unlensed_rate" title="LeR.unlensed_rate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">unlensed_rate()</span></code></a></p></td>
+<td><p>Function to calculate the
+unlensed rate. It also stores
+the parameters of the detectable
+unlesed events in a json file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ler-copy/index.html#LeR.lensed_cbc_statistics" title="LeR.lensed_cbc_statistics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lensed_cbc_statistics()</span></code></a></p></td>
+<td><p>Function to generate lensed
+GW source parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ler-copy/index.html#LeR.lensed_sampling_routine" title="LeR.lensed_sampling_routine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lensed_sampling_routine()</span></code></a></p></td>
+<td><p>Function to generate lensed
+GW source parameters. It stores
+the parameters of the generated
+events in a json file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ler-copy/index.html#LeR.lensed_rate" title="LeR.lensed_rate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lensed_rate()</span></code></a></p></td>
+<td><p>Function to calculate the
+lensed rate. It also stores the
+parameters of the detectable
+lensed events in a json file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ler-copy/index.html#LeR.rate_ratio" title="LeR.rate_ratio"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rate_ratio()</span></code></a></p></td>
+<td><p>Function to calculate the rate
+ratio between lensed and
+unlensed events.</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p><a class="reference internal" href="ler-copy/index.html#LeR.rate_comparison_with_rate_calculation" title="LeR.rate_comparison_with_rate_calculation"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rate_comparison_with_rate_calculation()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>Function to calculate rates for
+unleesed and lensed events and
+compare it with the rate. It also
+stores the parameters of the
+detectable events in a json file.</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p><a class="reference internal" href="ler-copy/index.html#LeR.selecting_n_unlensed_detectable_events" title="LeR.selecting_n_unlensed_detectable_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">selecting_n_unlensed_detectable_events()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>Function to select n unlensed
+detectable events. It stores the
+parameters of the detectable
+unlesed events in a json file.</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p><a class="reference internal" href="ler-copy/index.html#LeR.selecting_n_lensed_detectable_events" title="LeR.selecting_n_lensed_detectable_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">selecting_n_lensed_detectable_events()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>Function to select n lensed
+detectable events. It stores the
+parameters of the detectable
+lensed events in a json file.</p></td>
+</tr>
+</tbody>
+</table>
 <p>Note: <cite>LeR</cite> class also inherits all the instances from the <a class="reference internal" href="../lens_galaxy_population/index.html#ler.lens_galaxy_population.LensGalaxyParameterDistribution" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code></a> class. Please refer to the <a class="reference internal" href="../lens_galaxy_population/index.html#ler.lens_galaxy_population.LensGalaxyParameterDistribution" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code></a> class for more details.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="ler.rates.LeR.snr">
@@ -3517,7 +3613,7 @@ Choose False to prevent anything from printing.</p>
 </div>
 <section id="id13">
 <h4>Instance Attributes<a class="headerlink" href="#id13" title="Link to this heading"></a></h4>
-<p>LeR class has the following attributes,</p>
+<p>LeR class has the following attributes:</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Atrributes</p></th>
@@ -3575,7 +3671,7 @@ Choose False to prevent anything from printing.</p>
 </section>
 <section id="id14">
 <h4>Instance Methods<a class="headerlink" href="#id14" title="Link to this heading"></a></h4>
-<p>LeR class has the following methods,</p>
+<p>LeR class has the following methods:</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="ler.rates.GWRATES.snr">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">snr</span></span><a class="headerlink" href="#ler.rates.GWRATES.snr" title="Link to this definition"></a></dt>
