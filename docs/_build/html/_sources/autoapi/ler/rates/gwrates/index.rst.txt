@@ -123,7 +123,7 @@ Classes
 
    Instance Attributes
    ----------
-   LeR class has the following attributes,
+   LeR class has the following attributes:
 
    +-------------------------------------+----------------------------------+
    | Atrributes                          | Type                             |
@@ -161,7 +161,7 @@ Classes
 
    Instance Methods
    ----------
-   LeR class has the following methods,
+   LeR class has the following methods:
 
    +-------------------------------------+----------------------------------+
    | Methods                             | Description                      |

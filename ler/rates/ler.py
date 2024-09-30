@@ -115,7 +115,7 @@ class LeR(LensGalaxyParameterDistribution):
         
     Instance Attributes
     ----------
-    LeR class has the following attributes, \n
+    LeR class has the following attributes: \n
     +-------------------------------------+----------------------------------+
     | Atrributes                          | Type                             |
     +=====================================+==================================+
@@ -158,7 +158,7 @@ class LeR(LensGalaxyParameterDistribution):
 
     Instance Methods
     ----------
-    LeR class has the following methods, \n
+    LeR class has the following methods:\n
     +-------------------------------------+----------------------------------+
     | Methods                             | Description                      |
     +=====================================+==================================+
@@ -211,7 +211,7 @@ class LeR(LensGalaxyParameterDistribution):
     |                                     | ratio between lensed and         |
     |                                     | unlensed events.                 |
     +-------------------------------------+----------------------------------+
-    |:meth:`~rate_comparison_with_rate_calculation                          |
+    |:meth:`~rate_comparison_with_rate_calculation`                          |
     +-------------------------------------+----------------------------------+
     |                                     | Function to calculate rates for  |
     |                                     | unleesed and lensed events and   |
