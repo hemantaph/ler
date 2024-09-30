@@ -113,7 +113,7 @@ def main():
     # select detectable events and save them.
     # calculate rates.
     # compare the rates.
-    rate_ratio, unlensed_param_detectable, lensed_param_detectable = ler.rate_comparision_with_rate_calculation(
+    rate_ratio, unlensed_param_detectable, lensed_param_detectable = ler.rate_comparison_with_rate_calculation(
             unlensed_param=None,  # if None, will get get param wrt the unlensed_param file name from ler.json_file_names['unlensed_param']
             snr_threshold_unlensed=8.0,  # snr threshold for unlensed events
             output_jsonfile_unlensed=None, # if not None, file name from ler.json_file_names['unlensed_param_detectable'] will be used.

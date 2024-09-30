@@ -260,13 +260,13 @@ Choose False to prevent anything from printing.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#id0" title="LeR.unlensed_param"><code class="xref py py-attr docutils literal notranslate"><span class="pre">unlensed_param</span></code></a></p></td>
 <td><p><cite>dict</cite></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id3" title="LeR.unlensed_param_detectable"><code class="xref py py-attr docutils literal notranslate"><span class="pre">unlensed_param_detectable</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id1" title="LeR.unlensed_param_detectable"><code class="xref py py-attr docutils literal notranslate"><span class="pre">unlensed_param_detectable</span></code></a></p></td>
 <td><p><cite>dict</cite></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id4" title="LeR.lensed_param"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lensed_param</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id2" title="LeR.lensed_param"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lensed_param</span></code></a></p></td>
 <td><p><cite>dict</cite></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id5" title="LeR.lensed_param_detectable"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lensed_param_detectable</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id3" title="LeR.lensed_param_detectable"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lensed_param_detectable</span></code></a></p></td>
 <td><p><cite>dict</cite></p></td>
 </tr>
 </tbody>
@@ -275,102 +275,6 @@ Choose False to prevent anything from printing.</p>
 <section id="instance-methods">
 <h4>Instance Methods<a class="headerlink" href="#instance-methods" title="Link to this heading"></a></h4>
 <p>LeR class has the following methods,</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Methods</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="#LeR.class_initialization" title="LeR.class_initialization"><code class="xref py py-meth docutils literal notranslate"><span class="pre">class_initialization()</span></code></a></p></td>
-<td><p>Function to initialize the
-parent classes</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#LeR.gwsnr_intialization" title="LeR.gwsnr_intialization"><code class="xref py py-meth docutils literal notranslate"><span class="pre">gwsnr_intialization()</span></code></a></p></td>
-<td><p>Function to initialize the
-gwsnr class</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#LeR.snr" title="LeR.snr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">snr()</span></code></a></p></td>
-<td><p>Function to get the snr with the
-given parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">snr_bilby()</span></code></p></td>
-<td><p>Function to get the snr with the
-given parameters using inner-
-product method.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">pdet()</span></code></p></td>
-<td><p>Function to get the pdet with
-the given parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#LeR.store_ler_params" title="LeR.store_ler_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">store_ler_params()</span></code></a></p></td>
-<td><p>Function to store the all the
-necessary parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#LeR.unlensed_cbc_statistics" title="LeR.unlensed_cbc_statistics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">unlensed_cbc_statistics()</span></code></a></p></td>
-<td><p>Function to generate unlensed
-GW source parameters in batches.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#LeR.unlensed_sampling_routine" title="LeR.unlensed_sampling_routine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">unlensed_sampling_routine()</span></code></a></p></td>
-<td><p>Function to generate unlensed
-GW source parameters. It stores
-the parameters of the generated
-events in a json file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#LeR.unlensed_rate" title="LeR.unlensed_rate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">unlensed_rate()</span></code></a></p></td>
-<td><p>Function to calculate the
-unlensed rate. It also stores
-the parameters of the detectable
-unlesed events in a json file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#LeR.lensed_cbc_statistics" title="LeR.lensed_cbc_statistics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lensed_cbc_statistics()</span></code></a></p></td>
-<td><p>Function to generate lensed
-GW source parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#LeR.lensed_sampling_routine" title="LeR.lensed_sampling_routine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lensed_sampling_routine()</span></code></a></p></td>
-<td><p>Function to generate lensed
-GW source parameters. It stores
-the parameters of the generated
-events in a json file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#LeR.lensed_rate" title="LeR.lensed_rate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lensed_rate()</span></code></a></p></td>
-<td><p>Function to calculate the
-lensed rate. It also stores the
-parameters of the detectable
-lensed events in a json file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#LeR.rate_ratio" title="LeR.rate_ratio"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rate_ratio()</span></code></a></p></td>
-<td><p>Function to calculate the rate
-ratio between lensed and
-unlensed events.</p></td>
-</tr>
-<tr class="row-odd"><td colspan="2"><p>:meth:<a href="#id1"><span class="problematic" id="id2">`</span></a>~rate_comparision_with_rate_calculation</p></td>
-</tr>
-<tr class="row-even"><td></td>
-<td><p>Function to calculate rates for
-unleesed and lensed events and
-compare it with the rate. It also
-stores the parameters of the
-detectable events in a json file.</p></td>
-</tr>
-<tr class="row-odd"><td colspan="2"><p><a class="reference internal" href="#LeR.selecting_n_unlensed_detectable_events" title="LeR.selecting_n_unlensed_detectable_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">selecting_n_unlensed_detectable_events()</span></code></a></p></td>
-</tr>
-<tr class="row-even"><td></td>
-<td><p>Function to select n unlensed
-detectable events. It stores the
-parameters of the detectable
-unlesed events in a json file.</p></td>
-</tr>
-<tr class="row-odd"><td colspan="2"><p><a class="reference internal" href="#LeR.selecting_n_lensed_detectable_events" title="LeR.selecting_n_lensed_detectable_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">selecting_n_lensed_detectable_events()</span></code></a></p></td>
-</tr>
-<tr class="row-even"><td></td>
-<td><p>Function to select n lensed
-detectable events. It stores the
-parameters of the detectable
-lensed events in a json file.</p></td>
-</tr>
-</tbody>
-</table>
 <p>Note: <cite>LeR</cite> class also inherits all the instances from the <a class="reference internal" href="../../lens_galaxy_population/index.html#ler.lens_galaxy_population.LensGalaxyParameterDistribution" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code></a> class. Please refer to the <a class="reference internal" href="../../lens_galaxy_population/index.html#ler.lens_galaxy_population.LensGalaxyParameterDistribution" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code></a> class for more details.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="LeR.snr">
@@ -679,15 +583,15 @@ optimal_snr_net : <cite>numpy.ndarray</cite> or <cite>float</cite></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id3">
-<span class="sig-name descname"><span class="pre">unlensed_param_detectable</span></span><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">unlensed_param_detectable</span></span><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>Dictionary of detectable unlensed GW source parameters. It includes the same parameters as the <a class="reference internal" href="#id0" title="LeR.unlensed_param"><code class="xref py py-attr docutils literal notranslate"><span class="pre">unlensed_param</span></code></a> attribute.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id4">
-<span class="sig-name descname"><span class="pre">lensed_param</span></span><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">lensed_param</span></span><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>Dictionary of lens parameters, images parameters and lensed GW source parameters. The included parameters and their units are as follows (for default settings):</p>
 <table class="docutils align-default">
@@ -835,8 +739,8 @@ optimal_snr_net : <cite>numpy.ndarray</cite> or <cite>float</cite></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id5">
-<span class="sig-name descname"><span class="pre">lensed_param_detectable</span></span><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">lensed_param_detectable</span></span><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>Dictionary of detectable lensed GW source parameters.</p>
 </dd></dl>
@@ -1020,7 +924,7 @@ default output_jsonfile = ‘lensed_params.json’.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>lensed_param</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of lensed GW source parameters. Refer to <a class="reference internal" href="#id4" title="LeR.lensed_param"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lensed_param</span></code></a> for details.</p>
+<dt><strong>lensed_param</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of lensed GW source parameters. Refer to <a class="reference internal" href="#id2" title="LeR.lensed_param"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lensed_param</span></code></a> for details.</p>
 </dd>
 </dl>
 </dd>
@@ -1055,7 +959,7 @@ if True, it appends the new samples to the existing json file.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>lensed_param</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of lensed GW source parameters. Refer to <a class="reference internal" href="#id4" title="LeR.lensed_param"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lensed_param</span></code></a> for details.</p>
+<dt><strong>lensed_param</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of lensed GW source parameters. Refer to <a class="reference internal" href="#id2" title="LeR.lensed_param"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lensed_param</span></code></a> for details.</p>
 </dd>
 </dl>
 </dd>
@@ -1100,7 +1004,7 @@ default snr_threshold_recalculation = [5.5,5.5].</p>
 <dd class="field-even"><dl>
 <dt><strong>total_rate</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>total lensed rate (Mpc^-3 yr^-1).</p>
 </dd>
-<dt><strong>lensed_param</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of lensed GW source parameters of the detectable events. Refer to <a class="reference internal" href="#id4" title="LeR.lensed_param"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lensed_param</span></code></a> for details.</p>
+<dt><strong>lensed_param</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of lensed GW source parameters of the detectable events. Refer to <a class="reference internal" href="#id2" title="LeR.lensed_param"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lensed_param</span></code></a> for details.</p>
 </dd>
 </dl>
 </dd>
@@ -1139,8 +1043,8 @@ default snr_threshold_recalculation = [5.5,5.5].</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="LeR.rate_comparision_with_rate_calculation">
-<span class="sig-name descname"><span class="pre">rate_comparision_with_rate_calculation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unlensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold_unlensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile_unlensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[8.0,</span> <span class="pre">8.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan_to_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LeR.rate_comparision_with_rate_calculation" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="LeR.rate_comparison_with_rate_calculation">
+<span class="sig-name descname"><span class="pre">rate_comparison_with_rate_calculation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unlensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold_unlensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile_unlensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[8.0,</span> <span class="pre">8.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan_to_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectability_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'step_function'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LeR.rate_comparison_with_rate_calculation" title="Link to this definition"></a></dt>
 <dd><p>Function to calculate the unlensed and lensed rate and compare by computing the ratio. This function also stores the parameters of the detectable events in json file. If you use this function, you do not need to call the functions unlensed_rate and lensed_rate separately.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1181,7 +1085,7 @@ other options are ‘pdet’.</p>
 </dd>
 <dt><strong>unlensed_param</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of unlensed GW source parameters of the detectable events. Refer to <a class="reference internal" href="#id0" title="LeR.unlensed_param"><code class="xref py py-attr docutils literal notranslate"><span class="pre">unlensed_param</span></code></a> for details.</p>
 </dd>
-<dt><strong>lensed_param</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of lensed GW source parameters of the detectable events. Refer to <a class="reference internal" href="#id4" title="LeR.lensed_param"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lensed_param</span></code></a> for details.</p>
+<dt><strong>lensed_param</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of lensed GW source parameters of the detectable events. Refer to <a class="reference internal" href="#id2" title="LeR.lensed_param"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lensed_param</span></code></a> for details.</p>
 </dd>
 </dl>
 </dd>
@@ -1191,7 +1095,7 @@ other options are ‘pdet’.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">();</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span><span class="o">.</span><span class="n">lensed_cbc_statistics</span><span class="p">();</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_ratio</span><span class="p">,</span> <span class="n">unlensed_param</span><span class="p">,</span> <span class="n">lensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">rate_comparision_with_rate_calculation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_ratio</span><span class="p">,</span> <span class="n">unlensed_param</span><span class="p">,</span> <span class="n">lensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">rate_comparison_with_rate_calculation</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1299,7 +1203,7 @@ default snr_threshold_recalculation = [5.5,5.5].</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>param_final</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of lensed GW source parameters of the detectable events. Refer to <a class="reference internal" href="#id4" title="LeR.lensed_param"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lensed_param</span></code></a> for details.</p>
+<dt><strong>param_final</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of lensed GW source parameters of the detectable events. Refer to <a class="reference internal" href="#id2" title="LeR.lensed_param"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lensed_param</span></code></a> for details.</p>
 </dd>
 </dl>
 </dd>

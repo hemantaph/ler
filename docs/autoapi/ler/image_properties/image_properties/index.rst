@@ -7,7 +7,7 @@
 
    This module contains the LensGalaxyPopulation class, which is used to sample lens galaxy parameters, source parameters conditioned on the source being strongly lensed, image properties, and lensed SNRs.
 
-   The class inherits from the CompactBinaryPopulation class, which is used to sample source parameters.
+   The class inherits from the CBCSourceParameterDistribution class, which is used to sample source parameters.
 
    ..
        !! processed by numpydoc !!

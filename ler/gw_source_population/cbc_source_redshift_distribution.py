@@ -25,7 +25,7 @@ from .jit_functions import merger_rate_density_bbh_popI_II_oguri2018, star_forma
 
 class CBCSourceRedshiftDistribution(object):
     """Class to generate a population of source galaxies.
-    This class is inherited by :class:`~ler.ler.CompactBinaryPopulation` and :class:`~ler.ler.LensGalaxyParameterDistribution` class.
+    This class is inherited by :class:`~ler.ler.CBCSourceParameterDistribution` and :class:`~ler.ler.LensGalaxyParameterDistribution` class.
 
     Parameters
     ----------

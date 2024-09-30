@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Latest rates of various signals &mdash; ler 0.3.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="_static/nbsphinx-code-cells.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=4621528c"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Installation2.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/rates/grb%20detection%20rate.html">Calculation of detectable Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/rates/ler%20bns%20example.html">LeR complete examples of BNS events (O4 design sensitivity)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/rates/rates_with_3G_detectors.html">Event Rates with 3G detectors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/merger%20rate%20density%20evolution%20with%20redshift.html">Merger rate density evolution with redshift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/merger%20rate%20density%20model%20comparision.html">Merger rate density model comparision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/merger%20rate%20density%20model%20comparision.html#Primordial-BBH-model,-Ng-et-al.-2022">Primordial BBH model, Ng et al. 2022</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/sample%20compact%20binary%20parameters.html">Sampling parameters for a compact binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/statistical%20study%20of%20changing%20mass%20model%20params.html">Statistical study of changing Mass model paramter(s)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/statistical%20study%20of%20cosmological%20friction.html">Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/lens_parameters/sample%20lens%20parameters.html">Lens parameter distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/optical_depth/validation_SIE.html">Optical depth SIE model validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/optical_depth/validation_SIS.html">Validation of SIS model (Numerical vs Analytical)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/image_properties/dt_vs_dmu.html">Study of Time delays and magnification of lensed gravitational waves.</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Latest rates of various signals</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/latest_rates.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Latest-rates-of-various-signals">
+<h1>Latest rates of various signals<a class="headerlink" href="#Latest-rates-of-various-signals" title="Link to this heading"></a></h1>
+<section id="Below-I-am-providing-the-latest-rates-(events-per-year)-of-various-signals">
+<h2>Below I am providing the latest rates (events per year) of various signals<a class="headerlink" href="#Below-I-am-providing-the-latest-rates-(events-per-year)-of-various-signals" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>BBH (binary black hole) GWs (gravitational waves) for O4 (Observing Run 4) psd (power spectral density) for H1 and L1 detectors</p></li>
+<li><p>BNS (binary neutron star) GWs for O4 psd for H1 and L1 detectors</p></li>
+<li><p>BNS-GRB (gamma-ray burst) analytical for Fermi-GBM+Swift detectors</p></li>
+</ul>
+<section id="BBH-vs-BNS">
+<h3>BBH vs BNS<a class="headerlink" href="#BBH-vs-BNS" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Signal-type/Detectors</p></th>
+<th class="head"><p>unlensed (low, median, high)</p></th>
+<th class="head"><p>lensed (low, median, high)</p></th>
+<th class="head"><p>Ratio unlensed/lensed</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>BBH-GW</p></td>
+<td><p>91.302, 143.940, 231.981</p></td>
+<td><p>0.209, 0.321, 0.537</p></td>
+<td><p>437.825, 447.848, 432.134</p></td>
+</tr>
+<tr class="row-odd"><td><p>BNS-GW</p></td>
+<td><p>0.801, 3.427, 10.694</p></td>
+<td><p>0.001, 0.009, 0.027</p></td>
+<td><p>535.533, 387.699, 396.547</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Ratio BBH/BNS</strong></p></td>
+<td><p><strong>113.985, 42.001, 21.692</strong></p></td>
+<td><p><strong>209.000, 35.667, 19.889</strong></p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="BNS-vs-GRB-(independent)">
+<h3>BNS vs GRB (independent)<a class="headerlink" href="#BNS-vs-GRB-(independent)" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Signal-type/Detectors</p></th>
+<th class="head"><p>unlensed (low, median, high)</p></th>
+<th class="head"><p>lensed (low, median, high)</p></th>
+<th class="head"><p>Ratio unlensed/lensed</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>BNS-GRB</p></td>
+<td><p>1936.475, 9455.893, 26452.311</p></td>
+<td><p>1.775, 8.594, 24.159</p></td>
+<td><p>1090.669, 1100.271, 1094.943</p></td>
+</tr>
+<tr class="row-odd"><td><p>BNS-GW</p></td>
+<td><p>0.801, 3.427, 10.694</p></td>
+<td><p>0.001, 0.009, 0.027</p></td>
+<td><p>535.533, 387.699, 396.547</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Ratio GW/GRB</strong></p></td>
+<td><p><strong>1090.972, 1100.290, 1094.926</strong></p></td>
+<td><p><strong>1775.000, 954.889, 894.778</strong></p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="Details-on-the-various-settings-and-assumptions">
+<h2>Details on the various settings and assumptions<a class="headerlink" href="#Details-on-the-various-settings-and-assumptions" title="Link to this heading"></a></h2>
+<section id="BBH-GW">
+<h3>BBH-GW<a class="headerlink" href="#BBH-GW" title="Link to this heading"></a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>from ler.rates import LeR
+from astropy.cosmology import LambdaCDM
+
+ler = LeR(
+    # LeR set up params:
+    npool = 4,
+    z_min = 0.0,
+    z_max = 5,
+    event_type = &#39;BNS&#39;,
+    size = 100000,
+    batch_size = 50000,
+    cosmology = LambdaCDM(H0=70.0, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=None),
+    snr_finder = &#39;gwsnr&#39;,
+    json_file_names = {&#39;ler_params&#39;: &#39;ler_params.json&#39;, &#39;unlensed_param&#39;: &#39;unlensed_param.json&#39;, &#39;unlensed_param_detectable&#39;: &#39;unlensed_param_detectable.json&#39;, &#39;lensed_param&#39;: &#39;lensed_param.json&#39;, &#39;lensed_param_detectable&#39;: &#39;lensed_param_detectable.json&#39;},
+    interpolator_directory = &#39;./interpolator_pickle&#39;,
+    ler_directory = &#39;./ler_data&#39;,
+    create_new_interpolator = False,
+
+    # LeR also takes CBCSourceParameterDistribution class params as kwargs, as follows:
+    source_priors = {&#39;merger_rate_density&#39;: &#39;merger_rate_density_bbh_popI_II_oguri2018&#39;, &#39;source_frame_masses&#39;: &#39;binary_masses_BNS_bimodal&#39;, &#39;zs&#39;: &#39;sample_source_redshift&#39;, &#39;geocent_time&#39;: &#39;sampler_uniform&#39;, &#39;ra&#39;: &#39;sampler_uniform&#39;, &#39;dec&#39;: &#39;sampler_cosine&#39;, &#39;phase&#39;: &#39;sampler_uniform&#39;, &#39;psi&#39;: &#39;sampler_uniform&#39;, &#39;theta_jn&#39;: &#39;sampler_sine&#39;},
+    source_priors_params = {&#39;merger_rate_density&#39;: {&#39;R0&#39;: 1.055e-07, &#39;b2&#39;: 1.6, &#39;b3&#39;: 2.0, &#39;b4&#39;: 30}, &#39;source_frame_masses&#39;: {&#39;w&#39;: 0.643, &#39;muL&#39;: 1.352, &#39;sigmaL&#39;: 0.08, &#39;muR&#39;: 1.88, &#39;sigmaR&#39;: 0.3, &#39;mmin&#39;: 1.0, &#39;mmax&#39;: 2.3}, &#39;zs&#39;: None, &#39;geocent_time&#39;: {&#39;min_&#39;: 1238166018, &#39;max_&#39;: 1269702018}, &#39;ra&#39;: {&#39;min_&#39;: 0.0, &#39;max_&#39;: 6.283185307179586}, &#39;dec&#39;: None, &#39;phase&#39;: {&#39;min_&#39;: 0.0, &#39;max_&#39;: 6.283185307179586}, &#39;psi&#39;: {&#39;min_&#39;: 0.0, &#39;max_&#39;: 3.141592653589793}, &#39;theta_jn&#39;: None},
+    spin_zero = True,
+    spin_precession = False,
+
+    # LeR also takes LensGalaxyParameterDistribution class params as kwargs, as follows:
+    lens_type = &#39;epl_galaxy&#39;,
+    lens_functions = {&#39;strong_lensing_condition&#39;: &#39;rjs_with_cross_section_SIE&#39;, &#39;optical_depth&#39;: &#39;optical_depth_SIE_hemanta&#39;, &#39;param_sampler_type&#39;: &#39;sample_all_routine&#39;},
+    lens_priors = {&#39;source_redshift_sl&#39;: &#39;strongly_lensed_source_redshifts&#39;, &#39;lens_redshift&#39;: &#39;lens_redshift_SDSS_catalogue&#39;, &#39;velocity_dispersion&#39;: &#39;velocity_dispersion_ewoud&#39;, &#39;axis_ratio&#39;: &#39;axis_ratio_rayleigh&#39;, &#39;axis_rotation_angle&#39;: &#39;axis_rotation_angle_uniform&#39;, &#39;shear&#39;: &#39;shear_norm&#39;, &#39;mass_density_spectral_index&#39;: &#39;mass_density_spectral_index_normal&#39;, &#39;source_parameters&#39;: &#39;sample_gw_parameters&#39;},
+    lens_priors_params = {&#39;source_redshift_sl&#39;: None, &#39;lens_redshift&#39;: None, &#39;velocity_dispersion&#39;: None, &#39;axis_ratio&#39;: {&#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0}, &#39;axis_rotation_angle&#39;: {&#39;phi_min&#39;: 0.0, &#39;phi_max&#39;: 6.283185307179586}, &#39;shear&#39;: {&#39;scale&#39;: 0.05}, &#39;mass_density_spectral_index&#39;: {&#39;mean&#39;: 2.0, &#39;std&#39;: 0.2}, &#39;source_parameters&#39;: None},
+
+    # LeR also takes ImageProperties class params as kwargs, as follows:
+    n_min_images = 2,
+    n_max_images = 4,
+    geocent_time_min = 1126259462.4,
+    geocent_time_max = 1756979462.4,
+    lens_model_list = [&#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;],
+
+    # LeR also takes gwsnr.GWSNR params as kwargs, as follows:
+    mtot_min = 2.0,
+    mtot_max = 51,
+    ratio_min = 0.1,
+    ratio_max = 1.0,
+    mtot_resolution = 500,
+    ratio_resolution = 50,
+    sampling_frequency = 2048.0,
+    waveform_approximant = &#39;IMRPhenomD&#39;,
+    minimum_frequency = 20.0,
+    snr_type = &#39;interpolation&#39;,
+    psds = {&#39;L1&#39;:&#39;o4_psd.txt&#39;, &#39;H1&#39;:&#39;o4_psd.txt&#39;}, # psd generated from O4a strain near GW230529
+    ifos = None,
+    interpolator_dir = &#39;./interpolator_pickle&#39;,
+    gwsnr_verbose = False,
+    multiprocessing_verbose = True,
+    mtot_cut = True,
+)
+</pre></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

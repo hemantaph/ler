@@ -159,7 +159,7 @@
 <span class="sd">        Dictionary of prior sampler functions and its input parameters.</span>
 <span class="sd">        Check for available priors and corresponding input parameters by running,</span>
 <span class="sd">        &gt;&gt;&gt; from ler.gw_source_population import CBCSourceParameterDistribution</span>
-<span class="sd">        &gt;&gt;&gt; cbc = CompactBinaryPopulation()</span>
+<span class="sd">        &gt;&gt;&gt; cbc = CBCSourceParameterDistribution()</span>
 <span class="sd">        &gt;&gt;&gt; cbc.available_gw_prior_list_and_its_params()</span>
 <span class="sd">        # To check the current chosen priors and its parameters, run,</span>
 <span class="sd">        &gt;&gt;&gt; print(&quot;default priors=&quot;,cbc.gw_param_samplers)</span>
@@ -190,7 +190,7 @@
 
 <span class="sd">    Instance Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    CompactBinaryPopulation has the following instance attributes:\n</span>
+<span class="sd">    CBCSourceParameterDistribution has the following instance attributes:\n</span>
 <span class="sd">    +-------------------------------------+----------------------------------+</span>
 <span class="sd">    | Atrributes                          | Type                             |</span>
 <span class="sd">    +=====================================+==================================+</span>
@@ -227,7 +227,7 @@
 
 <span class="sd">    Instance Methods</span>
 <span class="sd">    ----------</span>
-<span class="sd">    CompactBinaryPopulation has the following instance methods:\n</span>
+<span class="sd">    CBCSourceParameterDistribution has the following instance methods:\n</span>
 <span class="sd">    +-------------------------------------+----------------------------------+</span>
 <span class="sd">    | Methods                             | Type                             |</span>
 <span class="sd">    +=====================================+==================================+</span>
@@ -1311,7 +1311,7 @@
 <span class="sd">        Examples</span>
 <span class="sd">        ----------</span>
 <span class="sd">        &gt;&gt;&gt; from ler.gw_source_population import CBCSourceParameterDistribution</span>
-<span class="sd">        &gt;&gt;&gt; cbc = CompactBinaryPopulation()</span>
+<span class="sd">        &gt;&gt;&gt; cbc = CBCSourceParameterDistribution()</span>
 <span class="sd">        &gt;&gt;&gt; priors = cbc.available_gw_prior_list_and_its_params</span>
 <span class="sd">        &gt;&gt;&gt; priors.keys()  # type of priors</span>
 <span class="sd">        dict_keys([&#39;merger_rate_density&#39;, &#39;source_frame_masses&#39;, &#39;spin&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;])</span>

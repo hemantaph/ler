@@ -46,7 +46,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         Dictionary of prior sampler functions and its input parameters.
         Check for available priors and corresponding input parameters by running,
         >>> from ler.gw_source_population import CBCSourceParameterDistribution
-        >>> cbc = CompactBinaryPopulation()
+        >>> cbc = CBCSourceParameterDistribution()
         >>> cbc.available_gw_prior_list_and_its_params()
         # To check the current chosen priors and its parameters, run,
         >>> print("default priors=",cbc.gw_param_samplers)
@@ -77,7 +77,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
     Instance Attributes
     ----------
-    CompactBinaryPopulation has the following instance attributes:\n
+    CBCSourceParameterDistribution has the following instance attributes:\n
     +-------------------------------------+----------------------------------+
     | Atrributes                          | Type                             |
     +=====================================+==================================+
@@ -114,7 +114,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
     Instance Methods
     ----------
-    CompactBinaryPopulation has the following instance methods:\n
+    CBCSourceParameterDistribution has the following instance methods:\n
     +-------------------------------------+----------------------------------+
     | Methods                             | Type                             |
     +=====================================+==================================+
@@ -1136,7 +1136,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         Examples
         ----------
         >>> from ler.gw_source_population import CBCSourceParameterDistribution
-        >>> cbc = CompactBinaryPopulation()
+        >>> cbc = CBCSourceParameterDistribution()
         >>> priors = cbc.available_gw_prior_list_and_its_params
         >>> priors.keys()  # type of priors
         dict_keys(['merger_rate_density', 'source_frame_masses', 'spin', 'geocent_time', 'ra', 'phase', 'psi', 'theta_jn'])

@@ -9,7 +9,7 @@
 
    The class inherits from the ImageProperties class, which is used calculate image properties (magnification, timedelays, source position, image position, morse phase).
 
-   Either the class takes in initialized CompactBinaryPopulation class as input or inherits the CompactBinaryPopulation class with default params (if no input)
+   Either the class takes in initialized CBCSourceParameterDistribution class as input or inherits the CBCSourceParameterDistribution class with default params (if no input)
 
    ..
        !! processed by numpydoc !!
@@ -508,9 +508,9 @@ Classes
    .. py:attribute:: cbc_pop
 
       
-      :class:`~CompactBinaryPopulation` class
+      :class:`~CBCSourceParameterDistribution` class
 
-      This is an already initialized class that contains a function (CompactBinaryPopulation.sample_gw_parameters) that actually samples the source parameters.
+      This is an already initialized class that contains a function (CBCSourceParameterDistribution.sample_gw_parameters) that actually samples the source parameters.
 
 
 

@@ -506,7 +506,7 @@ class GWRATES(CBCSourceParameterDistribution):
             dictionary of parameters to initialize the parent classes
         """
 
-        # initialization of CompactBinaryPopulation class
+        # initialization of CBCSourceParameterDistribution class
         # it also initializes the CBCSourceRedshiftDistribution class
         input_params = dict(
             z_min=self.z_min,
