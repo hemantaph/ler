@@ -141,6 +141,18 @@
 <h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.utils.load_pickle" title="ler.utils.utils.load_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_pickle</span></code></a>(file_name)</p></td>
+<td><p>Load a pickle file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.utils.save_pickle" title="ler.utils.utils.save_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_pickle</span></code></a>(file_name, param)</p></td>
+<td><p>Save a dictionary as a pickle file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.utils.load_hdf5" title="ler.utils.utils.load_hdf5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_hdf5</span></code></a>(file_name)</p></td>
+<td><p>Load a hdf5 file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.utils.save_hdf5" title="ler.utils.utils.save_hdf5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_hdf5</span></code></a>(file_name, param)</p></td>
+<td><p>Save a dictionary as a hdf5 file.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.utils.load_json" title="ler.utils.utils.load_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_json</span></code></a>(file_name)</p></td>
 <td><p>Load a json file.</p></td>
 </tr>
@@ -240,6 +252,76 @@
 <dd><p>function for encoding JSON file</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.utils.load_pickle">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">load_pickle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#load_pickle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.load_pickle" title="Link to this definition"></a></dt>
+<dd><p>Load a pickle file.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>file_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>pickle file name for storing the parameters.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>param</strong><span class="classifier"><cite>dict</cite></span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.utils.save_pickle">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">save_pickle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#save_pickle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.save_pickle" title="Link to this definition"></a></dt>
+<dd><p>Save a dictionary as a pickle file.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>file_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>pickle file name for storing the parameters.</p>
+</dd>
+<dt><strong>param</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary to be saved as a pickle file.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.utils.load_hdf5">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">load_hdf5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#load_hdf5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.load_hdf5" title="Link to this definition"></a></dt>
+<dd><p>Load a hdf5 file.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>file_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>hdf5 file name for storing the parameters.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>param</strong><span class="classifier"><cite>dict</cite></span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.utils.save_hdf5">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.utils.</span></span><span class="sig-name descname"><span class="pre">save_hdf5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/utils.html#save_hdf5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.utils.save_hdf5" title="Link to this definition"></a></dt>
+<dd><p>Save a dictionary as a hdf5 file.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>file_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>hdf5 file name for storing the parameters.</p>
+</dd>
+<dt><strong>param</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary to be saved as a hdf5 file.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">

@@ -33,6 +33,10 @@ Functions
 
 .. autoapisummary::
 
+   ler.utils.load_pickle
+   ler.utils.save_pickle
+   ler.utils.load_hdf5
+   ler.utils.save_hdf5
    ler.utils.load_json
    ler.utils.save_json
    ler.utils.append_json
@@ -121,6 +125,128 @@ Functions
       ..
           !! processed by numpydoc !!
 
+
+.. py:function:: load_pickle(file_name)
+
+   
+   Load a pickle file.
+
+
+   :Parameters:
+
+       **file_name** : `str`
+           pickle file name for storing the parameters.
+
+   :Returns:
+
+       **param** : `dict`
+           ..
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: save_pickle(file_name, param)
+
+   
+   Save a dictionary as a pickle file.
+
+
+   :Parameters:
+
+       **file_name** : `str`
+           pickle file name for storing the parameters.
+
+       **param** : `dict`
+           dictionary to be saved as a pickle file.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: load_hdf5(file_name)
+
+   
+   Load a hdf5 file.
+
+
+   :Parameters:
+
+       **file_name** : `str`
+           hdf5 file name for storing the parameters.
+
+   :Returns:
+
+       **param** : `dict`
+           ..
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: save_hdf5(file_name, param)
+
+   
+   Save a dictionary as a hdf5 file.
+
+
+   :Parameters:
+
+       **file_name** : `str`
+           hdf5 file name for storing the parameters.
+
+       **param** : `dict`
+           dictionary to be saved as a hdf5 file.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:function:: load_json(file_name)
 
