@@ -13,8 +13,8 @@ if python_version < (3, 10):
 
 setup(
     name="ler",
-    version="0.4.1",
-    description="Gravitational waves Lensing Rates",
+    version="0.4.2",
+    description="LVK (LIGO-Virgo-KAGRA collaboration) Event (compact-binary mergers) Rate calculator and simulator",
     long_description=long_description,
     long_description_content_type='text/markdown',
     author="Hemantakumar",

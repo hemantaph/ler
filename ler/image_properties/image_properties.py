@@ -341,6 +341,8 @@ class ImageProperties():
         ####################################
         lens_parameters.update(image_parameters)
         lens_parameters["n_images"] = n_images
+        lens_parameters["x_source"] = x_source
+        lens_parameters["y_source"] = y_source
 
         return lens_parameters
 
