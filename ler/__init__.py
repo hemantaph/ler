@@ -51,7 +51,7 @@ set_multiprocessing_start_method()
 __author__ = 'hemanta_ph <hemantaphurailatpam@gmail.com>'
 
 # The version as used in the setup.py
-__version__ = "0.4.1"
+__version__ = "0.4.2"
 
 # add __file__
 import os

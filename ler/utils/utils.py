@@ -5,6 +5,7 @@ This module contains helper routines for other modules in the ler package.
 
 import os
 import pickle
+import h5py
 import numpy as np
 import json
 from scipy.interpolate import interp1d
@@ -51,6 +52,66 @@ class NumpyEncoder(json.JSONEncoder):
         if isinstance(obj, np.ndarray):
             return obj.tolist()
         return json.JSONEncoder.default(self, obj)
+
+def load_pickle(file_name):
+    """Load a pickle file.
+
+    Parameters
+    ----------
+    file_name : `str`
+        pickle file name for storing the parameters.
+
+    Returns
+    ----------
+    param : `dict`
+    """
+    with open(file_name, "rb") as handle:
+        param = pickle.load(handle)
+
+    return param
+
+def save_pickle(file_name, param):
+    """Save a dictionary as a pickle file.
+
+    Parameters
+    ----------
+    file_name : `str`
+        pickle file name for storing the parameters.
+    param : `dict`
+        dictionary to be saved as a pickle file.
+    """
+    with open(file_name, "wb") as handle:
+        pickle.dump(param, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+# hdf5
+def load_hdf5(file_name):
+    """Load a hdf5 file.
+
+    Parameters
+    ----------
+    file_name : `str`
+        hdf5 file name for storing the parameters.
+
+    Returns
+    ----------
+    param : `dict`
+    """
+
+    return h5py.File(file_name, 'r')
+
+def save_hdf5(file_name, param):
+    """Save a dictionary as a hdf5 file.
+
+    Parameters
+    ----------
+    file_name : `str`
+        hdf5 file name for storing the parameters.
+    param : `dict`
+        dictionary to be saved as a hdf5 file.
+    """
+    with h5py.File(file_name, 'w') as f:
+        for key, value in param.items():
+            f.create_dataset(key, data=value)
 
 def load_json(file_name):
     """Load a json file.
