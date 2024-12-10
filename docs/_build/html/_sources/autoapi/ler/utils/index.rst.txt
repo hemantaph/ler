@@ -66,6 +66,8 @@ Functions
    ler.utils.relative_mu_dt_unlensed
    ler.utils.relative_mu_dt_lensed
    ler.utils.mu_vs_dt_plot
+   ler.utils.append_json
+   ler.utils.get_param_from_json
 
 
 
@@ -1445,6 +1447,78 @@ Functions
    >>> plt.ylim(-2.5, 2.5)
    >>> plt.grid(alpha=0.4)
    >>> plt.show()
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: append_json(file_name, new_dictionary, old_dictionary=None, replace=False)
+
+   
+   Append (values with corresponding keys) and update a json file with a dictionary. There are four options:
+
+   1. If old_dictionary is provided, the values of the new dictionary will be appended to the old dictionary and save in the 'file_name' json file.
+   2. If replace is True, replace the json file (with the 'file_name') content with the new_dictionary.
+   3. If the file does not exist, create a new one with the new_dictionary.
+   4. If none of the above, append the new dictionary to the content of the json file.
+
+   :Parameters:
+
+       **file_name** : `str`
+           json file name for storing the parameters.
+
+       **new_dictionary** : `dict`
+           dictionary to be appended to the json file.
+
+       **old_dictionary** : `dict`, optional
+           If provided the values of the new dictionary will be appended to the old dictionary and save in the 'file_name' json file.
+           Default is None.
+
+       **replace** : `bool`, optional
+           If True, replace the json file with the dictionary. Default is False.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: get_param_from_json(json_file)
+
+   
+   Function to get the parameters from json file.
+
+
+   :Parameters:
+
+       **json_file** : `str`
+           json file name for storing the parameters.
+
+   :Returns:
+
+       **param** : `dict`
+           ..
+
+
+
+
+
+
+
+
+
+
 
 
 
