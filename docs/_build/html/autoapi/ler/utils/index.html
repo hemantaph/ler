@@ -108,6 +108,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#ler.utils.relative_mu_dt_unlensed"><code class="docutils literal notranslate"><span class="pre">relative_mu_dt_unlensed()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.utils.relative_mu_dt_lensed"><code class="docutils literal notranslate"><span class="pre">relative_mu_dt_lensed()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.utils.mu_vs_dt_plot"><code class="docutils literal notranslate"><span class="pre">mu_vs_dt_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">append_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">get_param_from_json()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -203,10 +205,10 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.save_json" title="ler.utils.save_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_json</span></code></a>(file_name, param)</p></td>
 <td><p>Save a dictionary as a json file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.append_json" title="ler.utils.append_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_json</span></code></a>(file_name, new_dictionary[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id1" title="ler.utils.append_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_json</span></code></a>(file_name, new_dictionary[, ...])</p></td>
 <td><p>Append (values with corresponding keys) and update a json file with a dictionary. There are four options:</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id0" title="ler.utils.get_param_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_param_from_json</span></code></a>(json_file)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id2" title="ler.utils.get_param_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_param_from_json</span></code></a>(json_file)</p></td>
 <td><p>Function to get the parameters from json file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.rejection_sample" title="ler.utils.rejection_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rejection_sample</span></code></a>(pdf, xmin, xmax[, size, chunk_size])</p></td>
@@ -269,7 +271,7 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.create_batch_params" title="ler.utils.create_batch_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_batch_params</span></code></a>(sampling_routine, frac_batches, ...)</p></td>
 <td><p>Helper function to batch_handler. It create batch parameters and store in a dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id0" title="ler.utils.get_param_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_param_from_json</span></code></a>(json_file)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id2" title="ler.utils.get_param_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_param_from_json</span></code></a>(json_file)</p></td>
 <td><p>Function to get the parameters from json file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.param_plot" title="ler.utils.param_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_plot</span></code></a>([param_name, param_dict, plot_label, ...])</p></td>
@@ -283,6 +285,12 @@
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.mu_vs_dt_plot" title="ler.utils.mu_vs_dt_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mu_vs_dt_plot</span></code></a>(x_array, y_array[, xscale, yscale, ...])</p></td>
 <td><p>Function to generate 2D KDE and plot the relative magnification vs time delay difference for lensed samples.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id1" title="ler.utils.append_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_json</span></code></a>(file_name, new_dictionary[, ...])</p></td>
+<td><p>Append (values with corresponding keys) and update a json file with a dictionary. There are four options:</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id2" title="ler.utils.get_param_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_param_from_json</span></code></a>(json_file)</p></td>
+<td><p>Function to get the parameters from json file.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1159,6 +1167,52 @@ default colors = [‘blue’, ‘blue’, ‘blue’, ‘blue’, ‘blue’].</
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">append_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_dictionary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">old_dictionary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#append_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd><p>Append (values with corresponding keys) and update a json file with a dictionary. There are four options:</p>
+<ol class="arabic simple">
+<li><p>If old_dictionary is provided, the values of the new dictionary will be appended to the old dictionary and save in the ‘file_name’ json file.</p></li>
+<li><p>If replace is True, replace the json file (with the ‘file_name’) content with the new_dictionary.</p></li>
+<li><p>If the file does not exist, create a new one with the new_dictionary.</p></li>
+<li><p>If none of the above, append the new dictionary to the content of the json file.</p></li>
+</ol>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>file_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters.</p>
+</dd>
+<dt><strong>new_dictionary</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary to be appended to the json file.</p>
+</dd>
+<dt><strong>old_dictionary</strong><span class="classifier"><cite>dict</cite>, optional</span></dt><dd><p>If provided the values of the new dictionary will be appended to the old dictionary and save in the ‘file_name’ json file.
+Default is None.</p>
+</dd>
+<dt><strong>replace</strong><span class="classifier"><cite>bool</cite>, optional</span></dt><dd><p>If True, replace the json file with the dictionary. Default is False.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">get_param_from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#get_param_from_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd><p>Function to get the parameters from json file.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>json_file</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>json file name for storing the parameters.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>param</strong><span class="classifier"><cite>dict</cite></span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

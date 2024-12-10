@@ -49,7 +49,7 @@ Functions
    :Returns:
 
        **x_source** : `float`
-           x position of the source in the source plane
+           x position of the source in the source plane, unit: arcsec
 
        **y_source** : `float`
            y position of the source in the source plane
