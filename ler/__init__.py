@@ -3,7 +3,7 @@ LeR
 """
 
 # mypackage/cli.py
-import argparse
+# import argparse
 # import subprocess, os, sys, signal, warnings
 
 ## import pycbc

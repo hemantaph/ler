@@ -28,7 +28,7 @@ setup(
         "matplotlib>=3.4.2",
         "pycbc>=2.0.4",
         "numpy>=1.18",
-        "numba>=0.57.1",
+        "numba>=0.60.0",
         "bilby>=1.0.2",
         "gwsnr>=0.3.2",
         "scipy<1.14.0",
