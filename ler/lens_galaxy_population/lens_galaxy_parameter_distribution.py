@@ -10,7 +10,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 from numba import njit
 from scipy.integrate import quad
-from lenstronomy.Util.param_util import phi_q2_ellipticity
+# from lenstronomy.Util.param_util import phi_q2_ellipticity
 
 # for redshift to luminosity distance conversion
 from astropy.cosmology import LambdaCDM
@@ -20,7 +20,7 @@ from ..gw_source_population import CBCSourceParameterDistribution
 from .optical_depth import OpticalDepth
 from ..image_properties import ImageProperties
 from ..utils import add_dictionaries_together, trim_dictionary
-from .jit_functions import phi_cut_SIE, velocity_dispersion_z_dependent, lens_redshift_SDSS_catalogue
+from .jit_functions import phi_cut_SIE, velocity_dispersion_z_dependent, lens_redshift_SDSS_catalogue, phi_q2_ellipticity_hemanta
 
 
 class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImageProperties, OpticalDepth):
@@ -216,7 +216,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         z_max=10.0,
         cosmology=None,
         event_type="BBH",
-        lens_type="epl_galaxy",
+        lens_type="epl_shear_galaxy",
         lens_functions= None,
         lens_priors=None,
         lens_priors_params=None,
@@ -375,7 +375,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         )
         input_params_image.update(params)
 
-        print("input_params_image", input_params_image)
+        # print("input_params_image", input_params_image)
         ImageProperties.__init__(
             self,
             npool=self.npool,
@@ -423,7 +423,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             dictionary of lens functions
         """
 
-        if lens_type == "epl_galaxy":
+        if lens_type == "epl_shear_galaxy":
             lens_priors_ = dict(
                 source_redshift_sl="strongly_lensed_source_redshifts",
                 lens_redshift="lens_redshift_SDSS_catalogue",
@@ -487,7 +487,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             size=size, lens_parameters_input=lens_parameters_input
         )
 
-    def sample_all_routine(self, size=1000, lens_parameters_input=None):
+    def sample_all_routine_SIE(self, size=1000, lens_parameters_input=None):
         """
         Function to sample galaxy lens parameters along with the source parameters.
 
@@ -590,7 +590,133 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             lens_parameters["phi"] = self.sample_axis_rotation_angle(size=size)
 
             # Transform the axis ratio and the angle, to ellipticities e1, e2, using lenstronomy
-            lens_parameters["e1"], lens_parameters["e2"] = phi_q2_ellipticity(
+            lens_parameters["e1"], lens_parameters["e2"] = phi_q2_ellipticity_hemanta(
+                lens_parameters["phi"], lens_parameters["q"]
+            )
+
+            # Sample shears
+            lens_parameters["gamma1"], lens_parameters["gamma2"] = self.sample_shear(
+                size=size)
+
+            # Sample the spectral index of the mass density distribution
+            lens_parameters["gamma"] = self.sample_mass_density_spectral_index(
+                size=size)
+
+            # sample gravitional waves source parameter
+            param = dict(zs=lens_parameters["zs"])
+            if samplers_params["source_parameters"]:
+                param.update(self.sample_gw_parameters(size=size))
+            gw_param = self.sample_source_parameters(size=size, param=param)
+
+            # Add source params strongly lensed to the lens params
+            lens_parameters.update(gw_param)
+
+            return lens_parameters
+        
+    def sample_all_routine_SIE(self, size=1000, lens_parameters_input=None):
+        """
+        Function to sample galaxy lens parameters along with the source parameters.
+
+        Parameters
+        ----------
+        size : `int`
+            number of lens parameters to sample
+        lens_parameters_input : `dict`
+            dictionary of lens parameters to sample
+
+        Returns
+        -------
+        lens_parameters : `dict`
+            dictionary of lens parameters and source parameters (lens conditions applied): \n
+            zl: lens redshifts \n
+            zs: source redshifts, lensed condition applied\n
+            sigma: velocity dispersions \n
+            q: axis ratios \n
+            theta_E: Einstein radii \n
+            phi: axis rotation angle \n
+            e1: ellipticity component 1 \n
+            e2: ellipticity component 2 \n
+            gamma1: shear component 1 \n
+            gamma2: shear component 2 \n
+            gamma: spectral index of the mass density distribution \n
+            geocent_time: time of arrival of the unlensed signal\n
+            phase: phase of the unlensed signal\n
+            psi: polarization angle of the unlensed signal\n
+            theta_jn: inclination angle of the unlensed signal\n
+            luminosity_distance: luminosity distance of the source\n
+            mass_1_source: mass 1 (larger) of the source\n
+            mass_2_source: mass 2 (smaller) of the source\n
+            ra: right ascension of the source\n
+            dec: declination of the source\n
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+        >>> lens = LensGalaxyParameterDistribution()
+        >>> lens.sample_all_routine(size=1000)
+        """
+
+        if lens_parameters_input is None:
+            lens_parameters_input = dict()
+        samplers_params = self.lens_param_samplers_params.copy()
+
+        # Sample source redshifts from the source population
+        # rejection sampled with optical depth
+        zs = self.sample_source_redshift_sl(size=size)
+
+        # Sample lens redshifts
+        zl = self.sample_lens_redshift(zs=zs)
+
+        # Sample velocity dispersions
+        try:
+            sigma = self.sample_velocity_dispersion(len(zs))
+        except:
+            sigma = self.sample_velocity_dispersion(len(zs), zl)
+
+        # Sample axis ratios
+        try:
+            q = self.sample_axis_ratio(sigma)
+        except:
+            q = self.sample_axis_ratio(len(sigma))
+
+        # Compute the Einstein radii
+        theta_E = self.compute_einstein_radii(sigma, zl, zs)
+
+        # Create a dictionary of the lens parameters
+        lens_parameters = {
+            "zl": zl,
+            "zs": zs,
+            "sigma": sigma,
+            "q": q,
+            "theta_E": theta_E,
+        }
+
+        # Rejection sample based on the lensing probability, that is, rejection sample wrt theta_E
+        lens_parameters = self.rejection_sample_sl(
+            lens_parameters
+        )  # proportional to pi theta_E^2
+
+        # Add the lensing parameter dictionaries together
+        lens_parameters = add_dictionaries_together(
+            lens_parameters, lens_parameters_input
+        )
+
+        # check the size of the lens parameters
+        if len(lens_parameters["zl"]) < size:
+            # Run iteratively until we have the right number of lensing parmaeters
+            # print("current sampled size", len(lens_parameters["zl"]))
+            return self.sample_all_routine(
+                size=size, lens_parameters_input=lens_parameters
+            )
+        else:
+            # Trim dicitionary to right size
+            lens_parameters = trim_dictionary(lens_parameters, size)
+
+            # Sample the axis rotation angle
+            lens_parameters["phi"] = self.sample_axis_rotation_angle(size=size)
+
+            # Transform the axis ratio and the angle, to ellipticities e1, e2, using lenstronomy
+            lens_parameters["e1"], lens_parameters["e2"] = phi_q2_ellipticity_hemanta(
                 lens_parameters["phi"], lens_parameters["q"]
             )
 

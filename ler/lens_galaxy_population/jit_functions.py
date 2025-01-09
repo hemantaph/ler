@@ -68,9 +68,10 @@ def pdf_phi_z_div_0(s, z):
     return phi_sim_z / phi_sim_0
 
 @njit
-def phi(s,z, cosmology_h=0.7):
+def phi(s, z, alpha, beta, phistar, sigmastar):
     """
     Function to calculate the lens galaxy velocity dispersion function at redshift z.
+    For Oguri et al. (2018b) model: alpha=0.94, beta=1.85, phistar=2.099e-2*(self.cosmo.h/0.7)**3, sigmastar=113.78
 
     Parameters
     ----------
@@ -85,15 +86,17 @@ def phi(s,z, cosmology_h=0.7):
     -------
     result : `float: array`
     """
-
-    result = s**4*pdf_phi_z_div_0(s,z)*phi_loc_bernardi(sigma=s, cosmology_h=cosmology_h)
+    
+    result = pdf_phi_z_div_0(s,z) * phi_loc_bernardi(sigma=s, alpha=alpha, beta=beta, phistar=phistar, sigmastar=sigmastar)
     # result[result < 0.] = 0.
     return result
 
 @njit
-def phi_loc_bernardi(sigma, alpha=0.94, beta=1.85, phistar=2.099e-2, sigmastar=113.78, cosmology_h=0.7):
+def phi_loc_bernardi(sigma, alpha, beta, phistar, sigmastar):
     """
     Function to calculate the local universe velocity dispersion function. Bernardi et al. (2010).
+    For Oguri et al. (2018b) model: alpha=0.94, beta=1.85, phistar=2.099e-2*(self.cosmo.h/0.7)**3, sigmastar=113.78
+    For Choi et al. (2008) model: alpha = 2.32 / 2.67, beta = 2.67, phistar = 8.0e-3*self.cosmo.h**3, sigmastar = 161.0
 
     Parameters
     ----------
@@ -109,7 +112,7 @@ def phi_loc_bernardi(sigma, alpha=0.94, beta=1.85, phistar=2.099e-2, sigmastar=1
     philoc_ : `float: array`
     """
 
-    phistar = phistar * (cosmology_h / 0.7) ** 3  # Mpc**-3
+    # phistar = phistar * (cosmology_h / 0.7) ** 3  # Mpc**-3
     philoc_ = phistar*(sigma/sigmastar)**alpha * np.exp(-(sigma/sigmastar)**beta) * beta/gamma_(alpha/beta)/sigma
     return philoc_
 
@@ -275,4 +278,66 @@ def bounded_normal_sample(size, mean, std, low, high):
         samples[i] = sample
     return samples
 
+
+@njit()
+def phi_q2_ellipticity_hemanta(phi, q):
+    """Function to convert phi and q to ellipticity e1 and e2.
+
+    Parameters
+    ----------
+    phi : `float: array`
+        angle of the major axis in radians
+    q : `float: array`
+        axis ratio
+
+    Returns
+    -------
+    e1 : `float: array`
+        ellipticity component 1
+    e2 : `float: array`
+    """
+
+    e_1 = (1.0 - q) / (1.0 + q) * np.cos(2 * phi)
+    e_2 = (1.0 - q) / (1.0 + q) * np.sin(2 * phi)
+    return e_1, e_2
     
+def epl_shear_area(zl, zs):
+
+    size=10000
+    final_size = 0
+    area_list = []
+
+    while final_size < size:
+        size = size - final_size
+        theta_E, e1, e2, gamma1, gamma2, gamma = sample_lens_params(zl, zs, size=size)
+
+        for i in range(size):
+            kwargs_lens = [
+                {
+                    "theta_E": theta_E[i],
+                    "e1": e1[i],
+                    "e2": e2[i],
+                    "gamma": gamma[i],
+                    "center_x": 0.0,
+                    "center_y": 0.0,
+                },
+                {
+                    "gamma1": gamma1[i],
+                    "gamma2": gamma2[i],
+                    "ra_0": 0,
+                    "dec_0": 0,
+                },
+            ]
+            
+            caustic_double_points = caustics_epl_shear(
+                kwargs_lens, return_which="double", maginf=-100
+            )
+            caustic = np.logical_not(np.isnan(caustic_double_points).any())
+
+            # If there is a nan, caustic=False, draw a new gamma
+            if caustic:
+                area_list.append(Polygon(caustic_double_points.T).area)
+
+        final_size = len(area_list)
+
+    result_EPL = np.array(area_list)/(4*np.pi) * no * dVcdz(zl)

@@ -1,0 +1,244 @@
+classDiagram
+direction BT
+class node7 {
+    spin_precession
+    sample_theta_jn
+    _sample_phi_12
+    directory
+    cosmo
+    sampler_names
+    sample_phase
+    _sample_phase
+    _sample_geocent_time
+    sample_geocent_time
+    sample_phi_jl
+    sample_tilt_2
+    _sample_source_frame_masses
+    sample_tilt_1
+    spin_zero
+    sample_source_frame_masses
+    sample_dec
+    gw_param_samplers
+    _sample_dec
+    _sample_tilt_1
+    z_min
+    _sample_theta_jn
+    _sample_tilt_2
+    _sample_phi_jl
+    gw_param_samplers_params
+    create_new_interpolator
+    sample_a_2
+    sample_ra
+    sample_a_1
+    _sample_a_2
+    _sample_a_1
+    _available_gw_prior_list_and_its_params
+    _sample_zs
+    sample_phi_12
+    sample_zs
+    z_to_luminosity_distance
+    z_max
+    _sample_psi
+    sample_psi
+    _sample_ra
+    z_min
+    z_max
+    event_type
+    source_priors
+    source_priors_params
+    cosmo
+    spin_zero
+}
+class node4 {
+    c_n_i
+    merger_rate_density
+    z_min
+    cosmo
+    event_type
+    normalization_pdf_z
+    differential_comoving_volume
+    merger_rate_density_param
+    _merger_rate_density
+    z_to_luminosity_distance
+    sample_source_redshift
+    z_max
+    _merger_rate_density_model_list
+    _sample_source_redshift
+    z_min
+    z_max
+    event_type
+    cosmo
+    merger_rate_density_param
+    c_n_i
+    normalization_pdf_z
+    z_to_luminosity_distance
+    differential_comoving_volume
+}
+class node5 {
+    create_new_interpolator
+    n_min_images
+    geocent_time_min
+    npool
+    spin_precession
+    geocent_time_max
+    n_max_images
+    lens_model_list
+    spin_zero
+    cosmo
+    luminosity_distance_to_z
+}
+class node3 {
+    _sample_source_redshift_sl
+    normalization_pdf_z_lensed
+    lens_param_samplers
+    npool
+    sample_lens_parameters_routine
+    sample_velocity_dispersion
+    directory
+    lens_sampler_names
+    cosmo
+    lens_param_samplers_params
+    rejection_sample_sl
+    event_type
+    sample_mass_density_spectral_index
+    _sample_lens_redshift
+    _available_lens_prior_list_and_its_params
+    _sample_source_parameters
+    _available_lens_functions
+    z_min
+    lens_functions
+    sample_source_redshift_sl
+    _sample_shear
+    sample_shear
+    sample_axis_rotation_angle
+    _sample_mass_density_spectral_index
+    _sample_axis_rotation_angle
+    create_new_interpolator
+    sample_source_parameters
+    z_max
+    sample_lens_redshift
+    cbc_pop
+    z_min
+    z_max
+    m_min
+    m_max
+    normalization_pdf_z
+}
+class node6 {
+    sampler_priors
+    _sample_velocity_dispersion
+    _sample_axis_ratio
+    npool
+    vd_min
+    splineDa
+    sampler_priors_params
+    sample_velocity_dispersion
+    directory
+    cosmo
+    tau_mp_routine
+    strong_lensing_optical_depth
+    angular_diameter_distance
+    differential_comoving_volume
+    _strong_lensing_optical_depth
+    splineDc
+    _available_optical_depth_list_and_its_params
+    vd_max
+    Dc_to_z
+    splinedVcdz
+    _available_velocity_dispersion_list_and_its_params
+    c_n_i
+    sample_axis_ratio
+    z_min
+    splineDcInv
+    _available_axis_ratio_list_and_its_params
+    vd_inv_cdf
+    z_to_Dc
+    zl_list
+    z_max
+    angular_diameter_distance_z1z2
+}
+class node0 {
+    batch_size
+    json_file_names
+    npool
+    z_min
+    gw_param_sampler_dict
+    dict_buffer
+    snr_bilby
+    cosmo
+    snr_calculator_dict
+    ler_directory
+    event_type
+    size
+    _snr
+    interpolator_directory
+    snr
+    z_max
+    list_of_detectors
+    z_min
+    z_max
+    event_type
+    cosmo
+    size
+    batch_size
+    json_file_names
+    interpolator_directory
+    ler_directory
+    gwsnr
+    gw_param_sampler_dict
+    snr_calculator_dict
+    gw_param
+    gw_param_detectable
+}
+class node2 {
+    batch_size
+    json_file_names
+    npool
+    z_min
+    gw_param_sampler_dict
+    dict_buffer
+    snr_bilby
+    cosmo
+    snr_calculator_dict
+    ler_directory
+    event_type
+    size
+    _snr
+    interpolator_directory
+    snr
+    z_max
+    list_of_detectors
+    npool
+    z_min
+    z_max
+    event_type
+    cosmo
+    size
+    batch_size
+    json_file_names
+    interpolator_directory
+    ler_directory
+    gwsnr
+    gw_param_sampler_dict
+    snr_calculator_dict
+    list_of_detectors
+    unlensed_param
+    unlensed_param_detectable
+    lensed_param
+    lensed_param_detectable
+}
+class node8 {
+    ler_init_args
+    npool
+    z_min
+    z_max
+    verbose
+}
+class node1
+
+node4  -->  node7 
+node7  -->  node3 
+node5  -->  node3 
+node6  -->  node3 
+node7  -->  node0 
+node3  -->  node2 

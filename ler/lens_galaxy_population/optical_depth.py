@@ -4,6 +4,8 @@ import numpy as np
 from scipy.integrate import quad
 from scipy.stats import gengamma
 from astropy.cosmology import LambdaCDM
+from tqdm import tqdm
+
 from ..utils import  interpolator_from_pickle, cubic_spline_interpolator, inverse_transform_sampler
 from .jit_functions import phi_cut_SIE, axis_ratio_rayleigh, axis_ratio_SIS, phi, phi_loc_bernardi
 
@@ -156,27 +158,37 @@ class OpticalDepth():
         npool=4,
         z_min=0.001,
         z_max=10.0,
+        lens_type="sie_galaxy",
         optical_depth_function=None,
         sampler_priors=None,
         sampler_priors_params=None,
         cosmology=None,
         directory="./interpolator_pickle",
         create_new_interpolator=False,
+        verbose=False,
     ):
 
         self.npool = npool
         self.z_min = z_min
         self.z_max = z_max
         self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+        self.lens_type = lens_type
 
         self.sampler_priors = dict(
-            velocity_dispersion="velocity_dispersion_bernardi",
+            velocity_dispersion="velocity_dispersion_gengamma",
             axis_ratio="axis_ratio_rayleigh",
         )
         if sampler_priors:
             self.sampler_priors.update(sampler_priors)
+
+        vd_name = self.sampler_priors["velocity_dispersion"]  # velocity dispersion sampler name
+        if vd_name in self.available_velocity_dispersion_list_and_its_params:
+            vd_priors_params = self.available_velocity_dispersion_list_and_its_params[vd_name]
+        else:
+            vd_priors_params = None
+
         self.sampler_priors_params = dict(
-            velocity_dispersion=dict(vd_min=0., vd_max=350.),
+            velocity_dispersion=vd_priors_params,
             axis_ratio=dict(q_min=0.2, q_max=1.),
         )
         if sampler_priors_params:
@@ -207,9 +219,6 @@ class OpticalDepth():
                 differential_comoving_volume=dict(create_new=True, resolution=1000),
             )
 
-        vd_name = self.sampler_priors["velocity_dispersion"]  # velocity dispersion sampler name
-        tau_name = optical_depth_function  # optical depth function name
-
         self.create_lookup_table_fuction(self.z_max)
 
         # setting velocity dispersion sampler method
@@ -219,7 +228,16 @@ class OpticalDepth():
         if callable(optical_depth_function):
             self.strong_lensing_optical_depth = optical_depth_function
         else:
-            self.initialize_optical_depth_function(tau_name, vd_name);
+            self.initialize_optical_depth_function(optical_depth_function);
+    
+        if verbose:
+            print(f"Chosen velocity dispersion sampler: {vd_name}")
+            print(f"Chosen velocity dispersion sampler params: {self.sampler_priors_params['velocity_dispersion']}")
+            print(f"Chosen optical depth function: {optical_depth_function}")
+            print(f"Chosen axis ratio sampler: {self.sampler_priors['axis_ratio']}")
+            print(f"Chosen axis ratio sampler params: {self.sampler_priors_params['axis_ratio']}")
+            print(f"Chosen cosmology: {self.cosmo}")
+            print(f"Chosen lens_type: {self.lens_type}")
         
     def initialize_velocity_dispersion_sampler(self, vd_name):
         """
@@ -231,32 +249,56 @@ class OpticalDepth():
             name of velocity dispersion sampler
         """
 
-        # setting up input parameters for interpolation
-        # check vd_min and vd_max exists in sampler_priors_params
-        try:
-            self.vd_min = self.sampler_priors_params['velocity_dispersion']['vd_min']
-            self.vd_max = self.sampler_priors_params['velocity_dispersion']['vd_max']
-        except:
-            self.vd_min = 10.
-            self.vd_max = 350.
-            self.sampler_priors_params['velocity_dispersion']=dict(vd_min=self.vd_min, vd_max=self.vd_max)
-
         # generating inverse cdf interpolator for velocity dispersion
-        param_dict_given_ = dict(z_min=self.z_min, z_max=self.z_max, vd_min=self.vd_min, vd_max=self.vd_max, cosmology=self.cosmo, name=vd_name, resolution=self.c_n_i["velocity_dispersion"]["resolution"])
+        vd_min=self.sampler_priors_params["velocity_dispersion"]["vd_min"]
+        vd_max=self.sampler_priors_params["velocity_dispersion"]["vd_max"]
+        alpha=self.sampler_priors_params["velocity_dispersion"]["alpha"]
+        beta=self.sampler_priors_params["velocity_dispersion"]["beta"]
+        phistar=self.sampler_priors_params["velocity_dispersion"]["phistar"]
+        sigmastar=self.sampler_priors_params["velocity_dispersion"]["sigmastar"]
+        resolution=self.c_n_i["velocity_dispersion"]["resolution"]
+        param_dict_given_ = dict(
+            z_min=self.z_min, 
+            z_max=self.z_max, 
+            vd_min=vd_min, 
+            vd_max=vd_max,
+            alpha=alpha,
+            beta=beta,
+            phistar=phistar,
+            sigmastar=sigmastar,
+            cosmology=self.cosmo, 
+            name=vd_name, 
+            resolution=resolution,
+        )
         sub_directory_ = vd_name
-        x_ = np.linspace(self.vd_min, self.vd_max, self.c_n_i["velocity_dispersion"]["resolution"])
+        x_ = np.linspace(
+            vd_min,
+            vd_max,
+            self.c_n_i["velocity_dispersion"]["resolution"]
+        )
         category_ = "inv_cdf"
         create_new_ = self.c_n_i["velocity_dispersion"]["create_new"]
         
         if vd_name == "velocity_dispersion_gengamma":
-            # setting up input parameters for interpolation
-            pdf_func_ = lambda vd_: gengamma.pdf(vd_/161., a=2.32 / 2.67, c=2.67)   # gengamma pdf
+            
+            pdf_func_ = lambda vd_: gengamma.pdf(
+                vd_/sigmastar,
+                a= alpha/beta, 
+                c= beta,
+            )   # gengamma pdf
             conditioned_y_ = None
             dimension_ = 1
      
         elif vd_name == "velocity_dispersion_bernardi":
+
             # setting up input parameters for interpolation
-            pdf_func_ = lambda vd_: vd_**4*phi_loc_bernardi(sigma=vd_, cosmology_h=self.cosmo.h)
+            pdf_func_ = lambda vd_: phi_loc_bernardi(
+                sigma=vd_,
+                alpha=alpha,
+                beta=beta,
+                phistar=phistar,
+                sigmastar=sigmastar
+            )
             conditioned_y_ = None
             dimension_ = 1
 
@@ -266,7 +308,14 @@ class OpticalDepth():
             else:
                 self.zl_list = np.linspace(self.z_min, self.z_max, 100)
             # setting up input parameters for interpolation
-            pdf_func_ = lambda vd_, zl_: phi(vd_, zl_, cosmology_h=self.cosmo.h)*self.differential_comoving_volume(np.array([zl_]))
+            pdf_func_ = lambda vd_, zl_: phi(
+                vd_, 
+                zl_, 
+                alpha=alpha,
+                beta=beta,
+                phistar=phistar,
+                sigmastar=sigmastar,
+            )  # dont add *self.differential_comoving_volume(np.array([zl_]))
             conditioned_y_ = self.zl_list
             dimension_ = 2
 
@@ -282,7 +331,7 @@ class OpticalDepth():
             param_dict_given = param_dict_given_,
             directory=self.directory,
             sub_directory=sub_directory_,
-            name=vd_name,
+            name=str(vd_name),
             x = x_,
             pdf_func= pdf_func_,
             conditioned_y=conditioned_y_,
@@ -293,7 +342,7 @@ class OpticalDepth():
 
         self.sample_velocity_dispersion = self.sampler_priors["velocity_dispersion"]
 
-    def initialize_optical_depth_function(self, tau_name, vd_name):
+    def initialize_optical_depth_function(self, tau_name):
         """
         Function to initialize optical depth function.
 
@@ -317,7 +366,17 @@ class OpticalDepth():
         else:
             # setting up input parameters for interpolation
             resolution = self.c_n_i["optical_depth"]["resolution"]
-            param_dict_given_ = dict(z_min=self.z_min, z_max=self.z_max, vd_min=self.vd_min, vd_max=self.vd_max, cosmology=self.cosmo, tau_name=tau_name, vd_name=vd_name, q_name=self.sampler_priors["axis_ratio"], resolution=resolution)
+            param_dict_given_ = dict(
+                z_min=self.z_min, 
+                z_max=self.z_max,  
+                cosmology=self.cosmo, 
+                tau_name=tau_name, 
+                vd_name=self.sampler_priors["velocity_dispersion"],
+                vd_prior_params=self.sampler_priors_params["velocity_dispersion"],
+                q_name=self.sampler_priors["axis_ratio"],
+                q_prior_params=self.sampler_priors_params["axis_ratio"],
+                resolution=resolution
+            )
             #self.param_dict_given_ = param_dict_given_
             sub_directory_ = tau_name
             if self.z_min==0.0:
@@ -341,19 +400,41 @@ class OpticalDepth():
                 else:
                     self.sample_axis_ratio = self.sampler_priors["axis_ratio"]
 
-                if vd_name == "velocity_dispersion_ewoud":
+                if self.sampler_priors["velocity_dispersion"] == "velocity_dispersion_ewoud": # zl dependent velocity dispersion
                     from .mp import optical_depth_sie2_mp
                     self.tau_mp_routine = optical_depth_sie2_mp
-                else:
+                else:  # zl independent velocity dispersion
                     from .mp import optical_depth_sie1_mp
                     self.tau_mp_routine = optical_depth_sie1_mp
+
+            elif tau_name=="optical_depth_EPL_SHEAR_hemanta" or tau_name == "EPL_SHEAR":
+                # axis-ratio sampler
+                if self.sampler_priors["axis_ratio"]=="axis_ratio_rayleigh":
+                    self.sample_axis_ratio = axis_ratio_rayleigh
+                else:
+                    self.sample_axis_ratio = self.sampler_priors["axis_ratio"]
+
+                if self.sampler_priors["velocity_dispersion"] == "velocity_dispersion_ewoud": # zl dependent velocity dispersion
+                    from .mp import optical_depth_sie4_mp
+                    self.tau_mp_routine = optical_depth_sie4_mp
+                else:  # zl independent velocity dispersion
+                    from .mp import optical_depth_sie3_mp
+                    self.tau_mp_routine = optical_depth_sie3_mp
+
+                # if self.sampler_priors["velocity_dispersion"] == "velocity_dispersion_ewoud": # zl dependent velocity dispersion
+                #     from .mp import optical_depth_sie2_mp
+                #     self.tau_mp_routine = optical_depth_sie2_mp
+                # else:  # zl independent velocity dispersion
+                #     from .mp import optical_depth_sie1_mp
+                #     self.tau_mp_routine = optical_depth_sie1_mp
+                
 
             # this will initialize the interpolator
             optical_depth_setter = interpolator_from_pickle(
                 param_dict_given = param_dict_given_,
                 directory=self.directory,
                 sub_directory=sub_directory_,
-                name=tau_name,
+                name=str(tau_name),
                 x = x_,
                 pdf_func= pdf_func_,
                 conditioned_y=None,
@@ -479,7 +560,7 @@ class OpticalDepth():
         else:
             return inverse_transform_sampler(size, q_inv_cdf[0], q_inv_cdf[1])
 
-    def velocity_dispersion_gengamma(self, size, a=2.32 / 2.67, c=2.67, get_attribute=False, param=None, **kwargs):
+    def velocity_dispersion_gengamma(self, size, get_attribute=False, **kwargs):
         """
         Function to sample velocity dispersion from gengamma distribution
 
@@ -509,15 +590,12 @@ class OpticalDepth():
 
         """
 
-        if param:
-            a = param["a"]
-            c = param["c"]
-
+        vd_inv_cdf = self.vd_inv_cdf.copy()
+        # get the interpolator (inverse cdf) and sample
         if get_attribute:
-            return lambda size: 161.*gengamma.rvs(a, c, size=size)
+            return njit(lambda size: inverse_transform_sampler(size, vd_inv_cdf[0], vd_inv_cdf[1]))
         else:
-            # sample velocity dispersion from gengamma distribution
-            return 161.*gengamma.rvs(a, c, size=size)  # km/s
+            return inverse_transform_sampler(size, vd_inv_cdf[0], vd_inv_cdf[1])
     
     def velocity_dispersion_bernardi(self, size, get_attribute=False, **kwargs):
         """
@@ -655,7 +733,7 @@ class OpticalDepth():
             sigma = self.sample_velocity_dispersion(size=5000, zl=zl)
 
         q = self.sample_axis_ratio(sigma)  # if SIS, q=array of 1.0
-        no = 8*1e-3*self.cosmo.h**3
+        no = self.sampler_priors_params["velocity_dispersion"]["phistar"]
         test = phi_cut_SIE(q)*self.cross_section_SIS(sigma=sigma, zl=zl, zs=zs)/(4*np.pi)*no*self.differential_comoving_volume(zl)
         # average
         return np.mean(test)
@@ -710,7 +788,7 @@ class OpticalDepth():
         """
 
         zs = np.array([zs]).reshape(-1)
-        no = 8*1e-3*self.cosmo.h**3
+        no = self.sampler_priors_params["velocity_dispersion"]["phistar"]
         vd_inv_cdf = self.vd_inv_cdf
         splinedVcdz = self.splinedVcdz
         splineDa = self.splineDa
@@ -722,8 +800,12 @@ class OpticalDepth():
             input_params = [(zs[i], no, vd_inv_cdf, splinedVcdz, splineDa, idx[i]) for i in range(len(zs))]
 
         # Create a pool of workers and parallelize the integration
+        # with Pool(processes=self.npool) as pool:
+        #     result = list(pool.map(self.tau_mp_routine, input_params))
+        # with tqdm
+        print("Computing optical depth with multiprocessing...")
         with Pool(processes=self.npool) as pool:
-            result = list(pool.map(self.tau_mp_routine, input_params))
+            result = list(tqdm(pool.imap_unordered(self.tau_mp_routine, input_params), total=len(zs)))
 
         result = np.array(result)
         tau_list = result[:,1][np.array(result[:,0], dtype=int)]
@@ -953,10 +1035,11 @@ class OpticalDepth():
         Function to list all available velocity dispersion sampler and its parameters.
         """
         self._available_velocity_dispersion_list_and_its_params = dict(
-            velocity_dispersion_haris=dict(a=2.32 / 2.67, c=2.67),
-            velocity_dispersion_gengamma=dict(a=2.32 / 2.67, c=2.67),
-            velocity_dispersion_bernardi=None,
-            velocity_dispersion_ewoud=None,
+            velocity_dispersion_gengamma=dict(vd_min = 50., vd_max = 420., alpha = 2.32, beta = 2.67, phistar = 8.0e-3*self.cosmo.h**3, sigmastar = 161.0),
+
+            velocity_dispersion_bernardi=dict(vd_min=50., vd_max=420., alpha=0.94, beta=1.85, phistar=2.099e-2*(self.cosmo.h/0.7)**3, sigmastar=113.78),
+
+            velocity_dispersion_ewoud=dict(vd_min=50., vd_max=420., alpha=0.94, beta=1.85, phistar=2.099e-2*(self.cosmo.h/0.7)**3, sigmastar=113.78),
         )
 
         return self._available_velocity_dispersion_list_and_its_params
