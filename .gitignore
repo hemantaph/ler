@@ -41,6 +41,17 @@
 **/**/**/**/*.fits
 **/**/**/**/**/*.fits
 
+# ignore npy
+*.npy
+.npy
+**.npy
+**/*.npy
+**/**/*.npy
+**/**/**/*.npy
+**/**/**/**/*.npy
+**/**/**/**/**/*.npy
+
+
 # ignore pickle
 *.pickle
 .pickle
