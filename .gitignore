@@ -31,6 +31,17 @@
 **/**/**/**/*.gz
 **/**/**/**/**/*.gz
 
+# ignore npy
+*.npy
+.npy
+**.npy
+**/*.npy
+**/**/*.npy
+**/**/**/*.npy
+**/**/**/**/*.npy
+**/**/**/**/**/*.npy
+
+
 # ignore fits
 *.fits
 .fits

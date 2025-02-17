@@ -702,7 +702,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: print_all_params()
+   .. py:method:: print_all_params_ler()
 
       
       Function to print all the parameters.

@@ -2779,7 +2779,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:class:: LensGalaxyParameterDistribution(npool=4, z_min=0.0, z_max=10.0, cosmology=None, event_type='BBH', lens_type='epl_galaxy', lens_functions=None, lens_priors=None, lens_priors_params=None, directory='./interpolator_pickle', create_new_interpolator=False, **kwargs)
+.. py:class:: LensGalaxyParameterDistribution(npool=4, z_min=0.0, z_max=10.0, cosmology=None, event_type='BBH', lens_type='epl_shear_galaxy', lens_functions=None, lens_priors=None, lens_priors_params=None, directory='./interpolator_pickle', create_new_interpolator=False, **kwargs)
 
 
    Bases: :py:obj:`ler.gw_source_population.CBCSourceParameterDistribution`, :py:obj:`ler.image_properties.ImageProperties`, :py:obj:`ler.lens_galaxy_population.optical_depth.OpticalDepth`
@@ -2810,7 +2810,7 @@ Functions
 
        **lens_type** : `str`
            Type of lens galaxy to generate.
-           default: 'epl_galaxy'
+           default: 'epl_shear_galaxy'
 
        **lens_functions, lens_priors, lens_priors_params** : `dict`, `dict`, `dict`
            dictionary of lens functions, priors, and priors parameters
@@ -2915,7 +2915,7 @@ Functions
    |                                     | elliptical lens galaxy shear     |
    |                                     | from a normal distribution       |
    +-------------------------------------+----------------------------------+
-   |:meth:`~mass_density_spectral_index_normal`                             |
+   |:meth:`~density_profile_slope_normal`                             |
    +-------------------------------------+----------------------------------+
    |                                     | Function to sample the lens      |
    |                                     | galaxy spectral index of the     |
@@ -2952,7 +2952,7 @@ Functions
    |                                     | elliptical lens galaxy shear     |
    |                                     | from a normal distribution       |
    +-------------------------------------+----------------------------------+
-   |:attr:`~sample_mass_density_spectral_index`                             |
+   |:attr:`~sample_density_profile_slope`                             |
    +-------------------------------------+----------------------------------+
    |                                     | Function to sample the lens      |
    |                                     | galaxy spectral index of the     |
@@ -3143,7 +3143,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_mass_density_spectral_index
+   .. py:property:: sample_density_profile_slope
 
       
       Function to sample the lens galaxy spectral index of the mass density profile from a normal distribution
@@ -3172,7 +3172,7 @@ Functions
 
       >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
       >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.mass_density_spectral_index_normal(size=1000)
+      >>> lens.density_profile_slope_normal(size=1000)
 
 
 
@@ -3437,7 +3437,7 @@ Functions
 
           **lens_type** : `str`
               lens type
-              e.g. 'epl_galaxy' for elliptical power-law galaxy
+              e.g. 'epl_shear_galaxy' for elliptical power-law galaxy
 
           **lens_priors** : `dict`
               dictionary of priors
@@ -3793,7 +3793,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: mass_density_spectral_index_normal(size=1000, mean=2.0, std=0.2, get_attribute=False, param=None)
+   .. py:method:: density_profile_slope_normal(size=1000, mean=2.0, std=0.2, get_attribute=False, param=None)
 
       
       Function to sample the lens galaxy spectral index of the mass density profile from a normal distribution
@@ -3832,7 +3832,7 @@ Functions
 
       >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
       >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.mass_density_spectral_index_normal(size=1000)
+      >>> lens.density_profile_slope_normal(size=1000)
 
 
 

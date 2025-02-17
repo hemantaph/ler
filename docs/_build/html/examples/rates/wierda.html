@@ -196,8 +196,8 @@ create_new_interpolator= False
  LeR also takes LensGalaxyParameterDistribution params as kwargs, as follows:
 lens_type =  epl_galaxy
 lens_functions =  {&#39;strong_lensing_condition&#39;: &#39;rjs_with_cross_section_SIE&#39;, &#39;optical_depth&#39;: &#39;optical_depth_SIE_hemanta&#39;, &#39;param_sampler_type&#39;: &#39;sample_all_routine&#39;}
-lens_priors =  {&#39;source_redshift_sl&#39;: &#39;strongly_lensed_source_redshifts&#39;, &#39;lens_redshift&#39;: &#39;lens_redshift_SDSS_catalogue&#39;, &#39;velocity_dispersion&#39;: &#39;velocity_dispersion_ewoud&#39;, &#39;axis_ratio&#39;: &#39;axis_ratio_rayleigh&#39;, &#39;axis_rotation_angle&#39;: &#39;axis_rotation_angle_uniform&#39;, &#39;shear&#39;: &#39;shear_norm&#39;, &#39;mass_density_spectral_index&#39;: &#39;mass_density_spectral_index_normal&#39;, &#39;source_parameters&#39;: &#39;sample_gw_parameters&#39;}
-lens_priors_params =  {&#39;source_redshift_sl&#39;: None, &#39;lens_redshift&#39;: None, &#39;velocity_dispersion&#39;: None, &#39;axis_ratio&#39;: {&#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0}, &#39;axis_rotation_angle&#39;: {&#39;phi_min&#39;: 0.0, &#39;phi_max&#39;: 6.283185307179586}, &#39;shear&#39;: {&#39;scale&#39;: 0.05}, &#39;mass_density_spectral_index&#39;: {&#39;mean&#39;: 2.0, &#39;std&#39;: 0.2}, &#39;source_parameters&#39;: None}
+lens_priors =  {&#39;source_redshift_sl&#39;: &#39;strongly_lensed_source_redshifts&#39;, &#39;lens_redshift&#39;: &#39;lens_redshift_SDSS_catalogue&#39;, &#39;velocity_dispersion&#39;: &#39;velocity_dispersion_ewoud&#39;, &#39;axis_ratio&#39;: &#39;axis_ratio_rayleigh&#39;, &#39;axis_rotation_angle&#39;: &#39;axis_rotation_angle_uniform&#39;, &#39;shear&#39;: &#39;shear_norm&#39;, &#39;density_profile_slope&#39;: &#39;density_profile_slope_normal&#39;, &#39;source_parameters&#39;: &#39;sample_gw_parameters&#39;}
+lens_priors_params =  {&#39;source_redshift_sl&#39;: None, &#39;lens_redshift&#39;: None, &#39;velocity_dispersion&#39;: None, &#39;axis_ratio&#39;: {&#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0}, &#39;axis_rotation_angle&#39;: {&#39;phi_min&#39;: 0.0, &#39;phi_max&#39;: 6.283185307179586}, &#39;shear&#39;: {&#39;scale&#39;: 0.05}, &#39;density_profile_slope&#39;: {&#39;mean&#39;: 2.0, &#39;std&#39;: 0.2}, &#39;source_parameters&#39;: None}
 
  Image properties:
 n_min_images =  2
@@ -254,8 +254,8 @@ axis_rotation_angle =  axis_rotation_angle_uniform
 axis_rotation_angle_params =  {&#39;phi_min&#39;: 0.0, &#39;phi_max&#39;: 6.283185307179586}
 shear =  shear_norm
 shear_params =  {&#39;scale&#39;: 0.05}
-mass_density_spectral_index =  mass_density_spectral_index_normal
-mass_density_spectral_index_params =  {&#39;mean&#39;: 2.0, &#39;std&#39;: 0.2}
+density_profile_slope =  density_profile_slope_normal
+density_profile_slope_params =  {&#39;mean&#39;: 2.0, &#39;std&#39;: 0.2}
 Lens functions:
 strong_lensing_condition =  rjs_with_cross_section_SIE
 optical_depth =  optical_depth_SIE_hemanta

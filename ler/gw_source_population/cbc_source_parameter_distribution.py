@@ -20,12 +20,12 @@ from gwcosmo import priors as p
 
 # for multiprocessing
 # Import helper routines
-from ..utils import interpolator_from_pickle, cubic_spline_interpolator
+from ..utils import FunctionConditioning
 
 # import redshift distribution sampler
 from .cbc_source_redshift_distribution import CBCSourceRedshiftDistribution
 
-from .jit_functions import lognormal_distribution_2D, inverse_transform_sampler_m1m2
+from .jit_functions import lognormal_distribution_2D, bns_bimodal_pdf, inverse_transform_sampler_m1m2
 
 
 class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
@@ -72,7 +72,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
     ----------
     >>> from ler.gw_source_population import CBCSourceParameterDistribution
     >>> cbc = CBCSourceParameterDistribution()
-    >>> params = cbc.sample_gw_parameters(size=1000)
+    >>> params = cbc.gw_parameters(size=1000)
     >>> print("sampled parameters=",list(params.keys()))
 
     Instance Attributes
@@ -128,46 +128,46 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
     |                                     | table for converting redshift    |
     |                                     | to luminosity distance           |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_gw_parameters`        | Function to sample all the       |
+    |:meth:`~gw_parameters`        | Function to sample all the       |
     |                                     | intrinsic and extrinsic          |
     |                                     | parameters of compact binaries   |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_source_frame_masses`  | Function to sample source mass1  |
+    |:meth:`~source_frame_masses`  | Function to sample source mass1  |
     |                                     | and mass2                        |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_geocent_time`         | Function to sample geocent time  |
+    |:meth:`~geocent_time`         | Function to sample geocent time  |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_zs`                   | Function to sample source        |
+    |:meth:`~zs`                   | Function to sample source        |
     |                                     | redshift                         |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_ra`                   | Function to sample right         |
+    |:meth:`~ra`                   | Function to sample right         |
     |                                     | ascension (sky position)         |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_dec`                  | Function to sample declination   |
+    |:meth:`~dec`                  | Function to sample declination   |
     |                                     | (sky position)                   |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_phase`                | Function to sample coalescence   |
+    |:meth:`~phase`                | Function to sample coalescence   |
     |                                     | phase                            |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_psi`                  | Function to sample polarization  |
+    |:meth:`~psi`                  | Function to sample polarization  |
     |                                     | angle                            |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_theta_jn`             | Function to sample inclination   |
+    |:meth:`~theta_jn`             | Function to sample inclination   |
     |                                     | angle                            |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_a1`                   | Function to sample spin1         |
+    |:meth:`~a_1`                   | Function to sample spin1         |
     |                                     | magnitude                        |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_a2`                   | Function to sample spin2         |
+    |:meth:`~a_2`                   | Function to sample spin2         |
     |                                     | magnitude                        |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_tilt_1`               | Function to sample tilt1 angle   |
+    |:meth:`~tilt_1`               | Function to sample tilt1 angle   |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_tilt_2`               | Function to sample tilt2 angle   |
+    |:meth:`~tilt_2`               | Function to sample tilt2 angle   |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_phi_12`               | Function to sample phi12 angle   |
+    |:meth:`~phi_12`               | Function to sample phi12 angle   |
     +-------------------------------------+----------------------------------+
-    |:meth:`~sample_phi_jl`               | Function to sample phi_jl angle  |
+    |:meth:`~phi_jl`               | Function to sample phi_jl angle  |
     +-------------------------------------+----------------------------------+
     |:meth:`~binary_masses_BBH_popI_II_powerlaw_gaussian`                    |
     +-------------------------------------+----------------------------------+
@@ -259,6 +259,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         directory="./interpolator_pickle",
         create_new_interpolator=False,
     ):
+        print("\nInitializing CBCSourceParameterDistribution...\n")
         # set attributes
         self.z_min = z_min
         self.z_max = z_max
@@ -267,33 +268,21 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         self.spin_zero = spin_zero
         self.spin_precession = spin_precession
         self.directory = directory
-        # initialize the interpolator's parameters
-        self.create_new_interpolator = dict(
-            redshift_distribution=dict(create_new=False, resolution=1000),
-            z_to_luminosity_distance=dict(create_new=False, resolution=1000),
-            differential_comoving_volume=dict(create_new=False, resolution=1000),
-        )
-        if isinstance(create_new_interpolator, dict):
-            self.create_new_interpolator.update(create_new_interpolator)
-        elif create_new_interpolator is True:
-            self.create_new_interpolator = dict(
-                redshift_distribution=dict(create_new=True, resolution=500),
-                z_to_luminosity_distance=dict(create_new=True, resolution=500),
-                differential_comoving_volume=dict(create_new=True, resolution=500),
-            )
+
+        # setting up the interpolator creation parameters
+        create_new_interpolator = self.setup_decision_dictionary(create_new_interpolator)
 
         # dealing with prior functions and categorization
         (
             self.gw_param_samplers,
             self.gw_param_samplers_params,
-            self.sampler_names,
         ) = self.source_priors_categorization(
             event_type, source_priors, source_priors_params
         )
 
         # initialize the SourceGalaxyPopulationModel mother class
         # for redshift distribution
-        # instance attribute sample_source_redshift is initialized here
+        # instance attribute source_redshift is initialized here
         super().__init__(
             z_min=z_min,
             z_max=z_max,
@@ -304,87 +293,76 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             ],
             cosmology=cosmology,
             directory=directory,
-            create_new_interpolator=self.create_new_interpolator,
+            create_new_interpolator=create_new_interpolator,
         )
 
         # initializing samplers
         # it goes through the setter functions and assign the sampler functions
-        self.sample_source_frame_masses = self.gw_param_samplers["source_frame_masses"]
-        self.sample_geocent_time = self.gw_param_samplers["geocent_time"]
-        self.sample_zs = self.gw_param_samplers["zs"]
-        self.sample_ra = self.gw_param_samplers["ra"]
-        self.sample_dec = self.gw_param_samplers["dec"]
-        self.sample_phase = self.gw_param_samplers["phase"]
-        self.sample_psi = self.gw_param_samplers["psi"]
-        self.sample_theta_jn = self.gw_param_samplers["theta_jn"]
-        # initialize the spin prior attribute
-        # remove spin prior if spin_zero is True
-        if not spin_zero:
-            self.sample_a_1 = self.gw_param_samplers["a_1"]
-            self.sample_a_2 = self.gw_param_samplers["a_2"]
-            if spin_precession:
-                self.sample_tilt_1 = self.gw_param_samplers["tilt_1"]
-                self.sample_tilt_2 = self.gw_param_samplers["tilt_2"]
-                self.sample_phi_12 = self.gw_param_samplers["phi_12"]
-                self.sample_phi_jl = self.gw_param_samplers["phi_jl"]
+        # self.source_redshift is already initialized in the super class
+        # self.gw_param_samplers["source_redshift"] = self.source_redshift
+        # self.source_frame_masses = self.gw_param_samplers["source_frame_masses"]
+        # self.geocent_time = self.gw_param_samplers["geocent_time"]
+        # self.ra = self.gw_param_samplers["ra"]
+        # self.dec = self.gw_param_samplers["dec"]
+        # self.phase = self.gw_param_samplers["phase"]
+        # self.psi = self.gw_param_samplers["psi"]
+        # self.theta_jn = self.gw_param_samplers["theta_jn"]
+        # # initialize the spin prior attribute
+        # # remove spin prior if spin_zero is True
+        # if not spin_zero:
+        #     self.a_1 = self.gw_param_samplers["a_1"]
+        #     self.a_2 = self.gw_param_samplers["a_2"]
+        #     if spin_precession:
+        #         self.tilt_1 = self.gw_param_samplers["tilt_1"]
+        #         self.tilt_2 = self.gw_param_samplers["tilt_2"]
+        #         self.phi_12 = self.gw_param_samplers["phi_12"]
+        #         self.phi_jl = self.gw_param_samplers["phi_jl"]
 
-    def lookup_table_luminosity_distance(self, z_min, z_max, directory):
+
+    def setup_decision_dictionary(self, create_new_interpolator):
         """
-        Function to create a lookup table for the differential comoving volume
-        and luminosity distance wrt redshift.
+        Method to set up a decision dictionary for interpolator creation.
 
         Parameters
         ----------
-        z_min : `float`
-            Minimum redshift of the source population
-        z_max : `float`
-            Maximum redshift of the source population
-
-        Attributes
-        ----------
-        z_to_luminosity_distance : `scipy.interpolate.interpolate`
-            Function to convert redshift to luminosity distance
-        differential_comoving_volume : `scipy.interpolate.interpolate`
-            Function to calculate the differential comoving volume
-        """
-
-        # initialing cosmological functions for fast calculation through interpolation
-        resolution = self.c_n_i["z_to_luminosity_distance"]["resolution"]
-        create_new = self.c_n_i["z_to_luminosity_distance"]["create_new"]
-        spline1 = interpolator_from_pickle(
-            param_dict_given=dict(
-                z_min=z_min, z_max=z_max, cosmology=self.cosmo, resolution=resolution
-            ),
-            directory=directory,
-            sub_directory="z_to_luminosity_distance",
-            name="z_to_luminosity_distance",
-            x=np.linspace(z_min, z_max, resolution),
-            pdf_func=lambda z_: self.cosmo.luminosity_distance(z_).value,
-            conditioned_y=None,
-            dimension=1,
-            category="function",
-            create_new=create_new,
-        )
-        self.z_to_luminosity_distance = njit(
-            lambda z_: cubic_spline_interpolator(z_, spline1[0], spline1[1])
-        )
-        self.z_to_luminosity_distance.__doc__ = """
-        Function to convert redshift to luminosity distance.
-        
-        Parameters
-        ----------
-        zs : `numpy.ndarray`
-            1D array of floats
-            Source redshifts
+        create_new_interpolator : `dict`, `bool`
+            If `dict`, dictionary of boolean values and resolution to create new interpolator.
+            If `bool`, boolean value to create new interpolator for all quantities.
 
         Returns
-        ----------
-        luminosity_distance : `numpy.ndarray`
-            1D array of floats
-            luminosity distance
+        -------
+        create_new_interpolator_ : `dict`
+            Dictionary of boolean values and resolution to create new interpolator.
+            e.g. dict(redshift_distribution=dict(create_new=False, resolution=1000), luminosity_distance=dict(create_new=False, resolution=1000), differential_comoving_volume=dict(create_new=False, resolution=1000))
         """
+        create_new_interpolator_ = dict(
+            source_frame_masses=dict(create_new=False, resolution=500),
+            geocent_time=dict(create_new=False, resolution=500),
+            ra=dict(create_new=False, resolution=500),
+            dec=dict(create_new=False, resolution=500),
+            phase=dict(create_new=False, resolution=500),
+            psi=dict(create_new=False, resolution=500),
+            theta_jn=dict(create_new=False, resolution=500),
+            a_1=dict(create_new=False, resolution=500),
+            a_2=dict(create_new=False, resolution=500),
+            tilt_1=dict(create_new=False, resolution=500),
+            tilt_2=dict(create_new=False, resolution=500),
+            phi_12=dict(create_new=False, resolution=500),
+            phi_jl=dict(create_new=False, resolution=500),
+            merger_rate_density=dict(create_new=False, resolution=500),
+            redshift_distribution=dict(create_new=False, resolution=500), 
+            luminosity_distance=dict(create_new=False, resolution=500), 
+            differential_comoving_volume=dict(create_new=False, resolution=500),
+        )
+        if isinstance(create_new_interpolator, dict):
+            create_new_interpolator_.update(create_new_interpolator)
+        elif create_new_interpolator is True:
+            for key in create_new_interpolator_:
+                create_new_interpolator_[key]["create_new"] = True
 
-    def sample_gw_parameters(self, size=1000, param=None):
+        return create_new_interpolator_
+
+    def gw_parameters(self, size=1000, param=None):
         """
         Function to sample BBH/BNS/NSBH intrinsic and extrinsics parameters.
 
@@ -403,35 +381,39 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         ----------
         >>> from ler.gw_source_population import CBCSourceParameterDistribution
         >>> cbc = CBCSourceParameterDistribution()
-        >>> params = cbc.sample_gw_parameters(size=1000)
+        >>> params = cbc.gw_parameters(size=1000)
         >>> print("sampled parameters=",list(params.keys()))
         """
 
         # check for input parameters
+        # allow some of the parameters to be fixed 
         if param is None:
-            param = {}
-            param_keys = param.keys()
+            param = {}  # empty
+            param_keys = param.keys()  # empty
         else:
             param_keys = param.keys()
 
         # sample parameters
         param_names = list(self.gw_param_samplers.keys())
         del param_names[0]  # remove merger_rate_density
-        # make sure the order is correct
-        sampler_names = list(self.sampler_names.keys())
 
         gw_parameters = {}  # initialize dictionary to store parameters
-        for name, sampler in zip(param_names, sampler_names):
+        for sampler_name in param_names:
             # print(name)
-            if name not in param_keys:
+            if sampler_name not in param_keys:
                 # Sample the parameter using the specified sampler function
-                gw_parameters[name] = getattr(self, sampler)(size)
+                try:
+                    gw_parameters[sampler_name] = getattr(self, sampler_name)(size)
+                except:
+                    raise Exception(f"Sampler {sampler_name} is not defined.")
             else:
                 # Use the provided value from kwargs
-                gw_parameters[name] = param[name]
+                gw_parameters[sampler_name] = param[sampler_name]
 
         # calculate luminosity distance
-        zs = gw_parameters["zs"]
+        zs = gw_parameters["source_redshift"]
+        gw_parameters["zs"] = zs
+        del gw_parameters["source_redshift"]
         gw_parameters["luminosity_distance"] = self.z_to_luminosity_distance(zs)  # Mpc
         
         # mass1 and mass2
@@ -450,16 +432,8 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
     def binary_masses_BBH_popI_II_powerlaw_gaussian(
         self,
         size,
-        mminbh=4.98,
-        mmaxbh=112.5,
-        alpha=3.78,
-        mu_g=32.27,
-        sigma_g=3.88,
-        lambda_peak=0.03,
-        delta_m=4.8,
-        beta=0.81,
         get_attribute=False,
-        param=None,
+        **kwargs,
     ):
         """
         Function to sample source mass1 and mass2 with PowerLaw+PEAK model
@@ -509,48 +483,55 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         >>> m1_src, m2_src = cbc.binary_masses_BBH_popI_II_powerlaw_gaussian(size=1000)
         """
 
-        if param:
-            mminbh = param["mminbh"]
-            mmaxbh = param["mmaxbh"]
-            alpha = param["alpha"]
-            mu_g = param["mu_g"]
-            sigma_g = param["sigma_g"]
-            lambda_peak = param["lambda_peak"]
-            delta_m = param["delta_m"]
-            beta = param["beta"]
+        identifier_dict = {}
+        identifier_dict['name'] = "binary_masses_BBH_popI_II_powerlaw_gaussian"
+        identifier_dict.update(kwargs)
 
-        # check if the cdf exist
 
         # mass function
         model = p.BBH_powerlaw_gaussian(
-            mminbh=mminbh,
-            mmaxbh=mmaxbh,
-            alpha=alpha,
-            mu_g=mu_g,
-            sigma_g=sigma_g,
-            lambda_peak=lambda_peak,
-            delta_m=delta_m,
-            beta=beta,
+            mminbh=identifier_dict["mminbh"],
+            mmaxbh=identifier_dict["mmaxbh"],
+            alpha=identifier_dict["alpha"],
+            mu_g=identifier_dict["mu_g"],
+            sigma_g=identifier_dict['sigma_g'],
+            lambda_peak=identifier_dict['lambda_peak'],
+            delta_m=identifier_dict['delta_m'],
+            beta=identifier_dict['beta'],
         )
+        rvs_ = lambda size: model.sample(Nsample=size)    
+
+        mass_object = FunctionConditioning(
+            function=None,
+            x_array=None,
+            param_dict_given=identifier_dict,
+            directory=self.directory,
+            sub_directory="source_frame_masses",
+            name=identifier_dict['name'],
+            create_new=self.create_new_interpolator["source_frame_masses"]["create_new"],
+            create_function_inverse=False,
+            create_function=False,
+            create_pdf=False,
+            create_rvs=rvs_,
+            callback='rvs',
+        )
+
         if get_attribute:
-            sampler_function = lambda size: model.sample(Nsample=size)
-            return sampler_function
+            return mass_object
         else:
             # sample mass1 and mass2
-            mass_1_source, mass_2_source = model.sample(Nsample=size)
-
-            return (mass_1_source, mass_2_source)
+            return mass_object.rvs(size)
 
     def binary_masses_BBH_popIII_lognormal(
         self,
         size,
-        m_min=5.0,
-        m_max=150.0,
-        Mc=30.0,
-        sigma=0.3,
-        chunk_size=10000,
+        # m_min=5.0,
+        # m_max=150.0,
+        # Mc=30.0,
+        # sigma=0.3,
+        # chunk_size=10000,
         get_attribute=False,
-        param=None,
+        **kwargs,
     ):
         """
         Function to sample source mass1 and mass2 with pop III origin. Refer to Eqn. 1 and 4 of Ng et al. 2022
@@ -589,43 +570,50 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         >>> m1_src, m2_src = cbc.binary_masses_BBH_popIII_lognormal(size=1000)
         """
 
-        if param:
-            m_min = param["m_min"]
-            m_max = param["m_max"]
-            Mc = param["Mc"]
-            sigma = param["sigma"]
+        identifier_dict = {}
+        identifier_dict['name'] = "binary_masses_BBH_popIII_lognormal"
+        identifier_dict.update(kwargs)
+
+        rvs_ = lambda size: lognormal_distribution_2D(
+            size,
+            m_min=identifier_dict["m_min"],
+            m_max=identifier_dict["m_max"],
+            Mc=identifier_dict["Mc"],
+            sigma=identifier_dict["sigma"],
+            chunk_size=identifier_dict["chunk_size"],
+        )
+
+        mass_object = FunctionConditioning(
+            function=None,
+            x_array=None,
+            param_dict_given=identifier_dict,
+            directory=self.directory,
+            sub_directory="source_frame_masses",
+            name=identifier_dict['name'],
+            create_new=self.create_new_interpolator["source_frame_masses"]["create_new"],
+            create_function_inverse=False,
+            create_function=False,
+            create_pdf=False,
+            create_rvs=rvs_,
+            callback='rvs',
+        )
 
         if get_attribute:
-            return njit(
-                lambda size: lognormal_distribution_2D(
-                    size,
-                    m_min=m_min,
-                    m_max=m_max,
-                    Mc=Mc,
-                    sigma=sigma,
-                    chunk_size=chunk_size,
-                )
-            )
+            return mass_object
         else:
-            return lognormal_distribution_2D(
-                size,
-                m_min=m_min,
-                m_max=m_max,
-                Mc=Mc,
-                sigma=sigma,
-                chunk_size=chunk_size,
-            )
+            # sample mass1 and mass2
+            return mass_object.rvs(size)
 
     def binary_masses_BBH_primordial_lognormal(
         self,
         size,
-        m_min=1.0,
-        m_max=100.0,
-        Mc=20.0,
-        sigma=0.3,
-        chunk_size=10000,
+        # m_min=1.0,
+        # m_max=100.0,
+        # Mc=20.0,
+        # sigma=0.3,
+        # chunk_size=10000,
         get_attribute=False,
-        param=None,
+        **kwargs,
     ):
         """
         Function to sample source mass1 and mass2 with primordial origin. Refer to Eqn. 1 and 4 of Ng et al. 2022
@@ -655,35 +643,43 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             Array of mass2 in source frame (Msun)
         """
 
-        if param:
-            m_min = param["m_min"]
-            m_max = param["m_max"]
-            Mc = param["Mc"]
-            sigma = param["sigma"]
+        identifier_dict = {}
+        identifier_dict['name'] = "binary_masses_BBH_primordial_lognormal"
+        identifier_dict.update(kwargs)
+
+        rvs_ = lambda size: lognormal_distribution_2D(
+            size,
+            m_min=identifier_dict["m_min"],
+            m_max=identifier_dict["m_max"],
+            Mc=identifier_dict["Mc"],
+            sigma=identifier_dict["sigma"],
+            chunk_size=identifier_dict["chunk_size"],
+        )
+
+        mass_object = FunctionConditioning(
+            function=None,
+            x_array=None,
+            param_dict_given=identifier_dict,
+            directory=self.directory,
+            sub_directory="source_frame_masses",
+            name=identifier_dict['name'],
+            create_new=self.create_new_interpolator["source_frame_masses"]["create_new"],
+            create_function_inverse=False,
+            create_function=False,
+            create_pdf=False,
+            create_rvs=rvs_,
+            callback='rvs',
+        )
 
         if get_attribute:
-            return njit(
-                lambda size: lognormal_distribution_2D(
-                    size,
-                    m_min=m_min,
-                    m_max=m_max,
-                    Mc=Mc,
-                    sigma=sigma,
-                    chunk_size=chunk_size,
-                )
-            )
+            return mass_object
         else:
-            return lognormal_distribution_2D(
-                size,
-                m_min=m_min,
-                m_max=m_max,
-                Mc=Mc,
-                sigma=sigma,
-                chunk_size=chunk_size,
-            )
+            # sample mass1 and mass2
+            return mass_object.rvs(size)
+
 
     def binary_masses_BNS_gwcosmo(
-        self, size, mminns=1.0, mmaxns=3.0, alphans=0.0, get_attribute=False, param=None
+        self, size, get_attribute=False, **kwargs
     ):
         """
         Function to calculate source mass1 and mass2 of BNS from powerlaw distribution (gwcosmo)
@@ -716,26 +712,45 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         >>> m1_src, m2_src = cbc.binary_masses_BNS_gwcosmo(size=1000)
         """
 
-        if param:
-            mminns = param["mminns"]
-            mmaxns = param["mmaxns"]
-            alphans = param["alphans"]
+        # if param:
+        #     mminns = param["mminns"]
+        #     mmaxns = param["mmaxns"]
+        #     alphans = param["alphans"]
+
+        identifier_dict = {}
+        identifier_dict['name'] = "binary_masses_BNS_gwcosmo"
+        identifier_dict.update(kwargs)
+        
 
         # mass function for BNS
-        model = p.BNS(mminns=mminns, mmaxns=mmaxns, alphans=alphans)
+        model = p.BNS(
+            mminns=identifier_dict["mminns"],
+            mmaxns=identifier_dict["mmaxns"],
+            alphans=identifier_dict["alphans"],
+        )
+        rvs_ = lambda size: model.sample(Nsample=size)
+
+        mass_object = FunctionConditioning(
+            function=None,
+            x_array=None,
+            param_dict_given=identifier_dict,
+            directory=self.directory,
+            sub_directory="source_frame_masses",
+            name=identifier_dict['name'],
+            create_new=self.create_new_interpolator["source_frame_masses"]["create_new"],
+            create_function_inverse=False,
+            create_function=False,
+            create_pdf=False,
+            create_rvs=rvs_,
+            callback='rvs',
+        )
 
         if get_attribute:
-            sampler_function = lambda size: model.sample(Nsample=size)
-            return sampler_function
+            return mass_object
         else:
-            # sampling
-            mass_1_source, mass_2_source = model.sample(Nsample=size)
-
-            return (mass_1_source, mass_2_source)
+            return mass_object(size)
         
-    def binary_masses_NSBH_broken_powerlaw(
-        self, size, mminbh=26, mmaxbh=125, alpha_1=6.75, alpha_2=6.75, b=0.5, delta_m=5, mminns=1.0, mmaxns=3.0, alphans=0.0, get_attribute=False, param=None
-    ):
+    def binary_masses_NSBH_broken_powerlaw(self, size, get_attribute=False, **kwargs):
         """
         Function to calculate source mass1 and mass2 of NSBH from powerlaw distribution (gwcosmo). Parameters are mminbh=26,mmaxbh=125,alpha_1=6.75,alpha_2=6.75,b=0.5,delta_m=5,mminns=1.0,mmaxns=3.0,alphans=0.0.
 
@@ -789,46 +804,50 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         >>> m1_src, m2_src = cbc.binary_masses_NSBH_broken_powerlaw(size=1000)
         """
 
-        if param:
-            mminbh = param["mminbh"]
-            mmaxbh = param["mmaxbh"]
-            alpha_1 = param["alpha_1"]
-            alpha_2 = param["alpha_2"]
-            b = param["b"]
-            delta_m = param["delta_m"]
-            mminns = param["mminns"]
-            mmaxns = param["mmaxns"]
-            alphans = param["alphans"]
+        identifier_dict = {}
+        identifier_dict['name'] = "binary_masses_NSBH_broken_powerlaw"
+        identifier_dict.update(kwargs)
 
         # mass function for NSBH
         model = p.NSBH_broken_powerlaw(
-            mminbh=mminbh,
-            mmaxbh=mmaxbh,
-            alpha_1=alpha_1,
-            alpha_2=alpha_2,
-            b=b,
-            delta_m=delta_m,
-            mminns=mminns,
-            mmaxns=mmaxns,
-            alphans=alphans,
+            mminbh=identifier_dict["mminbh"],
+            mmaxbh=identifier_dict["mmaxbh"],
+            alpha_1=identifier_dict["alpha_1"],
+            alpha_2=identifier_dict["alpha_2"],
+            b=identifier_dict["b"],
+            delta_m=identifier_dict["delta_m"],
+            mminns=identifier_dict["mminns"],
+            mmaxns=identifier_dict["mmaxns"],
+            alphans=identifier_dict["alphans"],
+        )
+
+        rvs_ = lambda size: model.sample(Nsample=size)
+
+        mass_object = FunctionConditioning(
+            function=None,
+            x_array=None,
+            param_dict_given=identifier_dict,
+            directory=self.directory,
+            sub_directory="source_frame_masses",
+            name=identifier_dict['name'],
+            create_new=self.create_new_interpolator["source_frame_masses"]["create_new"],
+            create_function_inverse=False,
+            create_function=False,
+            create_pdf=False,
+            create_rvs=rvs_,
+            callback='rvs',
         )
 
         if get_attribute:
-            sampler_function = lambda size: model.sample(Nsample=size)
-            return sampler_function
+            return mass_object
         else:
-            # sampling
-            mass_1_source, mass_2_source = model.sample(Nsample=size)
+            return mass_object(size)
 
-            return (mass_1_source, mass_2_source)
-        
     def binary_masses_uniform(
         self,
         size,
-        m_min=1.0,
-        m_max=3.0,
         get_attribute=False,
-        param=None,
+        **kwargs,
     ):
         """
         Function to sample source mass1 and mass2 from uniform distribution.
@@ -863,28 +882,47 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         >>> m1_src, m2_src = cbc.binary_masses_uniform(size=1000)
         """
 
-        if param:
-            m_min = param["m_min"]
-            m_max = param["m_max"]
+        identifier_dict = {}
+        identifier_dict['name'] = "binary_masses_uniform"
+        identifier_dict.update(kwargs)
+
+        m_min = identifier_dict["m_min"]
+        m_max = identifier_dict["m_max"]
+        rvs_ = njit(lambda size: (np.random.uniform(m_min, m_max, size), np.random.uniform(m_min, m_max, size)))
+
+        mass_object = FunctionConditioning(
+            function=None,
+            x_array=None,
+            param_dict_given=identifier_dict,
+            directory=self.directory,
+            sub_directory="source_frame_masses",
+            name=identifier_dict['name'],
+            create_new=self.create_new_interpolator["source_frame_masses"]["create_new"],
+            create_function_inverse=False,
+            create_function=False,
+            create_pdf=False,
+            create_rvs=rvs_,
+            callback='rvs',
+        )
 
         if get_attribute:
-            return njit(lambda size: (np.random.uniform(m_min, m_max, size), np.random.uniform(m_min, m_max, size)))
-        return np.random.uniform(m_min, m_max, size), np.random.uniform(m_min, m_max, size)
+            return mass_object
+        else:
+            return mass_object(size)
 
     def binary_masses_BNS_bimodal(
         self,
         size,
-        w=0.643,
-        muL=1.352,
-        sigmaL=0.08,
-        muR=1.88,
-        sigmaR=0.3,
-        mmin=1.0,
-        mmax=2.3,
-        resolution=500,
-        create_new=False,
+        # w=0.643,
+        # muL=1.352,
+        # sigmaL=0.08,
+        # muR=1.88,
+        # sigmaR=0.3,
+        # mmin=1.0,
+        # mmax=2.3,
+        # resolution=500,
         get_attribute=False,
-        param=None,
+        **kwargs,
     ):
         """
         Function to sample source mass1 and mass2 from bimodal distribution. Refer to Will M. Farr et al. 2020 Eqn. 6, https://arxiv.org/pdf/2005.00032.pdf .
@@ -940,59 +978,52 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         >>> m1_src, m2_src = cbc.binary_masses_BNS_bimodal(size=1000)
         """
 
-        if param:
-            w, muL, sigmaL, muR, sigmaR, mmin, mmax = (
-                param["w"],
-                param["muL"],
-                param["sigmaL"],
-                param["muR"],
-                param["sigmaR"],
-                param["mmin"],
-                param["mmax"],
-            )
-        # left and right peak
-        pdf_unnormL = lambda m: np.exp(-((m - muL) ** 2) / (2 * sigmaL**2))
-        normL = quad(pdf_unnormL, mmin, mmax)[0]  # normalization constant
-        pdf_unnormR = lambda m: np.exp(-((m - muR) ** 2) / (2 * sigmaR**2))
-        normR = quad(pdf_unnormR, mmin, mmax)[0]  # normalization constant
-        # total pdf
-        pdf = lambda m: w * pdf_unnormL(m) / normL + (1 - w) * pdf_unnormR(m) / normR
+        identifier_dict = {}
+        identifier_dict['name'] = "binary_masses_BNS_bimodal"
+        identifier_dict['resolution'] = self.source_priors_params["source_frame_masses"]["resolution"]
+        identifier_dict.update(kwargs)
 
-        # find inverse cdf
-        inv_cdf = interpolator_from_pickle(
-            param_dict_given=dict(
-                w=w,
-                muL=muL,
-                sigmaL=sigmaL,
-                muR=muR,
-                sigmaR=sigmaR,
-                mmin=mmin,
-                mmax=mmax,
-                resolution=500,
-            ),
-            directory=self.directory,
-            sub_directory="binary_masses_BNS_bimodal",
-            name="binary_masses_BNS_bimodal",
-            x=np.linspace(mmin, mmax, resolution),
-            pdf_func=pdf,
-            conditioned_y=None,
-            dimension=1,
-            category="inv_cdf",
-            create_new=create_new,
+        # mass function for BNS
+        mass = np.linspace(identifier_dict["mmin"], identifier_dict["mmax"], identifier_dict["resolution"]) 
+        model = lambda mass: bns_bimodal_pdf(
+            mass,
+            w=identifier_dict["w"],
+            muL=identifier_dict["muL"],
+            sigmaL=identifier_dict["sigmaL"],
+            muR=identifier_dict["muR"],
+            sigmaR=identifier_dict["sigmaR"],
+            mmin=identifier_dict["mmin"],
+            mmax=identifier_dict["mmax"],
         )
 
-        # sample from inverse cdf
+        mass_object = FunctionConditioning(
+            function=model,
+            x_array=mass,
+            param_dict_given=identifier_dict,
+            directory=self.directory,
+            sub_directory="source_frame_masses",
+            name=identifier_dict['name'],
+            create_new=self.create_new_interpolator["source_frame_masses"]["create_new"],
+            create_function_inverse=False,
+            create_function=True,
+            create_pdf=True,
+            create_rvs=True,
+            callback='rvs',
+        )
+
+        mass_object.rvs = njit(lambda size: inverse_transform_sampler_m1m2(
+            size, 
+            mass_object.cdf_values, 
+            mass_object.x_array,)
+        )
+
         if get_attribute:
-            return njit(
-                lambda size: inverse_transform_sampler_m1m2(
-                    size, inv_cdf[0], inv_cdf[1]
-                )
-            )
+            return mass_object
         else:
-            return inverse_transform_sampler_m1m2(size, inv_cdf[0], inv_cdf[1])
+            return mass_object(size)
 
     def constant_values_n_size(
-        self, size=100, value=0.0, get_attribute=False, param=None
+        self, size=100, get_attribute=False, **kwargs
     ):
         """
         Function to sample constant values of size n.
@@ -1001,14 +1032,11 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         ----------
         size : `int`
             Number of samples to draw
-        value : `float`
-            Constant value
-            default: 0.0
         get_attribute : `bool`
             If True, return the njitted sampler function with size as the only input where parameters are fixed to the given values.
-        param : `dict`
-            Allows to pass in above parameters as dict.
-            e.g. param = dict(value=0.0)
+        kwargs : `keyword arguments`
+            Additional parameters to pass to the function
+
 
         Returns
         ----------
@@ -1022,16 +1050,31 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         >>> value = cbc.constant_values_n_size(size=1000)
         """
 
-        if param:
-            value = param["value"]
+        # if param:
+        #     value = param["value"]
+        identifier_dict = {}
+        identifier_dict['name'] = "constant_values_n_size"
+        identifier_dict.update(kwargs)
+
+        value = identifier_dict["value"]
+        # pdf_, zero everywhere except at value
+        pdf_ = njit(lambda x: np.where(x == value, 1.0, 0.0))
+        # rvs_, return value
+        rvs_ = njit(lambda size: np.ones(size) * value)
+
+        object_ = FunctionConditioning(
+            create_pdf=pdf_,
+            create_rvs=rvs_,
+            callback='rvs',
+        )
 
         if get_attribute:
-            return njit(lambda size: np.ones(size) * value)
+            return object_
         else:
-            return np.ones(size) * value
+            return object_(size)
 
     def sampler_uniform(
-        self, size, min_=0, max_=np.pi, get_attribute=False, param=None
+        self, size, get_attribute=False, **kwargs
     ):
         """
         Function to sample values from uniform distribution.
@@ -1063,17 +1106,29 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         >>> value = cbc.sampler_uniform(size=1000)
         """
 
-        if param:
-            min_ = param["min_"]
-            max_ = param["max_"]
+        identifier_dict = {}
+        identifier_dict['name'] = "sampler_uniform"
+        identifier_dict.update(kwargs)
+
+        xmin = identifier_dict['xmin']
+        xmax = identifier_dict['xmax']
+
+        pdf_ = njit(lambda x: 1.0 / (xmax - xmin) * np.ones(len(x)))
+        rvs_ = njit(lambda size: np.random.uniform(xmin, xmax, size=size))
+
+        object_ = FunctionConditioning(
+            create_pdf=pdf_,
+            create_rvs=rvs_,
+            callback='rvs',
+        )
 
         if get_attribute:
-            return njit(lambda size: np.random.uniform(min_, max_, size=size))
+            return object_
         else:
-            return np.random.uniform(min_, max_, size=size)
+            return object_(size)
 
     def sampler_cosine(
-        self, size, get_attribute=False, param=None
+        self, size, get_attribute=False, **kwargs
     ):
         """
         Function to sample from sine distribution at the limit of [-np.pi/2, np.pi/2]
@@ -1093,15 +1148,26 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             Array of values in the range of [-np.pi/2, np.pi/2]
         """
 
+        identifier_dict = {}
+        identifier_dict['name'] = "sampler_cosine"
+        identifier_dict.update(kwargs)
+
+        pdf_ = njit(lambda x: 0.5 * np.cos(x))
+        rvs_ = njit(lambda size: np.arcsin((np.random.uniform(0, 1, size=size) * 2 - 1)))
+
+        object_ = FunctionConditioning(
+            create_pdf=pdf_,
+            create_rvs=rvs_,
+            callback='rvs',
+        )
+
         if get_attribute:
-            return njit(
-                lambda size: np.arcsin((np.random.uniform(0, 1, size=size) * 2 - 1))
-            )
+            return object_
         else:
-            return np.arcsin((np.random.uniform(0, 1, size=size) * 2 - 1))
+            return object_(size)
 
     def sampler_sine(
-        self, size, get_attribute=False, param=None
+        self, size, get_attribute=False, **kwargs
     ):
         """
         Function to sample from sine distribution at the limit of [0, np.pi]
@@ -1121,12 +1187,23 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             Array of values in the range of [0, np.pi]
         """
 
+        identifier_dict = {}
+        identifier_dict['name'] = "sampler_sine"
+        identifier_dict.update(kwargs)
+
+        pdf_ = njit(lambda x: 0.5 * np.sin(x))
+        rvs_ = njit(lambda size: np.arcsin((np.random.uniform(0, 1, size=size) * 2 - 1)))
+
+        object_ = FunctionConditioning(
+            create_pdf=pdf_,
+            create_rvs=rvs_,
+            callback='rvs',
+        )   
+
         if get_attribute:
-            return njit(
-                lambda size: np.arccos((np.random.uniform(0, 1, size=size) - 0.5) * 2)
-            )
+            return object_
         else:
-            return np.arccos((np.random.uniform(0, 1, size=size) - 0.5) * 2)
+            return object_(size)
 
     @property
     def available_gw_prior_list_and_its_params(self):
@@ -1159,11 +1236,22 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                     delta_m=4.8,
                     beta=0.81,
                 ),
-                binary_masses_BBH_popIII_lognormal=dict(Mc=30.0, sigma=0.3, beta=1.1),
+                binary_masses_BBH_popIII_lognormal=dict(m_min=5.0, m_max=150.0, Mc=30.0, sigma=0.3, chunk_size=10000),
                 binary_masses_BBH_primordial_lognormal=dict(
                     Mc=30.0, sigma=0.3, beta=1.1
                 ),
                 binary_masses_BNS_gwcosmo=dict(mminns=1.0, mmaxns=3.0, alphans=0.0),
+                binary_masses_NSBH_broken_powerlaw=dict(
+                    mminbh=26,
+                    mmaxbh=125,
+                    alpha_1=6.75,
+                    alpha_2=0.0,
+                    b=0.5,
+                    mminns=1.0,
+                    mmaxns=3.0,
+                    alphans=0.0,
+                ),
+                binary_masses_uniform=dict(m_min=1.0, m_max=3.0),
                 binary_masses_BNS_bimodal=dict(
                     w=0.643,
                     muL=1.352,
@@ -1174,29 +1262,64 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                     mmax=2.3,
                 ),
             ),
-            zs=dict(
-                sample_source_redshift=dict(zs=None),
-            ),
-            spin=dict(
+            a_1=dict(
                 constant_values_n_size=dict(value=0.0),
-                binary_spin_BBH_bilby=None,
-                binary_spin_BNS_bilby=None,
+                sampler_uniform=dict(xmin=-0.8, xmax=0.8),
+            ),
+            a_2=dict(
+                constant_values_n_size=dict(value=0.0),
+                sampler_uniform=dict(xmin=0.0, xmax=1.0),
+            ),
+            tilt_1=dict(
+                constant_values_n_size=dict(value=0.0),
+                sampler_sine=None,
+            ),
+            tilt_2=dict(
+                constant_values_n_size=dict(value=0.0),
+                sampler_sine=None,
+            ),
+            phi_12=dict(
+                constant_values_n_size=dict(value=0.0),
+                sampler_uniform=dict(xmin=0.0, xmax=2 * np.pi),
+            ),
+            phi_jl=dict(
+                constant_values_n_size=dict(value=0.0),
+                sampler_uniform=dict(xmin=0.0, xmax=2 * np.pi),
             ),
             geocent_time=dict(
-                geocent_time_uniform=dict(
-                    start_time=1238166018, end_time=1238166018 + 31536000
-                )
+                sampler_uniform=dict(
+                    xmin=1238166018, xmax=1238166018 + 31536000
+                ),
+                constant_values_n_size=dict(value=1238166018),
             ),
-            ra=dict(ra_uniform_bilby=None),
-            phase=dict(phase_uniform_bilby=None),
-            psi=dict(psi_uniform_bilby=None),
-            theta_jn=dict(theta_jn_uniform_bilby=None),
+            ra=dict(
+                sampler_uniform=dict(xmin=0.0, xmax=2 * np.pi),
+                constant_values_n_size=dict(value=0.0),
+            ),
+            dec=dict(
+                sampler_cosine=None,
+                constant_values_n_size=dict(value=0.0),
+                sampler_uniform=dict(xmin=-np.pi / 2, xmax=np.pi / 2),
+            ),
+            phase=dict(
+                sampler_uniform=dict(xmin=0.0, xmax=2 * np.pi),
+                constant_values_n_size=dict(value=0.0),
+            ),
+            psi=dict(
+                sampler_uniform=dict(xmin=0.0, xmax=np.pi),
+                constant_values_n_size=dict(value=0.0),
+            ),
+            theta_jn=dict(
+                sampler_sine=None,
+                constant_values_n_size=dict(value=0.0),
+                sampler_uniform=dict(xmin=0.0, xmax=np.pi),
+            ),
         )
 
         return self._available_gw_prior_list_and_its_params
 
     def source_priors_categorization(
-        self, event_type, source_priors, event_prior_params
+        self, event_type, source_priors, source_prior_params
     ):
         """
         Function to categorize the event priors and its parameters.
@@ -1208,14 +1331,14 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             e.g. 'BBH', 'BNS', 'BBH_popIII', 'BBH_primordial', 'NSBH'
         source_priors : `dict`
             Dictionary of prior sampler functions for each parameter
-        event_prior_params : `dict`
+        source_prior_params : `dict`
             Dictionary of sampler parameters for each GW parameter
 
         Returns
         ----------
         source_priors_ : `dict`
             Dictionary of prior sampler functions for each parameter
-        event_prior_params_ : `dict`
+        source_prior_params_ : `dict`
             Dictionary of sampler parameters for each parameter
         sampler_names_ : `dict`
             Dictionary of sampler names with description
@@ -1224,9 +1347,9 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         ----------
         >>> from ler.gw_source_population import CBCSourceParameterDistribution
         >>> cbc = CBCSourceParameterDistribution()
-        >>> source_priors, event_prior_params, sampler_names = cbc.source_priors_categorization(event_type='BBH', source_priors=None, event_prior_params=None)
+        >>> source_priors, source_prior_params, sampler_names = cbc.source_priors_categorization(event_type='BBH', source_priors=None, source_prior_params=None)
         >>> print(source_priors.keys())
-        >>> print(event_prior_params.keys())
+        >>> print(source_prior_params.keys())
         >>> print(sampler_names.keys())
         """
 
@@ -1314,7 +1437,6 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         source_priors_ = dict(
             merger_rate_density=merger_rate_density_prior,
             source_frame_masses=source_frame_masses_prior,
-            zs="sample_source_redshift",
             geocent_time="sampler_uniform",
             ra="sampler_uniform",
             dec="sampler_cosine",
@@ -1322,10 +1444,9 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             psi="sampler_uniform",
             theta_jn="sampler_sine",
         )
-        event_prior_params_ = dict(
+        source_prior_params_ = dict(
             merger_rate_density=merger_rate_density_prior_params,
             source_frame_masses=source_frame_masses_prior_params,
-            zs=None,
             geocent_time=dict(min_=1238166018, max_=1269702018),
             ra=dict(min_=0., max_=2.*np.pi),
             dec=None,
@@ -1334,100 +1455,62 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             theta_jn=None,
         )
 
-        # dict of sampler names with description
-        sampler_names_ = dict(
-            sample_source_frame_masses="samples mass1 and mass2 of the compact binaries",
-            sample_zs="samples source redshifts",
-            sample_geocent_time="samples geocent_time",
-            sample_ra="samples right ascension of sky position",
-            sample_dec="samples declination of sky position",
-            sample_phase="samples coalescence phase",
-            sample_psi="samples polarization angle",
-            sample_theta_jn="samples inclination angle",
-        )
-
         # spin
         if not self.spin_zero:
             source_priors_["a_1"] = "sampler_uniform"
-            event_prior_params_["a_1"] = dict(min_=-a_max, max_=a_max)
-            sampler_names_[
-                "sample_a_1"
-            ] = "samples spin magnitude of the compact binaries (body1)"
+            source_prior_params_["a_1"] = dict(min_=-a_max, max_=a_max)
             source_priors_["a_2"] = "sampler_uniform"
-            event_prior_params_["a_2"] = dict(min_=-a_max, max_=a_max)
-            sampler_names_[
-                "sample_a_2"
-            ] = "samples spin magnitude of the compact binaries (body2)"
+            source_prior_params_["a_2"] = dict(min_=-a_max, max_=a_max)
 
             if self.spin_precession:
                 source_priors_["a_1"] = "sampler_uniform"
-                event_prior_params_["a_1"] = dict(min_=0.0, max_=a_max)
+                source_prior_params_["a_1"] = dict(min_=0.0, max_=a_max)
                 source_priors_["a_2"] = "sampler_uniform"
-                event_prior_params_["a_2"] = dict(min_=0.0, max_=a_max)
+                source_prior_params_["a_2"] = dict(min_=0.0, max_=a_max)
                 source_priors_["tilt_1"] = "sampler_sine"
-                event_prior_params_["tilt_1"] = None
-                sampler_names_[
-                    "sample_tilt_1"
-                ] = "samples tilt angle of the compact binaries (body1)"
+                source_prior_params_["tilt_1"] = None
 
                 source_priors_["tilt_2"] = "sampler_sine"
-                event_prior_params_["tilt_2"] = None
-                sampler_names_[
-                    "sample_tilt_2"
-                ] = "samples tilt angle of the compact binaries (body2)"
+                source_prior_params_["tilt_2"] = None
 
                 source_priors_["phi_12"] = "sampler_uniform"
-                event_prior_params_["phi_12"] = dict(min_=0, max_=2 * np.pi)
-                sampler_names_[
-                    "sample_phi_12"
-                ] = "samples azimuthal angle between the two spins"
+                source_prior_params_["phi_12"] = dict(min_=0, max_=2 * np.pi)
                 source_priors_["phi_jl"] = "sampler_uniform"
-                event_prior_params_["phi_jl"] = dict(min_=0, max_=2 * np.pi)
-                sampler_names_[
-                    "sample_phi_jl"
-                ] = "samples azimuthal angle between the total angular momentum and the orbital angular momentum"
+                source_prior_params_["phi_jl"] = dict(min_=0, max_=2 * np.pi)
 
         # update the priors if input is given
         if source_priors:
             source_priors_.update(source_priors)
-        if event_prior_params:
-            event_prior_params_.update(event_prior_params)
+        if source_prior_params:
+            source_prior_params_.update(source_prior_params)
 
-        return (source_priors_, event_prior_params_, sampler_names_)
+        print(source_prior_params_)
 
-    @property
-    def sample_zs(self):
-        """
-        Function to sample redshifts with the initialized prior.
-
-        Parameters
-        ----------
-        size : `int`
-            Number of samples to draw
-
-        Returns
-        ----------
-        zs : `numpy.ndarray` (1D array of floats)
-            Array of redshifts
-        """
-
-        return self._sample_zs
-
-    @sample_zs.setter
-    def sample_zs(self, prior):
-        try:
-            try:
-                self._sample_zs = getattr(self, prior)
-            except:
-                args = self.gw_param_samplers_params["zs"]
-                self._sample_zs = getattr(self, prior)(
-                    size=None, get_attribute=True, param=args
+        # taking care of source_prior_params from the available_gw_prior_list_and_its_params
+        for key, value in source_priors_.items():
+            if isinstance(value, str):
+                dict_ = self.available_gw_prior_list_and_its_params[key]  # e.g. all source_frame_masses_prior function names and its parameters
+                if value in dict_:
+                    param_dict = dict_[value]
+                    if source_prior_params_[key] is None:
+                        source_prior_params_[key] = param_dict
+                    else:
+                        source_prior_params_[key] = param_dict.update(source_prior_params_[key])
+                else:
+                    raise ValueError(
+                        f"source_prior_params_['{key}'] is not in available_gw_prior_list_and_its_params"
+                    )
+            elif not callable(value):
+                raise ValueError(
+                    f"source_prior_params_['{key}'] should be either a string name of available sampler or a function"
                 )
-        except:
-            self._sample_zs = prior
+            
+        print(source_prior_params_)
+
+        return (source_priors_, source_prior_params_)
 
     @property
-    def sample_source_frame_masses(self):
+    def source_frame_masses(self):
         """
         Function to sample source frame masses (mass1_source, mass2_source) with the initialized prior.
 
@@ -1444,40 +1527,26 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             Array of mass2 in source frame
         """
 
-        return self._sample_source_frame_masses
+        return self._source_frame_masses
 
-    # following setter is an example if the user wants to use a custom prior with custom input
-    # @sample_source_frame_masses.setter
-    # def sample_source_frame_masses(self, prior):
-    #     args = self.gw_param_samplers_params["source_frame_masses"]
-    
-    #     # Check if 'prior' is a callable attribute of self
-    #     args = self.gw_param_samplers_params["source_frame_masses"]
-    #     try:
-    #         # If prior is a method of the class
-    #         self._sample_source_frame_masses = getattr(self, prior)(
-    #             size=None, get_attribute=True, param=args,
-    #         )
-    #     except:
-    #         # If prior is a standalone function
-    #         try:
-    #             self._sample_source_frame_masses = lambda size: prior(size, param=args)
-    #         except:
-    #             raise ValueError("given source_frame_masses function should follow the signature of the default ones")
-
-    @sample_source_frame_masses.setter
-    def sample_source_frame_masses(self, prior):
-        try:
+    @source_frame_masses.setter
+    def source_frame_masses(self, prior):
+        if isinstance(prior, str):
             args = self.gw_param_samplers_params["source_frame_masses"]
+            print(args)
             # follwing should return a sampler function with only one argument (size)
-            self._sample_source_frame_masses = getattr(self, prior)(
-                size=None, get_attribute=True, param=args,
+            self._source_frame_masses = getattr(self, prior)(
+                size=None, get_attribute=True, **args
             )
-        except:
-            self._sample_source_frame_masses = prior
+        elif callable(prior):
+            self._source_frame_masses = prior
+        else:
+            raise ValueError(
+                "Invalid input for source_frame_masses. Must be a string or a callable function."
+            )
 
     @property
-    def sample_geocent_time(self):
+    def geocent_time(self):
         """
         Function to sample geocent time with the initialized prior.
 
@@ -1492,21 +1561,25 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             Array of geocent_time or time of coalescence
         """
 
-        return self._sample_geocent_time
+        return self._geocent_time
 
-    @sample_geocent_time.setter
-    def sample_geocent_time(self, prior):
-        try:
+    @geocent_time.setter
+    def geocent_time(self, prior):
+        if isinstance(prior, str):
             args = self.gw_param_samplers_params["geocent_time"]
             # follwing should return a sampler function with only one argument (size)
-            self._sample_geocent_time = getattr(self, prior)(
-                size=None, get_attribute=True, param=args,
+            self._geocent_time = getattr(self, prior)(
+                size=None, get_attribute=True, **args
             )
-        except:
-            self._sample_geocent_time = prior
+        elif callable(prior):
+            self._geocent_time = prior
+        else:
+            raise ValueError(
+                "Invalid input for geocent_time. Must be a string or a callable function."
+            )
 
     @property
-    def sample_ra(self):
+    def ra(self):
         """
         Function to sample right ascension of sky position with the initialized prior.
 
@@ -1521,20 +1594,23 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             Array of right ascension of sky position
         """
 
-        return self._sample_ra
+        return self._ra
 
-    @sample_ra.setter
-    def sample_ra(self, prior):
-        try:
+    @ra.setter
+    def ra(self, prior):
+        if isinstance(prior, str):
             args = self.gw_param_samplers_params["ra"]
-            self._sample_ra = getattr(self, prior)(
-                size=None, get_attribute=True, param=args
+            # follwing should return a sampler function with only one argument (size)
+            self._ra = getattr(self, prior)(size=None, get_attribute=True, **args)
+        elif callable(prior):
+            self._ra = prior
+        else:
+            raise ValueError(
+                "Invalid input for ra. Must be a string or a callable function."
             )
-        except:
-            self._sample_ra = prior
 
     @property
-    def sample_dec(self):
+    def dec(self):
         """
         Function to sample declination of sky position with the initialized prior.
 
@@ -1549,20 +1625,23 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             Array of declination of sky position
         """
 
-        return self._sample_dec
+        return self._dec
 
-    @sample_dec.setter
-    def sample_dec(self, prior):
-        try:
+    @dec.setter
+    def dec(self, prior):
+        if isinstance(prior, str):
             args = self.gw_param_samplers_params["dec"]
-            self._sample_dec = getattr(self, prior)(
-                size=None, get_attribute=True, param=args
+            # follwing should return a sampler function with only one argument (size)
+            self._dec = getattr(self, prior)(size=None, get_attribute=True, **args)
+        elif callable(prior):
+            self._dec = prior
+        else:
+            raise ValueError(
+                "Invalid input for dec. Must be a string or a callable function."
             )
-        except:
-            self._sample_dec = prior
 
     @property
-    def sample_phase(self):
+    def phase(self):
         """
         Function to sample coalescence phase with the initialized prior.
 
@@ -1577,20 +1656,23 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             Array of coalescence phase
         """
 
-        return self._sample_phase
+        return self._phase
 
-    @sample_phase.setter
-    def sample_phase(self, prior):
-        try:
+    @phase.setter
+    def phase(self, prior):
+        if isinstance(prior, str):
             args = self.gw_param_samplers_params["phase"]
-            self._sample_phase = getattr(self, prior)(
-                size=None, get_attribute=True, param=args
+            # follwing should return a sampler function with only one argument (size)
+            self._phase = getattr(self, prior)(size=None, get_attribute=True, **args)
+        elif callable(prior):
+            self._phase = prior
+        else:
+            raise ValueError(
+                "Invalid input for phase. Must be a string or a callable function."
             )
-        except:
-            self._sample_phase = prior
 
     @property
-    def sample_psi(self):
+    def psi(self):
         """
         Function to sample polarization angle with the initialized prior.
 
@@ -1605,20 +1687,23 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             Array of polarization angle
         """
 
-        return self._sample_psi
+        return self._psi
 
-    @sample_psi.setter
-    def sample_psi(self, prior):
-        try:
+    @psi.setter
+    def psi(self, prior):
+        if isinstance(prior, str):
             args = self.gw_param_samplers_params["psi"]
-            self._sample_psi = getattr(self, prior)(
-                size=None, get_attribute=True, param=args
+            # follwing should return a sampler function with only one argument (size)
+            self._psi = getattr(self, prior)(size=None, get_attribute=True, **args)
+        elif callable(prior):
+            self._psi = prior
+        else:
+            raise ValueError(
+                "Invalid input for psi. Must be a string or a callable function."
             )
-        except:
-            self._sample_psi = prior
 
     @property
-    def sample_theta_jn(self):
+    def theta_jn(self):
         """
         Function to sample theta_jn with the initialized prior.
 
@@ -1632,20 +1717,22 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         theta_jn : `numpy.ndarray` (1D array of floats)
             Array of theta_jn
         """
-        return self._sample_theta_jn
+        return self._theta_jn
 
-    @sample_theta_jn.setter
-    def sample_theta_jn(self, prior):
-        try:
+    @theta_jn.setter
+    def theta_jn(self, prior):
+        if isinstance(prior, str):
             args = self.gw_param_samplers_params["theta_jn"]
-            self._sample_theta_jn = getattr(self, prior)(
+            self._theta_jn = getattr(self, prior)(
                 size=None, get_attribute=True, param=args
             )
-        except:
-            self._sample_theta_jn = prior
+        elif callable(prior):
+            self._theta_jn = prior
+        else:
+            raise ValueError("Invalid input for theta_jn. Must be a string or a callable function.")
 
     @property
-    def sample_a_1(self):
+    def a_1(self):
         """
         Function to sample spin magnitude of the compact binaries (body1) with the initialized prior.
 
@@ -1659,20 +1746,22 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         a_1 : `numpy.ndarray` (1D array of floats)
             Array of spin magnitude of the compact binaries (body1)
         """
-        return self._sample_a_1
+        return self._a_1
 
-    @sample_a_1.setter
-    def sample_a_1(self, prior):
-        try:
+    @a_1.setter
+    def a_1(self, prior):
+        if isinstance(prior, str):
             args = self.gw_param_samplers_params["a_1"]
-            self._sample_a_1 = getattr(self, prior)(
+            self._a_1 = getattr(self, prior)(
                 size=None, get_attribute=True, param=args
             )
-        except:
-            self._sample_a_1 = prior
+        elif callable(prior):
+            self._a_1 = prior
+        else:
+            raise ValueError("Invalid input for a_1. Must be a string or a callable function.")
 
     @property
-    def sample_a_2(self):
+    def a_2(self):
         """
         Function to sample spin magnitude of the compact binaries (body2) with the initialized prior.
 
@@ -1686,20 +1775,22 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         a_2 : `numpy.ndarray` (1D array of floats)
             Array of spin magnitude of the compact binaries (body2)
         """
-        return self._sample_a_2
+        return self._a_2
 
-    @sample_a_2.setter
-    def sample_a_2(self, prior):
-        try:
+    @a_2.setter
+    def a_2(self, prior):
+        if isinstance(prior, str):
             args = self.gw_param_samplers_params["a_2"]
-            self._sample_a_2 = getattr(self, prior)(
+            self._a_2 = getattr(self, prior)(
                 size=None, get_attribute=True, param=args
             )
-        except:
-            self._sample_a_2 = prior
+        elif callable(prior):
+            self._a_2 = prior
+        else:
+            raise ValueError("Invalid input for a_2. Must be a string or a callable function.")
 
     @property
-    def sample_tilt_1(self):
+    def tilt_1(self):
         """
         Function to sample tilt angle of the compact binaries (body1) with the initialized prior.
 
@@ -1713,20 +1804,22 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         tilt_1 : `numpy.ndarray` (1D array of floats)
             Array of tilt angle of the compact binaries (body1)
         """
-        return self._sample_tilt_1
+        return self._tilt_1
 
-    @sample_tilt_1.setter
-    def sample_tilt_1(self, prior):
-        try:
+    @tilt_1.setter
+    def tilt_1(self, prior):
+        if isinstance(prior, str):
             args = self.gw_param_samplers_params["tilt_1"]
-            self._sample_tilt_1 = getattr(self, prior)(
+            self._tilt_1 = getattr(self, prior)(
                 size=None, get_attribute=True, param=args
             )
-        except:
-            self._sample_tilt_1 = prior
+        elif callable(prior):
+            self._tilt_1 = prior
+        else:
+            raise ValueError("Invalid input for tilt_1. Must be a string or a callable function.")
 
     @property
-    def sample_tilt_2(self):
+    def tilt_2(self):
         """
         Function to sample tilt angle of the compact binaries (body2) with the initialized prior.
 
@@ -1741,20 +1834,22 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             Array of tilt angle of the compact binaries (body2)
         """
 
-        return self._sample_tilt_2
+        return self._tilt_2
 
-    @sample_tilt_2.setter
-    def sample_tilt_2(self, prior):
-        try:
+    @tilt_2.setter
+    def tilt_2(self, prior):
+        if isinstance(prior, str):
             args = self.gw_param_samplers_params["tilt_2"]
-            self._sample_tilt_2 = getattr(self, prior)(
+            self._tilt_2 = getattr(self, prior)(
                 size=None, get_attribute=True, param=args
             )
-        except:
-            self._sample_tilt_2 = prior
-
+        elif callable(prior):
+            self._tilt_2 = prior
+        else:
+            raise ValueError("Invalid input for tilt_2. Must be a string or a callable function.")
+        
     @property
-    def sample_phi_12(self):
+    def phi_12(self):
         """
         Function to sample azimuthal angle between the two spins with the initialized prior.
 
@@ -1769,20 +1864,22 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             Array of azimuthal angle between the two spins
         """
 
-        return self._sample_phi_12
+        return self._phi_12
 
-    @sample_phi_12.setter
-    def sample_phi_12(self, prior):
-        try:
+    @phi_12.setter
+    def phi_12(self, prior):
+        if isinstance(prior, str):
             args = self.gw_param_samplers_params["phi_12"]
-            self._sample_phi_12 = getattr(self, prior)(
+            self._phi_12 = getattr(self, prior)(
                 size=None, get_attribute=True, param=args
             )
-        except:
-            self._sample_phi_12 = prior
+        elif callable(prior):
+            self._phi_12 = prior
+        else:
+            raise ValueError("Invalid input for phi_12. Must be a string or a callable function.")
 
     @property
-    def sample_phi_jl(self):
+    def phi_jl(self):
         """
         Function to sample azimuthal angle between the total angular momentum and the orbital angular momentum with the initialized prior.
 
@@ -1796,14 +1893,16 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         phi_jl : `numpy.ndarray` (1D array of floats)
             Array of azimuthal angle between the total angular momentum and the orbital angular momentum
         """
-        return self._sample_phi_jl
+        return self._phi_jl
 
-    @sample_phi_jl.setter
-    def sample_phi_jl(self, prior):
-        try:
+    @phi_jl.setter
+    def phi_jl(self, prior):
+        if isinstance(prior, str):
             args = self.gw_param_samplers_params["phi_jl"]
-            self._sample_phi_jl = getattr(self, prior)(
+            self._phi_jl = getattr(self, prior)(
                 size=None, get_attribute=True, param=args
             )
-        except:
-            self._sample_phi_jl = prior
+        elif callable(prior):
+            self._phi_jl = prior
+        else:
+            raise ValueError("Invalid input for phi_jl. Must be a string or a callable function.")

@@ -460,6 +460,7 @@ class LeR(LensGalaxyParameterDistribution):
         **kwargs,
     ):
         
+        print("\nInitializing LeR class...\n")
         self.npool = npool
         self.z_min = z_min
         self.z_max = z_max
@@ -497,12 +498,12 @@ class LeR(LensGalaxyParameterDistribution):
         # if verbose, prevent anything from printing
         if verbose:
             initialization()
-            self.print_all_params()
+            self.print_all_params_ler()
         else:
             with contextlib.redirect_stdout(None):
                 initialization()
             
-    def print_all_params(self):
+    def print_all_params_ler(self):
         """
         Function to print all the parameters.
         """
@@ -533,8 +534,8 @@ class LeR(LensGalaxyParameterDistribution):
         print("\n # LeR also takes LensGalaxyParameterDistribution class params as kwargs, as follows:")
         print(f"lens_type = '{self.gw_param_sampler_dict['lens_type']}',")
         print(f"lens_functions = {self.gw_param_sampler_dict['lens_functions']},")
-        print(f"lens_priors = {self.gw_param_sampler_dict['lens_priors']},")
-        print(f"lens_priors_params = {self.gw_param_sampler_dict['lens_priors_params']},")
+        print(f"sampler_priors = {self.gw_param_sampler_dict['sampler_priors']},")
+        print(f"sampler_priors_params = {self.gw_param_sampler_dict['sampler_priors_params']},")
         
         print("\n # LeR also takes ImageProperties class params as kwargs, as follows:")
         print(f"n_min_images = {self.n_min_images},")
@@ -604,14 +605,16 @@ class LeR(LensGalaxyParameterDistribution):
         print("axis_ratio_params = ", self.lens_param_samplers_params["axis_ratio"])
         print(f"axis_rotation_angle = '{self.lens_param_samplers['axis_rotation_angle']}'")
         print("axis_rotation_angle_params = ", self.lens_param_samplers_params["axis_rotation_angle"])
-        print(f"shear = '{self.lens_param_samplers['shear']}'")
-        print("shear_params = ", self.lens_param_samplers_params["shear"])
-        print(f"mass_density_spectral_index = '{self.lens_param_samplers['mass_density_spectral_index']}'")
-        print("mass_density_spectral_index_params = ", self.lens_param_samplers_params["mass_density_spectral_index"])
+        print(f"shear = '{self.lens_param_samplers['external_shear']}'")
+        print("shear_params = ", self.lens_param_samplers_params['external_shear'])
+        print(f"density_profile_slope = '{self.lens_param_samplers['density_profile_slope']}'")
+        print("density_profile_slope_params = ", self.lens_param_samplers_params["density_profile_slope"])
         # lens functions
         print("Lens functions:")
         print(f"strong_lensing_condition = '{self.lens_functions['strong_lensing_condition']}'")
         print(f"optical_depth = '{self.lens_functions['optical_depth']}'")
+        print(f"optical_depth_params = '{self.lens_functions_params['optical_depth']}'")
+        print(f"param_sampler_type = '{self.lens_functions['param_sampler_type']}'")
 
     @property
     def snr(self):
@@ -743,10 +746,12 @@ class LeR(LensGalaxyParameterDistribution):
             z_max=self.z_max,
             cosmology=self.cosmo,
             event_type=self.event_type,
-            lens_type="epl_galaxy",
+            lens_type="epl_shear_galaxy",
             lens_functions= None,
-            lens_priors=None,
-            lens_priors_params=None,
+            lens_functions_params=None,
+            sampler_priors=None,
+            sampler_priors_params=None,
+            buffer_size=int(2e5),
             # ImageProperties class params
             n_min_images=2, 
             n_max_images=4,
@@ -775,8 +780,9 @@ class LeR(LensGalaxyParameterDistribution):
             event_type=input_params["event_type"],
             lens_type=input_params["lens_type"],
             lens_functions=input_params["lens_functions"],
-            lens_priors=input_params["lens_priors"],
-            lens_priors_params=input_params["lens_priors_params"],
+            lens_functions_params=input_params["lens_functions_params"],
+            sampler_priors=input_params["sampler_priors"],
+            sampler_priors_params=input_params["sampler_priors_params"],
             n_min_images=input_params["n_min_images"],
             n_max_images=input_params["n_max_images"],
             geocent_time_min=input_params["geocent_time_min"],
@@ -788,13 +794,15 @@ class LeR(LensGalaxyParameterDistribution):
             spin_precession=input_params["spin_precession"],
             directory=input_params["directory"],
             create_new_interpolator=input_params["create_new_interpolator"],
+            buffer_size=input_params["buffer_size"],
         )
 
         self.gw_param_sampler_dict["source_priors"]=self.gw_param_samplers.copy()
         self.gw_param_sampler_dict["source_priors_params"]=self.gw_param_samplers_params.copy()
-        self.gw_param_sampler_dict["lens_priors"]=self.lens_param_samplers.copy()
-        self.gw_param_sampler_dict["lens_priors_params"]=self.lens_param_samplers_params.copy()
+        self.gw_param_sampler_dict["sampler_priors"]=self.lens_param_samplers.copy()
+        self.gw_param_sampler_dict["sampler_priors_params"]=self.lens_param_samplers_params.copy()
         self.gw_param_sampler_dict["lens_functions"]=self.lens_functions.copy()
+        self.gw_param_sampler_dict["lens_functions_params"]=self.lens_functions_params.copy()
 
     def gwsnr_intialization(self, params=None):
         """
@@ -922,12 +930,12 @@ class LeR(LensGalaxyParameterDistribution):
             for key, value in snr_calculator_dict.items():
                 snr_calculator_dict[key] = str(value)
             parameters_dict.update({"snr_calculator_dict": snr_calculator_dict})
-
-            file_name = output_jsonfile
-            append_json(self.ler_directory+"/"+file_name, parameters_dict, replace=True)
         except:
             # if snr_calculator is custom function
             pass
+        
+        file_name = output_jsonfile
+        append_json(self.ler_directory+"/"+file_name, parameters_dict, replace=True)
 
     def unlensed_cbc_statistics(
         self, size=None, resume=False, save_batch=False, output_jsonfile=None,
@@ -1522,6 +1530,8 @@ class LeR(LensGalaxyParameterDistribution):
         # find index of detectable events
         snr_hit = self._find_detectable_index_lensed(lensed_param, snr_threshold, pdet_threshold, num_img, detectability_condition, combine_image_snr=combine_image_snr, snr_cut_for_combine_image_snr=snr_cut_for_combine_image_snr)
 
+        # select according to time delay
+
         # montecarlo integration
         total_rate = self.rate_function(np.sum(snr_hit), total_events, param_type="lensed")
 
@@ -1668,6 +1678,7 @@ class LeR(LensGalaxyParameterDistribution):
                 for i, snr_th in enumerate(snr_threshold):
                     idx_max = idx_max + num_img[i]
                     snr_hit = snr_hit & (np.sum((snr_param[:,j:idx_max] > snr_th), axis=1) >= num_img[i])
+                    # select according to time delays
                     j = idx_max
             else:
                 # sqrt of the the sum of the squares of the snr of the images

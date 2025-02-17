@@ -12,6 +12,7 @@ from scipy.interpolate import interp1d
 from scipy.interpolate import CubicSpline
 from scipy.integrate import quad, cumtrapz
 from numba import njit
+from importlib import resources
 # import datetime
 
 
@@ -139,9 +140,20 @@ def save_json(file_name, param):
         json file name for storing the parameters.
     param : `dict`
         dictionary to be saved as a json file.
+
+    Example
+    ----------
+    >>> from ler.utils import save_json, load_json
+    >>> param = dict_list = [{"name": "lens_mass", "type": "cubic_spline", "x": np.array([0, 1, 2, 3]), "y": [0, 1, 0, 1]},]
+    >>> save_json("param.json", param)
+    >>> param = load_json("param.json")
     """
-    with open(file_name, "w", encoding="utf-8") as write_file:
-        json.dump(param, write_file)
+    try:
+        with open(file_name, "w", encoding="utf-8") as write_file:
+            json.dump(param, write_file)
+    except:
+        with open(file_name, "w", encoding="utf-8") as write_file:
+            json.dump(param, write_file, indent=4, cls=NumpyEncoder)
 
 def append_json(file_name, new_dictionary, old_dictionary=None, replace=False):
     """
@@ -668,8 +680,9 @@ def create_conditioned_inv_cdf_array(x, conditioned_y, pdf_func):
     """
 
     list_ = []
+    size = len(x)
     for y in conditioned_y:
-        phi = pdf_func(x,y)
+        phi = pdf_func(x,y*np.ones(size))
         list_.append(create_inv_cdf_array(x, phi))
         
     return np.array(list_)
@@ -796,11 +809,10 @@ def interpolator_pickle_path(
     path1 = full_dir + "/init_dict.pickle"
     if not os.path.exists(path1):
         dict_list = []
-        with open(path1, "wb") as handle:
-            pickle.dump(dict_list, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        save_pickle(path1, dict_list)
 
     # check if the input dict is the same as one of the dict inside the pickle file
-    param_dict_stored = pickle.load(open(path1, "rb"))
+    param_dict_stored = load_pickle(path1)
 
     path2 = full_dir
     len_ = len(param_dict_stored)
@@ -817,122 +829,34 @@ def interpolator_pickle_path(
         it_exist = False
         path_inv_cdf = path2 + "/" + interpolator_name + "_" + str(len_) + ".pickle"
         param_dict_stored.append(param_dict_given)
-        with open(path1, "wb") as handle:
-            pickle.dump(param_dict_stored, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        save_pickle(path1, param_dict_stored)
 
     return path_inv_cdf, it_exist
 
-def interpolator_pdf_conditioned(x, conditioned_y, y_array, interpolator_list):
-    """
-    Function to find the pdf interpolator coefficients from the conditioned y.
+# def interpolator_pdf_conditioned(x, conditioned_y, y_array, interpolator_list):
+#     """
+#     Function to find the pdf interpolator coefficients from the conditioned y.
 
-    Parameters
-    ----------
-    x : `numpy.ndarray`
-        x values.
-    conditioned_y : `float`
-        conditioned y value.
-    y_array : `numpy.ndarray`
-        y values.
-    interpolator_list : `list`
-        list of interpolators.
+#     Parameters
+#     ----------
+#     x : `numpy.ndarray`
+#         x values.
+#     conditioned_y : `float`
+#         conditioned y value.
+#     y_array : `numpy.ndarray`
+#         y values.
+#     interpolator_list : `list`
+#         list of interpolators.
 
-    Returns
-    ----------
-    interpolator_list[idx](x) : `numpy.ndarray`
-        samples from the interpolator.
-    """
-    # find the index of z in zlist
-    idx = np.searchsorted(y_array, conditioned_y)
+#     Returns
+#     ----------
+#     interpolator_list[idx](x) : `numpy.ndarray`
+#         samples from the interpolator.
+#     """
+#     # find the index of z in zlist
+#     idx = np.searchsorted(y_array, conditioned_y)
 
-    return interpolator_list[idx](x)
-
-def interpolator_sampler_conditioned(conditioned_y, y_array, interpolator_list, size=1000):
-    """
-    Function to find sampler interpolator coefficients from the conditioned y.
-
-    Parameters
-    ----------
-    conditioned_y : `float`
-        conditioned y value.
-    y_array : `numpy.ndarray`
-        y values.
-    interpolator_list : `list`
-        list of interpolators.
-    size : `int`
-        number of samples.
-
-    Returns
-    ----------
-    """
-
-    # find the index of z in zlist
-    idx = np.searchsorted(y_array, conditioned_y)
-    u = np.random.uniform(0, 1, size=size)
-    return interpolator_list[idx](u)
-
-@njit
-def cubic_spline_interpolator(xnew, coefficients, x):
-    """
-    Function to interpolate using cubic spline.
-
-    Parameters
-    ----------
-    xnew : `numpy.ndarray`
-        new x values.
-    coefficients : `numpy.ndarray`
-        coefficients of the cubic spline.
-    x : `numpy.ndarray`
-        x values.
-
-    Returns
-    ----------
-    result : `numpy.ndarray`
-        interpolated values.
-    """
-
-    # Handling extrapolation
-    i = np.searchsorted(x, xnew) - 1
-    idx1 = xnew <= x[0]
-    idx2 = xnew > x[-1]
-    i[idx1] = 0
-    i[idx2] = len(x) - 2
-
-    # Calculate the relative position within the interval
-    dx = xnew - x[i]
-
-    # Calculate the interpolated value
-    # Cubic polynomial: a + b*dx + c*dx^2 + d*dx^3
-    a, b, c, d = coefficients[:, i]
-    #result = a + b*dx + c*dx**2 + d*dx**3
-    result = d + c*dx + b*dx**2 + a*dx**3
-    return result
-
-@njit
-def inverse_transform_sampler(size, cdf, x):
-    """
-    Function to sample from the inverse transform method.
-
-    Parameters
-    ----------
-    size : `int`
-        number of samples.
-    cdf : `numpy.ndarray`
-        cdf values.
-    x : `numpy.ndarray`
-        x values.
-
-    Returns
-    ----------
-    samples : `numpy.ndarray`
-        samples from the cdf.
-    """
-
-    u = np.random.uniform(0, 1, size)
-    idx = np.searchsorted(cdf, u)
-    x1, x0, y1, y0 = cdf[idx], cdf[idx-1], x[idx], x[idx-1]
-    samples = y0 + (y1 - y0) * (u - x0) / (x1 - x0)
-    return samples
+#     return interpolator_list[idx](x)
 
 def batch_handler(size, batch_size, sampling_routine, output_jsonfile, save_batch=True, resume=False, param_name='parameters'):
     """
@@ -1076,3 +1000,371 @@ def create_batch_params(sampling_routine, frac_batches, dict_buffer, save_batch,
         dict_buffer = append_json(file_name=output_jsonfile, new_dictionary=param,  old_dictionary=dict_buffer, replace=not (resume))
 
     return track_batches, dict_buffer
+
+def monte_carlo_integration(function, uniform_prior, size=10000):
+    """
+    Function to perform Monte Carlo integration.
+
+    Parameters
+    ----------
+    function : `function`
+        function to be integrated.
+    prior : `function`
+        prior function.
+
+    Returns
+    ----------
+    integral : `float`
+        integral value.
+    """
+
+    # sample from the prior
+    x = uniform_prior(size=size)
+    # calculate the function
+    y = np.array([function(x[i]) for i in range(size)])
+    # calculate the integral
+    integral = np.mean(y)*(np.max(x)-np.min(x))
+    return integral
+
+@njit
+def cubic_spline_interpolator(xnew, coefficients, x):
+    """
+    Function to interpolate using cubic spline.
+
+    Parameters
+    ----------
+    xnew : `numpy.ndarray`
+        new x values.
+    coefficients : `numpy.ndarray`
+        coefficients of the cubic spline.
+    x : `numpy.ndarray`
+        x values.
+
+    Returns
+    ----------
+    result : `numpy.ndarray`
+        interpolated values.
+    """
+
+    # Handling extrapolation
+    i = np.searchsorted(x, xnew) - 1
+    idx1 = xnew <= x[0]
+    idx2 = xnew > x[-1]
+    i[idx1] = 0
+    i[idx2] = len(x) - 2
+    #i = np.array(i, dtype=np.int32)
+    # x = np.array(x, dtype=np.float64)
+
+    # Calculate the relative position within the interval
+    #print(f"i = {i}\n xnew = {xnew}\n x = {x}")
+    #print(x[i])
+    dx = xnew - x[i]
+
+    # Calculate the interpolated value
+    # Cubic polynomial: a + b*dx + c*dx^2 + d*dx^3
+    # coefficients = np.array(coefficients, dtype=np.float64)
+    #print(f"coefficients = {coefficients}")
+    a, b, c, d = coefficients[:, i]
+    #result = a + b*dx + c*dx**2 + d*dx**3
+    result = d + c*dx + b*dx**2 + a*dx**3
+    return result
+
+@njit
+def pdf_cubic_spline_interpolator2d_array(xnew_array, ynew_array, norm_array, coefficients, x, y):
+    """
+    Function to calculate the interpolated value of snr_partialscaled given the mass ratio (ynew) and total mass (xnew). This is based off 2D bicubic spline interpolation.
+
+    Parameters
+    ----------
+    xnew_array : `numpy.ndarray`
+        Total mass of the binary.
+    ynew_array : `numpy.ndarray`
+        Mass ratio of the binary.
+    coefficients : `numpy.ndarray`
+        Array of coefficients for the cubic spline interpolation.
+    x : `numpy.ndarray`
+        Array of total mass values for the coefficients.
+    y : `numpy.ndarray`
+        Array of mass ratio values for the coefficients.
+
+    Returns
+    -------
+    result : `float`
+        Interpolated value of snr_partialscaled.
+    """
+    result_array = []
+    for i in range(len(xnew_array)):
+        xnew = xnew_array[i]
+        ynew = ynew_array[i]
+
+        len_y = len(y)
+        # find the index nearest to the ynew in y
+        y_idx = np.searchsorted(y, ynew) - 1 if ynew > y[0] else 0
+
+        if (ynew>y[0]) and (ynew<y[1]):
+            if ynew > y[y_idx] + (y[y_idx+1] - y[y_idx]) / 2:
+                y_idx = y_idx + 1
+            result_array.append(cubic_spline_interpolator(np.array([xnew]), coefficients[y_idx], x[y_idx])[0]/norm_array[y_idx])
+        elif y_idx == 0:  # lower end point
+            result_array.append(cubic_spline_interpolator(np.array([xnew]), coefficients[0], x[0])[0]/norm_array[0])
+            # print("a")
+        elif y_idx+1 == len_y:  # upper end point
+            result_array.append(cubic_spline_interpolator(np.array([xnew]), coefficients[-1], x[-1])[0]/norm_array[-1])
+            # print("b")
+        elif y_idx+2 == len_y:  # upper end point
+            result_array.append(cubic_spline_interpolator(np.array([xnew]), coefficients[-1], x[-1])[0]/norm_array[-1])
+            # print("b")
+        else:
+            y_idx1 = y_idx - 1
+            y_idx2 = y_idx
+            y_idx3 = y_idx + 1
+            y_idx4 = y_idx + 2
+            coeff_low, coeff_high = 4, 8
+            # print("c")
+            y1, y2, y3, y4 = y[y_idx1], y[y_idx2], y[y_idx3], y[y_idx4]
+            z1 = cubic_spline_interpolator(np.array([xnew]), coefficients[y_idx1], x[y_idx1])[0]/norm_array[y_idx1]
+            z2 = cubic_spline_interpolator(np.array([xnew]), coefficients[y_idx2], x[y_idx2])[0]/norm_array[y_idx2]
+            z3 = cubic_spline_interpolator(np.array([xnew]), coefficients[y_idx3], x[y_idx3])[0]/norm_array[y_idx3]
+            z4 = cubic_spline_interpolator(np.array([xnew]), coefficients[y_idx4], x[y_idx4])[0]/norm_array[y_idx4]
+
+            coeff = coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4)
+            matrixD = coeff[coeff_low:coeff_high]
+            matrixB = np.array([ynew**3, ynew**2, ynew, 1])
+            result_array.append(np.dot(matrixB, matrixD))
+
+    return result_array
+
+@njit
+def cubic_spline_interpolator2d_array(xnew_array, ynew_array, coefficients, x, y):
+    """
+    Function to calculate the interpolated value of snr_partialscaled given the mass ratio (ynew) and total mass (xnew). This is based off 2D bicubic spline interpolation.
+
+    Parameters
+    ----------
+    xnew_array : `numpy.ndarray`
+        Total mass of the binary.
+    ynew_array : `numpy.ndarray`
+        Mass ratio of the binary.
+    coefficients : `numpy.ndarray`
+        Array of coefficients for the cubic spline interpolation.
+    x : `numpy.ndarray`
+        Array of total mass values for the coefficients.
+    y : `numpy.ndarray`
+        Array of mass ratio values for the coefficients.
+
+    Returns
+    -------
+    result : `float`
+        Interpolated value of snr_partialscaled.
+    """
+    result_array = []
+    for i in range(len(xnew_array)):
+        xnew = xnew_array[i]
+        ynew = ynew_array[i]
+
+        len_y = len(y)
+        # find the index nearest to the ynew in y
+        y_idx = np.searchsorted(y, ynew) - 1 if ynew > y[0] else 0
+
+        if (ynew>y[0]) and (ynew<y[1]):
+            if ynew > y[y_idx] + (y[y_idx+1] - y[y_idx]) / 2:
+                y_idx = y_idx + 1
+            result_array.append(cubic_spline_interpolator(np.array([xnew]), coefficients[y_idx], x[y_idx])[0])
+            # print(f"a) idx = {y_idx}")
+        elif y_idx == 0:  # lower end point
+            result_array.append(cubic_spline_interpolator(np.array([xnew]), coefficients[0], x[0])[0])
+            # print(f"a) idx = {y_idx}")
+        elif y_idx+1 == len_y:  # upper end point
+            result_array.append(cubic_spline_interpolator(np.array([xnew]), coefficients[-1], x[-1])[0])
+            # print(f"b) idx = {y_idx}")
+        elif y_idx+2 == len_y:  # upper end point
+            result_array.append(cubic_spline_interpolator(np.array([xnew]), coefficients[-1], x[-1])[0])
+            # print(f"c) idx = {y_idx}")
+        else:
+            y_idx1 = y_idx - 1
+            y_idx2 = y_idx
+            y_idx3 = y_idx + 1
+            y_idx4 = y_idx + 2
+            coeff_low, coeff_high = 4, 8
+            # print(f"d) idx1, idx2, idx3, idx4 = {y_idx1}, {y_idx2}, {y_idx3}, {y_idx4}")
+            y1, y2, y3, y4 = y[y_idx1], y[y_idx2], y[y_idx3], y[y_idx4]
+            z1 = cubic_spline_interpolator(np.array([xnew]), coefficients[y_idx1], x[y_idx1])[0]
+            z2 = cubic_spline_interpolator(np.array([xnew]), coefficients[y_idx2], x[y_idx2])[0]
+            z3 = cubic_spline_interpolator(np.array([xnew]), coefficients[y_idx3], x[y_idx3])[0]
+            z4 = cubic_spline_interpolator(np.array([xnew]), coefficients[y_idx4], x[y_idx4])[0]
+
+            coeff = coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4)
+            matrixD = coeff[coeff_low:coeff_high]
+            matrixB = np.array([ynew**3, ynew**2, ynew, 1])
+            result_array.append(np.dot(matrixB, matrixD))
+
+    return result_array
+
+@njit
+def coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4):
+    """
+    Function to generate the coefficients for the cubic spline interpolation of fn(y)=z.
+
+    Parameters
+    ----------
+    y1, y2, y3, y4, z1, z2, z3, z4: `float`
+        Values of y and z for the cubic spline interpolation.
+
+    Returns
+    -------
+    coefficients: `numpy.ndarray`
+        Coefficients for the cubic spline interpolation.
+    """
+    matrixA = np.array([
+        [y1**3, y1**2, y1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [y2**3, y2**2, y2, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, y2**3, y2**2, y2, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, y3**3, y3**2, y3, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, y3**3, y3**2, y3, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, y4**3, y4**2, y4, 1],
+        [3*y2**2, 2*y2, 1, 0, -3*y2**2, -2*y2, -1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 3*y3**2, 2*y3, 1, 0, -3*y3**2, -2*y3, -1, 0],
+        [6*y2, 2, 0, 0, -6*y2, -2, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 6*y3, 2, 0, 0, -6*y3, -2, 0, 0],
+        [6*y1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 6*y4, 2, 0, 0],
+    ])
+    matrixC = np.array([z1, z2, z2, z3, z3, z4, 0, 0, 0, 0, 0, 0])
+    return np.dot(np.linalg.inv(matrixA), matrixC)
+
+@njit
+def inverse_transform_sampler2d(size, conditioned_y, cdf2d, x2d, y1d):
+    """
+    Function to find sampler interpolator coefficients from the conditioned y.
+
+    Parameters
+    ----------
+    size: `int`
+        Size of the sample.
+    conditioned_y: `float`
+        Conditioned y value.
+    cdf2d: `numpy.ndarray`
+        2D array of cdf values.
+    x2d: `numpy.ndarray`
+        2D array of x values.
+    y1d: `numpy.ndarray`
+        1D array of y values.
+
+    Returns
+    -------
+    samples: `numpy.ndarray`
+        Samples of the conditioned y.
+    """
+
+    samples = np.zeros(size)
+    for i, y in enumerate(conditioned_y):
+        # find the index nearest to the conditioned_y in y1d
+        y_idx = np.searchsorted(y1d, y) - 1 if y > y1d[0] else 0
+        if y > y1d[y_idx] + (y1d[y_idx+1] - y1d[y_idx]) / 2:
+            y_idx = y_idx + 1
+
+        # linear scaling
+        # new cdf values 
+        x1, x0, y1, y0 = y1d[y_idx], y1d[y_idx-1], cdf2d[y_idx], cdf2d[y_idx-1]
+        cdf = y0 + (y1 - y0) * (y - x0) / (x1 - x0)
+        # new x values
+        # x=x2d[0], if all rows are same 
+        x1, x0, y1, y0 = y1d[y_idx], y1d[y_idx-1], x2d[y_idx], x2d[y_idx-1]
+        x = y0 + (y1 - y0) * (y - x0) / (x1 - x0)
+
+        while True:
+            u = np.random.uniform(0, 1)
+            idx = np.searchsorted(cdf, u)
+            x1, x0, y1, y0 = cdf[idx], cdf[idx-1], x[idx], x[idx-1]
+            samples[i] = y0 + (y1 - y0) * (u - x0) / (x1 - x0)
+            if not np.isnan(samples[i]):
+                break
+    return samples
+
+
+@njit
+def inverse_transform_sampler(size, cdf, x):
+    """
+    Function to sample from the inverse transform method.
+
+    Parameters
+    ----------
+    size : `int`
+        number of samples.
+    cdf : `numpy.ndarray`
+        cdf values.
+    x : `numpy.ndarray`
+        x values.
+
+    Returns
+    ----------
+    samples : `numpy.ndarray`
+        samples from the cdf.
+    """
+
+    u = np.random.uniform(0, 1, size)
+    idx = np.searchsorted(cdf, u)
+    x1, x0, y1, y0 = cdf[idx], cdf[idx-1], x[idx], x[idx-1]
+    samples = y0 + (y1 - y0) * (u - x0) / (x1 - x0)
+    return samples
+
+@njit
+def normal_pdf(x, mean=0., std=0.05):
+    """
+    Calculate the value of a normal probability density function.
+
+    Parameters
+    ----------
+    x : `float` or `numpy.ndarray`
+        The value(s) at which to evaluate the PDF.
+    mean : `float`, optional
+        The mean of the normal distribution. Default is 0.
+    std : `float`, optional
+        The standard deviation of the normal distribution. Default is 0.05.
+
+    Returns
+    -------
+    pdf : `float` or `numpy.ndarray`
+        The probability density function value(s) at x.
+    """
+
+    return (1 / (std * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((x - mean) / std)**2)
+
+
+@njit
+def normal_pdf_2d(x, y, mean_x=0., std_x=0.05, mean_y=0., std_y=0.05):
+    """
+    Calculate the value of a 2D normal probability density function.
+
+    Parameters
+    ----------
+    x : `float`
+        The x-coordinate for which the PDF is evaluated.
+    y : `float`
+        The y-coordinate for which the PDF is evaluated.
+    mean_x : `float`, optional
+        The mean of the normal distribution along the x-axis. Default is 0.
+    std_x : `float`, optional
+        The standard deviation of the normal distribution along the x-axis. Default is 0.05.
+    mean_y : `float`, optional
+        The mean of the normal distribution along the y-axis. Default is 0.
+    std_y : `float`, optional
+        The standard deviation of the normal distribution along the y-axis. Default is 0.05.
+
+    Returns
+    -------
+    `float`
+        The probability density function value at the given x and y coordinates.
+    """
+
+    factor_x = (1 / (std_x * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((x - mean_x) / std_x)**2)
+    factor_y = (1 / (std_y * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((y - mean_y) / std_y)**2)
+    return factor_x * factor_y
+
+
+def load_txt_from_module(package, directory, filename):
+    """
+    """
+
+    with resources.path(package + '.' + directory, filename) as txt_path:
+        return np.loadtxt(txt_path)

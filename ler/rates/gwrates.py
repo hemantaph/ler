@@ -287,6 +287,7 @@ class GWRATES(CBCSourceParameterDistribution):
         **kwargs,
     ):
         
+        print("\nInitializing GWRATES class...\n")
         self.npool = npool
         self.z_min = z_min
         self.z_max = z_max
@@ -322,12 +323,12 @@ class GWRATES(CBCSourceParameterDistribution):
 
         if verbose:
             initialization()
-            self.print_all_params()
+            self.print_all_params_ler()
         else:
             with contextlib.redirect_stdout(None):
                 initialization()
 
-    def print_all_params(self):
+    def print_all_params_ler(self):
         """
         Function to print all the parameters.
         """

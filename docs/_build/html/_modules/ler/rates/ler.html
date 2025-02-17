@@ -664,14 +664,14 @@
         <span class="c1"># if verbose, prevent anything from printing</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="n">initialization</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">print_all_params</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">print_all_params_ler</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">redirect_stdout</span><span class="p">(</span><span class="kc">None</span><span class="p">):</span>
                 <span class="n">initialization</span><span class="p">()</span>
             
-<div class="viewcode-block" id="LeR.print_all_params">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.LeR.print_all_params">[docs]</a>
-    <span class="k">def</span> <span class="nf">print_all_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="LeR.print_all_params_ler">
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.LeR.print_all_params_ler">[docs]</a>
+    <span class="k">def</span> <span class="nf">print_all_params_ler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to print all the parameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -775,8 +775,8 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;axis_rotation_angle_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;axis_rotation_angle&quot;</span><span class="p">])</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;shear = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="p">[</span><span class="s1">&#39;shear&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;shear_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;shear&quot;</span><span class="p">])</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mass_density_spectral_index = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="p">[</span><span class="s1">&#39;mass_density_spectral_index&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mass_density_spectral_index_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;mass_density_spectral_index&quot;</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;density_profile_slope = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="p">[</span><span class="s1">&#39;density_profile_slope&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;density_profile_slope_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;density_profile_slope&quot;</span><span class="p">])</span>
         <span class="c1"># lens functions</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Lens functions:&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;strong_lensing_condition = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_functions</span><span class="p">[</span><span class="s1">&#39;strong_lensing_condition&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
