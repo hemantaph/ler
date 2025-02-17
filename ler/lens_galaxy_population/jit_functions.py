@@ -68,7 +68,7 @@ def pdf_phi_z_div_0(s, z):
     return phi_sim_z / phi_sim_0
 
 @njit
-def phi(s, z, alpha, beta, phistar, sigmastar):
+def phi(s, z, alpha=0.94, beta=1.85, phistar=2.099e-2, sigmastar=113.78):
     """
     Function to calculate the lens galaxy velocity dispersion function at redshift z.
     For Oguri et al. (2018b) model: alpha=0.94, beta=1.85, phistar=2.099e-2*(self.cosmo.h/0.7)**3, sigmastar=113.78
@@ -88,7 +88,7 @@ def phi(s, z, alpha, beta, phistar, sigmastar):
     """
     
     result = pdf_phi_z_div_0(s,z) * phi_loc_bernardi(sigma=s, alpha=alpha, beta=beta, phistar=phistar, sigmastar=sigmastar)
-    # result[result < 0.] = 0.
+    result[result < 0.] = 0.
     return result
 
 @njit
@@ -146,7 +146,7 @@ def phi_cut_SIE(q):
     return result/np.pi
 
 @njit
-def axis_ratio_rayleigh(sigma, q_min=0.2, q_max=1.0):
+def axis_ratio_rayleigh_rvs(sigma, q_min=0.2, q_max=1.0):
         """
         Function to sample axis ratio from rayleigh distribution with given velocity dispersion.
 
@@ -188,6 +188,16 @@ def axis_ratio_rayleigh(sigma, q_min=0.2, q_max=1.0):
         return q
 
 @njit
+def axis_ratio_rayleigh_pdf(q, sigma, q_min=0.2, q_max=1.0):
+
+    s = 0.38 - 5.7e-4 * sigma
+    idx = (q >= q_min) & (q <= q_max)
+    q_pdf = np.zeros_like(q)
+    q_pdf[idx] = (1-q[idx])/s[idx]**2 * np.exp(-0.5*(1-q[idx])**2/s[idx]**2)
+    return q_pdf
+
+
+@njit
 def velocity_dispersion_z_dependent(size, zl, zl_list, vd_inv_cdf):
     """
     Function to sample velocity dispersion from the interpolator
@@ -218,9 +228,9 @@ def velocity_dispersion_z_dependent(size, zl, zl_list, vd_inv_cdf):
     return samples
 
 @njit
-def lens_redshift_SDSS_catalogue(zs, splineDc, splineDcInv, u, cdf):
+def lens_redshift_SDSS_catalogue_sis(zs, splineDc, splineDcInv, u, cdf):
     """
-    Function to sample lens redshift from the SDSS catalogue.
+    Function to sample lens redshift from the SDSS catalogue. Haris et al. (2018) cdf = (10 * u**3 - 15 * u**4 + 6 * u**5)
 
     Parameters
     ----------
@@ -300,44 +310,61 @@ def phi_q2_ellipticity_hemanta(phi, q):
     e_1 = (1.0 - q) / (1.0 + q) * np.cos(2 * phi)
     e_2 = (1.0 - q) / (1.0 + q) * np.sin(2 * phi)
     return e_1, e_2
+
+# @njit
+# def sample_sigma_zl(pdf, sigma_min, sigma_max, zl_min, zl_max, zs, chunk_size=10000):
+#     x_sample = []
+#     y_sample = []
     
-def epl_shear_area(zl, zs):
+#     for z in zs:
+#         xmin, xmax = sigma_min, sigma_max
+#         ymin, ymax = zl_min, z
+        
+#         # Keep sampling until a valid (sigma, zl) pair is found for this z
+#         while True:
+#             x_try = np.random.uniform(xmin, xmax, chunk_size)
+#             y_try = np.random.uniform(ymin, ymax, chunk_size)
+#             pdf_xy_try = pdf(x_try, y_try)
+#             zmax = np.max(pdf_xy_try)  # Maximum of the PDF for the current batch
 
-    size=10000
-    final_size = 0
-    area_list = []
+#             # Generate acceptance thresholds
+#             z_try = np.random.uniform(0, zmax, chunk_size)
 
-    while final_size < size:
-        size = size - final_size
-        theta_E, e1, e2, gamma1, gamma2, gamma = sample_lens_params(zl, zs, size=size)
+#             # Check which samples are accepted
+#             accepted_indices = z_try < pdf_xy_try
+#             if np.any(accepted_indices):
+#                 # Accept the first valid sample
+#                 x_sample.append(x_try[accepted_indices][0])
+#                 y_sample.append(y_try[accepted_indices][0])
+#                 break  # Exit the loop once the first valid sample is collected
 
-        for i in range(size):
-            kwargs_lens = [
-                {
-                    "theta_E": theta_E[i],
-                    "e1": e1[i],
-                    "e2": e2[i],
-                    "gamma": gamma[i],
-                    "center_x": 0.0,
-                    "center_y": 0.0,
-                },
-                {
-                    "gamma1": gamma1[i],
-                    "gamma2": gamma2[i],
-                    "ra_0": 0,
-                    "dec_0": 0,
-                },
-            ]
-            
-            caustic_double_points = caustics_epl_shear(
-                kwargs_lens, return_which="double", maginf=-100
-            )
-            caustic = np.logical_not(np.isnan(caustic_double_points).any())
+#     return np.array(x_sample), np.array(y_sample)
 
-            # If there is a nan, caustic=False, draw a new gamma
-            if caustic:
-                area_list.append(Polygon(caustic_double_points.T).area)
+@njit
+def sample_sigma_zl(pdf, sigma_min, sigma_max, zl_min, zl_max, zs, chunk_size=10000):
+    x_sample = []
+    y_sample = []
+    
+    for z in zs:
+        xmin, xmax = sigma_min, sigma_max
+        ymin, ymax = zl_min, zl_max  # Use full range and then filter
+        
+        valid_sample_found = False
+        while not valid_sample_found:
+            x_try = np.random.uniform(xmin, xmax, chunk_size)
+            y_try = np.random.uniform(ymin, ymax, chunk_size)
+            pdf_xy_try = pdf(x_try, y_try)
+            zmax = np.max(pdf_xy_try)  # Find maximum PDF value for current batch
 
-        final_size = len(area_list)
+            # Generate acceptance thresholds
+            z_try = np.random.uniform(0, zmax, chunk_size)
 
-    result_EPL = np.array(area_list)/(4*np.pi) * no * dVcdz(zl)
+            # Check and accept samples
+            accepted = (z_try < pdf_xy_try) & (y_try < z)  # Ensure zl < zs condition
+            if np.any(accepted):
+                idx = np.argmax(accepted)  # First valid index
+                x_sample.append(x_try[idx])
+                y_sample.append(y_try[idx])
+                valid_sample_found = True
+
+    return np.array(x_sample), np.array(y_sample)

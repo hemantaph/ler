@@ -295,3 +295,58 @@ def inverse_transform_sampler_m1m2(size, inv_cdf, x):
     m1[idx], m2[idx] = m2[idx], m1[idx]
     
     return m1, m2
+
+@njit
+def erf(x):
+    # Constants for the approximation
+    p = 0.3275911
+    a1 = 0.254829592
+    a2 = -0.284496736
+    a3 = 1.421413741
+    a4 = -1.453152027
+    a5 = 1.061405429
+    
+    # Save the sign of x
+    sign = np.sign(x)
+    x = abs(x)
+    
+    # A&S formula 7.1.26 given in Handbook of Mathematical Functions
+    t = 1.0 / (1.0 + p * x)
+    y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * np.exp(-x * x)
+    
+    return sign * y
+
+@njit
+def compute_normalization_factor(mu, sigma, mmin, mmax):
+    part1 = (mmax - mu) / (np.sqrt(2) * sigma)
+    part2 = (mmin - mu) / (np.sqrt(2) * sigma)
+    N = np.sqrt(2 * np.pi) * sigma * (0.5 * (erf(part1) - erf(part2)))
+    return N
+
+@njit
+def bns_bimodal_pdf(m, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3,):
+
+    # left peak
+    pdf_unnormL = np.exp(-((m - muL) ** 2) / (2 * sigmaL**2))
+    normL = compute_normalization_factor(muL, sigmaL, mmin, mmax)  # normalization constant
+    # right peak
+    pdf_unnormR = np.exp(-((m - muR) ** 2) / (2 * sigmaR**2))
+    normR = compute_normalization_factor(muR, sigmaR, mmin, mmax)
+    # total pdf
+    pdf = w * pdf_unnormL / normL + (1 - w) * pdf_unnormR / normR
+
+    return pdf
+
+
+# def bns_bimodal_pdf_scipy(m, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3,):
+
+#     mass_arr = np.linspace(mmin, mmax, 1000)
+#     # left and right peak
+#     pdf_unnormL = lambda m: np.exp(-((m - muL) ** 2) / (2 * sigmaL**2))
+#     normL = quad(pdf_unnormL, mmin, mmax)[0]  # normalization constant
+#     pdf_unnormR = lambda m: np.exp(-((m - muR) ** 2) / (2 * sigmaR**2))
+#     normR = quad(pdf_unnormR, mmin, mmax)[0]  # normalization constant
+#     # total pdf
+#     pdf = w * pdf_unnormL(m) / normL + (1 - w) * pdf_unnormR(m) / normR
+
+#     return pdf

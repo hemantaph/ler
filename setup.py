@@ -22,6 +22,9 @@ setup(
     author_email="hemantaphurailatpam@gmail.com",
     url="https://github.com/hemantaph/ler",
     packages=find_packages(),
+    package_data={
+        'ler': ['lens_galaxy_population/lens_param_data/*.txt'],
+      },
     python_requires='>=3.10',
     install_requires=[
         "setuptools>=65.5.0",
