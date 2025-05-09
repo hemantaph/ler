@@ -35,7 +35,7 @@ class FunctionConditioning():
         if create:
             # create_interpolator input list
             input_list = [function, x_array, conditioned_y_array, create_function_inverse, create_pdf, create_rvs, multiprocessing_function]
-            input_list_kde = [x_array, y_array,gaussian_kde_kwargs]
+            input_list_kde = [x_array, y_array, gaussian_kde_kwargs]
 
             # check first whether the directory, subdirectory and pickle exist
             path_inv_cdf, it_exist = interpolator_pickle_path(
@@ -166,10 +166,18 @@ class FunctionConditioning():
         function_spline = self.function_spline_generator(x_array, z_array, conditioned_y_array)
 
         if create_function_inverse:
+            if conditioned_y_array is None:
+                idx_sort = np.argsort(z_array)
+            else:
+                idx_sort = np.argsort(z_array, axis=1)
+            x_array_ = x_array[idx_sort]
+            z_array_ = z_array[idx_sort]
+
             # check z_array is strictly increasing
-            if not np.all(np.diff(z_array) > 0):
-                raise ValueError("z_array must be strictly increasing")
-            function_inverse_spline = self.function_spline_generator(z_array, x_array, conditioned_y_array)
+            # if (not np.all(np.diff(z_array) > 0)) or (not np.all(np.diff(z_array) < 0)):
+            #     raise ValueError("z_array must be strictly increasing")
+            
+            function_inverse_spline = self.function_spline_generator(z_array_, x_array_, conditioned_y_array)
         else:
             function_inverse_spline = None
 
@@ -226,6 +234,7 @@ class FunctionConditioning():
                         try:
                             z_list.append(function(x_array[i], y*np.ones_like(x_array[i])))
                         except:
+                            # print(x_array[i], y)
                             z_list.append(function(x_array[i], y))
                     z_array = np.array(z_list)
         else:
