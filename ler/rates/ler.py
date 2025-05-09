@@ -534,8 +534,8 @@ class LeR(LensGalaxyParameterDistribution):
         print("\n # LeR also takes LensGalaxyParameterDistribution class params as kwargs, as follows:")
         print(f"lens_type = '{self.gw_param_sampler_dict['lens_type']}',")
         print(f"lens_functions = {self.gw_param_sampler_dict['lens_functions']},")
-        print(f"sampler_priors = {self.gw_param_sampler_dict['sampler_priors']},")
-        print(f"sampler_priors_params = {self.gw_param_sampler_dict['sampler_priors_params']},")
+        print(f"lens_param_samplers = {self.gw_param_sampler_dict['lens_param_samplers']},")
+        print(f"lens_param_samplers_params = {self.gw_param_sampler_dict['lens_param_samplers_params']},")
         
         print("\n # LeR also takes ImageProperties class params as kwargs, as follows:")
         print(f"n_min_images = {self.n_min_images},")
@@ -749,9 +749,9 @@ class LeR(LensGalaxyParameterDistribution):
             lens_type="epl_shear_galaxy",
             lens_functions= None,
             lens_functions_params=None,
-            sampler_priors=None,
-            sampler_priors_params=None,
-            buffer_size=int(2e5),
+            lens_param_samplers=None,
+            lens_param_samplers_params=None,
+            buffer_size=1000,
             # ImageProperties class params
             n_min_images=2, 
             n_max_images=4,
@@ -781,8 +781,8 @@ class LeR(LensGalaxyParameterDistribution):
             lens_type=input_params["lens_type"],
             lens_functions=input_params["lens_functions"],
             lens_functions_params=input_params["lens_functions_params"],
-            sampler_priors=input_params["sampler_priors"],
-            sampler_priors_params=input_params["sampler_priors_params"],
+            lens_param_samplers=input_params["lens_param_samplers"],
+            lens_param_samplers_params=input_params["lens_param_samplers_params"],
             n_min_images=input_params["n_min_images"],
             n_max_images=input_params["n_max_images"],
             geocent_time_min=input_params["geocent_time_min"],
@@ -799,8 +799,8 @@ class LeR(LensGalaxyParameterDistribution):
 
         self.gw_param_sampler_dict["source_priors"]=self.gw_param_samplers.copy()
         self.gw_param_sampler_dict["source_priors_params"]=self.gw_param_samplers_params.copy()
-        self.gw_param_sampler_dict["sampler_priors"]=self.lens_param_samplers.copy()
-        self.gw_param_sampler_dict["sampler_priors_params"]=self.lens_param_samplers_params.copy()
+        self.gw_param_sampler_dict["lens_param_samplers"]=self.lens_param_samplers.copy()
+        self.gw_param_sampler_dict["lens_param_samplers_params"]=self.lens_param_samplers_params.copy()
         self.gw_param_sampler_dict["lens_functions"]=self.lens_functions.copy()
         self.gw_param_sampler_dict["lens_functions_params"]=self.lens_functions_params.copy()
 
@@ -859,7 +859,7 @@ class LeR(LensGalaxyParameterDistribution):
                 else:
                     raise ValueError("create_new_interpolator['gwsnr'] should be a boolean.")
             else:
-                raise ValueError("create_new_interpolator should be a boolean or a dictionary with 'gwsnr' key.")
+                input_params["create_new_interpolator"] = False
 
         # initialization of GWSNR class
         gwsnr = GWSNR(
@@ -1191,17 +1191,17 @@ class LeR(LensGalaxyParameterDistribution):
             if "optimal_snr_net" not in unlensed_param:
                 raise ValueError("'optimal_snr_net' not in unlensed param dict provided")
             if detectability_condition == "step_function":
-                print("given detectability_condition == 'step_function'")
+                #print("given detectability_condition == 'step_function'")
                 param = unlensed_param["optimal_snr_net"]
                 threshold = snr_threshold
             elif detectability_condition == "pdet":
-                print("given detectability_condition == 'pdet'")
+                #print("given detectability_condition == 'pdet'")
                 param = 1 - norm.cdf(snr_threshold - unlensed_param["optimal_snr_net"])
                 unlensed_param["pdet_net"] = param
                 threshold = pdet_threshold
         elif self.pdet:
             if "pdet_net" in unlensed_param:
-                print("given detectability_condition == 'pdet'")
+                #print("given detectability_condition == 'pdet'")
                 param = unlensed_param["pdet_net"]
                 threshold = pdet_threshold
             else:
@@ -1658,7 +1658,7 @@ class LeR(LensGalaxyParameterDistribution):
             boolean array to store the result of the threshold condition.
         """
 
-        print(f"given detectability_condition == {detectability_condition}")
+        #print(f"given detectability_condition == {detectability_condition}")
         if detectability_condition == "step_function":
             if "optimal_snr_net" not in lensed_param:
                 raise ValueError("'optimal_snr_net' not in lensed parm dict provided")
@@ -1852,13 +1852,17 @@ class LeR(LensGalaxyParameterDistribution):
         self,
         size=100,
         batch_size=None,
+        stopping_criteria=dict(
+            relative_diff_percentage=0.5,
+            number_of_last_batches_to_check=4,
+        ),
         snr_threshold=8.0,
         pdet_threshold=0.5,
         resume=False,
         output_jsonfile="n_unlensed_param_detectable.json",
         meta_data_file="meta_unlensed.json",
         detectability_condition="step_function",
-        trim_to_size=True,
+        trim_to_size=False,
         snr_recalculation=False,
         snr_threshold_recalculation=[4, 12],
     ):
@@ -1918,7 +1922,8 @@ class LeR(LensGalaxyParameterDistribution):
         n, events_total, output_path, meta_data_path, buffer_file, batch_size = self._initial_setup_for_n_event_selection(meta_data_file, output_jsonfile, resume, batch_size)
 
         # loop until n samples are collected
-        while n < size:
+        continue_condition = True
+        while continue_condition:
             # disable print statements
             with contextlib.redirect_stdout(None):
                 self.dict_buffer = None  # this is used to store the sampled unlensed_param in batches when running the sampling_routine
@@ -1943,7 +1948,31 @@ class LeR(LensGalaxyParameterDistribution):
             total_rate = self.rate_function(n, events_total, param_type="unlensed", verbose=False)
 
             # bookmark
-            self._append_meta_data(meta_data_path, n, events_total, total_rate)
+            buffer_dict = self._append_meta_data(meta_data_path, n, events_total, total_rate)
+
+            if isinstance(stopping_criteria, dict):
+                total_rates = np.array(buffer_dict['total_rate'])
+                limit = stopping_criteria['relative_diff_percentage']
+                num_a = stopping_criteria['number_of_last_batches_to_check']
+                if len(total_rates)>num_a:
+                    num_a = int(-1*(num_a))
+                    # num_b = int(num_a)
+                    percentage_diff = np.abs((total_rates[num_a:]-total_rates[-1])/total_rates[-1])*100
+                    print(f"percentage difference for the last {abs(num_a)} batches = {percentage_diff}")
+                    if np.any(percentage_diff>limit):
+                        continue_condition &= True
+                    else:
+                        print(rf"stopping criteria of rate relative difference of {limit}% reached. If you want to collect more events, reduce stopping_criteria['relative_diff_percentage'] or put stopping_criteria=None.")
+                        continue_condition &= False
+
+            if isinstance(size, int):
+                if n<size:
+                    continue_condition |= True
+                else:
+                    print(rf"Given size={size} reached")
+                    continue_condition |= False
+                    if stopping_criteria is None:
+                        continue_condition &= False
 
         print(f"stored detectable unlensed params in {output_path}")
         print(f"stored meta data in {meta_data_path}")
@@ -1971,6 +2000,10 @@ class LeR(LensGalaxyParameterDistribution):
     def selecting_n_lensed_detectable_events(
         self,
         size=100,
+        stopping_criteria=dict(
+            relative_diff_percentage=0.5,
+            number_of_last_batches_to_check=4,
+        ),
         batch_size=None,
         snr_threshold=[8.0,8.0],
         pdet_threshold=0.5,
@@ -1981,7 +2014,7 @@ class LeR(LensGalaxyParameterDistribution):
         detectability_condition="step_function",
         output_jsonfile="n_lensed_params_detectable.json",
         meta_data_file="meta_lensed.json",
-        trim_to_size=True,
+        trim_to_size=False,
         nan_to_num=False,
         snr_recalculation=False,
         snr_threshold_recalculation=[[4,4],[12,12]],
@@ -2050,7 +2083,8 @@ class LeR(LensGalaxyParameterDistribution):
         # re-analyse the provided snr_threshold and num_img
         snr_threshold, num_img = self._check_snr_threshold_lensed(snr_threshold, num_img)
 
-        while n < size:
+        continue_condition = True
+        while continue_condition:
             # disable print statements
             with contextlib.redirect_stdout(None):
                 self.dict_buffer = None  # this is used to store the sampled lensed_param in batches when running the sampling_routine
@@ -2075,7 +2109,30 @@ class LeR(LensGalaxyParameterDistribution):
             total_rate = self.rate_function(n, events_total, param_type="lensed", verbose=False)
 
             # save meta data
-            self._append_meta_data(meta_data_path, n, events_total, total_rate)
+            buffer_dict = self._append_meta_data(meta_data_path, n, events_total, total_rate)
+
+            if isinstance(stopping_criteria, dict):
+                total_rates = np.array(buffer_dict['total_rate'])
+                limit = stopping_criteria['relative_diff_percentage']
+                num_a = stopping_criteria['number_of_last_batches_to_check']
+
+                if len(total_rates)>num_a:
+                    num_a = int(-1*(num_a))
+                    # num_b = int(num_a)
+                    percentage_diff = np.abs((total_rates[num_a:]-total_rates[-1])/total_rates[-1])*100
+                    print(f"percentage difference for the last {abs(num_a)} batches = {percentage_diff}")
+                    if np.any(percentage_diff>limit):
+                        continue_condition &= True
+                    else:
+                        print(rf"stopping criteria of rate relative difference of {limit}% reached. If you want to collect more events, reduce stopping_criteria['relative_diff_percentage']")
+                        continue_condition &= False
+
+            if isinstance(size, int):
+                if n<size:
+                    continue_condition |= True
+                else:
+                    print(rf"Given size={size} reached")
+                    continue_condition |= False
 
         print(f"storing detectable lensed params in {output_path}")
         print(f"storing meta data in {meta_data_path}")
@@ -2095,7 +2152,7 @@ class LeR(LensGalaxyParameterDistribution):
             meta = get_param_from_json(meta_data_path)
             data["detectable_lensed_rate_per_year"] = meta["total_rate"][-1]
             data["detectability_condition_lensed"] = detectability_condition
-        append_json(self.ler_directory+"/"+self.json_file_names["ler_params"], data, replace=True)
+        buffer_dict = append_json(self.ler_directory+"/"+self.json_file_names["ler_params"], data, replace=True)
 
         return param_final
 
@@ -2243,12 +2300,14 @@ class LeR(LensGalaxyParameterDistribution):
 
         if os.path.exists(meta_data_path):
             try:
-                append_json(meta_data_path, meta_data, replace=False)
+                dict_ = append_json(meta_data_path, meta_data, replace=False)
             except:
-                append_json(meta_data_path, meta_data, replace=True)
+                dict_ = append_json(meta_data_path, meta_data, replace=True)
         else:
-            append_json(meta_data_path, meta_data, replace=True)
+            dict_ = append_json(meta_data_path, meta_data, replace=True)
 
         print("collected number of detectable events = ", n)
         print("total number of events = ", events_total)
         print(f"total rate (yr^-1): {total_rate}")
+
+        return dict_

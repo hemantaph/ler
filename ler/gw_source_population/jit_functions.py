@@ -5,8 +5,11 @@ This module contains various functions use for simulating GW source population.
 
 import numpy as np
 from numba import njit, jit
+from scipy.interpolate import CubicSpline
 from astropy.cosmology import LambdaCDM
 cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+from scipy.integrate import quad
+from scipy.optimize import fsolve
 
 from ler.utils import inverse_transform_sampler
 
@@ -30,7 +33,7 @@ def sample_source_redshift(size, zs_inv_cdf=None):
 
 @njit
 def merger_rate_density_bbh_popI_II_oguri2018(
-        zs, R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30,
+        zs, R0=23.9 * 1e-9, b2=1.6, b3=2.1, b4=30,
     ):
     """
     Function to compute the merger rate density (PopI/PopII). Reference: Oguri et al. (2018). The output is in detector frame and is unnormalized.
@@ -47,7 +50,7 @@ def merger_rate_density_bbh_popI_II_oguri2018(
         default: 1.6
     b3 : `float`
         Fitting paramters
-        default: 2.0
+        default: 2.1
     b4 : `float`
         Fitting paramters
         default: 30
@@ -107,12 +110,69 @@ def merger_rate_density_bbh_popIII_ken2022(zs, n0=19.2 * 1e-9, aIII=0.66, bIII=0
         / (bIII + aIII * np.exp((aIII + bIII) * (zs - zIII)))
     )
 
+# @njit
+def sfr_madau_fragos2017_with_bbh_td(zs, R0=23.9 * 1e-9):
+    """
+    """
+
+    rm = np.array([1.00304765, 1.00370075, 1.00449545, 1.00546251, 1.00663937, 1.00807168, 1.00981505, 1.01193727, 1.01046483, 1.01359803, 1.01741386, 1.02206193, 1.02772495, 1.03462601, 1.04303746, 1.05329142, 1.07093106, 1.08624215, 1.10489848, 1.12760683,1.15519183, 1.18858451, 1.22878158, 1.27676494, 1.33727882, 1.40335222, 1.47956936, 1.56759515, 1.6711375 , 1.79690371, 1.95410462, 2.15201042, 2.36151109, 2.66742932, 3.04354598, 3.49048755, 3.98122536, 4.42347511, 4.61710896, 4.30190679, 3.50890876, 2.37699066, 1.41830834, 0.77944771,0.40667706, 0.20463758, 0.09975143, 0.04745116])
+    zs_ = np.geomspace(0.001, 10, 48)
+
+    spline = CubicSpline(zs_, rm, extrapolate=True)
+    SFR = spline(zs)*R0 # in Mpc^-3 yr^-1
+    return SFR
+
+# @njit
+def sfr_madau_dickinson2014_with_bbh_td(zs, R0=23.9 * 1e-9):
+    """
+    """
+
+    rm = np.array([1.00292325, 1.0035494 , 1.0043112 , 1.00523807, 1.0063658 , 1.00773798, 1.00940767, 1.01143948, 1.00997839, 1.01297699, 1.01662662, 1.02106895, 1.02647649, 1.03305927, 1.04107277, 1.05082743, 1.06802831, 1.08255749, 1.10022606, 1.12169013, 1.14772134, 1.1792097 , 1.21715406, 1.26263694, 1.32051095, 1.38462461, 1.45997648, 1.54851567, 1.65349288, 1.78046645, 1.93811129, 2.1354612 , 2.34086287, 2.63664802, 2.98892341, 3.38353439, 3.76990612, 4.03489696, 4.00806904, 3.56766897, 2.86966689, 2.01282062, 1.29696347, 0.78913584, 0.46166281, 0.26226345, 0.14509118, 0.07854392])
+    zs_ = np.geomspace(0.001, 10, 48)
+
+    spline = CubicSpline(zs_, rm, extrapolate=True)
+    SFR = spline(zs)*R0 # in Mpc^-3 yr^-1
+    return SFR
+
+# @njit
+def sfr_madau_fragos2017_with_bns_td(zs, R0=105.5 * 1e-9):
+    """
+    """
+
+    rm = np.array([1.00309364, 1.00375139, 1.00455175, 1.00552568, 1.00671091, 1.00815339, 1.00990912, 1.01204635, 1.00757017, 1.01071962, 1.01455507, 1.01922677, 1.02491815, 1.03185311, 1.04030479, 1.05060602, 1.06970166, 1.08508957, 1.10382838, 1.12661829, 1.15427005, 1.18768774, 1.22781836, 1.27555711, 1.31791484, 1.38209039, 1.4555543 , 1.5397332 , 1.63806934, 1.75685668, 1.90448546, 2.08862044, 2.34440211, 2.63899295, 2.99729389, 3.41567274, 3.86324106, 4.24545603, 4.37018218, 4.00555831, 3.10525751, 2.06354992, 1.20906304, 0.65233811, 0.33356891, 0.16397688, 0.08024945, 0.036953])
+    zs_ = np.geomspace(0.001, 10, 48)
+
+    spline = CubicSpline(zs_, rm, extrapolate=True)
+    SFR = spline(zs)*R0 # in Mpc^-3 yr^-1
+    return SFR
+
+# @njit
+def sfr_madau_dickinson2014_with_bns_td(zs, R0=105.5 * 1e-9):
+    """
+    """
+
+    rm = np.array([1.0029945 , 1.00362259, 1.00438674, 1.00531645, 1.00644763, 1.00782396, 1.00949865, 1.01153645, 1.00240992, 1.00539605, 1.00903013, 1.01345293, 1.01883579, 1.02538714, 1.03336026, 1.04306247, 1.05841698, 1.07283625, 1.09035966, 1.11162909, 1.1373949 , 1.16851509, 1.20594024, 1.25068092, 1.3085267 , 1.37111306, 1.44421094, 1.52948237, 1.62985636, 1.75058453, 1.90010572, 2.0870216 , 2.33573104, 2.6218286 , 2.96031682, 3.3343522 , 3.69149889, 3.92099769, 3.86227814, 3.40811745, 2.59314381, 1.79588097, 1.14260538, 0.686002  , 0.3954134 , 0.22083291, 0.11548455, 0.06064368])
+    zs_ = np.geomspace(0.001, 10, 48)
+
+    spline = CubicSpline(zs_, rm, extrapolate=True)
+    SFR = spline(zs)*R0 # in Mpc^-3 yr^-1
+    return SFR
+
+
 @njit
-def star_formation_rate_madau_dickinson2014(
-        zs, af=2.7, bf=5.6, cf=2.9,
+def sfr_madau_fragos2017(zs, a=0.01, b=2.6, c=3.2, d=6.2):
+    """
+    https://arxiv.org/pdf/1606.07887.pdf
+    """
+
+    return a * (1+zs)**b / (1 + ((1+zs)/c)**d) # [Msun yr-1 Mpc-3]
+
+@njit
+def sfr_madau_dickinson2014(
+        zs, a=0.015, b=2.7, c=2.9, d=5.6,
     ):
     """
-    Function to compute star formation rate as given in Eqn. 15 Madau & Dickinson (2014). The output is in detector frame and is unnormalized.
+    Function to compute star formation rate as given in Eqn. 15 Madau & Dickinson (2014). The output is in detector frame and is unnormalized. https://arxiv.org/pdf/1403.0007
 
     Parameters
     ----------
@@ -135,12 +195,12 @@ def star_formation_rate_madau_dickinson2014(
 
     Examples
     ----------
-    >>> from ler.gw_source_population import star_formation_rate_madau_dickinson2014
-    >>> rate_density = star_formation_rate_madau_dickinson2014(zs=0.1)
+    >>> from ler.gw_source_population import sfr_madau_dickinson2014
+    >>> rate_density = sfr_madau_dickinson2014(zs=0.1)
     """
 
     # rate density
-    return 0.015 * (1 + zs) ** af / (1 + ((1 + zs) / cf) ** bf)
+    return a * (1 + zs) ** b / (1 + ((1 + zs) / c) ** d) # [Msun yr-1 Mpc-3]
 
 
 # @jit

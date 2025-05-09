@@ -4,7 +4,7 @@ from numba import njit
 from lenstronomy.LensModel.Solver.epl_shear_solver import caustics_epl_shear
 from shapely.geometry import Polygon
 
-from .jit_functions import phi_cut_SIE, axis_ratio_rayleigh_rvs, phi_q2_ellipticity_hemanta
+from .jit_functions import phi_cut_SIE, phi_q2_ellipticity_hemanta
 from ..utils import inverse_transform_sampler, cubic_spline_interpolator, cubic_spline_interpolator2d_array, inverse_transform_sampler2d
 
 # for testing
@@ -13,9 +13,6 @@ from .jit_functions import phi_loc_bernardi, phi
 
 
 def lens_redshift_sis1_mp(params):
-    """
-    Function to calculate redshift distribution, zl, given velocity dependent 
-    """
 
     size = 20000  # integration size
     zs = params[0] # float
@@ -47,7 +44,7 @@ def lens_redshift_sis1_mp(params):
 
         # velocity dispersion distribution
         phi_sigma = phi_loc_bernardi(
-            s=sigma,
+            sigma=sigma,
             alpha=params[2][2], 
             beta=params[2][3],
             phistar=params[2][4],
@@ -63,9 +60,6 @@ def lens_redshift_sis1_mp(params):
     return(params[6], np.array(result_array))
 
 def lens_redshift_sis2_mp(params):
-    """
-    Function to calculate redshift distribution, zl, given velocity dependent 
-    """
 
     size = 20000  # integration size
     zs = params[0] # float
@@ -115,9 +109,6 @@ def lens_redshift_sis2_mp(params):
     return(params[6], np.array(result_array))
 
 def lens_redshift_sie1_mp(params):
-    """
-    Function to calculate redshift distribution, zl, given velocity dependent 
-    """
 
     size = 20000  # integration size
     zs = params[0] # float
@@ -132,7 +123,14 @@ def lens_redshift_sie1_mp(params):
         sigma = np.random.uniform(sigma_min, sigma_max, size)
 
         # axis ratio distribution
-        q = inverse_transform_sampler2d(size, sigma, params[3][0], params[3][1], params[3][2])
+        if len(params[3]) == 3:
+            print
+            q = inverse_transform_sampler2d(size, sigma, params[3][0], params[3][1], params[3][2])
+        else:
+            if isinstance(params[3][0], float):
+                q = np.random.uniform(params[3][0], params[3][1], size)
+            else:
+                q = inverse_transform_sampler(size, params[3][0], params[3][1])
     
         ## Einstein radius calculation
         # angular diameter distance
@@ -147,12 +145,18 @@ def lens_redshift_sie1_mp(params):
 
         # cross-section
         area_array = phi_cut_SIE(q) * np.pi*theta_E**2
+        # area_array_sis = np.pi*theta_E**2
+        # logic = area_array_sis < area_array
+        # # area_array should be less than area_array_sis
+        # if logic.any():
+        #     raise(ValueError('area_array should be less than area_array_sis'))
+
         # non-nan index
         idx = np.logical_not(np.isnan(area_array))
 
         # velocity dispersion distribution
         phi_sigma = phi_loc_bernardi(
-            s=sigma,
+            sigma=sigma,
             alpha=params[2][2], 
             beta=params[2][3],
             phistar=params[2][4],
@@ -169,9 +173,6 @@ def lens_redshift_sie1_mp(params):
 
 
 def lens_redshift_sie2_mp(params):
-    """
-    Function to calculate redshift distribution, zl, given velocity dependent 
-    """
 
     size = 20000  # integration size
     zs = params[0] # float
@@ -186,7 +187,13 @@ def lens_redshift_sie2_mp(params):
         sigma = np.random.uniform(sigma_min, sigma_max, size)
 
         # axis ratio distribution
-        q = inverse_transform_sampler2d(size, sigma, params[3][0], params[3][1], params[3][2])
+        if len(params[3]) == 3:
+            q = inverse_transform_sampler2d(size, sigma, params[3][0], params[3][1], params[3][2])
+        else:
+            if isinstance(params[3][0], float):
+                q = np.random.uniform(params[3][0], params[3][1], size)
+            else:
+                q = inverse_transform_sampler(size, params[3][0], params[3][1])
     
         ## Einstein radius calculation
         # angular diameter distance
@@ -225,9 +232,6 @@ def lens_redshift_sie2_mp(params):
 
 
 def lens_redshift_sie3_mp(params):
-    """
-    Function to calculate redshift distribution, zl, given velocity dependent 
-    """
 
     size = 20000  # integration size
     zs = params[0] # float
@@ -242,7 +246,13 @@ def lens_redshift_sie3_mp(params):
         sigma = np.random.uniform(sigma_min, sigma_max, size)
 
         # axis ratio distribution
-        q = inverse_transform_sampler2d(size, sigma, params[3][0], params[3][1], params[3][2])
+        if len(params[3]) == 3:
+            q = inverse_transform_sampler2d(size, sigma, params[3][0], params[3][1], params[3][2])
+        else:
+            if isinstance(params[3][0], float):
+                q = np.random.uniform(params[3][0], params[3][1], size)
+            else:
+                q = inverse_transform_sampler(size, params[3][0], params[3][1])
 
         # axis rotation angle
         psi = np.random.uniform(params[8][0], params[8][1], size)
@@ -279,7 +289,7 @@ def lens_redshift_sie3_mp(params):
 
         # velocity dispersion distribution
         phi_sigma = phi_loc_bernardi(
-            s=sigma,
+            sigma=sigma,
             alpha=params[2][2], 
             beta=params[2][3],
             phistar=params[2][4],
@@ -296,9 +306,6 @@ def lens_redshift_sie3_mp(params):
 
 
 def lens_redshift_sie4_mp(params):
-    """
-    Function to calculate redshift distribution, zl, given velocity dependent 
-    """
 
     size = 20000  # integration size
     zs = params[0] # float
@@ -313,7 +320,13 @@ def lens_redshift_sie4_mp(params):
         sigma = np.random.uniform(sigma_min, sigma_max, size)
 
         # axis ratio distribution
-        q = inverse_transform_sampler2d(size, sigma, params[3][0], params[3][1], params[3][2])
+        if len(params[3]) == 3:
+            q = inverse_transform_sampler2d(size, sigma, params[3][0], params[3][1], params[3][2])
+        else:
+            if isinstance(params[3][0], float):
+                q = np.random.uniform(params[3][0], params[3][1], size)
+            else:
+                q = inverse_transform_sampler(size, params[3][0], params[3][1])
 
         # axis rotation angle
         psi = np.random.uniform(params[8][0], params[8][1], size)
@@ -369,9 +382,6 @@ def lens_redshift_sie4_mp(params):
 
 
 def lens_redshift_epl_shear1_mp(params):
-    """
-    Function to calculate redshift distribution, zl, given velocity dependent 
-    """
 
     size = 20000  # integration size
     zs = params[0] # float
@@ -386,7 +396,13 @@ def lens_redshift_epl_shear1_mp(params):
         sigma = np.random.uniform(sigma_min, sigma_max, size)
 
         # axis ratio distribution
-        q = inverse_transform_sampler2d(size, sigma, params[3][0], params[3][1], params[3][2])
+        if len(params[3]) == 3:
+            q = inverse_transform_sampler2d(size, sigma, params[3][0], params[3][1], params[3][2])
+        else:
+            if isinstance(params[3][0], float):
+                q = np.random.uniform(params[3][0], params[3][1], size)
+            else:
+                q = inverse_transform_sampler(size, params[3][0], params[3][1])
 
         # axis rotation angle
         psi = np.random.uniform(params[8][0], params[8][1], size)
@@ -429,7 +445,7 @@ def lens_redshift_epl_shear1_mp(params):
 
         # velocity dispersion distribution
         phi_sigma = phi_loc_bernardi(
-            s=sigma,
+            sigma=sigma,
             alpha=params[2][2], 
             beta=params[2][3],
             phistar=params[2][4],
@@ -446,9 +462,7 @@ def lens_redshift_epl_shear1_mp(params):
 
 
 def lens_redshift_epl_shear2_mp(params):
-    """
-    Function to calculate redshift distribution, zl, given velocity dependent 
-    """
+
 
     size = 20000  # integration size
     zs = params[0] # float
@@ -463,12 +477,18 @@ def lens_redshift_epl_shear2_mp(params):
         sigma = np.random.uniform(sigma_min, sigma_max, size)
 
         # axis ratio distribution
-        q = inverse_transform_sampler2d(size, sigma, params[3][0], params[3][1], params[3][2])
+        if len(params[3]) == 3:
+            q = inverse_transform_sampler2d(size, sigma, params[3][0], params[3][1], params[3][2])
+        else:
+            if isinstance(params[3][0], float):
+                q = np.random.uniform(params[3][0], params[3][1], size)
+            else:
+                q = inverse_transform_sampler(size, params[3][0], params[3][1])
 
         # axis rotation angle
         psi = np.random.uniform(params[8][0], params[8][1], size)
 
-        # Transform the axis ratio and the angle, to ellipticities e1, e2, using lenstronomy
+        # Transform the axis ratio and the axis rotation angle, to ellipticities e1, e2, using lenstronomy
         e1, e2 = phi_q2_ellipticity_hemanta(psi, q)
 
         # Sample shears
@@ -503,6 +523,7 @@ def lens_redshift_epl_shear2_mp(params):
                 area_array.append(cross_section(theta_E[i], e1[i], e2[i], gamma[i], gamma1[i], gamma2[i]))
             area_array = np.array(area_array)
 
+        # this is to avoid nan, inf, -inf
         idx = (area_array>=2.4906932608826035e-28) & (area_array<=1.972789211435565e-08)
 
         # velocity dispersion distribution
@@ -651,3 +672,97 @@ def cross_section(theta_E, e1, e2, gamma, gamma1, gamma2):
         area = 0.0
 
     return area
+
+def rjs_sie_mp(params):
+
+    size = 1000  # integration size
+    zs = params[0] # float
+
+    # redshift of the lens between the source and the observer
+    zl_array = params[1]
+
+    while True:
+        # velocity dispersion distribution
+        # njit might give problem
+        if len(params[2]) == 2:
+            sigma = inverse_transform_sampler2d(size, zl_array, params[2][0], params[2][1], params[2][2])
+        else:
+            sigma = inverse_transform_sampler(size, params[2][0], params[2][1])
+
+        # axis ratio distribution
+        if len(params[3]) == 3:
+            q = inverse_transform_sampler2d(size, sigma, params[3][0], params[3][1], params[3][2])
+        else:
+            q = inverse_transform_sampler(size, params[3][0], params[3][1])
+    
+        ## Einstein radius calculation
+        # angular diameter distance
+        Da_zs = cubic_spline_interpolator(np.array([zs]), params[4][0], params[4][1])[0] # float
+        Da_zl = cubic_spline_interpolator(np.array([zl]), params[4][0], params[4][1])[0]
+
+        # einstein radius 
+        Dls = (Da_zs*(1+zs) - Da_zl*(1+zl))/(1+zs)
+        theta_E = (
+            4.0 * np.pi * (sigma / 299792.458) ** 2 * Dls / Da_zs
+        )  # Note: km/s for sigma; Dls, Ds are in Mpc
+
+        # cross-section
+        cross_section = phi_cut_SIE(q) * np.pi*theta_E**2
+
+        # rejection sampling
+        max_ = np.max(cross_section)  # maximum einstein radius
+        u = np.random.uniform(0, max_, size=size)
+        mask = u < cross_section
+        if np.sum(mask) > 0:
+            break
+
+    return(params[6], sigma[mask][0], q[mask][0], theta_E[mask][0])
+
+def rjs_sie_mp(args):
+
+    idx, zs, zl, sigma_args_cdf_values, sigma_args_x_array, sigma_args_conditioned_y_array, q_args_cdf_values, q_args_x_array, q_args_conditioned_y_array, da_args_function_spline, da_args_x_array, buffer_size = args
+
+    zl_ = zl*np.ones(buffer_size) # need for sigma computation
+    max_value = 0.
+    while True:
+        # velocity dispersion distribution
+        if sigma_args_conditioned_y_array is not None:
+            sigma = inverse_transform_sampler2d(buffer_size, zl_, sigma_args_cdf_values, sigma_args_x_array, sigma_args_conditioned_y_array)
+        else:
+            sigma = inverse_transform_sampler(buffer_size, zl_, sigma_args_cdf_values, sigma_args_x_array)
+
+        # axis ratio distribution
+        if q_args_conditioned_y_array is not None:
+            q = inverse_transform_sampler2d(buffer_size, sigma, q_args_cdf_values, q_args_x_array, q_args_conditioned_y_array)
+        else:
+            q = inverse_transform_sampler(buffer_size, sigma, q_args_cdf_values, q_args_x_array)
+    
+        ## Einstein radius calculation
+        # angular diameter distance
+        Da_zs = cubic_spline_interpolator(np.array([zs]), da_args_function_spline, da_args_x_array)[0] # float
+        Da_zl = cubic_spline_interpolator(np.array([zl]), da_args_function_spline, da_args_x_array)[0]
+
+        # einstein radius 
+        Dls = (Da_zs*(1+zs) - Da_zl*(1+zl))/(1+zs)
+        theta_E = (
+            4.0 * np.pi * (sigma / 299792.458) ** 2 * Dls / Da_zs
+        )  # Note: km/s for sigma; Dls, Ds are in Mpc
+
+        # cross-section
+        cross_section = phi_cut_SIE(q) * np.pi*theta_E**2
+
+        # rejection sampling
+        max_ = np.max(cross_section)  # maximum einstein radius
+        if max_ > max_value:
+            max_value = max_
+        u = np.random.uniform(0, max_value, size=buffer_size)
+        mask = u < cross_section
+        if np.sum(mask) > 0:
+            break
+
+    sigma_final = sigma[mask][0]
+    theta_E_final = theta_E[mask][0]
+    q_final = q[mask][0]
+    # print(idx)
+
+    return(idx, sigma_final, theta_E_final, q_final)

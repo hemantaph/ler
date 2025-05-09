@@ -258,6 +258,28 @@ def get_param_from_json(json_file):
         param[key] = np.array(value)
     return param
 
+def load_txt_from_module(package, directory, filename):
+    """
+    Function to load a specific dataset from a .txt file within the package
+
+    Parameters
+    ----------
+    package : str
+        name of the package
+    directory : str
+        name of the directory within the package
+    filename : str
+        name of the .txt file
+
+    Returns
+    ----------
+    data : `dict`
+        Dictionary loaded from the .txt file
+    """
+
+    with resources.path(package + '.' + directory, filename) as txt_path:
+        return np.loadtxt(txt_path)
+        
 def rejection_sample(pdf, xmin, xmax, size=100, chunk_size=10000):
     """
     Helper function for rejection sampling from a pdf with maximum and minimum arguments.
@@ -1132,7 +1154,7 @@ def pdf_cubic_spline_interpolator2d_array(xnew_array, ynew_array, norm_array, co
             matrixB = np.array([ynew**3, ynew**2, ynew, 1])
             result_array.append(np.dot(matrixB, matrixD))
 
-    return result_array
+    return np.array(result_array)
 
 @njit
 def cubic_spline_interpolator2d_array(xnew_array, ynew_array, coefficients, x, y):

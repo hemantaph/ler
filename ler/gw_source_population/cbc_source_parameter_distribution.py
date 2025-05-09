@@ -27,6 +27,8 @@ from .cbc_source_redshift_distribution import CBCSourceRedshiftDistribution
 
 from .jit_functions import lognormal_distribution_2D, bns_bimodal_pdf, inverse_transform_sampler_m1m2
 
+chunk_size = 10000
+
 
 class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
     """Class to generate a population of compact binaries. It helps sample all the intrinsic and extrinsic parameters of compact binaries. This daughter class inherits from :class:`~ler.ler.CBCSourceRedshiftDistribution` class.
@@ -259,7 +261,6 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         directory="./interpolator_pickle",
         create_new_interpolator=False,
     ):
-        print("\nInitializing CBCSourceParameterDistribution...\n")
         # set attributes
         self.z_min = z_min
         self.z_max = z_max
@@ -270,7 +271,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         self.directory = directory
 
         # setting up the interpolator creation parameters
-        create_new_interpolator = self.setup_decision_dictionary(create_new_interpolator)
+        create_new_interpolator = self.setup_decision_dictionary_gw_params(create_new_interpolator)
 
         # dealing with prior functions and categorization
         (
@@ -296,30 +297,31 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             create_new_interpolator=create_new_interpolator,
         )
 
+        print("\nInitializing CBCSourceParameterDistribution...\n")
         # initializing samplers
         # it goes through the setter functions and assign the sampler functions
         # self.source_redshift is already initialized in the super class
-        # self.gw_param_samplers["source_redshift"] = self.source_redshift
-        # self.source_frame_masses = self.gw_param_samplers["source_frame_masses"]
-        # self.geocent_time = self.gw_param_samplers["geocent_time"]
-        # self.ra = self.gw_param_samplers["ra"]
-        # self.dec = self.gw_param_samplers["dec"]
-        # self.phase = self.gw_param_samplers["phase"]
-        # self.psi = self.gw_param_samplers["psi"]
-        # self.theta_jn = self.gw_param_samplers["theta_jn"]
-        # # initialize the spin prior attribute
-        # # remove spin prior if spin_zero is True
-        # if not spin_zero:
-        #     self.a_1 = self.gw_param_samplers["a_1"]
-        #     self.a_2 = self.gw_param_samplers["a_2"]
-        #     if spin_precession:
-        #         self.tilt_1 = self.gw_param_samplers["tilt_1"]
-        #         self.tilt_2 = self.gw_param_samplers["tilt_2"]
-        #         self.phi_12 = self.gw_param_samplers["phi_12"]
-        #         self.phi_jl = self.gw_param_samplers["phi_jl"]
+        self.zs = self.gw_param_samplers["zs"]
+        self.source_frame_masses = self.gw_param_samplers["source_frame_masses"]
+        self.geocent_time = self.gw_param_samplers["geocent_time"]
+        self.ra = self.gw_param_samplers["ra"]
+        self.dec = self.gw_param_samplers["dec"]
+        self.phase = self.gw_param_samplers["phase"]
+        self.psi = self.gw_param_samplers["psi"]
+        self.theta_jn = self.gw_param_samplers["theta_jn"]
+        # initialize the spin prior attribute
+        # remove spin prior if spin_zero is True
+        if not spin_zero:
+            self.a_1 = self.gw_param_samplers["a_1"]
+            self.a_2 = self.gw_param_samplers["a_2"]
+            if spin_precession:
+                self.tilt_1 = self.gw_param_samplers["tilt_1"]
+                self.tilt_2 = self.gw_param_samplers["tilt_2"]
+                self.phi_12 = self.gw_param_samplers["phi_12"]
+                self.phi_jl = self.gw_param_samplers["phi_jl"]
 
 
-    def setup_decision_dictionary(self, create_new_interpolator):
+    def setup_decision_dictionary_gw_params(self, create_new_interpolator):
         """
         Method to set up a decision dictionary for interpolator creation.
 
@@ -362,7 +364,197 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         return create_new_interpolator_
 
-    def gw_parameters(self, size=1000, param=None):
+    def source_priors_categorization(
+        self, event_type, source_priors, source_prior_params
+    ):
+        """
+        Function to categorize the event priors and its parameters.
+
+        Parameters
+        ----------
+        event_type : `str`
+            Type of event to generate.
+            e.g. 'BBH', 'BNS', 'BBH_popIII', 'BBH_primordial', 'NSBH'
+        source_priors : `dict`
+            Dictionary of prior sampler functions for each parameter
+        source_prior_params : `dict`
+            Dictionary of sampler parameters for each GW parameter
+
+        Returns
+        ----------
+        source_priors_ : `dict`
+            Dictionary of prior sampler functions for each parameter
+        source_prior_params_ : `dict`
+            Dictionary of sampler parameters for each parameter
+        sampler_names_ : `dict`
+            Dictionary of sampler names with description
+
+        Examples
+        ----------
+        >>> from ler.gw_source_population import CBCSourceParameterDistribution
+        >>> cbc = CBCSourceParameterDistribution()
+        >>> source_priors, source_prior_params, sampler_names = cbc.source_priors_categorization(event_type='BBH', source_priors=None, source_prior_params=None)
+        >>> print(source_priors.keys())
+        >>> print(source_prior_params.keys())
+        >>> print(sampler_names.keys())
+        """
+
+        # for BBH
+        if event_type == "BBH":
+            merger_rate_density_prior = "merger_rate_density_bbh_popI_II_oguri2018"
+            merger_rate_density_prior_params = dict(
+                R0=23.9 * 1e-9, b2=1.6, b3=2.1, b4=30  # 
+            )
+            source_frame_masses_prior = "binary_masses_BBH_popI_II_powerlaw_gaussian"
+            source_frame_masses_prior_params = dict(
+                mminbh=4.98,
+                mmaxbh=112.5,
+                alpha=3.78,
+                mu_g=32.27,
+                sigma_g=3.88,
+                lambda_peak=0.03,
+                delta_m=4.8,
+                beta=0.81,
+            )
+            a_max = 0.8
+
+        elif event_type == "BNS":
+            merger_rate_density_prior = "merger_rate_density_bbh_popI_II_oguri2018"
+            merger_rate_density_prior_params = dict(
+                R0=105.5 * 1e-9, b2=1.6, b3=2.1, b4=30
+            )
+            source_frame_masses_prior = "binary_masses_BNS_bimodal"
+            source_frame_masses_prior_params = dict(
+                w=0.643,
+                muL=1.352,
+                sigmaL=0.08,
+                muR=1.88,
+                sigmaR=0.3,
+                mmin=1.0,
+                mmax=2.3,
+            )
+            a_max = 0.05
+
+        elif event_type == "NSBH":
+            merger_rate_density_prior = "merger_rate_density_bbh_popI_II_oguri2018"
+            merger_rate_density_prior_params = dict(
+                R0=27.0 * 1e-9, b2=1.6, b3=2.1, b4=30
+            )
+            source_frame_masses_prior = "binary_masses_NSBH_broken_powerlaw"
+            source_frame_masses_prior_params = dict(
+                mminbh=26,
+                mmaxbh=125,
+                alpha_1=6.75,
+                alpha_2=6.75,
+                b=0.5,
+                delta_m=5,
+                mminns=1.0,
+                mmaxns=3.0,
+                alphans=0.0,
+            )
+            a_max = 0.8
+
+        elif event_type == "BBH_popIII":
+            merger_rate_density_prior = "merger_rate_density_bbh_popIII_ken2022"
+            merger_rate_density_prior_params = dict(
+                n0=19.2 * 1e-9, aIII=0.66, bIII=0.3, zIII=11.6
+            )
+            source_frame_masses_prior = "binary_masses_BBH_popIII_lognormal"
+            source_frame_masses_prior_params = dict(
+                m_min=5.0, m_max=150.0, Mc=30.0, sigma=0.3, chunk_size=chunk_size
+            )
+            a_max = 0.8
+
+        elif event_type == "BBH_primordial":
+            merger_rate_density_prior = "merger_rate_density_bbh_primordial_ken2022"
+            merger_rate_density_prior_params = dict(
+                n0=0.044 * 1e-9, t0=13.786885302009708
+            )
+            source_frame_masses_prior = "binary_masses_BBH_primordial_lognormal"
+            source_frame_masses_prior_params = dict(
+                m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=chunk_size
+            )
+            a_max = 0.8
+
+        else:
+            raise ValueError("event_type is not recognized")
+
+        # setting the priors and its parameters
+        source_priors_ = dict(
+            merger_rate_density=merger_rate_density_prior,
+            zs='source_redshift',
+            source_frame_masses=source_frame_masses_prior,
+            geocent_time="sampler_uniform",
+            ra="sampler_uniform",
+            dec="sampler_cosine",
+            phase="sampler_uniform",
+            psi="sampler_uniform",
+            theta_jn="sampler_sine",
+        )
+        source_prior_params_ = dict(
+            merger_rate_density=merger_rate_density_prior_params,
+            zs=None,
+            source_frame_masses=source_frame_masses_prior_params,
+            geocent_time=dict(min_=1238166018, max_=1269702018),
+            ra=dict(min_=0., max_=2.*np.pi),
+            dec=None,  # dict(min_=-np.pi/2, max_=np.pi/2),
+            phase=dict(min_=0., max_=2.*np.pi),
+            psi=dict(min_=0., max_=np.pi),
+            theta_jn=None,  # dict(min_=0., max_=np.pi),
+        )
+
+        # spin
+        if not self.spin_zero:
+            source_priors_["a_1"] = "sampler_uniform"
+            source_prior_params_["a_1"] = dict(min_=-a_max, max_=a_max)
+            source_priors_["a_2"] = "sampler_uniform"
+            source_prior_params_["a_2"] = dict(min_=-a_max, max_=a_max)
+
+            if self.spin_precession:
+                source_priors_["a_1"] = "sampler_uniform"
+                source_prior_params_["a_1"] = dict(min_=0.0, max_=a_max)
+                source_priors_["a_2"] = "sampler_uniform"
+                source_prior_params_["a_2"] = dict(min_=0.0, max_=a_max)
+                source_priors_["tilt_1"] = "sampler_sine"
+                source_prior_params_["tilt_1"] = None
+
+                source_priors_["tilt_2"] = "sampler_sine"
+                source_prior_params_["tilt_2"] = None
+
+                source_priors_["phi_12"] = "sampler_uniform"
+                source_prior_params_["phi_12"] = dict(min_=0, max_=2 * np.pi)
+                source_priors_["phi_jl"] = "sampler_uniform"
+                source_prior_params_["phi_jl"] = dict(min_=0, max_=2 * np.pi)
+
+        # update the priors if input is given
+        if source_priors:
+            source_priors_.update(source_priors)
+        if source_prior_params:
+            source_prior_params_.update(source_prior_params)
+
+        # taking care of source_prior_params from the available_gw_prior_list_and_its_params
+        for key, value in source_priors_.items():
+            if isinstance(value, str):
+                dict_ = self.available_gw_prior_list_and_its_params[key]  # e.g. all source_frame_masses_prior function names and its parameters
+                if value in dict_:
+                    param_dict = dict_[value]
+                    if source_prior_params_[key] is None:
+                        source_prior_params_[key] = param_dict
+                    else:
+                        param_dict.update(source_prior_params_[key])
+                        source_prior_params_[key] = param_dict
+                else:
+                    raise ValueError(
+                        f"source_prior_params_['{key}'] is not in available_gw_prior_list_and_its_params"
+                    )
+            elif not callable(value):
+                raise ValueError(
+                    f"source_prior_params_['{key}'] should be either a string name of available sampler or a function"
+                )
+
+        return (source_priors_, source_prior_params_)
+    
+    def sample_gw_parameters(self, size=1000, param=None):
         """
         Function to sample BBH/BNS/NSBH intrinsic and extrinsics parameters.
 
@@ -411,10 +603,8 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 gw_parameters[sampler_name] = param[sampler_name]
 
         # calculate luminosity distance
-        zs = gw_parameters["source_redshift"]
-        gw_parameters["zs"] = zs
-        del gw_parameters["source_redshift"]
-        gw_parameters["luminosity_distance"] = self.z_to_luminosity_distance(zs)  # Mpc
+        zs = gw_parameters["zs"]
+        gw_parameters["luminosity_distance"] = self.luminosity_distance(zs)  # Mpc
         
         # mass1 and mass2
         m1, m2 = gw_parameters["source_frame_masses"]  # Msun
@@ -483,9 +673,13 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         >>> m1_src, m2_src = cbc.binary_masses_BBH_popI_II_powerlaw_gaussian(size=1000)
         """
 
-        identifier_dict = {}
-        identifier_dict['name'] = "binary_masses_BBH_popI_II_powerlaw_gaussian"
-        identifier_dict.update(kwargs)
+        identifier_dict = {'name': "binary_masses_BBH_popI_II_powerlaw_gaussian"}
+        param_dict = self.available_gw_prior_list_and_its_params["source_frame_masses"]["binary_masses_BBH_popI_II_powerlaw_gaussian"].copy()
+        if param_dict:
+            param_dict.update(kwargs)
+        else:
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
 
 
         # mass function
@@ -516,11 +710,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             callback='rvs',
         )
 
-        if get_attribute:
-            return mass_object
-        else:
-            # sample mass1 and mass2
-            return mass_object.rvs(size)
+        return mass_object if get_attribute else mass_object.rvs(size)
 
     def binary_masses_BBH_popIII_lognormal(
         self,
@@ -570,9 +760,13 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         >>> m1_src, m2_src = cbc.binary_masses_BBH_popIII_lognormal(size=1000)
         """
 
-        identifier_dict = {}
-        identifier_dict['name'] = "binary_masses_BBH_popIII_lognormal"
-        identifier_dict.update(kwargs)
+        identifier_dict = {'name': "binary_masses_BBH_popIII_lognormal"}
+        param_dict = self.available_gw_prior_list_and_its_params["source_frame_masses"]["binary_masses_BBH_popIII_lognormal"].copy()
+        if param_dict:
+            param_dict.update(kwargs)
+        else:
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
 
         rvs_ = lambda size: lognormal_distribution_2D(
             size,
@@ -580,7 +774,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             m_max=identifier_dict["m_max"],
             Mc=identifier_dict["Mc"],
             sigma=identifier_dict["sigma"],
-            chunk_size=identifier_dict["chunk_size"],
+            chunk_size=chunk_size,
         )
 
         mass_object = FunctionConditioning(
@@ -598,11 +792,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             callback='rvs',
         )
 
-        if get_attribute:
-            return mass_object
-        else:
-            # sample mass1 and mass2
-            return mass_object.rvs(size)
+        return mass_object if get_attribute else mass_object.rvs(size)
 
     def binary_masses_BBH_primordial_lognormal(
         self,
@@ -643,9 +833,13 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             Array of mass2 in source frame (Msun)
         """
 
-        identifier_dict = {}
-        identifier_dict['name'] = "binary_masses_BBH_primordial_lognormal"
-        identifier_dict.update(kwargs)
+        identifier_dict = {'name': "binary_masses_BBH_primordial_lognormal"}    
+        param_dict = self.available_gw_prior_list_and_its_params["source_frame_masses"]["binary_masses_BBH_primordial_lognormal"].copy()
+        if param_dict:
+            param_dict.update(kwargs)
+        else:
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
 
         rvs_ = lambda size: lognormal_distribution_2D(
             size,
@@ -653,7 +847,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             m_max=identifier_dict["m_max"],
             Mc=identifier_dict["Mc"],
             sigma=identifier_dict["sigma"],
-            chunk_size=identifier_dict["chunk_size"],
+            chunk_size=chunk_size,
         )
 
         mass_object = FunctionConditioning(
@@ -671,12 +865,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             callback='rvs',
         )
 
-        if get_attribute:
-            return mass_object
-        else:
-            # sample mass1 and mass2
-            return mass_object.rvs(size)
-
+        return mass_object if get_attribute else mass_object.rvs(size)
 
     def binary_masses_BNS_gwcosmo(
         self, size, get_attribute=False, **kwargs
@@ -717,10 +906,13 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         #     mmaxns = param["mmaxns"]
         #     alphans = param["alphans"]
 
-        identifier_dict = {}
-        identifier_dict['name'] = "binary_masses_BNS_gwcosmo"
-        identifier_dict.update(kwargs)
-        
+        identifier_dict = {'name': "binary_masses_BNS_gwcosmo"}
+        param_dict = self.available_gw_prior_list_and_its_params["source_frame_masses"]["binary_masses_BNS_gwcosmo"].copy()
+        if param_dict is not None:
+            param_dict.update(kwargs)
+        else:
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
 
         # mass function for BNS
         model = p.BNS(
@@ -745,10 +937,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             callback='rvs',
         )
 
-        if get_attribute:
-            return mass_object
-        else:
-            return mass_object(size)
+        return mass_object if get_attribute else mass_object(size)
         
     def binary_masses_NSBH_broken_powerlaw(self, size, get_attribute=False, **kwargs):
         """
@@ -804,9 +993,13 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         >>> m1_src, m2_src = cbc.binary_masses_NSBH_broken_powerlaw(size=1000)
         """
 
-        identifier_dict = {}
-        identifier_dict['name'] = "binary_masses_NSBH_broken_powerlaw"
-        identifier_dict.update(kwargs)
+        identifier_dict = {'name': "binary_masses_NSBH_broken_powerlaw"}
+        param_dict = self.available_gw_prior_list_and_its_params["source_frame_masses"]["binary_masses_NSBH_broken_powerlaw"].copy()
+        if param_dict:
+            param_dict.update(kwargs)
+        else:
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
 
         # mass function for NSBH
         model = p.NSBH_broken_powerlaw(
@@ -838,10 +1031,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             callback='rvs',
         )
 
-        if get_attribute:
-            return mass_object
-        else:
-            return mass_object(size)
+        return mass_object if get_attribute else mass_object.rvs(size)
 
     def binary_masses_uniform(
         self,
@@ -882,9 +1072,13 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         >>> m1_src, m2_src = cbc.binary_masses_uniform(size=1000)
         """
 
-        identifier_dict = {}
-        identifier_dict['name'] = "binary_masses_uniform"
-        identifier_dict.update(kwargs)
+        identifier_dict = {'name': "binary_masses_uniform"}
+        param_dict = self.available_gw_prior_list_and_its_params["source_frame_masses"]["binary_masses_uniform"].copy()
+        if param_dict:
+            param_dict.update(kwargs)
+        else:
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
 
         m_min = identifier_dict["m_min"]
         m_max = identifier_dict["m_max"]
@@ -905,10 +1099,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             callback='rvs',
         )
 
-        if get_attribute:
-            return mass_object
-        else:
-            return mass_object(size)
+        return mass_object if get_attribute else mass_object.rvs(size)
 
     def binary_masses_BNS_bimodal(
         self,
@@ -978,10 +1169,14 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         >>> m1_src, m2_src = cbc.binary_masses_BNS_bimodal(size=1000)
         """
 
-        identifier_dict = {}
-        identifier_dict['name'] = "binary_masses_BNS_bimodal"
-        identifier_dict['resolution'] = self.source_priors_params["source_frame_masses"]["resolution"]
-        identifier_dict.update(kwargs)
+        identifier_dict = {'name': "binary_masses_BNS_bimodal"}
+        identifier_dict['resolution'] = self.create_new_interpolator["source_frame_masses"]["resolution"]
+        param_dict = self.available_gw_prior_list_and_its_params["source_frame_masses"]["binary_masses_BNS_bimodal"].copy()
+        if param_dict:
+            param_dict.update(kwargs)
+        else:
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
 
         # mass function for BNS
         mass = np.linspace(identifier_dict["mmin"], identifier_dict["mmax"], identifier_dict["resolution"]) 
@@ -1011,10 +1206,13 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             callback='rvs',
         )
 
+        cdf_values = mass_object.cdf_values
+        x_array = mass_object.x_array
+
         mass_object.rvs = njit(lambda size: inverse_transform_sampler_m1m2(
             size, 
-            mass_object.cdf_values, 
-            mass_object.x_array,)
+            cdf_values, 
+            x_array,)
         )
 
         if get_attribute:
@@ -1052,9 +1250,10 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         # if param:
         #     value = param["value"]
-        identifier_dict = {}
-        identifier_dict['name'] = "constant_values_n_size"
-        identifier_dict.update(kwargs)
+        identifier_dict = {'name': "constant_values_n_size"}
+        param_dict = dict(value=0.0)
+        param_dict.update(kwargs)
+        identifier_dict.update(param_dict)
 
         value = identifier_dict["value"]
         # pdf_, zero everywhere except at value
@@ -1083,12 +1282,6 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         ----------
         size : `int`
             Number of samples to draw
-        start_time : `float`
-            Start time of the uniform distribution
-            default: 1238166018
-        end_time : `float`
-            End time of the uniform distribution
-            default: 1238166018 + 31536000
         get_attribute : `bool`
             If True, return the njitted sampler function with size as the only input where parameters are fixed to the given values.
         param : `dict`
@@ -1106,9 +1299,10 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         >>> value = cbc.sampler_uniform(size=1000)
         """
 
-        identifier_dict = {}
-        identifier_dict['name'] = "sampler_uniform"
-        identifier_dict.update(kwargs)
+        identifier_dict = {'name': "sampler_uniform"}
+        param_dict = dict(xmin=0.0, xmax=1.0)
+        param_dict.update(kwargs)
+        identifier_dict.update(param_dict)
 
         xmin = identifier_dict['xmin']
         xmax = identifier_dict['xmax']
@@ -1192,7 +1386,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         identifier_dict.update(kwargs)
 
         pdf_ = njit(lambda x: 0.5 * np.sin(x))
-        rvs_ = njit(lambda size: np.arcsin((np.random.uniform(0, 1, size=size) * 2 - 1)))
+        rvs_ = njit(lambda size: np.arccos((np.random.uniform(0, 1, size=size) - 0.5) * 2))
 
         object_ = FunctionConditioning(
             create_pdf=pdf_,
@@ -1204,6 +1398,561 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             return object_
         else:
             return object_(size)
+
+    @property
+    def source_frame_masses(self):
+        """
+        Function to sample source frame masses (mass1_source, mass2_source) with the initialized prior.
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+
+        Returns
+        ----------
+        mass_1_source : `numpy.ndarray` (1D array of floats)
+            Array of mass1 in source frame
+        mass_2_source : `numpy.ndarray` (1D array of floats)
+            Array of mass2 in source frame
+        """
+
+        return self._source_frame_masses
+
+    @source_frame_masses.setter
+    def source_frame_masses(self, prior):
+        if prior in self.available_gw_prior_list_and_its_params["source_frame_masses"]:
+            print(f"using ler available source_frame_masses function : {prior}")
+            args = self.gw_param_samplers_params["source_frame_masses"]
+            if args is None:
+                self._source_frame_masses = getattr(self, prior)(
+                size=None, get_attribute=True
+            )
+            else:
+                # follwing should return a sampler function with only one argument (size)
+                self._source_frame_masses = getattr(self, prior)(
+                    size=None, get_attribute=True, **args
+                )
+        elif callable(prior):
+            print("using user defined custom source_frame_masses function")
+            self._source_frame_masses = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+        elif isinstance(prior, object):
+            print("using user defined custom source_frame_masses class/object")
+            self._source_frame_masses = prior
+        else:
+            raise ValueError(
+                "source_frame_masses prior not available in available_gw_prior_list_and_its_params. Must be a string or a callable function."
+            )
+        
+    @property
+    def zs(self):
+        """
+        Function to sample source redshift with the initialized prior.
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+        
+        Returns
+        ----------
+        zs : `numpy.ndarray` (1D array of floats)
+            Array of source redshift
+        """
+
+        return self._zs
+    
+    @zs.setter
+    def zs(self, prior):
+        if prior in self.available_gw_prior_list_and_its_params["zs"]:
+            print(f"using ler available zs function : {prior}")
+            self._zs = getattr(self, prior)
+        elif callable(prior):
+            print("using user defined custom zs function")
+            self._zs = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+        elif isinstance(prior, object):
+            print("using user defined custom zs class/object")
+            self._zs = prior
+        else:
+            raise ValueError(
+                "zs prior not available in available_gw_prior_list_and_its_params. Must be a string or a callable function."
+            )
+
+    @property
+    def geocent_time(self):
+        """
+        Function to sample geocent time with the initialized prior.
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+
+        Returns
+        ----------
+        geocent_time : `numpy.ndarray` (1D array of floats)
+            Array of geocent_time or time of coalescence
+        """
+
+        return self._geocent_time
+
+    @geocent_time.setter
+    def geocent_time(self, prior):
+        if prior in self.available_gw_prior_list_and_its_params["geocent_time"]:
+            print(f"using ler available geocent_time function : {prior}")
+            args = self.gw_param_samplers_params["geocent_time"]
+            if args is None:
+                self._geocent_time = getattr(self, prior)(
+                size=None, get_attribute=True
+            )
+            else:
+                # follwing should return a sampler function with only one argument (size)
+                self._geocent_time = getattr(self, prior)(
+                    size=None, get_attribute=True, **args
+                )
+        elif callable(prior):
+            print("using user defined custom geocent_time function")
+            self._geocent_time = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+        elif isinstance(prior, object):
+            print("using user defined custom geocent_time class/object")
+            self._geocent_time = prior
+        else:
+            raise ValueError(
+                "geocent_time prior not available in available_gw_prior_list_and_its_params. Must be a string or a callable function."
+            )
+
+    @property
+    def ra(self):
+        """
+        Function to sample right ascension of sky position with the initialized prior.
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+
+        Returns
+        ----------
+        ra : `numpy.ndarray` (1D array of floats)
+            Array of right ascension of sky position
+        """
+
+        return self._ra
+
+    @ra.setter
+    def ra(self, prior):
+        if prior in self.available_gw_prior_list_and_its_params["ra"]:
+            args = self.gw_param_samplers_params["ra"]
+            if args is None:
+                self._ra = getattr(self, prior)(size=None, get_attribute=True)
+            else:
+                # follwing should return a sampler function with only one argument (size)
+                self._ra = getattr(self, prior)(size=None, get_attribute=True, **args)
+        elif callable(prior):
+            print("using user defined custom ra function")
+            self._ra = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+        elif isinstance(prior, object):
+            print("using user defined custom ra class/object")
+            self._ra = prior
+        else:
+            raise ValueError(
+                "ra prior not available in available_gw_prior_list_and_its_params. Must be a string or a callable function."
+            )
+
+    @property
+    def dec(self):
+        """
+        Function to sample declination of sky position with the initialized prior.
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+
+        Returns
+        ----------
+        dec : `numpy.ndarray` (1D array of floats)
+            Array of declination of sky position
+        """
+
+        return self._dec
+
+    @dec.setter
+    def dec(self, prior):
+        if prior in self.available_gw_prior_list_and_its_params["dec"]:
+            print(f"using ler available dec function : {prior}")
+            args = self.gw_param_samplers_params["dec"]
+            if args is None:
+                self._dec = getattr(self, prior)(size=None, get_attribute=True)
+            else:
+                # follwing should return a sampler function with only one argument (size)
+                self._dec = getattr(self, prior)(size=None, get_attribute=True, **args)
+        elif callable(prior):
+            print("using user provided custom dec function")
+            self._dec = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+        elif isinstance(prior, object):
+            print("using user provided custom dec class/object")
+            self._dec = prior
+        else:
+            raise ValueError(
+                "dec prior not available in available_gw_prior_list_and_its_params. Must be a string or a callable function."
+            )
+
+    @property
+    def phase(self):
+        """
+        Function to sample coalescence phase with the initialized prior.
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+
+        Returns
+        ----------
+        phase : `numpy.ndarray` (1D array of floats)
+            Array of coalescence phase
+        """
+
+        return self._phase
+
+    @phase.setter
+    def phase(self, prior):
+        if prior in self.available_gw_prior_list_and_its_params["phase"]:
+            print(f"using ler available phase function : {prior}")
+            args = self.gw_param_samplers_params["phase"]
+            if args is None:
+                self._phase = getattr(self, prior)(size=None, get_attribute=True)
+            else:
+                # follwing should return a sampler function with only one argument (size)
+                self._phase = getattr(self, prior)(size=None, get_attribute=True, **args)
+        elif callable(prior):
+            print("using user provided custom phase function")
+            self._phase = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+        elif isinstance(prior, object):
+            print("using user provided custom phase class/object")
+            self._phase = prior
+        else:
+            raise ValueError(
+                "phase prior not available in available_gw_prior_list_and_its_params. Must be a string or a callable function."
+            )
+
+    @property
+    def psi(self):
+        """
+        Function to sample polarization angle with the initialized prior.
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+
+        Returns
+        ----------
+        psi : `numpy.ndarray` (1D array of floats)
+            Array of polarization angle
+        """
+
+        return self._psi
+
+    @psi.setter
+    def psi(self, prior):
+        if prior in self.available_gw_prior_list_and_its_params["psi"]:
+            print(f"using ler available psi function : {prior}")
+            args = self.gw_param_samplers_params["psi"]
+            if args is None:
+                self._psi = getattr(self, prior)(size=None, get_attribute=True)
+            else:
+                # follwing should return a sampler function with only one argument (size)
+                self._psi = getattr(self, prior)(size=None, get_attribute=True, **args)
+        elif callable(prior):
+            print("using user provided custom psi function")
+            self._psi = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+        elif isinstance(prior, object):
+            print("using user provided custom psi class/object")
+            self._psi = prior
+        else:
+            raise ValueError(
+                "psi prior not available in available_gw_prior_list_and_its_params. Must be a string or a callable function."
+            )
+
+    @property
+    def theta_jn(self):
+        """
+        Function to sample theta_jn with the initialized prior.
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+
+        Returns
+        ----------
+        theta_jn : `numpy.ndarray` (1D array of floats)
+            Array of theta_jn
+        """
+        return self._theta_jn
+
+    @theta_jn.setter
+    def theta_jn(self, prior):
+        if prior in self.available_gw_prior_list_and_its_params["theta_jn"]:
+            print(f"using ler available theta_jn function : {prior}")
+            args = self.gw_param_samplers_params["theta_jn"]
+            if args is None:
+                self._theta_jn = getattr(self, prior)(
+                size=None, get_attribute=True
+            )
+            else:
+                # follwing should return a sampler function with only one argument (size)
+                self._theta_jn = getattr(self, prior)(
+                    size=None, get_attribute=True, **args
+                )
+        elif callable(prior):
+            print("using user provided custom theta_jn function")
+            self._theta_jn = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+        elif isinstance(prior, object):
+            print("using user provided custom theta_jn class/object")
+            self._theta_jn = prior
+        else:
+            raise ValueError("theta_jn prior not available in available_gw_prior_list_and_its_params. Must be a string or a callable function.")
+
+    @property
+    def a_1(self):
+        """
+        Function to sample spin magnitude of the compact binaries (body1) with the initialized prior.
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+
+        Returns
+        ----------
+        a_1 : `numpy.ndarray` (1D array of floats)
+            Array of spin magnitude of the compact binaries (body1)
+        """
+        return self._a_1
+
+    @a_1.setter
+    def a_1(self, prior):
+        if prior in self.available_gw_prior_list_and_its_params["a_1"]:
+            print(f"using ler available a_1 function : {prior}")
+            args = self.gw_param_samplers_params["a_1"]
+            if args is None:
+                self._a_1 = getattr(self, prior)(
+                size=None, get_attribute=True
+            )
+            else:
+                # follwing should return a sampler function with only one argument (size)
+                self._a_1 = getattr(self, prior)(
+                    size=None, get_attribute=True, **args
+                )
+        elif callable(prior):
+            print("using user provided custom a_1 function")
+            self._a_1 = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+        elif isinstance(prior, object):
+            print("using user provided custom a_1 class/object")
+            self._a_1 = prior
+        else:
+            raise ValueError("a_1 prior not available in available_gw_prior_list_and_its_params. Must be a string or a callable function.")
+
+    @property
+    def a_2(self):
+        """
+        Function to sample spin magnitude of the compact binaries (body2) with the initialized prior.
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+
+        Returns
+        ----------
+        a_2 : `numpy.ndarray` (1D array of floats)
+            Array of spin magnitude of the compact binaries (body2)
+        """
+        return self._a_2
+
+    @a_2.setter
+    def a_2(self, prior):
+        if prior in self.available_gw_prior_list_and_its_params["a_2"]:
+            print(f"using ler available a_2 function : {prior}")
+            args = self.gw_param_samplers_params["a_2"]
+            if args is None:
+                self._a_2 = getattr(self, prior)(
+                size=None, get_attribute=True
+            )
+            else:
+                # follwing should return a sampler function with only one argument (size)
+                self._a_2 = getattr(self, prior)(
+                    size=None, get_attribute=True, param=args
+                )
+        elif callable(prior):
+            print("using user provided custom a_2 function")
+            self._a_2 = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+        elif isinstance(prior, object):
+            print("using user provided custom a_2 class/object")
+            self._a_2 = prior
+        else:
+            raise ValueError("a_2 prior not available in available_gw_prior_list_and_its_params. Must be a string or a callable function.")
+
+    @property
+    def tilt_1(self):
+        """
+        Function to sample tilt angle of the compact binaries (body1) with the initialized prior.
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+
+        Returns
+        ----------
+        tilt_1 : `numpy.ndarray` (1D array of floats)
+            Array of tilt angle of the compact binaries (body1)
+        """
+        return self._tilt_1
+
+    @tilt_1.setter
+    def tilt_1(self, prior):
+        if prior in self.available_gw_prior_list_and_its_params["tilt_1"]:
+            print(f"using ler available tilt_1 function : {prior}")
+            args = self.gw_param_samplers_params["tilt_1"]
+            if args is None:
+                self._tilt_1 = getattr(self, prior)(
+                size=None, get_attribute=True
+            )
+            else:
+                self._tilt_1 = getattr(self, prior)(
+                    size=None, get_attribute=True, param=args
+                )
+        elif callable(prior):
+            print("using user provided custom tilt_1 function")
+            self._tilt_1 = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+        elif isinstance(prior, object):
+            print("using user provided custom tilt_1 class/object")
+            self._tilt_1 = prior
+        else:
+            raise ValueError("tilt_1 prior not available in available_gw_prior_list_and_its_params. Must be a string or a callable function.")
+
+    @property
+    def tilt_2(self):
+        """
+        Function to sample tilt angle of the compact binaries (body2) with the initialized prior.
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+
+        Returns
+        ----------
+        tilt_2 : `numpy.ndarray` (1D array of floats)
+            Array of tilt angle of the compact binaries (body2)
+        """
+
+        return self._tilt_2
+
+    @tilt_2.setter
+    def tilt_2(self, prior):
+        if prior in self.available_gw_prior_list_and_its_params["tilt_2"]:
+            print(f"using ler available tilt_2 function : {prior}")
+            args = self.gw_param_samplers_params["tilt_2"]
+            if args is None:
+                self._tilt_2 = getattr(self, prior)(
+                size=None, get_attribute=True
+            )
+            else:
+                self._tilt_2 = getattr(self, prior)(
+                    size=None, get_attribute=True, param=args
+                )
+        elif callable(prior):
+            print("using user provided custom tilt_2 function")
+            self._tilt_2 = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+        elif isinstance(prior, object):
+            print("using user provided custom tilt_2 class/object")
+            self._tilt_2 = prior
+        else:
+            raise ValueError("tilt_2 prior not available in available_gw_prior_list_and_its_params. Must be a string or a callable function.")
+        
+    @property
+    def phi_12(self):
+        """
+        Function to sample azimuthal angle between the two spins with the initialized prior.
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+
+        Returns
+        ----------
+        phi_12 : `numpy.ndarray` (1D array of floats)
+            Array of azimuthal angle between the two spins
+        """
+
+        return self._phi_12
+
+    @phi_12.setter
+    def phi_12(self, prior):
+        if prior in self.available_gw_prior_list_and_its_params["phi_12"]:
+            print(f"using ler available phi_12 function : {prior}")
+            args = self.gw_param_samplers_params["phi_12"]
+            if args is None:
+                self._phi_12 = getattr(self, prior)(
+                    size=None, get_attribute=True
+                )
+            else:
+                self._phi_12 = getattr(self, prior)(
+                    size=None, get_attribute=True, param=args
+                )
+        elif callable(prior):
+            print("using user provided custom phi_12 function")
+            self._phi_12 = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+        elif isinstance(prior, object):
+            print("using user provided custom phi_12 class/object")
+            self._phi_12 = prior
+        else:
+            raise ValueError("phi_12 prior not available in available_gw_prior_list_and_its_params. Must be a string or a callable function.")
+
+    @property
+    def phi_jl(self):
+        """
+        Function to sample azimuthal angle between the total angular momentum and the orbital angular momentum with the initialized prior.
+
+        Parameters
+        ----------
+        size : `int`
+            Number of samples to draw
+
+        Returns
+        ----------
+        phi_jl : `numpy.ndarray` (1D array of floats)
+            Array of azimuthal angle between the total angular momentum and the orbital angular momentum
+        """
+        return self._phi_jl
+
+    @phi_jl.setter
+    def phi_jl(self, prior):
+        if prior in self.available_gw_prior_list_and_its_params["phi_jl"]:
+            print(f"using ler available phi_jl function : {prior}")
+            args = self.gw_param_samplers_params["phi_jl"]
+            if args is None:
+                self._phi_jl = getattr(self, prior)(
+                size=None, get_attribute=True
+            )
+            else:
+                self._phi_jl = getattr(self, prior)(
+                    size=None, get_attribute=True, param=args
+                )
+        elif callable(prior):
+            print("using user provided custom phi_jl function")
+            self._phi_jl = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+        elif isinstance(prior, object):
+            print("using user provided custom phi_jl class/object")
+            self._phi_jl = prior
+        else:
+            raise ValueError("phi_jl prior not available in available_gw_prior_list_and_its_params. Must be a string or a callable function.")
 
     @property
     def available_gw_prior_list_and_its_params(self):
@@ -1225,6 +1974,9 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         self._available_gw_prior_list_and_its_params = dict(
             merger_rate_density=self.merger_rate_density_model_list,
+            zs=dict(
+                source_redshift=None,
+            ),
             source_frame_masses=dict(
                 binary_masses_BBH_popI_II_powerlaw_gaussian=dict(
                     mminbh=4.98,
@@ -1236,7 +1988,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                     delta_m=4.8,
                     beta=0.81,
                 ),
-                binary_masses_BBH_popIII_lognormal=dict(m_min=5.0, m_max=150.0, Mc=30.0, sigma=0.3, chunk_size=10000),
+                binary_masses_BBH_popIII_lognormal=dict(m_min=5.0, m_max=150.0, Mc=30.0, sigma=0.3),
                 binary_masses_BBH_primordial_lognormal=dict(
                     Mc=30.0, sigma=0.3, beta=1.1
                 ),
@@ -1247,6 +1999,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                     alpha_1=6.75,
                     alpha_2=0.0,
                     b=0.5,
+                    delta_m=5,
                     mminns=1.0,
                     mmaxns=3.0,
                     alphans=0.0,
@@ -1288,7 +2041,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             ),
             geocent_time=dict(
                 sampler_uniform=dict(
-                    xmin=1238166018, xmax=1238166018 + 31536000
+                    xmin=1238166018, xmax=1238166018 + 31557600.0
                 ),
                 constant_values_n_size=dict(value=1238166018),
             ),
@@ -1317,592 +2070,3 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         )
 
         return self._available_gw_prior_list_and_its_params
-
-    def source_priors_categorization(
-        self, event_type, source_priors, source_prior_params
-    ):
-        """
-        Function to categorize the event priors and its parameters.
-
-        Parameters
-        ----------
-        event_type : `str`
-            Type of event to generate.
-            e.g. 'BBH', 'BNS', 'BBH_popIII', 'BBH_primordial', 'NSBH'
-        source_priors : `dict`
-            Dictionary of prior sampler functions for each parameter
-        source_prior_params : `dict`
-            Dictionary of sampler parameters for each GW parameter
-
-        Returns
-        ----------
-        source_priors_ : `dict`
-            Dictionary of prior sampler functions for each parameter
-        source_prior_params_ : `dict`
-            Dictionary of sampler parameters for each parameter
-        sampler_names_ : `dict`
-            Dictionary of sampler names with description
-
-        Examples
-        ----------
-        >>> from ler.gw_source_population import CBCSourceParameterDistribution
-        >>> cbc = CBCSourceParameterDistribution()
-        >>> source_priors, source_prior_params, sampler_names = cbc.source_priors_categorization(event_type='BBH', source_priors=None, source_prior_params=None)
-        >>> print(source_priors.keys())
-        >>> print(source_prior_params.keys())
-        >>> print(sampler_names.keys())
-        """
-
-        # for BBH
-        if event_type == "BBH":
-            merger_rate_density_prior = "merger_rate_density_bbh_popI_II_oguri2018"
-            merger_rate_density_prior_params = dict(
-                R0=23.9 * 1e-9, b2=1.6, b3=2.0, b4=30  # 
-            )
-            source_frame_masses_prior = "binary_masses_BBH_popI_II_powerlaw_gaussian"
-            source_frame_masses_prior_params = dict(
-                mminbh=4.98,
-                mmaxbh=112.5,
-                alpha=3.78,
-                mu_g=32.27,
-                sigma_g=3.88,
-                lambda_peak=0.03,
-                delta_m=4.8,
-                beta=0.81,
-            )
-            a_max = 0.8
-
-        elif event_type == "BNS":
-            merger_rate_density_prior = "merger_rate_density_bbh_popI_II_oguri2018"
-            merger_rate_density_prior_params = dict(
-                R0=105.5 * 1e-9, b2=1.6, b3=2.0, b4=30
-            )
-            source_frame_masses_prior = "binary_masses_BNS_bimodal"
-            source_frame_masses_prior_params = dict(
-                w=0.643,
-                muL=1.352,
-                sigmaL=0.08,
-                muR=1.88,
-                sigmaR=0.3,
-                mmin=1.0,
-                mmax=2.3,
-            )
-            a_max = 0.05
-
-        elif event_type == "NSBH":
-            merger_rate_density_prior = "merger_rate_density_bbh_popI_II_oguri2018"
-            merger_rate_density_prior_params = dict(
-                R0=27.0 * 1e-9, b2=1.6, b3=2.0, b4=30
-            )
-            source_frame_masses_prior = "binary_masses_NSBH_broken_powerlaw"
-            source_frame_masses_prior_params = dict(
-                mminbh=26,
-                mmaxbh=125,
-                alpha_1=6.75,
-                alpha_2=6.75,
-                b=0.5,
-                delta_m=5,
-                mminns=1.0,
-                mmaxns=3.0,
-                alphans=0.0,
-            )
-            a_max = 0.8
-
-        elif event_type == "BBH_popIII":
-            merger_rate_density_prior = "merger_rate_density_bbh_popIII_ken2022"
-            merger_rate_density_prior_params = dict(
-                n0=19.2 * 1e-9, aIII=0.66, bIII=0.3, zIII=11.6
-            )
-            source_frame_masses_prior = "binary_masses_BBH_popIII_lognormal"
-            source_frame_masses_prior_params = dict(
-                m_min=5.0, m_max=150.0, Mc=30.0, sigma=0.3, chunk_size=10000
-            )
-            a_max = 0.8
-
-        elif event_type == "BBH_primordial":
-            merger_rate_density_prior = "merger_rate_density_bbh_primordial_ken2022"
-            merger_rate_density_prior_params = dict(
-                n0=0.044 * 1e-9, t0=13.786885302009708
-            )
-            source_frame_masses_prior = "binary_masses_BBH_primordial_lognormal"
-            source_frame_masses_prior_params = dict(
-                m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000
-            )
-            a_max = 0.8
-
-        else:
-            raise ValueError("event_type is not recognized")
-
-        # setting the priors and its parameters
-        source_priors_ = dict(
-            merger_rate_density=merger_rate_density_prior,
-            source_frame_masses=source_frame_masses_prior,
-            geocent_time="sampler_uniform",
-            ra="sampler_uniform",
-            dec="sampler_cosine",
-            phase="sampler_uniform",
-            psi="sampler_uniform",
-            theta_jn="sampler_sine",
-        )
-        source_prior_params_ = dict(
-            merger_rate_density=merger_rate_density_prior_params,
-            source_frame_masses=source_frame_masses_prior_params,
-            geocent_time=dict(min_=1238166018, max_=1269702018),
-            ra=dict(min_=0., max_=2.*np.pi),
-            dec=None,
-            phase=dict(min_=0., max_=2.*np.pi),
-            psi=dict(min_=0., max_=np.pi),
-            theta_jn=None,
-        )
-
-        # spin
-        if not self.spin_zero:
-            source_priors_["a_1"] = "sampler_uniform"
-            source_prior_params_["a_1"] = dict(min_=-a_max, max_=a_max)
-            source_priors_["a_2"] = "sampler_uniform"
-            source_prior_params_["a_2"] = dict(min_=-a_max, max_=a_max)
-
-            if self.spin_precession:
-                source_priors_["a_1"] = "sampler_uniform"
-                source_prior_params_["a_1"] = dict(min_=0.0, max_=a_max)
-                source_priors_["a_2"] = "sampler_uniform"
-                source_prior_params_["a_2"] = dict(min_=0.0, max_=a_max)
-                source_priors_["tilt_1"] = "sampler_sine"
-                source_prior_params_["tilt_1"] = None
-
-                source_priors_["tilt_2"] = "sampler_sine"
-                source_prior_params_["tilt_2"] = None
-
-                source_priors_["phi_12"] = "sampler_uniform"
-                source_prior_params_["phi_12"] = dict(min_=0, max_=2 * np.pi)
-                source_priors_["phi_jl"] = "sampler_uniform"
-                source_prior_params_["phi_jl"] = dict(min_=0, max_=2 * np.pi)
-
-        # update the priors if input is given
-        if source_priors:
-            source_priors_.update(source_priors)
-        if source_prior_params:
-            source_prior_params_.update(source_prior_params)
-
-        print(source_prior_params_)
-
-        # taking care of source_prior_params from the available_gw_prior_list_and_its_params
-        for key, value in source_priors_.items():
-            if isinstance(value, str):
-                dict_ = self.available_gw_prior_list_and_its_params[key]  # e.g. all source_frame_masses_prior function names and its parameters
-                if value in dict_:
-                    param_dict = dict_[value]
-                    if source_prior_params_[key] is None:
-                        source_prior_params_[key] = param_dict
-                    else:
-                        source_prior_params_[key] = param_dict.update(source_prior_params_[key])
-                else:
-                    raise ValueError(
-                        f"source_prior_params_['{key}'] is not in available_gw_prior_list_and_its_params"
-                    )
-            elif not callable(value):
-                raise ValueError(
-                    f"source_prior_params_['{key}'] should be either a string name of available sampler or a function"
-                )
-            
-        print(source_prior_params_)
-
-        return (source_priors_, source_prior_params_)
-
-    @property
-    def source_frame_masses(self):
-        """
-        Function to sample source frame masses (mass1_source, mass2_source) with the initialized prior.
-
-        Parameters
-        ----------
-        size : `int`
-            Number of samples to draw
-
-        Returns
-        ----------
-        mass_1_source : `numpy.ndarray` (1D array of floats)
-            Array of mass1 in source frame
-        mass_2_source : `numpy.ndarray` (1D array of floats)
-            Array of mass2 in source frame
-        """
-
-        return self._source_frame_masses
-
-    @source_frame_masses.setter
-    def source_frame_masses(self, prior):
-        if isinstance(prior, str):
-            args = self.gw_param_samplers_params["source_frame_masses"]
-            print(args)
-            # follwing should return a sampler function with only one argument (size)
-            self._source_frame_masses = getattr(self, prior)(
-                size=None, get_attribute=True, **args
-            )
-        elif callable(prior):
-            self._source_frame_masses = prior
-        else:
-            raise ValueError(
-                "Invalid input for source_frame_masses. Must be a string or a callable function."
-            )
-
-    @property
-    def geocent_time(self):
-        """
-        Function to sample geocent time with the initialized prior.
-
-        Parameters
-        ----------
-        size : `int`
-            Number of samples to draw
-
-        Returns
-        ----------
-        geocent_time : `numpy.ndarray` (1D array of floats)
-            Array of geocent_time or time of coalescence
-        """
-
-        return self._geocent_time
-
-    @geocent_time.setter
-    def geocent_time(self, prior):
-        if isinstance(prior, str):
-            args = self.gw_param_samplers_params["geocent_time"]
-            # follwing should return a sampler function with only one argument (size)
-            self._geocent_time = getattr(self, prior)(
-                size=None, get_attribute=True, **args
-            )
-        elif callable(prior):
-            self._geocent_time = prior
-        else:
-            raise ValueError(
-                "Invalid input for geocent_time. Must be a string or a callable function."
-            )
-
-    @property
-    def ra(self):
-        """
-        Function to sample right ascension of sky position with the initialized prior.
-
-        Parameters
-        ----------
-        size : `int`
-            Number of samples to draw
-
-        Returns
-        ----------
-        ra : `numpy.ndarray` (1D array of floats)
-            Array of right ascension of sky position
-        """
-
-        return self._ra
-
-    @ra.setter
-    def ra(self, prior):
-        if isinstance(prior, str):
-            args = self.gw_param_samplers_params["ra"]
-            # follwing should return a sampler function with only one argument (size)
-            self._ra = getattr(self, prior)(size=None, get_attribute=True, **args)
-        elif callable(prior):
-            self._ra = prior
-        else:
-            raise ValueError(
-                "Invalid input for ra. Must be a string or a callable function."
-            )
-
-    @property
-    def dec(self):
-        """
-        Function to sample declination of sky position with the initialized prior.
-
-        Parameters
-        ----------
-        size : `int`
-            Number of samples to draw
-
-        Returns
-        ----------
-        dec : `numpy.ndarray` (1D array of floats)
-            Array of declination of sky position
-        """
-
-        return self._dec
-
-    @dec.setter
-    def dec(self, prior):
-        if isinstance(prior, str):
-            args = self.gw_param_samplers_params["dec"]
-            # follwing should return a sampler function with only one argument (size)
-            self._dec = getattr(self, prior)(size=None, get_attribute=True, **args)
-        elif callable(prior):
-            self._dec = prior
-        else:
-            raise ValueError(
-                "Invalid input for dec. Must be a string or a callable function."
-            )
-
-    @property
-    def phase(self):
-        """
-        Function to sample coalescence phase with the initialized prior.
-
-        Parameters
-        ----------
-        size : `int`
-            Number of samples to draw
-
-        Returns
-        ----------
-        phase : `numpy.ndarray` (1D array of floats)
-            Array of coalescence phase
-        """
-
-        return self._phase
-
-    @phase.setter
-    def phase(self, prior):
-        if isinstance(prior, str):
-            args = self.gw_param_samplers_params["phase"]
-            # follwing should return a sampler function with only one argument (size)
-            self._phase = getattr(self, prior)(size=None, get_attribute=True, **args)
-        elif callable(prior):
-            self._phase = prior
-        else:
-            raise ValueError(
-                "Invalid input for phase. Must be a string or a callable function."
-            )
-
-    @property
-    def psi(self):
-        """
-        Function to sample polarization angle with the initialized prior.
-
-        Parameters
-        ----------
-        size : `int`
-            Number of samples to draw
-
-        Returns
-        ----------
-        psi : `numpy.ndarray` (1D array of floats)
-            Array of polarization angle
-        """
-
-        return self._psi
-
-    @psi.setter
-    def psi(self, prior):
-        if isinstance(prior, str):
-            args = self.gw_param_samplers_params["psi"]
-            # follwing should return a sampler function with only one argument (size)
-            self._psi = getattr(self, prior)(size=None, get_attribute=True, **args)
-        elif callable(prior):
-            self._psi = prior
-        else:
-            raise ValueError(
-                "Invalid input for psi. Must be a string or a callable function."
-            )
-
-    @property
-    def theta_jn(self):
-        """
-        Function to sample theta_jn with the initialized prior.
-
-        Parameters
-        ----------
-        size : `int`
-            Number of samples to draw
-
-        Returns
-        ----------
-        theta_jn : `numpy.ndarray` (1D array of floats)
-            Array of theta_jn
-        """
-        return self._theta_jn
-
-    @theta_jn.setter
-    def theta_jn(self, prior):
-        if isinstance(prior, str):
-            args = self.gw_param_samplers_params["theta_jn"]
-            self._theta_jn = getattr(self, prior)(
-                size=None, get_attribute=True, param=args
-            )
-        elif callable(prior):
-            self._theta_jn = prior
-        else:
-            raise ValueError("Invalid input for theta_jn. Must be a string or a callable function.")
-
-    @property
-    def a_1(self):
-        """
-        Function to sample spin magnitude of the compact binaries (body1) with the initialized prior.
-
-        Parameters
-        ----------
-        size : `int`
-            Number of samples to draw
-
-        Returns
-        ----------
-        a_1 : `numpy.ndarray` (1D array of floats)
-            Array of spin magnitude of the compact binaries (body1)
-        """
-        return self._a_1
-
-    @a_1.setter
-    def a_1(self, prior):
-        if isinstance(prior, str):
-            args = self.gw_param_samplers_params["a_1"]
-            self._a_1 = getattr(self, prior)(
-                size=None, get_attribute=True, param=args
-            )
-        elif callable(prior):
-            self._a_1 = prior
-        else:
-            raise ValueError("Invalid input for a_1. Must be a string or a callable function.")
-
-    @property
-    def a_2(self):
-        """
-        Function to sample spin magnitude of the compact binaries (body2) with the initialized prior.
-
-        Parameters
-        ----------
-        size : `int`
-            Number of samples to draw
-
-        Returns
-        ----------
-        a_2 : `numpy.ndarray` (1D array of floats)
-            Array of spin magnitude of the compact binaries (body2)
-        """
-        return self._a_2
-
-    @a_2.setter
-    def a_2(self, prior):
-        if isinstance(prior, str):
-            args = self.gw_param_samplers_params["a_2"]
-            self._a_2 = getattr(self, prior)(
-                size=None, get_attribute=True, param=args
-            )
-        elif callable(prior):
-            self._a_2 = prior
-        else:
-            raise ValueError("Invalid input for a_2. Must be a string or a callable function.")
-
-    @property
-    def tilt_1(self):
-        """
-        Function to sample tilt angle of the compact binaries (body1) with the initialized prior.
-
-        Parameters
-        ----------
-        size : `int`
-            Number of samples to draw
-
-        Returns
-        ----------
-        tilt_1 : `numpy.ndarray` (1D array of floats)
-            Array of tilt angle of the compact binaries (body1)
-        """
-        return self._tilt_1
-
-    @tilt_1.setter
-    def tilt_1(self, prior):
-        if isinstance(prior, str):
-            args = self.gw_param_samplers_params["tilt_1"]
-            self._tilt_1 = getattr(self, prior)(
-                size=None, get_attribute=True, param=args
-            )
-        elif callable(prior):
-            self._tilt_1 = prior
-        else:
-            raise ValueError("Invalid input for tilt_1. Must be a string or a callable function.")
-
-    @property
-    def tilt_2(self):
-        """
-        Function to sample tilt angle of the compact binaries (body2) with the initialized prior.
-
-        Parameters
-        ----------
-        size : `int`
-            Number of samples to draw
-
-        Returns
-        ----------
-        tilt_2 : `numpy.ndarray` (1D array of floats)
-            Array of tilt angle of the compact binaries (body2)
-        """
-
-        return self._tilt_2
-
-    @tilt_2.setter
-    def tilt_2(self, prior):
-        if isinstance(prior, str):
-            args = self.gw_param_samplers_params["tilt_2"]
-            self._tilt_2 = getattr(self, prior)(
-                size=None, get_attribute=True, param=args
-            )
-        elif callable(prior):
-            self._tilt_2 = prior
-        else:
-            raise ValueError("Invalid input for tilt_2. Must be a string or a callable function.")
-        
-    @property
-    def phi_12(self):
-        """
-        Function to sample azimuthal angle between the two spins with the initialized prior.
-
-        Parameters
-        ----------
-        size : `int`
-            Number of samples to draw
-
-        Returns
-        ----------
-        phi_12 : `numpy.ndarray` (1D array of floats)
-            Array of azimuthal angle between the two spins
-        """
-
-        return self._phi_12
-
-    @phi_12.setter
-    def phi_12(self, prior):
-        if isinstance(prior, str):
-            args = self.gw_param_samplers_params["phi_12"]
-            self._phi_12 = getattr(self, prior)(
-                size=None, get_attribute=True, param=args
-            )
-        elif callable(prior):
-            self._phi_12 = prior
-        else:
-            raise ValueError("Invalid input for phi_12. Must be a string or a callable function.")
-
-    @property
-    def phi_jl(self):
-        """
-        Function to sample azimuthal angle between the total angular momentum and the orbital angular momentum with the initialized prior.
-
-        Parameters
-        ----------
-        size : `int`
-            Number of samples to draw
-
-        Returns
-        ----------
-        phi_jl : `numpy.ndarray` (1D array of floats)
-            Array of azimuthal angle between the total angular momentum and the orbital angular momentum
-        """
-        return self._phi_jl
-
-    @phi_jl.setter
-    def phi_jl(self, prior):
-        if isinstance(prior, str):
-            args = self.gw_param_samplers_params["phi_jl"]
-            self._phi_jl = getattr(self, prior)(
-                size=None, get_attribute=True, param=args
-            )
-        elif callable(prior):
-            self._phi_jl = prior
-        else:
-            raise ValueError("Invalid input for phi_jl. Must be a string or a callable function.")

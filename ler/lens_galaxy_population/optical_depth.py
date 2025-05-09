@@ -11,7 +11,7 @@ from lenstronomy.LensModel.Solver.epl_shear_solver import caustics_epl_shear
 from shapely.geometry import Polygon
 
 
-from ..utils import  interpolator_from_pickle, cubic_spline_interpolator, inverse_transform_sampler, cubic_spline_interpolator2d_array, save_pickle, interpolator_pickle_path, FunctionConditioning, inverse_transform_sampler2d, pdf_cubic_spline_interpolator2d_array, normal_pdf, normal_pdf_2d
+from ..utils import cubic_spline_interpolator, inverse_transform_sampler, cubic_spline_interpolator2d_array, save_pickle, interpolator_pickle_path, FunctionConditioning, inverse_transform_sampler2d, pdf_cubic_spline_interpolator2d_array, normal_pdf, normal_pdf_2d, load_txt_from_module
 
 from .jit_functions import phi_cut_SIE, phi, phi_loc_bernardi, phi_q2_ellipticity_hemanta, lens_redshift_SDSS_catalogue_sis, axis_ratio_rayleigh_pdf
 
@@ -80,17 +80,17 @@ class OpticalDepth():
         # decision dict fot creating interpolator
         self.initialize_decision_dictionary(create_new_interpolator);
 
-        # dealing with prior functions and categorization
-        # considering user input samplers and functions
-        self.lens_param_samplers, self.lens_param_samplers_params, self.lens_functions, self.lens_functions_params = self.lens_priors_categorization(lens_type, lens_param_samplers, lens_param_samplers_params, lens_functions, lens_functions_params)
+        # default lens functions and samplers
+        self.lens_param_samplers, self.lens_param_samplers_params, self.lens_functions, self.lens_functions_params = self.default_lens_samplers_and_functions(lens_type)
 
-        # considering user input samplers and functions
-        self.initialize_all_lens_samplers_and_functions(lens_param_samplers, lens_param_samplers_params, lens_functions, lens_functions_params);
+        # change default lens functions and samplers if user input is given
+        # if lens functions and samplers are given but not parameters, then use default parameters
+        # it updates self.lens_param_samplers, self.lens_param_samplers_params, self.lens_functions, self.lens_functions_params
+        self.lens_functions_and_sampler_categorization(lens_param_samplers, lens_param_samplers_params, lens_functions, lens_functions_params);
 
         # setting up astropy cosmology functions
         self.create_lookup_table_fuction();
 
-        print(f"\n{self.lens_functions['cross_section']}\n")
         if self.lens_functions['cross_section'] == "interpolated_cross_section_function":
             self.create_cross_section_function();
             self.cross_section = getattr(self, "interpolated_cross_section_function")
@@ -108,16 +108,16 @@ class OpticalDepth():
         self.density_profile_slope = self.lens_param_samplers['density_profile_slope']
         self.external_shear = self.lens_param_samplers['external_shear']
         self.lens_redshift = self.lens_param_samplers['lens_redshift']
-
+        self.density_profile_slope_sl = self.lens_param_samplers['density_profile_slope_sl']
+        self.external_shear_sl = self.lens_param_samplers['external_shear_sl']
+        
         # lens function initialization
         self.optical_depth = self.lens_functions['optical_depth']
 
     ##################
     # Initialization #
     ##################
-    def lens_priors_categorization(
-        self, lens_type, lens_priors=None, lens_priors_params=None, lens_functions=None, lens_functions_params=None,
-    ):
+    def default_lens_samplers_and_functions(self, lens_type):
         """
             Function to categorize the lens priors/samplers
 
@@ -126,12 +126,6 @@ class OpticalDepth():
                 lens_type : `str`
                     lens type
                     e.g. 'epl_shear_galaxy' for elliptical power-law galaxy
-                lens_priors : `dict`
-                    dictionary of priors
-                lens_priors_params : `dict`
-                    dictionary of priors parameters
-                lens_functions : `dict`
-                    dictionary of lens functions
 
             Returns
             -------
@@ -148,58 +142,64 @@ class OpticalDepth():
         if lens_type == "epl_shear_galaxy":
             lens_priors_ = dict(
                 source_redshift_sl="strongly_lensed_source_redshifts",
-                lens_redshift="lens_redshift_SDSS_catalogue_numerical",
+                lens_redshift="lens_redshift_SDSS_catalogue_hemanta", #"lens_redshift_SDSS_catalogue_numerical",
                 velocity_dispersion="velocity_dispersion_ewoud",
                 axis_ratio="axis_ratio_rayleigh",
                 axis_rotation_angle="axis_rotation_angle_uniform",
                 external_shear="external_shear_normal",
                 density_profile_slope="density_profile_slope_normal",
+                external_shear_sl="external_shear_normal",
+                density_profile_slope_sl="density_profile_slope_normal",
             )
             lens_priors_params_ = dict(
                 source_redshift_sl=None,
                 lens_redshift=None,
-                velocity_dispersion=dict(sigma_min=10., sigma_max=420., alpha=0.94, beta=1.85, phistar=2.099e-2*(self.cosmo.h/0.7)**3, sigmastar=113.78),
+                velocity_dispersion=dict(sigma_min=100., sigma_max=400., alpha=0.94, beta=1.85, phistar=2.099e-2*(self.cosmo.h/0.7)**3, sigmastar=113.78),
                 axis_ratio=dict(q_min=0.2, q_max=1.),
                 axis_rotation_angle=dict(phi_min=0.0, phi_max=2 * np.pi),
                 external_shear=dict(mean=0., std=0.05),
                 density_profile_slope=dict(mean=1.99, std=0.149),
+                external_shear_sl=dict(mean=0., std=0.05, name="external_shear_sl"),
+                density_profile_slope_sl=dict(mean=2.078, std=0.16, name="density_profile_slope_sl"),
             )
             lens_functions_ = dict(
                 param_sampler_type="sample_all_routine_sie_sl",
                 strong_lensing_condition="rjs_with_cross_section_sie_feixu",
                 optical_depth="optical_depth_numerical",
                 cross_section="interpolated_cross_section_function",
-                galaxy_density_distribution="galaxy_density_distribution_oguri",
             )
             lens_functions_params_ = dict(
                 strong_lensing_condition=None,
                 optical_depth=None,
-                param_sampler_type=dict(fast_sampler=True),
+                param_sampler_type=dict(fast_sampler=True), # not implemented yet
                 cross_section=None,
-                galaxy_density_distribution=None,
             )
         elif lens_type == "sie_galaxy":
             lens_priors_ = dict(
                 source_redshift_sl="strongly_lensed_source_redshifts",
-                lens_redshift="lens_redshift_SDSS_sie_numerical",
+                lens_redshift="lens_redshift_SDSS_catalogue_hemanta", #"lens_redshift_SDSS_catalogue_numerical",
                 velocity_dispersion="velocity_dispersion_ewoud",
                 axis_ratio="axis_ratio_rayleigh",
                 axis_rotation_angle="axis_rotation_angle_uniform",
-                external_shear=njit( lambda size: np.zeros((2,size)) ),
-                density_profile_slope=njit(lambda size: np.ones(size)*2.0),
+                external_shear="external_shear_normal",
+                density_profile_slope="density_profile_slope_normal",
+                external_shear_sl="external_shear_normal",
+                density_profile_slope_sl="density_profile_slope_normal",
             )
             lens_priors_params_ = dict(
                 source_redshift_sl=None,
                 lens_redshift=None,
-                velocity_dispersion=dict(sigma_min=10., sigma_max=420., alpha=0.94, beta=1.85, phistar=2.099e-2*(self.cosmo.h/0.7)**3, sigmastar=113.78),
+                velocity_dispersion=dict(sigma_min=100., sigma_max=400., alpha=0.94, beta=1.85, phistar=2.099e-2*(self.cosmo.h/0.7)**3, sigmastar=113.78),
                 axis_ratio=dict(q_min=0.2, q_max=1.),
                 axis_rotation_angle=dict(phi_min=0.0, phi_max=2 * np.pi),
-                external_shear=None,
-                density_profile_slope=None,
+                external_shear=dict(mean=0., std=0.),
+                density_profile_slope=dict(mean=2., std=0.),
+                external_shear_sl=dict(mean=0., std=0.),
+                density_profile_slope_sl=dict(mean=2., std=0.),
             )
             lens_functions_ = dict(
                 strong_lensing_condition="rjs_with_cross_section_sie_feixu",
-                optical_depth="optical_depth_sie_hemanta",
+                optical_depth="optical_depth_numerical",
                 param_sampler_type="sample_all_routine_sie_sl",
                 cross_section="cross_section_sie_feixu",
             )
@@ -209,18 +209,43 @@ class OpticalDepth():
                 param_sampler_type=None,
                 cross_section=None,
             )
+        elif lens_type == "sis_galaxy":
+            lens_priors_ = dict(
+                source_redshift_sl="strongly_lensed_source_redshifts",
+                lens_redshift="lens_redshift_SDSS_catalogue_numerical",
+                velocity_dispersion="velocity_dispersion_choi",
+                axis_ratio="axis_ratio_uniform",
+                axis_rotation_angle="axis_rotation_angle_uniform",
+                external_shear="external_shear_normal",
+                density_profile_slope="density_profile_slope_normal",
+                external_shear_sl="external_shear_normal",
+                density_profile_slope_sl="density_profile_slope_normal",
+            )
+            lens_priors_params_ = dict(
+                source_redshift_sl=None,
+                lens_redshift=None,
+                velocity_dispersion=dict(sigma_min = 10., sigma_max = 420., alpha = 2.32, beta = 2.67, phistar = 8.0e-3*self.cosmo.h**3, sigmastar = 161.0),
+                axis_ratio=dict(q_min=1., q_max=1.),
+                axis_rotation_angle=dict(phi_min=0.0, phi_max=0.),
+                external_shear=dict(mean=0., std=0.),
+                density_profile_slope=dict(mean=2., std=0.),
+                external_shear_sl=dict(mean=0., std=0.),
+                density_profile_slope_sl=dict(mean=2., std=0.),
+            )
+            lens_functions_ = dict(
+                strong_lensing_condition="rjs_with_cross_section_sis",
+                optical_depth="optical_depth_numerical",
+                param_sampler_type="sample_all_routine_sis",
+                cross_section="cross_section_sis",
+            )
+            lens_functions_params_ = dict(
+                strong_lensing_condition=None,
+                optical_depth=dict(interpolated_cross_section=True),
+                param_sampler_type=None,
+                cross_section=None,
+            )
         else:
             raise ValueError("lens_type not recognized")
-
-        # update the priors if input is given
-        if lens_priors:
-            lens_priors_.update(lens_priors)
-        if lens_priors_params:
-            lens_priors_params_.update(lens_priors_params)
-        if lens_functions:
-            lens_functions_.update(lens_functions)
-        if lens_functions_params:
-            lens_functions_params_.update(lens_functions_params)
 
         return(lens_priors_, lens_priors_params_, lens_functions_, lens_functions_params_)
 
@@ -254,7 +279,7 @@ class OpticalDepth():
             for key in self.create_new_interpolator.keys():
                 self.create_new_interpolator[key]['create_new'] = True
         
-    def initialize_all_lens_samplers_and_functions(self, lens_param_samplers, lens_param_samplers_params, lens_functions, lens_functions_params):
+    def lens_functions_and_sampler_categorization(self, lens_param_samplers, lens_param_samplers_params, lens_functions, lens_functions_params):
         """
         Function to initialize velocity dispersion sampler with it's settings. The reason I am seperating this from lens_priors_categorization is only a specific parameters needs special attention.
 
@@ -270,83 +295,99 @@ class OpticalDepth():
             lens function parameters
         """
 
-        sampler_prior_names = ['velocity_dispersion', 'axis_ratio', 'axis_rotation_angle', 'density_profile_slope', 'external_shear', 'lens_redshift']
+        # update the priors if input is given
+        if lens_param_samplers:
+            self.lens_param_samplers.update(lens_param_samplers)
+        if lens_param_samplers_params:
+            self.lens_param_samplers_params.update(lens_param_samplers_params)
+        if lens_functions:
+            self.lens_functions.update(lens_functions)
+        if lens_functions_params:
+            self.lens_functions_params.update(lens_functions_params)
 
-        # if there is user input function, update the sampler priors
-        for name in sampler_prior_names:
-            # the following is already taken care in lens_priors_categorization
-            # if (lens_param_samplers is not None) and (name in lens_param_samplers):
-            #     self.lens_param_samplers[name] = lens_param_samplers[name]
-            # if (lens_param_samplers_params is not None) and (name in lens_param_samplers_params):
-            #     if self.lens_param_samplers_params[name] is None: # not a dictionary
-            #         self.lens_param_samplers_params[name] = lens_param_samplers_params[name]
-            #     else:  # if there is user input lens_param_samplers_params
-            #         self.lens_param_samplers_params[name].update(lens_param_samplers_params[name])
+        sampler_prior_names = ['lens_redshift', 'velocity_dispersion', 'axis_ratio', 'axis_rotation_angle', 'external_shear', 'density_profile_slope', 'external_shear_sl', 'density_profile_slope_sl']
 
-            # if there is user input function name, update the sampler priors
-            if isinstance(lens_param_samplers[name], str):
-                # setting up sample prior params
-                sampler_name = lens_param_samplers[name]  # e.g. 'axis_ratio_padilla_strauss'
-                dict_ = self.available_lens_prior_list_and_its_params[name]  # e.g. {'axis_ratio_padilla_strauss': {'q_min': 0.2, 'q_max': 1.0}, ....}
-                if sampler_name in dict_:
-                    param_dict = dict_[sampler_name]  # {'q_min': 0.2, 'q_max': 1.0}
-                    if lens_param_samplers_params[name] is None:  # not a dictionary
-                        self.lens_param_samplers_params[name] = param_dict
-                    else:  # if there is user input lens_param_samplers_params
-                        self.lens_param_samplers_params[name] = param_dict.update(lens_param_samplers_params[name])  # user inputs will override the default values
-                else:
-                    raise ValueError(f"{name} sampler {sampler_name} not available.\n Available {name} samplers and its parameters are: {dict_[name]}")
-            elif not callable(lens_param_samplers[name]):
-                raise ValueError(f"Given {name} sampler should be either a string name of available sampler or a function")
+        # if there is user input sampler prior params
+        # you can't only give lens_param_samplers_params, you have to give lens_param_samplers as well if you want to update the sampler priors
+        for name in sampler_prior_names:  # e.g. name='axis_ratio'
+            # avoid None
+            if (lens_param_samplers is not None) and (name in lens_param_samplers):
+                # if there is user input function name, update the sampler priors
+                sampler_name = lens_param_samplers[name]  # e.g. 'axis_ratio_rayleigh'
+                # check input sampler is string or function
+                if isinstance(sampler_name, str):
+                    # available lens samplers for name e.g. 'axis_ratio'
+                    dict_ = self.available_lens_prior_list_and_its_params[name]  # e.g. {'axis_ratio_padilla_strauss': {'q_min': 0.2, 'q_max': 1.0}, ....}
+                    if sampler_name in dict_:  # e.g. 'axis_ratio_padilla_strauss'
+                        param_dict = dict_[sampler_name]  # e.g. {'q_min': 0.2, 'q_max': 1.0}
+                        if (lens_param_samplers_params is None) or (lens_param_samplers_params[name] is None):  # not a dictionary
+                            self.lens_param_samplers_params[name] = param_dict
+                        else:  # if there is user input lens_param_samplers_params
+                            param_dict.update(lens_param_samplers_params[name])
+                            self.lens_param_samplers_params[name].update(param_dict)  # user inputs will override the default values
+                    else:
+                        raise ValueError(f"{name} sampler {sampler_name} not available.\n Available {name} samplers and its parameters are: {dict_[name]}")
+                elif not callable(lens_param_samplers[name]):
+                    raise ValueError(f"Given {name} sampler should be either a string name of available sampler or a function")
 
                 
         lens_function_names = ['optical_depth', 'cross_section']
 
         # if there is user input function, update the sampler priors
         for name in lens_function_names:
-            if isinstance(lens_functions[name], str):
-                # setting up sample prior params
-                function_name = lens_functions[name]  
-                dict_ = self.available_lens_functions_and_its_params[name]  
-                if function_name in dict_:
-                    param_dict = dict_[function_name]  
-                    if lens_functions_params[name] is None:  # not a dictionary
-                        self.lens_functions_params[name] = param_dict
-                    else:  # if there is user input lens_functions_params
-                        self.lens_functions_params[name] = param_dict.update(lens_functions_params[name])  # user inputs will override the default values
-                else:
-                    raise ValueError(f"{name} function {function_name} not available.\n Available {name} functions and its parameters are: {dict_[name]}")
-            elif not callable(lens_functions[name]):
-                raise ValueError(f"Given {name} function should be either a string name of available function or a function")
+            if (lens_functions is not None) and (name in lens_functions):
+                function_name = lens_functions[name] 
+                if isinstance(function_name, str):
+                     # available lens functions for name e.g. 'optical_depth'
+                    dict_ = self.available_lens_functions_and_its_params[name]  
+                    if function_name in dict_:
+                        param_dict = dict_[function_name]  
+                        if (lens_functions_params is None) or (lens_functions_params[name] is None):  # not a dictionary
+                            self.lens_functions_params[name] = param_dict
+                        else:  # if there is user input lens_functions_params
+                            param_dict.update(lens_functions_params[name])
+                            self.lens_functions_params[name].update(param_dict)   # user inputs will override the default values
+                    else:
+                        raise ValueError(f"{name} function {function_name} not available.\n Available {name} functions and its parameters are: {dict_[name]}")
+                elif not callable(lens_functions[name]):
+                    raise ValueError(f"Given {name} function should be either a string name of available function or a function")
                 
         # setting up multiprocessor function for lens redshift
-        if 'epl_shear_galaxy':
+        if self.lens_type == 'epl_shear_galaxy':
             if self.lens_param_samplers['velocity_dispersion'] == 'velocity_dispersion_ewoud':
+                print('using lens_redshift_epl_shear2_mp')
                 from .mp import lens_redshift_epl_shear2_mp
                 self._helper_sl_disribution_mp = lens_redshift_epl_shear2_mp
             else:
+                print('using lens_redshift_epl_shear1_mp')
                 from .mp import lens_redshift_epl_shear1_mp
                 self._helper_sl_disribution_mp = lens_redshift_epl_shear1_mp
-        elif 'sie_galaxy':
+        elif self.lens_type == 'sie_galaxy':
             if self.lens_param_samplers['velocity_dispersion'] == 'velocity_dispersion_ewoud':
-                if self.lens_functions_params['cross_section']['interpolated_cross_section_function']:
+                if self.lens_functions['cross_section']=='interpolated_cross_section_function':
+                    print('using lens_redshift_sie4_mp')
                     from .mp import lens_redshift_sie4_mp
                     self._helper_sl_disribution_mp = lens_redshift_sie4_mp
                 else:
+                    print('using lens_redshift_sie2_mp')
                     from .mp import lens_redshift_sie2_mp
                     self._helper_sl_disribution_mp = lens_redshift_sie2_mp
             else:
-                if self.lens_functions_params['cross_section']['interpolated_cross_section_function']:
+                if self.lens_functions['cross_section']=='interpolated_cross_section_function':
+                    print('using lens_redshift_sie3_mp')
                     from .mp import lens_redshift_sie3_mp
                     self._helper_sl_disribution_mp = lens_redshift_sie3_mp
                 else:
+                    print('using lens_redshift_sie1_mp')
                     from .mp import lens_redshift_sie1_mp
                     self._helper_sl_disribution_mp = lens_redshift_sie1_mp
-        elif 'sis_galaxy':
+        elif self.lens_type == 'sis_galaxy':
             if self.lens_param_samplers['velocity_dispersion'] == 'velocity_dispersion_ewoud':
+                print('using lens_redshift_sis2_mp')
                 from .mp import lens_redshift_sis2_mp
                 self._helper_sl_disribution_mp = lens_redshift_sis2_mp
             else:
+                print('using lens_redshift_sis1_mp')
                 from .mp import lens_redshift_sis1_mp
                 self._helper_sl_disribution_mp = lens_redshift_sis1_mp
 
@@ -379,35 +420,41 @@ class OpticalDepth():
         >>> print(od.axis_ratio(sigma=200.))
         """
 
-        param_dict_given_ = self.lens_param_samplers_params["axis_ratio"].copy()
-        param_dict_given_.update(self.lens_param_samplers_params["velocity_dispersion"].copy())
-        param_dict_given_['name'] = "axis_ratio_rayleigh"
-        param_dict_given_['resolution'] = self.create_new_interpolator["axis_ratio"]["resolution"]
-        param_dict_given_.update(kwargs)
+        identifier_dict = {'name': "axis_ratio_rayleigh"}
+        identifier_dict['velocity_dispersion'] = self.lens_param_samplers_params['velocity_dispersion']
+        if identifier_dict['velocity_dispersion']: # if velocity_dispersion is not None
+            identifier_dict['velocity_dispersion']['name'] = str(self.lens_param_samplers['velocity_dispersion'])
+        identifier_dict['resolution'] = self.create_new_interpolator["axis_ratio"]["resolution"]
+        param_dict = self.available_lens_prior_list_and_its_params["axis_ratio"]["axis_ratio_rayleigh"]
+        if param_dict:
+            param_dict.update(kwargs)
+        else:
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
 
         q_array = np.linspace(
-            param_dict_given_["q_min"], 
-            param_dict_given_["q_max"],
-            param_dict_given_["resolution"],
+            identifier_dict["q_min"], 
+            identifier_dict["q_max"],
+            identifier_dict["resolution"],
         )
         sigma_array = np.linspace(
-            param_dict_given_["sigma_min"],
-            param_dict_given_["sigma_max"],
+            identifier_dict['velocity_dispersion']["sigma_min"],
+            identifier_dict['velocity_dispersion']["sigma_max"],
             500,
         )
 
         q_pdf = lambda q, sigma: axis_ratio_rayleigh_pdf(
             q=q,
             sigma=sigma,
-            q_min=param_dict_given_["q_min"],
-            q_max=param_dict_given_["q_max"],
+            q_min=identifier_dict["q_min"],
+            q_max=identifier_dict["q_max"],
         )
 
         q_object = FunctionConditioning(
             function=q_pdf,
             x_array=q_array,
             conditioned_y_array=sigma_array,
-            param_dict_given=param_dict_given_,
+            param_dict_given=identifier_dict,
             directory=self.directory,
             sub_directory="axis_ratio",
             name="axis_ratio_rayleigh",
@@ -419,10 +466,7 @@ class OpticalDepth():
             callback='rvs',
         )
 
-        if get_attribute:
-            return q_object
-        else:
-            return q_object(size, sigma)
+        return q_object if get_attribute else q_object(size, sigma)
         
     def axis_ratio_padilla_strauss(self, size=1000, get_attribute=False, **kwargs):
         """
@@ -449,10 +493,14 @@ class OpticalDepth():
         >>> print(od.axis_ratio(size=10))
         """
 
-        param_dict_given_ = self.lens_param_samplers_params["axis_ratio"].copy()
-        param_dict_given_['name'] = "axis_ratio_padilla_strauss"
-        param_dict_given_['resolution'] = self.create_new_interpolator["axis_ratio"]["resolution"]
-        param_dict_given_.update(kwargs)
+        identifier_dict = {'name': "axis_ratio_padilla_strauss"}
+        identifier_dict['resolution'] = self.create_new_interpolator["axis_ratio"]["resolution"]
+        param_dict = self.available_lens_prior_list_and_its_params["axis_ratio"]["axis_ratio_padilla_strauss"]
+        if param_dict:
+            param_dict.update(kwargs)
+        else:
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
 
         # Using Padilla and Strauss 2008 distribution for axis ratio
         q_array = np.array([0.04903276402927845, 0.09210526315789469, 0.13596491228070173, 0.20789473684210524, 0.2899703729522482, 0.3230132450331126, 0.35350877192982455, 0.37946148483792264, 0.4219298245614036, 0.4689525967235971, 0.5075026141512723, 0.5226472638550018, 0.5640350877192983, 0.6096491228070177, 0.6500000000000001, 0.6864848379226213, 0.7377192982456142, 0.7787295224817011, 0.8007581038689441, 0.822786685256187, 0.8668438480306729, 0.8973684210526317, 0.9254385964912283])
@@ -462,7 +510,7 @@ class OpticalDepth():
             function=pdf,
             x_array=q_array,
             conditioned_y_array=None,
-            param_dict_given=param_dict_given_,
+            param_dict_given=identifier_dict,
             directory=self.directory,
             sub_directory="axis_ratio",
             name="axis_ratio_padilla_strauss",
@@ -474,10 +522,7 @@ class OpticalDepth():
             callback='rvs',
         )
 
-        if get_attribute:
-            return q_object
-        else:
-            return q_object(size)
+        return q_object if get_attribute else q_object(size)
         
     def lens_redshift_SDSS_catalogue_numerical(self, size=1000, zs=None, get_attribute=False, **kwargs):
         """
@@ -504,16 +549,34 @@ class OpticalDepth():
         >>> print(od.lens_redshift(size=10, zs=1.0))
         """
     
-        param_dict_given_ = self.lens_param_samplers_params["lens_redshift"].copy() if self.lens_param_samplers_params["lens_redshift"] is not None else {}
-        try:
-            param_dict_given_.update(self.velocity_dispersion.info)
-        except:
-            param_dict_given_['z_min'] = self.z_min
-            param_dict_given_['z_max'] = self.z_max
-            param_dict_given_['cosmology'] = self.cosmo
-        param_dict_given_['name'] = "lens_redshift_numerical"+self.lens_type
-        param_dict_given_['resolution'] = self.create_new_interpolator["lens_redshift"]["resolution"]
-        param_dict_given_.update(kwargs)
+        identifier_dict = {}
+        identifier_dict['name'] = "lens_redshift_numerical_"+self.lens_type
+        identifier_dict['resolution'] = self.create_new_interpolator["lens_redshift"]["resolution"]
+        identifier_dict['z_min'] = self.z_min
+        identifier_dict['z_max'] = self.z_max
+        identifier_dict['cosmology'] = self.cosmo
+        identifier_dict['velocity_dispersion'] = self.lens_param_samplers_params['velocity_dispersion']
+        if identifier_dict['velocity_dispersion']: # if velocity_dispersion is not None
+            identifier_dict['velocity_dispersion']['name'] = str(self.lens_param_samplers['velocity_dispersion'])
+        identifier_dict['axis_ratio'] = self.lens_param_samplers_params['axis_ratio']
+        if identifier_dict['axis_ratio']: # if axis_ratio is not None
+            identifier_dict['axis_ratio']['name'] = str(self.lens_param_samplers['axis_ratio'])
+        identifier_dict['axis_rotation_angle'] = self.lens_param_samplers_params['axis_rotation_angle']
+        if identifier_dict['axis_rotation_angle']: # if axis_rotation_angle is not None
+            identifier_dict['axis_rotation_angle']['name'] = str(self.lens_param_samplers['axis_rotation_angle'])
+        identifier_dict['density_profile_slope'] = self.lens_param_samplers_params['density_profile_slope']
+        if identifier_dict['density_profile_slope']: # if density_profile_slope is not None
+            identifier_dict['density_profile_slope']['name'] = str(self.lens_param_samplers['density_profile_slope'])
+        identifier_dict['external_shear'] = self.lens_param_samplers_params['external_shear']
+        if identifier_dict['external_shear']: # if external_shear is not None
+            identifier_dict['external_shear']['name'] = str(self.lens_param_samplers['external_shear'])
+        
+        param_dict = self.available_lens_prior_list_and_its_params["lens_redshift"]["lens_redshift_SDSS_catalogue_numerical"]
+        if param_dict:
+            param_dict.update(kwargs)
+        else:
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
 
         print("Numerically solving the lens redshift distribution...")
         zs_resolution = self.create_new_interpolator["optical_depth"]["resolution"]
@@ -521,20 +584,21 @@ class OpticalDepth():
 
         zl_scaled2d = []
         for i, zs_ in enumerate(zs_array):
-            buffer_ = np.linspace(0.0001, zs_-0.0001, param_dict_given_['resolution'])
+            buffer_ = np.linspace(0.0001, zs_-0.0001, identifier_dict['resolution'])
             zl_scaled2d.append(buffer_/zs_)
         zl_scaled2d = np.array(zl_scaled2d)
 
         _, it_exist = interpolator_pickle_path(
-            param_dict_given=param_dict_given_,
+            param_dict_given=identifier_dict,
             directory=self.directory,
             sub_directory="lens_redshift",
-            interpolator_name=param_dict_given_['name'],
+            interpolator_name=identifier_dict['name'],
         )
 
         create_new = self.create_new_interpolator["lens_redshift"]["create_new"]
         if not it_exist or create_new:
             number_density = self.lens_redshift_multiprocessing(zl_scaled2d, zs_array)
+            # number density is zero for zl=0 and infinite for zl=zs
             # Adding zero at the first element of each row
             zl_scaled2d = np.hstack((np.zeros((zl_scaled2d.shape[0], 1)), zl_scaled2d))
             number_density = np.hstack((np.zeros((number_density.shape[0], 1)), number_density))
@@ -549,10 +613,10 @@ class OpticalDepth():
             function=number_density,
             x_array=zl_scaled2d,
             conditioned_y_array=zs_array,
-            param_dict_given=param_dict_given_,
+            param_dict_given=identifier_dict,
             directory=self.directory,
             sub_directory="lens_redshift",
-            name=param_dict_given_['name'],
+            name=identifier_dict['name'],
             create_new=create_new,
             create_function_inverse=False,
             create_function=True,
@@ -574,12 +638,9 @@ class OpticalDepth():
 
         zl_object.rvs = njit(lambda size, y: inverse_transform_sampler2d(size, y, cdf_values, x_array, y_array)*y)
 
-        if get_attribute:
-            return zl_object
-        else:
-            return zl_object(size, zs)
-        
-    def intrinsic_lens_redshift(self, size=1000, get_attribute=False, **kwargs):
+        return zl_object if get_attribute else zl_object(size, zs)
+    
+    def lens_redshift_SDSS_catalogue_hemanta(self, size=1000, zs=None, get_attribute=False, **kwargs):
         """
         Function to sample lens redshifts, conditioned on the lens being strongly lensed
 
@@ -596,32 +657,139 @@ class OpticalDepth():
         -------
         zs : `float: array`
             lens redshifts
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth(lens_param_samplers=dict(lens_redshift="lens_redshift_SDSS_catalogue_numerical"))
+        >>> print(od.lens_redshift(size=10, zs=1.0))
         """
     
-        param_dict_given_ = self.lens_param_samplers_params["lens_redshift"].copy() if self.lens_param_samplers_params["lens_redshift"] is not None else {}
-        try:
-            param_dict_given_.update(self.velocity_dispersion.info)
-        except:
-            param_dict_given_['z_min'] = self.z_min
-            param_dict_given_['z_max'] = self.z_max
-            param_dict_given_['cosmology'] = self.cosmo
-        param_dict_given_['name'] = "intrinsic_lens_redshift"
-        param_dict_given_['resolution'] = 500
+        # default parameters
+        identifier_dict = {'name': 'lens_redshift_numerical_epl_shear_galaxy',
+            'resolution': 50,
+            'z_min': 0.0,
+            'z_max': 10.0,
+            'cosmology': LambdaCDM(H0=70, Om0=0.3, Ode0=0.7),
+            'velocity_dispersion': {'sigma_min': 100.0,
+            'sigma_max': 400.0,
+            'alpha': 0.94,
+            'beta': 1.85,
+            'phistar': 0.02099,
+            'sigmastar': 113.78,
+            'name': 'velocity_dispersion_ewoud'},
+            'axis_ratio': {'q_min': 0.2, 'q_max': 1.0, 'name': 'axis_ratio_rayleigh'},
+            'axis_rotation_angle': {'phi_min': 0.0,
+            'phi_max': 6.283185307179586,
+            'name': 'axis_rotation_angle_uniform'},
+            'density_profile_slope': {'mean': 1.99,
+            'std': 0.149,
+            'name': 'density_profile_slope_normal'},
+            'external_shear': {'mean': 0.0, 'std': 0.05, 'name': 'external_shear_normal'}
+        }
+        
+        print("Getting pre-computed lens redshift distribution...")
+        zs_resolution = 48
+        zs_array = np.geomspace(0.001, 10., zs_resolution)
+        zl_scaled2d = []
+        for i, zs_ in enumerate(zs_array):
+            buffer_ = np.linspace(0.0001, zs_-0.0001, identifier_dict['resolution'])
+            zl_scaled2d.append(buffer_/zs_)
+        zl_scaled2d = np.array(zl_scaled2d)
 
-        _, it_exist = interpolator_pickle_path(
-            param_dict_given=param_dict_given_,
+        # get number_density
+        number_density = load_txt_from_module('ler', 'lens_galaxy_population.lens_param_data', 'number_density_zl_zs.txt')
+
+        # number density is zero for zl=0 and infinite for zl=zs
+        # Adding zero at the first element of each row
+        zl_scaled2d = np.hstack((np.zeros((zl_scaled2d.shape[0], 1)), zl_scaled2d))
+        # number_density = np.hstack((np.zeros((number_density.shape[0], 1)), number_density))
+        # Adding one at the last element of each row of zl_scaled2d
+        zl_scaled2d = np.hstack((zl_scaled2d, np.ones((zl_scaled2d.shape[0], 1))))
+        # Adding zero at the last element of each row of density
+       # number_density = np.hstack((number_density, np.zeros((number_density.shape[0], 1))))
+
+        zl_object = FunctionConditioning(
+            function=number_density,
+            x_array=zl_scaled2d,
+            conditioned_y_array=zs_array,
+            param_dict_given=identifier_dict,
             directory=self.directory,
             sub_directory="lens_redshift",
-            interpolator_name=param_dict_given_['name'],
+            name=identifier_dict['name'],
+            create_new=False,
+            create_function_inverse=False,
+            create_function=True,
+            create_pdf=True,
+            create_rvs=True,
+            callback='rvs',
+        )
+
+        # un-scaled lens redshift
+        cdf_values = zl_object.cdf_values
+        x_array = zl_object.x_array
+        y_array = zl_object.conditioned_y_array
+        function_spline = zl_object.function_spline
+        pdf_norm_const = zl_object.pdf_norm_const
+
+        zl_object.function = njit(lambda x, y: cubic_spline_interpolator2d_array(x/y, y, function_spline, x_array, y_array))
+
+        zl_object.pdf = njit(lambda x, y: pdf_cubic_spline_interpolator2d_array(x/y, y, pdf_norm_const, function_spline, x_array, y_array)) 
+
+        zl_object.rvs = njit(lambda size, y: inverse_transform_sampler2d(size, y, cdf_values, x_array, y_array)*y)
+
+        return zl_object if get_attribute else zl_object(size, zs)
+        
+    def intrinsic_lens_redshift(self, size=1000, get_attribute=False, **kwargs):
+        """
+        Function to sample intrinsic lens redshifts, based on the intrinsic velocity dispersion of the lens galaxy.
+
+        Parameters
+        ----------
+        size : `int`
+            sample size
+        zs : `float`
+            source redshifts
+        get_attribute : `bool`
+            if True, returns a function that can be used to sample lens redshifts
+
+        Returns
+        -------
+        zs : `float: array`
+            lens redshifts
+        """
+    
+        identifier_dict = {'name': "intrinsic_lens_redshift"}
+        identifier_dict['z_min'] = self.z_min
+        identifier_dict['z_max'] = self.z_max
+        identifier_dict['cosmology'] = self.cosmo
+        identifier_dict['velocity_dispersion'] = self.lens_param_samplers_params['velocity_dispersion']
+        if identifier_dict['velocity_dispersion']: # if velocity_dispersion is not None
+            identifier_dict['velocity_dispersion']['name'] = str(self.lens_param_samplers['velocity_dispersion'])
+
+        identifier_dict['resolution'] = 500
+        # param_dict = self.available_lens_prior_list_and_its_params["lens_redshift"]["intrinsic_lens_redshift"]
+        # if param_dict:
+        #     param_dict.update(kwargs)
+        # else:
+        #     param_dict = kwargs
+        # identifier_dict.update(param_dict)
+
+        _, it_exist = interpolator_pickle_path(
+            param_dict_given=identifier_dict,
+            directory=self.directory,
+            sub_directory="lens_redshift",
+            interpolator_name=identifier_dict['name'],
         )
 
         create_new = self.create_new_interpolator["lens_redshift"]["create_new"]
         if not it_exist or create_new:
             z_min = 0.001 if self.z_min==0 else self.z_min
             z_max = self.z_max
-            zl_array = np.linspace(z_min, z_max, param_dict_given_['resolution']) 
-            integrand = lambda sigma, z: self.velocity_dispersion.function(np.array([sigma]), np.array([z]))[0]
-            integral = [quad(integrand, 10., 420., args=(z))[0] for z in zl_array]
+            zl_array = np.linspace(z_min, z_max, identifier_dict['resolution']) 
+            integrand = lambda sigma, z: self.velocity_dispersion.function(np.array([sigma]), np.array([z]))[0]*self.differential_comoving_volume.function(np.array([z]))[0]
+            # integral = [quad(integrand, 10., 420., args=(z))[0] for z in zl_array]
+            integral = [quad(integrand, identifier_dict['velocity_dispersion']['sigma_min'], identifier_dict['velocity_dispersion']['sigma_max'], args=(z))[0] for z in zl_array]
         else:
             zl_array = None
             integral=None
@@ -629,10 +797,10 @@ class OpticalDepth():
         zl_object = FunctionConditioning(
             function=integral,
             x_array=zl_array,
-            param_dict_given=param_dict_given_,
+            param_dict_given=identifier_dict,
             directory=self.directory,
             sub_directory="lens_redshift",
-            name=param_dict_given_['name'],
+            name=identifier_dict['name'],
             create_new=create_new,
             create_function_inverse=False,
             create_function=True,
@@ -641,10 +809,7 @@ class OpticalDepth():
             callback='rvs',
         )
 
-        if get_attribute:
-            return zl_object
-        else:
-            return zl_object(size)
+        return zl_object if get_attribute else zl_object(size)
         
     def lens_redshift_multiprocessing(self, zl_scaled2d, zs1d):
         """
@@ -675,11 +840,18 @@ class OpticalDepth():
             sigma_args["sigmastar"],
         ]
         # 3. q; q_rvs = self.axis_ratio.rvs
-        q_args = [
-            np.array(self.axis_ratio.cdf_values),
-            np.array(self.axis_ratio.x_array),
-            np.array(self.axis_ratio.conditioned_y_array),
-        ]
+        try:
+            q_args = [
+                np.array(self.axis_ratio.cdf_values),
+                np.array(self.axis_ratio.x_array),
+                np.array(self.axis_ratio.conditioned_y_array),
+            ]
+        except:
+            # SIS case
+            q_args = [
+                self.axis_ratio.info["q_min"],
+                self.axis_ratio.info["q_max"],
+            ]
 
         # 4. Da; Da_function = self.angular_diameter_distance.function
         Da_args = [
@@ -758,33 +930,151 @@ class OpticalDepth():
         return density_array
 
     def axis_rotation_angle_uniform(self, size, get_attribute=False, **kwargs):
+        """
+        Function to sample the axis rotation angle of the elliptical lens galaxy from a uniform distribution.
 
-        phi_min = self.lens_param_samplers_params["axis_rotation_angle"]["phi_min"]
-        phi_max = self.lens_param_samplers_params["axis_rotation_angle"]["phi_max"]
+        Parameters
+        ----------
+        size : `int`
+            number of lens parameters to sample
+        get_attribute : `bool`
+            if True, returns a function that can be called with size as input
+
+        Returns
+        -------
+        phi : `numpy.ndarray`
+            axis rotation angle of the elliptical lens galaxy
+
+        Examples
+        --------
+
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth(lens_param_samplers=dict(axis_rotation_angle="axis_rotation_angle_uniform"))
+        >>> print(od.axis_rotation_angle_uniform(size=10))
+        """
+
+        identifier_dict = {'name': "axis_rotation_angle_uniform"}
+        param_dict = self.available_lens_prior_list_and_its_params["axis_rotation_angle"]["axis_rotation_angle_uniform"]
+        if param_dict:
+            param_dict.update(kwargs)
+        else:
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
+
+        low = param_dict["phi_min"]
+        high = param_dict["phi_max"]
         phi_rvs = njit(lambda size: np.random.uniform(
-            low=phi_min,
-            high=phi_max,
+            low=low,
+            high=high,
             size=size,
         ))
-        phi_pdf = lambda phi: 1/(phi_max-phi_min)
+        if param_dict["phi_max"] == param_dict["phi_min"]:
+            phi_pdf = lambda phi: 1. if phi == param_dict["phi_min"] else 0.
+        else:
+            phi_pdf = lambda phi: 1/(param_dict["phi_max"]-param_dict["phi_min"])
 
         phi_object =FunctionConditioning(
             function=None,
             x_array=None,
+            param_dict_given=param_dict,
             create_rvs=phi_rvs,
             create_pdf=phi_pdf,
             callback='rvs',
         )
 
-        if get_attribute:
-            return phi_object
+        return phi_object if get_attribute else phi_object.rvs(size)
+    
+    def axis_ratio_uniform(self, size, get_attribute=False, **kwargs):
+        """
+        Function to sample the axis ratio of the elliptical lens galaxy from a uniform distribution.
+
+        Parameters
+        ----------
+        size : `int`
+            number of lens parameters to sample
+        get_attribute : `bool`
+            if True, returns a function that can be called with size as input
+
+        Returns
+        -------
+        q : `numpy.ndarray`
+            axis ratio of the elliptical lens galaxy
+
+        Examples
+        --------
+
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth(lens_param_samplers=dict(axis_ratio="axis_ratio_uniform"))
+        >>> print(od.axis_ratio_uniform(size=10))
+        """
+
+        identifier_dict = {'name': "axis_ratio_uniform"}
+        param_dict = self.available_lens_prior_list_and_its_params["axis_ratio"]["axis_ratio_uniform"]
+        if param_dict:
+            param_dict.update(kwargs)
         else:
-            return phi_rvs(size)
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
+
+        low = param_dict["q_min"]
+        high = param_dict["q_max"]
+        q_rvs = njit(lambda size: np.random.uniform(
+            low=low,
+            high=high,
+            size=size,
+        ))
+        if param_dict["q_max"] == param_dict["q_min"]:
+            q_pdf = lambda q: 1. if q == param_dict["q_min"] else 0.
+        else:
+            q_pdf = lambda q: 1/(param_dict["q_max"]-param_dict["q_min"])
+
+        q_object =FunctionConditioning(
+            function=None,
+            x_array=None,
+            param_dict_given=param_dict,
+            create_rvs=q_rvs,
+            create_pdf=q_pdf,
+            callback='rvs',
+        )
+
+        return q_object if get_attribute else q_object.rvs(size)
         
     def external_shear_normal(self, size, get_attribute=False, **kwargs):
+        """
+        Function to sample the external shear parameters from a normal distribution.
 
-        mean = self.lens_param_samplers_params["external_shear"]["mean"]
-        std = self.lens_param_samplers_params["external_shear"]["std"]
+        Parameters
+        ----------
+        size : `int`
+            number of lens parameters to sample
+        get_attribute : `bool`
+            if True, returns a function that can be called with size as input
+
+        Returns
+        -------
+        gamma_1 : `numpy.ndarray`
+            shear component in the x-direction
+        gamma_2 : `numpy.ndarray`
+            shear component in the y-direction
+
+        Examples
+        --------
+
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth(lens_param_samplers=dict(external_shear="external_shear_normal"))
+        >>> print(od.external_shear_normal(size=10))
+        """
+
+        identifier_dict = {'name': "external_shear_normal"}
+        param = self.available_lens_prior_list_and_its_params["external_shear"]["external_shear_normal"]
+        if param:
+            param.update(kwargs)
+        else:
+            param = kwargs
+        identifier_dict.update(param)
+
+        mean = param["mean"]
+        std = param["std"]
         shear_rvs = njit(lambda size: np.random.normal(
             loc=mean,
             scale=std,
@@ -802,20 +1092,96 @@ class OpticalDepth():
         shear_object =FunctionConditioning(
             function=None,
             x_array=None,
+            param_dict_given=identifier_dict,
             create_rvs=shear_rvs,
             create_pdf=shear_pdf,
             callback='rvs',
         )
 
-        if get_attribute:
-            return shear_object
-        else:
-            return shear_rvs(size)
+        return shear_object if get_attribute else shear_object.rvs(size)
+    
+    def external_shear_numerical_hemanta(self, size, get_attribute=False, **kwargs):
+        """
+        Function to sample the external shear parameters from a normal distribution.
+
+        Parameters
+        ----------
+        size : `int`
+            number of lens parameters to sample
+        get_attribute : `bool`
+            if True, returns a function that can be called with size as input
+
+        Returns
+        -------
+        gamma_1 : `numpy.ndarray`
+            shear component in the x-direction
+        gamma_2 : `numpy.ndarray`
+            shear component in the y-direction
+
+        Examples
+        --------
+
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth(lens_param_samplers=dict(external_shear="external_shear_normal"))
+        >>> print(od.external_shear_normal(size=10))
+        """
+
+        identifier_dict = {
+            'name': 'external_shear_numerical_hemanta', 
+            'external_shear_normal': {'mean': 0., 'std': 0.05},
+        }
+
+        gamma1, gamma2 = load_txt_from_module('ler', 'lens_galaxy_population.lens_param_data', 'external_shear_sl.txt')
+
+        shear_object =FunctionConditioning(
+            x_array=gamma1,
+            y_array=gamma2,
+            gaussian_kde=True,
+            param_dict_given=identifier_dict,
+            create_rvs=True,
+            create_pdf=True,
+            callback='rvs',
+        )
+
+        return shear_object if get_attribute else shear_object.rvs(size)
         
     def density_profile_slope_normal(self, size, get_attribute=False, **kwargs):
+        """
+        Function to sample the lens galaxy density profile slope with normal distribution.
 
-        mean = self.lens_param_samplers_params["density_profile_slope"]["mean"]
-        std = self.lens_param_samplers_params["density_profile_slope"]["std"]
+        Parameters
+        ----------
+        size : `int`
+            number of lens parameters to sample
+        get_attribute : `bool`
+            if True, returns a function that can be used to sample velocity dispersion
+        **kwargs : `dict`
+            additional parameters to be passed to the function, 
+            e.g. `mean` and `std` for the normal distribution
+
+        Returns
+        -------
+        slope : `float`
+            density profile slope of the lens galaxy
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth(lens_param_samplers=dict(density_profile_slope="density_profile_slope_normal"))
+        >>> print(od.density_profile_slope_normal(size=10))
+        """
+
+        identifier_dict = {'name': "density_profile_slope_normal"}
+
+        param = self.available_lens_prior_list_and_its_params["density_profile_slope"]["density_profile_slope_normal"]
+        if param:
+            param.update(kwargs)
+        else:
+            param = kwargs
+        identifier_dict.update(param)
+
+        mean = param["mean"]
+        std = param["std"]
         slope_rvs = njit(lambda size: np.random.normal(
             loc=mean,
             scale=std,
@@ -830,6 +1196,7 @@ class OpticalDepth():
         slope_object =FunctionConditioning(
             function=None,
             x_array=None,
+            param_dict_given=identifier_dict,
             create_rvs=slope_rvs,
             create_pdf=slope_pdf,
             callback='rvs',
@@ -839,6 +1206,50 @@ class OpticalDepth():
             return slope_object
         else:
             return slope_rvs(size)
+        
+    def density_profile_slope_numerical_hemanta(self, size, get_attribute=False, **kwargs):
+        """
+        Function to sample the lens galaxy density profile slope with normal distribution.
+
+        Parameters
+        ----------
+        size : `int`
+            number of lens parameters to sample
+        get_attribute : `bool`
+            if True, returns a function that can be used to sample velocity dispersion
+        **kwargs : `dict`
+            additional parameters to be passed to the function, 
+            e.g. `mean` and `std` for the normal distribution
+
+        Returns
+        -------
+        slope : `float`
+            density profile slope of the lens galaxy
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import OpticalDepth
+        >>> od = OpticalDepth(lens_param_samplers=dict(density_profile_slope="density_profile_slope_normal"))
+        >>> print(od.density_profile_slope_normal(size=10))
+        """
+
+        identifier_dict = {
+            'name': 'density_profile_slope_numerical_hemanta', 
+            'density_profile_slope_normal': {'mean': 1.99, 'std': 0.149},
+        }
+
+        gamma = load_txt_from_module('ler', 'lens_galaxy_population.lens_param_data', 'density_profile_slope_sl.txt')
+
+        slope_object =FunctionConditioning(
+            x_array=gamma,
+            gaussian_kde=True,
+            param_dict_given=identifier_dict,
+            create_rvs=True,
+            create_pdf=True,
+            callback='rvs',
+        )
+
+        return slope_object if get_attribute else slope_object.rvs(size)
     
     def lens_redshift_SDSS_catalogue_sis(self, size, zs, get_attribute=False, **kwargs):
         """
@@ -871,23 +1282,30 @@ class OpticalDepth():
         # zs = np.array([zs]).reshape(-1)
 
         # New way
-        param_dict_given_ = self.lens_param_samplers_params["lens_redshift"].copy() if self.lens_param_samplers_params["lens_redshift"] is not None else {}
-        param_dict_given_.update(self.comoving_distance.info)
-        param_dict_given_['name'] = "lens_redshift_numerical"+self.lens_type
-        param_dict_given_['resolution'] = self.create_new_interpolator["lens_redshift"]["resolution"]
-        param_dict_given_.update(kwargs)
+        identifier_dict = {'name': "lens_redshift_SDSS_catalogue_sis"}
+        identifier_dict['z_min'] = self.z_min
+        identifier_dict['z_max'] = self.z_max
+        identifier_dict['cosmology'] = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+        identifier_dict['velocity_dispersion'] = dict(sigma_min = 10., sigma_max = 420., alpha = 2.32, beta = 2.67, phistar = 8.0e-3*self.cosmo.h**3, sigmastar = 161.0)
+        identifier_dict['resolution'] = self.create_new_interpolator["lens_redshift"]["resolution"]
+        param_dict = self.available_lens_prior_list_and_its_params["lens_redshift"]["lens_redshift_SDSS_catalogue_sis"]
+        if param_dict:
+            param_dict.update(kwargs)
+        else:
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
 
-        zl_resolution = self.create_new_interpolator["lens_redshift"]["resolution"]
+        zl_resolution = identifier_dict['resolution']
         x_array = np.linspace(0., 1., zl_resolution)
         pdf_ = lambda x: 30* x**2 * (1-x)**2  # Haris et al. 2018 (A7)
 
         zl_object = FunctionConditioning(
             function=pdf_,
             x_array=x_array,
-            param_dict_given=param_dict_given_,
+            param_dict_given=identifier_dict,
             directory=self.directory,
             sub_directory="lens_redshift",
-            name=param_dict_given_['name'],
+            name=identifier_dict['name'],
             create_new=self.create_new_interpolator["lens_redshift"]["create_new"],
             create_function_inverse=False,
             create_function=True,
@@ -927,12 +1345,7 @@ class OpticalDepth():
         zl_object.pdf = zl_pdf
         zl_object.rvs = zl_rvs
 
-        # lens redshifts
-        #return self.Dc_to_z(lens_galaxy_Dc)
-        if get_attribute:
-            return zl_object
-        else:
-            return zl_object(size, zs)
+        return zl_object if get_attribute else zl_object.rvs(size, zs)
         
          
     def velocity_dispersion_gengamma(self, size, get_attribute=False, **kwargs):
@@ -964,33 +1377,37 @@ class OpticalDepth():
         >>> print(od.velocity_dispersion(size=10))
         """
 
-        param_dict_given_ = self.lens_param_samplers_params["velocity_dispersion"].copy()
-        param_dict_given_['z_min'] = self.z_min
-        param_dict_given_['z_max'] = self.z_max
-        param_dict_given_['cosmology'] = self.cosmo
-        param_dict_given_['name'] = "velocity_dispersion_gengamma"
-        param_dict_given_['resolution'] = self.create_new_interpolator["velocity_dispersion"]["resolution"]
-        # update with kwargs
-        param_dict_given_.update(kwargs)
+        identifier_dict = {'name': "velocity_dispersion_gengamma"}
+        identifier_dict['z_min'] = self.z_min
+        identifier_dict['z_max'] = self.z_max
+        identifier_dict['cosmology'] = self.cosmo
+        identifier_dict['resolution'] = self.create_new_interpolator["velocity_dispersion"]["resolution"]
+        param_dict = self.available_lens_prior_list_and_its_params["velocity_dispersion"]["velocity_dispersion_gengamma"]
+        if param_dict:
+            param_dict.update(kwargs)
+        else:
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
+
         # setting up inputs for the interpolator
         sigma_array = np.linspace(
-            param_dict_given_['sigma_min'],
-            param_dict_given_['sigma_max'],
-            param_dict_given_["resolution"]
+            identifier_dict['sigma_min'],
+            identifier_dict['sigma_max'],
+            identifier_dict["resolution"]
         )
         pdf_func_ = lambda sigma_: gengamma.pdf(
-            sigma_/param_dict_given_['sigmastar'],
-            a= param_dict_given_['alpha']/param_dict_given_['beta'],
-            c= param_dict_given_['beta'],
+            sigma_/identifier_dict['sigmastar'],
+            a= identifier_dict['alpha']/identifier_dict['beta'],
+            c= identifier_dict['beta'],
         )   # gengamma pdf
 
         sigma_object = FunctionConditioning(
             function=pdf_func_,
             x_array=sigma_array,
-            param_dict_given=param_dict_given_,
+            param_dict_given=identifier_dict,
             directory=self.directory,
             sub_directory="velocity_dispersion",
-            name=param_dict_given_['name'],
+            name=identifier_dict['name'],
             create_new=self.create_new_interpolator["velocity_dispersion"]['create_new'],
             create_function_inverse=False,
             create_function=True,
@@ -999,10 +1416,7 @@ class OpticalDepth():
             callback='rvs',
         )
         
-        if get_attribute:
-            return sigma_object
-        else:
-            return sigma_object.rvs(size)
+        return sigma_object if get_attribute else sigma_object.rvs(size)
     
     def velocity_dispersion_bernardi(self, size, get_attribute=False, **kwargs):
         """
@@ -1027,19 +1441,24 @@ class OpticalDepth():
         >>> print(od.velocity_dispersion(size=10))
         """
 
-        param_dict_given_ = self.lens_param_samplers_params["velocity_dispersion"].copy()
-        param_dict_given_['z_min'] = self.z_min
-        param_dict_given_['z_max'] = self.z_max
-        param_dict_given_['cosmology'] = self.cosmo
-        param_dict_given_['name'] = "velocity_dispersion_bernardi"
-        param_dict_given_['resolution'] = self.create_new_interpolator["velocity_dispersion"]["resolution"]
-        # update with kwargs
-        param_dict_given_.update(kwargs)
+        identifier_dict = {'name': "velocity_dispersion_bernardi"}
+        identifier_dict['z_min'] = self.z_min
+        identifier_dict['z_max'] = self.z_max
+        identifier_dict['cosmology'] = self.cosmo
+        identifier_dict['name'] = "velocity_dispersion_bernardi"
+        identifier_dict['resolution'] = self.create_new_interpolator["velocity_dispersion"]["resolution"]
+        param_dict = self.available_lens_prior_list_and_its_params["velocity_dispersion"]["velocity_dispersion_bernardi"]
+        if param_dict: 
+            param_dict.update(kwargs)
+        else:
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
+
         # setting up inputs for the interpolator
         sigma_array = np.linspace(
-            param_dict_given_['sigma_min'],
-            param_dict_given_['sigma_max'],
-            param_dict_given_["resolution"]
+            identifier_dict['sigma_min'],
+            identifier_dict['sigma_max'],
+            identifier_dict["resolution"]
         )
         number_density_function = lambda sigma: phi_loc_bernardi(
             sigma, 
@@ -1052,10 +1471,10 @@ class OpticalDepth():
         sigma_object = FunctionConditioning(
             function=number_density_function,
             x_array=sigma_array,
-            param_dict_given=param_dict_given_,
+            param_dict_given=identifier_dict,
             directory=self.directory,
             sub_directory="velocity_dispersion",
-            name=param_dict_given_['name'],
+            name=identifier_dict['name'],
             create_new=self.create_new_interpolator["velocity_dispersion"]['create_new'],
             create_function_inverse=False,
             create_function=True,
@@ -1064,10 +1483,7 @@ class OpticalDepth():
             callback='rvs',
         )
         
-        if get_attribute:
-            return sigma_object
-        else:
-            return sigma_object.rvs(size)
+        return sigma_object if get_attribute else sigma_object.rvs(size)
 
     def velocity_dispersion_ewoud(self, size, zl, get_attribute=False, **kwargs):
         """
@@ -1094,19 +1510,24 @@ class OpticalDepth():
         >>> print(od.velocity_dispersion(size=10, zl=0.5))
         """
 
-        param_dict_given_ = self.lens_param_samplers_params["velocity_dispersion"].copy()
-        param_dict_given_['z_min'] = self.z_min
-        param_dict_given_['z_max'] = self.z_max
-        param_dict_given_['cosmology'] = self.cosmo
-        param_dict_given_['name'] = "velocity_dispersion_ewoud"
-        param_dict_given_['resolution'] = self.create_new_interpolator["velocity_dispersion"]["resolution"]
-        # update with kwargs
-        param_dict_given_.update(kwargs)
+        identifier_dict = {'name': "velocity_dispersion_ewoud"}
+        identifier_dict['z_min'] = self.z_min
+        identifier_dict['z_max'] = self.z_max
+        identifier_dict['cosmology'] = self.cosmo
+        identifier_dict['name'] = "velocity_dispersion_ewoud"
+        identifier_dict['resolution'] = self.create_new_interpolator["velocity_dispersion"]["resolution"]
+        param_dict = self.available_lens_prior_list_and_its_params["velocity_dispersion"]["velocity_dispersion_ewoud"].copy()
+        if param_dict: 
+            param_dict.update(kwargs)
+        else:
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
+
         # setting up inputs for the interpolator
         sigma_array = np.linspace(
-            param_dict_given_['sigma_min'],
-            param_dict_given_['sigma_max'],
-            param_dict_given_["resolution"]
+            identifier_dict['sigma_min'],
+            identifier_dict['sigma_max'],
+            identifier_dict["resolution"]
         )
         number_density_function = lambda sigma, zl: phi(
             sigma, 
@@ -1123,10 +1544,10 @@ class OpticalDepth():
             function=number_density_function,
             x_array=sigma_array,
             conditioned_y_array=zl_array,
-            param_dict_given=param_dict_given_,
+            param_dict_given=identifier_dict,
             directory=self.directory,
             sub_directory="velocity_dispersion",
-            name=param_dict_given_['name'],
+            name=identifier_dict['name'],
             create_new=self.create_new_interpolator["velocity_dispersion"]['create_new'],
             create_function_inverse=False,
             create_function=True,
@@ -1135,32 +1556,44 @@ class OpticalDepth():
             callback='rvs',
         )
         
-        if get_attribute:
-            return sigma_object
-        else:
-            return sigma_object.rvs(size, zl)
+        return sigma_object if get_attribute else sigma_object.rvs(size, zl)
 
     ##################
     # Lens functions #
     ##################
     def optical_depth_numerical(self, zs, get_attribute=False, **kwargs):
 
-        param_dict_given_ = self.lens_functions_params["optical_depth"] if self.lens_functions_params["optical_depth"] is not None else {}
-        param_dict_given_['z_min'] = self.z_min
-        param_dict_given_['z_max'] = self.z_max
-        param_dict_given_['cosmology'] = self.cosmo
-        param_dict_given_['name'] = "optical_depth_numerical"
-        param_dict_given_['resolution'] = self.create_new_interpolator["optical_depth"]["resolution"]
-        param_dict_given_['sigma_args'] = self.lens_param_samplers_params["velocity_dispersion"]
-        param_dict_given_['axis_rotation_angle_args'] = self.lens_param_samplers_params["axis_rotation_angle"]
-        param_dict_given_['external_shear_args'] = self.lens_param_samplers_params["external_shear"]
-        param_dict_given_['density_profile_slope_args'] = self.lens_param_samplers_params["density_profile_slope"]
-        param_dict_given_['axis_ratio_args'] = self.lens_param_samplers_params["axis_ratio"]
-        param_dict_given_.update(kwargs)
+        identifier_dict = {'name': "optical_depth_numerical"}
+        identifier_dict['resolution'] = self.create_new_interpolator["optical_depth"]["resolution"]
+        identifier_dict['z_min'] = self.z_min
+        identifier_dict['z_max'] = self.z_max
+        identifier_dict['cosmology'] = self.cosmo
+        identifier_dict['velocity_dispersion'] = self.lens_param_samplers_params['velocity_dispersion']
+        if identifier_dict['velocity_dispersion']: # if velocity_dispersion is not None
+            identifier_dict['velocity_dispersion']['name'] = str(self.lens_param_samplers['velocity_dispersion'])
+        identifier_dict['axis_ratio'] = self.lens_param_samplers_params['axis_ratio']
+        if identifier_dict['axis_ratio']: # if axis_ratio is not None
+            identifier_dict['axis_ratio']['name'] = str(self.lens_param_samplers['axis_ratio'])
+        identifier_dict['axis_rotation_angle'] = self.lens_param_samplers_params['axis_rotation_angle']
+        if identifier_dict['axis_rotation_angle']: # if axis_rotation_angle is not None
+            identifier_dict['axis_rotation_angle']['name'] = str(self.lens_param_samplers['axis_rotation_angle'])
+        identifier_dict['density_profile_slope'] = self.lens_param_samplers_params['density_profile_slope']
+        if identifier_dict['density_profile_slope']: # if density_profile_slope is not None
+            identifier_dict['density_profile_slope']['name'] = str(self.lens_param_samplers['density_profile_slope'])
+        identifier_dict['external_shear'] = self.lens_param_samplers_params['external_shear']
+        if identifier_dict['external_shear']: # if external_shear is not None
+            identifier_dict['external_shear']['name'] = str(self.lens_param_samplers['external_shear'])
+        
+        param_dict = self.available_lens_functions_and_its_params["optical_depth"]["optical_depth_numerical"]
+        if param_dict:
+            param_dict.update(kwargs)
+        else:
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
 
         z_min = self.z_min if self.z_min>0. else 0.001
         z_max = self.z_max
-        resolution = self.create_new_interpolator["optical_depth"]["resolution"]
+        resolution = identifier_dict['resolution']
         zs_array = np.geomspace(
             z_min, 
             z_max, 
@@ -1177,10 +1610,10 @@ class OpticalDepth():
             function=tau,
             x_array=zs_array,
             conditioned_y_array=None,
-            param_dict_given=param_dict_given_,
+            param_dict_given=identifier_dict,
             directory=self.directory,
             sub_directory="optical_depth",
-            name=param_dict_given_['name'],
+            name=identifier_dict['name'],
             create_new=self.create_new_interpolator["optical_depth"]["create_new"],
             create_function_inverse=False,
             create_function=True,
@@ -1189,10 +1622,7 @@ class OpticalDepth():
             callback='function',
         )
 
-        if get_attribute:
-            return tau_object
-        else:
-            return tau(zs)
+        return tau_object if get_attribute else tau_object.function(zs)
         
     def cross_section_sis(self, sigma, zl, zs, **kwargs):
         """
@@ -1238,7 +1668,7 @@ class OpticalDepth():
         Returns
         -------
         theta_E : `float`
-            Einstein radii of the lens galaxies
+            Einstein radii of the lens galaxies in radians. Multiply by 
 
         Examples
         --------
@@ -1310,41 +1740,46 @@ class OpticalDepth():
         >>> print(od.optical_depth_epl_shear_lambdacdm(zs=1.0))
         """
 
-        zs_arr = np.array([1.00000000e-03, 1.21648395e-03, 1.47983320e-03, 1.80019333e-03, 2.18990629e-03, 2.66398586e-03, 3.24069604e-03, 3.94225471e-03, 4.79568958e-03, 5.83387940e-03, 7.09682065e-03, 8.63316841e-03, 1.05021108e-02, 1.27756492e-02, 1.55413722e-02, 1.89058298e-02, 2.29986385e-02, 2.79774746e-02, 3.40341488e-02, 4.14019958e-02, 5.03648633e-02, 6.12680478e-02, 7.45315967e-02, 9.06664911e-02, 1.10294331e-01, 1.34171284e-01, 1.63217213e-01, 1.98551120e-01, 2.41534250e-01, 2.93822538e-01, 3.57430402e-01, 4.34808347e-01, 5.28937375e-01, 6.43443826e-01, 7.82739087e-01, 9.52189535e-01, 1.15832329e+00, 1.40908169e+00, 1.71412525e+00, 2.08520586e+00, 2.53661946e+00, 3.08575685e+00, 3.75377368e+00, 4.56640543e+00, 5.55495891e+00, 6.75751836e+00, 8.22041261e+00, 1.00000000e+01])
-        # zs and tau data points
-        if self.lens_param_samplers["velocity_dispersion"] == "velocity_dispersion_ewoud":
-            tau_arr = np.array([6.03160386e-13, 1.10059613e-12, 1.95432798e-12,3.51678900e-12, 6.33417074e-12, 1.14135959e-11,2.05172549e-11, 3.69566725e-11, 6.64560594e-11,1.19567171e-10, 2.15045832e-10, 3.86804139e-10,6.95544002e-10, 1.25051410e-09, 2.24678876e-09,4.03770124e-09, 7.22902834e-09, 1.29770147e-08,2.32749843e-08, 4.17109576e-08, 7.46815960e-08,1.33544615e-07, 2.38334487e-07, 4.24696339e-07,7.55269773e-07, 1.34275891e-06, 2.36388764e-06,4.15418141e-06, 7.25947183e-06, 1.25895566e-05,2.16379755e-05, 3.67860126e-05, 6.16981466e-05,1.01690398e-04, 1.64327884e-04, 2.59006953e-04,3.97439317e-04, 5.91890529e-04, 8.52861969e-04,1.18758691e-03, 1.59535092e-03, 2.07060366e-03,2.59787615e-03, 3.15410459e-03, 3.71873528e-03,4.27359478e-03, 4.80010742e-03, 5.29316594e-03])
-        elif self.lens_param_samplers["velocity_dispersion"] == "velocity_dispersion_bernardi":
-            tau_arr = np.array([6.00850294e-13, 1.08151426e-12, 1.94596619e-12,3.50298950e-12, 6.30402062e-12, 1.13442972e-11,2.04185899e-11, 3.67329162e-11, 6.62640787e-11,1.19216485e-10, 2.14427873e-10, 3.85652158e-10,6.93134949e-10, 1.24617524e-09, 2.23879004e-09,4.02030613e-09, 7.23573234e-09, 1.29811881e-08,2.32726057e-08, 4.16808742e-08, 7.45702352e-08,1.33237672e-07, 2.37571038e-07, 4.22869164e-07,7.50078130e-07, 1.32708456e-06, 2.33911764e-06,4.10269165e-06, 7.14815719e-06, 1.23628518e-05,2.11810176e-05, 3.58674556e-05, 5.96848327e-05,9.79654101e-05, 1.57538383e-04, 2.47616378e-04,3.79005699e-04, 5.63804261e-04, 8.13766486e-04,1.13922731e-03, 1.55230925e-03, 2.04780867e-03,2.62674567e-03, 3.28454887e-03, 4.00924305e-03,4.79080880e-03, 5.61454580e-03, 6.46916402e-03])
-        elif self.lens_param_samplers["velocity_dispersion"] == "velocity_dispersion_choi":
-            # print("\nChoi\n")
-            tau_arr = np.array([4.08414474e-13, 7.35144978e-13, 1.32295988e-12, 2.38118175e-12, 4.28588534e-12, 7.71120932e-12, 1.38771914e-11, 2.49711498e-11, 4.48291558e-11, 8.06450938e-11, 1.45027675e-10, 2.60849771e-10, 4.69063665e-10, 8.43134806e-10, 1.51479934e-09, 2.71997503e-09, 4.87999147e-09, 8.75163578e-09, 1.56877772e-08, 2.81048883e-08, 5.02784547e-08, 8.98264456e-08, 1.60176352e-07, 2.85127183e-07, 5.08168496e-07, 8.98942430e-07, 1.58429969e-06, 2.77820454e-06, 4.84094964e-06, 8.37289340e-06, 1.43435176e-05, 2.42868938e-05, 4.04335816e-05, 6.63637616e-05, 1.06745981e-04, 1.67759099e-04, 2.56906334e-04, 3.82278437e-04, 5.51906916e-04, 7.72602939e-04, 1.04818537e-03, 1.38241558e-03, 1.77355736e-03, 2.21595390e-03, 2.70449762e-03, 3.23214166e-03, 3.78761428e-03, 4.36316348e-03])
-        else:
-            raise ValueError("velocity_dispersion should be one of velocity_dispersion_ewoud, velocity_dispersion_bernardi, velocity_dispersion_choi.\n Otherwise use optical_depth_numerical with lens_redshift_SDSS_catalogue_numerical.")
-
         # setting up input parameters for interpolation
-        param_dict_given_ = self.lens_functions_params["optical_depth"] if self.lens_functions_params["optical_depth"] is not None else {}
-        param_dict_given_['z_min'] = self.z_min
-        param_dict_given_['z_max'] = self.z_max
-        param_dict_given_['cosmology'] = self.cosmo
-        param_dict_given_['name'] = "optical_depth_epl_shear_hemanta"
-        param_dict_given_['resolution'] = self.create_new_interpolator["optical_depth"]["resolution"]
-        param_dict_given_['sigma_args'] = self.lens_param_samplers_params["velocity_dispersion"]
-        param_dict_given_['sigma_args']['name'] = self.lens_param_samplers["velocity_dispersion"]
-        param_dict_given_['axis_rotation_angle_args'] = self.lens_param_samplers_params["axis_rotation_angle"]
-        param_dict_given_['external_shear_args'] = self.lens_param_samplers_params["external_shear"]
-        param_dict_given_['density_profile_slope_args'] = self.lens_param_samplers_params["density_profile_slope"]
-        param_dict_given_['axis_ratio_args'] = self.lens_param_samplers_params["axis_ratio"]
-        param_dict_given_.update(kwargs)
+        identifier_dict = {'name': 'optical_depth_numerical',
+            'resolution': 48,
+            'z_min': 0.0,
+            'z_max': 10.0,
+            'cosmology': LambdaCDM(H0=70, Om0=0.3, Ode0=0.7),
+            'velocity_dispersion': {'sigma_min': 100.0,
+            'sigma_max': 400.0,
+            'alpha': 0.94,
+            'beta': 1.85,
+            'phistar': 0.02099,
+            'sigmastar': 113.78,
+            'name': 'velocity_dispersion_ewoud'},
+            'axis_ratio': {'q_min': 0.2, 'q_max': 1.0, 'name': 'axis_ratio_rayleigh'},
+            'axis_rotation_angle': {'phi_min': 0.0,
+            'phi_max': 6.283185307179586,
+            'name': 'axis_rotation_angle_uniform'},
+            'density_profile_slope': {'mean': 1.99,
+            'std': 0.149,
+            'name': 'density_profile_slope_normal'},
+            'external_shear': {'mean': 0.0, 'std': 0.05, 'name': 'external_shear_normal'}
+        }
+        
+        print("Getting pre-computed optical depth for EPL+Shear lenses...")
+
+        zs_arr = np.geomspace(
+            0.001,
+            10,
+            identifier_dict['resolution']
+        )
+        tau_arr = load_txt_from_module('ler', 'lens_galaxy_population.lens_param_data', 'optical_depth_epl_shear_vd_ewoud.txt')
 
         tau_object = FunctionConditioning(
             function=tau_arr,
             x_array=zs_arr,
             conditioned_y_array=None,
-            param_dict_given=param_dict_given_,
+            param_dict_given=identifier_dict,
             directory=self.directory,
             sub_directory="optical_depth",
-            name=param_dict_given_['name'],
+            name=identifier_dict['name'],
             create_new=self.create_new_interpolator["optical_depth"]["create_new"],
             create_function_inverse=False,
             create_function=True,
@@ -1353,81 +1788,7 @@ class OpticalDepth():
             callback='function',
         )
 
-        if get_attribute:
-            return tau_object
-        else:
-            return tau_object.function(zs)
-
-        
-    def optical_depth_sie_hemanta(self, zs, get_attribute=False, **kwargs):
-        """
-        Function to compute the strong lensing optical depth (EPL with shear). \n
-        LambdaCDM(H0=70, Om0=0.3, Ode0=0.7) was used to derive the following equation. This is the analytic version of optical depth from z=0 to z=zs.
-
-        Parameters
-        ----------
-        zs : `float`
-            source redshifts
-
-        Returns
-        -------
-        tau : `float`
-            strong lensing optical depth
-
-        Examples
-        --------
-        >>> from ler.lens_galaxy_population import OpticalDepth
-        >>> od = OpticalDepth()
-        >>> print(od.optical_depth_epl_shear_lambdacdm(zs=1.0))
-        """
-
-        zs_arr = np.array([1.00000000e-03, 1.21648395e-03, 1.47983320e-03, 1.80019333e-03, 2.18990629e-03, 2.66398586e-03, 3.24069604e-03, 3.94225471e-03, 4.79568958e-03, 5.83387940e-03, 7.09682065e-03, 8.63316841e-03, 1.05021108e-02, 1.27756492e-02, 1.55413722e-02, 1.89058298e-02, 2.29986385e-02, 2.79774746e-02, 3.40341488e-02, 4.14019958e-02, 5.03648633e-02, 6.12680478e-02, 7.45315967e-02, 9.06664911e-02, 1.10294331e-01, 1.34171284e-01, 1.63217213e-01, 1.98551120e-01, 2.41534250e-01, 2.93822538e-01, 3.57430402e-01, 4.34808347e-01, 5.28937375e-01, 6.43443826e-01, 7.82739087e-01, 9.52189535e-01, 1.15832329e+00, 1.40908169e+00, 1.71412525e+00, 2.08520586e+00, 2.53661946e+00, 3.08575685e+00, 3.75377368e+00, 4.56640543e+00, 5.55495891e+00, 6.75751836e+00, 8.22041261e+00, 1.00000000e+01])
-        # zs and tau data points
-        if self.lens_param_samplers["velocity_dispersion"] == "velocity_dispersion_ewoud":
-            tau_arr = np.array([4.54036644e-13, 8.17268345e-13, 1.47099928e-12,2.64758548e-12, 4.76546219e-12, 8.57629879e-12,1.54350154e-11, 2.77685962e-11, 4.99750460e-11,8.99132847e-11, 1.61762940e-10, 2.90914905e-10,5.23059702e-10, 9.40436875e-10, 1.69006517e-09,3.03640554e-09, 5.44428663e-09, 9.76944171e-09,1.75267955e-08, 3.14050085e-08, 5.62138789e-08,1.00536493e-07, 1.79457116e-07, 3.19758127e-07,5.70201751e-07, 1.01048160e-06, 1.78413346e-06,3.13567775e-06, 5.47906920e-06, 9.50476063e-06,1.63384307e-05, 2.77745755e-05, 4.64364701e-05,7.65441573e-05, 1.23597343e-04, 1.94901461e-04,2.99138988e-04, 4.45383678e-04, 6.41658926e-04,8.93600436e-04, 1.20324039e-03, 1.56217727e-03,1.95954919e-03, 2.38176031e-03, 2.80927989e-03,3.22777949e-03, 3.62813939e-03, 3.99877537e-03])
-        elif self.lens_param_samplers["velocity_dispersion"] == "velocity_dispersion_bernardi":
-            tau_arr = np.array([4.54063374e-13, 8.17279328e-13, 1.47114189e-12, 2.64715333e-12, 4.76477438e-12, 8.57443341e-12, 1.54282211e-11, 2.77619047e-11, 4.99557984e-11, 8.98575333e-11, 1.61640635e-10, 2.90702164e-10, 5.22577159e-10, 9.39402651e-10, 1.68784451e-09, 3.03139742e-09, 5.43477142e-09, 9.75051198e-09, 1.74810705e-08, 3.13081553e-08, 5.60075774e-08, 1.00062419e-07, 1.78479781e-07, 3.17642651e-07, 5.65649750e-07, 1.00075359e-06, 1.76376952e-06, 3.09304545e-06, 5.39042972e-06, 9.32256438e-06, 1.59713696e-05, 2.70505750e-05, 4.50540923e-05, 7.39462404e-05, 1.18936516e-04, 1.86949693e-04, 2.86271754e-04, 4.25919631e-04, 6.14957660e-04, 8.60665526e-04, 1.17141003e-03, 1.54454572e-03, 1.98089667e-03, 2.47619125e-03, 3.02253022e-03, 3.61140114e-03, 4.23206664e-03, 4.87465742e-03])
-        elif self.lens_param_samplers["velocity_dispersion"] == "velocity_dispersion_choi":
-            tau_arr = np.array([3.08366701e-13, 5.54949810e-13, 9.98838724e-13,1.79781610e-12, 3.23592802e-12, 5.82346322e-12,1.04792802e-11, 1.88535240e-11, 3.38875656e-11,6.09717917e-11, 1.09663271e-10, 1.97183649e-10,3.54528312e-10, 6.37217292e-10, 1.14494304e-09,2.05681955e-09, 3.68773233e-09, 6.61558072e-09,1.18637936e-08, 2.12438273e-08, 3.80072216e-08,6.78958282e-08, 1.21115645e-07, 2.15545918e-07,3.84052022e-07, 6.79353353e-07, 1.19734646e-06,2.09966521e-06, 3.65958234e-06, 6.32972798e-06,1.08436671e-05, 1.83628014e-05, 3.05685722e-05,5.01655770e-05, 8.07097438e-05, 1.26851057e-04,1.94231292e-04, 2.88923844e-04, 4.17255033e-04,5.84257923e-04, 7.94755792e-04, 1.04802273e-03,1.34395427e-03, 1.67941176e-03, 2.05010705e-03,2.44910251e-03, 2.86979677e-03, 3.30478671e-03])
-        else:
-            raise ValueError(
-                f"velocity_dispersion must be one of 'velocity_dispersion_gengamma', 'velocity_dispersion_choi', 'velocity_dispersion_gaussian'.")
-        
-        # setting up input parameters for interpolation
-        param_dict_given_ = self.lens_functions_params["optical_depth"] if self.lens_functions_params["optical_depth"] is not None else {}
-        param_dict_given_['z_min'] = self.z_min
-        param_dict_given_['z_max'] = self.z_max
-        param_dict_given_['cosmology'] = self.cosmo
-        param_dict_given_['name'] = "optical_depth_sie_hemanta"
-        param_dict_given_['resolution'] = self.create_new_interpolator["optical_depth"]["resolution"]
-        param_dict_given_['sigma_args'] = self.lens_param_samplers_params["velocity_dispersion"]
-        param_dict_given_['sigma_args']['name'] = self.lens_param_samplers["velocity_dispersion"]
-        param_dict_given_['axis_rotation_angle_args'] = self.lens_param_samplers_params["axis_rotation_angle"]
-        param_dict_given_['external_shear_args'] = self.lens_param_samplers_params["external_shear"]
-        param_dict_given_['density_profile_slope_args'] = self.lens_param_samplers_params["density_profile_slope"]
-        param_dict_given_['axis_ratio_args'] = self.lens_param_samplers_params["axis_ratio"]
-        param_dict_given_.update(kwargs)
-
-        tau_object = FunctionConditioning(
-            function=tau_arr,
-            x_array=zs_arr,
-            conditioned_y_array=None,
-            param_dict_given=param_dict_given_,
-            directory=self.directory,
-            sub_directory="optical_depth",
-            name=param_dict_given_['name'],
-            create_new=self.create_new_interpolator["optical_depth"]["create_new"],
-            create_function_inverse=False,
-            create_function=True,
-            create_pdf=True,
-            create_rvs=True,
-            callback='function',
-        )
-
-        if get_attribute:
-            return tau_object
-        else:
-            return tau_object.function(zs)
+        return tau_object if get_attribute else tau_object.function(zs)
 
     def optical_depth_sis_haris(self, zs, get_attribute=False, **kwargs):
         """
@@ -1451,20 +1812,52 @@ class OpticalDepth():
         >>> print(od.optical_depth_sis_haris(zs=1.0))
         """
 
-        # z to luminosity_distance (luminosity_distance) conversion
-        #Dc = self.z_to_Dc(zs) * 1e-3  # 1e-3 converts Mpc to Gpc
-        splineDc = self.splineDc
+        # # z to luminosity_distance (luminosity_distance) conversion
+        # #Dc = self.z_to_Dc(zs) * 1e-3  # 1e-3 converts Mpc to Gpc
+        # splineDc = self.splineDc
 
-        @njit
-        def tau(zs):
-            Dc = cubic_spline_interpolator(zs, splineDc[0], splineDc[1])
-            return (Dc * 1e-3 / 62.2) ** 3
+        
 
-        if get_attribute:
-            return tau
+        # if get_attribute:
+        #     return tau
+        # else:
+        #     return tau(zs)
+        identifier_dict = {'name': "optical_depth_sis_haris"}
+        identifier_dict['z_min'] = self.z_min if self.z_min>0. else 0.001
+        identifier_dict['z_max'] = self.z_max
+        identifier_dict['cosmology'] = self.cosmo
+        identifier_dict['resolution'] = self.create_new_interpolator["optical_depth"]["resolution"]
+        param_dict = self.available_lens_functions_and_its_params["optical_depth"]["optical_depth_sis_haris"]
+        if param_dict:
+            param_dict.update(kwargs)
         else:
-            return tau(zs)
-    
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
+
+        zs_arr = np.geomspace(identifier_dict['z_min'], identifier_dict['z_max'], identifier_dict['resolution'])
+
+        def tau(zs):
+            Dc = self.comoving_distance.function(zs)
+            return (Dc * 1e-3 / 62.2) ** 3
+        
+        tau_object = FunctionConditioning(
+            function=tau,
+            x_array=zs_arr,
+            conditioned_y_array=None,
+            param_dict_given=identifier_dict,
+            directory=self.directory,
+            sub_directory="optical_depth",
+            name=identifier_dict['name'],
+            create_new=self.create_new_interpolator["optical_depth"]["create_new"],
+            create_function_inverse=False,
+            create_function=True,
+            create_pdf=True,
+            create_rvs=True,
+            callback='function',
+        )
+
+        return tau_object if get_attribute else tau_object.function(zs)
+
     #######################################
     # interpolated cross section function #
     #######################################
@@ -1595,7 +1988,7 @@ class OpticalDepth():
         if (self.create_new_interpolator["cross_section"]["create_new"] is True) or (it_exist is False):
             
             print(f"Interpolated cross section function will be created at {file_path}")
-            print("Creating interpolated cross section function...")
+            print("Creating interpolated cross section function with sklearn NearestNeighbors, and this will be use for cross section calculation")
 
             size_interpolation=1000
             theta_E, e1, e2, gamma, gamma1, gamma2, _ = self.create_data_set(size_interpolation)
@@ -1670,7 +2063,6 @@ class OpticalDepth():
 
         return new_values_nn1*theta_E_correction
 
-
     ##########################
     # Cosmological functions #
     ##########################
@@ -1685,12 +2077,11 @@ class OpticalDepth():
 
         z_max = self.z_max
         z_min = 0.001 if self.z_min == 0. else self.z_min
-
         # for co-moving distance
-        Dc = self.cosmo.comoving_distance(zs).value  # co-moving distance in Mpc
         resolution = self.create_new_interpolator["comoving_distance"]["resolution"]
         create_new = self.create_new_interpolator["comoving_distance"]["create_new"]
         zs = np.geomspace(z_min, z_max, resolution)
+        Dc = self.cosmo.comoving_distance(zs).value  # co-moving distance in Mpc
         self.comoving_distance = FunctionConditioning(
             function=Dc,
             x_array=zs,
@@ -1893,7 +2284,11 @@ class OpticalDepth():
     def optical_depth(self, input_function):
         if input_function in self.available_lens_functions_and_its_params['optical_depth']:
             print(f"using ler available optical depth function : {input_function}")
-            self._optical_depth = getattr(self, input_function)(zs=None, get_attribute=True)
+            args = self.lens_functions_params["optical_depth"]
+            if args is None:
+                self._optical_depth = getattr(self, input_function)(zs=None, get_attribute=True)
+            else:
+                self._optical_depth = getattr(self, input_function)(zs=None, get_attribute=True, **args)
         elif callable(input_function):
             print(f"using user provided custom optical depth function")
             self._optical_depth = FunctionConditioning(function=None, x_array=None, create_function=input_function)
@@ -1932,15 +2327,19 @@ class OpticalDepth():
 
     @velocity_dispersion.setter
     def velocity_dispersion(self, prior):
-        if prior=="velocity_dispersion_choi":
-            prior = "velocity_dispersion_bernardi"
     
         if prior in self.available_lens_prior_list_and_its_params["velocity_dispersion"]:
             print(f"using ler available velocity dispersion function : {prior}")
-            self._velocity_dispersion = getattr(self, prior)(size=None, zl=None, get_attribute=True)
+            args = self.lens_param_samplers_params["velocity_dispersion"]
+            if prior=="velocity_dispersion_choi":
+                prior = "velocity_dispersion_bernardi"
+            if args is None:
+                self._velocity_dispersion = getattr(self, prior)(size=None, zl=None, get_attribute=True)
+            else:
+                self._velocity_dispersion = getattr(self, prior)(size=None, zl=None, get_attribute=True, **args)
         elif callable(prior):
             print("using user provided custom velocity_dispersion function")
-            self._velocity_dispersion = FunctionConditioning(function=None, x_array=None,create_rvs=prior)
+            self._velocity_dispersion = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
         elif isinstance(prior, object):
             print("using user provided custom velocity_dispersion class/object")
             self._velocity_dispersion = prior
@@ -1975,10 +2374,14 @@ class OpticalDepth():
     def axis_ratio(self, prior):
         if prior in self.available_lens_prior_list_and_its_params["axis_ratio"]:
             print(f"using ler available axis_ratio function : {prior}")
-            self._axis_ratio = getattr(self, prior)(size=None,sigma=None, get_attribute=True)
+            args = self.lens_param_samplers_params["axis_ratio"]
+            if args is None:
+                self._axis_ratio = getattr(self, prior)(size=None,sigma=None, get_attribute=True)
+            else:
+                self._axis_ratio = getattr(self, prior)(size=None, sigma=None, get_attribute=True, **args)
         elif callable(prior):
             print("using user provided custom axis_ratio function")
-            self._axis_ratio = FunctionConditioning(function=None, x_array=None,create_rvs=prior)
+            self._axis_ratio = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
         elif isinstance(prior, object):
             print("using user provided custom axis_ratio class/object")
             self._axis_ratio = prior
@@ -1993,10 +2396,14 @@ class OpticalDepth():
     def lens_redshift(self, prior):
         if prior in self.available_lens_prior_list_and_its_params["lens_redshift"]:
             print(f"using ler available lens_redshift function : {prior}")
-            self._lens_redshift = getattr(self, prior)(size=None, zs=None, get_attribute=True)
+            args = self.lens_param_samplers_params["lens_redshift"]
+            if args is None:
+                self._lens_redshift = getattr(self, prior)(size=None, zs=None, get_attribute=True)
+            else:
+                self._lens_redshift = getattr(self, prior)(size=None, zs=None, get_attribute=True, **args)
         elif callable(prior):
             print("using user provided custom lens_redshift function")
-            self._lens_redshift = FunctionConditioning(function=prior, original_function=True)
+            self._lens_redshift = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
         elif isinstance(prior, object):
             print("using user provided custom lens_redshift class/object")
             self._lens_redshift = prior
@@ -2011,10 +2418,14 @@ class OpticalDepth():
     def axis_rotation_angle(self, prior):
         if prior in self.available_lens_prior_list_and_its_params["axis_rotation_angle"]:
             print(f"using ler available axis_rotation_angle function : {prior}")
-            self._axis_rotation_angle = getattr(self, prior)(size=None, get_attribute=True)
+            args = self.lens_param_samplers_params["axis_rotation_angle"]
+            if args is None:
+                self._axis_rotation_angle = getattr(self, prior)(size=None, get_attribute=True)
+            else:
+                self._axis_rotation_angle = getattr(self, prior)(size=None, get_attribute=True, **args)
         elif callable(prior):
             print("using user provided custom axis_rotation_angle function")
-            self._axis_rotation_angle = FunctionConditioning(function=prior, original_function=True)
+            self._axis_rotation_angle = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
         elif isinstance(prior, object):
             print("using user provided custom axis_rotation_angle class/object")
             self._axis_rotation_angle = prior
@@ -2029,15 +2440,41 @@ class OpticalDepth():
     def external_shear(self, prior):
         if prior in self.available_lens_prior_list_and_its_params["external_shear"]:
             print(f"using ler available external_shear function : {prior}")
-            self._external_shear = getattr(self, prior)(size=None, get_attribute=True)
+            args = self.lens_param_samplers_params["external_shear"]
+            if args is None:
+                self._external_shear = getattr(self, prior)(size=None, get_attribute=True)
+            else:
+                self._external_shear = getattr(self, prior)(size=None, get_attribute=True, **args)
         elif callable(prior):
             print("using user provided custom external_shear function")
-            self._external_shear = FunctionConditioning(function=prior, original_function=True)
+            self._external_shear = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
         elif isinstance(prior, object):
             print("using user provided custom external_shear class/object")
             self._external_shear = prior
         else:
             raise ValueError("prior not in available_lens_prior_list_and_its_params['external_shear']")
+        
+    @property
+    def external_shear_sl(self):
+        return self._external_shear_sl
+    
+    @external_shear_sl.setter
+    def external_shear_sl(self, prior):
+        if prior in self.available_lens_prior_list_and_its_params["external_shear_sl"]:
+            print(f"using ler available external_shear_sl function : {prior}")
+            args = self.lens_param_samplers_params["external_shear_sl"]
+            if args is None:
+                self._external_shear_sl = getattr(self, prior)(size=None, get_attribute=True)
+            else:
+                self._external_shear_sl = getattr(self, prior)(size=None, get_attribute=True, **args)
+        elif callable(prior):
+            print("using user provided custom external_shear_sl function")
+            self._external_shear_sl = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+        elif isinstance(prior, object):
+            print("using user provided custom external_shear_sl class/object")
+            self._external_shear_sl = prior
+        else:
+            raise ValueError("prior not in available_lens_prior_list_and_its_params['external_shear_sl']")
         
     @property
     def density_profile_slope(self):
@@ -2047,15 +2484,41 @@ class OpticalDepth():
     def density_profile_slope(self, prior):
         if prior in self.available_lens_prior_list_and_its_params["density_profile_slope"]:
             print(f"using ler available density_profile_slope function : {prior}")
-            self._density_profile_slope = getattr(self, prior)(size=None, get_attribute=True)
+            args = self.lens_param_samplers_params["density_profile_slope"]
+            if args is None:
+                self._density_profile_slope = getattr(self, prior)(size=None, get_attribute=True)
+            else:
+                self._density_profile_slope = getattr(self, prior)(size=None, get_attribute=True, **args)
         elif callable(prior):
             print("using user provided custom density_profile_slope function")
-            self._density_profile_slope = FunctionConditioning(function=prior, original_function=True)
+            self._density_profile_slope = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
         elif isinstance(prior, object):
             print("using user provided custom density_profile_slope class/object")
             self._density_profile_slope = prior
         else:
             raise ValueError("prior not in available_lens_prior_list_and_its_params['density_profile_slope']")
+        
+    @property
+    def density_profile_slope_sl(self):
+        return self._density_profile_slope_sl
+    
+    @density_profile_slope_sl.setter
+    def density_profile_slope_sl(self, prior):
+        if prior in self.available_lens_prior_list_and_its_params["density_profile_slope_sl"]:
+            print(f"using ler available density_profile_slope_sl function : {prior}")
+            args = self.lens_param_samplers_params["density_profile_slope_sl"]
+            if args is None:
+                self._density_profile_slope_sl = getattr(self, prior)(size=None, get_attribute=True)
+            else:
+                self._density_profile_slope_sl = getattr(self, prior)(size=None, get_attribute=True, **args)
+        elif callable(prior):
+            print("using user provided custom density_profile_slope_sl function")
+            self._density_profile_slope_sl = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+        elif isinstance(prior, object):
+            print("using user provided custom density_profile_slope_sl class/object")
+            self._density_profile_slope_sl = prior
+        else:
+            raise ValueError("prior not in available_lens_prior_list_and_its_params['density_profile_slope_sl']")
         
 
     ####################################
@@ -2077,22 +2540,22 @@ class OpticalDepth():
             ),
             velocity_dispersion = dict(
                 velocity_dispersion_gengamma = dict(
-                    sigma_min=10., sigma_max=420., alpha=0.94, beta=1.85, phistar=2.099e-2*(self.cosmo.h/0.7)**3, sigmastar=113.78
+                    sigma_min=100., sigma_max=400., alpha=0.94, beta=1.85, phistar=2.099e-2*(self.cosmo.h/0.7)**3, sigmastar=113.78
                 ),
                 velocity_dispersion_choi = dict(
-                    sigma_min = 50., sigma_max = 420., alpha = 2.32, beta = 2.67, phistar = 8.0e-3*self.cosmo.h**3, sigmastar = 161.0
+                    sigma_min=100., sigma_max=400., alpha = 2.32, beta = 2.67, phistar = 8.0e-3*self.cosmo.h**3, sigmastar = 161.0
                 ),
                 velocity_dispersion_bernardi = dict(
-                    sigma_min=10., sigma_max=420., alpha=0.94, beta=1.85, phistar=2.099e-2*(self.cosmo.h/0.7)**3, sigmastar=113.78
+                    sigma_min=100., sigma_max=400., alpha=0.94, beta=1.85, phistar=2.099e-2*(self.cosmo.h/0.7)**3, sigmastar=113.78
                 ),
                 velocity_dispersion_ewoud = dict(
-                    sigma_min=10., sigma_max=420., alpha=0.94, beta=1.85, phistar=2.099e-2*(self.cosmo.h/0.7)**3, sigmastar=113.78
+                    sigma_min=100., sigma_max=400., alpha=0.94, beta=1.85, phistar=2.099e-2*(self.cosmo.h/0.7)**3, sigmastar=113.78
                 ),
             ),
             axis_ratio = dict(
                 axis_ratio_rayleigh = dict(q_min=0.2, q_max=1.0),
                 axis_ratio_padilla_strauss = dict(q_min=0.2, q_max=1.0),
-                axis_ratio_SIS = None,
+                axis_ratio_uniform = dict(q_min=0.2, q_max=1.0),
             ),
             axis_rotation_angle = dict(
                 axis_rotation_angle_uniform = dict(
@@ -2102,8 +2565,16 @@ class OpticalDepth():
             external_shear = dict(
                 external_shear_normal = dict(mean=0., std=0.05),
             ),
+            external_shear_sl = dict(
+                external_shear_normal = dict(mean=0., std=0.05, name="external_shear_normal_sl"),
+                external_shear_sl_numerical_hemanta = dict(external_shear_normal=dict(mean=0., std=0.05), name="external_shear_sl_numerical_hemanta"),
+            ),
             density_profile_slope = dict(
                 density_profile_slope_normal=dict(mean=1.99, std=0.149),
+            ),
+            density_profile_slope_sl = dict(
+                density_profile_slope_normal=dict(mean=2.091, std=0.133, name="density_profile_slope_normal_sl"),
+                density_profile_slope_sl_numerical_hemanta=dict(density_profile_slope_normal=dict(mean=1.99, std=0.149), name="density_profile_slope_sl_numerical_hemanta"),
             ),
             source_parameters=dict(
                 sample_gw_parameters=None
@@ -2122,7 +2593,7 @@ class OpticalDepth():
             strong_lensing_condition=dict(
                 rjs_with_cross_section_sie_feixu=None,
                 rjs_with_cross_section_sis=None,
-                rjs_with_cross_section_epl_shear=None,
+                rjs_with_cross_section_mp=None,
             ),
             optical_depth=dict(
                 optical_depth_sis_haris=None,
@@ -2131,9 +2602,9 @@ class OpticalDepth():
                 optical_depth_numerical=None,
             ),
             param_sampler_type=dict(
-                sample_all_routine_sie=None,
-                sample_all_routine_sis=None,
-                sample_all_routine_epl_shear=None,
+                sample_all_routine_sie_sl=None,
+                sample_all_routine_sis_sl=None,
+                sample_all_routine_epl_shear_sl=None,
             ),
             cross_section=dict(
                 cross_section_sie_feixu=None,

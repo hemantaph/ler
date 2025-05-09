@@ -11,6 +11,7 @@ import numpy as np
 from scipy.integrate import quad
 # from lenstronomy.Util.param_util import phi_q2_ellipticity
 from multiprocessing import Pool
+from tqdm import tqdm
 
 # the following .py file will be called if they are not given in the class initialization
 from ..gw_source_population import CBCSourceParameterDistribution
@@ -18,7 +19,7 @@ from .optical_depth import OpticalDepth
 from ..image_properties import ImageProperties
 from ..utils import add_dictionaries_together, trim_dictionary, FunctionConditioning, interpolator_pickle_path
 from .jit_functions import phi_cut_SIE, phi_q2_ellipticity_hemanta
-from .mp import cross_section_mp
+from .mp import cross_section_mp, rjs_sie_mp
 
 class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImageProperties, OpticalDepth):
     """
@@ -220,7 +221,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         lens_param_samplers_params=None,
         directory="./interpolator_pickle",
         create_new_interpolator=False,
-        buffer_size=int(2e5),
+        buffer_size=1000,
         **kwargs  # for initialization of CBCSourceParameterDistribution class and ImageProperties class
     ):
         print("\nInitializing LensGalaxyParameterDistribution class...\n")          
@@ -245,19 +246,19 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
 
         # function to sample source redshifts conditioned on the source being strongly lensed 
         self.sample_source_redshift_sl = getattr(self,self.lens_param_samplers["source_redshift_sl"])
-        # create kde for strong lensing paramters: gamma, gamma1, gamma2
-        # this is done to speed up the sampling lens parameters
-        self.create_kde_sl();
+
+        # interpolated cross section function is not very accurate for rejection sampling
+        if self.lens_functions["cross_section"] == "interpolated_cross_section_function":
+            self.cross_section = self.cross_section_caustic_area
         # function to sample lens parameters
         self.sample_lens_parameters_routine = getattr(self, self.lens_functions['param_sampler_type'])  
         # function to rejection sample wrt lens cross section
         self.rejection_sample_sl = getattr(self, self.lens_functions['strong_lensing_condition']) 
-        
 
         # To find the normalization constant of the pdf p(z)
         # this under the assumption that the event is strongly lensed
         # Define the merger-rate density function
-        pdf_unnormalized_ = lambda z: self.merger_rate_density_detector_frame(np.array([z]), param=self.merger_rate_density_param) * self.optical_depth.function(np.array([z]))
+        pdf_unnormalized_ = lambda z: self.merger_rate_density_detector_frame(np.array([z])) * self.optical_depth.function(np.array([z]))
         pdf_unnormalized = lambda z: pdf_unnormalized_(z)[0]
 
         self.normalization_pdf_z_lensed = quad(
@@ -265,89 +266,6 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             self.z_min,
             self.z_max
         )[0]
-
-    def create_kde_sl(self):
-        """
-            Creates kernel density estimates (KDE) for strong lensing parameters: gamma, gamma1, and gamma2.
-            
-            This function checks if the necessary interpolator files exist for the parameters 
-            associated with strongly lensed gamma and gamma1, gamma2. If they do not exist, 
-            or if a new creation is requested, it generates the interpolators by sampling 
-            lens parameters under strong lensing conditions. The KDEs are computed to speed 
-            up the sampling of these lens parameters.
-            
-            The function utilizes various class attributes to obtain parameter information 
-            and buffer size. It temporarily modifies certain settings and reverts them back 
-            after interpolator creation.
-
-            Attributes
-            ----------
-            density_profile_slope_sl : callable
-                A kernel density estimator for the density profile slope under strong lensing.
-            external_shear_sl : callable
-                A kernel density estimator for the external shear parameters under strong lensing.
-
-            Raises
-            ------
-            FileNotFoundError
-                If the necessary pickle files do not exist and interpolator creation fails.
-        """
-
-        self.cross_section = self.cross_section_caustic_area
-        self.rejection_sample_sl = self.rjs_with_cross_section_mp
-
-        param_dict_given_ = self.external_shear.info 
-        param_dict_given_.update(self.density_profile_slope.info)
-        param_dict_given_.update(self.axis_ratio.info)
-        param_dict_given_.update(self.density_profile_slope.info)
-        param_dict_given_.update(self.velocity_dispersion.info)
-        param_dict_given_['buffer_size'] = self.buffer_size
-
-        gamma_dict = param_dict_given_.copy()
-        gamma_dict['name'] = 'density_profile_slope_sl'
-        gamma12_dict = param_dict_given_.copy()
-        gamma12_dict['name'] = 'external_shear_sl'
-
-        # check first whether the directory, subdirectory and pickle exist
-        _, it_exist_gamma = interpolator_pickle_path(
-            param_dict_given=gamma_dict,
-            directory=self.directory,
-            sub_directory='density_profile_slope',
-            interpolator_name=gamma_dict['name'],
-        )
-        _, it_exist_gamma12 = interpolator_pickle_path(
-            param_dict_given=gamma12_dict,
-            directory=self.directory,
-            sub_directory='external_shear',
-            interpolator_name=gamma12_dict['name'],
-        )
-
-        create_new = self.create_new_interpolator['lens_parameters_kde_sl']['create_new']
-        if (it_exist_gamma is False) or (it_exist_gamma12 is False) or create_new:
-            print("Creating interpolator for strongly lensed gamma and gamma1, gamma2...")
-            # create the interpolator
-            buffer_size_ = self.buffer_size
-            self.buffer_size = int(2e5)
-            # sample lens parameters, strongly lensed
-            size = self.create_new_interpolator['lens_parameters_kde_sl']['resolution']
-            print(f"Sampling lens parameters for interpolator creation with size: {size}")
-            lens_params = self.sample_all_routine_epl_shear_sl(size)
-            # revert back to the original settings
-            self.buffer_size = buffer_size_
-
-            gamma = lens_params['gamma']
-            gamma1 = lens_params['gamma1']
-            gamma2 = lens_params['gamma2']
-        else:
-            print("Loading interpolator for strongly lensed gamma and gamma1, gamma2...")
-            gamma = None
-            gamma1 = None
-            gamma2 = None
-
-        # create kde for gamma
-        self.density_profile_slope_sl = getattr(self, 'density_profile_slope_sl_sampler')(size=None, get_attribute=True, gamma=gamma)
-        self.external_shear_sl = getattr(self, 'external_shear_sl_sampler')(size=None, get_attribute=True, gamma1=gamma1, gamma2=gamma2)
-
 
     def class_initialization_lens(self, npool, z_min, z_max, cosmology, lens_type, lens_functions, lens_functions_params, lens_param_samplers,  lens_param_samplers_params,  directory, create_new_interpolator, params):
         """
@@ -383,7 +301,8 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         """
 
         # initialize the optical depth class
-        # this also initializes the lens related parameter samplers and functions
+        # this also initializes the lens related parameter samplers and functions:
+        # self.lens_param_samplers, self.lens_param_samplers_params, self.lens_functions, self.lens_functions_params
         OpticalDepth.__init__(
             self,
             npool = npool,
@@ -431,7 +350,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             n_min_images=2,
             n_max_images=4,
             geocent_time_min=1126259462.4,
-            geocent_time_max=1126259462.4+365*24*3600*10,
+            geocent_time_max=1126259462.4+365*24*3600*2,
             lens_model_list=["EPL_NUMBA", "SHEAR"],
         )
         input_params_image.update(params)
@@ -453,7 +372,6 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             directory=self.directory,
             create_new_interpolator=self.create_new_interpolator,
         )
-
 
     def sample_lens_parameters(self, size=1000,):
         """
@@ -512,89 +430,6 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         lens_parameters.update(gw_param)
 
         return lens_parameters
-    
-    def sample_all_routine_sis_sl(self, size=1000):
-        """
-            Function to sample galaxy lens parameters. SIS cross section is used for rejection sampling.
-
-            Parameters
-            ----------
-            size : `int`
-                number of lens parameters to sample
-            lens_parameters_input : `dict`
-                dictionary of lens parameters to sample
-
-            Returns
-            -------
-            lens_parameters : `dict`
-                dictionary of lens parameters and source parameters (lens conditions applied): \n
-                zl: lens redshifts \n
-                zs: source redshifts, lensed condition applied\n
-                sigma: velocity dispersions \n
-                q: axis ratios \n
-                theta_E: Einstein radii \n
-                phi: axis rotation angle \n
-                e1: ellipticity component 1 \n
-                e2: ellipticity component 2 \n
-                gamma1: shear component 1 \n
-                gamma2: shear component 2 \n
-                gamma: density profile slope distribution \n
-
-            Examples
-            --------
-            >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-            >>> lens = LensGalaxyParameterDistribution()
-            >>> lens.sample_all_routine_sie(size=1000)
-        """
-
-        buffer_size = self.buffer_size if self.buffer_size is not None else size
-        
-        lens_parameters = dict()
-
-        # Sample source redshifts from the source population
-        # rejection sampled with optical depth
-        zs = self.sample_source_redshift_sl(buffer_size)
-
-        # # Sample lens redshifts
-        zl = self.lens_redshift.rvs(buffer_size, zs)
-
-        while True:
-
-            # Create a dictionary of the lens parameters; q, phi, e1, e2
-            lens_parameters_ = self.rjs_with_cross_section_sis(zl, zs, size=buffer_size)
-
-            # Rejection sample based on the lensing probability, that is, rejection sample wrt theta_E
-            lens_parameters_ = self.rejection_sample_sis(
-                lens_parameters_
-            )  # proportional to pi theta_E^2
-
-            # Add the lensing parameter dictionaries together
-            lens_parameters = add_dictionaries_together(
-                lens_parameters, lens_parameters_
-            )
-
-            # check the size of the lens parameters
-            size_now = len(lens_parameters["sigma"])
-            #print(f"current sampled size: {size_now}")
-            if size_now > size:
-                break
-
-        # trim to the right size
-        lens_parameters = trim_dictionary(lens_parameters, size)
-        lens_parameters["zs"] = zs[:size]
-        lens_parameters["zl"] = zl[:size]
-        lens_parameters["q"] = self.axis_ratio.rvs(size)
-        lens_parameters["phi"] = self.axis_rotation_angle.rvs(size)
-        
-        # sample additional lens parameters
-        if self.lens_type == "epl_shear_galaxy":
-            lens_parameters["gamma"] = self.density_profile_slope_sl.rvs(size)
-            lens_parameters["gamma1"], lens_parameters["gamma2"] = self.external_shear_sl.rvs(size)
-        else:
-            lens_parameters["gamma"] = self.density_profile_slope.rvs(size)
-            lens_parameters["gamma1"], lens_parameters["gamma2"] = self.external_shear.rvs(size)
-
-        return lens_parameters
 
     def sample_all_routine_sie_sl(self, size=1000):
         """
@@ -630,50 +465,106 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         >>> lens.sample_all_routine_sie(size=1000)
         """
 
-        buffer_size = self.buffer_size if self.buffer_size is not None else size
-        
-        lens_parameters = dict()
+        buffer_size = self.buffer_size
 
         # Sample source redshifts from the source population
         # rejection sampled with optical depth
-        zs = self.sample_source_redshift_sl(buffer_size)
+        zs = self.sample_source_redshift_sl(size)
 
         # # Sample lens redshifts
-        zl = self.lens_redshift.rvs(buffer_size, zs)
+        zl = self.lens_redshift.rvs(size, zs)
 
-        while True:
+        sigma = np.zeros(size)
+        theta_E = np.zeros(size)
+        q = np.zeros(size)
 
-            # Create a dictionary of the lens parameters; q, phi, e1, e2
-            lens_parameters_ = self.sampling_routine_sie_nsl(zl, zs, size=buffer_size)
+        # # set-up multiprocessing args
+        # q_args_cdf_values = self.axis_ratio.cdf_values
+        # q_args_x_array = self.axis_ratio.x_array
+        # q_args_conditioned_y_array = self.axis_ratio.conditioned_y_array
 
-            # Rejection sample based on the lensing probability, that is, rejection sample wrt theta_E
-            lens_parameters_ = self.rjs_with_cross_section_sie_feixu(
-                lens_parameters_
-            )  # proportional to pi theta_E^2
+        # sigma_args_cdf_values = self.velocity_dispersion.cdf_values
+        # sigma_args_x_array = self.velocity_dispersion.x_array
+        # sigma_args_conditioned_y_array = self.velocity_dispersion.conditioned_y_array
 
-            # Add the lensing parameter dictionaries together
-            lens_parameters = add_dictionaries_together(
-                lens_parameters, lens_parameters_
-            )
+        # da_args_function_spline = self.angular_diameter_distance.function_spline
+        # da_args_x_array = self.angular_diameter_distance.x_array
 
-            # check the size of the lens parameters
-            size_now = len(lens_parameters["sigma"])
-            #print(f"current sampled size: {size_now}")
-            if size_now > size:
-                break
+        # idx = np.arange(size)
+        # input_params = np.array([(idx[i], zs[i], zl[i], sigma_args_cdf_values, sigma_args_x_array, sigma_args_conditioned_y_array, q_args_cdf_values, q_args_x_array, q_args_conditioned_y_array, da_args_function_spline, da_args_x_array, buffer_size) for i in range(size)], dtype=object)
 
-        # trim to the right size
-        lens_parameters = trim_dictionary(lens_parameters, size)
-        lens_parameters["zs"] = zs[:size]
-        lens_parameters["zl"] = zl[:size]   
+        # with Pool(processes=self.npool) as pool:
+        #     for result in tqdm(
+        #         pool.imap_unordered(rjs_sie_mp, input_params),
+        #         total=size,
+        #         ncols=100,
+        #         disable=False,
+        #     ):
+        #         (
+        #             idx_,
+        #             sigma_,
+        #             theta_E_,
+        #             q_,
+        #         ) = result
+
+        #         sigma[idx_] = sigma_
+        #         theta_E[idx_] = theta_E_
+        #         q[idx_] = q_
+        # phi = self.axis_rotation_angle.rvs(size)
+        # e1, e2 = phi_q2_ellipticity_hemanta(phi, q)
         
+        sigma_max = self.velocity_dispersion.info['sigma_max']
+
+        for i in tqdm(range(size), ncols=100, disable=False):
+            zs_ = zs[i]*np.ones(buffer_size)
+            zl_ = zl[i]*np.ones(buffer_size)
+
+            # cross_section_max calculation
+            theta_E_max = self.compute_einstein_radii(np.array([sigma_max]), np.array([zl[i]]), np.array([zs[i]]))[0]
+            sie_factor=1.
+            cross_section_max = sie_factor*np.pi*theta_E_max**2
+
+            while True:
+                # Create a dictionary of the lens parameters; sigma, theta_E, q, phi, e1, e2
+                lens_parameters_ = self.sampling_routine_sie_nsl(zl_, zs_, size=buffer_size)
+
+                # Rejection sample based on the lensing probability, that is, rejection sample wrt theta_E
+                lens_parameters_, mask, cross_section_max_ = self.rjs_with_cross_section_sie_feixu(
+                    lens_parameters_, cross_section_max
+                )  # proportional to pi theta_E^2
+
+                if cross_section_max_>cross_section_max:
+                    cross_section_max = cross_section_max_
+
+                if np.sum(mask) > 0:
+                    break
+            
+            sigma[i] = lens_parameters_["sigma"][0]
+            theta_E[i] = lens_parameters_["theta_E"][0]
+            q[i] = lens_parameters_["q"][0]
+            
         # sample additional lens parameters
-        if self.lens_type == "epl_shear_galaxy":
-            lens_parameters["gamma"] = self.density_profile_slope_sl.rvs(size)
-            lens_parameters["gamma1"], lens_parameters["gamma2"] = self.external_shear_sl.rvs(size)
-        else:
-            lens_parameters["gamma"] = self.density_profile_slope.rvs(size)
-            lens_parameters["gamma1"], lens_parameters["gamma2"] = self.external_shear.rvs(size)
+        # P(gamma|SL), P(gamma1, gamma2|SL)
+        gamma = self.density_profile_slope_sl.rvs(size)
+        gamma1, gamma2 = self.external_shear_sl.rvs(size)
+
+        phi = self.axis_rotation_angle.rvs(size)
+        e1, e2 = phi_q2_ellipticity_hemanta(phi, q)
+
+        # Create a dictionary of the lens parameters
+        lens_parameters = {
+            "zl": zl,
+            "zs": zs,
+            "sigma": sigma,
+            "theta_E": theta_E,
+            "q": q,
+            "phi": phi,
+            "e1": e1,
+            "e2": e2,
+            "gamma": gamma,
+            "gamma1": gamma1,
+            "gamma2": gamma2,
+        }
 
         return lens_parameters
         
@@ -711,46 +602,74 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             >>> lens.sample_all_routine_sie(size=1000)
         """
 
-        buffer_size = self.buffer_size if self.buffer_size is not None else size
-        
-        lens_parameters = dict()
+        buffer_size = self.buffer_size
 
         # Sample source redshifts from the source population
         # rejection sampled with optical depth
-        zs = self.sample_source_redshift_sl(buffer_size)
+        zs = self.sample_source_redshift_sl(size)
 
         # # Sample lens redshifts
-        zl = self.lens_redshift.rvs(buffer_size, zs)
+        zl = self.lens_redshift.rvs(size, zs)
 
-        while True:
+        sigma = np.zeros(size)
+        theta_E = np.zeros(size)
+        q = np.zeros(size)
+        phi = np.zeros(size)
+        gamma1 = np.zeros(size)
+        gamma2 = np.zeros(size)
+        gamma = np.zeros(size)
 
-            # Create a dictionary of the lens parameters
-            lens_parameters_ = self.sampling_routine_epl_shear_nsl(zl, zs, size=buffer_size)
+        sigma_max = self.velocity_dispersion.info['sigma_max']
 
-            # Rejection sample based on the lensing probability, that is, rejection sample wrt theta_E
-            lens_parameters_ = self.rejection_sample_sl(
-                lens_parameters_
-            )  # proportional to pi theta_E^2
+        # this will take some time
+        for i in tqdm(range(size), ncols=100, disable=False):
+            zs_ = zs[i]*np.ones(buffer_size)
+            zl_ = zl[i]*np.ones(buffer_size)
 
-            # Add the lensing parameter dictionaries together
-            lens_parameters = add_dictionaries_together(
-                lens_parameters_, lens_parameters
-            )
+            # cross_section_max calculation            
+            theta_E_max = self.compute_einstein_radii(np.array([sigma_max]), np.array([zl[i]]), np.array([zs[i]]))[0]
+            epl_factor=5.
+            cross_section_max = epl_factor*np.pi*theta_E_max**2
 
-            # check the size of the lens parameters
-            size_now = len(lens_parameters["sigma"])
-            print(f"current sampled size: {size_now}")
-            if size_now > size:
-                break
+            while True:
+                # Create a dictionary of the lens parameters, gamma, gamma1, gamma2, sigma, theta_E, q, phi, e1, e2
+                lens_parameters_ = self.sampling_routine_epl_shear_nsl(zl_, zs_, size=buffer_size)
 
-        # Trim dicitionary to right size
-        lens_parameters = trim_dictionary(lens_parameters, size)
-        lens_parameters["zs"] = zs
-        lens_parameters["zl"] = zl
+                # Rejection sample based on the lensing probability, that is, rejection sample wrt theta_E
+                lens_parameters_, mask, cross_section_max_ = self.rejection_sample_sl(
+                    lens_parameters_, cross_section_max
+                )  # proportional to pi theta_E^2
+                
+                if cross_section_max_>cross_section_max:
+                    cross_section_max = cross_section_max_
 
-        # trim to the right size
-        for key in lens_parameters.keys():
-            lens_parameters[key] = lens_parameters[key][:size]
+                # check the size of the lens parameters
+                if np.sum(mask) > 0:
+                    break
+
+            sigma[i] = lens_parameters_["sigma"][0]
+            theta_E[i] = lens_parameters_["theta_E"][0]
+            q[i] = lens_parameters_["q"][0]
+            phi[i] = lens_parameters_["phi"][0]
+            gamma[i] = lens_parameters_["gamma"][0]
+            gamma1[i] = lens_parameters_["gamma1"][0]
+            gamma2[i] = lens_parameters_["gamma2"][0]
+        e1, e2 = phi_q2_ellipticity_hemanta(phi, q)
+
+        # Create a dictionary of the lens parameters
+        lens_parameters = {
+            "zl": zl,
+            "zs": zs,
+            "sigma": sigma,
+            "theta_E": theta_E,
+            "q": q,
+            "phi": phi,
+            "e1": e1,
+            "e2": e2,
+            "gamma": gamma,
+            "gamma1": gamma1,
+            "gamma2": gamma2,
+        }
 
         return lens_parameters
         
@@ -783,6 +702,8 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
 
         # Create a dictionary of the lens parameters
         lens_parameters = {
+            "zs": zs,
+            "zl": zl,
             "sigma": sigma,
             "theta_E": theta_E,
         }
@@ -806,7 +727,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         -------
         lens_parameters : `dict`
             dictionary of sampled lens parameters.
-            keys: sigma, q, phi, e1, e2
+            keys: sigma, q, phi
         """
 
         lens_parameters = self.sampling_routine_sis_nsl(zl, zs, size=size)
@@ -821,13 +742,13 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         phi = self.axis_rotation_angle.rvs(size)
 
         # Transform the axis ratio and the angle, to ellipticities e1, e2, using lenstronomy
-        e1, e2 = phi_q2_ellipticity_hemanta(phi, q)
+        # e1, e2 = phi_q2_ellipticity_hemanta(phi, q)
 
         # Add the lensing parameter dictionaries together
         lens_parameters["q"] = q
         lens_parameters["phi"] = phi
-        lens_parameters["e1"] = e1
-        lens_parameters["e2"] = e2
+        # lens_parameters["e1"] = e1
+        # lens_parameters["e2"] = e2
 
         return lens_parameters
     
@@ -848,7 +769,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         -------
         lens_parameters : `dict`
             dictionary of sampled lens parameters.
-            keys: sigma, q, phi, e1, e2, gamma, gamma1, gamma2
+            keys: sigma, q, phi, gamma, gamma1, gamma2
         """
 
         lens_parameters = self.sampling_routine_sie_nsl(zl, zs, size=size)
@@ -892,10 +813,10 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         def zs_function(zs_sl):
             # get zs
             # self.sample_source_redshifts from CBCSourceRedshiftDistribution class
-            zs = self.sample_zs(size)  # this function is from CBCSourceParameterDistribution class
+            zs = self.zs(size)  # this function is from CBCSourceParameterDistribution class
             # put strong lensing condition with optical depth
             tau = self.optical_depth(zs)
-            tau_max = self.optical_depth(z_max)[0] # tau increases with z
+            tau_max = self.optical_depth(np.array([z_max]))[0] # tau increases with z
             r = np.random.uniform(0, tau_max, size=len(zs)) 
             # Add the strongly lensed source redshifts to the list
             # pick strongly lensed sources
@@ -913,107 +834,8 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         zs_sl = []
 
         return np.array(zs_function(zs_sl))
-
         
-    def density_profile_slope_sl_sampler(self, size=1000, get_attribute=False, **kwargs):
-        """
-            Function to sample the lens galaxy density profile slope profile with strong condition applied.
-
-            Parameters
-            ----------
-            size : `int`
-                number of lens parameters to sample
-
-            Returns
-            -------
-            gamma : `float`
-                spectral index of the density profile
-
-        """
-
-        if 'gamma' in kwargs:
-            gamma = kwargs['gamma']
-        else:
-            gamma = None
-
-        param_dict_given_ = self.external_shear.info 
-        param_dict_given_.update(self.density_profile_slope.info)
-        param_dict_given_.update(self.axis_ratio.info)
-        param_dict_given_.update(self.density_profile_slope.info)
-        param_dict_given_.update(self.velocity_dispersion.info)
-        param_dict_given_['buffer_size'] = self.buffer_size
-        param_dict_given_['name'] = "density_profile_slope_sl"
-
-        gamma_object = FunctionConditioning(
-            x_array=gamma,
-            y_array=None,
-            gaussian_kde=True,
-            create_rvs=True,
-            create_pdf=True,
-            callback='rvs',
-            create_new=self.create_new_interpolator['lens_parameters_kde_sl']['create_new'],
-            param_dict_given=param_dict_given_,
-            directory=self.directory,
-            sub_directory='density_profile_slope',
-            name=param_dict_given_['name'],
-        )
-
-        if get_attribute:
-            return gamma_object
-        else:
-            return gamma_object.rvs(size)
-        
-    def external_shear_sl_sampler(self, size=1000, get_attribute=False, **kwargs):
-        """
-            Function to sample the lens galaxy shear with strong condition applied.
-
-            Parameters
-            ----------
-            size : `int`
-                number of lens parameters to sample
-
-            Returns
-            -------
-            gamma : `float`
-                spectral index of the density profile
-
-        """
-
-        if ('gamma1' in kwargs) and ('gamma2' in kwargs):
-            gamma1 = kwargs['gamma1']
-            gamma2 = kwargs['gamma2']
-        else:
-            gamma1 = None
-            gamma2 = None
-
-        param_dict_given_ = self.external_shear.info 
-        param_dict_given_.update(self.density_profile_slope.info)
-        param_dict_given_.update(self.axis_ratio.info)
-        param_dict_given_.update(self.density_profile_slope.info)
-        param_dict_given_.update(self.velocity_dispersion.info)
-        param_dict_given_['buffer_size'] = self.buffer_size
-        param_dict_given_['name'] = "external_shear_sl"
-
-        gamma12_object = FunctionConditioning(
-            x_array=gamma1,
-            y_array=gamma2,
-            gaussian_kde=True,
-            create_rvs=True,
-            create_pdf=True,
-            callback='rvs',
-            create_new=self.create_new_interpolator['lens_parameters_kde_sl']['create_new'],
-            param_dict_given=param_dict_given_,
-            directory=self.directory,
-            sub_directory="external_shear",
-            name="external_shear_sl",
-        )
-
-        if get_attribute:
-            return gamma12_object
-        else:
-            return gamma12_object.rvs(size)
-        
-    def rjs_with_cross_section_sis(self, param_dict):
+    def rjs_with_cross_section_sis(self, param_dict, cross_section_max=0.):
         """
             Function to conduct rejection sampling wrt einstein radius
 
@@ -1031,15 +853,19 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         theta_E = param_dict["theta_E"]
         size = len(theta_E)
         cross_section = np.pi * theta_E**2
-        cross_section_max = np.max(cross_section)  # maximum einstein radius
-        mask = np.random.uniform(size=size) < (cross_section / cross_section_max)
+
+        max_ = np.max(cross_section)
+        if cross_section_max>max_:
+            max_ = cross_section_max
+
+        mask = np.random.uniform(size=size) < (cross_section / max_)
 
         # return the dictionary with the mask applied
         dict_ = {key: val[mask] for key, val in param_dict.items()}
         dict_["cross_section"] = cross_section[mask]
-        return dict_
+        return dict_, mask, max_
 
-    def rjs_with_cross_section_sie_feixu(self, param_dict):
+    def rjs_with_cross_section_sie_feixu(self, param_dict, cross_section_max=0.):
         """
         Function to conduct rejection sampling wrt cross_section
 
@@ -1059,16 +885,20 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         q = param_dict["q"]
         size = len(theta_E)
         cross_section = np.pi * theta_E**2 * phi_cut_SIE(q)
-        max_ = np.max(cross_section)  # maximum einstein radius
+
+        max_ = np.max(cross_section)
+        if cross_section_max>max_:
+            max_ = cross_section_max
+
         u = np.random.uniform(0, max_, size=size)
         mask = u < cross_section
 
         # return the dictionary with the mask applied
         dict_ = {key: val[mask] for key, val in param_dict.items()}
         dict_["cross_section"] = cross_section[mask]
-        return dict_
+        return dict_, mask, max_
     
-    def rjs_with_cross_section(self, param_dict):
+    def rjs_with_cross_section(self, param_dict, cross_section_max=0.):
         """
             Function to conduct rejection sampling wrt cross_section of EPL+Shear lens
 
@@ -1083,34 +913,40 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
                 dictionary of lens parameters after rejection sampling
         """
 
-        theta_E_cut = 2.9243287409459857e-08
+        theta_E_cut = 2.9243287409459857e-08 # this is numerically found
 
         # Pre-filter param_dict directly
-        idx = param_dict["theta_E"] > theta_E_cut
-        param_dict = {key: val[idx] 
+        size_original = len(param_dict["theta_E"])
+        idx_ = param_dict["theta_E"] > theta_E_cut
+        param_dict = {key: val[idx_]
                     for key, val in param_dict.items()}
 
         size = len(param_dict["theta_E"])  # Update size after filtering
         theta_E = param_dict["theta_E"]
-        e1 = param_dict["e1"]
-        e2 = param_dict["e2"]
+        e1, e2 = phi_q2_ellipticity_hemanta(param_dict["phi"], param_dict["q"])
         gamma = param_dict["gamma"]
         gamma1 = param_dict["gamma1"]
         gamma2 = param_dict["gamma2"]
 
-        cross_section = self.cross_section_function(theta_E, e1, e2, gamma, gamma1, gamma2)
+        cross_section = self.cross_section(theta_E, e1, e2, gamma, gamma1, gamma2)
 
-        max_ = np.max(cross_section)  # maximum einstein radius
+        max_ = np.max(cross_section)
+        if cross_section_max>max_:
+            max_ = cross_section_max
+
         u = np.random.uniform(0, max_, size=size)
         mask = u < cross_section
 
         # return the dictionary with the mask applied
         dict_ = {key: val[mask] for key, val in param_dict.items()}
         dict_["cross_section"] = cross_section[mask]
-        return dict_
+
+        mask_complete = np.zeros(size_original, dtype=bool)
+        mask_complete[idx_] = mask
+        return dict_, mask_complete, max_
 
     
-    def rjs_with_cross_section_mp(self, param_dict):
+    def rjs_with_cross_section_mp(self, param_dict, cross_section_max=0.):
         """
             Function to conduct rejection sampling wrt cross_section, multiprocessing
 
@@ -1125,106 +961,84 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
                 dictionary of lens parameters after rejection sampling
         """
 
-
-        theta_E_cut = 2.9243287409459857e-08
+        theta_E_cut = 1e-09 # this is numerically found
+        theta_E = param_dict["theta_E"]
+        size_original = len(theta_E)
 
         # Pre-filter param_dict directly
-        idx = param_dict["theta_E"] > theta_E_cut
-        param_dict = {key: val[idx] 
-                    for key, val in param_dict.items()}
+        
+        idx_ = theta_E > theta_E_cut
+        if np.sum(idx_) > 0:
+        
+            param_dict = {key: val[idx_] 
+                        for key, val in param_dict.items()}
+            size = np.sum(idx_)
 
-        # Update size after filtering
-        size = len(param_dict["theta_E"])
+            e1, e2 = phi_q2_ellipticity_hemanta(param_dict["phi"], param_dict["q"])
 
-        # Combine parameters into a single array for multiprocessing
-        params = np.array([
-            param_dict["theta_E"],
-            param_dict["e1"],
-            param_dict["e2"],
-            param_dict["gamma"],
-            param_dict["gamma1"],
-            param_dict["gamma2"],
-            np.arange(size, dtype=int)
-        ]).T
+            # Combine parameters into a single array for multiprocessing
+            params = np.array([
+                param_dict["theta_E"],
+                e1,
+                e2,
+                param_dict["gamma"],
+                param_dict["gamma1"],
+                param_dict["gamma2"],
+                np.arange(size, dtype=int)
+            ]).T
 
-        cross_section = np.zeros(size)  # Directly create filtered array
-        # with Pool(processes=self.npool) as pool:
-        #     for result in tqdm(pool.imap_unordered(cross_section_mp, params), total=size,
-        #                     ncols=100):  # Remove total from tqdm
-        #         idx_, tau_ = result
-        #         cross_section[idx_] = tau_
-        # without tqdm. Use map
-        # Use multiprocessing to calculate cross-section values
-        with Pool(processes=self.npool) as pool:
-            for idx, tau in pool.imap_unordered(cross_section_mp, params):
-                cross_section[idx] = tau
+            cross_section = np.zeros(size)  # Directly create filtered array
+            # with Pool(processes=self.npool) as pool:
+            #     for result in tqdm(pool.imap_unordered(cross_section_mp, params), total=size,
+            #                     ncols=100):  # Remove total from tqdm
+            #         idx_, tau_ = result
+            #         cross_section[idx_] = tau_
+            # without tqdm. Use map
+            # Use multiprocessing to calculate cross-section values
+            with Pool(processes=self.npool) as pool:
+                for idx, tau in pool.imap_unordered(cross_section_mp, params):
+                    cross_section[idx] = tau
 
-        # Perform rejection sampling
-        max_cross_section = np.max(cross_section)
-        random_values = np.random.uniform(0, max_cross_section, size=size)
-        mask = random_values < cross_section
+            # Perform rejection sampling
+            max_ = np.max(cross_section)
+
+            if cross_section_max>max_:
+                max_ = cross_section_max
+            random_values = np.random.uniform(0, max_, size=size)
+            mask = random_values < cross_section
+        else:
+            print("No valid values found")
+            mask = np.zeros(size, dtype=bool)
 
         # Return the dictionary with the mask applied
         dict_ = {key: val[mask] for key, val in param_dict.items()}
         dict_["cross_section"] = cross_section[mask]
 
-        return dict_
+        mask_complete = np.zeros(size_original, dtype=bool)
+        mask_complete[idx_] = mask
+        return dict_, mask_complete, max_
 
-    @property
-    def density_profile_slope_sl(self):
-        """
-        Function to sample the lens galaxy density profile slope profile from a normal distribution
+    # @property
+    # def sample_source_parameters(self):
+    #     """
+    #     Function to sample source parameters conditioned on the source being strongly lensed
 
-        Parameters
-        ----------
-        size : `int`
-            number of lens parameters to sample
+    #     Parameters
+    #     ----------
+    #     size : `int`
+    #         number of lens parameters to sample
 
-        Returns
-        -------
-        gamma : `float`
-            spectral index of the density profile
+    #     Returns
+    #     -------
+    #     source_parameters : `dict`
+    #         dictionary of source parameters conditioned on the source being strongly lensed
+    #     """
+    #     return self._sample_source_parameters
 
-        Examples
-        --------
-        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-        >>> lens = LensGalaxyParameterDistribution()
-        >>> lens.density_profile_slope_normal(size=1000)
-        """
-
-        return self._sample_density_profile_slope
-
-    @density_profile_slope_sl.setter
-    def density_profile_slope_sl(self, prior):
-        if isinstance(prior, str):
-            args = self.lens_param_samplers_params["density_profile_slope"]
-            self._sample_density_profile_slope = getattr(self, prior)(size=None, get_attribute=True, param=args)
-        elif callable(prior):
-            self._sample_density_profile_slope = prior
-        else:
-            raise ValueError("Invalid input for sample_density_profile_slope. Must be a string or a callable function.")
-
-    @property
-    def sample_source_parameters(self):
-        """
-        Function to sample source parameters conditioned on the source being strongly lensed
-
-        Parameters
-        ----------
-        size : `int`
-            number of lens parameters to sample
-
-        Returns
-        -------
-        source_parameters : `dict`
-            dictionary of source parameters conditioned on the source being strongly lensed
-        """
-        return self._sample_source_parameters
-
-    @sample_source_parameters.setter
-    def sample_source_parameters(self, prior):
-        try:
-            self._sample_source_parameters = getattr(self, prior)
-        except:
-            self._sample_source_parameters = prior
+    # @sample_source_parameters.setter
+    # def sample_source_parameters(self, prior):
+    #     try:
+    #         self._sample_source_parameters = getattr(self, prior)
+    #     except:
+    #         self._sample_source_parameters = prior
 
