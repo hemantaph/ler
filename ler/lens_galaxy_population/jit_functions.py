@@ -289,7 +289,7 @@ def bounded_normal_sample(size, mean, std, low, high):
     return samples
 
 
-@njit()
+@njit
 def phi_q2_ellipticity_hemanta(phi, q):
     """Function to convert phi and q to ellipticity e1 and e2.
 

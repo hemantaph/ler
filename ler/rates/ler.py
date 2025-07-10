@@ -16,12 +16,6 @@ from ..lens_galaxy_population import LensGalaxyParameterDistribution
 from ..utils import load_json, append_json, get_param_from_json, batch_handler
 
 
-# # multiprocessing guard code
-# def main():
-#     obj = LeR()
-
-# if __name__ == '__main__':
-
 class LeR(LensGalaxyParameterDistribution):
     """Class to sample of lensed and unlensed events and calculate it's rates. Please note that parameters of the simulated events are stored in json file but not as an attribute of the class. This saves RAM memory. 
 
@@ -495,7 +489,7 @@ class LeR(LensGalaxyParameterDistribution):
             # store all the ler input parameters
             self.store_ler_params(output_jsonfile=self.json_file_names["ler_params"])
 
-        # if verbose, prevent anything from printing
+        # if not verbose, prevent anything from printing
         if verbose:
             initialization()
             self.print_all_params_ler()
@@ -788,13 +782,13 @@ class LeR(LensGalaxyParameterDistribution):
             geocent_time_min=input_params["geocent_time_min"],
             geocent_time_max=input_params["geocent_time_max"],
             lens_model_list=input_params["lens_model_list"],
+            buffer_size=input_params["buffer_size"],
             source_priors=input_params["source_priors"],
             source_priors_params=input_params["source_priors_params"],
             spin_zero=input_params["spin_zero"],
             spin_precession=input_params["spin_precession"],
             directory=input_params["directory"],
             create_new_interpolator=input_params["create_new_interpolator"],
-            buffer_size=input_params["buffer_size"],
         )
 
         self.gw_param_sampler_dict["source_priors"]=self.gw_param_samplers.copy()
@@ -818,27 +812,35 @@ class LeR(LensGalaxyParameterDistribution):
         # initialization of GWSNR class
         input_params = dict(
             npool=self.npool,
-            mtot_min=2.0,
-            mtot_max=200,
+            mtot_min=2*self.gw_param_samplers_params['source_frame_masses']['mminbh'],
+            mtot_max=2*self.gw_param_samplers_params['source_frame_masses']['mmaxbh']+10.0,
             ratio_min=0.1,
             ratio_max=1.0,
-            mtot_resolution=500,
-            ratio_resolution=50,
+            spin_max=0.99,
+            mtot_resolution=200,
+            ratio_resolution=20,
+            spin_resolution=10,
             sampling_frequency=2048.0,
             waveform_approximant="IMRPhenomD",
+            frequency_domain_source_model='lal_binary_black_hole',
             minimum_frequency=20.0,
+            duration_max=None,
+            duration_min=None,
             snr_type="interpolation",
             psds=None,
             ifos=None,
-            interpolator_dir=self.interpolator_directory,
+            interpolator_dir="./interpolator_pickle",
             create_new_interpolator=False,
-            gwsnr_verbose=False,
+            gwsnr_verbose=True,
             multiprocessing_verbose=True,
-            mtot_cut=True,
+            mtot_cut=False,
             pdet=False,
             snr_th=8.0,
             snr_th_net=8.0,
             ann_path_dict=None,
+            snr_recalculation=False,
+            snr_recalculation_range=[4,12],
+            snr_recalculation_waveform_approximant="IMRPhenomXPHM",
         )
         # if self.event_type == "BNS":
         #     input_params["mtot_max"]= 18.
@@ -868,11 +870,16 @@ class LeR(LensGalaxyParameterDistribution):
                     mtot_max=input_params["mtot_max"],
                     ratio_min=input_params["ratio_min"],
                     ratio_max=input_params["ratio_max"],
+                    spin_max=input_params["spin_max"],
                     mtot_resolution=input_params["mtot_resolution"],
                     ratio_resolution=input_params["ratio_resolution"],
+                    spin_resolution=input_params["spin_resolution"],
                     sampling_frequency=input_params["sampling_frequency"],
                     waveform_approximant=input_params["waveform_approximant"],
+                    frequency_domain_source_model=input_params["frequency_domain_source_model"],
                     minimum_frequency=input_params["minimum_frequency"],
+                    duration_max=input_params["duration_max"],
+                    duration_min=input_params["duration_min"],
                     snr_type=input_params["snr_type"],
                     psds=input_params["psds"],
                     ifos=input_params["ifos"],
@@ -882,7 +889,7 @@ class LeR(LensGalaxyParameterDistribution):
                     multiprocessing_verbose=input_params["multiprocessing_verbose"],
                     mtot_cut=input_params["mtot_cut"],
                     pdet=input_params["pdet"],
-                    snr_th=input_params["snr_th"],
+                    snr_th=input_params["snr_th"],      
                     snr_th_net=input_params["snr_th_net"],
                     ann_path_dict=input_params["ann_path_dict"],
                 )
@@ -973,7 +980,7 @@ class LeR(LensGalaxyParameterDistribution):
         output_jsonfile = output_jsonfile or self.json_file_names["unlensed_param"]
         self.json_file_names["unlensed_param"] = output_jsonfile
         output_path = os.path.join(self.ler_directory, output_jsonfile)
-        print(f"unlensed params will be store in {output_path}")
+        print(f"unlensed params will be stored in {output_path}")
 
         unlensed_param = batch_handler(
             size=size,

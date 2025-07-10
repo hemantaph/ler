@@ -2537,6 +2537,7 @@ class OpticalDepth():
             lens_redshift=dict(
                 lens_redshift_SDSS_catalogue_sis=None,
                 lens_redshift_SDSS_catalogue_numerical=None,
+                lens_redshift_SDSS_catalogue_hemanta=None,
             ),
             velocity_dispersion = dict(
                 velocity_dispersion_gengamma = dict(

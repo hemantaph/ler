@@ -7,26 +7,26 @@ LeR
 # import subprocess, os, sys, signal, warnings
 
 ## import pycbc
-import os
-import multiprocessing as mp
+# import os
+# import multiprocessing as mp
 
-def set_multiprocessing_start_method():
-    if os.name == 'posix':  # posix indicates the program is run on Unix/Linux/Mac
-      print("Setting multiprocessing start method to 'fork'")
-      try:
-         mp.set_start_method('fork', force=True)
-      except RuntimeError:
-         # The start method can only be set once and must be set before any process starts
-         pass
-    else:
-      print("Setting multiprocessing start method to 'spawn'")
-      # For Windows and other operating systems, use 'spawn'
-      try:
-         mp.set_start_method('spawn', force=True)
-      except RuntimeError:
-         pass
+# def set_multiprocessing_start_method():
+#     if os.name == 'posix':  # posix indicates the program is run on Unix/Linux/Mac
+#       print("Setting multiprocessing start method to 'fork'")
+#       try:
+#          mp.set_start_method('fork', force=True)
+#       except RuntimeError:
+#          # The start method can only be set once and must be set before any process starts
+#          pass
+#     else:
+#       print("Setting multiprocessing start method to 'spawn'")
+#       # For Windows and other operating systems, use 'spawn'
+#       try:
+#          mp.set_start_method('spawn', force=True)
+#       except RuntimeError:
+#          pass
 
-set_multiprocessing_start_method()
+# set_multiprocessing_start_method()
 
 # try:
 #    mp.set_start_method('fork', force=True)
@@ -57,12 +57,12 @@ __version__ = "0.4.2"
 import os
 __file__ = os.path.abspath(__file__)
 
-from . import rates, gw_source_population, lens_galaxy_population, image_properties, utils
+# from . import rates, gw_source_population, lens_galaxy_population, image_properties, utils
 
-from .rates import ler, gwrates
-from .gw_source_population import cbc_source_parameter_distribution, cbc_source_redshift_distribution
-from .lens_galaxy_population import lens_galaxy_parameter_distribution, optical_depth
-from .image_properties import image_properties
-from .utils import utils, plots
+# from .rates import ler, gwrates
+# from .gw_source_population import cbc_source_parameter_distribution, cbc_source_redshift_distribution
+# from .lens_galaxy_population import lens_galaxy_parameter_distribution, optical_depth
+# from .image_properties import image_properties
+# from .utils import utils, plots
 
 

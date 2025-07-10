@@ -1,7 +1,7 @@
 
 from .utils import interpolator_pickle_path, cubic_spline_interpolator, cubic_spline_interpolator2d_array, inverse_transform_sampler, pdf_cubic_spline_interpolator2d_array, save_pickle, load_pickle, inverse_transform_sampler2d
 import numpy as np
-from scipy.integrate import quad, cumtrapz
+from scipy.integrate import quad, cumulative_trapezoid
 from scipy.interpolate import  CubicSpline
 from scipy.stats import gaussian_kde
 from numba import njit
@@ -276,7 +276,7 @@ class FunctionConditioning():
         # 1D case
         if conditioned_y_array is None:
             # z_array[z_array<0.] = 0. # already done
-            cdf_values = cumtrapz(z_array, x_array, initial=0)
+            cdf_values = cumulative_trapezoid(z_array, x_array, initial=0)
             cdf_values = cdf_values/cdf_values[-1]
         # 2D case
         else:
@@ -284,7 +284,7 @@ class FunctionConditioning():
             for i, y in enumerate(conditioned_y_array):
                 z_array_ = z_array[i]
                 z_array_[z_array_<0.] = 0.
-                cdfs_ = cumtrapz(z_array_, x_array[i], initial=0)
+                cdfs_ = cumulative_trapezoid(z_array_, x_array[i], initial=0)
 
                 cdf_values.append(cdfs_/cdfs_[-1])
                 # cdf_values.append(cdfs_)

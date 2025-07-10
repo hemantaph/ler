@@ -27,23 +27,25 @@ class TrainingDataGenerator():
             spin_zero=False,
             spin_precession=True,
             # gwsnr args
-            mtot_min=2.0,
-            mtot_max=200,
+            mtot_min=2*4.98, # 4.98 Mo is the minimum component mass of BBH systems in GWTC-3
+            mtot_max=2*112.5+10.0, # 112.5 Mo is the maximum component mass of BBH systems in GWTC-3. 10.0 Mo is added to avoid edge effects.
             ratio_min=0.1,
             ratio_max=1.0,
-            mtot_resolution=500,
-            ratio_resolution=50,
+            spin_max=0.99,
+            mtot_resolution=200,
+            ratio_resolution=20,
+            spin_resolution=10,
             sampling_frequency=2048.0,
             waveform_approximant="IMRPhenomXPHM",
             minimum_frequency=20.0,
-            snr_type="inner_product",
+            snr_type="interpolation_aligned_spins",
             psds=None,
             ifos=None,
             interpolator_dir="./interpolator_pickle",
             create_new_interpolator=False,
-            gwsnr_verbose=False,
+            gwsnr_verbose=True,
             multiprocessing_verbose=True,
-            mtot_cut=True,
+            mtot_cut=False,
         )
         self.ler_init_args.update(kwargs)
 
@@ -60,7 +62,7 @@ class TrainingDataGenerator():
 
         args = self.ler_init_args.copy()
         if snr_recalculation:
-            snr_type = 'interpolation'
+            snr_type = 'interpolation_aligned_spins'
         else:
             snr_type = 'inner_product'
 
@@ -131,6 +133,9 @@ class TrainingDataGenerator():
 
                     gw_param = self.helper_data_distribution(gw_param, data_distribution_range)
 
+            if gw_param is None:
+                print("No data in one of the given range")
+                continue
             # save the parameters
             append_json(json_path, gw_param, replace=False);
 
@@ -173,8 +178,15 @@ class TrainingDataGenerator():
             for j, len_ in enumerate(len_arr):  # loop over snr range
                 idx_buffer = np.random.choice(idx_arr[j], len_ref, replace=False)
 
-                for key, value in gw_param.items():    
-                    buffer_ = value[idx_buffer]
+                for key, value in gw_param.items(): 
+                    
+                    try:
+                        buffer_ = value[idx_buffer]
+                    except IndexError:
+                        print(f"IndexError")
+                        print(f"key: {key}, len(value): {len(value)}, len(idx_buffer): {len(idx_buffer)}")
+                        print(f"rerun the code again with: replace=False")
+                        return None
                     if j==0:
                         gw_param_final[key] = buffer_
                     else:
@@ -185,7 +197,7 @@ class TrainingDataGenerator():
     def combine_dicts(self,
         file_name_list=None,
         path_list=None, 
-        detector='optimal_snr_net',
+        detector='L1',
         parameter_list=['mass_1', 'mass_2', 'luminosity_distance', 'theta_jn', 'psi', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2'],
         output_jsonfile="combined_data.json",
     ):
@@ -207,6 +219,9 @@ class TrainingDataGenerator():
                         combined_dict[key] = np.concatenate([combined_dict[key], value])
                     else:
                         combined_dict[key] = value
+
+        # if 'optimal_snr_net' is not in the combined_dict, we can calculate it
+        combined_dict['optimal_snr_net'] = combined_dict[detector]
 
         json_path = f"{self.ler_init_args['ler_directory']}/{output_jsonfile}"
         print(f"json file saved at: {json_path}\n")

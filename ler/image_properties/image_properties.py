@@ -375,7 +375,12 @@ class ImageProperties():
         n_max_images = self.n_max_images
         magnifications = lensed_param["magnifications"]
         time_delays = lensed_param["time_delays"]
+        imgage_type = lensed_param["image_type"]
         size = len(magnifications)
+
+        # image type to morse phase
+        imgage_type[imgage_type==1.] = 0.
+        imgage_type[imgage_type==2.] = np.pi/2
 
         # Get the binary parameters
         number_of_lensed_events = len(magnifications)
@@ -445,6 +450,17 @@ class ImageProperties():
             time_eff_present = True
         else:
             raise ValueError("geocent_time or effective_geocent_time not given")
+        
+        if "phase" in lensed_param:
+            phase = lensed_param["phase"]
+            lensed_param["effective_phase"] = np.ones((number_of_lensed_events, n_max_images)) * np.nan
+            phase_eff_present = False
+        elif "effective_phase" in lensed_param:
+            phase_eff = lensed_param["effective_phase"]
+            phase_eff_present = True
+        else:
+            raise ValueError("phase or effective_phase not given")
+
 
         # Get the optimal signal to noise ratios for each image
         # iterate over the image type (column)
@@ -464,9 +480,14 @@ class ImageProperties():
                 )
             else:
                 effective_luminosity_distance = dl_eff[:, i]
+            # get the effective phase for each image type
+            if not phase_eff_present:
+                effective_phase = phase - imgage_type[:, i]  # morse phase correction
+            else:
+                effective_phase = phase_eff[:, i]
             
             # check for nan values
-            idx = idx & ~np.isnan(effective_luminosity_distance) & ~np.isnan(effective_geocent_time)
+            idx = idx & ~np.isnan(effective_luminosity_distance) & ~np.isnan(effective_geocent_time) & ~np.isnan(effective_phase)
 
             # Each image has their own effective luminosity distance and effective geocent time
             if len(effective_luminosity_distance) != 0:
@@ -479,7 +500,7 @@ class ImageProperties():
                             luminosity_distance=effective_luminosity_distance[idx],
                             theta_jn=theta_jn[idx],
                             psi=psi[idx],
-                            phase=phase[idx],
+                            phase= effective_phase[idx],
                             geocent_time=effective_geocent_time[idx],
                             ra=ra[idx],
                             dec=dec[idx],
@@ -507,7 +528,7 @@ class ImageProperties():
                             luminosity_distance=effective_luminosity_distance[idx],
                             theta_jn=theta_jn[idx],
                             psi=psi[idx],
-                            phase=phase[idx],
+                            phase= effective_phase[idx],
                             geocent_time=effective_geocent_time[idx],
                             ra=ra[idx],
                             dec=dec[idx],
@@ -529,10 +550,13 @@ class ImageProperties():
 
                 lensed_param["effective_luminosity_distance"][:, i] = effective_luminosity_distance
                 lensed_param["effective_geocent_time"][:, i] = effective_geocent_time
+                lensed_param["effective_phase"][:, i] = effective_phase
 
         if dl_eff_present:
             del lensed_param["effective_luminosity_distance"]
         if time_eff_present:
             del lensed_param["effective_geocent_time"]
+        if phase_eff_present:
+            del lensed_param["effective_phase"]
 
         return result_dict, lensed_param

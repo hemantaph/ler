@@ -928,44 +928,44 @@ class CBCSourceRedshiftDistribution(object):
         else:
             raise ValueError("merger_rate_density must be a function or a string from the available merger rate density model list")
     
-    @property
-    def source_redshift(self):
-        """
-        Function to sample source redshifts from pdf of merger rate density (detector frame).
+    # @property
+    # def source_redshift(self):
+    #     """
+    #     Function to sample source redshifts from pdf of merger rate density (detector frame).
 
-        Parameters
-        ----------
-        size : `int`
-            Number of samples to draw
+    #     Parameters
+    #     ----------
+    #     size : `int`
+    #         Number of samples to draw
 
-        Returns
-        ----------
-        source_redshift : `numpy.ndarray` (1D array of floats)
-            Array of source redshifts
-        """
+    #     Returns
+    #     ----------
+    #     source_redshift : `numpy.ndarray` (1D array of floats)
+    #         Array of source redshifts
+    #     """
 
-        return self._source_redshift
+    #     return self._source_redshift
     
-    @source_redshift.setter
-    def source_redshift(self, prior):
-        if isinstance(prior, str):
-            args = self.gw_param_samplers_params["source_redshift"]
-            if args is None:
-                self._source_redshift = getattr(self, prior)(
-                size=None, get_attribute=True
-            )
-            else:
-                self._source_redshift = getattr(self, prior)(
-                    size=None, get_attribute=True, param=args
-                )
-        elif isinstance(prior, object):
-            print("using user provided custom source redshift class/object")
-            self._source_redshift = prior
-        elif callable(prior):
-            print("using user provided custom source redshift function")
-            self._source_redshift = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
-        else:
-            raise ValueError("Invalid input for source_redshift. Must be a string or a callable function.")
+    # @source_redshift.setter
+    # def source_redshift(self, prior):
+    #     if isinstance(prior, str):
+    #         args = self.gw_param_samplers_params["source_redshift"]
+    #         if args is None:
+    #             self._source_redshift = getattr(self, prior)(
+    #             size=None, get_attribute=True
+    #         )
+    #         else:
+    #             self._source_redshift = getattr(self, prior)(
+    #                 size=None, get_attribute=True, param=args
+    #             )
+    #     elif isinstance(prior, object):
+    #         print("using user provided custom source redshift class/object")
+    #         self._source_redshift = prior
+    #     elif callable(prior):
+    #         print("using user provided custom source redshift function")
+    #         self._source_redshift = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+    #     else:
+    #         raise ValueError("Invalid input for source_redshift. Must be a string or a callable function.")
 
     @property
     def merger_rate_density_model_list(self):
