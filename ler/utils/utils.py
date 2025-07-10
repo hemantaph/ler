@@ -10,7 +10,7 @@ import numpy as np
 import json
 from scipy.interpolate import interp1d
 from scipy.interpolate import CubicSpline
-from scipy.integrate import quad, cumtrapz
+from scipy.integrate import quad
 from numba import njit
 from importlib import resources
 # import datetime
@@ -521,7 +521,7 @@ def create_func_pdf_invcdf(x, y, category="function"):
         pdf = interp1d(x, y, kind="cubic", fill_value="extrapolate")
         return pdf
     # cdf
-    cdf_values = cumtrapz(y, x, initial=0)
+    cdf_values = cumulative_trapezoid(y, x, initial=0)
     idx = np.argwhere(cdf_values > 0)[0][0]
     cdf_values = cdf_values[idx:]
     x = x[idx:]
@@ -647,7 +647,7 @@ def create_inv_cdf_array(x, y):
     idx = np.argwhere(np.isnan(y))
     x = np.delete(x, idx)
     y = np.delete(y, idx)
-    cdf_values = cumtrapz(y, x, initial=0)
+    cdf_values = cumulative_trapezoid(y, x, initial=0)
     cdf_values = cdf_values / cdf_values[-1]
     # to remove duplicate values on x-axis before interpolation
     # idx = np.argwhere(cdf_values > 0)[0][0]
@@ -1390,3 +1390,61 @@ def load_txt_from_module(package, directory, filename):
 
     with resources.path(package + '.' + directory, filename) as txt_path:
         return np.loadtxt(txt_path)
+    
+@njit
+def cumulative_trapezoid(y, x=None, dx=1.0, initial=0.0):
+    """
+    Compute the cumulative integral of a function using the trapezoidal rule.
+    """
+    if x is None:
+        x = np.arange(len(y)) * dx
+
+    # Calculate the cumulative integral using trapezoidal rule
+    cumsum = np.zeros_like(y)
+    cumsum[0] = initial
+    for i in range(1, len(y)):
+        cumsum[i] = cumsum[i - 1] + (y[i - 1] + y[i]) * (x[i] - x[i - 1]) / 2.0
+
+    return cumsum
+    
+@njit
+def sample_from_powerlaw_distribution(size, alphans, mminns, mmaxns):
+    """
+    Inverse transform sampling for a power-law mass distribution:
+    p(m) ∝ m^{-alphans}, m in [mminns, mmaxns]
+    
+    Parameters
+    ----------
+    size : int
+        Number of samples to generate.
+    alphans : float
+        Power-law index (α).
+    mminns : float
+        Minimum neutron star mass (lower bound).
+    mmaxns : float
+        Maximum neutron star mass (upper bound).
+    random_state : int, np.random.Generator, or None
+        Seed or random generator for reproducibility.
+    
+    Returns
+    -------
+    m : ndarray
+        Array of sampled neutron star masses.
+    """
+
+    u = np.random.uniform(0, 1, size)
+
+    if alphans == 1.0:
+        # Special case α=1
+        m = mminns * (mmaxns / mminns) ** u
+    elif alphans == 0.0:
+        # Special case α=0 (uniform distribution)
+        m = mminns + (mmaxns - mminns) * u
+    else:
+        pow1 = 1.0 - alphans
+        mmin_pow = mminns ** pow1
+        mmax_pow = mmaxns ** pow1
+        m = (u * (mmax_pow - mmin_pow) + mmin_pow) ** (1.0 / pow1)
+
+    return m
+    

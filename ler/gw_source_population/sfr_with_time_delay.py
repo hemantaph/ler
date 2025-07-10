@@ -81,15 +81,6 @@ def sfr_with_time_delay(input_args):
         zform_solution = fsolve(equation_to_solve, z, args=(z, td))
         return zform_solution
     
-    if (H0==70.) and (Omega_M==0.3) and (Omega_Lambda==0.7):
-        def sfr_madau(z):
-            """Madau-Fragos star formation rate."""
-            return sfr_madau_fragos2017(z, a, b, c, d)
-    else:
-        # change source frame to observer frame
-        def sfr_madau(z):
-            sfr_source = sfr_madau_fragos2017(z, a, b, c, d)
-    
     # montecalo integration
     def integrand_rates(z, size=100000, zform_max=1000.):
 

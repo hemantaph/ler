@@ -11,7 +11,23 @@ cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
 from scipy.integrate import quad
 from scipy.optimize import fsolve
 
-from ler.utils import inverse_transform_sampler
+from ..utils import inverse_transform_sampler, sample_from_powerlaw_distribution
+
+@njit
+def cumulative_trapezoid(y, x=None, dx=1.0, initial=0.0):
+    """
+    Compute the cumulative integral of a function using the trapezoidal rule.
+    """
+    if x is None:
+        x = np.arange(len(y)) * dx
+
+    # Calculate the cumulative integral using trapezoidal rule
+    cumsum = np.zeros_like(y)
+    cumsum[0] = initial
+    for i in range(1, len(y)):
+        cumsum[i] = cumsum[i - 1] + (y[i - 1] + y[i]) * (x[i] - x[i - 1]) / 2.0
+
+    return cumsum
 
 # import pickle
 # # call the interpolator
@@ -397,6 +413,260 @@ def bns_bimodal_pdf(m, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mm
 
     return pdf
 
+@njit
+def smoothing_S(m, mmin, delta_m, threshold=709.0):
+    s = np.zeros_like(m)
+
+    # Region where smoothing is not needed: m >= mmin + delta_m
+    idx_2 = m >= mmin + delta_m
+    s[idx_2] = 1.0
+
+    # Region where smoothing is applied: mmin <= m < mmin + delta_m
+    idx_1 = (m >= mmin) & (m < mmin + delta_m)
+    mprime = m[idx_1] - mmin
+    exponent = delta_m / mprime + delta_m / (mprime - delta_m)
+
+    # Safe exponentiation only where the exponent is below threshold
+    safe_idx = exponent <= threshold
+    s_vals = np.zeros_like(mprime)
+    s_vals[safe_idx] = 1.0 / (np.exp(exponent[safe_idx]) + 1.0)
+
+    # Assign back to main array
+    s[idx_1] = s_vals
+
+    return s
+
+@njit
+def powerlaw_with_smoothing(m, mmin, alpha, delta_m):
+    """
+    Power law with smoothing applied.
+    """
+    s = smoothing_S(m, mmin, delta_m)
+    return m ** (-alpha) * s
+
+@njit
+def inverse_transform_sampler(size, cdf, x):
+    """
+    Function to sample from the inverse transform method.
+    """
+
+    u = np.random.uniform(0, 1, size)
+    idx = np.searchsorted(cdf, u)
+    x1, x0, y1, y0 = cdf[idx], cdf[idx-1], x[idx], x[idx-1]
+    samples = y0 + (y1 - y0) * (u - x0) / (x1 - x0)
+    return samples
+
+@njit
+def broken_powerlaw_cdf(size=1000, mminbh=26,mmaxbh=125,alpha_1=6.75,alpha_2=0.0,b=0.5,delta_m=5):
+
+    # find normalization
+    m_try = np.linspace(mminbh, mmaxbh, size)
+    pdf_unnormalized = broken_powerlaw_unormalized(m_try, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha_2=0., b=0.5, delta_m=5.)
+    # Compute the CDF using cumulative trapezoid integration
+    cdf_values = cumulative_trapezoid(y=pdf_unnormalized, x=m_try, dx=1.0, initial=0.0)
+    # Normalize the CDF
+    normalization = cdf_values[size-1]
+    # Normalize the CDF
+    cdf_values /= normalization
+
+    return cdf_values
+
+@njit
+def sample_broken_powerlaw(size=1000, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha_2=0., b=0.5, delta_m=5., normalization_size=1000):
+    """
+    Generates samples from the broken powerlaw distribution.
+    """
+    # Generate the CDF
+    cdf_values = broken_powerlaw_cdf(size=normalization_size, mminbh=mminbh, mmaxbh=mmaxbh, alpha_1=alpha_1, alpha_2=alpha_2, b=b, delta_m=delta_m)
+
+    x = np.linspace(mminbh, mmaxbh, normalization_size)
+    idx = np.argwhere(cdf_values > 0)[0][0]
+    cdf_values = cdf_values[idx:]
+    x = x[idx:]
+    samples = inverse_transform_sampler(size, cdf_values, x)
+
+    return samples
+
+@njit
+def sample_broken_powerlaw_nsbh_masses(size=1000, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha_2=0., b=0.5, delta_m=5., mminns=1.0, mmaxns=3.0, alphans=0.0, normalization_size=1000):
+    """
+    Generates samples from the broken powerlaw distribution for NSBH masses.
+    """
+    # Sample mass 1
+    m1_samples = sample_broken_powerlaw(size=size, mminbh=mminbh, mmaxbh=mmaxbh, alpha_1=alpha_1, alpha_2=alpha_2, b=b, delta_m=delta_m, normalization_size=normalization_size)
+
+    # Sample mass 2 (NS mass)
+    # inverse transform sampling from a power-law distribution, with a minimum and maximum mass
+    m2_samples = sample_from_powerlaw_distribution(size, alphans, mminns, mmaxns)
+
+    return m1_samples, m2_samples
+    
+    
+@njit
+def broken_powerlaw_pdf(m, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha_2=0., b=0.5, delta_m=5., normalization_size=1000):
+    """
+    Generates samples using a Numba-jitted loop for high performance.
+    """
+    # find normalization
+    m_try = np.linspace(mminbh, mmaxbh, normalization_size)
+    pdf_unnormalized = broken_powerlaw_unormalized(m_try, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha_2=0., b=0.5, delta_m=5.)
+    # Normalize the PDF
+    normalization = np.trapz(pdf_unnormalized, m_try)
+
+    # Generate the PDF for the input mass array
+    pdf_unnormalized = broken_powerlaw_unormalized(m, mminbh=mminbh, mmaxbh=mmaxbh, alpha_1=alpha_1, alpha_2=alpha_2, b=b, delta_m=delta_m)
+    # Normalize the PDF
+    pdf = pdf_unnormalized / normalization
+
+    return pdf
+
+@njit
+def broken_powerlaw_unormalized(m, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha_2=0., b=0.5, delta_m=5.):
+    """
+    Probability density function for the broken powerlaw model.
+    """
+    mbreak = mminbh + b * (mmaxbh - mminbh)
+    idx_1 = (m > mminbh) & (m < mbreak)
+    idx_2 = (m >= mbreak) & (m < mmaxbh)
+
+    pdf_unnormalized = np.zeros_like(m)
+    pdf_unnormalized[idx_1] = powerlaw_with_smoothing(m[idx_1], mminbh, alpha_1, delta_m) # m[idx_1] ** (-alpha_1) * smoothing_S(m[idx_1], mminbh, delta_m)
+    norm_1 = pdf_unnormalized[idx_1][np.sum(idx_1)-1]
+    pdf_unnormalized[idx_2] = powerlaw_with_smoothing(m[idx_2], mminbh, alpha_2, delta_m)
+     # (m[idx_2] ** (-alpha_2)* smoothing_S(m[idx_2], mminbh, delta_m))
+    norm_2 = pdf_unnormalized[idx_2][0]
+    pdf_unnormalized[idx_2] = pdf_unnormalized[idx_2] * (norm_1 / norm_2)
+    
+    return pdf_unnormalized
+
+@njit
+def powerlaw_B(m, alpha, mminbh, mmaxbh):
+    """
+    normalised power-law distribution with spectral index -alpha and cut-off mmaxbh
+    """
+
+    normalization = (mmaxbh ** (-alpha + 1)) / (-alpha + 1) - (mminbh ** (-alpha + 1)) / (-alpha + 1)
+    pdf = m ** (-alpha) / normalization
+    return pdf
+
+@njit
+def gaussian_G(m, mu_g, sigma_g):
+    """
+    Gaussian distribution with mean mu_g and standard deviation sigma_g.
+    """
+    normalization = 1.0 / (sigma_g * np.sqrt(2 * np.pi))
+    exponent = -0.5 * ((m - mu_g) / sigma_g) ** 2
+    pdf = normalization * np.exp(exponent)
+    return pdf
+
+@njit
+def powerlaw_gaussian_pdf(m, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, normalization_size=1000):
+    """
+    Calculate the PDF for the power-law Gaussian model.
+    """
+
+    # find normalization
+    m_try = np.linspace(mminbh, mmaxbh, normalization_size)
+    pdf_unnormalized = powerlaw_gaussian_unnormalized(
+        m_try, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m
+    )
+    normalization = np.trapz(pdf_unnormalized, m_try)
+
+    # calculate PDF
+    pdf_unnormalized = powerlaw_gaussian_unnormalized(
+        m, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m
+    )
+    pdf = pdf_unnormalized / normalization
+
+    return pdf
+
+@njit
+def powerlaw_gaussian_cdf(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m):
+    """
+    Sample from the power-law Gaussian model.
+    """
+    # find normalization
+    m_try = np.linspace(mminbh, mmaxbh, size)
+    pdf_unnormalized = powerlaw_gaussian_unnormalized(
+        m_try, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m
+    )
+    # Compute the CDF using cumulative trapezoid integration
+    cdf_values = cumulative_trapezoid(y=pdf_unnormalized, x=m_try, dx=1.0, initial=0.0)
+    # Normalize the CDF
+    normalization = cdf_values[size-1]
+    # Normalize the CDF
+    cdf_values /= normalization
+
+    return cdf_values
+
+@njit
+def sample_powerlaw_gaussian(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, normalization_size=1000):
+    """
+    Sample from the power-law Gaussian model.
+    """
+    # Generate the CDF
+    cdf_values = powerlaw_gaussian_cdf(normalization_size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m)
+
+    # Generate random samples from a uniform distribution
+    x = np.linspace(mminbh, mmaxbh, normalization_size)
+    idx = np.argwhere(cdf_values > 0)[0][0]
+    cdf_values = cdf_values[idx:]
+    x = x[idx:]
+    samples = inverse_transform_sampler(size, cdf_values, x)
+
+    return samples
+
+@njit
+def sample_powerlaw_gaussian_source_bbh_masses(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, beta, normalization_size=1000):
+    """
+    Sample from the power-law Gaussian model for source masses.
+    """
+    # Sample mass 1
+    m1 = sample_powerlaw_gaussian(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, normalization_size)
+
+    # Sample mass ratio q
+    # sample_mass_ratio(m1, mminbh, beta, delta_m) in for loop
+    q = np.zeros(size)
+    for i in range(size):
+        q[i] = sample_mass_ratio(m1[i], mminbh, beta, delta_m)
+
+    # Calculate mass 2
+    m2 = m1 * q
+
+    return m1, m2
+
+@njit
+def sample_mass_ratio(m1, mminbh, beta, delta_m):
+
+    qmin = mminbh / m1
+    pow_beta = beta + 1.0
+
+    while True:
+        u_q = np.random.rand()
+        # inverse transform sampling for mass ratio q
+        # where q follows a power-law distribution
+        q = (u_q * (1.0**pow_beta - qmin**pow_beta) + qmin**pow_beta)**(1.0 / pow_beta)
+        m2 = m1 * q
+        # apply the smoothing function to m2
+        s_m2 = smoothing_S(np.array([m2]), mminbh, delta_m)[0]
+        u_smooth = np.random.rand()
+        if u_smooth < s_m2:
+            break
+
+    return q
+    
+@njit
+def powerlaw_gaussian_unnormalized(m, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m):
+    """
+    Calculate the unnormalized PDF for the power-law Gaussian model.
+    """
+
+    # pdf_unnormalized = ((1-lambda_peak) * powerlaw_B(m, alpha, mminbh, mmaxbh)) + 0*(lambda_peak * gaussian_G(m, mu_g, sigma_g)) * smoothing_S(m, mminbh, delta_m)
+
+    pdf_unnormalized = ((1-lambda_peak)*powerlaw_B(m, alpha, mminbh, mmaxbh) + (lambda_peak * gaussian_G(m, mu_g, sigma_g)))* smoothing_S(m, mminbh, delta_m)
+
+    return pdf_unnormalized
+
 
 # def bns_bimodal_pdf_scipy(m, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3,):
 
@@ -410,3 +680,93 @@ def bns_bimodal_pdf(m, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mm
 #     pdf = w * pdf_unnormL(m) / normL + (1 - w) * pdf_unnormR(m) / normR
 
 #     return pdf
+
+
+###### power law_gaussian functions without vectorization ######
+# @njit
+# def smoothing_S(m, mmin, delta_m):
+#     """
+#     A Numba-jitted smoothing function for the low-mass cutoff.
+#     """
+#     if m < mmin:
+#         return 0.0
+#     elif m < mmin + delta_m:
+#         mprime = m - mmin
+#         # This calculation is safe from division by zero due to the checks above
+#         exponent = delta_m / mprime + delta_m / (mprime - delta_m)
+        
+#         # Prevent overflow warning, as learned from the previous step
+#         if exponent > 709.0:
+#             return 0.0
+            
+#         f = np.exp(exponent)
+#         return 1.0 / (f + 1.0)
+#     else:
+#         return 1.0
+
+# @njit
+# def BBH_powerlaw_gaussian(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, beta):
+#     """
+#     Generates samples using a Numba-jitted loop for high performance.
+#     """
+#     # Pre-allocate NumPy arrays to store the results. This is much faster
+#     # than appending to a list in a loop.
+#     m1_sample = np.empty(size, dtype=np.float64)
+#     m2_sample = np.empty(size, dtype=np.float64)
+    
+#     accepted_count = 0
+    
+#     # Pre-calculate powers outside the loop
+#     pow_alpha = 1.0 - alpha
+#     mmin_pow_alpha = mminbh**pow_alpha
+#     mmax_pow_alpha = mmaxbh**pow_alpha
+#     pow_beta = beta + 1.0
+    
+#     # Use a 'while' loop to ensure we collect exactly size,
+#     # accounting for samples rejected by the smoothing function.
+#     while accepted_count < size:
+#         # 1. Sample m1
+#         # ----------------
+#         if np.random.rand() < lambda_peak:
+#             # Sample from Gaussian component
+#             m1_ = np.random.normal(mu_g, sigma_g) 
+#         else:
+#             # Sample from Power-law component
+#             # FIX: The original code was missing this random number draw
+#             u_pl = np.random.rand() 
+#             m1_ = (u_pl * (mmax_pow_alpha - mmin_pow_alpha) + mmin_pow_alpha)**(1.0 / pow_alpha)
+
+#         # 2. Apply smoothing rejection sampling for m1 and m2
+#         # ----------------------------------------------------
+#         # Draw a single random number for the joint smoothing check
+#         u_smooth = np.random.rand()
+        
+#         s1 = smoothing_S(m1_, mminbh, delta_m)
+#         if u_smooth > s1:
+#             continue  # Reject m1 and restart the loop
+
+#         # If m1 is accepted, sample m2
+#         qmin = mminbh / m1_
+        
+#         # Rejection sampling loop for m2
+#         while True:
+#             u_q = np.random.rand()
+#             # Inverse transform sampling for mass ratio q
+#             q = (u_q * (1.0**pow_beta - qmin**pow_beta) + qmin**pow_beta)**(1.0 / pow_beta)
+#             m2_ = m1_ * q
+            
+#             s_m2 = smoothing_S(m2_, mminbh, delta_m)
+            
+#             # The acceptance of m2 depends on the same random number 'u_smooth'.
+#             # This logic is preserved from the original code.
+#             u_smooth = np.random.rand()
+#             if u_smooth <= s_m2:
+#                 break  # m2 is accepted, break the inner loop
+        
+#         # 3. Store the accepted sample
+#         # -----------------------------
+#         m1_sample[accepted_count] = m1_
+#         m2_sample[accepted_count] = m2_
+#         accepted_count += 1
+            
+#     return m1_sample, m2_sample
