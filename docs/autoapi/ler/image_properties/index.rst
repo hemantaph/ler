@@ -36,7 +36,6 @@ Functions
    ler.image_properties.solve_lens_equation
    ler.image_properties.interpolator_from_pickle
    ler.image_properties.cubic_spline_interpolator
-   ler.image_properties.axis_ratio_rayleigh
    ler.image_properties.solve_lens_equation
 
 
@@ -425,37 +424,6 @@ Functions
       ..
           !! processed by numpydoc !!
 
-
-.. py:function:: axis_ratio_rayleigh(sigma, q_min=0.2, q_max=1.0)
-
-   
-   Function to sample axis ratio from rayleigh distribution with given velocity dispersion.
-
-
-   :Parameters:
-
-       **sigma** : `float: array`
-           velocity dispersion of the lens galaxy
-
-   :Returns:
-
-       **q** : `float: array`
-           axis ratio of the lens galaxy
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
 
 .. py:function:: solve_lens_equation(lens_parameters)
 

@@ -1,28 +1,28 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ler.utils &mdash; ler 0.3.1 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
+
   
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=4621528c"></script>
-        <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../../_static/copybutton.js?v=f281be69"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -83,6 +83,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#ler.utils.save_json"><code class="docutils literal notranslate"><span class="pre">save_json()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.utils.append_json"><code class="docutils literal notranslate"><span class="pre">append_json()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.utils.get_param_from_json"><code class="docutils literal notranslate"><span class="pre">get_param_from_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.utils.load_txt_from_module"><code class="docutils literal notranslate"><span class="pre">load_txt_from_module()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.utils.rejection_sample"><code class="docutils literal notranslate"><span class="pre">rejection_sample()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.utils.rejection_sample2d"><code class="docutils literal notranslate"><span class="pre">rejection_sample2d()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.utils.add_dictionaries_together"><code class="docutils literal notranslate"><span class="pre">add_dictionaries_together()</span></code></a></li>
@@ -97,12 +98,19 @@
 <li class="toctree-l4"><a class="reference internal" href="#ler.utils.create_conditioned_inv_cdf_array"><code class="docutils literal notranslate"><span class="pre">create_conditioned_inv_cdf_array()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.utils.interpolator_from_pickle"><code class="docutils literal notranslate"><span class="pre">interpolator_from_pickle()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.utils.interpolator_pickle_path"><code class="docutils literal notranslate"><span class="pre">interpolator_pickle_path()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ler.utils.interpolator_pdf_conditioned"><code class="docutils literal notranslate"><span class="pre">interpolator_pdf_conditioned()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ler.utils.interpolator_sampler_conditioned"><code class="docutils literal notranslate"><span class="pre">interpolator_sampler_conditioned()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ler.utils.cubic_spline_interpolator"><code class="docutils literal notranslate"><span class="pre">cubic_spline_interpolator()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ler.utils.inverse_transform_sampler"><code class="docutils literal notranslate"><span class="pre">inverse_transform_sampler()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.utils.batch_handler"><code class="docutils literal notranslate"><span class="pre">batch_handler()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.utils.create_batch_params"><code class="docutils literal notranslate"><span class="pre">create_batch_params()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.utils.monte_carlo_integration"><code class="docutils literal notranslate"><span class="pre">monte_carlo_integration()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.utils.cubic_spline_interpolator"><code class="docutils literal notranslate"><span class="pre">cubic_spline_interpolator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.utils.pdf_cubic_spline_interpolator2d_array"><code class="docutils literal notranslate"><span class="pre">pdf_cubic_spline_interpolator2d_array()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.utils.cubic_spline_interpolator2d_array"><code class="docutils literal notranslate"><span class="pre">cubic_spline_interpolator2d_array()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.utils.coefficients_generator_ler"><code class="docutils literal notranslate"><span class="pre">coefficients_generator_ler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.utils.inverse_transform_sampler2d"><code class="docutils literal notranslate"><span class="pre">inverse_transform_sampler2d()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.utils.inverse_transform_sampler"><code class="docutils literal notranslate"><span class="pre">inverse_transform_sampler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.utils.normal_pdf"><code class="docutils literal notranslate"><span class="pre">normal_pdf()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.utils.normal_pdf_2d"><code class="docutils literal notranslate"><span class="pre">normal_pdf_2d()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.utils.cumulative_trapezoid"><code class="docutils literal notranslate"><span class="pre">cumulative_trapezoid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.utils.sample_from_powerlaw_distribution"><code class="docutils literal notranslate"><span class="pre">sample_from_powerlaw_distribution()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">get_param_from_json()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.utils.param_plot"><code class="docutils literal notranslate"><span class="pre">param_plot()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.utils.relative_mu_dt_unlensed"><code class="docutils literal notranslate"><span class="pre">relative_mu_dt_unlensed()</span></code></a></li>
@@ -110,6 +118,14 @@
 <li class="toctree-l4"><a class="reference internal" href="#ler.utils.mu_vs_dt_plot"><code class="docutils literal notranslate"><span class="pre">mu_vs_dt_plot()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">append_json()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">get_param_from_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">interpolator_pickle_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">cubic_spline_interpolator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5"><code class="docutils literal notranslate"><span class="pre">cubic_spline_interpolator2d_array()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6"><code class="docutils literal notranslate"><span class="pre">inverse_transform_sampler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7"><code class="docutils literal notranslate"><span class="pre">pdf_cubic_spline_interpolator2d_array()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8"><code class="docutils literal notranslate"><span class="pre">save_pickle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9"><code class="docutils literal notranslate"><span class="pre">load_pickle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10"><code class="docutils literal notranslate"><span class="pre">inverse_transform_sampler2d()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -187,10 +203,10 @@
 <h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.load_pickle" title="ler.utils.load_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_pickle</span></code></a>(file_name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id9" title="ler.utils.load_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_pickle</span></code></a>(file_name)</p></td>
 <td><p>Load a pickle file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.save_pickle" title="ler.utils.save_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_pickle</span></code></a>(file_name, param)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id8" title="ler.utils.save_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_pickle</span></code></a>(file_name, param)</p></td>
 <td><p>Save a dictionary as a pickle file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.load_hdf5" title="ler.utils.load_hdf5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_hdf5</span></code></a>(file_name)</p></td>
@@ -211,65 +227,89 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#id2" title="ler.utils.get_param_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_param_from_json</span></code></a>(json_file)</p></td>
 <td><p>Function to get the parameters from json file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.rejection_sample" title="ler.utils.rejection_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rejection_sample</span></code></a>(pdf, xmin, xmax[, size, chunk_size])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.load_txt_from_module" title="ler.utils.load_txt_from_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_txt_from_module</span></code></a>(package, directory, filename)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.rejection_sample" title="ler.utils.rejection_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rejection_sample</span></code></a>(pdf, xmin, xmax[, size, chunk_size])</p></td>
 <td><p>Helper function for rejection sampling from a pdf with maximum and minimum arguments.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.rejection_sample2d" title="ler.utils.rejection_sample2d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rejection_sample2d</span></code></a>(pdf, xmin, xmax, ymin, ymax[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.rejection_sample2d" title="ler.utils.rejection_sample2d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rejection_sample2d</span></code></a>(pdf, xmin, xmax, ymin, ymax[, ...])</p></td>
 <td><p>Helper function for rejection sampling from a 2D pdf with maximum and minimum arguments.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.add_dictionaries_together" title="ler.utils.add_dictionaries_together"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_dictionaries_together</span></code></a>(dictionary1, dictionary2)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.add_dictionaries_together" title="ler.utils.add_dictionaries_together"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_dictionaries_together</span></code></a>(dictionary1, dictionary2)</p></td>
 <td><p>Adds two dictionaries with the same keys together.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.trim_dictionary" title="ler.utils.trim_dictionary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim_dictionary</span></code></a>(dictionary, size)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.trim_dictionary" title="ler.utils.trim_dictionary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim_dictionary</span></code></a>(dictionary, size)</p></td>
 <td><p>Filters an event dictionary to only contain the size.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.create_func_pdf_invcdf" title="ler.utils.create_func_pdf_invcdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_func_pdf_invcdf</span></code></a>(x, y[, category])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.create_func_pdf_invcdf" title="ler.utils.create_func_pdf_invcdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_func_pdf_invcdf</span></code></a>(x, y[, category])</p></td>
 <td><p>Function to create a interpolated function, inverse function or inverse cdf from the input x and y.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.create_conditioned_pdf_invcdf" title="ler.utils.create_conditioned_pdf_invcdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_conditioned_pdf_invcdf</span></code></a>(x, conditioned_y, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.create_conditioned_pdf_invcdf" title="ler.utils.create_conditioned_pdf_invcdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_conditioned_pdf_invcdf</span></code></a>(x, conditioned_y, ...)</p></td>
 <td><p>pdf_func is the function to calculate the pdf of x given y</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.create_func" title="ler.utils.create_func"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_func</span></code></a>(x, y)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.create_func" title="ler.utils.create_func"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_func</span></code></a>(x, y)</p></td>
 <td><p>Function to create a spline interpolated function from the input x and y.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.create_func_inv" title="ler.utils.create_func_inv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_func_inv</span></code></a>(x, y)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.create_func_inv" title="ler.utils.create_func_inv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_func_inv</span></code></a>(x, y)</p></td>
 <td><p>Function to create a spline interpolated inverse function from the input x and y.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.create_pdf" title="ler.utils.create_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_pdf</span></code></a>(x, y)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.create_pdf" title="ler.utils.create_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_pdf</span></code></a>(x, y)</p></td>
 <td><p>Function to create a spline interpolated normalized pdf from the input x and y.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.create_inv_cdf_array" title="ler.utils.create_inv_cdf_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_inv_cdf_array</span></code></a>(x, y)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.create_inv_cdf_array" title="ler.utils.create_inv_cdf_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_inv_cdf_array</span></code></a>(x, y)</p></td>
 <td><p>Function to create a spline interpolated inverse cdf from the input x and y.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.create_conditioned_pdf" title="ler.utils.create_conditioned_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_conditioned_pdf</span></code></a>(x, conditioned_y, pdf_func)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.create_conditioned_pdf" title="ler.utils.create_conditioned_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_conditioned_pdf</span></code></a>(x, conditioned_y, pdf_func)</p></td>
 <td><p>Function to create a conditioned pdf from the input x and y.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.create_conditioned_inv_cdf_array" title="ler.utils.create_conditioned_inv_cdf_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_conditioned_inv_cdf_array</span></code></a>(x, conditioned_y, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.create_conditioned_inv_cdf_array" title="ler.utils.create_conditioned_inv_cdf_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_conditioned_inv_cdf_array</span></code></a>(x, conditioned_y, ...)</p></td>
 <td><p>Function to create a conditioned inv_cdf from the input x and y.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.interpolator_from_pickle" title="ler.utils.interpolator_from_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolator_from_pickle</span></code></a>(param_dict_given, directory, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.interpolator_from_pickle" title="ler.utils.interpolator_from_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolator_from_pickle</span></code></a>(param_dict_given, directory, ...)</p></td>
 <td><p>Function to decide which interpolator to use.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.interpolator_pickle_path" title="ler.utils.interpolator_pickle_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolator_pickle_path</span></code></a>(param_dict_given, directory, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id3" title="ler.utils.interpolator_pickle_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolator_pickle_path</span></code></a>(param_dict_given, directory, ...)</p></td>
 <td><p>Function to create the interpolator pickle file path.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.interpolator_pdf_conditioned" title="ler.utils.interpolator_pdf_conditioned"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolator_pdf_conditioned</span></code></a>(x, conditioned_y, ...)</p></td>
-<td><p>Function to find the pdf interpolator coefficients from the conditioned y.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.interpolator_sampler_conditioned" title="ler.utils.interpolator_sampler_conditioned"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolator_sampler_conditioned</span></code></a>(conditioned_y, ...[, ...])</p></td>
-<td><p>Function to find sampler interpolator coefficients from the conditioned y.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.cubic_spline_interpolator" title="ler.utils.cubic_spline_interpolator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cubic_spline_interpolator</span></code></a>(xnew, coefficients, x)</p></td>
-<td><p>Function to interpolate using cubic spline.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.inverse_transform_sampler" title="ler.utils.inverse_transform_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform_sampler</span></code></a>(size, cdf, x)</p></td>
-<td><p>Function to sample from the inverse transform method.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.batch_handler" title="ler.utils.batch_handler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">batch_handler</span></code></a>(size, batch_size, sampling_routine, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.batch_handler" title="ler.utils.batch_handler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">batch_handler</span></code></a>(size, batch_size, sampling_routine, ...)</p></td>
 <td><p>Function to run the sampling in batches.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.create_batch_params" title="ler.utils.create_batch_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_batch_params</span></code></a>(sampling_routine, frac_batches, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.create_batch_params" title="ler.utils.create_batch_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_batch_params</span></code></a>(sampling_routine, frac_batches, ...)</p></td>
 <td><p>Helper function to batch_handler. It create batch parameters and store in a dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.monte_carlo_integration" title="ler.utils.monte_carlo_integration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">monte_carlo_integration</span></code></a>(function, uniform_prior[, size])</p></td>
+<td><p>Function to perform Monte Carlo integration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id4" title="ler.utils.cubic_spline_interpolator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cubic_spline_interpolator</span></code></a>(xnew, coefficients, x)</p></td>
+<td><p>Function to interpolate using cubic spline.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id7" title="ler.utils.pdf_cubic_spline_interpolator2d_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pdf_cubic_spline_interpolator2d_array</span></code></a>(xnew_array, ...)</p></td>
+<td><p>Function to calculate the interpolated value of snr_partialscaled given the mass ratio (ynew) and total mass (xnew). This is based off 2D bicubic spline interpolation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id5" title="ler.utils.cubic_spline_interpolator2d_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cubic_spline_interpolator2d_array</span></code></a>(xnew_array, ...)</p></td>
+<td><p>Function to calculate the interpolated value of snr_partialscaled given the mass ratio (ynew) and total mass (xnew). This is based off 2D bicubic spline interpolation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.coefficients_generator_ler" title="ler.utils.coefficients_generator_ler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coefficients_generator_ler</span></code></a>(y1, y2, y3, y4, z1, z2, z3, z4)</p></td>
+<td><p>Function to generate the coefficients for the cubic spline interpolation of fn(y)=z.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id10" title="ler.utils.inverse_transform_sampler2d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform_sampler2d</span></code></a>(size, conditioned_y, ...)</p></td>
+<td><p>Function to find sampler interpolator coefficients from the conditioned y.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id6" title="ler.utils.inverse_transform_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform_sampler</span></code></a>(size, cdf, x)</p></td>
+<td><p>Function to sample from the inverse transform method.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.normal_pdf" title="ler.utils.normal_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_pdf</span></code></a>(x[, mean, std])</p></td>
+<td><p>Calculate the value of a normal probability density function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.normal_pdf_2d" title="ler.utils.normal_pdf_2d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_pdf_2d</span></code></a>(x, y[, mean_x, std_x, mean_y, std_y])</p></td>
+<td><p>Calculate the value of a 2D normal probability density function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.cumulative_trapezoid" title="ler.utils.cumulative_trapezoid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cumulative_trapezoid</span></code></a>(y[, x, dx, initial])</p></td>
+<td><p>Compute the cumulative integral of a function using the trapezoidal rule.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.sample_from_powerlaw_distribution" title="ler.utils.sample_from_powerlaw_distribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample_from_powerlaw_distribution</span></code></a>(size, alphans, ...)</p></td>
+<td><p>Inverse transform sampling for a power-law mass distribution:</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#id2" title="ler.utils.get_param_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_param_from_json</span></code></a>(json_file)</p></td>
 <td><p>Function to get the parameters from json file.</p></td>
@@ -291,6 +331,30 @@
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#id2" title="ler.utils.get_param_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_param_from_json</span></code></a>(json_file)</p></td>
 <td><p>Function to get the parameters from json file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id3" title="ler.utils.interpolator_pickle_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolator_pickle_path</span></code></a>(param_dict_given, directory, ...)</p></td>
+<td><p>Function to create the interpolator pickle file path.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id4" title="ler.utils.cubic_spline_interpolator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cubic_spline_interpolator</span></code></a>(xnew, coefficients, x)</p></td>
+<td><p>Function to interpolate using cubic spline.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id5" title="ler.utils.cubic_spline_interpolator2d_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cubic_spline_interpolator2d_array</span></code></a>(xnew_array, ...)</p></td>
+<td><p>Function to calculate the interpolated value of snr_partialscaled given the mass ratio (ynew) and total mass (xnew). This is based off 2D bicubic spline interpolation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id6" title="ler.utils.inverse_transform_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform_sampler</span></code></a>(size, cdf, x)</p></td>
+<td><p>Function to sample from the inverse transform method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id7" title="ler.utils.pdf_cubic_spline_interpolator2d_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pdf_cubic_spline_interpolator2d_array</span></code></a>(xnew_array, ...)</p></td>
+<td><p>Function to calculate the interpolated value of snr_partialscaled given the mass ratio (ynew) and total mass (xnew). This is based off 2D bicubic spline interpolation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id8" title="ler.utils.save_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_pickle</span></code></a>(file_name, param)</p></td>
+<td><p>Save a dictionary as a pickle file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id9" title="ler.utils.load_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_pickle</span></code></a>(file_name)</p></td>
+<td><p>Load a pickle file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id10" title="ler.utils.inverse_transform_sampler2d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform_sampler2d</span></code></a>(size, conditioned_y, ...)</p></td>
+<td><p>Function to find sampler interpolator coefficients from the conditioned y.</p></td>
 </tr>
 </tbody>
 </table>
@@ -471,6 +535,11 @@ Default is None.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.load_txt_from_module">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">load_txt_from_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">package</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#load_txt_from_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.load_txt_from_module" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.utils.rejection_sample">
@@ -832,102 +901,6 @@ we consider parameter plane of x and y</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ler.utils.interpolator_pdf_conditioned">
-<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">interpolator_pdf_conditioned</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditioned_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolator_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#interpolator_pdf_conditioned"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.interpolator_pdf_conditioned" title="Link to this definition"></a></dt>
-<dd><p>Function to find the pdf interpolator coefficients from the conditioned y.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>x</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>x values.</p>
-</dd>
-<dt><strong>conditioned_y</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>conditioned y value.</p>
-</dd>
-<dt><strong>y_array</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>y values.</p>
-</dd>
-<dt><strong>interpolator_list</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>list of interpolators.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl>
-<dt><strong>interpolator_list[idx](x)</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>samples from the interpolator.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ler.utils.interpolator_sampler_conditioned">
-<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">interpolator_sampler_conditioned</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conditioned_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolator_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#interpolator_sampler_conditioned"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.interpolator_sampler_conditioned" title="Link to this definition"></a></dt>
-<dd><p>Function to find sampler interpolator coefficients from the conditioned y.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>conditioned_y</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>conditioned y value.</p>
-</dd>
-<dt><strong>y_array</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>y values.</p>
-</dd>
-<dt><strong>interpolator_list</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>list of interpolators.</p>
-</dd>
-<dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of samples.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"></dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ler.utils.cubic_spline_interpolator">
-<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">cubic_spline_interpolator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xnew</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coefficients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#cubic_spline_interpolator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.cubic_spline_interpolator" title="Link to this definition"></a></dt>
-<dd><p>Function to interpolate using cubic spline.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>xnew</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>new x values.</p>
-</dd>
-<dt><strong>coefficients</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>coefficients of the cubic spline.</p>
-</dd>
-<dt><strong>x</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>x values.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl>
-<dt><strong>result</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>interpolated values.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ler.utils.inverse_transform_sampler">
-<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">inverse_transform_sampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#inverse_transform_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.inverse_transform_sampler" title="Link to this definition"></a></dt>
-<dd><p>Function to sample from the inverse transform method.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of samples.</p>
-</dd>
-<dt><strong>cdf</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>cdf values.</p>
-</dd>
-<dt><strong>x</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>x values.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl>
-<dt><strong>samples</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>samples from the cdf.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="ler.utils.batch_handler">
 <span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">batch_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_routine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'parameters'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#batch_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.batch_handler" title="Link to this definition"></a></dt>
 <dd><p>Function to run the sampling in batches.</p>
@@ -985,6 +958,269 @@ we consider parameter plane of x and y</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
 <dt><strong>track_batches</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>track the number of batches.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.monte_carlo_integration">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">monte_carlo_integration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uniform_prior</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#monte_carlo_integration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.monte_carlo_integration" title="Link to this definition"></a></dt>
+<dd><p>Function to perform Monte Carlo integration.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>function</strong><span class="classifier"><cite>function</cite></span></dt><dd><p>function to be integrated.</p>
+</dd>
+<dt><strong>prior</strong><span class="classifier"><cite>function</cite></span></dt><dd><p>prior function.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>integral</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>integral value.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.cubic_spline_interpolator">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">cubic_spline_interpolator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xnew</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coefficients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#cubic_spline_interpolator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.cubic_spline_interpolator" title="Link to this definition"></a></dt>
+<dd><p>Function to interpolate using cubic spline.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>xnew</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>new x values.</p>
+</dd>
+<dt><strong>coefficients</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>coefficients of the cubic spline.</p>
+</dd>
+<dt><strong>x</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>x values.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>interpolated values.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.pdf_cubic_spline_interpolator2d_array">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">pdf_cubic_spline_interpolator2d_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xnew_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ynew_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coefficients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#pdf_cubic_spline_interpolator2d_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.pdf_cubic_spline_interpolator2d_array" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the interpolated value of snr_partialscaled given the mass ratio (ynew) and total mass (xnew). This is based off 2D bicubic spline interpolation.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>xnew_array</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Total mass of the binary.</p>
+</dd>
+<dt><strong>ynew_array</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Mass ratio of the binary.</p>
+</dd>
+<dt><strong>coefficients</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Array of coefficients for the cubic spline interpolation.</p>
+</dd>
+<dt><strong>x</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Array of total mass values for the coefficients.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Array of mass ratio values for the coefficients.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Interpolated value of snr_partialscaled.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.cubic_spline_interpolator2d_array">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">cubic_spline_interpolator2d_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xnew_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ynew_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coefficients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#cubic_spline_interpolator2d_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.cubic_spline_interpolator2d_array" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the interpolated value of snr_partialscaled given the mass ratio (ynew) and total mass (xnew). This is based off 2D bicubic spline interpolation.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>xnew_array</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Total mass of the binary.</p>
+</dd>
+<dt><strong>ynew_array</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Mass ratio of the binary.</p>
+</dd>
+<dt><strong>coefficients</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Array of coefficients for the cubic spline interpolation.</p>
+</dd>
+<dt><strong>x</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Array of total mass values for the coefficients.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Array of mass ratio values for the coefficients.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Interpolated value of snr_partialscaled.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.coefficients_generator_ler">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">coefficients_generator_ler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#coefficients_generator_ler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.coefficients_generator_ler" title="Link to this definition"></a></dt>
+<dd><p>Function to generate the coefficients for the cubic spline interpolation of fn(y)=z.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>y1, y2, y3, y4, z1, z2, z3, z4: `float`</strong></dt><dd><p>Values of y and z for the cubic spline interpolation.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>coefficients: <cite>numpy.ndarray</cite></dt><dd><p>Coefficients for the cubic spline interpolation.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.inverse_transform_sampler2d">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">inverse_transform_sampler2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditioned_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdf2d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#inverse_transform_sampler2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.inverse_transform_sampler2d" title="Link to this definition"></a></dt>
+<dd><p>Function to find sampler interpolator coefficients from the conditioned y.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>size: `int`</strong></dt><dd><p>Size of the sample.</p>
+</dd>
+<dt><strong>conditioned_y: `float`</strong></dt><dd><p>Conditioned y value.</p>
+</dd>
+<dt><strong>cdf2d: `numpy.ndarray`</strong></dt><dd><p>2D array of cdf values.</p>
+</dd>
+<dt><strong>x2d: `numpy.ndarray`</strong></dt><dd><p>2D array of x values.</p>
+</dd>
+<dt><strong>y1d: `numpy.ndarray`</strong></dt><dd><p>1D array of y values.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>samples: <cite>numpy.ndarray</cite></dt><dd><p>Samples of the conditioned y.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.inverse_transform_sampler">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">inverse_transform_sampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#inverse_transform_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.inverse_transform_sampler" title="Link to this definition"></a></dt>
+<dd><p>Function to sample from the inverse transform method.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of samples.</p>
+</dd>
+<dt><strong>cdf</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>cdf values.</p>
+</dd>
+<dt><strong>x</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>x values.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>samples</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>samples from the cdf.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.normal_pdf">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">normal_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#normal_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.normal_pdf" title="Link to this definition"></a></dt>
+<dd><p>Calculate the value of a normal probability density function.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>x</strong><span class="classifier"><cite>float</cite> or <cite>numpy.ndarray</cite></span></dt><dd><p>The value(s) at which to evaluate the PDF.</p>
+</dd>
+<dt><strong>mean</strong><span class="classifier"><cite>float</cite>, optional</span></dt><dd><p>The mean of the normal distribution. Default is 0.</p>
+</dd>
+<dt><strong>std</strong><span class="classifier"><cite>float</cite>, optional</span></dt><dd><p>The standard deviation of the normal distribution. Default is 0.05.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>pdf</strong><span class="classifier"><cite>float</cite> or <cite>numpy.ndarray</cite></span></dt><dd><p>The probability density function value(s) at x.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.normal_pdf_2d">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">normal_pdf_2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std_x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#normal_pdf_2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.normal_pdf_2d" title="Link to this definition"></a></dt>
+<dd><p>Calculate the value of a 2D normal probability density function.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>x</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>The x-coordinate for which the PDF is evaluated.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>The y-coordinate for which the PDF is evaluated.</p>
+</dd>
+<dt><strong>mean_x</strong><span class="classifier"><cite>float</cite>, optional</span></dt><dd><p>The mean of the normal distribution along the x-axis. Default is 0.</p>
+</dd>
+<dt><strong>std_x</strong><span class="classifier"><cite>float</cite>, optional</span></dt><dd><p>The standard deviation of the normal distribution along the x-axis. Default is 0.05.</p>
+</dd>
+<dt><strong>mean_y</strong><span class="classifier"><cite>float</cite>, optional</span></dt><dd><p>The mean of the normal distribution along the y-axis. Default is 0.</p>
+</dd>
+<dt><strong>std_y</strong><span class="classifier"><cite>float</cite>, optional</span></dt><dd><p>The standard deviation of the normal distribution along the y-axis. Default is 0.05.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><cite>float</cite></dt><dd><p>The probability density function value at the given x and y coordinates.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.cumulative_trapezoid">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">cumulative_trapezoid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#cumulative_trapezoid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.cumulative_trapezoid" title="Link to this definition"></a></dt>
+<dd><p>Compute the cumulative integral of a function using the trapezoidal rule.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.utils.sample_from_powerlaw_distribution">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">sample_from_powerlaw_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphans</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mminns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmaxns</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#sample_from_powerlaw_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.sample_from_powerlaw_distribution" title="Link to this definition"></a></dt>
+<dd><p>Inverse transform sampling for a power-law mass distribution:
+p(m) ∝ m^{-alphans}, m in [mminns, mmaxns]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>size</strong><span class="classifier">int</span></dt><dd><p>Number of samples to generate.</p>
+</dd>
+<dt><strong>alphans</strong><span class="classifier">float</span></dt><dd><p>Power-law index (α).</p>
+</dd>
+<dt><strong>mminns</strong><span class="classifier">float</span></dt><dd><p>Minimum neutron star mass (lower bound).</p>
+</dd>
+<dt><strong>mmaxns</strong><span class="classifier">float</span></dt><dd><p>Maximum neutron star mass (upper bound).</p>
+</dd>
+<dt><strong>random_state</strong><span class="classifier">int, np.random.Generator, or None</span></dt><dd><p>Seed or random generator for reproducibility.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>m</strong><span class="classifier">ndarray</span></dt><dd><p>Array of sampled neutron star masses.</p>
 </dd>
 </dl>
 </dd>
@@ -1210,6 +1446,201 @@ Default is None.</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
 <dt><strong>param</strong><span class="classifier"><cite>dict</cite></span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">interpolator_pickle_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_dict_given</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sub_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolator_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#interpolator_pickle_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd><p>Function to create the interpolator pickle file path.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>param_dict_given</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of parameters.</p>
+</dd>
+<dt><strong>directory</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>directory to store the interpolator.</p>
+</dd>
+<dt><strong>sub_directory</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>sub-directory to store the interpolator.</p>
+</dd>
+<dt><strong>interpolator_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>name of the interpolator.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>path_inv_cdf</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>path of the interpolator pickle file.</p>
+</dd>
+<dt><strong>it_exist</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if True, the interpolator exists.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">cubic_spline_interpolator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xnew</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coefficients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#cubic_spline_interpolator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd><p>Function to interpolate using cubic spline.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>xnew</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>new x values.</p>
+</dd>
+<dt><strong>coefficients</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>coefficients of the cubic spline.</p>
+</dd>
+<dt><strong>x</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>x values.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>interpolated values.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">cubic_spline_interpolator2d_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xnew_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ynew_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coefficients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#cubic_spline_interpolator2d_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the interpolated value of snr_partialscaled given the mass ratio (ynew) and total mass (xnew). This is based off 2D bicubic spline interpolation.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>xnew_array</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Total mass of the binary.</p>
+</dd>
+<dt><strong>ynew_array</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Mass ratio of the binary.</p>
+</dd>
+<dt><strong>coefficients</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Array of coefficients for the cubic spline interpolation.</p>
+</dd>
+<dt><strong>x</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Array of total mass values for the coefficients.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Array of mass ratio values for the coefficients.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Interpolated value of snr_partialscaled.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">inverse_transform_sampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#inverse_transform_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dd><p>Function to sample from the inverse transform method.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of samples.</p>
+</dd>
+<dt><strong>cdf</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>cdf values.</p>
+</dd>
+<dt><strong>x</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>x values.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>samples</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>samples from the cdf.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">pdf_cubic_spline_interpolator2d_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xnew_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ynew_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coefficients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#pdf_cubic_spline_interpolator2d_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the interpolated value of snr_partialscaled given the mass ratio (ynew) and total mass (xnew). This is based off 2D bicubic spline interpolation.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>xnew_array</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Total mass of the binary.</p>
+</dd>
+<dt><strong>ynew_array</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Mass ratio of the binary.</p>
+</dd>
+<dt><strong>coefficients</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Array of coefficients for the cubic spline interpolation.</p>
+</dd>
+<dt><strong>x</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Array of total mass values for the coefficients.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Array of mass ratio values for the coefficients.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>Interpolated value of snr_partialscaled.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">save_pickle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#save_pickle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
+<dd><p>Save a dictionary as a pickle file.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>file_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>pickle file name for storing the parameters.</p>
+</dd>
+<dt><strong>param</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary to be saved as a pickle file.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">load_pickle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#load_pickle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id9" title="Link to this definition"></a></dt>
+<dd><p>Load a pickle file.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>file_name</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>pickle file name for storing the parameters.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>param</strong><span class="classifier"><cite>dict</cite></span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-prename descclassname"><span class="pre">ler.utils.</span></span><span class="sig-name descname"><span class="pre">inverse_transform_sampler2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditioned_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdf2d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/utils/utils.html#inverse_transform_sampler2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id10" title="Link to this definition"></a></dt>
+<dd><p>Function to find sampler interpolator coefficients from the conditioned y.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>size: `int`</strong></dt><dd><p>Size of the sample.</p>
+</dd>
+<dt><strong>conditioned_y: `float`</strong></dt><dd><p>Conditioned y value.</p>
+</dd>
+<dt><strong>cdf2d: `numpy.ndarray`</strong></dt><dd><p>2D array of cdf values.</p>
+</dd>
+<dt><strong>x2d: `numpy.ndarray`</strong></dt><dd><p>2D array of x values.</p>
+</dd>
+<dt><strong>y1d: `numpy.ndarray`</strong></dt><dd><p>1D array of y values.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>samples: <cite>numpy.ndarray</cite></dt><dd><p>Samples of the conditioned y.</p>
+</dd>
 </dl>
 </dd>
 </dl>

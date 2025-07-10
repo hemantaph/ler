@@ -1588,7 +1588,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_unlensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, pdet_threshold=0.5, resume=False, output_jsonfile='n_unlensed_param_detectable.json', meta_data_file='meta_unlensed.json', detectability_condition='step_function', trim_to_size=True, snr_recalculation=False, snr_threshold_recalculation=[4, 12])
+   .. py:method:: selecting_n_unlensed_detectable_events(size=100, batch_size=None, stopping_criteria=dict(relative_diff_percentage=0.5, number_of_last_batches_to_check=4), snr_threshold=8.0, pdet_threshold=0.5, resume=False, output_jsonfile='n_unlensed_param_detectable.json', meta_data_file='meta_unlensed.json', detectability_condition='step_function', trim_to_size=False, snr_recalculation=False, snr_threshold_recalculation=[4, 12])
 
       
       Function to generate n unlensed detectable events. This fuction samples the unlensed parameters and save only the detectable events in json file. It also records metadata in the JSON file, which includes the total number of events and the cumulative rate of events. This functionality is particularly useful for generating a fixed or large number of detectable events until the event rates stabilize.
@@ -1666,7 +1666,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_lensed_detectable_events(size=100, batch_size=None, snr_threshold=[8.0, 8.0], pdet_threshold=0.5, num_img=[1, 1], combine_image_snr=False, snr_cut_for_combine_image_snr=4.0, resume=False, detectability_condition='step_function', output_jsonfile='n_lensed_params_detectable.json', meta_data_file='meta_lensed.json', trim_to_size=True, nan_to_num=False, snr_recalculation=False, snr_threshold_recalculation=[[4, 4], [12, 12]])
+   .. py:method:: selecting_n_lensed_detectable_events(size=100, stopping_criteria=dict(relative_diff_percentage=0.5, number_of_last_batches_to_check=4), batch_size=None, snr_threshold=[8.0, 8.0], pdet_threshold=0.5, num_img=[1, 1], combine_image_snr=False, snr_cut_for_combine_image_snr=4.0, resume=False, detectability_condition='step_function', output_jsonfile='n_lensed_params_detectable.json', meta_data_file='meta_lensed.json', trim_to_size=False, nan_to_num=False, snr_recalculation=False, snr_threshold_recalculation=[[4, 4], [12, 12]])
 
       
       Function to generate n lensed detectable events. This fuction only samples the lensed parameters and save only the detectable events in json file. It also records metadata in the JSON file, which includes the total number of events and the cumulative rate of events. This functionality is particularly useful for generating a fixed or large number of detectable events until the event rates stabilize.

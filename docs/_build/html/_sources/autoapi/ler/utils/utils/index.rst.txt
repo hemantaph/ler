@@ -36,6 +36,7 @@ Functions
    ler.utils.utils.save_json
    ler.utils.utils.append_json
    ler.utils.utils.get_param_from_json
+   ler.utils.utils.load_txt_from_module
    ler.utils.utils.rejection_sample
    ler.utils.utils.rejection_sample2d
    ler.utils.utils.add_dictionaries_together
@@ -50,12 +51,20 @@ Functions
    ler.utils.utils.create_conditioned_inv_cdf_array
    ler.utils.utils.interpolator_from_pickle
    ler.utils.utils.interpolator_pickle_path
-   ler.utils.utils.interpolator_pdf_conditioned
-   ler.utils.utils.interpolator_sampler_conditioned
-   ler.utils.utils.cubic_spline_interpolator
-   ler.utils.utils.inverse_transform_sampler
    ler.utils.utils.batch_handler
    ler.utils.utils.create_batch_params
+   ler.utils.utils.monte_carlo_integration
+   ler.utils.utils.cubic_spline_interpolator
+   ler.utils.utils.pdf_cubic_spline_interpolator2d_array
+   ler.utils.utils.cubic_spline_interpolator2d_array
+   ler.utils.utils.coefficients_generator_ler
+   ler.utils.utils.inverse_transform_sampler2d
+   ler.utils.utils.inverse_transform_sampler
+   ler.utils.utils.normal_pdf
+   ler.utils.utils.normal_pdf_2d
+   ler.utils.utils.load_txt_from_module
+   ler.utils.utils.cumulative_trapezoid
+   ler.utils.utils.sample_from_powerlaw_distribution
 
 
 
@@ -355,6 +364,43 @@ Functions
 
        **param** : `dict`
            ..
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: load_txt_from_module(package, directory, filename)
+
+   
+   Function to load a specific dataset from a .txt file within the package
+
+
+   :Parameters:
+
+       **package** : str
+           name of the package
+
+       **directory** : str
+           name of the directory within the package
+
+       **filename** : str
+           name of the .txt file
+
+   :Returns:
+
+       **data** : `dict`
+           Dictionary loaded from the .txt file
 
 
 
@@ -927,160 +973,6 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: interpolator_pdf_conditioned(x, conditioned_y, y_array, interpolator_list)
-
-   
-   Function to find the pdf interpolator coefficients from the conditioned y.
-
-
-   :Parameters:
-
-       **x** : `numpy.ndarray`
-           x values.
-
-       **conditioned_y** : `float`
-           conditioned y value.
-
-       **y_array** : `numpy.ndarray`
-           y values.
-
-       **interpolator_list** : `list`
-           list of interpolators.
-
-   :Returns:
-
-       **interpolator_list[idx](x)** : `numpy.ndarray`
-           samples from the interpolator.
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: interpolator_sampler_conditioned(conditioned_y, y_array, interpolator_list, size=1000)
-
-   
-   Function to find sampler interpolator coefficients from the conditioned y.
-
-
-   :Parameters:
-
-       **conditioned_y** : `float`
-           conditioned y value.
-
-       **y_array** : `numpy.ndarray`
-           y values.
-
-       **interpolator_list** : `list`
-           list of interpolators.
-
-       **size** : `int`
-           number of samples.
-
-   :Returns:
-
-
-           ..
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: cubic_spline_interpolator(xnew, coefficients, x)
-
-   
-   Function to interpolate using cubic spline.
-
-
-   :Parameters:
-
-       **xnew** : `numpy.ndarray`
-           new x values.
-
-       **coefficients** : `numpy.ndarray`
-           coefficients of the cubic spline.
-
-       **x** : `numpy.ndarray`
-           x values.
-
-   :Returns:
-
-       **result** : `numpy.ndarray`
-           interpolated values.
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: inverse_transform_sampler(size, cdf, x)
-
-   
-   Function to sample from the inverse transform method.
-
-
-   :Parameters:
-
-       **size** : `int`
-           number of samples.
-
-       **cdf** : `numpy.ndarray`
-           cdf values.
-
-       **x** : `numpy.ndarray`
-           x values.
-
-   :Returns:
-
-       **samples** : `numpy.ndarray`
-           samples from the cdf.
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
 .. py:function:: batch_handler(size, batch_size, sampling_routine, output_jsonfile, save_batch=True, resume=False, param_name='parameters')
 
    
@@ -1163,6 +1055,446 @@ Functions
 
        **track_batches** : `int`
            track the number of batches.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: monte_carlo_integration(function, uniform_prior, size=10000)
+
+   
+   Function to perform Monte Carlo integration.
+
+
+   :Parameters:
+
+       **function** : `function`
+           function to be integrated.
+
+       **prior** : `function`
+           prior function.
+
+   :Returns:
+
+       **integral** : `float`
+           integral value.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: cubic_spline_interpolator(xnew, coefficients, x)
+
+   
+   Function to interpolate using cubic spline.
+
+
+   :Parameters:
+
+       **xnew** : `numpy.ndarray`
+           new x values.
+
+       **coefficients** : `numpy.ndarray`
+           coefficients of the cubic spline.
+
+       **x** : `numpy.ndarray`
+           x values.
+
+   :Returns:
+
+       **result** : `numpy.ndarray`
+           interpolated values.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: pdf_cubic_spline_interpolator2d_array(xnew_array, ynew_array, norm_array, coefficients, x, y)
+
+   
+   Function to calculate the interpolated value of snr_partialscaled given the mass ratio (ynew) and total mass (xnew). This is based off 2D bicubic spline interpolation.
+
+
+   :Parameters:
+
+       **xnew_array** : `numpy.ndarray`
+           Total mass of the binary.
+
+       **ynew_array** : `numpy.ndarray`
+           Mass ratio of the binary.
+
+       **coefficients** : `numpy.ndarray`
+           Array of coefficients for the cubic spline interpolation.
+
+       **x** : `numpy.ndarray`
+           Array of total mass values for the coefficients.
+
+       **y** : `numpy.ndarray`
+           Array of mass ratio values for the coefficients.
+
+   :Returns:
+
+       **result** : `float`
+           Interpolated value of snr_partialscaled.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: cubic_spline_interpolator2d_array(xnew_array, ynew_array, coefficients, x, y)
+
+   
+   Function to calculate the interpolated value of snr_partialscaled given the mass ratio (ynew) and total mass (xnew). This is based off 2D bicubic spline interpolation.
+
+
+   :Parameters:
+
+       **xnew_array** : `numpy.ndarray`
+           Total mass of the binary.
+
+       **ynew_array** : `numpy.ndarray`
+           Mass ratio of the binary.
+
+       **coefficients** : `numpy.ndarray`
+           Array of coefficients for the cubic spline interpolation.
+
+       **x** : `numpy.ndarray`
+           Array of total mass values for the coefficients.
+
+       **y** : `numpy.ndarray`
+           Array of mass ratio values for the coefficients.
+
+   :Returns:
+
+       **result** : `float`
+           Interpolated value of snr_partialscaled.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4)
+
+   
+   Function to generate the coefficients for the cubic spline interpolation of fn(y)=z.
+
+
+   :Parameters:
+
+       **y1, y2, y3, y4, z1, z2, z3, z4: `float`**
+           Values of y and z for the cubic spline interpolation.
+
+   :Returns:
+
+       coefficients: `numpy.ndarray`
+           Coefficients for the cubic spline interpolation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: inverse_transform_sampler2d(size, conditioned_y, cdf2d, x2d, y1d)
+
+   
+   Function to find sampler interpolator coefficients from the conditioned y.
+
+
+   :Parameters:
+
+       **size: `int`**
+           Size of the sample.
+
+       **conditioned_y: `float`**
+           Conditioned y value.
+
+       **cdf2d: `numpy.ndarray`**
+           2D array of cdf values.
+
+       **x2d: `numpy.ndarray`**
+           2D array of x values.
+
+       **y1d: `numpy.ndarray`**
+           1D array of y values.
+
+   :Returns:
+
+       samples: `numpy.ndarray`
+           Samples of the conditioned y.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: inverse_transform_sampler(size, cdf, x)
+
+   
+   Function to sample from the inverse transform method.
+
+
+   :Parameters:
+
+       **size** : `int`
+           number of samples.
+
+       **cdf** : `numpy.ndarray`
+           cdf values.
+
+       **x** : `numpy.ndarray`
+           x values.
+
+   :Returns:
+
+       **samples** : `numpy.ndarray`
+           samples from the cdf.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: normal_pdf(x, mean=0.0, std=0.05)
+
+   
+   Calculate the value of a normal probability density function.
+
+
+   :Parameters:
+
+       **x** : `float` or `numpy.ndarray`
+           The value(s) at which to evaluate the PDF.
+
+       **mean** : `float`, optional
+           The mean of the normal distribution. Default is 0.
+
+       **std** : `float`, optional
+           The standard deviation of the normal distribution. Default is 0.05.
+
+   :Returns:
+
+       **pdf** : `float` or `numpy.ndarray`
+           The probability density function value(s) at x.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: normal_pdf_2d(x, y, mean_x=0.0, std_x=0.05, mean_y=0.0, std_y=0.05)
+
+   
+   Calculate the value of a 2D normal probability density function.
+
+
+   :Parameters:
+
+       **x** : `float`
+           The x-coordinate for which the PDF is evaluated.
+
+       **y** : `float`
+           The y-coordinate for which the PDF is evaluated.
+
+       **mean_x** : `float`, optional
+           The mean of the normal distribution along the x-axis. Default is 0.
+
+       **std_x** : `float`, optional
+           The standard deviation of the normal distribution along the x-axis. Default is 0.05.
+
+       **mean_y** : `float`, optional
+           The mean of the normal distribution along the y-axis. Default is 0.
+
+       **std_y** : `float`, optional
+           The standard deviation of the normal distribution along the y-axis. Default is 0.05.
+
+   :Returns:
+
+       `float`
+           The probability density function value at the given x and y coordinates.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: load_txt_from_module(package, directory, filename)
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: cumulative_trapezoid(y, x=None, dx=1.0, initial=0.0)
+
+   
+   Compute the cumulative integral of a function using the trapezoidal rule.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: sample_from_powerlaw_distribution(size, alphans, mminns, mmaxns)
+
+   
+   Inverse transform sampling for a power-law mass distribution:
+   p(m) ∝ m^{-alphans}, m in [mminns, mmaxns]
+
+
+   :Parameters:
+
+       **size** : int
+           Number of samples to generate.
+
+       **alphans** : float
+           Power-law index (α).
+
+       **mminns** : float
+           Minimum neutron star mass (lower bound).
+
+       **mmaxns** : float
+           Maximum neutron star mass (upper bound).
+
+       **random_state** : int, np.random.Generator, or None
+           Seed or random generator for reproducibility.
+
+   :Returns:
+
+       **m** : ndarray
+           Array of sampled neutron star masses.
 
 
 
