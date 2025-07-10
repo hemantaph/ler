@@ -47,7 +47,7 @@ Functions
 
 
 
-.. py:class:: LensGalaxyParameterDistribution(npool=4, z_min=0.0, z_max=10.0, cosmology=None, event_type='BBH', lens_type='epl_shear_galaxy', lens_functions=None, lens_priors=None, lens_priors_params=None, directory='./interpolator_pickle', create_new_interpolator=False, **kwargs)
+.. py:class:: LensGalaxyParameterDistribution(npool=4, z_min=0.0, z_max=10.0, cosmology=None, event_type='BBH', lens_type='epl_shear_galaxy', lens_functions=None, lens_functions_params=None, lens_param_samplers=None, lens_param_samplers_params=None, directory='./interpolator_pickle', create_new_interpolator=False, buffer_size=1000, **kwargs)
 
 
    Bases: :py:obj:`ler.gw_source_population.CBCSourceParameterDistribution`, :py:obj:`ler.image_properties.ImageProperties`, :py:obj:`ler.lens_galaxy_population.optical_depth.OpticalDepth`
@@ -157,7 +157,7 @@ Functions
    |                                     | galaxy lens parameters sampler   |
    |                                     | routine.                         |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_all_routine`          | Function to sample galaxy lens   |
+   |:meth:`~sample_all_routine_sie`      | Function to sample galaxy lens   |
    |                                     | parameters along with the source |
    |                                     | parameters.                      |
    +-------------------------------------+----------------------------------+
@@ -193,10 +193,10 @@ Functions
    |:meth:`~compute_einstein_radii`      | Function to compute the Einstein |
    |                                     | radii of the lens galaxies       |
    +-------------------------------------+----------------------------------+
-   |:meth:`~rjs_with_cross_section_SIE`  | Function to conduct rejection    |
+   |:meth:`~rjs_with_cross_section_sis`  | Function to conduct rejection    |
    |                                     | sampling wrt einstein radius     |
    +-------------------------------------+----------------------------------+
-   |:meth:`~rjs_with_cross_section_SIE`  | Function to conduct rejection    |
+   |:meth:`~rjs_with_cross_section_sie`  | Function to conduct rejection    |
    |                                     | sampling wrt cross_section       |
    +-------------------------------------+----------------------------------+
    |:attr:`~rejection_sample_sl`         | Function to conduct rejection    |
@@ -232,298 +232,6 @@ Functions
 
    ..
        !! processed by numpydoc !!
-   .. py:property:: sample_source_redshift_sl
-
-      
-      Function to sample source redshifts conditioned on the source being strongly lensed
-
-
-      :Parameters:
-
-          **size** : `int`
-              number samples to draw
-
-      :Returns:
-
-          **zs** : `numpy.ndarray` (1D array of floats)
-              source redshifts conditioned on the source being strongly lensed
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.sample_source_redshift_sl(size=1000)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: sample_source_parameters
-
-      
-      Function to sample source parameters conditioned on the source being strongly lensed
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-      :Returns:
-
-          **source_parameters** : `dict`
-              dictionary of source parameters conditioned on the source being strongly lensed
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: sample_lens_redshift
-
-      
-      Function to sample lens redshifts, conditioned on the lens being strongly lensed
-
-
-      :Parameters:
-
-          **zs** : `numpy.ndarray` (1D array of floats)
-              source redshifts
-
-      :Returns:
-
-          **zl** : `numpy.ndarray` (1D array of floats)
-              lens redshifts corresponding to the source redshifts
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> lens = LensGalaxyParameterDistribution()
-      >>> zs = lens.sample_source_redshift_sl(size=1000)
-      >>> lens.sample_lens_redshift(zs=zs)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: sample_axis_rotation_angle
-
-      
-      Function to sample the axis rotation angle of the elliptical lens galaxy from a uniform distribution
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-      :Returns:
-
-          **phi** : `float`
-              axis rotation angle of the elliptical lens galaxy
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.sample_axis_rotation_angle(size=1000)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: sample_shear
-
-      
-      Function to sample the elliptical lens galaxy shear from a normal distribution
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-      :Returns:
-
-          **gamma_1** : `float`
-              shear component in the x-direction
-
-          **gamma_2** : `float`
-              shear component in the y-direction
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> lens = LensGalaxyParameterDistribution()
-      >>> gamma_1, gamma_2 = lens.shear_norm(size=1000)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: sample_density_profile_slope
-
-      
-      Function to sample the lens galaxy spectral index of the mass density profile from a normal distribution
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-      :Returns:
-
-          **gamma** : `float`
-              spectral index of the density profile
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.density_profile_slope_normal(size=1000)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: sample_source_parameters
-
-      
-      Function to sample source parameters conditioned on the source being strongly lensed
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-      :Returns:
-
-          **source_parameters** : `dict`
-              dictionary of source parameters conditioned on the source being strongly lensed
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: available_lens_prior_list_and_its_params
-
-      
-      Dictionary with list all the available priors and it's corresponding parameters. This is an immutable instance attribute.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: available_lens_functions
-
-      
-      Dictionary with list all the available lens functions. This is an immutable instance attribute.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
    .. py:attribute:: cbc_pop
 
       
@@ -668,16 +376,49 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: class_initialization_lens(params=None)
+   .. py:method:: class_initialization_lens(npool, z_min, z_max, cosmology, lens_type, lens_functions, lens_functions_params, lens_param_samplers, lens_param_samplers_params, directory, create_new_interpolator, params)
 
       
-      Function to initialize the parent classes
+      Initialize the LensGalaxyParameterDistribution class.
 
 
       :Parameters:
 
+          **npool** : `int`
+              number of processors to use for sampling
+
+          **z_min** : `float`
+              minimum redshift of the lens galaxy
+
+          **z_max** : `float`
+              maximum redshift of the lens galaxy
+
+          **cosmology** : `astropy.cosmology`
+              cosmology object
+
+          **lens_type** : `str`
+              type of the lens galaxy
+
+          **lens_functions** : `dict`
+              dictionary with the lens related functions
+
+          **lens_functions_params** : `dict`
+              dictionary with the parameters for the lens related functions
+
+          **lens_param_samplers** : `dict`
+              dictionary with the priors for the sampler
+
+          **lens_param_samplers_params** : `dict`
+              dictionary with the parameters for the priors of the sampler
+
+          **directory** : `str`
+              directory where the interpolators are saved
+
+          **create_new_interpolator** : `bool`
+              if True, creates a new interpolator
+
           **params** : `dict`
-              dictionary of parameters to initialize the parent classes
+              additional parameters for the CBCSourceParameterDistribution and ImageProperties classes
 
 
 
@@ -695,40 +436,63 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lens_priors_categorization(lens_type, lens_priors=None, lens_priors_params=None, lens_functions=None)
+   .. py:method:: sample_lens_parameters(size=1000)
 
       
-      Function to categorize the lens priors/samplers
+      Function to sample galaxy lens parameters along with the source parameters, conditioned on the source being strongly lensed.
 
 
       :Parameters:
 
-          **lens_type** : `str`
-              lens type
-              e.g. 'epl_shear_galaxy' for elliptical power-law galaxy
-
-          **lens_priors** : `dict`
-              dictionary of priors
-
-          **lens_priors_params** : `dict`
-              dictionary of priors parameters
-
-          **lens_functions** : `dict`
-              dictionary of lens functions
+          **size** : `int`
+              number of lens parameters to sample
 
       :Returns:
 
-          **lens_priors_** : `dict`
-              dictionary of priors
+          **lens_parameters** : `dict`
+              dictionary of sampled lens parameters and source parameters.
 
-          **lens_priors_params_** : `dict`
-              dictionary of priors parameters
+              keys:
 
-          **lens_sampler_names_** : `dict`
-              dictionary of sampler names
+              zl: lens redshifts
 
-          **lens_functions_** : `dict`
-              dictionary of lens functions
+              zs: source redshifts, lensed condition applied
+
+              sigma: velocity dispersions
+
+              q: axis ratios
+
+              theta_E: Einstein radii
+
+              phi: axis rotation angle
+
+              e1: ellipticity component 1
+
+              e2: ellipticity component 2
+
+              gamma1: shear component 1
+
+              gamma2: shear component 2
+
+              gamma: density profile slope distribution
+
+              geocent_time: time of arrival of the unlensed signal
+
+              phase: phase of the unlensed signal
+
+              psi: polarization angle of the unlensed signal
+
+              theta_jn: inclination angle of the unlensed signal
+
+              luminosity_distance: luminosity distance of the source
+
+              mass_1_source: mass 1 (larger) of the source
+
+              mass_2_source: mass 2 (smaller) of the source
+
+              ra: right ascension of the source
+
+              dec: declination of the source
 
 
 
@@ -739,39 +503,21 @@ Functions
 
 
 
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+      >>> od = LensGalaxyParameterDistribution(lens_param_samplers=dict(velocity_dispersion="velocity_dispersion_ewoud"))
+      >>> print(od.sample_lens_parameters(size=10))
 
 
 
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: sample_lens_parameters(size=1000, lens_parameters_input=None)
+   .. py:method:: sample_all_routine_sie_sl(size=1000)
 
       
-      Function to call the specific galaxy lens parameters sampler routine.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: sample_all_routine(size=1000, lens_parameters_input=None)
-
-      
-      Function to sample galaxy lens parameters along with the source parameters.
+      Function to sample galaxy lens parameters. SIE cross section is used for rejection sampling.
 
 
       :Parameters:
@@ -807,25 +553,7 @@ Functions
 
               gamma2: shear component 2
 
-              gamma: spectral index of the mass density distribution
-
-              geocent_time: time of arrival of the unlensed signal
-
-              phase: phase of the unlensed signal
-
-              psi: polarization angle of the unlensed signal
-
-              theta_jn: inclination angle of the unlensed signal
-
-              luminosity_distance: luminosity distance of the source
-
-              mass_1_source: mass 1 (larger) of the source
-
-              mass_2_source: mass 2 (smaller) of the source
-
-              ra: right ascension of the source
-
-              dec: declination of the source
+              gamma: density profile slope distribution
 
 
 
@@ -840,7 +568,182 @@ Functions
 
       >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
       >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.sample_all_routine(size=1000)
+      >>> lens.sample_all_routine_sie(size=1000)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: sample_all_routine_epl_shear_sl(size=1000)
+
+      
+      Function to sample galaxy lens parameters along. EPL shear cross section is used for rejection sampling.
+
+
+      :Parameters:
+
+          **size** : `int`
+              number of lens parameters to sample
+
+          **lens_parameters_input** : `dict`
+              dictionary of lens parameters to sample
+
+      :Returns:
+
+          **lens_parameters** : `dict`
+              dictionary of lens parameters and source parameters (lens conditions applied):
+
+              zl: lens redshifts
+
+              zs: source redshifts, lensed condition applied
+
+              sigma: velocity dispersions
+
+              q: axis ratios
+
+              theta_E: Einstein radii
+
+              phi: axis rotation angle
+
+              e1: ellipticity component 1
+
+              e2: ellipticity component 2
+
+              gamma1: shear component 1
+
+              gamma2: shear component 2
+
+              gamma: density profile slope distribution
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+      >>> lens = LensGalaxyParameterDistribution()
+      >>> lens.sample_all_routine_sie(size=1000)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: sampling_routine_sis_nsl(zl, zs, size=1000)
+
+      
+      Function to sample SIS lens related parameters.
+
+
+      :Parameters:
+
+          **zl** : `float`
+              lens redshifts
+
+          **zs** : `float`
+              source redshifts
+
+          **size** : `int`
+              number of lens parameters to sample
+
+      :Returns:
+
+          **lens_parameters** : `dict`
+              dictionary of sampled lens parameters.
+              keys: sigma, theta_E
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: sampling_routine_sie_nsl(zl, zs, size=1000)
+
+      
+      Function to sample SIE lens related parameters.
+
+
+      :Parameters:
+
+          **zl** : `float`
+              lens redshifts
+
+          **zs** : `float`
+              source redshifts
+
+          **size** : `int`
+              number of lens parameters to sample
+
+      :Returns:
+
+          **lens_parameters** : `dict`
+              dictionary of sampled lens parameters.
+              keys: sigma, q, phi
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: sampling_routine_epl_shear_nsl(zl, zs, size=1000)
+
+      
+      Function to sample EPL and shear related parameters.
+
+
+      :Parameters:
+
+          **zl** : `float`
+              lens redshifts
+
+          **zs** : `float`
+              source redshifts
+
+          **size** : `int`
+              number of lens parameters to sample
+
+      :Returns:
+
+          **lens_parameters** : `dict`
+              dictionary of sampled lens parameters.
+              keys: sigma, q, phi, gamma, gamma1, gamma2
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -850,7 +753,7 @@ Functions
    .. py:method:: strongly_lensed_source_redshifts(size=1000)
 
       
-      Function to sample source redshifts and other parameters, conditioned on the source being strongly lensed.
+      Function to sample source redshifts, conditioned on the source being strongly lensed.
 
 
       :Parameters:
@@ -883,276 +786,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: source_parameters(size, get_attribute=False, param=None)
-
-      
-      Function to sample gw source parameters
-
-
-      :Parameters:
-
-          **size** : `int`
-              Number of samples to draw
-
-          **param** : `dict`
-              Allows to pass in parameters as dict.
-              param =
-
-      :Returns:
-
-          **source_parameters** : `dict`
-              Dictionary of source parameters
-              source_parameters.keys() = ['mass_1', 'mass_2', 'mass_1_source', 'mass_2_source', 'zs', 'luminosity_distance', 'inclination', 'polarization_angle', 'phase', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl']
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.source_parameters(size=1000)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: lens_redshift_SDSS_catalogue(zs, get_attribute=False, param=None)
-
-      
-      Function to sample lens redshifts, conditioned on the lens being strongly lensed
-
-
-      :Parameters:
-
-          **zs** : `float`
-              source redshifts
-
-          **get_attribute** : `bool`
-              If True, returns a function that can be called with zs as input
-
-      :Returns:
-
-          **zl** : `float`
-              lens redshifts
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.lens_redshift_SDSS_catalogue(zs=1.0)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: axis_rotation_angle_uniform(size=1000, phi_min=0.0, phi_max=2 * np.pi, get_attribute=False, param=None)
-
-      
-      Function to sample the axis rotation angle of the elliptical lens galaxy from a uniform distribution.
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-          **phi_min** : `float`
-              minimum axis rotation angle of the elliptical lens galaxy
-
-          **phi_max** : `float`
-              maximum axis rotation angle of the elliptical lens galaxy
-
-          **get_attribute** : `bool`
-              If True, returns a function that can be called with size as input
-
-          **param** : `dict`
-              Allows to pass in above parameters as dict.
-              e.g. param = dict(phi_min=0.0, phi_max=2 * np.pi)
-
-      :Returns:
-
-          **phi** : `float`
-              axis rotation angle of the elliptical lens galaxy
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.axis_rotation_angle_uniform(size=1000)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: shear_norm(size, scale=0.05, get_attribute=False, param=None)
-
-      
-      Function to sample the elliptical lens galaxy shear from a normal distribution
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-          **scale** : `float`
-              standard deviation of the normal distribution
-
-          **get_attribute** : `bool`
-              If True, returns a function that can be called with size as input
-
-          **param** : `dict`
-              Allows to pass in above parameters as dict.
-              e.g. param = dict(scale=0.05)
-
-      :Returns:
-
-          **gamma_1** : `float`
-              shear component in the x-direction
-
-          **gamma_2** : `float`
-              shear component in the y-direction
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> lens = LensGalaxyParameterDistribution()
-      >>> gamma_1, gamma_2 = lens.shear_norm(size=1000)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: density_profile_slope_normal(size=1000, mean=2.0, std=0.2, get_attribute=False, param=None)
-
-      
-      Function to sample the lens galaxy spectral index of the mass density profile from a normal distribution
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-          **mean** : `float`
-              mean of the normal distribution
-
-          **std** : `float`
-              standard deviation of the normal distribution
-
-          **param** : `dict`
-              Allows to pass in above parameters as dict.
-              e.g. param = dict(mean=2.0, std=0.2)
-
-      :Returns:
-
-          **gamma** : `float`
-              spectral index of the density profile
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.density_profile_slope_normal(size=1000)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: compute_einstein_radii(sigma, zl, zs)
-
-      
-      Function to compute the Einstein radii of the lens galaxies
-
-
-      :Parameters:
-
-          **sigma** : `float`
-              velocity dispersion of the lens galaxy
-
-          **zl** : `float`
-              lens redshifts
-
-          **zs** : `float`
-              source redshifts
-
-      :Returns:
-
-          **theta_E** : `float`
-              Einstein radii of the lens galaxies
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> lens = LensGalaxyParameterDistribution()
-      >>> sigma = 200.0
-      >>> zl = 0.5
-      >>> zs = 1.0
-      >>> lens.compute_einstein_radii(sigma, zl, zs)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: rjs_with_cross_section_SIS(param_dict)
+   .. py:method:: rjs_with_cross_section_sis(param_dict, cross_section_max=0.0)
 
       
       Function to conduct rejection sampling wrt einstein radius
@@ -1183,10 +817,72 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: rjs_with_cross_section_SIE(param_dict)
+   .. py:method:: rjs_with_cross_section_sie_feixu(param_dict, cross_section_max=0.0)
 
       
       Function to conduct rejection sampling wrt cross_section
+
+
+      :Parameters:
+
+          **param_dict** : `dict`
+              dictionary of lens parameters and source parameters
+
+      :Returns:
+
+          **lens_params** : `dict`
+              dictionary of lens parameters after rejection sampling
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: rjs_with_cross_section(param_dict, cross_section_max=0.0)
+
+      
+      Function to conduct rejection sampling wrt cross_section of EPL+Shear lens
+
+
+      :Parameters:
+
+          **param_dict** : `dict`
+              dictionary of lens parameters and source parameters
+
+      :Returns:
+
+          **lens_params** : `dict`
+              dictionary of lens parameters after rejection sampling
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: rjs_with_cross_section_mp(param_dict, cross_section_max=0.0)
+
+      
+      Function to conduct rejection sampling wrt cross_section, multiprocessing
 
 
       :Parameters:
@@ -2931,7 +2627,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_unlensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, pdet_threshold=0.5, resume=False, output_jsonfile='n_unlensed_param_detectable.json', meta_data_file='meta_unlensed.json', detectability_condition='step_function', trim_to_size=True, snr_recalculation=False, snr_threshold_recalculation=[4, 12])
+   .. py:method:: selecting_n_unlensed_detectable_events(size=100, batch_size=None, stopping_criteria=dict(relative_diff_percentage=0.5, number_of_last_batches_to_check=4), snr_threshold=8.0, pdet_threshold=0.5, resume=False, output_jsonfile='n_unlensed_param_detectable.json', meta_data_file='meta_unlensed.json', detectability_condition='step_function', trim_to_size=False, snr_recalculation=False, snr_threshold_recalculation=[4, 12])
 
       
       Function to generate n unlensed detectable events. This fuction samples the unlensed parameters and save only the detectable events in json file. It also records metadata in the JSON file, which includes the total number of events and the cumulative rate of events. This functionality is particularly useful for generating a fixed or large number of detectable events until the event rates stabilize.
@@ -3009,7 +2705,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_lensed_detectable_events(size=100, batch_size=None, snr_threshold=[8.0, 8.0], pdet_threshold=0.5, num_img=[1, 1], combine_image_snr=False, snr_cut_for_combine_image_snr=4.0, resume=False, detectability_condition='step_function', output_jsonfile='n_lensed_params_detectable.json', meta_data_file='meta_lensed.json', trim_to_size=True, nan_to_num=False, snr_recalculation=False, snr_threshold_recalculation=[[4, 4], [12, 12]])
+   .. py:method:: selecting_n_lensed_detectable_events(size=100, stopping_criteria=dict(relative_diff_percentage=0.5, number_of_last_batches_to_check=4), batch_size=None, snr_threshold=[8.0, 8.0], pdet_threshold=0.5, num_img=[1, 1], combine_image_snr=False, snr_cut_for_combine_image_snr=4.0, resume=False, detectability_condition='step_function', output_jsonfile='n_lensed_params_detectable.json', meta_data_file='meta_lensed.json', trim_to_size=False, nan_to_num=False, snr_recalculation=False, snr_threshold_recalculation=[[4, 4], [12, 12]])
 
       
       Function to generate n lensed detectable events. This fuction only samples the lensed parameters and save only the detectable events in json file. It also records metadata in the JSON file, which includes the total number of events and the cumulative rate of events. This functionality is particularly useful for generating a fixed or large number of detectable events until the event rates stabilize.
@@ -3164,7 +2860,7 @@ Functions
 
    >>> from ler.gw_source_population import CBCSourceParameterDistribution
    >>> cbc = CBCSourceParameterDistribution()
-   >>> params = cbc.sample_gw_parameters(size=1000)
+   >>> params = cbc.gw_parameters(size=1000)
    >>> print("sampled parameters=",list(params.keys()))
 
    Instance Attributes
@@ -3222,46 +2918,46 @@ Functions
    |                                     | table for converting redshift    |
    |                                     | to luminosity distance           |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_gw_parameters`        | Function to sample all the       |
+   |:meth:`~gw_parameters`        | Function to sample all the       |
    |                                     | intrinsic and extrinsic          |
    |                                     | parameters of compact binaries   |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_source_frame_masses`  | Function to sample source mass1  |
+   |:meth:`~source_frame_masses`  | Function to sample source mass1  |
    |                                     | and mass2                        |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_geocent_time`         | Function to sample geocent time  |
+   |:meth:`~geocent_time`         | Function to sample geocent time  |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_zs`                   | Function to sample source        |
+   |:meth:`~zs`                   | Function to sample source        |
    |                                     | redshift                         |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_ra`                   | Function to sample right         |
+   |:meth:`~ra`                   | Function to sample right         |
    |                                     | ascension (sky position)         |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_dec`                  | Function to sample declination   |
+   |:meth:`~dec`                  | Function to sample declination   |
    |                                     | (sky position)                   |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_phase`                | Function to sample coalescence   |
+   |:meth:`~phase`                | Function to sample coalescence   |
    |                                     | phase                            |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_psi`                  | Function to sample polarization  |
+   |:meth:`~psi`                  | Function to sample polarization  |
    |                                     | angle                            |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_theta_jn`             | Function to sample inclination   |
+   |:meth:`~theta_jn`             | Function to sample inclination   |
    |                                     | angle                            |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_a1`                   | Function to sample spin1         |
+   |:meth:`~a_1`                   | Function to sample spin1         |
    |                                     | magnitude                        |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_a2`                   | Function to sample spin2         |
+   |:meth:`~a_2`                   | Function to sample spin2         |
    |                                     | magnitude                        |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_tilt_1`               | Function to sample tilt1 angle   |
+   |:meth:`~tilt_1`               | Function to sample tilt1 angle   |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_tilt_2`               | Function to sample tilt2 angle   |
+   |:meth:`~tilt_2`               | Function to sample tilt2 angle   |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_phi_12`               | Function to sample phi12 angle   |
+   |:meth:`~phi_12`               | Function to sample phi12 angle   |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_phi_jl`               | Function to sample phi_jl angle  |
+   |:meth:`~phi_jl`               | Function to sample phi_jl angle  |
    +-------------------------------------+----------------------------------+
    |:meth:`~binary_masses_BBH_popI_II_powerlaw_gaussian`                    |
    +-------------------------------------+----------------------------------+
@@ -3284,12 +2980,6 @@ Functions
    |                                     | Refer to Ng et al. 2022. Eqn. 1  |
    |                                     | and 4                            |
    +-------------------------------------+----------------------------------+
-   |:meth:`~binary_masses_BNS_gwcosmo`                                      |
-   +-------------------------------------+----------------------------------+
-   |                                     | Function to sample source mass1  |
-   |                                     | and mass2 from powerlaw          |
-   |                                     | distribution.                    |
-   +-------------------------------------+----------------------------------+
    |:meth:`~binary_masses_BNS_bimodal`   | Function to sample source mass1  |
    |                                     | and mass2 from bimodal           |
    |                                     | distribution. Refer to           |
@@ -3306,72 +2996,7 @@ Functions
 
    ..
        !! processed by numpydoc !!
-   .. py:property:: available_gw_prior_list_and_its_params
-
-      
-      Dictionary with list all the available priors and it's corresponding parameters. This is an immutable instance attribute.
-
-
-
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.gw_source_population import CBCSourceParameterDistribution
-      >>> cbc = CBCSourceParameterDistribution()
-      >>> priors = cbc.available_gw_prior_list_and_its_params
-      >>> priors.keys()  # type of priors
-      dict_keys(['merger_rate_density', 'source_frame_masses', 'spin', 'geocent_time', 'ra', 'phase', 'psi', 'theta_jn'])
-      >>> priors['source_frame_masses'].keys()  # type of source_frame_masses priors
-      dict_keys(['binary_masses_BBH_popI_II_powerlaw_gaussian', 'binary_masses_BBH_popIII_lognormal', 'binary_masses_BBH_primordial_lognormal', 'binary_masses_BNS_gwcosmo', 'binary_masses_BNS_bimodal'])
-      >>> priors['source_frame_masses']['binary_masses_BBH_popI_II_powerlaw_gaussian'].keys()  # parameters of binary_masses_BBH_popI_II_powerlaw_gaussian
-      dict_keys(['mminbh', 'mmaxbh', 'alpha', 'mu_g', 'sigma_g', 'lambda_peak', 'delta_m', 'beta'])
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: sample_zs
-
-      
-      Function to sample redshifts with the initialized prior.
-
-
-      :Parameters:
-
-          **size** : `int`
-              Number of samples to draw
-
-      :Returns:
-
-          **zs** : `numpy.ndarray` (1D array of floats)
-              Array of redshifts
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: sample_source_frame_masses
+   .. py:property:: source_frame_masses
 
       
       Function to sample source frame masses (mass1_source, mass2_source) with the initialized prior.
@@ -3405,7 +3030,38 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_geocent_time
+   .. py:property:: zs
+
+      
+      Function to sample source redshift with the initialized prior.
+
+
+      :Parameters:
+
+          **size** : `int`
+              Number of samples to draw
+
+      :Returns:
+
+          **zs** : `numpy.ndarray` (1D array of floats)
+              Array of source redshift
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: geocent_time
 
       
       Function to sample geocent time with the initialized prior.
@@ -3436,7 +3092,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_ra
+   .. py:property:: ra
 
       
       Function to sample right ascension of sky position with the initialized prior.
@@ -3467,7 +3123,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_dec
+   .. py:property:: dec
 
       
       Function to sample declination of sky position with the initialized prior.
@@ -3498,7 +3154,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_phase
+   .. py:property:: phase
 
       
       Function to sample coalescence phase with the initialized prior.
@@ -3529,7 +3185,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_psi
+   .. py:property:: psi
 
       
       Function to sample polarization angle with the initialized prior.
@@ -3560,7 +3216,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_theta_jn
+   .. py:property:: theta_jn
 
       
       Function to sample theta_jn with the initialized prior.
@@ -3591,7 +3247,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_a_1
+   .. py:property:: a_1
 
       
       Function to sample spin magnitude of the compact binaries (body1) with the initialized prior.
@@ -3622,7 +3278,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_a_2
+   .. py:property:: a_2
 
       
       Function to sample spin magnitude of the compact binaries (body2) with the initialized prior.
@@ -3653,7 +3309,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_tilt_1
+   .. py:property:: tilt_1
 
       
       Function to sample tilt angle of the compact binaries (body1) with the initialized prior.
@@ -3684,7 +3340,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_tilt_2
+   .. py:property:: tilt_2
 
       
       Function to sample tilt angle of the compact binaries (body2) with the initialized prior.
@@ -3715,7 +3371,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_phi_12
+   .. py:property:: phi_12
 
       
       Function to sample azimuthal angle between the two spins with the initialized prior.
@@ -3746,7 +3402,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_phi_jl
+   .. py:property:: phi_jl
 
       
       Function to sample azimuthal angle between the total angular momentum and the orbital angular momentum with the initialized prior.
@@ -3771,6 +3427,40 @@ Functions
 
 
 
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: available_gw_prior_list_and_its_params
+
+      
+      Dictionary with list all the available priors and it's corresponding parameters. This is an immutable instance attribute.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.gw_source_population import CBCSourceParameterDistribution
+      >>> cbc = CBCSourceParameterDistribution()
+      >>> priors = cbc.available_gw_prior_list_and_its_params
+      >>> priors.keys()  # type of priors
+      dict_keys(['merger_rate_density', 'source_frame_masses', 'spin', 'geocent_time', 'ra', 'phase', 'psi', 'theta_jn'])
+      >>> priors['source_frame_masses'].keys()  # type of source_frame_masses priors
+      dict_keys(['binary_masses_BBH_popI_II_powerlaw_gaussian', 'binary_masses_BBH_popIII_lognormal', 'binary_masses_BBH_primordial_lognormal', 'binary_masses_BNS_bimodal'])
+      >>> priors['source_frame_masses']['binary_masses_BBH_popI_II_powerlaw_gaussian'].keys()  # parameters of binary_masses_BBH_popI_II_powerlaw_gaussian
+      dict_keys(['mminbh', 'mmaxbh', 'alpha', 'mu_g', 'sigma_g', 'lambda_peak', 'delta_m', 'beta'])
 
 
 
@@ -3947,39 +3637,86 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lookup_table_luminosity_distance(z_min, z_max, directory)
+   .. py:method:: setup_decision_dictionary_gw_params(create_new_interpolator)
 
       
-      Function to create a lookup table for the differential comoving volume
-      and luminosity distance wrt redshift.
+      Method to set up a decision dictionary for interpolator creation.
 
 
       :Parameters:
 
-          **z_min** : `float`
-              Minimum redshift of the source population
+          **create_new_interpolator** : `dict`, `bool`
+              If `dict`, dictionary of boolean values and resolution to create new interpolator.
+              If `bool`, boolean value to create new interpolator for all quantities.
 
-          **z_max** : `float`
-              Maximum redshift of the source population
+      :Returns:
 
-
-
-
-
-
+          **create_new_interpolator_** : `dict`
+              Dictionary of boolean values and resolution to create new interpolator.
+              e.g. dict(redshift_distribution=dict(create_new=False, resolution=1000), luminosity_distance=dict(create_new=False, resolution=1000), differential_comoving_volume=dict(create_new=False, resolution=1000))
 
 
 
 
 
 
-      :Attributes:
 
-          **z_to_luminosity_distance** : `scipy.interpolate.interpolate`
-              Function to convert redshift to luminosity distance
 
-          **differential_comoving_volume** : `scipy.interpolate.interpolate`
-              Function to calculate the differential comoving volume
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: source_priors_categorization(event_type, source_priors, source_prior_params)
+
+      
+      Function to categorize the event priors and its parameters.
+
+
+      :Parameters:
+
+          **event_type** : `str`
+              Type of event to generate.
+              e.g. 'BBH', 'BNS', 'BBH_popIII', 'BBH_primordial', 'NSBH'
+
+          **source_priors** : `dict`
+              Dictionary of prior sampler functions for each parameter
+
+          **source_prior_params** : `dict`
+              Dictionary of sampler parameters for each GW parameter
+
+      :Returns:
+
+          **source_priors_** : `dict`
+              Dictionary of prior sampler functions for each parameter
+
+          **source_prior_params_** : `dict`
+              Dictionary of sampler parameters for each parameter
+
+          **sampler_names_** : `dict`
+              Dictionary of sampler names with description
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.gw_source_population import CBCSourceParameterDistribution
+      >>> cbc = CBCSourceParameterDistribution()
+      >>> source_priors, source_prior_params, sampler_names = cbc.source_priors_categorization(event_type='BBH', source_priors=None, source_prior_params=None)
+      >>> print(source_priors.keys())
+      >>> print(source_prior_params.keys())
+      >>> print(sampler_names.keys())
+
 
 
       ..
@@ -4015,7 +3752,7 @@ Functions
 
       >>> from ler.gw_source_population import CBCSourceParameterDistribution
       >>> cbc = CBCSourceParameterDistribution()
-      >>> params = cbc.sample_gw_parameters(size=1000)
+      >>> params = cbc.gw_parameters(size=1000)
       >>> print("sampled parameters=",list(params.keys()))
 
 
@@ -4023,7 +3760,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BBH_popI_II_powerlaw_gaussian(size, mminbh=4.98, mmaxbh=112.5, alpha=3.78, mu_g=32.27, sigma_g=3.88, lambda_peak=0.03, delta_m=4.8, beta=0.81, get_attribute=False, param=None)
+   .. py:method:: binary_masses_BBH_popI_II_powerlaw_gaussian(size, get_attribute=False, **kwargs)
 
       
       Function to sample source mass1 and mass2 with PowerLaw+PEAK model
@@ -4097,7 +3834,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BBH_popIII_lognormal(size, m_min=5.0, m_max=150.0, Mc=30.0, sigma=0.3, chunk_size=10000, get_attribute=False, param=None)
+   .. py:method:: binary_masses_BBH_popIII_lognormal(size, get_attribute=False, **kwargs)
 
       
       Function to sample source mass1 and mass2 with pop III origin. Refer to Eqn. 1 and 4 of Ng et al. 2022
@@ -4156,7 +3893,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BBH_primordial_lognormal(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000, get_attribute=False, param=None)
+   .. py:method:: binary_masses_BBH_primordial_lognormal(size, get_attribute=False, **kwargs)
 
       
       Function to sample source mass1 and mass2 with primordial origin. Refer to Eqn. 1 and 4 of Ng et al. 2022
@@ -4206,58 +3943,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BNS_gwcosmo(size, mminns=1.0, mmaxns=3.0, alphans=0.0, get_attribute=False, param=None)
-
-      
-      Function to calculate source mass1 and mass2 of BNS from powerlaw distribution (gwcosmo)
-
-
-      :Parameters:
-
-          **size** : `int`
-              Number of samples to draw
-
-          **mminns** : `float`
-              Minimum mass of the BNS (Msun)
-              default: 1.0
-
-          **mmaxns** : `float`
-              Maximum mass of the BNS (Msun)
-              default: 3.0
-
-          **alphans** : `float`
-              Power law index
-              default: 0.0
-
-      :Returns:
-
-          **mass_1_source** : `numpy.ndarray` (1D array of floats)
-              Array of mass1 in source frame (Msun)
-
-          **mass_2_source** : `numpy.ndarray` (1D array of floats)
-              Array of mass2 in source frame (Msun)
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.gw_source_population import CBCSourceParameterDistribution
-      >>> cbc = CBCSourceParameterDistribution()
-      >>> m1_src, m2_src = cbc.binary_masses_BNS_gwcosmo(size=1000)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: binary_masses_NSBH_broken_powerlaw(size, mminbh=26, mmaxbh=125, alpha_1=6.75, alpha_2=6.75, b=0.5, delta_m=5, mminns=1.0, mmaxns=3.0, alphans=0.0, get_attribute=False, param=None)
+   .. py:method:: binary_masses_NSBH_broken_powerlaw(size, get_attribute=False, **kwargs)
 
       
       Function to calculate source mass1 and mass2 of NSBH from powerlaw distribution (gwcosmo). Parameters are mminbh=26,mmaxbh=125,alpha_1=6.75,alpha_2=6.75,b=0.5,delta_m=5,mminns=1.0,mmaxns=3.0,alphans=0.0.
@@ -4338,7 +4024,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_uniform(size, m_min=1.0, m_max=3.0, get_attribute=False, param=None)
+   .. py:method:: binary_masses_uniform(size, get_attribute=False, **kwargs)
 
       
       Function to sample source mass1 and mass2 from uniform distribution.
@@ -4392,7 +4078,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BNS_bimodal(size, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3, resolution=500, create_new=False, get_attribute=False, param=None)
+   .. py:method:: binary_masses_BNS_bimodal(size, get_attribute=False, **kwargs)
 
       
       Function to sample source mass1 and mass2 from bimodal distribution. Refer to Will M. Farr et al. 2020 Eqn. 6, https://arxiv.org/pdf/2005.00032.pdf .
@@ -4474,7 +4160,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: constant_values_n_size(size=100, value=0.0, get_attribute=False, param=None)
+   .. py:method:: constant_values_n_size(size=100, get_attribute=False, **kwargs)
 
       
       Function to sample constant values of size n.
@@ -4485,16 +4171,11 @@ Functions
           **size** : `int`
               Number of samples to draw
 
-          **value** : `float`
-              Constant value
-              default: 0.0
-
           **get_attribute** : `bool`
               If True, return the njitted sampler function with size as the only input where parameters are fixed to the given values.
 
-          **param** : `dict`
-              Allows to pass in above parameters as dict.
-              e.g. param = dict(value=0.0)
+          **kwargs** : `keyword arguments`
+              Additional parameters to pass to the function
 
       :Returns:
 
@@ -4521,7 +4202,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: sampler_uniform(size, min_=0, max_=np.pi, get_attribute=False, param=None)
+   .. py:method:: sampler_uniform(size, get_attribute=False, **kwargs)
 
       
       Function to sample values from uniform distribution.
@@ -4531,14 +4212,6 @@ Functions
 
           **size** : `int`
               Number of samples to draw
-
-          **start_time** : `float`
-              Start time of the uniform distribution
-              default: 1238166018
-
-          **end_time** : `float`
-              End time of the uniform distribution
-              default: 1238166018 + 31536000
 
           **get_attribute** : `bool`
               If True, return the njitted sampler function with size as the only input where parameters are fixed to the given values.
@@ -4571,7 +4244,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: sampler_cosine(size, get_attribute=False, param=None)
+   .. py:method:: sampler_cosine(size, get_attribute=False, **kwargs)
 
       
       Function to sample from sine distribution at the limit of [-np.pi/2, np.pi/2]
@@ -4608,7 +4281,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: sampler_sine(size, get_attribute=False, param=None)
+   .. py:method:: sampler_sine(size, get_attribute=False, **kwargs)
 
       
       Function to sample from sine distribution at the limit of [0, np.pi]
@@ -4639,58 +4312,6 @@ Functions
 
 
 
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: source_priors_categorization(event_type, source_priors, event_prior_params)
-
-      
-      Function to categorize the event priors and its parameters.
-
-
-      :Parameters:
-
-          **event_type** : `str`
-              Type of event to generate.
-              e.g. 'BBH', 'BNS', 'BBH_popIII', 'BBH_primordial', 'NSBH'
-
-          **source_priors** : `dict`
-              Dictionary of prior sampler functions for each parameter
-
-          **event_prior_params** : `dict`
-              Dictionary of sampler parameters for each GW parameter
-
-      :Returns:
-
-          **source_priors_** : `dict`
-              Dictionary of prior sampler functions for each parameter
-
-          **event_prior_params_** : `dict`
-              Dictionary of sampler parameters for each parameter
-
-          **sampler_names_** : `dict`
-              Dictionary of sampler names with description
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.gw_source_population import CBCSourceParameterDistribution
-      >>> cbc = CBCSourceParameterDistribution()
-      >>> source_priors, event_prior_params, sampler_names = cbc.source_priors_categorization(event_type='BBH', source_priors=None, event_prior_params=None)
-      >>> print(source_priors.keys())
-      >>> print(event_prior_params.keys())
-      >>> print(sampler_names.keys())
 
 
 
@@ -4850,7 +4471,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:class:: GWRATES(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=50000, cosmology=None, snr_finder=None, pdet_finder=None, list_of_detectors=None, json_file_names=None, interpolator_directory='./interpolator_pickle', ler_directory='./ler_data', verbose=True, **kwargs)
+.. py:class:: GWRATES(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=50000, cosmology=None, snr_finder=None, pdet_finder=None, list_of_detectors=None, json_file_names=None, interpolator_directory='./interpolator_pickle', create_new_interpolator=False, ler_directory='./ler_data', verbose=True, **kwargs)
 
 
    Bases: :py:obj:`ler.gw_source_population.CBCSourceParameterDistribution`
@@ -5835,7 +5456,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_gw_detectable_events(size=100, batch_size=None, snr_threshold=8.0, pdet_threshold=0.5, resume=False, output_jsonfile='gw_params_n_detectable.json', meta_data_file='meta_gw.json', detectability_condition='step_function', trim_to_size=True, snr_recalculation=False, snr_threshold_recalculation=[4, 12])
+   .. py:method:: selecting_n_gw_detectable_events(size=100, batch_size=None, stopping_criteria=dict(relative_diff_percentage=0.5, number_of_last_batches_to_check=4), snr_threshold=8.0, pdet_threshold=0.5, resume=False, output_jsonfile='gw_params_n_detectable.json', meta_data_file='meta_gw.json', detectability_condition='step_function', trim_to_size=False, snr_recalculation=False, snr_threshold_recalculation=[4, 12])
 
       
       Function to generate n GW detectable events. This fuction samples the GW parameters and save only the detectable events in json file. It also records metadata in the JSON file, which includes the total number of events and the cumulative rate of events. This functionality is particularly useful for generating a fixed or large number of detectable events until the event rates stabilize.

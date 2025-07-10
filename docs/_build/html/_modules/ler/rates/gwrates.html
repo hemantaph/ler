@@ -1,28 +1,28 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ler.rates.gwrates &mdash; ler 0.3.1 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
+
   
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=4621528c"></script>
-        <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../../_static/copybutton.js?v=f281be69"></script>
-        <script src="../../../_static/tabs.js?v=3030b3cb"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../_static/tabs.js?v=3030b3cb"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -117,6 +117,8 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;numexpr.utils&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
@@ -437,11 +439,13 @@
         <span class="n">list_of_detectors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">json_file_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">interpolator_directory</span><span class="o">=</span><span class="s2">&quot;./interpolator_pickle&quot;</span><span class="p">,</span>
+        <span class="n">create_new_interpolator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">ler_directory</span><span class="o">=</span><span class="s2">&quot;./ler_data&quot;</span><span class="p">,</span>
         <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
         
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Initializing GWRATES class...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">npool</span> <span class="o">=</span> <span class="n">npool</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span> <span class="o">=</span> <span class="n">z_min</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span> <span class="o">=</span> <span class="n">z_max</span>
@@ -453,6 +457,7 @@
         <span class="k">if</span> <span class="n">json_file_names</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">json_file_names</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">interpolator_directory</span> <span class="o">=</span> <span class="n">interpolator_directory</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">create_new_interpolator</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span> <span class="o">=</span> <span class="n">ler_directory</span>
         <span class="c1"># create directory if not exists</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">ler_directory</span><span class="p">):</span>
@@ -475,6 +480,7 @@
             <span class="c1"># store all the gwrates input parameters</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">store_gwrates_params</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;gwrates_params&quot;</span><span class="p">])</span>
 
+        <span class="c1"># if not verbose, prevent anything from printing</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="n">initialization</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">print_all_params_ler</span><span class="p">()</span>
@@ -490,7 +496,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># print all relevant functions and sampler priors</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> GWRATES set up params:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> # GWRATES set up params:&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;npool = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">npool</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;z_min = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;z_max = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
@@ -503,10 +509,10 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdet</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;pdet_finder = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pdet</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;json_file_names = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;interpolator_directory = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolator_directory</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ler_directory = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;interpolator_directory = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolator_directory</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ler_directory = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> GWRATES also takes CBCSourceParameterDistribution params as kwargs, as follows:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> # GWRATES also takes CBCSourceParameterDistribution params as kwargs, as follows:&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;source_priors = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s1">&#39;source_priors&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;source_priors_params = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s1">&#39;source_priors_params&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;spin_zero = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s1">&#39;spin_zero&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
@@ -514,7 +520,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;create_new_interpolator = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s1">&#39;create_new_interpolator&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gwsnr</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> LeR also takes gwsnr.GWSNR params as kwargs, as follows:&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> # LeR also takes gwsnr.GWSNR params as kwargs, as follows:&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mtot_min = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s1">&#39;mtot_min&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mtot_max = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s1">&#39;mtot_max&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ratio_min = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s1">&#39;ratio_min&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
@@ -693,10 +699,10 @@
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">z_min</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;z_min&quot;</span><span class="p">],</span>
             <span class="n">z_max</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;z_max&quot;</span><span class="p">],</span>
+            <span class="n">cosmology</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;cosmology&quot;</span><span class="p">],</span>
             <span class="n">event_type</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;event_type&quot;</span><span class="p">],</span>
             <span class="n">source_priors</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;source_priors&quot;</span><span class="p">],</span>
             <span class="n">source_priors_params</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;source_priors_params&quot;</span><span class="p">],</span>
-            <span class="n">cosmology</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;cosmology&quot;</span><span class="p">],</span>
             <span class="n">spin_zero</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;spin_zero&quot;</span><span class="p">],</span>
             <span class="n">spin_precession</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;spin_precession&quot;</span><span class="p">],</span>
             <span class="n">directory</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;directory&quot;</span><span class="p">],</span>
@@ -723,23 +729,35 @@
         <span class="c1"># initialization of GWSNR class</span>
         <span class="n">input_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">npool</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">npool</span><span class="p">,</span>
-            <span class="n">mtot_min</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
-            <span class="n">mtot_max</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+            <span class="n">mtot_min</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s1">&#39;source_frame_masses&#39;</span><span class="p">][</span><span class="s1">&#39;mminbh&#39;</span><span class="p">],</span>
+            <span class="n">mtot_max</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s1">&#39;source_frame_masses&#39;</span><span class="p">][</span><span class="s1">&#39;mmaxbh&#39;</span><span class="p">]</span><span class="o">+</span><span class="mf">10.0</span><span class="p">,</span>
             <span class="n">ratio_min</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
             <span class="n">ratio_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-            <span class="n">mtot_resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-            <span class="n">ratio_resolution</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+            <span class="n">spin_max</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span>
+            <span class="n">mtot_resolution</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+            <span class="n">ratio_resolution</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+            <span class="n">spin_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
             <span class="n">sampling_frequency</span><span class="o">=</span><span class="mf">2048.0</span><span class="p">,</span>
             <span class="n">waveform_approximant</span><span class="o">=</span><span class="s2">&quot;IMRPhenomD&quot;</span><span class="p">,</span>
+            <span class="n">frequency_domain_source_model</span><span class="o">=</span><span class="s1">&#39;lal_binary_black_hole&#39;</span><span class="p">,</span>
             <span class="n">minimum_frequency</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
+            <span class="n">duration_max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">duration_min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">snr_type</span><span class="o">=</span><span class="s2">&quot;interpolation&quot;</span><span class="p">,</span>
             <span class="n">psds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">ifos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">interpolator_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolator_directory</span><span class="p">,</span>
+            <span class="n">interpolator_dir</span><span class="o">=</span><span class="s2">&quot;./interpolator_pickle&quot;</span><span class="p">,</span>
             <span class="n">create_new_interpolator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">gwsnr_verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">gwsnr_verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">multiprocessing_verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">mtot_cut</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">mtot_cut</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">pdet</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">snr_th</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
+            <span class="n">snr_th_net</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
+            <span class="n">ann_path_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">snr_recalculation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">snr_recalculation_range</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">12</span><span class="p">],</span>
+            <span class="n">snr_recalculation_waveform_approximant</span><span class="o">=</span><span class="s2">&quot;IMRPhenomXPHM&quot;</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="c1"># if self.event_type == &quot;BNS&quot;:</span>
         <span class="c1">#     input_params[&quot;mtot_max&quot;]= 18.</span>
@@ -748,34 +766,68 @@
                 <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">input_params</span><span class="p">:</span>
                     <span class="n">input_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span> <span class="o">=</span> <span class="n">input_params</span>
+
+        <span class="c1"># dealing with create_new_interpolator param</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="c1"># check input_params[&quot;gwsnr&quot;] exists</span>
+            <span class="k">if</span> <span class="s2">&quot;gwsnr&quot;</span> <span class="ow">in</span> <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">][</span><span class="s2">&quot;gwsnr&quot;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+                    <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">][</span><span class="s2">&quot;gwsnr&quot;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;create_new_interpolator[&#39;gwsnr&#39;] should be a boolean.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># initialization of GWSNR class</span>
         <span class="n">gwsnr</span> <span class="o">=</span> <span class="n">GWSNR</span><span class="p">(</span>
                     <span class="n">npool</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;npool&quot;</span><span class="p">],</span>
                     <span class="n">mtot_min</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;mtot_min&quot;</span><span class="p">],</span>
                     <span class="n">mtot_max</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;mtot_max&quot;</span><span class="p">],</span>
                     <span class="n">ratio_min</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;ratio_min&quot;</span><span class="p">],</span>
                     <span class="n">ratio_max</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;ratio_max&quot;</span><span class="p">],</span>
+                    <span class="n">spin_max</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;spin_max&quot;</span><span class="p">],</span>
                     <span class="n">mtot_resolution</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;mtot_resolution&quot;</span><span class="p">],</span>
                     <span class="n">ratio_resolution</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;ratio_resolution&quot;</span><span class="p">],</span>
+                    <span class="n">spin_resolution</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;spin_resolution&quot;</span><span class="p">],</span>
                     <span class="n">sampling_frequency</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;sampling_frequency&quot;</span><span class="p">],</span>
                     <span class="n">waveform_approximant</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;waveform_approximant&quot;</span><span class="p">],</span>
+                    <span class="n">frequency_domain_source_model</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;frequency_domain_source_model&quot;</span><span class="p">],</span>
                     <span class="n">minimum_frequency</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;minimum_frequency&quot;</span><span class="p">],</span>
+                    <span class="n">duration_max</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;duration_max&quot;</span><span class="p">],</span>
+                    <span class="n">duration_min</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;duration_min&quot;</span><span class="p">],</span>
                     <span class="n">snr_type</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;snr_type&quot;</span><span class="p">],</span>
                     <span class="n">psds</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;psds&quot;</span><span class="p">],</span>
                     <span class="n">ifos</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;ifos&quot;</span><span class="p">],</span>
                     <span class="n">interpolator_dir</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;interpolator_dir&quot;</span><span class="p">],</span>
-                    <span class="c1"># create_new_interpolator=input_params[&quot;create_new_interpolator&quot;],</span>
+                    <span class="n">create_new_interpolator</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">],</span>
                     <span class="n">gwsnr_verbose</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;gwsnr_verbose&quot;</span><span class="p">],</span>
                     <span class="n">multiprocessing_verbose</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;multiprocessing_verbose&quot;</span><span class="p">],</span>
                     <span class="n">mtot_cut</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;mtot_cut&quot;</span><span class="p">],</span>
+                    <span class="n">pdet</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;pdet&quot;</span><span class="p">],</span>
+                    <span class="n">snr_th</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;snr_th&quot;</span><span class="p">],</span>      
+                    <span class="n">snr_th_net</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;snr_th_net&quot;</span><span class="p">],</span>
+                    <span class="n">ann_path_dict</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;ann_path_dict&quot;</span><span class="p">],</span>
                 <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">snr</span> <span class="o">=</span> <span class="n">gwsnr</span><span class="o">.</span><span class="n">snr</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">list_of_detectors</span> <span class="o">=</span> <span class="n">gwsnr</span><span class="o">.</span><span class="n">detector_list</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">snr_bilby</span> <span class="o">=</span> <span class="n">gwsnr</span><span class="o">.</span><span class="n">compute_bilby_snr</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s2">&quot;mtot_max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gwsnr</span><span class="o">.</span><span class="n">mtot_max</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s2">&quot;psds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gwsnr</span><span class="o">.</span><span class="n">psds_list</span></div>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">snr_calculator_dict</span><span class="p">[</span><span class="s2">&quot;psds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gwsnr</span><span class="o">.</span><span class="n">psds_list</span>
         <span class="c1">#self.pdet = gwsnr.pdet</span>
+
+        <span class="c1"># warm-up the snr calculator</span>
+        <span class="k">if</span> <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;snr_type&quot;</span><span class="p">]</span><span class="o">!=</span><span class="s2">&quot;inner_product&quot;</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+                <span class="c1"># if snr_type is not inner_product, then we can warm up the snr calculator</span>
+                <span class="c1"># this is useful to avoid the first call to snr being slow</span>
+                <span class="n">mass_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">10.</span><span class="p">])</span>
+                <span class="n">ratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.8</span><span class="p">])</span>
+                <span class="n">dl</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1000.0</span><span class="p">])</span>  <span class="c1"># in Mpc</span>
+                <span class="n">snr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">snr</span><span class="p">(</span><span class="n">mass_1</span><span class="o">=</span><span class="n">mass_1</span><span class="p">,</span> <span class="n">mass_2</span><span class="o">=</span><span class="n">mass_1</span><span class="o">*</span><span class="n">ratio</span><span class="p">,</span> <span class="n">luminosity_distance</span><span class="o">=</span><span class="n">dl</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="GWRATES.store_gwrates_params">
 <a class="viewcode-back" href="../../../autoapi/ler/rates/index.html#ler.rates.gwrates.GWRATES.store_gwrates_params">[docs]</a>
@@ -815,12 +867,12 @@
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">snr_calculator_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">snr_calculator_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
             <span class="n">parameters_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;snr_calculator_dict&quot;</span><span class="p">:</span> <span class="n">snr_calculator_dict</span><span class="p">})</span>
-
-            <span class="n">file_name</span> <span class="o">=</span> <span class="n">output_jsonfile</span>
-            <span class="n">append_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">file_name</span><span class="p">,</span> <span class="n">parameters_dict</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="c1"># if snr_calculator is custom function</span>
-            <span class="k">pass</span></div>
+            <span class="k">pass</span>
+
+        <span class="n">file_name</span> <span class="o">=</span> <span class="n">output_jsonfile</span>
+        <span class="n">append_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">file_name</span><span class="p">,</span> <span class="n">parameters_dict</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GWRATES.gw_cbc_statistics">
@@ -863,35 +915,15 @@
         <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Simulated GW params will be stored in </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="c1"># sampling in batches</span>
-        <span class="k">if</span> <span class="n">resume</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_path</span><span class="p">):</span>
-            <span class="c1"># get sample from json file</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">dict_buffer</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">dict_buffer</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="n">batch_handler</span><span class="p">(</span>
+        <span class="n">gw_param</span> <span class="o">=</span> <span class="n">batch_handler</span><span class="p">(</span>
             <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
             <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
             <span class="n">sampling_routine</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_sampling_routine</span><span class="p">,</span>
             <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span>
             <span class="n">save_batch</span><span class="o">=</span><span class="n">save_batch</span><span class="p">,</span>
             <span class="n">resume</span><span class="o">=</span><span class="n">resume</span><span class="p">,</span>
+            <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;gw parameters&quot;</span><span class="p">,</span>
         <span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">save_batch</span><span class="p">:</span>
-            <span class="n">gw_param</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># this if condition is required if there is nothing to save</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict_buffer</span><span class="p">:</span>
-                <span class="n">gw_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict_buffer</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-                <span class="c1"># store all params in json file</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;saving all gw_params in </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
-                <span class="n">append_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">gw_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;gw_params already sampled.&quot;</span><span class="p">)</span>
-                <span class="n">gw_param</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dict_buffer</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># save memory</span>
 
         <span class="k">return</span> <span class="n">gw_param</span></div>
 
@@ -934,17 +966,6 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;calculating pdet...&quot;</span><span class="p">)</span>
             <span class="n">pdet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdet</span><span class="p">(</span><span class="n">gw_param_dict</span><span class="o">=</span><span class="n">gw_param</span><span class="p">)</span>
             <span class="n">gw_param</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pdet</span><span class="p">)</span>
-
-        <span class="c1"># adding batches</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">save_batch</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict_buffer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">dict_buffer</span> <span class="o">=</span> <span class="n">gw_param</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">gw_param</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">dict_buffer</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">dict_buffer</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">value</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># store all params in json file</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">dict_buffer</span> <span class="o">=</span> <span class="n">append_json</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">new_dictionary</span><span class="o">=</span><span class="n">gw_param</span><span class="p">,</span>  <span class="n">old_dictionary</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dict_buffer</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="ow">not</span> <span class="p">(</span><span class="n">resume</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">gw_param</span></div>
 
@@ -1245,13 +1266,17 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">stopping_criteria</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">relative_diff_percentage</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+            <span class="n">number_of_last_batches_to_check</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+        <span class="p">),</span>
         <span class="n">snr_threshold</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
         <span class="n">pdet_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
         <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">output_jsonfile</span><span class="o">=</span><span class="s2">&quot;gw_params_n_detectable.json&quot;</span><span class="p">,</span>
         <span class="n">meta_data_file</span><span class="o">=</span><span class="s2">&quot;meta_gw.json&quot;</span><span class="p">,</span>
         <span class="n">detectability_condition</span><span class="o">=</span><span class="s2">&quot;step_function&quot;</span><span class="p">,</span>
-        <span class="n">trim_to_size</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">trim_to_size</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">snr_recalculation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">snr_threshold_recalculation</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
     <span class="p">):</span>
@@ -1308,10 +1333,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># initial setup</span>
-        <span class="n">n</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">meta_data_path</span><span class="p">,</span> <span class="n">buffer_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_setup_for_n_event_selection</span><span class="p">(</span><span class="n">meta_data_file</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">resume</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">meta_data_path</span><span class="p">,</span> <span class="n">buffer_file</span><span class="p">,</span> <span class="n">batch_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_setup_for_n_event_selection</span><span class="p">(</span><span class="n">meta_data_file</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">resume</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
 
         <span class="c1"># loop until n samples are collected</span>
-        <span class="k">while</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">:</span>
+        <span class="n">continue_condition</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">while</span> <span class="n">continue_condition</span><span class="p">:</span>
             <span class="c1"># disable print statements</span>
             <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">redirect_stdout</span><span class="p">(</span><span class="kc">None</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">dict_buffer</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># this is used to store the sampled gw_param in batches when running the sampling_routine</span>
@@ -1336,9 +1362,33 @@
             <span class="n">total_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_function</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
             <span class="c1"># bookmark</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_append_meta_data</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">total_rate</span><span class="p">)</span>
+            <span class="n">buffer_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append_meta_data</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">total_rate</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;stored detectable gw params in </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stopping_criteria</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">total_rates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">buffer_dict</span><span class="p">[</span><span class="s1">&#39;total_rate&#39;</span><span class="p">])</span>
+                <span class="n">limit</span> <span class="o">=</span> <span class="n">stopping_criteria</span><span class="p">[</span><span class="s1">&#39;relative_diff_percentage&#39;</span><span class="p">]</span>
+                <span class="n">num_a</span> <span class="o">=</span> <span class="n">stopping_criteria</span><span class="p">[</span><span class="s1">&#39;number_of_last_batches_to_check&#39;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">total_rates</span><span class="p">)</span><span class="o">&gt;</span><span class="n">num_a</span><span class="p">:</span>
+                    <span class="n">num_a</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="p">(</span><span class="n">num_a</span><span class="p">))</span>
+                    <span class="c1"># num_b = int(num_a)</span>
+                    <span class="n">percentage_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">total_rates</span><span class="p">[</span><span class="n">num_a</span><span class="p">:]</span><span class="o">-</span><span class="n">total_rates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="n">total_rates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="mi">100</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;percentage difference for the last </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">num_a</span><span class="p">)</span><span class="si">}</span><span class="s2"> batches = </span><span class="si">{</span><span class="n">percentage_diff</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">percentage_diff</span><span class="o">&gt;</span><span class="n">limit</span><span class="p">):</span>
+                        <span class="n">continue_condition</span> <span class="o">&amp;=</span> <span class="kc">True</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;stopping criteria of rate relative difference of </span><span class="si">{</span><span class="n">limit</span><span class="si">}</span><span class="s2">% reached. If you want to collect more events, reduce stopping_criteria[&#39;relative_diff_percentage&#39;] or put stopping_criteria=None.&quot;</span><span class="p">)</span>
+                        <span class="n">continue_condition</span> <span class="o">&amp;=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">n</span><span class="o">&lt;</span><span class="n">size</span><span class="p">:</span>
+                    <span class="n">continue_condition</span> <span class="o">|=</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;Given size=</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2"> reached&quot;</span><span class="p">)</span>
+                    <span class="n">continue_condition</span> <span class="o">|=</span> <span class="kc">False</span>
+                    <span class="k">if</span> <span class="n">stopping_criteria</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">continue_condition</span> <span class="o">&amp;=</span> <span class="kc">False</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;stored detectable unlensed params in </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;stored meta data in </span><span class="si">{</span><span class="n">meta_data_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">trim_to_size</span><span class="p">:</span>
@@ -1406,6 +1456,8 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">resume</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># iterator</span>
             <span class="n">events_total</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="c1"># the following file will be removed if it exists</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;removing </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">meta_data_path</span><span class="si">}</span><span class="s2"> if they exist&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_path</span><span class="p">):</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">):</span>
@@ -1424,7 +1476,7 @@
         <span class="n">buffer_file</span> <span class="o">=</span> <span class="s2">&quot;params_buffer.json&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;collected number of detectable events = &quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">meta_data_path</span><span class="p">,</span> <span class="n">buffer_file</span>
+        <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">meta_data_path</span><span class="p">,</span> <span class="n">buffer_file</span><span class="p">,</span> <span class="n">batch_size</span>
 
     <span class="k">def</span> <span class="nf">_trim_results_to_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">meta_data_path</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1501,15 +1553,17 @@
 
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">append_json</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">,</span> <span class="n">meta_data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">dict_</span> <span class="o">=</span> <span class="n">append_json</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">,</span> <span class="n">meta_data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
-                <span class="n">append_json</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">,</span> <span class="n">meta_data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">dict_</span> <span class="o">=</span> <span class="n">append_json</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">,</span> <span class="n">meta_data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">append_json</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">,</span> <span class="n">meta_data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">dict_</span> <span class="o">=</span> <span class="n">append_json</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">,</span> <span class="n">meta_data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;collected number of detectable events = &quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;total number of events = &quot;</span><span class="p">,</span> <span class="n">events_total</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;total rate (yr^-1): </span><span class="si">{</span><span class="n">total_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;total rate (yr^-1): </span><span class="si">{</span><span class="n">total_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dict_</span></div>
 
 </pre></div>
 

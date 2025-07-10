@@ -1,28 +1,28 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ler.gw_source_population.jit_functions &mdash; ler 0.3.1 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
+
   
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=4621528c"></script>
-        <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../../_static/copybutton.js?v=f281be69"></script>
-        <script src="../../../_static/tabs.js?v=3030b3cb"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../_static/tabs.js?v=3030b3cb"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -116,10 +116,32 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">jit</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">CubicSpline</span>
 <span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
 <span class="n">cosmo</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">fsolve</span>
 
-<span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">inverse_transform_sampler</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">inverse_transform_sampler</span><span class="p">,</span> <span class="n">sample_from_powerlaw_distribution</span>
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="cumulative_trapezoid">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.cumulative_trapezoid">[docs]</a>
+<span class="k">def</span> <span class="nf">cumulative_trapezoid</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the cumulative integral of a function using the trapezoidal rule.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="o">*</span> <span class="n">dx</span>
+
+    <span class="c1"># Calculate the cumulative integral using trapezoidal rule</span>
+    <span class="n">cumsum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">cumsum</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">initial</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)):</span>
+        <span class="n">cumsum</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cumsum</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span>
+
+    <span class="k">return</span> <span class="n">cumsum</span></div>
+
 
 <span class="c1"># import pickle</span>
 <span class="c1"># # call the interpolator</span>
@@ -143,7 +165,7 @@
 <div class="viewcode-block" id="merger_rate_density_bbh_popI_II_oguri2018">
 <a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.merger_rate_density_bbh_popI_II_oguri2018">[docs]</a>
 <span class="k">def</span> <span class="nf">merger_rate_density_bbh_popI_II_oguri2018</span><span class="p">(</span>
-        <span class="n">zs</span><span class="p">,</span> <span class="n">R0</span><span class="o">=</span><span class="mf">23.9</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">b3</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">b4</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+        <span class="n">zs</span><span class="p">,</span> <span class="n">R0</span><span class="o">=</span><span class="mf">23.9</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">b3</span><span class="o">=</span><span class="mf">2.1</span><span class="p">,</span> <span class="n">b4</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to compute the merger rate density (PopI/PopII). Reference: Oguri et al. (2018). The output is in detector frame and is unnormalized.</span>
@@ -160,7 +182,7 @@
 <span class="sd">        default: 1.6</span>
 <span class="sd">    b3 : `float`</span>
 <span class="sd">        Fitting paramters</span>
-<span class="sd">        default: 2.0</span>
+<span class="sd">        default: 2.1</span>
 <span class="sd">    b4 : `float`</span>
 <span class="sd">        Fitting paramters</span>
 <span class="sd">        default: 30</span>
@@ -224,14 +246,86 @@
     <span class="p">)</span></div>
 
 
+<span class="c1"># @njit</span>
+<div class="viewcode-block" id="sfr_madau_fragos2017_with_bbh_td">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.sfr_madau_fragos2017_with_bbh_td">[docs]</a>
+<span class="k">def</span> <span class="nf">sfr_madau_fragos2017_with_bbh_td</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">R0</span><span class="o">=</span><span class="mf">23.9</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">rm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.00304765</span><span class="p">,</span> <span class="mf">1.00370075</span><span class="p">,</span> <span class="mf">1.00449545</span><span class="p">,</span> <span class="mf">1.00546251</span><span class="p">,</span> <span class="mf">1.00663937</span><span class="p">,</span> <span class="mf">1.00807168</span><span class="p">,</span> <span class="mf">1.00981505</span><span class="p">,</span> <span class="mf">1.01193727</span><span class="p">,</span> <span class="mf">1.01046483</span><span class="p">,</span> <span class="mf">1.01359803</span><span class="p">,</span> <span class="mf">1.01741386</span><span class="p">,</span> <span class="mf">1.02206193</span><span class="p">,</span> <span class="mf">1.02772495</span><span class="p">,</span> <span class="mf">1.03462601</span><span class="p">,</span> <span class="mf">1.04303746</span><span class="p">,</span> <span class="mf">1.05329142</span><span class="p">,</span> <span class="mf">1.07093106</span><span class="p">,</span> <span class="mf">1.08624215</span><span class="p">,</span> <span class="mf">1.10489848</span><span class="p">,</span> <span class="mf">1.12760683</span><span class="p">,</span><span class="mf">1.15519183</span><span class="p">,</span> <span class="mf">1.18858451</span><span class="p">,</span> <span class="mf">1.22878158</span><span class="p">,</span> <span class="mf">1.27676494</span><span class="p">,</span> <span class="mf">1.33727882</span><span class="p">,</span> <span class="mf">1.40335222</span><span class="p">,</span> <span class="mf">1.47956936</span><span class="p">,</span> <span class="mf">1.56759515</span><span class="p">,</span> <span class="mf">1.6711375</span> <span class="p">,</span> <span class="mf">1.79690371</span><span class="p">,</span> <span class="mf">1.95410462</span><span class="p">,</span> <span class="mf">2.15201042</span><span class="p">,</span> <span class="mf">2.36151109</span><span class="p">,</span> <span class="mf">2.66742932</span><span class="p">,</span> <span class="mf">3.04354598</span><span class="p">,</span> <span class="mf">3.49048755</span><span class="p">,</span> <span class="mf">3.98122536</span><span class="p">,</span> <span class="mf">4.42347511</span><span class="p">,</span> <span class="mf">4.61710896</span><span class="p">,</span> <span class="mf">4.30190679</span><span class="p">,</span> <span class="mf">3.50890876</span><span class="p">,</span> <span class="mf">2.37699066</span><span class="p">,</span> <span class="mf">1.41830834</span><span class="p">,</span> <span class="mf">0.77944771</span><span class="p">,</span><span class="mf">0.40667706</span><span class="p">,</span> <span class="mf">0.20463758</span><span class="p">,</span> <span class="mf">0.09975143</span><span class="p">,</span> <span class="mf">0.04745116</span><span class="p">])</span>
+    <span class="n">zs_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">48</span><span class="p">)</span>
+
+    <span class="n">spline</span> <span class="o">=</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">zs_</span><span class="p">,</span> <span class="n">rm</span><span class="p">,</span> <span class="n">extrapolate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">SFR</span> <span class="o">=</span> <span class="n">spline</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="o">*</span><span class="n">R0</span> <span class="c1"># in Mpc^-3 yr^-1</span>
+    <span class="k">return</span> <span class="n">SFR</span></div>
+
+
+<span class="c1"># @njit</span>
+<div class="viewcode-block" id="sfr_madau_dickinson2014_with_bbh_td">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.sfr_madau_dickinson2014_with_bbh_td">[docs]</a>
+<span class="k">def</span> <span class="nf">sfr_madau_dickinson2014_with_bbh_td</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">R0</span><span class="o">=</span><span class="mf">23.9</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">rm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.00292325</span><span class="p">,</span> <span class="mf">1.0035494</span> <span class="p">,</span> <span class="mf">1.0043112</span> <span class="p">,</span> <span class="mf">1.00523807</span><span class="p">,</span> <span class="mf">1.0063658</span> <span class="p">,</span> <span class="mf">1.00773798</span><span class="p">,</span> <span class="mf">1.00940767</span><span class="p">,</span> <span class="mf">1.01143948</span><span class="p">,</span> <span class="mf">1.00997839</span><span class="p">,</span> <span class="mf">1.01297699</span><span class="p">,</span> <span class="mf">1.01662662</span><span class="p">,</span> <span class="mf">1.02106895</span><span class="p">,</span> <span class="mf">1.02647649</span><span class="p">,</span> <span class="mf">1.03305927</span><span class="p">,</span> <span class="mf">1.04107277</span><span class="p">,</span> <span class="mf">1.05082743</span><span class="p">,</span> <span class="mf">1.06802831</span><span class="p">,</span> <span class="mf">1.08255749</span><span class="p">,</span> <span class="mf">1.10022606</span><span class="p">,</span> <span class="mf">1.12169013</span><span class="p">,</span> <span class="mf">1.14772134</span><span class="p">,</span> <span class="mf">1.1792097</span> <span class="p">,</span> <span class="mf">1.21715406</span><span class="p">,</span> <span class="mf">1.26263694</span><span class="p">,</span> <span class="mf">1.32051095</span><span class="p">,</span> <span class="mf">1.38462461</span><span class="p">,</span> <span class="mf">1.45997648</span><span class="p">,</span> <span class="mf">1.54851567</span><span class="p">,</span> <span class="mf">1.65349288</span><span class="p">,</span> <span class="mf">1.78046645</span><span class="p">,</span> <span class="mf">1.93811129</span><span class="p">,</span> <span class="mf">2.1354612</span> <span class="p">,</span> <span class="mf">2.34086287</span><span class="p">,</span> <span class="mf">2.63664802</span><span class="p">,</span> <span class="mf">2.98892341</span><span class="p">,</span> <span class="mf">3.38353439</span><span class="p">,</span> <span class="mf">3.76990612</span><span class="p">,</span> <span class="mf">4.03489696</span><span class="p">,</span> <span class="mf">4.00806904</span><span class="p">,</span> <span class="mf">3.56766897</span><span class="p">,</span> <span class="mf">2.86966689</span><span class="p">,</span> <span class="mf">2.01282062</span><span class="p">,</span> <span class="mf">1.29696347</span><span class="p">,</span> <span class="mf">0.78913584</span><span class="p">,</span> <span class="mf">0.46166281</span><span class="p">,</span> <span class="mf">0.26226345</span><span class="p">,</span> <span class="mf">0.14509118</span><span class="p">,</span> <span class="mf">0.07854392</span><span class="p">])</span>
+    <span class="n">zs_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">48</span><span class="p">)</span>
+
+    <span class="n">spline</span> <span class="o">=</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">zs_</span><span class="p">,</span> <span class="n">rm</span><span class="p">,</span> <span class="n">extrapolate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">SFR</span> <span class="o">=</span> <span class="n">spline</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="o">*</span><span class="n">R0</span> <span class="c1"># in Mpc^-3 yr^-1</span>
+    <span class="k">return</span> <span class="n">SFR</span></div>
+
+
+<span class="c1"># @njit</span>
+<div class="viewcode-block" id="sfr_madau_fragos2017_with_bns_td">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.sfr_madau_fragos2017_with_bns_td">[docs]</a>
+<span class="k">def</span> <span class="nf">sfr_madau_fragos2017_with_bns_td</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">R0</span><span class="o">=</span><span class="mf">105.5</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">rm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.00309364</span><span class="p">,</span> <span class="mf">1.00375139</span><span class="p">,</span> <span class="mf">1.00455175</span><span class="p">,</span> <span class="mf">1.00552568</span><span class="p">,</span> <span class="mf">1.00671091</span><span class="p">,</span> <span class="mf">1.00815339</span><span class="p">,</span> <span class="mf">1.00990912</span><span class="p">,</span> <span class="mf">1.01204635</span><span class="p">,</span> <span class="mf">1.00757017</span><span class="p">,</span> <span class="mf">1.01071962</span><span class="p">,</span> <span class="mf">1.01455507</span><span class="p">,</span> <span class="mf">1.01922677</span><span class="p">,</span> <span class="mf">1.02491815</span><span class="p">,</span> <span class="mf">1.03185311</span><span class="p">,</span> <span class="mf">1.04030479</span><span class="p">,</span> <span class="mf">1.05060602</span><span class="p">,</span> <span class="mf">1.06970166</span><span class="p">,</span> <span class="mf">1.08508957</span><span class="p">,</span> <span class="mf">1.10382838</span><span class="p">,</span> <span class="mf">1.12661829</span><span class="p">,</span> <span class="mf">1.15427005</span><span class="p">,</span> <span class="mf">1.18768774</span><span class="p">,</span> <span class="mf">1.22781836</span><span class="p">,</span> <span class="mf">1.27555711</span><span class="p">,</span> <span class="mf">1.31791484</span><span class="p">,</span> <span class="mf">1.38209039</span><span class="p">,</span> <span class="mf">1.4555543</span> <span class="p">,</span> <span class="mf">1.5397332</span> <span class="p">,</span> <span class="mf">1.63806934</span><span class="p">,</span> <span class="mf">1.75685668</span><span class="p">,</span> <span class="mf">1.90448546</span><span class="p">,</span> <span class="mf">2.08862044</span><span class="p">,</span> <span class="mf">2.34440211</span><span class="p">,</span> <span class="mf">2.63899295</span><span class="p">,</span> <span class="mf">2.99729389</span><span class="p">,</span> <span class="mf">3.41567274</span><span class="p">,</span> <span class="mf">3.86324106</span><span class="p">,</span> <span class="mf">4.24545603</span><span class="p">,</span> <span class="mf">4.37018218</span><span class="p">,</span> <span class="mf">4.00555831</span><span class="p">,</span> <span class="mf">3.10525751</span><span class="p">,</span> <span class="mf">2.06354992</span><span class="p">,</span> <span class="mf">1.20906304</span><span class="p">,</span> <span class="mf">0.65233811</span><span class="p">,</span> <span class="mf">0.33356891</span><span class="p">,</span> <span class="mf">0.16397688</span><span class="p">,</span> <span class="mf">0.08024945</span><span class="p">,</span> <span class="mf">0.036953</span><span class="p">])</span>
+    <span class="n">zs_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">48</span><span class="p">)</span>
+
+    <span class="n">spline</span> <span class="o">=</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">zs_</span><span class="p">,</span> <span class="n">rm</span><span class="p">,</span> <span class="n">extrapolate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">SFR</span> <span class="o">=</span> <span class="n">spline</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="o">*</span><span class="n">R0</span> <span class="c1"># in Mpc^-3 yr^-1</span>
+    <span class="k">return</span> <span class="n">SFR</span></div>
+
+
+<span class="c1"># @njit</span>
+<div class="viewcode-block" id="sfr_madau_dickinson2014_with_bns_td">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.sfr_madau_dickinson2014_with_bns_td">[docs]</a>
+<span class="k">def</span> <span class="nf">sfr_madau_dickinson2014_with_bns_td</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">R0</span><span class="o">=</span><span class="mf">105.5</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">rm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0029945</span> <span class="p">,</span> <span class="mf">1.00362259</span><span class="p">,</span> <span class="mf">1.00438674</span><span class="p">,</span> <span class="mf">1.00531645</span><span class="p">,</span> <span class="mf">1.00644763</span><span class="p">,</span> <span class="mf">1.00782396</span><span class="p">,</span> <span class="mf">1.00949865</span><span class="p">,</span> <span class="mf">1.01153645</span><span class="p">,</span> <span class="mf">1.00240992</span><span class="p">,</span> <span class="mf">1.00539605</span><span class="p">,</span> <span class="mf">1.00903013</span><span class="p">,</span> <span class="mf">1.01345293</span><span class="p">,</span> <span class="mf">1.01883579</span><span class="p">,</span> <span class="mf">1.02538714</span><span class="p">,</span> <span class="mf">1.03336026</span><span class="p">,</span> <span class="mf">1.04306247</span><span class="p">,</span> <span class="mf">1.05841698</span><span class="p">,</span> <span class="mf">1.07283625</span><span class="p">,</span> <span class="mf">1.09035966</span><span class="p">,</span> <span class="mf">1.11162909</span><span class="p">,</span> <span class="mf">1.1373949</span> <span class="p">,</span> <span class="mf">1.16851509</span><span class="p">,</span> <span class="mf">1.20594024</span><span class="p">,</span> <span class="mf">1.25068092</span><span class="p">,</span> <span class="mf">1.3085267</span> <span class="p">,</span> <span class="mf">1.37111306</span><span class="p">,</span> <span class="mf">1.44421094</span><span class="p">,</span> <span class="mf">1.52948237</span><span class="p">,</span> <span class="mf">1.62985636</span><span class="p">,</span> <span class="mf">1.75058453</span><span class="p">,</span> <span class="mf">1.90010572</span><span class="p">,</span> <span class="mf">2.0870216</span> <span class="p">,</span> <span class="mf">2.33573104</span><span class="p">,</span> <span class="mf">2.6218286</span> <span class="p">,</span> <span class="mf">2.96031682</span><span class="p">,</span> <span class="mf">3.3343522</span> <span class="p">,</span> <span class="mf">3.69149889</span><span class="p">,</span> <span class="mf">3.92099769</span><span class="p">,</span> <span class="mf">3.86227814</span><span class="p">,</span> <span class="mf">3.40811745</span><span class="p">,</span> <span class="mf">2.59314381</span><span class="p">,</span> <span class="mf">1.79588097</span><span class="p">,</span> <span class="mf">1.14260538</span><span class="p">,</span> <span class="mf">0.686002</span>  <span class="p">,</span> <span class="mf">0.3954134</span> <span class="p">,</span> <span class="mf">0.22083291</span><span class="p">,</span> <span class="mf">0.11548455</span><span class="p">,</span> <span class="mf">0.06064368</span><span class="p">])</span>
+    <span class="n">zs_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">48</span><span class="p">)</span>
+
+    <span class="n">spline</span> <span class="o">=</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">zs_</span><span class="p">,</span> <span class="n">rm</span><span class="p">,</span> <span class="n">extrapolate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">SFR</span> <span class="o">=</span> <span class="n">spline</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="o">*</span><span class="n">R0</span> <span class="c1"># in Mpc^-3 yr^-1</span>
+    <span class="k">return</span> <span class="n">SFR</span></div>
+
+
+
 <span class="nd">@njit</span>
-<div class="viewcode-block" id="star_formation_rate_madau_dickinson2014">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.star_formation_rate_madau_dickinson2014">[docs]</a>
-<span class="k">def</span> <span class="nf">star_formation_rate_madau_dickinson2014</span><span class="p">(</span>
-        <span class="n">zs</span><span class="p">,</span> <span class="n">af</span><span class="o">=</span><span class="mf">2.7</span><span class="p">,</span> <span class="n">bf</span><span class="o">=</span><span class="mf">5.6</span><span class="p">,</span> <span class="n">cf</span><span class="o">=</span><span class="mf">2.9</span><span class="p">,</span>
+<div class="viewcode-block" id="sfr_madau_fragos2017">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.sfr_madau_fragos2017">[docs]</a>
+<span class="k">def</span> <span class="nf">sfr_madau_fragos2017</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">2.6</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">3.2</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">6.2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    https://arxiv.org/pdf/1606.07887.pdf</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">zs</span><span class="p">)</span><span class="o">**</span><span class="n">b</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="n">zs</span><span class="p">)</span><span class="o">/</span><span class="n">c</span><span class="p">)</span><span class="o">**</span><span class="n">d</span><span class="p">)</span> <span class="c1"># [Msun yr-1 Mpc-3]</span></div>
+
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="sfr_madau_dickinson2014">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.sfr_madau_dickinson2014">[docs]</a>
+<span class="k">def</span> <span class="nf">sfr_madau_dickinson2014</span><span class="p">(</span>
+        <span class="n">zs</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">2.7</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">2.9</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">5.6</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Function to compute star formation rate as given in Eqn. 15 Madau &amp; Dickinson (2014). The output is in detector frame and is unnormalized.</span>
+<span class="sd">    Function to compute star formation rate as given in Eqn. 15 Madau &amp; Dickinson (2014). The output is in detector frame and is unnormalized. https://arxiv.org/pdf/1403.0007</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -254,12 +348,12 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    ----------</span>
-<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population import star_formation_rate_madau_dickinson2014</span>
-<span class="sd">    &gt;&gt;&gt; rate_density = star_formation_rate_madau_dickinson2014(zs=0.1)</span>
+<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population import sfr_madau_dickinson2014</span>
+<span class="sd">    &gt;&gt;&gt; rate_density = sfr_madau_dickinson2014(zs=0.1)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># rate density</span>
-    <span class="k">return</span> <span class="mf">0.015</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">zs</span><span class="p">)</span> <span class="o">**</span> <span class="n">af</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">zs</span><span class="p">)</span> <span class="o">/</span> <span class="n">cf</span><span class="p">)</span> <span class="o">**</span> <span class="n">bf</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">zs</span><span class="p">)</span> <span class="o">**</span> <span class="n">b</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">zs</span><span class="p">)</span> <span class="o">/</span> <span class="n">c</span><span class="p">)</span> <span class="o">**</span> <span class="n">d</span><span class="p">)</span> <span class="c1"># [Msun yr-1 Mpc-3]</span></div>
 
 
 
@@ -424,6 +518,444 @@
     
     <span class="k">return</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span></div>
 
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">erf</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1"># Constants for the approximation</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="mf">0.3275911</span>
+    <span class="n">a1</span> <span class="o">=</span> <span class="mf">0.254829592</span>
+    <span class="n">a2</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.284496736</span>
+    <span class="n">a3</span> <span class="o">=</span> <span class="mf">1.421413741</span>
+    <span class="n">a4</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.453152027</span>
+    <span class="n">a5</span> <span class="o">=</span> <span class="mf">1.061405429</span>
+    
+    <span class="c1"># Save the sign of x</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    
+    <span class="c1"># A&amp;S formula 7.1.26 given in Handbook of Mathematical Functions</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">p</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(((((</span><span class="n">a5</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">a4</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="n">a3</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">a2</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">a1</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">y</span>
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">compute_normalization_factor</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">mmin</span><span class="p">,</span> <span class="n">mmax</span><span class="p">):</span>
+    <span class="n">part1</span> <span class="o">=</span> <span class="p">(</span><span class="n">mmax</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">)</span>
+    <span class="n">part2</span> <span class="o">=</span> <span class="p">(</span><span class="n">mmin</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">)</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">sigma</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">erf</span><span class="p">(</span><span class="n">part1</span><span class="p">)</span> <span class="o">-</span> <span class="n">erf</span><span class="p">(</span><span class="n">part2</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">N</span>
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">bns_bimodal_pdf</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mf">0.643</span><span class="p">,</span> <span class="n">muL</span><span class="o">=</span><span class="mf">1.352</span><span class="p">,</span> <span class="n">sigmaL</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">muR</span><span class="o">=</span><span class="mf">1.88</span><span class="p">,</span> <span class="n">sigmaR</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">mmin</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">mmax</span><span class="o">=</span><span class="mf">2.3</span><span class="p">,):</span>
+
+    <span class="c1"># left peak</span>
+    <span class="n">pdf_unnormL</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">m</span> <span class="o">-</span> <span class="n">muL</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigmaL</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">normL</span> <span class="o">=</span> <span class="n">compute_normalization_factor</span><span class="p">(</span><span class="n">muL</span><span class="p">,</span> <span class="n">sigmaL</span><span class="p">,</span> <span class="n">mmin</span><span class="p">,</span> <span class="n">mmax</span><span class="p">)</span>  <span class="c1"># normalization constant</span>
+    <span class="c1"># right peak</span>
+    <span class="n">pdf_unnormR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">m</span> <span class="o">-</span> <span class="n">muR</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigmaR</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">normR</span> <span class="o">=</span> <span class="n">compute_normalization_factor</span><span class="p">(</span><span class="n">muR</span><span class="p">,</span> <span class="n">sigmaR</span><span class="p">,</span> <span class="n">mmin</span><span class="p">,</span> <span class="n">mmax</span><span class="p">)</span>
+    <span class="c1"># total pdf</span>
+    <span class="n">pdf</span> <span class="o">=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">pdf_unnormL</span> <span class="o">/</span> <span class="n">normL</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">pdf_unnormR</span> <span class="o">/</span> <span class="n">normR</span>
+
+    <span class="k">return</span> <span class="n">pdf</span>
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">smoothing_S</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">mmin</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">709.0</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+    <span class="c1"># Region where smoothing is not needed: m &gt;= mmin + delta_m</span>
+    <span class="n">idx_2</span> <span class="o">=</span> <span class="n">m</span> <span class="o">&gt;=</span> <span class="n">mmin</span> <span class="o">+</span> <span class="n">delta_m</span>
+    <span class="n">s</span><span class="p">[</span><span class="n">idx_2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="c1"># Region where smoothing is applied: mmin &lt;= m &lt; mmin + delta_m</span>
+    <span class="n">idx_1</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span> <span class="o">&gt;=</span> <span class="n">mmin</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">m</span> <span class="o">&lt;</span> <span class="n">mmin</span> <span class="o">+</span> <span class="n">delta_m</span><span class="p">)</span>
+    <span class="n">mprime</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="n">idx_1</span><span class="p">]</span> <span class="o">-</span> <span class="n">mmin</span>
+    <span class="n">exponent</span> <span class="o">=</span> <span class="n">delta_m</span> <span class="o">/</span> <span class="n">mprime</span> <span class="o">+</span> <span class="n">delta_m</span> <span class="o">/</span> <span class="p">(</span><span class="n">mprime</span> <span class="o">-</span> <span class="n">delta_m</span><span class="p">)</span>
+
+    <span class="c1"># Safe exponentiation only where the exponent is below threshold</span>
+    <span class="n">safe_idx</span> <span class="o">=</span> <span class="n">exponent</span> <span class="o">&lt;=</span> <span class="n">threshold</span>
+    <span class="n">s_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">mprime</span><span class="p">)</span>
+    <span class="n">s_vals</span><span class="p">[</span><span class="n">safe_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">exponent</span><span class="p">[</span><span class="n">safe_idx</span><span class="p">])</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="c1"># Assign back to main array</span>
+    <span class="n">s</span><span class="p">[</span><span class="n">idx_1</span><span class="p">]</span> <span class="o">=</span> <span class="n">s_vals</span>
+
+    <span class="k">return</span> <span class="n">s</span>
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="powerlaw_with_smoothing">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.powerlaw_with_smoothing">[docs]</a>
+<span class="k">def</span> <span class="nf">powerlaw_with_smoothing</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">mmin</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Power law with smoothing applied.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">smoothing_S</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">mmin</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">m</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">s</span></div>
+
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="inverse_transform_sampler">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.inverse_transform_sampler">[docs]</a>
+<span class="k">def</span> <span class="nf">inverse_transform_sampler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">cdf</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to sample from the inverse transform method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">cdf</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">cdf</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">cdf</span><span class="p">[</span><span class="n">idx</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">y0</span> <span class="o">+</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">u</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">samples</span></div>
+
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">broken_powerlaw_cdf</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">mminbh</span><span class="o">=</span><span class="mi">26</span><span class="p">,</span><span class="n">mmaxbh</span><span class="o">=</span><span class="mi">125</span><span class="p">,</span><span class="n">alpha_1</span><span class="o">=</span><span class="mf">6.75</span><span class="p">,</span><span class="n">alpha_2</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="n">delta_m</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+
+    <span class="c1"># find normalization</span>
+    <span class="n">m_try</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">pdf_unnormalized</span> <span class="o">=</span> <span class="n">broken_powerlaw_unormalized</span><span class="p">(</span><span class="n">m_try</span><span class="p">,</span> <span class="n">mminbh</span><span class="o">=</span><span class="mf">26.</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="o">=</span><span class="mf">125.</span><span class="p">,</span> <span class="n">alpha_1</span><span class="o">=</span><span class="mf">6.75</span><span class="p">,</span> <span class="n">alpha_2</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">delta_m</span><span class="o">=</span><span class="mf">5.</span><span class="p">)</span>
+    <span class="c1"># Compute the CDF using cumulative trapezoid integration</span>
+    <span class="n">cdf_values</span> <span class="o">=</span> <span class="n">cumulative_trapezoid</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">pdf_unnormalized</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">m_try</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="c1"># Normalize the CDF</span>
+    <span class="n">normalization</span> <span class="o">=</span> <span class="n">cdf_values</span><span class="p">[</span><span class="n">size</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># Normalize the CDF</span>
+    <span class="n">cdf_values</span> <span class="o">/=</span> <span class="n">normalization</span>
+
+    <span class="k">return</span> <span class="n">cdf_values</span>
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="sample_broken_powerlaw">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.sample_broken_powerlaw">[docs]</a>
+<span class="k">def</span> <span class="nf">sample_broken_powerlaw</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">mminbh</span><span class="o">=</span><span class="mf">26.</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="o">=</span><span class="mf">125.</span><span class="p">,</span> <span class="n">alpha_1</span><span class="o">=</span><span class="mf">6.75</span><span class="p">,</span> <span class="n">alpha_2</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">delta_m</span><span class="o">=</span><span class="mf">5.</span><span class="p">,</span> <span class="n">normalization_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates samples from the broken powerlaw distribution.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Generate the CDF</span>
+    <span class="n">cdf_values</span> <span class="o">=</span> <span class="n">broken_powerlaw_cdf</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">normalization_size</span><span class="p">,</span> <span class="n">mminbh</span><span class="o">=</span><span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="o">=</span><span class="n">mmaxbh</span><span class="p">,</span> <span class="n">alpha_1</span><span class="o">=</span><span class="n">alpha_1</span><span class="p">,</span> <span class="n">alpha_2</span><span class="o">=</span><span class="n">alpha_2</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">delta_m</span><span class="o">=</span><span class="n">delta_m</span><span class="p">)</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">,</span> <span class="n">normalization_size</span><span class="p">)</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">cdf_values</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">cdf_values</span> <span class="o">=</span> <span class="n">cdf_values</span><span class="p">[</span><span class="n">idx</span><span class="p">:]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">:]</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">inverse_transform_sampler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">cdf_values</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">samples</span></div>
+
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="sample_broken_powerlaw_nsbh_masses">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.sample_broken_powerlaw_nsbh_masses">[docs]</a>
+<span class="k">def</span> <span class="nf">sample_broken_powerlaw_nsbh_masses</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">mminbh</span><span class="o">=</span><span class="mf">26.</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="o">=</span><span class="mf">125.</span><span class="p">,</span> <span class="n">alpha_1</span><span class="o">=</span><span class="mf">6.75</span><span class="p">,</span> <span class="n">alpha_2</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">delta_m</span><span class="o">=</span><span class="mf">5.</span><span class="p">,</span> <span class="n">mminns</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">mmaxns</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">alphans</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">normalization_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates samples from the broken powerlaw distribution for NSBH masses.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Sample mass 1</span>
+    <span class="n">m1_samples</span> <span class="o">=</span> <span class="n">sample_broken_powerlaw</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">mminbh</span><span class="o">=</span><span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="o">=</span><span class="n">mmaxbh</span><span class="p">,</span> <span class="n">alpha_1</span><span class="o">=</span><span class="n">alpha_1</span><span class="p">,</span> <span class="n">alpha_2</span><span class="o">=</span><span class="n">alpha_2</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">delta_m</span><span class="o">=</span><span class="n">delta_m</span><span class="p">,</span> <span class="n">normalization_size</span><span class="o">=</span><span class="n">normalization_size</span><span class="p">)</span>
+
+    <span class="c1"># Sample mass 2 (NS mass)</span>
+    <span class="c1"># inverse transform sampling from a power-law distribution, with a minimum and maximum mass</span>
+    <span class="n">m2_samples</span> <span class="o">=</span> <span class="n">sample_from_powerlaw_distribution</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">alphans</span><span class="p">,</span> <span class="n">mminns</span><span class="p">,</span> <span class="n">mmaxns</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">m1_samples</span><span class="p">,</span> <span class="n">m2_samples</span></div>
+
+    
+    
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="broken_powerlaw_pdf">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.broken_powerlaw_pdf">[docs]</a>
+<span class="k">def</span> <span class="nf">broken_powerlaw_pdf</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">mminbh</span><span class="o">=</span><span class="mf">26.</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="o">=</span><span class="mf">125.</span><span class="p">,</span> <span class="n">alpha_1</span><span class="o">=</span><span class="mf">6.75</span><span class="p">,</span> <span class="n">alpha_2</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">delta_m</span><span class="o">=</span><span class="mf">5.</span><span class="p">,</span> <span class="n">normalization_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates samples using a Numba-jitted loop for high performance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># find normalization</span>
+    <span class="n">m_try</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">,</span> <span class="n">normalization_size</span><span class="p">)</span>
+    <span class="n">pdf_unnormalized</span> <span class="o">=</span> <span class="n">broken_powerlaw_unormalized</span><span class="p">(</span><span class="n">m_try</span><span class="p">,</span> <span class="n">mminbh</span><span class="o">=</span><span class="mf">26.</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="o">=</span><span class="mf">125.</span><span class="p">,</span> <span class="n">alpha_1</span><span class="o">=</span><span class="mf">6.75</span><span class="p">,</span> <span class="n">alpha_2</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">delta_m</span><span class="o">=</span><span class="mf">5.</span><span class="p">)</span>
+    <span class="c1"># Normalize the PDF</span>
+    <span class="n">normalization</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">pdf_unnormalized</span><span class="p">,</span> <span class="n">m_try</span><span class="p">)</span>
+
+    <span class="c1"># Generate the PDF for the input mass array</span>
+    <span class="n">pdf_unnormalized</span> <span class="o">=</span> <span class="n">broken_powerlaw_unormalized</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">mminbh</span><span class="o">=</span><span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="o">=</span><span class="n">mmaxbh</span><span class="p">,</span> <span class="n">alpha_1</span><span class="o">=</span><span class="n">alpha_1</span><span class="p">,</span> <span class="n">alpha_2</span><span class="o">=</span><span class="n">alpha_2</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">delta_m</span><span class="o">=</span><span class="n">delta_m</span><span class="p">)</span>
+    <span class="c1"># Normalize the PDF</span>
+    <span class="n">pdf</span> <span class="o">=</span> <span class="n">pdf_unnormalized</span> <span class="o">/</span> <span class="n">normalization</span>
+
+    <span class="k">return</span> <span class="n">pdf</span></div>
+
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="broken_powerlaw_unormalized">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.broken_powerlaw_unormalized">[docs]</a>
+<span class="k">def</span> <span class="nf">broken_powerlaw_unormalized</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">mminbh</span><span class="o">=</span><span class="mf">26.</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="o">=</span><span class="mf">125.</span><span class="p">,</span> <span class="n">alpha_1</span><span class="o">=</span><span class="mf">6.75</span><span class="p">,</span> <span class="n">alpha_2</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">delta_m</span><span class="o">=</span><span class="mf">5.</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Probability density function for the broken powerlaw model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mbreak</span> <span class="o">=</span> <span class="n">mminbh</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="p">(</span><span class="n">mmaxbh</span> <span class="o">-</span> <span class="n">mminbh</span><span class="p">)</span>
+    <span class="n">idx_1</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span> <span class="o">&gt;</span> <span class="n">mminbh</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">m</span> <span class="o">&lt;</span> <span class="n">mbreak</span><span class="p">)</span>
+    <span class="n">idx_2</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span> <span class="o">&gt;=</span> <span class="n">mbreak</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">m</span> <span class="o">&lt;</span> <span class="n">mmaxbh</span><span class="p">)</span>
+
+    <span class="n">pdf_unnormalized</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">pdf_unnormalized</span><span class="p">[</span><span class="n">idx_1</span><span class="p">]</span> <span class="o">=</span> <span class="n">powerlaw_with_smoothing</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">idx_1</span><span class="p">],</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">alpha_1</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">)</span> <span class="c1"># m[idx_1] ** (-alpha_1) * smoothing_S(m[idx_1], mminbh, delta_m)</span>
+    <span class="n">norm_1</span> <span class="o">=</span> <span class="n">pdf_unnormalized</span><span class="p">[</span><span class="n">idx_1</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">idx_1</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">pdf_unnormalized</span><span class="p">[</span><span class="n">idx_2</span><span class="p">]</span> <span class="o">=</span> <span class="n">powerlaw_with_smoothing</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">idx_2</span><span class="p">],</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">alpha_2</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">)</span>
+     <span class="c1"># (m[idx_2] ** (-alpha_2)* smoothing_S(m[idx_2], mminbh, delta_m))</span>
+    <span class="n">norm_2</span> <span class="o">=</span> <span class="n">pdf_unnormalized</span><span class="p">[</span><span class="n">idx_2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">pdf_unnormalized</span><span class="p">[</span><span class="n">idx_2</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdf_unnormalized</span><span class="p">[</span><span class="n">idx_2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">norm_1</span> <span class="o">/</span> <span class="n">norm_2</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">pdf_unnormalized</span></div>
+
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="powerlaw_B">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.powerlaw_B">[docs]</a>
+<span class="k">def</span> <span class="nf">powerlaw_B</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    normalised power-law distribution with spectral index -alpha and cut-off mmaxbh</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">normalization</span> <span class="o">=</span> <span class="p">(</span><span class="n">mmaxbh</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">alpha</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="o">-</span><span class="n">alpha</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">mminbh</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">alpha</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="o">-</span><span class="n">alpha</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">pdf</span> <span class="o">=</span> <span class="n">m</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">alpha</span><span class="p">)</span> <span class="o">/</span> <span class="n">normalization</span>
+    <span class="k">return</span> <span class="n">pdf</span></div>
+
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="gaussian_G">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.gaussian_G">[docs]</a>
+<span class="k">def</span> <span class="nf">gaussian_G</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">mu_g</span><span class="p">,</span> <span class="n">sigma_g</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gaussian distribution with mean mu_g and standard deviation sigma_g.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">normalization</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma_g</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+    <span class="n">exponent</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">((</span><span class="n">m</span> <span class="o">-</span> <span class="n">mu_g</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma_g</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">pdf</span> <span class="o">=</span> <span class="n">normalization</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">exponent</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pdf</span></div>
+
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="powerlaw_gaussian_pdf">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.powerlaw_gaussian_pdf">[docs]</a>
+<span class="k">def</span> <span class="nf">powerlaw_gaussian_pdf</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">mu_g</span><span class="p">,</span> <span class="n">sigma_g</span><span class="p">,</span> <span class="n">lambda_peak</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">,</span> <span class="n">normalization_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the PDF for the power-law Gaussian model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># find normalization</span>
+    <span class="n">m_try</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">,</span> <span class="n">normalization_size</span><span class="p">)</span>
+    <span class="n">pdf_unnormalized</span> <span class="o">=</span> <span class="n">powerlaw_gaussian_unnormalized</span><span class="p">(</span>
+        <span class="n">m_try</span><span class="p">,</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">mu_g</span><span class="p">,</span> <span class="n">sigma_g</span><span class="p">,</span> <span class="n">lambda_peak</span><span class="p">,</span> <span class="n">delta_m</span>
+    <span class="p">)</span>
+    <span class="n">normalization</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">pdf_unnormalized</span><span class="p">,</span> <span class="n">m_try</span><span class="p">)</span>
+
+    <span class="c1"># calculate PDF</span>
+    <span class="n">pdf_unnormalized</span> <span class="o">=</span> <span class="n">powerlaw_gaussian_unnormalized</span><span class="p">(</span>
+        <span class="n">m</span><span class="p">,</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">mu_g</span><span class="p">,</span> <span class="n">sigma_g</span><span class="p">,</span> <span class="n">lambda_peak</span><span class="p">,</span> <span class="n">delta_m</span>
+    <span class="p">)</span>
+    <span class="n">pdf</span> <span class="o">=</span> <span class="n">pdf_unnormalized</span> <span class="o">/</span> <span class="n">normalization</span>
+
+    <span class="k">return</span> <span class="n">pdf</span></div>
+
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="powerlaw_gaussian_cdf">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.powerlaw_gaussian_cdf">[docs]</a>
+<span class="k">def</span> <span class="nf">powerlaw_gaussian_cdf</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">mu_g</span><span class="p">,</span> <span class="n">sigma_g</span><span class="p">,</span> <span class="n">lambda_peak</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sample from the power-law Gaussian model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># find normalization</span>
+    <span class="n">m_try</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">pdf_unnormalized</span> <span class="o">=</span> <span class="n">powerlaw_gaussian_unnormalized</span><span class="p">(</span>
+        <span class="n">m_try</span><span class="p">,</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">mu_g</span><span class="p">,</span> <span class="n">sigma_g</span><span class="p">,</span> <span class="n">lambda_peak</span><span class="p">,</span> <span class="n">delta_m</span>
+    <span class="p">)</span>
+    <span class="c1"># Compute the CDF using cumulative trapezoid integration</span>
+    <span class="n">cdf_values</span> <span class="o">=</span> <span class="n">cumulative_trapezoid</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">pdf_unnormalized</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">m_try</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="c1"># Normalize the CDF</span>
+    <span class="n">normalization</span> <span class="o">=</span> <span class="n">cdf_values</span><span class="p">[</span><span class="n">size</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># Normalize the CDF</span>
+    <span class="n">cdf_values</span> <span class="o">/=</span> <span class="n">normalization</span>
+
+    <span class="k">return</span> <span class="n">cdf_values</span></div>
+
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="sample_powerlaw_gaussian">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.sample_powerlaw_gaussian">[docs]</a>
+<span class="k">def</span> <span class="nf">sample_powerlaw_gaussian</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">mu_g</span><span class="p">,</span> <span class="n">sigma_g</span><span class="p">,</span> <span class="n">lambda_peak</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">,</span> <span class="n">normalization_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sample from the power-law Gaussian model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Generate the CDF</span>
+    <span class="n">cdf_values</span> <span class="o">=</span> <span class="n">powerlaw_gaussian_cdf</span><span class="p">(</span><span class="n">normalization_size</span><span class="p">,</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">mu_g</span><span class="p">,</span> <span class="n">sigma_g</span><span class="p">,</span> <span class="n">lambda_peak</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">)</span>
+
+    <span class="c1"># Generate random samples from a uniform distribution</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">,</span> <span class="n">normalization_size</span><span class="p">)</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">cdf_values</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">cdf_values</span> <span class="o">=</span> <span class="n">cdf_values</span><span class="p">[</span><span class="n">idx</span><span class="p">:]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">:]</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">inverse_transform_sampler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">cdf_values</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">samples</span></div>
+
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="sample_powerlaw_gaussian_source_bbh_masses">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.sample_powerlaw_gaussian_source_bbh_masses">[docs]</a>
+<span class="k">def</span> <span class="nf">sample_powerlaw_gaussian_source_bbh_masses</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">mu_g</span><span class="p">,</span> <span class="n">sigma_g</span><span class="p">,</span> <span class="n">lambda_peak</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">normalization_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sample from the power-law Gaussian model for source masses.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Sample mass 1</span>
+    <span class="n">m1</span> <span class="o">=</span> <span class="n">sample_powerlaw_gaussian</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">mu_g</span><span class="p">,</span> <span class="n">sigma_g</span><span class="p">,</span> <span class="n">lambda_peak</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">,</span> <span class="n">normalization_size</span><span class="p">)</span>
+
+    <span class="c1"># Sample mass ratio q</span>
+    <span class="c1"># sample_mass_ratio(m1, mminbh, beta, delta_m) in for loop</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+        <span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample_mass_ratio</span><span class="p">(</span><span class="n">m1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">)</span>
+
+    <span class="c1"># Calculate mass 2</span>
+    <span class="n">m2</span> <span class="o">=</span> <span class="n">m1</span> <span class="o">*</span> <span class="n">q</span>
+
+    <span class="k">return</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span></div>
+
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">sample_mass_ratio</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">):</span>
+
+    <span class="n">qmin</span> <span class="o">=</span> <span class="n">mminbh</span> <span class="o">/</span> <span class="n">m1</span>
+    <span class="n">pow_beta</span> <span class="o">=</span> <span class="n">beta</span> <span class="o">+</span> <span class="mf">1.0</span>
+
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">u_q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span>
+        <span class="c1"># inverse transform sampling for mass ratio q</span>
+        <span class="c1"># where q follows a power-law distribution</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="p">(</span><span class="n">u_q</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">**</span><span class="n">pow_beta</span> <span class="o">-</span> <span class="n">qmin</span><span class="o">**</span><span class="n">pow_beta</span><span class="p">)</span> <span class="o">+</span> <span class="n">qmin</span><span class="o">**</span><span class="n">pow_beta</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">pow_beta</span><span class="p">)</span>
+        <span class="n">m2</span> <span class="o">=</span> <span class="n">m1</span> <span class="o">*</span> <span class="n">q</span>
+        <span class="c1"># apply the smoothing function to m2</span>
+        <span class="n">s_m2</span> <span class="o">=</span> <span class="n">smoothing_S</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">m2</span><span class="p">]),</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">u_smooth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">u_smooth</span> <span class="o">&lt;</span> <span class="n">s_m2</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">q</span>
+    
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="powerlaw_gaussian_unnormalized">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.powerlaw_gaussian_unnormalized">[docs]</a>
+<span class="k">def</span> <span class="nf">powerlaw_gaussian_unnormalized</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">mu_g</span><span class="p">,</span> <span class="n">sigma_g</span><span class="p">,</span> <span class="n">lambda_peak</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the unnormalized PDF for the power-law Gaussian model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># pdf_unnormalized = ((1-lambda_peak) * powerlaw_B(m, alpha, mminbh, mmaxbh)) + 0*(lambda_peak * gaussian_G(m, mu_g, sigma_g)) * smoothing_S(m, mminbh, delta_m)</span>
+
+    <span class="n">pdf_unnormalized</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">lambda_peak</span><span class="p">)</span><span class="o">*</span><span class="n">powerlaw_B</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">lambda_peak</span> <span class="o">*</span> <span class="n">gaussian_G</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">mu_g</span><span class="p">,</span> <span class="n">sigma_g</span><span class="p">)))</span><span class="o">*</span> <span class="n">smoothing_S</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pdf_unnormalized</span></div>
+
+
+
+<span class="c1"># def bns_bimodal_pdf_scipy(m, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3,):</span>
+
+<span class="c1">#     mass_arr = np.linspace(mmin, mmax, 1000)</span>
+<span class="c1">#     # left and right peak</span>
+<span class="c1">#     pdf_unnormL = lambda m: np.exp(-((m - muL) ** 2) / (2 * sigmaL**2))</span>
+<span class="c1">#     normL = quad(pdf_unnormL, mmin, mmax)[0]  # normalization constant</span>
+<span class="c1">#     pdf_unnormR = lambda m: np.exp(-((m - muR) ** 2) / (2 * sigmaR**2))</span>
+<span class="c1">#     normR = quad(pdf_unnormR, mmin, mmax)[0]  # normalization constant</span>
+<span class="c1">#     # total pdf</span>
+<span class="c1">#     pdf = w * pdf_unnormL(m) / normL + (1 - w) * pdf_unnormR(m) / normR</span>
+
+<span class="c1">#     return pdf</span>
+
+
+<span class="c1">###### power law_gaussian functions without vectorization ######</span>
+<span class="c1"># @njit</span>
+<span class="c1"># def smoothing_S(m, mmin, delta_m):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     A Numba-jitted smoothing function for the low-mass cutoff.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     if m &lt; mmin:</span>
+<span class="c1">#         return 0.0</span>
+<span class="c1">#     elif m &lt; mmin + delta_m:</span>
+<span class="c1">#         mprime = m - mmin</span>
+<span class="c1">#         # This calculation is safe from division by zero due to the checks above</span>
+<span class="c1">#         exponent = delta_m / mprime + delta_m / (mprime - delta_m)</span>
+        
+<span class="c1">#         # Prevent overflow warning, as learned from the previous step</span>
+<span class="c1">#         if exponent &gt; 709.0:</span>
+<span class="c1">#             return 0.0</span>
+            
+<span class="c1">#         f = np.exp(exponent)</span>
+<span class="c1">#         return 1.0 / (f + 1.0)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         return 1.0</span>
+
+<span class="c1"># @njit</span>
+<span class="c1"># def BBH_powerlaw_gaussian(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, beta):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Generates samples using a Numba-jitted loop for high performance.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     # Pre-allocate NumPy arrays to store the results. This is much faster</span>
+<span class="c1">#     # than appending to a list in a loop.</span>
+<span class="c1">#     m1_sample = np.empty(size, dtype=np.float64)</span>
+<span class="c1">#     m2_sample = np.empty(size, dtype=np.float64)</span>
+    
+<span class="c1">#     accepted_count = 0</span>
+    
+<span class="c1">#     # Pre-calculate powers outside the loop</span>
+<span class="c1">#     pow_alpha = 1.0 - alpha</span>
+<span class="c1">#     mmin_pow_alpha = mminbh**pow_alpha</span>
+<span class="c1">#     mmax_pow_alpha = mmaxbh**pow_alpha</span>
+<span class="c1">#     pow_beta = beta + 1.0</span>
+    
+<span class="c1">#     # Use a &#39;while&#39; loop to ensure we collect exactly size,</span>
+<span class="c1">#     # accounting for samples rejected by the smoothing function.</span>
+<span class="c1">#     while accepted_count &lt; size:</span>
+<span class="c1">#         # 1. Sample m1</span>
+<span class="c1">#         # ----------------</span>
+<span class="c1">#         if np.random.rand() &lt; lambda_peak:</span>
+<span class="c1">#             # Sample from Gaussian component</span>
+<span class="c1">#             m1_ = np.random.normal(mu_g, sigma_g) </span>
+<span class="c1">#         else:</span>
+<span class="c1">#             # Sample from Power-law component</span>
+<span class="c1">#             # FIX: The original code was missing this random number draw</span>
+<span class="c1">#             u_pl = np.random.rand() </span>
+<span class="c1">#             m1_ = (u_pl * (mmax_pow_alpha - mmin_pow_alpha) + mmin_pow_alpha)**(1.0 / pow_alpha)</span>
+
+<span class="c1">#         # 2. Apply smoothing rejection sampling for m1 and m2</span>
+<span class="c1">#         # ----------------------------------------------------</span>
+<span class="c1">#         # Draw a single random number for the joint smoothing check</span>
+<span class="c1">#         u_smooth = np.random.rand()</span>
+        
+<span class="c1">#         s1 = smoothing_S(m1_, mminbh, delta_m)</span>
+<span class="c1">#         if u_smooth &gt; s1:</span>
+<span class="c1">#             continue  # Reject m1 and restart the loop</span>
+
+<span class="c1">#         # If m1 is accepted, sample m2</span>
+<span class="c1">#         qmin = mminbh / m1_</span>
+        
+<span class="c1">#         # Rejection sampling loop for m2</span>
+<span class="c1">#         while True:</span>
+<span class="c1">#             u_q = np.random.rand()</span>
+<span class="c1">#             # Inverse transform sampling for mass ratio q</span>
+<span class="c1">#             q = (u_q * (1.0**pow_beta - qmin**pow_beta) + qmin**pow_beta)**(1.0 / pow_beta)</span>
+<span class="c1">#             m2_ = m1_ * q</span>
+            
+<span class="c1">#             s_m2 = smoothing_S(m2_, mminbh, delta_m)</span>
+            
+<span class="c1">#             # The acceptance of m2 depends on the same random number &#39;u_smooth&#39;.</span>
+<span class="c1">#             # This logic is preserved from the original code.</span>
+<span class="c1">#             u_smooth = np.random.rand()</span>
+<span class="c1">#             if u_smooth &lt;= s_m2:</span>
+<span class="c1">#                 break  # m2 is accepted, break the inner loop</span>
+        
+<span class="c1">#         # 3. Store the accepted sample</span>
+<span class="c1">#         # -----------------------------</span>
+<span class="c1">#         m1_sample[accepted_count] = m1_</span>
+<span class="c1">#         m2_sample[accepted_count] = m2_</span>
+<span class="c1">#         accepted_count += 1</span>
+            
+<span class="c1">#     return m1_sample, m2_sample</span>
 </pre></div>
 
            </div>

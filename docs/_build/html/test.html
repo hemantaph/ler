@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Optical Depth for EPL+Shear Lens &mdash; ler 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=776609e1" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=4621528c"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Installation2.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/rates/grb%20detection%20rate.html">Calculation of detectable Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/rates/ler%20bns%20example.html">LeR complete examples of BNS events (O4 design sensitivity)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/rates/rates_with_3G_detectors.html">Event Rates with 3G detectors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/merger%20rate%20density%20evolution%20with%20redshift.html">Merger rate density evolution with redshift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/merger%20rate%20density%20model%20comparision.html">Merger rate density model comparision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/merger%20rate%20density%20model%20comparision.html#Primordial-BBH-model,-Ng-et-al.-2022">Primordial BBH model, Ng et al. 2022</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/sample%20compact%20binary%20parameters.html">Sampling parameters for a compact binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/statistical%20study%20of%20changing%20mass%20model%20params.html">Statistical study of changing Mass model paramter(s)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/statistical%20study%20of%20cosmological%20friction.html">Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/lens_parameters/sample%20lens%20parameters.html">Lens parameter distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/optical_depth/validation_SIE.html">Optical depth SIE model validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/optical_depth/validation_SIS.html">Validation of SIS model (Numerical vs Analytical)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/image_properties/dt_vs_dmu.html">Study of Time delays and magnification of lensed gravitational waves.</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Optical Depth for EPL+Shear Lens</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/test.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p>To calculate the optical depth for an Elliptical Power Law (EPL) lens model with external shear, we need to define the probability of strong lensing for this model and integrate it over the appropriate lens parameters and redshift. Here is how you could approach this calculation, building on the previous examples for SIS and SIE lenses:</p>
+<section id="Optical-Depth-for-EPL+Shear-Lens">
+<h1>Optical Depth for EPL+Shear Lens<a class="headerlink" href="#Optical-Depth-for-EPL+Shear-Lens" title="Link to this heading"></a></h1>
+<ol class="arabic simple">
+<li><p><strong>Model Description:</strong></p>
+<ul class="simple">
+<li><p>The EPL model is characterized by a power-law mass distribution, which generalizes the SIE model by allowing for a varying density profile indexed by <span class="math notranslate nohighlight">\(\gamma\)</span>.</p></li>
+<li><p>External shear (<span class="math notranslate nohighlight">\(\gamma_1\)</span>, <span class="math notranslate nohighlight">\(\gamma_2\)</span>) is added to the potential to account for the tidal influence of nearby structures.</p></li>
+<li><p>The ellipticity parameters (<span class="math notranslate nohighlight">\(e_1\)</span>, <span class="math notranslate nohighlight">\(e_2\)</span>) describe the ellipticity of the lens.</p></li>
+</ul>
+</li>
+<li><p><strong>Lensing Probability :math:`P(SL|z_s, z_l, theta_L)`:</strong></p>
+<ul class="simple">
+<li><p>In the context of the EPL+Shear model, <span class="math notranslate nohighlight">\(\theta_L\)</span> includes the velocity dispersion <span class="math notranslate nohighlight">\(\sigma\)</span>, axis ratio <span class="math notranslate nohighlight">\(q\)</span> (or equivalently ellipticity <span class="math notranslate nohighlight">\(e_1, e_2\)</span>), power-law slope <span class="math notranslate nohighlight">\(\gamma\)</span>, and the external shear parameters <span class="math notranslate nohighlight">\(\gamma_1, \gamma_2\)</span>.</p></li>
+<li><p>The Einstein radius <span class="math notranslate nohighlight">\(\theta_E\)</span> for the EPL model depends on these parameters and can be expressed as a function of them, though the exact expression may require numerical solutions depending on the complexity.</p></li>
+</ul>
+</li>
+<li><p><strong>Calculating the Cross Section :math:`phi_{text{EPL+Shear}}`:</strong></p>
+<ul class="simple">
+<li><p>The cross-section for lensing can be approximated as <span class="math notranslate nohighlight">\(\phi_{\text{EPL+Shear}} = \pi \theta_E^2\)</span>, modified by terms that account for the effects of ellipticity and shear. The form of this function will depend on detailed modeling and potentially numerical simulations to capture the geometric and gravitational interactions accurately.</p></li>
+</ul>
+</li>
+<li><p><strong>Optical Depth Calculation:</strong></p>
+<ul class="simple">
+<li><p>You need to integrate the probability of lensing over all possible lens parameters and redshifts, similar to equations for SIS and SIE:</p></li>
+</ul>
+</li>
+</ol>
+<p><span class="math">\begin{equation}
+\begin{split}
+P(SL|z_s) &= \frac{1}{4\pi} \int^{z_s}_{z_l=0} \int_{\theta_L} P(SL|z_s, z_l, \theta_L) \frac{d^2N(z_l, \theta_L)}{dV_c d\theta_L} \frac{dV_c}{dz_l} dz_l d\theta_L \\
+&= \frac{1}{4\pi} \int^{z_s}_{z_l=0} \int_{\theta_L} \phi_{\text{EPL+Shear}} \frac{d^2N(z_l, \theta_L)}{dV_c d\theta_L} \frac{dV_c}{dz_l} dz_l d\theta_L,
+\end{split}
+\end{equation}</span></p>
+<ul class="simple">
+<li><p>where <span class="math notranslate nohighlight">\(\theta_L\)</span> spans <span class="math notranslate nohighlight">\(\{\sigma, q, e_1, e_2, \gamma, \gamma_1, \gamma_2\}\)</span>.</p></li>
+<li><p>The distribution <span class="math notranslate nohighlight">\(d^2N(z_l, \theta_L)\)</span> would have to be derived from observational data or theoretical models that provide the joint distribution of these lens parameters.</p></li>
+</ul>
+<ol class="arabic simple" start="5">
+<li><p><strong>Challenges and Considerations:</strong></p>
+<ul class="simple">
+<li><p>Detailed numerical modeling might be necessary, especially for integrating over a high-dimensional parameter space including ellipticity, shear, and power-law slope.</p></li>
+<li><p>Empirical or semi-analytical methods to estimate <span class="math notranslate nohighlight">\(\phi_{\text{EPL+Shear}}\)</span> can be crucial, particularly if simplifying assumptions (like small shear or nearly spherical lenses) do not hold.</p></li>
+</ul>
+</li>
+<li><p><strong>Further Steps:</strong></p>
+<ul class="simple">
+<li><p>Implement numerical integration techniques, potentially using Monte Carlo methods or adaptive integration schemes.</p></li>
+<li><p>Consider dependencies and covariances between parameters like <span class="math notranslate nohighlight">\(\sigma\)</span> and <span class="math notranslate nohighlight">\(\gamma\)</span>, or between ellipticity and shear, which might impact the density function <span class="math notranslate nohighlight">\(d^2N\)</span>.</p></li>
+</ul>
+</li>
+</ol>
+<p>This approach provides a framework to begin tackling the problem, though the specifics would likely require substantial computational resources and expertise in numerical relativity and gravitational lensing.</p>
+<section id="Calculation-of-Optical-Depth-for-the-EPL+Shear-Model">
+<h2>Calculation of Optical Depth for the EPL+Shear Model<a class="headerlink" href="#Calculation-of-Optical-Depth-for-the-EPL+Shear-Model" title="Link to this heading"></a></h2>
+<section id="Overview">
+<h3>Overview<a class="headerlink" href="#Overview" title="Link to this heading"></a></h3>
+<p>This document outlines the methodology for calculating the optical depth of an Elliptical Power Law (EPL) lens model with external shear. The optical depth represents the probability of strong lensing events where a source at a given redshift is multiply imaged due to gravitational lensing.</p>
+</section>
+<section id="Definitions">
+<h3>Definitions<a class="headerlink" href="#Definitions" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Optical Depth (:math:`tau`)</strong>: The probability that a light ray from a distant source is strongly lensed as it travels to the observer.</p></li>
+<li><p><strong>EPL+Shear Model Parameters</strong>:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\sigma\)</span>: Velocity dispersion of the lens.</p></li>
+<li><p><span class="math notranslate nohighlight">\(q\)</span>: Axis ratio of the elliptical mass distribution.</p></li>
+<li><p><span class="math notranslate nohighlight">\(e_1, e_2\)</span>: Components of the ellipticity.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\gamma_1, \gamma_2\)</span>: Components of external shear.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\gamma\)</span>: Density profile slope of the power law mass distribution.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="Lensing-Probability">
+<h3>Lensing Probability<a class="headerlink" href="#Lensing-Probability" title="Link to this heading"></a></h3>
+<p>For the EPL+Shear model, the lensing probability, <span class="math notranslate nohighlight">\(P(SL|z_s, z_l, \theta_L)\)</span>, is derived from the caustic area induced by the lens parameters. The caustic area, <span class="math notranslate nohighlight">\(\phi_{\text{EPL+Shear}}\)</span>, is computed numerically given the complexity of the EPL+Shear potential.</p>
+</section>
+<section id="Mathematical-Formulation">
+<h3>Mathematical Formulation<a class="headerlink" href="#Mathematical-Formulation" title="Link to this heading"></a></h3>
+<p>The optical depth is calculated by integrating the lensing probability over the parameter space of the lenses and their redshift distribution: <span class="math">\begin{equation}
+P(SL|z_s) = \frac{1}{4\pi} \int_{0}^{z_s} \int_{\theta_L} \phi_{\text{EPL+Shear}}(\theta_L) \frac{d^2N(z_l, \theta_L)}{dV_c d\theta_L} \frac{dV_c}{dz_l} dz_l d\theta_L
+\end{equation}</span> Where: - <span class="math notranslate nohighlight">\(\phi_{\text{EPL+Shear}}(\theta_L)\)</span>: Represents the caustic area for the given lens parameters. - <span class="math notranslate nohighlight">\(d^2N(z_l, \theta_L)/dV_c d\theta_L\)</span>: Density of lenses per unit volume per unit parameter space. - <span class="math notranslate nohighlight">\(dV_c/dz_l\)</span>: Comoving volume element per unit redshift.</p>
+</section>
+<section id="Numerical-Implementation">
+<h3>Numerical Implementation<a class="headerlink" href="#Numerical-Implementation" title="Link to this heading"></a></h3>
+<p>The numerical calculation is performed using the <code class="docutils literal notranslate"><span class="pre">lenstronomy</span></code> software package, which allows for the precise modeling of complex lens geometries and the computation of caustic structures.</p>
+</section>
+</section>
+</section>
+<section id="Steps:">
+<h1>Steps:<a class="headerlink" href="#Steps:" title="Link to this heading"></a></h1>
+<ol class="arabic simple">
+<li><p><strong>Parameter Sampling</strong>: Sample the lens parameter space <span class="math notranslate nohighlight">\((\sigma, q, e_1, e_2, \gamma, \gamma_1, \gamma_2)\)</span> using a Monte Carlo approach or grid sampling.</p></li>
+<li><p><strong>Caustic Area Calculation</strong>: For each set of parameters, calculate the caustic area using the ray-tracing module in <code class="docutils literal notranslate"><span class="pre">lenstronomy</span></code>.</p></li>
+<li><p><strong>Integration</strong>: Integrate the results across the sampled parameter space and redshifts to compute the total optical depth.</p></li>
+</ol>
+<ul class="simple">
+<li><p>Reference to foundational papers and texts that discuss the theory and numerical methods involved in gravitational lensing.</p></li>
+<li><p>Link to the <code class="docutils literal notranslate"><span class="pre">lenstronomy</span></code> documentation for detailed usage and additional features related to lens modeling.</p></li>
+</ul>
+<p>The calculation of optical depth for the EPL+Shear model provides essential insights into the probability and characteristics of strong lensing events. This methodology supports a wide range of astrophysical studies, from cosmological parameter estimation to studies of dark matter distribution in galaxies.</p>
+<p>To calculate the optical depth for a lens model that includes an Elliptical Power-Law (EPL) mass profile with external shear, we need to consider the lens properties such as mass density spectral index, ellipticity, and external shear. Here’s a formulation for the optical depth considering these parameters:</p>
+</section>
+<section id="General-Setup-for-EPL+Shear-Lens-Model">
+<h1>General Setup for EPL+Shear Lens Model<a class="headerlink" href="#General-Setup-for-EPL+Shear-Lens-Model" title="Link to this heading"></a></h1>
+<p>Let’s denote: - <span class="math notranslate nohighlight">\(\sigma\)</span> as the velocity dispersion. - <span class="math notranslate nohighlight">\(q\)</span> as the axis ratio of the elliptical distribution. - <span class="math notranslate nohighlight">\(\gamma\)</span> as the mass density spectral index. - <span class="math notranslate nohighlight">\((e_1, e_2)\)</span> as the components of ellipticity. - <span class="math notranslate nohighlight">\((\gamma_1, \gamma_2)\)</span> as the components of external shear.</p>
+<p>For the EPL+Shear model, we will calculate <span class="math notranslate nohighlight">\(\phi_{\text{EPL+Shear}}\)</span>, the effective lensing cross-section (or caustic area) numerically for given parameters and will use it similarly to the <span class="math notranslate nohighlight">\(\phi_{\text{SIS}}\)</span> and <span class="math notranslate nohighlight">\(\phi_{\text{SIE}}\)</span> used in the SIS and SIE models respectively.</p>
+</section>
+<section id="Optical-Depth-Calculation">
+<h1>Optical Depth Calculation<a class="headerlink" href="#Optical-Depth-Calculation" title="Link to this heading"></a></h1>
+<p>The optical depth calculation for the EPL+Shear lens model can be expressed as:</p>
+<p>[ <span class="math">\begin{equation}
+P(SL|z_s) = \int_0^{z_s} \Phi_{\text{EPL+Shear}}(z_l) dz_l
+\end{equation}</span> ]</p>
+<p>Where, [ <span class="math">\begin{equation}
+\Phi_{\text{EPL+Shear}}(z_l) = \int \frac{\phi_{\text{EPL+Shear}}}{4\pi} n_o P(\sigma, q, e_1, e_2, \gamma_1, \gamma_2, \gamma | z_l) \frac{dV_c}{dz_l} d\sigma dq de_1 de_2 d\gamma_1 d\gamma_2 d\gamma
+\end{equation}</span> ]</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\phi_{\text{EPL+Shear}}\)</span> is the caustic area for the EPL+Shear lens model parameters at <span class="math notranslate nohighlight">\(z_l\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(\sigma, q, e_1, e_2, \gamma_1, \gamma_2, \gamma | z_l)\)</span> is the joint probability density function of the lens parameters given the lens redshift, <span class="math notranslate nohighlight">\(z_l\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(n_o\)</span> is the number density of lenses.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\frac{dV_c}{dz_l}\)</span> represents the comoving volume element per unit redshift at <span class="math notranslate nohighlight">\(z_l\)</span>.</p></li>
+</ul>
+</section>
+<section id="Specific-Considerations">
+<h1>Specific Considerations<a class="headerlink" href="#Specific-Considerations" title="Link to this heading"></a></h1>
+<ol class="arabic simple">
+<li><p><strong>Caustic Area Calculation</strong>: The effective lensing cross-section, <span class="math notranslate nohighlight">\(\phi_{\text{EPL+Shear}}\)</span>, must be numerically calculated based on the parameters. This involves simulating the lensing effect given the ellipticity, shear, and power-law mass density profile to determine how much area in the source plane can be strongly lensed by typical configurations of the EPL+Shear model.</p></li>
+<li><p><strong>Parameter Distribution</strong>: The distribution function, <span class="math notranslate nohighlight">\(P(\sigma, q, e_1, e_2, \gamma_1, \gamma_2, \gamma | z_l)\)</span>, must either be empirically derived from observational data or assumed based on theoretical models. This function describes how likely a particular set of lens parameters is, given a lens at redshift <span class="math notranslate nohighlight">\(z_l\)</span>.</p></li>
+<li><p><strong>Integration over Parameters</strong>: The calculation requires integration over all possible values of the parameters <span class="math notranslate nohighlight">\((\sigma, q, e_1, e_2, \gamma_1, \gamma_2, \gamma)\)</span>, which could be computationally intensive. Techniques such as Monte Carlo integration might be useful here.</p></li>
+</ol>
+<p>This setup gives you a framework to calculate the optical depth for the EPL+Shear model by numerically determining the lensing cross-section for a range of lens parameters and integrating over the probable distribution of those parameters across different lens redshifts.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

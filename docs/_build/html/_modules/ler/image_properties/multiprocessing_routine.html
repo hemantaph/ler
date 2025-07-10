@@ -1,28 +1,28 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ler.image_properties.multiprocessing_routine &mdash; ler 0.3.1 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
+
   
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=4621528c"></script>
-        <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../../_static/copybutton.js?v=f281be69"></script>
-        <script src="../../../_static/tabs.js?v=3030b3cb"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../_static/tabs.js?v=3030b3cb"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -118,8 +118,8 @@
 <span class="kn">from</span> <span class="nn">lenstronomy.LensModel.lens_model</span> <span class="kn">import</span> <span class="n">LensModel</span>
 <span class="kn">from</span> <span class="nn">lenstronomy.LensModel.Solver.lens_equation_solver</span> <span class="kn">import</span> <span class="n">LensEquationSolver</span>
 <span class="kn">from</span> <span class="nn">lenstronomy.LensModel.Solver.epl_shear_solver</span> <span class="kn">import</span> <span class="n">caustics_epl_shear</span>
-<span class="kn">from</span> <span class="nn">lenstronomy.Util.param_util</span> <span class="kn">import</span> <span class="n">phi_q2_ellipticity</span>
-<span class="kn">from</span> <span class="nn">..lens_galaxy_population.jit_functions</span> <span class="kn">import</span> <span class="n">axis_ratio_rayleigh</span>
+<span class="c1"># from lenstronomy.Util.param_util import phi_q2_ellipticity</span>
+<span class="c1"># from ..lens_galaxy_population.jit_functions import axis_ratio_rayleigh</span>
 
 <span class="c1"># For sampling from caustic</span>
 <span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Polygon</span>
@@ -356,211 +356,6 @@
 
 
 
-<span class="c1"># def solve_lens_equation(lens_parameters):</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     Function to solve the lens equation (min_image = 2)</span>
-
-<span class="c1">#     Parameters</span>
-<span class="c1">#     ----------</span>
-<span class="c1">#     lens_parameters : `list`</span>
-<span class="c1">#         a list of parameters</span>
-<span class="c1">#         lens_parameters[0] = min_images : minimum number of images</span>
-<span class="c1">#         lens_parameters[1] = e1 : ellipticity</span>
-<span class="c1">#         lens_parameters[2] = e2 : ellipticity</span>
-<span class="c1">#         lens_parameters[3] = gamma : power-law index</span>
-<span class="c1">#         lens_parameters[4] = gamma1 : shear</span>
-<span class="c1">#         lens_parameters[5] = gamma2 : shear</span>
-<span class="c1">#         lens_parameters[6] = zl : redshift of the lens</span>
-<span class="c1">#         lens_parameters[7] = zs : redshift of the source</span>
-<span class="c1">#         lens_parameters[8] = einstein_radius : Einstein radius</span>
-<span class="c1">#         lens_parameters[9] = iteration : iteration number</span>
-<span class="c1">#         lens_parameters[10:] = lens_model_list : numpy array of lens models</span>
-
-<span class="c1">#     Returns</span>
-<span class="c1">#     -------</span>
-<span class="c1">#     x_source : `float`</span>
-<span class="c1">#         x position of the source in the source plane</span>
-<span class="c1">#     y_source : `float`</span>
-<span class="c1">#         y position of the source in the source plane</span>
-<span class="c1">#     x0_image_position : `float`</span>
-<span class="c1">#         x position of the images in the source plane</span>
-<span class="c1">#     x1_image_position : `float`</span>
-<span class="c1">#         y position of the images in the source plane</span>
-<span class="c1">#     magnifications : `float`</span>
-<span class="c1">#         magnification of the images</span>
-<span class="c1">#     time_delays : `float`</span>
-<span class="c1">#         time-delay of the images</span>
-<span class="c1">#     nImages : `int`</span>
-<span class="c1">#         number of images</span>
-<span class="c1">#     determinant : `float`</span>
-<span class="c1">#         determinant of the hessian matrix</span>
-<span class="c1">#     trace : `float`</span>
-<span class="c1">#         trace of the hessian matrix</span>
-<span class="c1">#     iteration : `int`</span>
-<span class="c1">#         iteration number</span>
-
-<span class="c1">#     Examples</span>
-<span class="c1">#     --------</span>
-<span class="c1">#     &gt;&gt;&gt; from ler.multiprocessing_routine import solve_lens_equation1</span>
-<span class="c1">#     &gt;&gt;&gt; import numpy as np</span>
-<span class="c1">#     &gt;&gt;&gt; from multiprocessing import Pool</span>
-<span class="c1">#     &gt;&gt;&gt; # lens parameters input contains 12 parameters [e1, e2, gamma, gamma1, gamma2, zl, zs, einstein_radius, iteration, lens_model_list]</span>
-<span class="c1">#     &gt;&gt;&gt; lens_parameters1 = np.array([2, 0.024069457093642648, -0.016002190961948142, 1.8945414936459974, 0.10117465203892329, 0.09600089396968613, 0.2503743800068136, 0.9418211055453296, 2.5055790287104725e-06, 0, &#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;], dtype=object)</span>
-<span class="c1">#     &gt;&gt;&gt; lens_parameters2 = np.array([2, -0.04030088581646998, -0.01419438113690042, 2.0068239327017, 0.08482718989370612, -0.015393332086560785, 1.0952303138971118, 2.5534097159384417, 1.0125570159563301e-06, 1, &#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;], dtype=object)</span>
-<span class="c1">#     &gt;&gt;&gt; input_arguments = np.vstack((lens_parameters1, lens_parameters2))</span>
-<span class="c1">#     &gt;&gt;&gt; # solve the lens equation for each set of lens parameters</span>
-<span class="c1">#     &gt;&gt;&gt; with Pool(2) as p:</span>
-<span class="c1">#     ...     result = p.map(solve_lens_equation1, input_arguments)</span>
-<span class="c1">#     &gt;&gt;&gt; # result is a list of tuples</span>
-<span class="c1">#     &gt;&gt;&gt; # each tuple contains the output parameters of the function</span>
-<span class="c1">#     &gt;&gt;&gt; # each output parameter contains x_source, y_source, x0_image_position, x1_image_position, magnifications, time_delays, nImages, determinant, trace, iteration</span>
-<span class="c1">#     &gt;&gt;&gt; print(f&quot;magnification of images with lens parameters &#39;lens_parameters1&#39; is {result[0][6]}&quot;)</span>
-<span class="c1">#     magnification of images with lens parameters &#39;lens_parameters1&#39; is [ 2.18973765 -1.27542831]</span>
-
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     n_min_images = int(lens_parameters[0])</span>
-<span class="c1">#     zl = lens_parameters[6]</span>
-<span class="c1">#     zs = lens_parameters[7]</span>
-<span class="c1">#     einstein_radius = lens_parameters[8]</span>
-<span class="c1">#     iteration = lens_parameters[9]</span>
-<span class="c1">#     # lensModel parameters are the same for the three functions used for image param calculation</span>
-<span class="c1">#     # 1. x-y position of images in the source plane, 2. magnifications, 3. time-delays (relative)</span>
-<span class="c1">#     lensModel = LensModel(</span>
-<span class="c1">#         lens_model_list=lens_parameters[10:].tolist(), z_lens=zl, z_source=zs</span>
-<span class="c1">#     )</span>
-
-<span class="c1">#     lens_eq_solver = LensEquationSolver(lensModel)</span>
-
-<span class="c1">#     factor = 1.0</span>
-<span class="c1">#     # ---------------------------------------------------#</span>
-<span class="c1">#     #     x-y position of images in the source plane</span>
-<span class="c1">#     # ---------------------------------------------------#</span>
-<span class="c1">#     # Get the caustic curve cut by the lens</span>
-<span class="c1">#     # First check if there is any nan in the caustic points</span>
-<span class="c1">#     def check_caustic():</span>
-<span class="c1">#         &quot;&quot;&quot;</span>
-<span class="c1">#         Function to check if there is any nan in the caustic points</span>
-<span class="c1">#         &quot;&quot;&quot;</span>
-<span class="c1">#         while True:</span>
-<span class="c1">#             kwargs_lens = [</span>
-<span class="c1">#                 {</span>
-<span class="c1">#                     &quot;theta_E&quot;: factor,</span>
-<span class="c1">#                     &quot;e1&quot;: lens_parameters[1],</span>
-<span class="c1">#                     &quot;e2&quot;: lens_parameters[2],</span>
-<span class="c1">#                     &quot;gamma&quot;: lens_parameters[3],</span>
-<span class="c1">#                     &quot;center_x&quot;: 0.0,</span>
-<span class="c1">#                     &quot;center_y&quot;: 0.0,</span>
-<span class="c1">#                 },</span>
-<span class="c1">#                 {</span>
-<span class="c1">#                     &quot;gamma1&quot;: lens_parameters[4],</span>
-<span class="c1">#                     &quot;gamma2&quot;: lens_parameters[5],</span>
-<span class="c1">#                     &quot;ra_0&quot;: 0,</span>
-<span class="c1">#                     &quot;dec_0&quot;: 0,</span>
-<span class="c1">#                 },</span>
-<span class="c1">#             ]</span>
-<span class="c1">#             caustic_double_points = caustics_epl_shear(</span>
-<span class="c1">#                 kwargs_lens, return_which=&quot;double&quot;, maginf=-100</span>
-<span class="c1">#             )</span>
-<span class="c1">#             caustic = np.logical_not(np.isnan(caustic_double_points).any())</span>
-
-<span class="c1">#             # If there is a nan, caustic=False, draw a new gamma</span>
-<span class="c1">#             if caustic:</span>
-<span class="c1">#                 break</span>
-<span class="c1">#             else:</span>
-<span class="c1">#                 #</span>
-<span class="c1">#                 q = axis_ratio_rayleigh(sigma=np.array([160.]))[0]</span>
-<span class="c1">#                 phi = np.random.uniform(0.0, 2*np.pi, size=1)[0]</span>
-<span class="c1">#                 lens_parameters[1], lens_parameters[2] = phi_q2_ellipticity(phi, q)</span>
-<span class="c1">#                 # resampling power-law index and shear</span>
-<span class="c1">#                 lens_parameters[3] = np.random.normal(loc=2.0, scale=0.2, size=1)[0]</span>
-<span class="c1">#                 gamma1, gamma2 = np.random.normal(loc=0, scale=0.05,size=(2,1))</span>
-<span class="c1">#                 lens_parameters[4], lens_parameters[5] = gamma1[0], gamma2[0]</span>
-
-<span class="c1">#         caustic_double = Polygon(caustic_double_points.T)</span>
-<span class="c1">#         return caustic_double, kwargs_lens</span>
-    
-<span class="c1">#     caustic_double, kwargs_lens = check_caustic()</span>
-
-<span class="c1">#     # check for strong lensed condition</span>
-<span class="c1">#     strongly_lensed = False</span>
-<span class="c1">#     i = 0</span>
-<span class="c1">#     while strongly_lensed == False:</span>
-<span class="c1">#         # Draw random points within the caustic</span>
-<span class="c1">#         # sometimes x_source, y_source positions are at same location and the solver fails</span>
-<span class="c1">#         # so we use a try-except block to catch the error and draw a new point</span>
-<span class="c1">#         # try:</span>
-<span class="c1">#         x_source, y_source = pointpats.random.poisson(caustic_double, size=1)</span>
-<span class="c1">#         # Solve the lens equation</span>
-<span class="c1">#         (</span>
-<span class="c1">#             x0_image_position,</span>
-<span class="c1">#             x1_image_position,</span>
-<span class="c1">#         ) = lens_eq_solver.image_position_from_source(</span>
-<span class="c1">#             sourcePos_x=x_source,</span>
-<span class="c1">#             sourcePos_y=y_source,</span>
-<span class="c1">#             kwargs_lens=kwargs_lens,</span>
-<span class="c1">#             solver=&quot;analytical&quot;,</span>
-<span class="c1">#             magnification_limit=1.0 / 1000.0,</span>
-<span class="c1">#             arrival_time_sort=True,</span>
-<span class="c1">#         )</span>
-<span class="c1">#         nImages = len(x0_image_position)  # shows how many images</span>
-<span class="c1">#         if nImages &gt;= n_min_images:</span>
-<span class="c1">#             strongly_lensed = True</span>
-<span class="c1">#         # except:</span>
-<span class="c1">#         #     pass</span>
-<span class="c1">#         ## test ##</span>
-<span class="c1">#         if i &gt; 10:</span>
-<span class="c1">#             print(&quot;Could not find a valid source position. Run the sampling again by setting resume=True&quot;)</span>
-<span class="c1">#             caustic_double, kwargs_lens = check_caustic()</span>
-<span class="c1">#             i = 0</span>
-<span class="c1">#         i += 1</span>
-<span class="c1">#         ##########</span>
-
-<span class="c1">#     # ---------------------------------------------------#</span>
-<span class="c1">#     #          magnification and time-delay</span>
-<span class="c1">#     # ---------------------------------------------------#</span>
-<span class="c1">#     # theta_E is in arcsec</span>
-<span class="c1">#     theta_E_nImages = einstein_radius * np.ones(nImages)</span>
-<span class="c1">#     radian_to_arcseconds = 180.0 / np.pi * 3600.0</span>
-<span class="c1">#     days_to_seconds = 24.0 * 3600.0</span>
-<span class="c1">#     # can have multiple magnification</span>
-<span class="c1">#     magnifications = lensModel.magnification(</span>
-<span class="c1">#         x0_image_position, x1_image_position, kwargs_lens</span>
-<span class="c1">#     )</span>
-<span class="c1">#     time_delays = (</span>
-<span class="c1">#         lensModel.arrival_time(x0_image_position, x1_image_position, kwargs_lens)</span>
-<span class="c1">#         * (theta_E_nImages * radian_to_arcseconds) ** 2</span>
-<span class="c1">#         * days_to_seconds</span>
-<span class="c1">#     )</span>
-
-<span class="c1">#     # ---------------------------------------------------#</span>
-<span class="c1">#     #     Params needed for image-type classification</span>
-<span class="c1">#     # ---------------------------------------------------#</span>
-<span class="c1">#     # it is faster to use numpy array operation to do image classification</span>
-<span class="c1">#     # return: f_xx, f_xy, f_yx, f_yy components</span>
-<span class="c1">#     hessian = lensModel.hessian(x0_image_position, x1_image_position, kwargs_lens)</span>
-<span class="c1">#     determinant = np.array(</span>
-<span class="c1">#         (1 - hessian[0]) * (1 - hessian[3]) - hessian[1] * hessian[2]</span>
-<span class="c1">#     )</span>
-<span class="c1">#     trace = np.array(2 - hessian[0] - hessian[3])</span>
-
-<span class="c1">#     #  return also gamma1, gamma2</span>
-<span class="c1">#     return (</span>
-<span class="c1">#         x_source,</span>
-<span class="c1">#         y_source,</span>
-<span class="c1">#         x0_image_position,</span>
-<span class="c1">#         x1_image_position,</span>
-<span class="c1">#         magnifications,</span>
-<span class="c1">#         time_delays,</span>
-<span class="c1">#         nImages,</span>
-<span class="c1">#         determinant,</span>
-<span class="c1">#         trace,</span>
-<span class="c1">#         lens_parameters[1],</span>
-<span class="c1">#         lens_parameters[2],</span>
-<span class="c1">#         lens_parameters[3],</span>
-<span class="c1">#         lens_parameters[4],</span>
-<span class="c1">#         lens_parameters[5],</span>
-<span class="c1">#         iteration,</span>
-<span class="c1">#     )</span>
 </pre></div>
 
            </div>

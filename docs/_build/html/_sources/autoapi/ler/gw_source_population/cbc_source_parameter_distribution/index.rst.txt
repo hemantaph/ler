@@ -92,7 +92,7 @@ Classes
 
    >>> from ler.gw_source_population import CBCSourceParameterDistribution
    >>> cbc = CBCSourceParameterDistribution()
-   >>> params = cbc.sample_gw_parameters(size=1000)
+   >>> params = cbc.gw_parameters(size=1000)
    >>> print("sampled parameters=",list(params.keys()))
 
    Instance Attributes
@@ -150,46 +150,46 @@ Classes
    |                                     | table for converting redshift    |
    |                                     | to luminosity distance           |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_gw_parameters`        | Function to sample all the       |
+   |:meth:`~gw_parameters`        | Function to sample all the       |
    |                                     | intrinsic and extrinsic          |
    |                                     | parameters of compact binaries   |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_source_frame_masses`  | Function to sample source mass1  |
+   |:meth:`~source_frame_masses`  | Function to sample source mass1  |
    |                                     | and mass2                        |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_geocent_time`         | Function to sample geocent time  |
+   |:meth:`~geocent_time`         | Function to sample geocent time  |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_zs`                   | Function to sample source        |
+   |:meth:`~zs`                   | Function to sample source        |
    |                                     | redshift                         |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_ra`                   | Function to sample right         |
+   |:meth:`~ra`                   | Function to sample right         |
    |                                     | ascension (sky position)         |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_dec`                  | Function to sample declination   |
+   |:meth:`~dec`                  | Function to sample declination   |
    |                                     | (sky position)                   |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_phase`                | Function to sample coalescence   |
+   |:meth:`~phase`                | Function to sample coalescence   |
    |                                     | phase                            |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_psi`                  | Function to sample polarization  |
+   |:meth:`~psi`                  | Function to sample polarization  |
    |                                     | angle                            |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_theta_jn`             | Function to sample inclination   |
+   |:meth:`~theta_jn`             | Function to sample inclination   |
    |                                     | angle                            |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_a1`                   | Function to sample spin1         |
+   |:meth:`~a_1`                   | Function to sample spin1         |
    |                                     | magnitude                        |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_a2`                   | Function to sample spin2         |
+   |:meth:`~a_2`                   | Function to sample spin2         |
    |                                     | magnitude                        |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_tilt_1`               | Function to sample tilt1 angle   |
+   |:meth:`~tilt_1`               | Function to sample tilt1 angle   |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_tilt_2`               | Function to sample tilt2 angle   |
+   |:meth:`~tilt_2`               | Function to sample tilt2 angle   |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_phi_12`               | Function to sample phi12 angle   |
+   |:meth:`~phi_12`               | Function to sample phi12 angle   |
    +-------------------------------------+----------------------------------+
-   |:meth:`~sample_phi_jl`               | Function to sample phi_jl angle  |
+   |:meth:`~phi_jl`               | Function to sample phi_jl angle  |
    +-------------------------------------+----------------------------------+
    |:meth:`~binary_masses_BBH_popI_II_powerlaw_gaussian`                    |
    +-------------------------------------+----------------------------------+
@@ -212,12 +212,6 @@ Classes
    |                                     | Refer to Ng et al. 2022. Eqn. 1  |
    |                                     | and 4                            |
    +-------------------------------------+----------------------------------+
-   |:meth:`~binary_masses_BNS_gwcosmo`                                      |
-   +-------------------------------------+----------------------------------+
-   |                                     | Function to sample source mass1  |
-   |                                     | and mass2 from powerlaw          |
-   |                                     | distribution.                    |
-   +-------------------------------------+----------------------------------+
    |:meth:`~binary_masses_BNS_bimodal`   | Function to sample source mass1  |
    |                                     | and mass2 from bimodal           |
    |                                     | distribution. Refer to           |
@@ -234,72 +228,7 @@ Classes
 
    ..
        !! processed by numpydoc !!
-   .. py:property:: available_gw_prior_list_and_its_params
-
-      
-      Dictionary with list all the available priors and it's corresponding parameters. This is an immutable instance attribute.
-
-
-
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.gw_source_population import CBCSourceParameterDistribution
-      >>> cbc = CBCSourceParameterDistribution()
-      >>> priors = cbc.available_gw_prior_list_and_its_params
-      >>> priors.keys()  # type of priors
-      dict_keys(['merger_rate_density', 'source_frame_masses', 'spin', 'geocent_time', 'ra', 'phase', 'psi', 'theta_jn'])
-      >>> priors['source_frame_masses'].keys()  # type of source_frame_masses priors
-      dict_keys(['binary_masses_BBH_popI_II_powerlaw_gaussian', 'binary_masses_BBH_popIII_lognormal', 'binary_masses_BBH_primordial_lognormal', 'binary_masses_BNS_gwcosmo', 'binary_masses_BNS_bimodal'])
-      >>> priors['source_frame_masses']['binary_masses_BBH_popI_II_powerlaw_gaussian'].keys()  # parameters of binary_masses_BBH_popI_II_powerlaw_gaussian
-      dict_keys(['mminbh', 'mmaxbh', 'alpha', 'mu_g', 'sigma_g', 'lambda_peak', 'delta_m', 'beta'])
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: sample_zs
-
-      
-      Function to sample redshifts with the initialized prior.
-
-
-      :Parameters:
-
-          **size** : `int`
-              Number of samples to draw
-
-      :Returns:
-
-          **zs** : `numpy.ndarray` (1D array of floats)
-              Array of redshifts
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: sample_source_frame_masses
+   .. py:property:: source_frame_masses
 
       
       Function to sample source frame masses (mass1_source, mass2_source) with the initialized prior.
@@ -333,7 +262,38 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_geocent_time
+   .. py:property:: zs
+
+      
+      Function to sample source redshift with the initialized prior.
+
+
+      :Parameters:
+
+          **size** : `int`
+              Number of samples to draw
+
+      :Returns:
+
+          **zs** : `numpy.ndarray` (1D array of floats)
+              Array of source redshift
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: geocent_time
 
       
       Function to sample geocent time with the initialized prior.
@@ -364,7 +324,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_ra
+   .. py:property:: ra
 
       
       Function to sample right ascension of sky position with the initialized prior.
@@ -395,7 +355,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_dec
+   .. py:property:: dec
 
       
       Function to sample declination of sky position with the initialized prior.
@@ -426,7 +386,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_phase
+   .. py:property:: phase
 
       
       Function to sample coalescence phase with the initialized prior.
@@ -457,7 +417,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_psi
+   .. py:property:: psi
 
       
       Function to sample polarization angle with the initialized prior.
@@ -488,7 +448,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_theta_jn
+   .. py:property:: theta_jn
 
       
       Function to sample theta_jn with the initialized prior.
@@ -519,7 +479,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_a_1
+   .. py:property:: a_1
 
       
       Function to sample spin magnitude of the compact binaries (body1) with the initialized prior.
@@ -550,7 +510,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_a_2
+   .. py:property:: a_2
 
       
       Function to sample spin magnitude of the compact binaries (body2) with the initialized prior.
@@ -581,7 +541,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_tilt_1
+   .. py:property:: tilt_1
 
       
       Function to sample tilt angle of the compact binaries (body1) with the initialized prior.
@@ -612,7 +572,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_tilt_2
+   .. py:property:: tilt_2
 
       
       Function to sample tilt angle of the compact binaries (body2) with the initialized prior.
@@ -643,7 +603,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_phi_12
+   .. py:property:: phi_12
 
       
       Function to sample azimuthal angle between the two spins with the initialized prior.
@@ -674,7 +634,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: sample_phi_jl
+   .. py:property:: phi_jl
 
       
       Function to sample azimuthal angle between the total angular momentum and the orbital angular momentum with the initialized prior.
@@ -699,6 +659,40 @@ Classes
 
 
 
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: available_gw_prior_list_and_its_params
+
+      
+      Dictionary with list all the available priors and it's corresponding parameters. This is an immutable instance attribute.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.gw_source_population import CBCSourceParameterDistribution
+      >>> cbc = CBCSourceParameterDistribution()
+      >>> priors = cbc.available_gw_prior_list_and_its_params
+      >>> priors.keys()  # type of priors
+      dict_keys(['merger_rate_density', 'source_frame_masses', 'spin', 'geocent_time', 'ra', 'phase', 'psi', 'theta_jn'])
+      >>> priors['source_frame_masses'].keys()  # type of source_frame_masses priors
+      dict_keys(['binary_masses_BBH_popI_II_powerlaw_gaussian', 'binary_masses_BBH_popIII_lognormal', 'binary_masses_BBH_primordial_lognormal', 'binary_masses_BNS_bimodal'])
+      >>> priors['source_frame_masses']['binary_masses_BBH_popI_II_powerlaw_gaussian'].keys()  # parameters of binary_masses_BBH_popI_II_powerlaw_gaussian
+      dict_keys(['mminbh', 'mmaxbh', 'alpha', 'mu_g', 'sigma_g', 'lambda_peak', 'delta_m', 'beta'])
 
 
 
@@ -875,39 +869,86 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lookup_table_luminosity_distance(z_min, z_max, directory)
+   .. py:method:: setup_decision_dictionary_gw_params(create_new_interpolator)
 
       
-      Function to create a lookup table for the differential comoving volume
-      and luminosity distance wrt redshift.
+      Method to set up a decision dictionary for interpolator creation.
 
 
       :Parameters:
 
-          **z_min** : `float`
-              Minimum redshift of the source population
+          **create_new_interpolator** : `dict`, `bool`
+              If `dict`, dictionary of boolean values and resolution to create new interpolator.
+              If `bool`, boolean value to create new interpolator for all quantities.
 
-          **z_max** : `float`
-              Maximum redshift of the source population
+      :Returns:
 
-
-
-
-
-
+          **create_new_interpolator_** : `dict`
+              Dictionary of boolean values and resolution to create new interpolator.
+              e.g. dict(redshift_distribution=dict(create_new=False, resolution=1000), luminosity_distance=dict(create_new=False, resolution=1000), differential_comoving_volume=dict(create_new=False, resolution=1000))
 
 
 
 
 
 
-      :Attributes:
 
-          **z_to_luminosity_distance** : `scipy.interpolate.interpolate`
-              Function to convert redshift to luminosity distance
 
-          **differential_comoving_volume** : `scipy.interpolate.interpolate`
-              Function to calculate the differential comoving volume
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: source_priors_categorization(event_type, source_priors, source_prior_params)
+
+      
+      Function to categorize the event priors and its parameters.
+
+
+      :Parameters:
+
+          **event_type** : `str`
+              Type of event to generate.
+              e.g. 'BBH', 'BNS', 'BBH_popIII', 'BBH_primordial', 'NSBH'
+
+          **source_priors** : `dict`
+              Dictionary of prior sampler functions for each parameter
+
+          **source_prior_params** : `dict`
+              Dictionary of sampler parameters for each GW parameter
+
+      :Returns:
+
+          **source_priors_** : `dict`
+              Dictionary of prior sampler functions for each parameter
+
+          **source_prior_params_** : `dict`
+              Dictionary of sampler parameters for each parameter
+
+          **sampler_names_** : `dict`
+              Dictionary of sampler names with description
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.gw_source_population import CBCSourceParameterDistribution
+      >>> cbc = CBCSourceParameterDistribution()
+      >>> source_priors, source_prior_params, sampler_names = cbc.source_priors_categorization(event_type='BBH', source_priors=None, source_prior_params=None)
+      >>> print(source_priors.keys())
+      >>> print(source_prior_params.keys())
+      >>> print(sampler_names.keys())
+
 
 
       ..
@@ -943,7 +984,7 @@ Classes
 
       >>> from ler.gw_source_population import CBCSourceParameterDistribution
       >>> cbc = CBCSourceParameterDistribution()
-      >>> params = cbc.sample_gw_parameters(size=1000)
+      >>> params = cbc.gw_parameters(size=1000)
       >>> print("sampled parameters=",list(params.keys()))
 
 
@@ -951,7 +992,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BBH_popI_II_powerlaw_gaussian(size, mminbh=4.98, mmaxbh=112.5, alpha=3.78, mu_g=32.27, sigma_g=3.88, lambda_peak=0.03, delta_m=4.8, beta=0.81, get_attribute=False, param=None)
+   .. py:method:: binary_masses_BBH_popI_II_powerlaw_gaussian(size, get_attribute=False, **kwargs)
 
       
       Function to sample source mass1 and mass2 with PowerLaw+PEAK model
@@ -1025,7 +1066,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BBH_popIII_lognormal(size, m_min=5.0, m_max=150.0, Mc=30.0, sigma=0.3, chunk_size=10000, get_attribute=False, param=None)
+   .. py:method:: binary_masses_BBH_popIII_lognormal(size, get_attribute=False, **kwargs)
 
       
       Function to sample source mass1 and mass2 with pop III origin. Refer to Eqn. 1 and 4 of Ng et al. 2022
@@ -1084,7 +1125,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BBH_primordial_lognormal(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000, get_attribute=False, param=None)
+   .. py:method:: binary_masses_BBH_primordial_lognormal(size, get_attribute=False, **kwargs)
 
       
       Function to sample source mass1 and mass2 with primordial origin. Refer to Eqn. 1 and 4 of Ng et al. 2022
@@ -1134,58 +1175,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BNS_gwcosmo(size, mminns=1.0, mmaxns=3.0, alphans=0.0, get_attribute=False, param=None)
-
-      
-      Function to calculate source mass1 and mass2 of BNS from powerlaw distribution (gwcosmo)
-
-
-      :Parameters:
-
-          **size** : `int`
-              Number of samples to draw
-
-          **mminns** : `float`
-              Minimum mass of the BNS (Msun)
-              default: 1.0
-
-          **mmaxns** : `float`
-              Maximum mass of the BNS (Msun)
-              default: 3.0
-
-          **alphans** : `float`
-              Power law index
-              default: 0.0
-
-      :Returns:
-
-          **mass_1_source** : `numpy.ndarray` (1D array of floats)
-              Array of mass1 in source frame (Msun)
-
-          **mass_2_source** : `numpy.ndarray` (1D array of floats)
-              Array of mass2 in source frame (Msun)
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.gw_source_population import CBCSourceParameterDistribution
-      >>> cbc = CBCSourceParameterDistribution()
-      >>> m1_src, m2_src = cbc.binary_masses_BNS_gwcosmo(size=1000)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: binary_masses_NSBH_broken_powerlaw(size, mminbh=26, mmaxbh=125, alpha_1=6.75, alpha_2=6.75, b=0.5, delta_m=5, mminns=1.0, mmaxns=3.0, alphans=0.0, get_attribute=False, param=None)
+   .. py:method:: binary_masses_NSBH_broken_powerlaw(size, get_attribute=False, **kwargs)
 
       
       Function to calculate source mass1 and mass2 of NSBH from powerlaw distribution (gwcosmo). Parameters are mminbh=26,mmaxbh=125,alpha_1=6.75,alpha_2=6.75,b=0.5,delta_m=5,mminns=1.0,mmaxns=3.0,alphans=0.0.
@@ -1266,7 +1256,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_uniform(size, m_min=1.0, m_max=3.0, get_attribute=False, param=None)
+   .. py:method:: binary_masses_uniform(size, get_attribute=False, **kwargs)
 
       
       Function to sample source mass1 and mass2 from uniform distribution.
@@ -1320,7 +1310,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BNS_bimodal(size, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3, resolution=500, create_new=False, get_attribute=False, param=None)
+   .. py:method:: binary_masses_BNS_bimodal(size, get_attribute=False, **kwargs)
 
       
       Function to sample source mass1 and mass2 from bimodal distribution. Refer to Will M. Farr et al. 2020 Eqn. 6, https://arxiv.org/pdf/2005.00032.pdf .
@@ -1402,7 +1392,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: constant_values_n_size(size=100, value=0.0, get_attribute=False, param=None)
+   .. py:method:: constant_values_n_size(size=100, get_attribute=False, **kwargs)
 
       
       Function to sample constant values of size n.
@@ -1413,16 +1403,11 @@ Classes
           **size** : `int`
               Number of samples to draw
 
-          **value** : `float`
-              Constant value
-              default: 0.0
-
           **get_attribute** : `bool`
               If True, return the njitted sampler function with size as the only input where parameters are fixed to the given values.
 
-          **param** : `dict`
-              Allows to pass in above parameters as dict.
-              e.g. param = dict(value=0.0)
+          **kwargs** : `keyword arguments`
+              Additional parameters to pass to the function
 
       :Returns:
 
@@ -1449,7 +1434,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: sampler_uniform(size, min_=0, max_=np.pi, get_attribute=False, param=None)
+   .. py:method:: sampler_uniform(size, get_attribute=False, **kwargs)
 
       
       Function to sample values from uniform distribution.
@@ -1459,14 +1444,6 @@ Classes
 
           **size** : `int`
               Number of samples to draw
-
-          **start_time** : `float`
-              Start time of the uniform distribution
-              default: 1238166018
-
-          **end_time** : `float`
-              End time of the uniform distribution
-              default: 1238166018 + 31536000
 
           **get_attribute** : `bool`
               If True, return the njitted sampler function with size as the only input where parameters are fixed to the given values.
@@ -1499,7 +1476,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: sampler_cosine(size, get_attribute=False, param=None)
+   .. py:method:: sampler_cosine(size, get_attribute=False, **kwargs)
 
       
       Function to sample from sine distribution at the limit of [-np.pi/2, np.pi/2]
@@ -1536,7 +1513,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: sampler_sine(size, get_attribute=False, param=None)
+   .. py:method:: sampler_sine(size, get_attribute=False, **kwargs)
 
       
       Function to sample from sine distribution at the limit of [0, np.pi]
@@ -1567,58 +1544,6 @@ Classes
 
 
 
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: source_priors_categorization(event_type, source_priors, event_prior_params)
-
-      
-      Function to categorize the event priors and its parameters.
-
-
-      :Parameters:
-
-          **event_type** : `str`
-              Type of event to generate.
-              e.g. 'BBH', 'BNS', 'BBH_popIII', 'BBH_primordial', 'NSBH'
-
-          **source_priors** : `dict`
-              Dictionary of prior sampler functions for each parameter
-
-          **event_prior_params** : `dict`
-              Dictionary of sampler parameters for each GW parameter
-
-      :Returns:
-
-          **source_priors_** : `dict`
-              Dictionary of prior sampler functions for each parameter
-
-          **event_prior_params_** : `dict`
-              Dictionary of sampler parameters for each parameter
-
-          **sampler_names_** : `dict`
-              Dictionary of sampler names with description
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.gw_source_population import CBCSourceParameterDistribution
-      >>> cbc = CBCSourceParameterDistribution()
-      >>> source_priors, event_prior_params, sampler_names = cbc.source_priors_categorization(event_type='BBH', source_priors=None, event_prior_params=None)
-      >>> print(source_priors.keys())
-      >>> print(event_prior_params.keys())
-      >>> print(sampler_names.keys())
 
 
 

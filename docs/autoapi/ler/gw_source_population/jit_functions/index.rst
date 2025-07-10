@@ -20,16 +20,58 @@ Functions
 
 .. autoapisummary::
 
+   ler.gw_source_population.jit_functions.cumulative_trapezoid
    ler.gw_source_population.jit_functions.merger_rate_density_bbh_popI_II_oguri2018
    ler.gw_source_population.jit_functions.merger_rate_density_bbh_popIII_ken2022
-   ler.gw_source_population.jit_functions.star_formation_rate_madau_dickinson2014
+   ler.gw_source_population.jit_functions.sfr_madau_fragos2017_with_bbh_td
+   ler.gw_source_population.jit_functions.sfr_madau_dickinson2014_with_bbh_td
+   ler.gw_source_population.jit_functions.sfr_madau_fragos2017_with_bns_td
+   ler.gw_source_population.jit_functions.sfr_madau_dickinson2014_with_bns_td
+   ler.gw_source_population.jit_functions.sfr_madau_fragos2017
+   ler.gw_source_population.jit_functions.sfr_madau_dickinson2014
    ler.gw_source_population.jit_functions.merger_rate_density_bbh_primordial_ken2022
    ler.gw_source_population.jit_functions.lognormal_distribution_2D
    ler.gw_source_population.jit_functions.inverse_transform_sampler_m1m2
+   ler.gw_source_population.jit_functions.powerlaw_with_smoothing
+   ler.gw_source_population.jit_functions.inverse_transform_sampler
+   ler.gw_source_population.jit_functions.sample_broken_powerlaw
+   ler.gw_source_population.jit_functions.sample_broken_powerlaw_nsbh_masses
+   ler.gw_source_population.jit_functions.broken_powerlaw_pdf
+   ler.gw_source_population.jit_functions.broken_powerlaw_unormalized
+   ler.gw_source_population.jit_functions.powerlaw_B
+   ler.gw_source_population.jit_functions.gaussian_G
+   ler.gw_source_population.jit_functions.powerlaw_gaussian_pdf
+   ler.gw_source_population.jit_functions.powerlaw_gaussian_cdf
+   ler.gw_source_population.jit_functions.sample_powerlaw_gaussian
+   ler.gw_source_population.jit_functions.sample_powerlaw_gaussian_source_bbh_masses
+   ler.gw_source_population.jit_functions.powerlaw_gaussian_unnormalized
 
 
 
-.. py:function:: merger_rate_density_bbh_popI_II_oguri2018(zs, R0=23.9 * 1e-09, b2=1.6, b3=2.0, b4=30)
+.. py:function:: cumulative_trapezoid(y, x=None, dx=1.0, initial=0.0)
+
+   
+   Compute the cumulative integral of a function using the trapezoidal rule.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: merger_rate_density_bbh_popI_II_oguri2018(zs, R0=23.9 * 1e-09, b2=1.6, b3=2.1, b4=30)
 
    
    Function to compute the merger rate density (PopI/PopII). Reference: Oguri et al. (2018). The output is in detector frame and is unnormalized.
@@ -50,7 +92,7 @@ Functions
 
        **b3** : `float`
            Fitting paramters
-           default: 2.0
+           default: 2.1
 
        **b4** : `float`
            Fitting paramters
@@ -131,10 +173,121 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: star_formation_rate_madau_dickinson2014(zs, af=2.7, bf=5.6, cf=2.9)
+.. py:function:: sfr_madau_fragos2017_with_bbh_td(zs, R0=23.9 * 1e-09)
 
    
-   Function to compute star formation rate as given in Eqn. 15 Madau & Dickinson (2014). The output is in detector frame and is unnormalized.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: sfr_madau_dickinson2014_with_bbh_td(zs, R0=23.9 * 1e-09)
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: sfr_madau_fragos2017_with_bns_td(zs, R0=105.5 * 1e-09)
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: sfr_madau_dickinson2014_with_bns_td(zs, R0=105.5 * 1e-09)
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: sfr_madau_fragos2017(zs, a=0.01, b=2.6, c=3.2, d=6.2)
+
+   
+   https://arxiv.org/pdf/1606.07887.pdf
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: sfr_madau_dickinson2014(zs, a=0.015, b=2.7, c=2.9, d=5.6)
+
+   
+   Function to compute star formation rate as given in Eqn. 15 Madau & Dickinson (2014). The output is in detector frame and is unnormalized. https://arxiv.org/pdf/1403.0007
 
 
    :Parameters:
@@ -170,8 +323,8 @@ Functions
 
    .. rubric:: Examples
 
-   >>> from ler.gw_source_population import star_formation_rate_madau_dickinson2014
-   >>> rate_density = star_formation_rate_madau_dickinson2014(zs=0.1)
+   >>> from ler.gw_source_population import sfr_madau_dickinson2014
+   >>> rate_density = sfr_madau_dickinson2014(zs=0.1)
 
 
 
@@ -317,6 +470,305 @@ Functions
 
    >>> from ler.gw_source_population import inverse_transform_sampler_m1m2
    >>> m1, m2 = inverse_transform_sampler_m1m2(size=1000, inv_cdf=inv_cdf, x=x)
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: powerlaw_with_smoothing(m, mmin, alpha, delta_m)
+
+   
+   Power law with smoothing applied.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: inverse_transform_sampler(size, cdf, x)
+
+   
+   Function to sample from the inverse transform method.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: sample_broken_powerlaw(size=1000, mminbh=26.0, mmaxbh=125.0, alpha_1=6.75, alpha_2=0.0, b=0.5, delta_m=5.0, normalization_size=1000)
+
+   
+   Generates samples from the broken powerlaw distribution.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: sample_broken_powerlaw_nsbh_masses(size=1000, mminbh=26.0, mmaxbh=125.0, alpha_1=6.75, alpha_2=0.0, b=0.5, delta_m=5.0, mminns=1.0, mmaxns=3.0, alphans=0.0, normalization_size=1000)
+
+   
+   Generates samples from the broken powerlaw distribution for NSBH masses.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: broken_powerlaw_pdf(m, mminbh=26.0, mmaxbh=125.0, alpha_1=6.75, alpha_2=0.0, b=0.5, delta_m=5.0, normalization_size=1000)
+
+   
+   Generates samples using a Numba-jitted loop for high performance.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: broken_powerlaw_unormalized(m, mminbh=26.0, mmaxbh=125.0, alpha_1=6.75, alpha_2=0.0, b=0.5, delta_m=5.0)
+
+   
+   Probability density function for the broken powerlaw model.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: powerlaw_B(m, alpha, mminbh, mmaxbh)
+
+   
+   normalised power-law distribution with spectral index -alpha and cut-off mmaxbh
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: gaussian_G(m, mu_g, sigma_g)
+
+   
+   Gaussian distribution with mean mu_g and standard deviation sigma_g.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: powerlaw_gaussian_pdf(m, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, normalization_size=1000)
+
+   
+   Calculate the PDF for the power-law Gaussian model.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: powerlaw_gaussian_cdf(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m)
+
+   
+   Sample from the power-law Gaussian model.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: sample_powerlaw_gaussian(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, normalization_size=1000)
+
+   
+   Sample from the power-law Gaussian model.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: sample_powerlaw_gaussian_source_bbh_masses(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, beta, normalization_size=1000)
+
+   
+   Sample from the power-law Gaussian model for source masses.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: powerlaw_gaussian_unnormalized(m, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m)
+
+   
+   Calculate the unnormalized PDF for the power-law Gaussian model.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

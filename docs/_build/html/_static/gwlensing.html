@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gravitational Lensing Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000000; /* Changed to black for space */
+            font-family: 'Inter', sans-serif;
+            color: #ffffff; /* Text color to white for contrast */
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+        import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+
+        let scene, camera, renderer, controls, font;
+        let spacetimePlane, staticVertices;
+        let lensingGalaxy, bh1, bh2, mergedBH, detector;
+        let detectorArm1, detectorArm2; // References for animation
+        let path1, path2;
+        const clock = new THREE.Clock();
+        const textLabels = []; // Array to hold labels for rotation
+
+        // --- State variables for wave propagation ---
+        let waveHeadDist1 = 0;
+        let waveHeadDist2 = 0;
+        let waveActive = false;
+        let maxSlowdownEffect1 = 0;
+        let maxSlowdownEffect2 = 0;
+
+        // --- Configuration ---
+        const X_DISTANCE = 220;
+        const GRID_SIZE = 450;
+        const GRID_SEGMENTS = 120;
+        const GALAXY_RADIUS = 35;
+        const GRAVITY_WELL_DEPTH = 60;
+        const GRAVITY_WELL_RADIUS = 120;
+        const GRID_ELEV = 5;
+        
+        const WAVE_AMPLITUDE = 10; // Base amplitude
+        const WAVE_FREQUENCY = 0.15;
+        const WAVE_BEAM_WIDTH = 150;
+        const WAVE_PROPAGATION_SPEED = 250; 
+
+        // --- Animation Cycle Timing ---
+        const INSPIRAL_DURATION = 4.0; 
+        const WAVE_DURATION = 4.8; // Increased slightly to allow for slowdown
+        const PAUSE_DURATION = 1.5;
+        const CYCLE_DURATION = INSPIRAL_DURATION + WAVE_DURATION + PAUSE_DURATION;
+
+        const SOURCE_POS = new THREE.Vector3(X_DISTANCE-20, GRID_ELEV, 0);
+        const OBSERVER_POS = new THREE.Vector3(-X_DISTANCE+20, GRID_ELEV, 0);
+        const LENSING_POS = new THREE.Vector3(0, -GRAVITY_WELL_DEPTH, 0);
+
+        const GRID_BASE_COLOR = new THREE.Color(0x0077ff); // Blue grid
+        const WAVE_COLOR = new THREE.Color(0xff00ff); // Magenta wave
+
+        // --- Initialization ---
+        function init() {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x000000);
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+            camera.position.set(0, 180, 280);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.body.appendChild(renderer.domElement);
+
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.target.set(0, 0, 0);
+
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 1.5;
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+            directionalLight.position.set(100, 200, 150);
+            scene.add(directionalLight);
+            
+            const fontLoader = new FontLoader();
+            fontLoader.load('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/fonts/helvetiker_regular.typeface.json', (loadedFont) => {
+                font = loadedFont;
+                createSceneObjects();
+                animate();
+            });
+
+            window.addEventListener('resize', onWindowResize);
+        }
+
+        function createSceneObjects() {
+            createStarfield();
+            createSpacetimeGrid();
+            createLensingGalaxy();
+            createBBHSource();
+            createDetector();
+            createLabels();
+            createWavePaths();
+        }
+
+        function createStarfield() {
+            const starVertices = [];
+            for (let i = 0; i < 10000; i++) {
+                const x = THREE.MathUtils.randFloatSpread(2000);
+                const y = THREE.MathUtils.randFloatSpread(2000);
+                const z = THREE.MathUtils.randFloatSpread(2000);
+                starVertices.push(x, y, z);
+            }
+            const starGeometry = new THREE.BufferGeometry();
+            starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+            const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.7 });
+            const starfield = new THREE.Points(starGeometry, starMaterial);
+            scene.add(starfield);
+        }
+
+        function createSpacetimeGrid() {
+            const geometry = new THREE.PlaneGeometry(GRID_SIZE, GRID_SIZE, GRID_SEGMENTS, GRID_SEGMENTS);
+            const material = new THREE.MeshBasicMaterial({
+                wireframe: true, 
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.5
+            });
+            spacetimePlane = new THREE.Mesh(geometry, material);
+            spacetimePlane.rotation.x = -Math.PI / 2;
+            scene.add(spacetimePlane);
+            
+            const vertices = spacetimePlane.geometry.attributes.position;
+            for (let i = 0; i < vertices.count; i++) {
+                const x = vertices.getX(i);
+                const y = vertices.getY(i);
+                const dist = Math.sqrt(x * x + y * y);
+                if (dist < GRAVITY_WELL_RADIUS) {
+                    const smoothFactor = 0.5 * (1 + Math.cos(Math.PI * dist / GRAVITY_WELL_RADIUS));
+                    vertices.setZ(i, -GRAVITY_WELL_DEPTH * smoothFactor);
+                }
+            }
+            staticVertices = new Float32Array(vertices.array);
+            const colors = new Float32Array(staticVertices.length);
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        }
+
+        function createLensingGalaxy() {
+            lensingGalaxy = new THREE.Group();
+            const particleCount = 30000;
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            const colorCore = new THREE.Color(0xfff5b6);
+            const colorOuter = new THREE.Color(0x9bb0ff);
+
+            for (let i = 0; i < particleCount; i++) {
+                const i3 = i * 3;
+                const r = GALAXY_RADIUS * Math.cbrt(Math.random()); 
+                const theta = Math.random() * 2 * Math.PI;
+                const phi = Math.acos(2 * Math.random() - 1);
+                
+                const x = r * Math.sin(phi) * Math.cos(theta);
+                const y = r * Math.sin(phi) * Math.sin(theta);
+                const z = r * Math.cos(phi);
+
+                positions[i3] = x;
+                positions[i3 + 1] = y;
+                positions[i3 + 2] = z;
+
+                const mixedColor = colorCore.clone();
+                const radiusNormalized = r / GALAXY_RADIUS;
+                mixedColor.lerp(colorOuter, radiusNormalized * 1.2);
+                colors[i3] = mixedColor.r;
+                colors[i3 + 1] = mixedColor.g;
+                colors[i3 + 2] = mixedColor.b;
+            }
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            const material = new THREE.PointsMaterial({
+                size: 0.3,
+                vertexColors: true,
+                blending: THREE.AdditiveBlending,
+                transparent: true,
+                depthWrite: false,
+                opacity: 0.7
+            });
+            const particles = new THREE.Points(geometry, material);
+            lensingGalaxy.add(particles);
+            lensingGalaxy.position.set(0, 0, 0);
+            scene.add(lensingGalaxy);
+        }
+
+        function createBBHSource() {
+            // const bhMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+            const bhMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x000000,       // Deep blue for visibility
+                shininess: 80, 
+                emissive: 0x111155, 
+                specular: 0xaaaaee 
+            });
+            bh1 = new THREE.Mesh(new THREE.SphereGeometry(6, 32, 32), bhMaterial);
+            bh2 = new THREE.Mesh(new THREE.SphereGeometry(5, 32, 32), bhMaterial);
+            mergedBH = new THREE.Mesh(new THREE.SphereGeometry(7, 32, 32), bhMaterial);
+            
+            // Removed the glow sprite here
+
+            const sourceGroup = new THREE.Group();
+            sourceGroup.add(bh1, bh2, mergedBH);
+            sourceGroup.position.copy(SOURCE_POS);
+            scene.add(sourceGroup);
+        }
+
+
+        function createDetector() {
+            detector = new THREE.Group();
+            const baseMat = new THREE.MeshPhongMaterial({ color: 0xcccccc, shininess: 80 });
+            const building = new THREE.Mesh(new THREE.BoxGeometry(8, 4, 8), baseMat);
+            detector.add(building);
+            const armGeo = new THREE.CylinderGeometry(0.8, 0.8, 30, 8);
+            
+            detectorArm1 = new THREE.Mesh(armGeo, baseMat);
+            detectorArm1.rotation.z = Math.PI / 2;
+            detectorArm1.position.x = 15;
+            detector.add(detectorArm1);
+            
+            detectorArm2 = new THREE.Mesh(armGeo, baseMat);
+            detectorArm2.rotation.x = Math.PI / 2;
+            detectorArm2.position.z = 15;
+            detector.add(detectorArm2);
+
+            detector.position.copy(OBSERVER_POS);
+            detector.rotation.y = -Math.PI / 2;
+            scene.add(detector);
+        }
+        
+        function createLabels() {
+            const textMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            function createText(text, position, size = 8) {
+                const textGeo = new TextGeometry(text, { font: font, size: size, height: 0.5 });
+                const textMesh = new THREE.Mesh(textGeo, textMat);
+                textMesh.position.copy(position);
+                textMesh.geometry.center();
+                scene.add(textMesh);
+                textLabels.push(textMesh); // Add to array for animation
+            }
+            createText("Source (BBH Merger)", SOURCE_POS.clone().add(new THREE.Vector3(0, 20, 0)));
+            createText("Lensing Galaxy", new THREE.Vector3(0, GALAXY_RADIUS + 15, 0));
+            createText("Detector", OBSERVER_POS.clone().add(new THREE.Vector3(0, 20, 0)));
+        }
+
+        function createWavePaths() {
+            const pathSeparation = 65; 
+            const pathDip = -GRAVITY_WELL_DEPTH * 0.8;
+            path1 = new THREE.CatmullRomCurve3([ SOURCE_POS, new THREE.Vector3(0, pathDip, pathSeparation), OBSERVER_POS ]);
+            path2 = new THREE.CatmullRomCurve3([ SOURCE_POS, new THREE.Vector3(0, pathDip, -pathSeparation), OBSERVER_POS ]);
+            
+            const points1 = path1.getPoints(100);
+            const points2 = path2.getPoints(100);
+            const lineGeo1 = new THREE.BufferGeometry().setFromPoints(points1);
+            const lineGeo2 = new THREE.BufferGeometry().setFromPoints(points2);
+            const lineMat = new THREE.LineDashedMaterial({ color: 0x00ffff, dashSize: 5, gapSize: 5, transparent: true, opacity: 0.5 });
+            
+            const line1 = new THREE.Line(lineGeo1, lineMat);
+            line1.computeLineDistances();
+            const line2 = new THREE.Line(lineGeo2, lineMat);
+            line2.computeLineDistances();
+            
+            scene.add(line1, line2);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const deltaTime = clock.getDelta();
+            const elapsedTime = clock.getElapsedTime();
+            const cycleTime = elapsedTime % CYCLE_DURATION;
+
+            const isWavePhase = cycleTime > INSPIRAL_DURATION && cycleTime < INSPIRAL_DURATION + WAVE_DURATION;
+            if (isWavePhase && !waveActive) {
+                waveActive = true;
+                waveHeadDist1 = 0;
+                waveHeadDist2 = 0;
+                maxSlowdownEffect1 = 0;
+                maxSlowdownEffect2 = 0;
+            } else if (!isWavePhase) {
+                waveActive = false;
+            }
+
+            if (cycleTime < INSPIRAL_DURATION) {
+                bh1.visible = true;
+                bh2.visible = true;
+                mergedBH.visible = false;
+                
+                const inspiralProgress = cycleTime / INSPIRAL_DURATION;
+                const initialSeparation = 22; // Initial separation distance
+                const currentRadius = initialSeparation * (1 - inspiralProgress);
+                const angularSpeed = 1 + inspiralProgress * 15;
+                
+                bh1.position.x = currentRadius * Math.cos(cycleTime * angularSpeed);
+                bh1.position.z = currentRadius * Math.sin(cycleTime * angularSpeed);
+                bh2.position.x = -currentRadius * Math.cos(cycleTime * angularSpeed);
+                bh2.position.z = -currentRadius * Math.sin(cycleTime * angularSpeed);
+            } else {
+                bh1.visible = false;
+                bh2.visible = false;
+                mergedBH.visible = true;
+            }
+
+            if (waveActive) {
+                const pathLength = path1.getLength();
+                const slowdownCenter = pathLength / 2;
+                const slowdownRadius = 100;
+                
+                const minSpeedFactor1 = 0.6; 
+                const minSpeedFactor2 = 0.2;
+
+                const distFromCenter1 = Math.abs(waveHeadDist1 - slowdownCenter);
+                let currentSpeed1 = WAVE_PROPAGATION_SPEED;
+                if (distFromCenter1 < slowdownRadius) {
+                    const slowdownEffect1 = (Math.cos(distFromCenter1 / slowdownRadius * Math.PI) + 1) / 2;
+                    const speedFactor1 = 1 - (1 - minSpeedFactor1) * slowdownEffect1;
+                    currentSpeed1 = WAVE_PROPAGATION_SPEED * speedFactor1;
+                }
+                waveHeadDist1 += currentSpeed1 * deltaTime;
+
+                const distFromCenter2 = Math.abs(waveHeadDist2 - slowdownCenter);
+                let currentSpeed2 = WAVE_PROPAGATION_SPEED;
+                if (distFromCenter2 < slowdownRadius) {
+                    const slowdownEffect2 = (Math.cos(distFromCenter2 / slowdownRadius * Math.PI) + 1) / 2;
+                    const speedFactor2 = 1 - (1 - minSpeedFactor2) * slowdownEffect2;
+                    currentSpeed2 = WAVE_PROPAGATION_SPEED * speedFactor2;
+                }
+                waveHeadDist2 += currentSpeed2 * deltaTime;
+            }
+            
+            const pathLength = path1.getLength();
+            const waveProgress1 = Math.min(1.0, waveHeadDist1 / pathLength);
+            const waveProgress2 = Math.min(1.0, waveHeadDist2 / pathLength);
+
+            const waveHeadPos1 = path1.getPointAt(waveProgress1);
+            const waveHeadPos2 = path2.getPointAt(waveProgress2);
+            
+            const vertices = spacetimePlane.geometry.attributes.position;
+            const colors = spacetimePlane.geometry.attributes.color;
+
+            const baseAmplitude = WAVE_AMPLITUDE;
+            const maxMagnification1 = 1.5;
+            const maxMagnification2 = 2.5;
+
+            const slowdownCenter = pathLength / 2;
+            const slowdownRadius = 100;
+
+            const distFromCenter1 = Math.abs(waveHeadDist1 - slowdownCenter);
+            let slowdownEffect1 = 0;
+            if (waveActive && distFromCenter1 < slowdownRadius) {
+                slowdownEffect1 = (Math.cos(distFromCenter1 / slowdownRadius * Math.PI) + 1) / 2;
+            }
+            maxSlowdownEffect1 = Math.max(maxSlowdownEffect1, slowdownEffect1);
+
+            const distFromCenter2 = Math.abs(waveHeadDist2 - slowdownCenter);
+            let slowdownEffect2 = 0;
+            if (waveActive && distFromCenter2 < slowdownRadius) {
+                slowdownEffect2 = (Math.cos(distFromCenter2 / slowdownRadius * Math.PI) + 1) / 2;
+            }
+            maxSlowdownEffect2 = Math.max(maxSlowdownEffect2, slowdownEffect2);
+
+            const currentAmplitude1 = baseAmplitude * (1 + (maxMagnification1 - 1) * maxSlowdownEffect1);
+            const currentAmplitude2 = baseAmplitude * (1 + (maxMagnification2 - 1) * maxSlowdownEffect2);
+
+            for (let i = 0; i < vertices.count; i++) {
+                const x = vertices.getX(i);
+                const z = vertices.getY(i);
+
+                const distFromSource = Math.sqrt(Math.pow(x - SOURCE_POS.x, 2) + Math.pow(z - SOURCE_POS.z, 2));
+
+                const rippleShape1 = currentAmplitude1 * Math.sin((distFromSource - waveHeadDist1) * WAVE_FREQUENCY);
+                const rippleShape2 = currentAmplitude2 * Math.sin((distFromSource - waveHeadDist2) * WAVE_FREQUENCY);
+
+                const distToHead1 = Math.sqrt(Math.pow(x - waveHeadPos1.x, 2) + Math.pow(z - waveHeadPos1.z, 2));
+                const distToHead2 = Math.sqrt(Math.pow(x - waveHeadPos2.x, 2) + Math.pow(z - waveHeadPos2.z, 2));
+                
+                let falloff1 = 0;
+                if (waveActive && distToHead1 < WAVE_BEAM_WIDTH && waveProgress1 < 1.0) {
+                    falloff1 = Math.pow(1 - distToHead1 / WAVE_BEAM_WIDTH, 2);
+                }
+                let falloff2 = 0;
+                if (waveActive && distToHead2 < WAVE_BEAM_WIDTH && waveProgress2 < 1.0) {
+                    falloff2 = Math.pow(1 - distToHead2 / WAVE_BEAM_WIDTH, 2);
+                }
+
+                let displacement = rippleShape1 * falloff1 + rippleShape2 * falloff2;
+                let waveIntensity = Math.max(falloff1, falloff2);
+                
+                const staticY = staticVertices[i * 3 + 2];
+                vertices.setZ(i, staticY + displacement);
+                
+                const currentColor = new THREE.Color().copy(GRID_BASE_COLOR);
+                currentColor.lerp(WAVE_COLOR, waveIntensity);
+                colors.setXYZ(i, currentColor.r, currentColor.g, currentColor.b);
+            }
+            vertices.needsUpdate = true;
+            colors.needsUpdate = true;
+            spacetimePlane.geometry.computeVertexNormals();
+
+            let detectorIntensity = 0;
+            const distDetectorToHead1 = OBSERVER_POS.distanceTo(waveHeadPos1);
+            const distDetectorToHead2 = OBSERVER_POS.distanceTo(waveHeadPos2);
+
+            if (waveActive && distDetectorToHead1 < WAVE_BEAM_WIDTH && waveProgress1 < 1.0) {
+                detectorIntensity = Math.max(detectorIntensity, Math.pow(1 - distDetectorToHead1 / WAVE_BEAM_WIDTH, 2));
+            }
+            if (waveActive && distDetectorToHead2 < WAVE_BEAM_WIDTH && waveProgress2 < 1.0) {
+                detectorIntensity = Math.max(detectorIntensity, Math.pow(1 - distDetectorToHead2 / WAVE_BEAM_WIDTH, 2));
+            }
+            
+
+            // const baseScale = 1;
+            // const maxScaleOffset = 0.1; 
+            // const oscillation = Math.sin(elapsedTime * 80); 
+            
+            // if (detectorArm1 && detectorArm2) {
+            //     detectorArm1.scale.y = baseScale + oscillation * maxScaleOffset * detectorIntensity;
+            //     detectorArm2.scale.y = baseScale - oscillation * maxScaleOffset * detectorIntensity;
+            // }
+
+            // let detectorStrain = 0;
+            // if (waveActive && distDetectorToHead1 < WAVE_BEAM_WIDTH && waveProgress1 < 1.0) {
+            //     detectorStrain = Math.pow(1 - distDetectorToHead1 / WAVE_BEAM_WIDTH, 2) * Math.sin(elapsedTime * 1);  // Slowed down
+            // }
+            // if (waveActive && distDetectorToHead2 < WAVE_BEAM_WIDTH && waveProgress2 < 1.0) {
+            //     detectorStrain += Math.pow(1 - distDetectorToHead2 / WAVE_BEAM_WIDTH, 2) * Math.sin(elapsedTime * 1 + Math.PI / 2);
+            // }
+            // detectorStrain = Math.max(-1, Math.min(1, detectorStrain));
+
+            // // Animate detector arms in anti-phase
+            // const baseArmLength = 1;
+            // const GW_amplitude = 0.5;
+            // if (detectorArm1 && detectorArm2) {
+            //     detectorArm1.scale.y = baseArmLength + GW_amplitude * detectorStrain;
+            //     detectorArm2.scale.y = baseArmLength - GW_amplitude * detectorStrain;
+            //     // Optionally clamp
+            //     detectorArm1.scale.y = Math.max(0.7, Math.min(1.3, detectorArm1.scale.y));
+            //     detectorArm2.scale.y = Math.max(0.7, Math.min(1.3, detectorArm2.scale.y));
+            // }
+
+            let detectorStrain = 0;
+            const osc_freq = 1.0; // Frequency of oscillation (unchanged)
+            if (waveActive && distDetectorToHead1 < WAVE_BEAM_WIDTH && waveProgress1 < 1.0) {
+                let env = Math.pow(1 - distDetectorToHead1 / WAVE_BEAM_WIDTH, 2);
+                detectorStrain = env * Math.sin(elapsedTime * 2 * Math.PI * osc_freq);
+            }
+            if (waveActive && distDetectorToHead2 < WAVE_BEAM_WIDTH && waveProgress2 < 1.0) {
+                let env = Math.pow(1 - distDetectorToHead2 / WAVE_BEAM_WIDTH, 2);
+                detectorStrain += env * Math.sin(elapsedTime * 2 * Math.PI * osc_freq + Math.PI / 2);
+            }
+            detectorStrain = Math.max(-1, Math.min(1, detectorStrain));
+
+
+            const baseArmLength = 1;
+            const GW_amplitude = 0.5;
+            if (detectorArm1 && detectorArm2) {
+                detectorArm1.scale.y = baseArmLength + GW_amplitude * detectorStrain;
+                detectorArm2.scale.y = baseArmLength - GW_amplitude * detectorStrain;
+                detectorArm1.scale.y = Math.max(0.7, Math.min(1.3, detectorArm1.scale.y));
+                detectorArm2.scale.y = Math.max(0.7, Math.min(1.3, detectorArm2.scale.y));
+            }
+
+
+
+
+
+
+            if(lensingGalaxy) {
+                lensingGalaxy.rotation.y += 0.0005;
+                lensingGalaxy.rotation.x += 0.0002;
+            }
+
+            // --- UPDATED: Keep labels facing camera ---
+            for (const label of textLabels) {
+                label.quaternion.copy(camera.quaternion);
+            }
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function generateGlowTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 128;
+            canvas.height = 128;
+            const context = canvas.getContext('2d');
+            const gradient = context.createRadialGradient(64, 64, 0, 64, 64, 64);
+            gradient.addColorStop(0, 'rgba(255,255,255,1)');
+            gradient.addColorStop(0.3, 'rgba(255,255,255,0.6)');
+            gradient.addColorStop(1, 'rgba(255,255,255,0)');
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, 128, 128);
+            return canvas;
+        }
+
+        init();
+    </script>
+</body>
+</html>
