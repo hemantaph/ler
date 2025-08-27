@@ -121,7 +121,7 @@ def solve_lens_equation(lens_parameters):
         )
         caustic = np.logical_not(np.isnan(caustic_double_points).any())
 
-        # If there is a nan, caustic=False, draw a new gamma
+        # If there is a nan, caustic=False, this batch will be ignored and resampled outside in lens_parameters sampling
         if caustic:
             break
         else:
@@ -139,6 +139,7 @@ def solve_lens_equation(lens_parameters):
                 iteration,
             )
 
+    # define region in the source plane where 2 or more images are formed
     caustic_double = Polygon(caustic_double_points.T)
 
     # check for strong lensed condition

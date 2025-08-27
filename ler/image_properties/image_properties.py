@@ -120,8 +120,7 @@ class ImageProperties():
                  z_max=10,
                  n_min_images=2, 
                  n_max_images=4,
-                 geocent_time_min=1126259462.4,
-                 geocent_time_max=1126259462.4+365*24*3600*20,
+                 time_window=365*24*3600*20,
                  lens_model_list=['EPL_NUMBA', 'SHEAR'],
                  cosmology=None,
                  spin_zero=True,
@@ -136,8 +135,9 @@ class ImageProperties():
         self.lens_model_list = lens_model_list  # list of lens models
         self.spin_zero = spin_zero
         self.spin_precession = spin_precession
-        self.geocent_time_min = geocent_time_min
-        self.geocent_time_max = geocent_time_max
+        self.time_window = time_window
+        # self.geocent_time_min = geocent_time_min
+        # self.geocent_time_max = geocent_time_max
         self.cosmo = cosmology if cosmology else cosmo
         
         # initialize the interpolator's parameters
@@ -464,6 +464,9 @@ class ImageProperties():
 
         # Get the optimal signal to noise ratios for each image
         # iterate over the image type (column)
+        geocent_time_min = np.min(geocent_time)
+        geocent_time_max = geocent_time_min + self.time_window
+
         for i in range(n_max_images):
             
             # get the effective time for each image type
@@ -471,8 +474,10 @@ class ImageProperties():
                 effective_geocent_time = geocent_time + time_delays[:, i]
             else:
                 effective_geocent_time = time_eff[:, i]
+                
             # choose only the events that are within the time range and also not nan
-            idx = (effective_geocent_time <= self.geocent_time_max) & (effective_geocent_time >= self.geocent_time_min)
+            idx = (effective_geocent_time <= geocent_time_max) & (effective_geocent_time >= geocent_time_min)
+
             # get the effective luminosity distance for each image type
             if not dl_eff_present:
                 effective_luminosity_distance = luminosity_distance / np.sqrt(
@@ -490,7 +495,7 @@ class ImageProperties():
             idx = idx & ~np.isnan(effective_luminosity_distance) & ~np.isnan(effective_geocent_time) & ~np.isnan(effective_phase)
 
             # Each image has their own effective luminosity distance and effective geocent time
-            if len(effective_luminosity_distance) != 0:
+            if sum(idx) != 0:
                 # Returns a dictionary
                 if snr_calculator:
                     optimal_snr = snr_calculator(

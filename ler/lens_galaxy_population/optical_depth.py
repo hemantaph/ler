@@ -212,7 +212,7 @@ class OpticalDepth():
         elif lens_type == "sis_galaxy":
             lens_priors_ = dict(
                 source_redshift_sl="strongly_lensed_source_redshifts",
-                lens_redshift="lens_redshift_SDSS_catalogue_numerical",
+                lens_redshift="lens_redshift_SDSS_catalogue_sis",
                 velocity_dispersion="velocity_dispersion_choi",
                 axis_ratio="axis_ratio_uniform",
                 axis_rotation_angle="axis_rotation_angle_uniform",
@@ -234,8 +234,8 @@ class OpticalDepth():
             )
             lens_functions_ = dict(
                 strong_lensing_condition="rjs_with_cross_section_sis",
-                optical_depth="optical_depth_numerical",
-                param_sampler_type="sample_all_routine_sis",
+                optical_depth="optical_depth_sis_haris",
+                param_sampler_type="sample_all_routine_sis_sl",
                 cross_section="cross_section_sis",
             )
             lens_functions_params_ = dict(

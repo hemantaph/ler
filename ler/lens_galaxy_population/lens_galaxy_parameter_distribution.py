@@ -349,8 +349,9 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         input_params_image = dict(
             n_min_images=2,
             n_max_images=4,
-            geocent_time_min=1126259462.4,
-            geocent_time_max=1126259462.4+365*24*3600*2,
+            time_window=365*24*3600*20,
+            # geocent_time_min=1126259462.4,
+            # geocent_time_max=1126259462.4+365*24*3600*2,
             lens_model_list=["EPL_NUMBA", "SHEAR"],
         )
         input_params_image.update(params)
@@ -365,8 +366,9 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             n_max_images=input_params_image["n_max_images"],
             lens_model_list=input_params_image["lens_model_list"],
             cosmology=self.cosmo,
-            geocent_time_min=input_params_image["geocent_time_min"],
-            geocent_time_max=input_params_image["geocent_time_max"],
+            time_window=input_params_image["time_window"],
+            # geocent_time_min=input_params_image["geocent_time_min"],
+            # geocent_time_max=input_params_image["geocent_time_max"],
             spin_zero=input_params["spin_zero"],
             spin_precession=input_params["spin_precession"],
             directory=self.directory,
@@ -428,6 +430,77 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         gw_param = self.sample_gw_parameters(size=size, param=param)
         # Add source params strongly lensed to the lens params
         lens_parameters.update(gw_param)
+
+        return lens_parameters
+    
+    def sample_all_routine_sis_sl(self, size=1000):
+        """
+        Function to sample galaxy lens parameters. SIS cross section is used for rejection sampling.
+        """
+
+        buffer_size = self.buffer_size
+
+        # Sample source redshifts from the source population
+        # rejection sampled with optical depth
+        zs = self.sample_source_redshift_sl(size)
+
+        # # Sample lens redshifts
+        zl = self.lens_redshift.rvs(size, zs)
+
+        sigma = np.zeros(size)
+        theta_E = np.zeros(size)
+        
+        sigma_max = self.velocity_dispersion.info['sigma_max']
+
+        for i in tqdm(range(size), ncols=100, disable=False):
+            zs_ = zs[i]*np.ones(buffer_size)
+            zl_ = zl[i]*np.ones(buffer_size)
+
+            # cross_section_max calculation
+            theta_E_max = self.compute_einstein_radii(np.array([sigma_max]), np.array([zl[i]]), np.array([zs[i]]))[0]
+            cross_section_max = np.pi*theta_E_max**2
+
+            while True:
+                # Create a dictionary of the lens parameters; sigma, theta_E, q, phi, e1, e2
+                lens_parameters_ = self.sampling_routine_sie_nsl(zl_, zs_, size=buffer_size)
+
+                # Rejection sample based on the lensing probability, that is, rejection sample wrt theta_E
+                lens_parameters_, mask, cross_section_max_ = self.rjs_with_cross_section_sis(
+                    lens_parameters_, cross_section_max
+                )  # proportional to pi theta_E^2
+
+                if cross_section_max_>cross_section_max:
+                    cross_section_max = cross_section_max_
+
+                if np.sum(mask) > 0:
+                    break
+            
+            sigma[i] = lens_parameters_["sigma"][0]
+            theta_E[i] = lens_parameters_["theta_E"][0]
+            
+        # sample additional lens parameters
+        # P(q|SL), P(gamma|SL), P(gamma1, gamma2|SL)
+        q = self.axis_ratio.rvs(size)
+        gamma = self.density_profile_slope_sl.rvs(size)
+        gamma1, gamma2 = self.external_shear_sl.rvs(size)
+
+        phi = self.axis_rotation_angle.rvs(size)
+        e1, e2 = phi_q2_ellipticity_hemanta(phi, q)
+
+        # Create a dictionary of the lens parameters
+        lens_parameters = {
+            "zl": zl,
+            "zs": zs,
+            "sigma": sigma,
+            "theta_E": theta_E,
+            "q": q,
+            "phi": phi,
+            "e1": e1,
+            "e2": e2,
+            "gamma": gamma,
+            "gamma1": gamma1,
+            "gamma2": gamma2,
+        }
 
         return lens_parameters
 

@@ -486,26 +486,26 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             merger_rate_density=merger_rate_density_prior_params,
             zs=None,
             source_frame_masses=source_frame_masses_prior_params,
-            geocent_time=dict(min_=1238166018, max_=1269702018),
-            ra=dict(min_=0., max_=2.*np.pi),
-            dec=None,  # dict(min_=-np.pi/2, max_=np.pi/2),
-            phase=dict(min_=0., max_=2.*np.pi),
-            psi=dict(min_=0., max_=np.pi),
-            theta_jn=None,  # dict(min_=0., max_=np.pi),
+            geocent_time=dict(xmin=1238166018, xmax=1269702018),
+            ra=dict(xmin=0., xmax=2.*np.pi),
+            dec=None,  # dict(xmin=-np.pi/2, xmax=np.pi/2),
+            phase=dict(xmin=0., xmax=2.*np.pi),
+            psi=dict(xmin=0., xmax=np.pi),
+            theta_jn=None,  # dict(xmin=0., xmax=np.pi),
         )
 
         # spin
         if not self.spin_zero:
             source_priors_["a_1"] = "sampler_uniform"
-            source_prior_params_["a_1"] = dict(min_=-a_max, max_=a_max)
+            source_prior_params_["a_1"] = dict(xmin=-a_max, xmax=a_max)
             source_priors_["a_2"] = "sampler_uniform"
-            source_prior_params_["a_2"] = dict(min_=-a_max, max_=a_max)
+            source_prior_params_["a_2"] = dict(xmin=-a_max, xmax=a_max)
 
             if self.spin_precession:
                 source_priors_["a_1"] = "sampler_uniform"
-                source_prior_params_["a_1"] = dict(min_=0.0, max_=a_max)
+                source_prior_params_["a_1"] = dict(xmin=0.0, xmax=a_max)
                 source_priors_["a_2"] = "sampler_uniform"
-                source_prior_params_["a_2"] = dict(min_=0.0, max_=a_max)
+                source_prior_params_["a_2"] = dict(xmin=0.0, xmax=a_max)
                 source_priors_["tilt_1"] = "sampler_sine"
                 source_prior_params_["tilt_1"] = None
 
@@ -513,9 +513,9 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 source_prior_params_["tilt_2"] = None
 
                 source_priors_["phi_12"] = "sampler_uniform"
-                source_prior_params_["phi_12"] = dict(min_=0, max_=2 * np.pi)
+                source_prior_params_["phi_12"] = dict(xmin=0, xmax=2 * np.pi)
                 source_priors_["phi_jl"] = "sampler_uniform"
-                source_prior_params_["phi_jl"] = dict(min_=0, max_=2 * np.pi)
+                source_prior_params_["phi_jl"] = dict(xmin=0, xmax=2 * np.pi)
 
         # update the priors if input is given
         if source_priors:

@@ -534,8 +534,9 @@ class LeR(LensGalaxyParameterDistribution):
         print("\n # LeR also takes ImageProperties class params as kwargs, as follows:")
         print(f"n_min_images = {self.n_min_images},")
         print(f"n_max_images = {self.n_max_images},")
-        print(f"geocent_time_min = {self.geocent_time_min},")
-        print(f"geocent_time_max = {self.geocent_time_max},")
+        print(f"time_window = {self.time_window},")
+        # print(f"geocent_time_min = {self.geocent_time_min},")
+        # print(f"geocent_time_max = {self.geocent_time_max},")
         print(f"lens_model_list = {self.lens_model_list},")
         
         if self.gwsnr:
@@ -749,8 +750,9 @@ class LeR(LensGalaxyParameterDistribution):
             # ImageProperties class params
             n_min_images=2, 
             n_max_images=4,
-            geocent_time_min=1126259462.4,
-            geocent_time_max=1126259462.4+365*24*3600*20,
+            time_window=365*24*3600*20,
+            # geocent_time_min=1126259462.4,
+            # geocent_time_max=1126259462.4+365*24*3600*20,
             lens_model_list=['EPL_NUMBA', 'SHEAR'],
             # CBCSourceParameterDistribution class params
             source_priors=None,
@@ -779,8 +781,9 @@ class LeR(LensGalaxyParameterDistribution):
             lens_param_samplers_params=input_params["lens_param_samplers_params"],
             n_min_images=input_params["n_min_images"],
             n_max_images=input_params["n_max_images"],
-            geocent_time_min=input_params["geocent_time_min"],
-            geocent_time_max=input_params["geocent_time_max"],
+            time_window=input_params["time_window"],
+            # geocent_time_min=input_params["geocent_time_min"],
+            # geocent_time_max=input_params["geocent_time_max"],
             lens_model_list=input_params["lens_model_list"],
             buffer_size=input_params["buffer_size"],
             source_priors=input_params["source_priors"],
@@ -1021,10 +1024,11 @@ class LeR(LensGalaxyParameterDistribution):
         # get gw params
         print("sampling gw source params...")
         unlensed_param = self.sample_gw_parameters(size=size)
+
         # Get all of the signal to noise ratios
         if self.snr:
             print("calculating snrs...")
-            snrs = self.snr(gw_param_dict=unlensed_param)
+            snrs = self.snr(gw_param_dict=unlensed_param.copy())
             unlensed_param.update(snrs)
         elif self.pdet:
             print("calculating pdet...")
@@ -1424,11 +1428,12 @@ class LeR(LensGalaxyParameterDistribution):
             # check for invalid samples
             idx = lensed_param["n_images"] < 2
             
-            if np.sum(idx) == 0:
-                break
-            else:
-                print(f"Invalid sample found. Resampling {np.sum(idx)} lensed events...")
-                size = np.sum(idx)
+            # if np.sum(idx) == 0:
+            #     break
+            # else:
+            #     print(f"Invalid sample found. Resampling {np.sum(idx)} lensed events...")
+            #     size = np.sum(idx)
+            break
                 
         # Get all of the signal to noise ratios
         if self.snr:
