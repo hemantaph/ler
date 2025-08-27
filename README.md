@@ -14,7 +14,7 @@ pip install ler
 ## About
 
 <p align="center">
-  <img src="sl.png" alt="Your Logo" width="100%">
+  <img src="docs/_static/sl.png" alt="Your Logo" width="100%">
 </p>
 
 LeR is a Python package designed for the statistical simulation and forecasting of gravitational wave (GW) events and their rates. It is tailored to support both GW population study groups and GW lensing research groups by providing a comprehensive suite of tools for GW event analysis. The package is organized into the following main components:
