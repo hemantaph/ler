@@ -79,6 +79,8 @@ html_static_path = ['_static']
 html_css_files = [
     'custom.css',  # Add this line to include your custom CSS
 ]
+# Add this line to ensure the .nojekyll file is copied
+html_extra_path = ['_static/.nojekyll']
 
 # -- Configure autoapi -------------------------------------------------------
 autodoc_typehints = "signature"  # autoapi respects this
