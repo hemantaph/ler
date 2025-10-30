@@ -496,7 +496,7 @@
     "# You have two choice to input the generated parameters, either as json file name or as a dict\n",
     "rate, param_detectable = ler.gw_rate(\n",
     "    gw_param='./new_gw_params.json',\n",
-    "    snr_threshold=8.0,\n",
+    "    snr_threshold=10.0,\n",
     "    output_jsonfile='./new_gw_params_detectable.json',\n",
     ")"
    ]
@@ -711,7 +711,7 @@
    "source": [
     "n_size_param = ler.selecting_n_gw_detectable_events(\n",
     "    size=500, \n",
-    "    snr_threshold=8.0,\n",
+    "    snr_threshold=10.0,\n",
     "    batch_size=25000,\n",
     "    output_jsonfile='./gw_params_n_detectable.json'\n",
     "    )"

@@ -797,7 +797,7 @@ class GWRATES(CBCSourceParameterDistribution):
     def gw_rate(
         self,
         gw_param=None,
-        snr_threshold=8.0,
+        snr_threshold=10.0,
         pdet_threshold=0.5,
         output_jsonfile=None,
         detectability_condition="step_function",
@@ -1086,7 +1086,7 @@ class GWRATES(CBCSourceParameterDistribution):
             relative_diff_percentage=0.5,
             number_of_last_batches_to_check=4,
         ),
-        snr_threshold=8.0,
+        snr_threshold=10.0,
         pdet_threshold=0.5,
         resume=False,
         output_jsonfile="gw_params_n_detectable.json",

@@ -85,7 +85,7 @@
    ],
    "source": [
     "# snr_cut=8.0\n",
-    "ler.selecting_n_unlensed_detectable_events(size=1000, batch_size=100000,snr_threshold=8.0, output_jsonfile='n_unlensed_detectable_bns.json', meta_data_file='n_unlensed_detectable_bns_meta.json', resume=True);"
+    "ler.selecting_n_unlensed_detectable_events(size=1000, batch_size=100000,snr_threshold=10.0, output_jsonfile='n_unlensed_detectable_bns.json', meta_data_file='n_unlensed_detectable_bns_meta.json', resume=True);"
    ]
   },
   {
@@ -3097,7 +3097,7 @@
    "source": [
     "# snr_cut=8.0\n",
     "# time will take long time sample\n",
-    "ler.selecting_n_lensed_detectable_events(size=1000, batch_size=100000,snr_threshold=8.0, num_img=2, output_jsonfile='n_lensed_detectable_bns.json', meta_data_file='n_lensed_detectable_bns_meta.json', resume=True);"
+    "ler.selecting_n_lensed_detectable_events(size=1000, batch_size=100000,snr_threshold=10.0, num_img=2, output_jsonfile='n_lensed_detectable_bns.json', meta_data_file='n_lensed_detectable_bns_meta.json', resume=True);"
    ]
   },
   {
