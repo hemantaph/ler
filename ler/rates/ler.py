@@ -4,6 +4,7 @@ This module contains the main class for calculating the rates of detectable grav
 """
 
 import os
+# os.environ['OMP_NESTED'] = 'FALSE'
 import warnings
 warnings.filterwarnings("ignore")
 import logging
@@ -53,7 +54,7 @@ class LeR(LensGalaxyParameterDistribution):
         def snr_finder(gw_param_dict):
             ...
             return optimal_snr_dict
-        where optimal_snr_dict.keys = ['optimal_snr_net']. Refer to `gwsnr` package's GWSNR.snr attribute for more details.
+        where optimal_snr_dict.keys = ['snr_net']. Refer to `gwsnr` package's GWSNR.snr attribute for more details.
     pdet_finder : `function`
         default pdet_finder = None.
         The rate calculation uses either the pdet_finder or the snr_finder to calculate the detectable events. The custom pdet finder function should follow the following signature:
@@ -159,7 +160,7 @@ class LeR(LensGalaxyParameterDistribution):
     |:meth:`~class_initialization`        | Function to initialize the       |
     |                                     | parent classes                   |
     +-------------------------------------+----------------------------------+
-    |:meth:`~gwsnr_intialization`         | Function to initialize the       |
+    |:meth:`~gwsnr_initialization`         | Function to initialize the       |
     |                                     | gwsnr class                      |
     +-------------------------------------+----------------------------------+
     |:meth:`~snr`                         | Function to get the snr with the |
@@ -477,7 +478,7 @@ class LeR(LensGalaxyParameterDistribution):
             self.class_initialization(params=kwargs)
             # initialization self.snr and self.pdet from GWSNR class
             if not snr_finder and not pdet_finder:
-                self.gwsnr_intialization(params=kwargs)
+                self.gwsnr_initialization(params=kwargs)
                 self.gwsnr = True
                 self.pdet = pdet_finder
             else:
@@ -801,7 +802,7 @@ class LeR(LensGalaxyParameterDistribution):
         self.gw_param_sampler_dict["lens_functions"]=self.lens_functions.copy()
         self.gw_param_sampler_dict["lens_functions_params"]=self.lens_functions_params.copy()
 
-    def gwsnr_intialization(self, params=None):
+    def gwsnr_initialization(self, params=None):
         """
         Function to initialize the GWSNR class from the `gwsnr` package.
 
@@ -813,36 +814,54 @@ class LeR(LensGalaxyParameterDistribution):
         from gwsnr import GWSNR
 
         # initialization of GWSNR class
+        if 'mminbh' in self.gw_param_samplers_params['source_frame_masses']:
+            min_bh_mass = self.gw_param_samplers_params['source_frame_masses']['mminbh']
+        else:
+            min_bh_mass = 2.0
+
+        if 'mmaxbh' in self.gw_param_samplers_params['source_frame_masses']:
+            max_bh_mass = self.gw_param_samplers_params['source_frame_masses']['mmaxbh']
+        else:
+            max_bh_mass = 200.0
         input_params = dict(
+            # General settings
             npool=self.npool,
-            mtot_min=2*self.gw_param_samplers_params['source_frame_masses']['mminbh'],
-            mtot_max=2*self.gw_param_samplers_params['source_frame_masses']['mmaxbh']+10.0,
+            snr_method="interpolation_aligned_spins",
+            snr_type="optimal_snr",
+            gwsnr_verbose=True,
+            multiprocessing_verbose=True,
+            pdet_kwargs=None,
+            # Settings for interpolation grid
+            mtot_min=min_bh_mass*2,
+            mtot_max=max_bh_mass*2*(1+self.z_max) if max_bh_mass*2*(1+self.z_max)<500.0 else 500.0,
             ratio_min=0.1,
             ratio_max=1.0,
             spin_max=0.99,
             mtot_resolution=200,
             ratio_resolution=20,
             spin_resolution=10,
+            batch_size_interpolation=1000000,
+            interpolator_dir="./interpolator_pickle",
+            create_new_interpolator=False,
+            # GW signal settings
             sampling_frequency=2048.0,
             waveform_approximant="IMRPhenomD",
             frequency_domain_source_model='lal_binary_black_hole',
             minimum_frequency=20.0,
+            reference_frequency=None,
             duration_max=None,
             duration_min=None,
-            snr_type="interpolation",
+            fixed_duration=None,
+            mtot_cut=False,
+            # Detector settings
             psds=None,
             ifos=None,
-            interpolator_dir="./interpolator_pickle",
-            create_new_interpolator=False,
-            gwsnr_verbose=True,
-            multiprocessing_verbose=True,
-            mtot_cut=False,
-            pdet=False,
-            snr_th=8.0,
-            snr_th_net=8.0,
+            noise_realization=None, # not implemented yet
+            # ANN settings
             ann_path_dict=None,
+            # Hybrid SNR recalculation settings
             snr_recalculation=False,
-            snr_recalculation_range=[4,12],
+            snr_recalculation_range=[6,14],
             snr_recalculation_waveform_approximant="IMRPhenomXPHM",
         )
         # if self.event_type == "BNS":
@@ -868,41 +887,47 @@ class LeR(LensGalaxyParameterDistribution):
 
         # initialization of GWSNR class
         gwsnr = GWSNR(
-                    npool=input_params["npool"],
-                    mtot_min=input_params["mtot_min"],
-                    mtot_max=input_params["mtot_max"],
-                    ratio_min=input_params["ratio_min"],
-                    ratio_max=input_params["ratio_max"],
-                    spin_max=input_params["spin_max"],
-                    mtot_resolution=input_params["mtot_resolution"],
-                    ratio_resolution=input_params["ratio_resolution"],
-                    spin_resolution=input_params["spin_resolution"],
-                    sampling_frequency=input_params["sampling_frequency"],
-                    waveform_approximant=input_params["waveform_approximant"],
-                    frequency_domain_source_model=input_params["frequency_domain_source_model"],
-                    minimum_frequency=input_params["minimum_frequency"],
-                    duration_max=input_params["duration_max"],
-                    duration_min=input_params["duration_min"],
-                    snr_type=input_params["snr_type"],
-                    psds=input_params["psds"],
-                    ifos=input_params["ifos"],
-                    interpolator_dir=input_params["interpolator_dir"],
-                    create_new_interpolator=input_params["create_new_interpolator"],
-                    gwsnr_verbose=input_params["gwsnr_verbose"],
-                    multiprocessing_verbose=input_params["multiprocessing_verbose"],
-                    mtot_cut=input_params["mtot_cut"],
-                    pdet=input_params["pdet"],
-                    snr_th=input_params["snr_th"],      
-                    snr_th_net=input_params["snr_th_net"],
-                    ann_path_dict=input_params["ann_path_dict"],
-                )
+            npool=input_params["npool"],
+            snr_method=input_params["snr_method"],
+            snr_type=input_params["snr_type"],
+            gwsnr_verbose=input_params["gwsnr_verbose"],
+            multiprocessing_verbose=input_params["multiprocessing_verbose"],
+            pdet_kwargs=input_params["pdet_kwargs"],
+            mtot_min=input_params["mtot_min"],
+            mtot_max=input_params["mtot_max"],
+            ratio_min=input_params["ratio_min"],
+            ratio_max=input_params["ratio_max"],
+            spin_max=input_params["spin_max"],
+            mtot_resolution=input_params["mtot_resolution"],
+            ratio_resolution=input_params["ratio_resolution"],
+            spin_resolution=input_params["spin_resolution"],
+            batch_size_interpolation=input_params["batch_size_interpolation"],
+            interpolator_dir=input_params["interpolator_dir"],
+            create_new_interpolator=input_params["create_new_interpolator"],
+            sampling_frequency=input_params["sampling_frequency"],
+            waveform_approximant=input_params["waveform_approximant"],
+            frequency_domain_source_model=input_params["frequency_domain_source_model"],
+            minimum_frequency=input_params["minimum_frequency"],
+            reference_frequency=input_params["reference_frequency"],
+            duration_max=input_params["duration_max"],
+            duration_min=input_params["duration_min"],
+            fixed_duration=input_params["fixed_duration"],
+            mtot_cut=input_params["mtot_cut"],
+            psds=input_params["psds"],
+            ifos=input_params["ifos"],
+            noise_realization=input_params["noise_realization"],
+            ann_path_dict=input_params["ann_path_dict"],
+            snr_recalculation=input_params["snr_recalculation"],
+            snr_recalculation_range=input_params["snr_recalculation_range"],
+            snr_recalculation_waveform_approximant=input_params["snr_recalculation_waveform_approximant"],
+        )
 
-        self.snr = gwsnr.snr
+        self.snr = gwsnr.optimal_snr
         self.list_of_detectors = gwsnr.detector_list
-        self.snr_bilby = gwsnr.compute_bilby_snr
+        self.snr_bilby = gwsnr.optimal_snr_with_inner_product
         self.snr_calculator_dict["mtot_max"] = gwsnr.mtot_max
         self.snr_calculator_dict["psds"] = gwsnr.psds_list
-        #self.pdet = gwsnr.pdet
+        self.pdet = gwsnr.pdet
 
     def store_ler_params(self, output_jsonfile="ler_params.json"):
         """
@@ -1165,7 +1190,7 @@ class LeR(LensGalaxyParameterDistribution):
             dictionary of unlensed GW source parameters.
         """
 
-        snr_param = unlensed_param["optimal_snr_net"]
+        snr_param = unlensed_param["snr_net"]
         idx_detectable = (snr_param > snr_threshold_recalculation[0]) & (snr_param < snr_threshold_recalculation[1])
         # reduce the size of the dict
         for key, value in unlensed_param.items():
@@ -1199,15 +1224,15 @@ class LeR(LensGalaxyParameterDistribution):
         """
 
         if self.snr:
-            if "optimal_snr_net" not in unlensed_param:
-                raise ValueError("'optimal_snr_net' not in unlensed param dict provided")
+            if "snr_net" not in unlensed_param:
+                raise ValueError("'snr_net' not in unlensed param dict provided")
             if detectability_condition == "step_function":
                 #print("given detectability_condition == 'step_function'")
-                param = unlensed_param["optimal_snr_net"]
+                param = unlensed_param["snr_net"]
                 threshold = snr_threshold
             elif detectability_condition == "pdet":
                 #print("given detectability_condition == 'pdet'")
-                param = 1 - norm.cdf(snr_threshold - unlensed_param["optimal_snr_net"])
+                param = 1 - norm.cdf(snr_threshold - unlensed_param["snr_net"])
                 unlensed_param["pdet_net"] = param
                 threshold = pdet_threshold
         elif self.pdet:
@@ -1612,10 +1637,10 @@ class LeR(LensGalaxyParameterDistribution):
         snr_threshold_recalculation_max, _ = self._check_snr_threshold_lensed(snr_threshold_recalculation[1], num_img)
 
         # check optimal_snr_net is provided in dict
-        if "optimal_snr_net" not in lensed_param:
+        if "snr_net" not in lensed_param:
             raise ValueError("optimal_snr_net not provided in lensed_param dict. Exiting...")
 
-        snr_param = lensed_param["optimal_snr_net"]
+        snr_param = lensed_param["snr_net"]
         snr_param = -np.sort(-snr_param, axis=1)  # sort snr in descending order
             
         # for each row: choose a threshold and check if the number of images above threshold. Sum over the images. If sum is greater than num_img, then snr_hit = True
@@ -1672,9 +1697,9 @@ class LeR(LensGalaxyParameterDistribution):
 
         #print(f"given detectability_condition == {detectability_condition}")
         if detectability_condition == "step_function":
-            if "optimal_snr_net" not in lensed_param:
-                raise ValueError("'optimal_snr_net' not in lensed parm dict provided")
-            snr_param = lensed_param["optimal_snr_net"]
+            if "snr_net" not in lensed_param:
+                raise ValueError("'snr_net' not in lensed parm dict provided")
+            snr_param = lensed_param["snr_net"]
             snr_param = -np.sort(-snr_param, axis=1)  # sort snr in descending order
             snr_hit = np.full(len(snr_param), True)  # boolean array to store the result of the threshold condition
 
@@ -1700,12 +1725,12 @@ class LeR(LensGalaxyParameterDistribution):
                 
         elif detectability_condition == "pdet":
             if "pdet_net" not in lensed_param:
-                if "optimal_snr_net" not in lensed_param:
-                    raise ValueError("'optimal_snr_net' or 'pdet_net' not in lensed parm dict provided")
+                if "snr_net" not in lensed_param:
+                    raise ValueError("'snr_net' or 'pdet_net' not in lensed parm dict provided")
                 else:
-                    print("calculating pdet using 'optimal_snr_net'...")
+                    print("calculating pdet using 'snr_net'...")
                     # pdet dimension is (size, n_max_images)
-                    snr_param = lensed_param["optimal_snr_net"]
+                    snr_param = lensed_param["snr_net"]
                     snr_param = -np.sort(-snr_param, axis=1)  # sort snr in descending order
 
                     # column index beyong np.sum(num_img)-1 are not considered

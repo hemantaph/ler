@@ -209,7 +209,7 @@ Classes
 
           **snrs** : `dict`
               signal to noise ratio for each image in each event.
-              (dictionary containing 'H1', 'L1', ..., and 'optimal_snr_net', which is the network snr, for each image as an array with dimensions (number_of_lensed_events,n_max_images) )
+              (dictionary containing 'H1', 'L1', ..., and 'snr_net', which is the network snr, for each image as an array with dimensions (number_of_lensed_events,n_max_images) )
 
 
 

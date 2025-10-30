@@ -53,7 +53,7 @@ class GWRATES(CBCSourceParameterDistribution):
         def snr_finder(gw_param_dict):
             ...
             return optimal_snr_dict
-        where optimal_snr_dict.keys = ['optimal_snr_net']. Refer to `gwsnr` package's GWSNR.snr attribute for more details.
+        where optimal_snr_dict.keys = ['snr_net']. Refer to `gwsnr` package's GWSNR.snr attribute for more details.
     pdet_finder : `function`
         default pdet_finder = None.
         The rate calculation uses either the pdet_finder or the snr_finder to calculate the detectable events. The custom pdet finder function should follow the following signature:
@@ -130,7 +130,7 @@ class GWRATES(CBCSourceParameterDistribution):
     |:meth:`~class_initialization`        | Function to initialize the       |
     |                                     | parent classes                   |
     +-------------------------------------+----------------------------------+
-    |:meth:`~gwsnr_intialization`         | Function to initialize the       |
+    |:meth:`~gwsnr_initialization`         | Function to initialize the       |
     |                                     | gwsnr class                      |
     +-------------------------------------+----------------------------------+
     |:meth:`~snr`                         | Function to get the snr with the |
@@ -313,7 +313,7 @@ class GWRATES(CBCSourceParameterDistribution):
             self.class_initialization(params=kwargs)
             # initialization self.snr and self.pdet from GWSNR class
             if not snr_finder and not pdet_finder:
-                self.gwsnr_intialization(params=kwargs)
+                self.gwsnr_initialization(params=kwargs)
                 self.gwsnr = True
                 self.pdet = pdet_finder
             else:
@@ -549,7 +549,7 @@ class GWRATES(CBCSourceParameterDistribution):
         self.gw_param_sampler_dict["source_priors"]=self.gw_param_samplers.copy()
         self.gw_param_sampler_dict["source_priors_params"]=self.gw_param_samplers_params.copy()
 
-    def gwsnr_intialization(self, params=None):
+    def gwsnr_initialization(self, params=None):
         """
         Function to initialize the GWSNR class from the `gwsnr` package.
 
@@ -918,7 +918,7 @@ class GWRATES(CBCSourceParameterDistribution):
             dictionary of GW source parameters.
         """
 
-        snr_param = gw_param["optimal_snr_net"]
+        snr_param = gw_param["snr_net"]
         idx_detectable = (snr_param > snr_threshold_recalculation[0]) & (snr_param < snr_threshold_recalculation[1])
         # reduce the size of the dict
         for key, value in gw_param.items():
@@ -952,15 +952,15 @@ class GWRATES(CBCSourceParameterDistribution):
         """
 
         if self.snr:
-            if "optimal_snr_net" not in gw_param:
-                raise ValueError("'optimal_snr_net' not in gw param dict provided")
+            if "snr_net" not in gw_param:
+                raise ValueError("'snr_net' not in gw param dict provided")
             if detectability_condition == "step_function":
                 print("given detectability_condition == 'step_function'")
-                param = gw_param["optimal_snr_net"]
+                param = gw_param["snr_net"]
                 threshold = snr_threshold
             elif detectability_condition == "pdet":
                 print("given detectability_condition == 'pdet'")
-                param = 1 - norm.cdf(snr_threshold - gw_param["optimal_snr_net"])
+                param = 1 - norm.cdf(snr_threshold - gw_param["snr_net"])
                 gw_param["pdet_net"] = param
                 threshold = pdet_threshold
         elif self.pdet:

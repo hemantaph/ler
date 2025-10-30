@@ -243,7 +243,7 @@
 <span class="sd">    |:meth:`~class_initialization`        | Function to initialize the       |</span>
 <span class="sd">    |                                     | parent classes                   |</span>
 <span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:meth:`~gwsnr_intialization`         | Function to initialize the       |</span>
+<span class="sd">    |:meth:`~gwsnr_initialization`         | Function to initialize the       |</span>
 <span class="sd">    |                                     | gwsnr class                      |</span>
 <span class="sd">    +-------------------------------------+----------------------------------+</span>
 <span class="sd">    |:meth:`~snr`                         | Function to get the snr with the |</span>
@@ -468,7 +468,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">class_initialization</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="c1"># initialization self.snr and self.pdet from GWSNR class</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">snr_finder</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">pdet_finder</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">gwsnr_intialization</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gwsnr_initialization</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">gwsnr</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">pdet</span> <span class="o">=</span> <span class="n">pdet_finder</span>
             <span class="k">else</span><span class="p">:</span>
@@ -713,9 +713,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_sampler_dict</span><span class="p">[</span><span class="s2">&quot;source_priors_params&quot;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="GWRATES.gwsnr_intialization">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/index.html#ler.rates.gwrates.GWRATES.gwsnr_intialization">[docs]</a>
-    <span class="k">def</span> <span class="nf">gwsnr_intialization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="GWRATES.gwsnr_initialization">
+<a class="viewcode-back" href="../../../autoapi/ler/rates/index.html#ler.rates.gwrates.GWRATES.gwsnr_initialization">[docs]</a>
+    <span class="k">def</span> <span class="nf">gwsnr_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to initialize the GWSNR class from the `gwsnr` package.</span>
 
