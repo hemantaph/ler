@@ -1065,7 +1065,7 @@ class LeR(LensGalaxyParameterDistribution):
     def unlensed_rate(
         self,
         unlensed_param=None,
-        snr_threshold=8.0,
+        snr_threshold=10.0,
         pdet_threshold=0.5,
         output_jsonfile=None,
         detectability_condition="step_function",
@@ -1893,7 +1893,7 @@ class LeR(LensGalaxyParameterDistribution):
             relative_diff_percentage=0.5,
             number_of_last_batches_to_check=4,
         ),
-        snr_threshold=8.0,
+        snr_threshold=10.0,
         pdet_threshold=0.5,
         resume=False,
         output_jsonfile="n_unlensed_param_detectable.json",

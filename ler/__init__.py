@@ -51,7 +51,7 @@ LeR
 __author__ = 'hemanta_ph <hemantaphurailatpam@gmail.com>'
 
 # The version as used in the setup.py
-__version__ = "0.4.2"
+__version__ = "0.4.3"
 
 # add __file__
 import os

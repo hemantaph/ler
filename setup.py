@@ -13,7 +13,7 @@ if python_version < (3, 10):
 
 setup(
     name="ler",
-    version="0.4.2",
+    version="0.4.3",
     description="LVK (LIGO-Virgo-KAGRA collaboration) Event (compact-binary mergers) Rate calculator and simulator",
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -30,9 +30,11 @@ setup(
         "setuptools>=65.5.0",
         "matplotlib>=3.4.2",
         "pycbc>=2.0.4",
-        "numpy>=1.18",
+        "numpy<=1.26.4",
         "numba>=0.60.0",
         "bilby>=1.0.2",
+        "gwpy>=3.0.12",
+        "lalsuite>=7.26.1",
         "gwsnr>=0.3.8",
         # "scipy<1.14.0",
         "lenstronomy>=1.10.4",

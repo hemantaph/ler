@@ -1175,7 +1175,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: unlensed_rate(unlensed_param=None, snr_threshold=8.0, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, snr_threshold_recalculation=5.5)
+   .. py:method:: unlensed_rate(unlensed_param=None, snr_threshold=10.0, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, snr_threshold_recalculation=5.5)
 
       
       Function to calculate the unlensed rate. This function also stores the parameters of the detectable events in json file.
@@ -1511,7 +1511,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_unlensed_detectable_events(size=100, batch_size=None, snr_threshold=8.0, resume=False, output_jsonfile='n_unlensed_param_detectable.json', meta_data_file='meta_unlensed.json', detectability_condition='step_function', trim_to_size=True, snr_recalculation=False, snr_threshold_recalculation=5.5)
+   .. py:method:: selecting_n_unlensed_detectable_events(size=100, batch_size=None, snr_threshold=10.0, resume=False, output_jsonfile='n_unlensed_param_detectable.json', meta_data_file='meta_unlensed.json', detectability_condition='step_function', trim_to_size=True, snr_recalculation=False, snr_threshold_recalculation=5.5)
 
       
       Function to generate n unlensed detectable events. This fuction samples the unlensed parameters and save only the detectable events in json file. It also records metadata in the JSON file, which includes the total number of events and the cumulative rate of events. This functionality is particularly useful for generating a fixed or large number of detectable events until the event rates stabilize.
