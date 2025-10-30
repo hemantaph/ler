@@ -174,7 +174,7 @@ def relative_mu_dt_lensed(
     # get magnifications, time_delays and snr
     mu = lensed_param["magnifications"]
     dt = lensed_param["time_delays"]
-    snr = lensed_param["optimal_snr_net"]
+    snr = lensed_param["snr_net"]
     image_type = lensed_param["image_type"]
 
     # pair images wrt to image_type

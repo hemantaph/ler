@@ -111,7 +111,7 @@ class TrainingDataGenerator():
         else:
             if os.path.exists(json_path):
                 gw_param = get_param_from_json(json_path)
-                len_final = len(gw_param['optimal_snr_net'])
+                len_final = len(gw_param['snr_net'])
                 print(f'current size of the json file: {len_final}\n')
             else:
                 len_final = 0
@@ -140,7 +140,7 @@ class TrainingDataGenerator():
             append_json(json_path, gw_param, replace=False);
 
             # print(f"Collected number of events: {len_}")
-            len_final += len(gw_param['optimal_snr_net'])
+            len_final += len(gw_param['snr_net'])
             if verbose:
                 print(f"Collected number of events: {len_final}")
 
@@ -149,14 +149,14 @@ class TrainingDataGenerator():
             for key, value in gw_param.items():
                 gw_param[key] = value[:size]
             append_json(json_path, gw_param, replace=True);
-            len_final = len(gw_param['optimal_snr_net'])
+            len_final = len(gw_param['snr_net'])
 
         print(f"final size: {len_final}\n")
         print(f"json file saved at: {json_path}\n")
 
     def helper_data_distribution(self, gw_param, data_distribution_range):
     # optimal SNR 
-        snr = np.array(gw_param['optimal_snr_net'])
+        snr = np.array(gw_param['snr_net'])
 
         idx_arr = []
         snr_range = np.array(data_distribution_range)
@@ -220,8 +220,8 @@ class TrainingDataGenerator():
                     else:
                         combined_dict[key] = value
 
-        # if 'optimal_snr_net' is not in the combined_dict, we can calculate it
-        combined_dict['optimal_snr_net'] = combined_dict[detector]
+        # if 'snr_net' is not in the combined_dict, we can calculate it
+        combined_dict['snr_net'] = combined_dict[detector]
 
         json_path = f"{self.ler_init_args['ler_directory']}/{output_jsonfile}"
         print(f"json file saved at: {json_path}\n")

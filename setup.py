@@ -33,7 +33,7 @@ setup(
         "numpy>=1.18",
         "numba>=0.60.0",
         "bilby>=1.0.2",
-        "gwsnr>=0.3.2",
+        "gwsnr>=0.3.8",
         # "scipy<1.14.0",
         "lenstronomy>=1.10.4",
         "astropy>=5.1",

@@ -183,7 +183,7 @@
     {
      "data": {
       "text/plain": [
-       "dict_keys(['zl', 'zs', 'sigma', 'q', 'theta_E', 'phi', 'e1', 'e2', 'gamma1', 'gamma2', 'gamma', 'geocent_time', 'ra', 'dec', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2', 'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'image_type', 'n_images', 'effective_luminosity_distance', 'effective_geocent_time', 'optimal_snr_net', 'L1', 'H1', 'V1'])"
+       "dict_keys(['zl', 'zs', 'sigma', 'q', 'theta_E', 'phi', 'e1', 'e2', 'gamma1', 'gamma2', 'gamma', 'geocent_time', 'ra', 'dec', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2', 'x0_image_positions', 'x1_image_positions', 'magnifications', 'time_delays', 'image_type', 'n_images', 'effective_luminosity_distance', 'effective_geocent_time', 'snr_net', 'L1', 'H1', 'V1'])"
       ]
      },
      "execution_count": 5,
@@ -209,7 +209,7 @@
     "dt14 = abs(dt_eff[:,3]-dt_eff[:,0])/ (24*3600)\n",
     "\n",
     "# select only detectable\n",
-    "snr_l = lensed_params_detectable['optimal_snr_net']\n",
+    "snr_l = lensed_params_detectable['snr_net']\n",
     "dt12 = dt12[snr_l[:,1]>8]\n",
     "dt13 = dt13[snr_l[:,2]>8]\n",
     "dt14 = dt14[snr_l[:,3]>8]\n",
@@ -328,7 +328,7 @@
     "# dn90 for [typeI,typeII] or [typeI,typeII]\n",
     "img_type = lensed_params_detectable['image_type']\n",
     "dt_eff = lensed_params_detectable['effective_geocent_time']\n",
-    "snr_l = lensed_params_detectable['optimal_snr_net']\n",
+    "snr_l = lensed_params_detectable['snr_net']\n",
     "mu = lensed_params_detectable['magnifications']"
    ]
   },
@@ -788,7 +788,7 @@
     "mu = mu[~idx_nan]\n",
     "\n",
     "# snr \n",
-    "snr = lensed_params_detectable['optimal_snr_net']\n",
+    "snr = lensed_params_detectable['snr_net']\n",
     "snr = np.array(snr).flatten()\n",
     "snr = snr[~idx_nan]\n",
     "idx_detectable = snr>8\n",
@@ -1082,7 +1082,7 @@
     "dt14 = abs(dt_eff[:,3]-dt_eff[:,0])/ (24*3600)\n",
     "\n",
     "# select only detectable\n",
-    "snr_l = lensed_params_detectable['optimal_snr_net']\n",
+    "snr_l = lensed_params_detectable['snr_net']\n",
     "dt12 = dt12[snr_l[:,1]>8]\n",
     "dt13 = dt13[snr_l[:,2]>8]\n",
     "dt14 = dt14[snr_l[:,3]>8]\n",
@@ -1138,7 +1138,7 @@
     "# dn90 for [typeI,typeII] or [typeI,typeII]\n",
     "img_type = lensed_params_detectable['image_type']\n",
     "dt_eff = lensed_params_detectable['effective_geocent_time']\n",
-    "snr_l = lensed_params_detectable['optimal_snr_net']"
+    "snr_l = lensed_params_detectable['snr_net']"
    ]
   },
   {

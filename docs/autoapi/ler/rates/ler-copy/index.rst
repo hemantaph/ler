@@ -74,7 +74,7 @@ Classes
            def snr_finder(gw_param_dict):
                ...
                return optimal_snr_dict
-           where optimal_snr_dict.keys = ['optimal_snr_net']. Refer to `gwsnr` package's GWSNR.snr attribute for more details.
+           where optimal_snr_dict.keys = ['snr_net']. Refer to `gwsnr` package's GWSNR.snr attribute for more details.
 
        **pdet_finder** : `function`
            default pdet_finder = None.
@@ -182,7 +182,7 @@ Classes
    |:meth:`~class_initialization`        | Function to initialize the       |
    |                                     | parent classes                   |
    +-------------------------------------+----------------------------------+
-   |:meth:`~gwsnr_intialization`         | Function to initialize the       |
+   |:meth:`~gwsnr_initialization`         | Function to initialize the       |
    |                                     | gwsnr class                      |
    +-------------------------------------+----------------------------------+
    |:meth:`~snr`                         | Function to get the snr with the |
@@ -1030,7 +1030,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: gwsnr_intialization(params=None)
+   .. py:method:: gwsnr_initialization(params=None)
 
       
       Function to initialize the GWSNR class from the `gwsnr` package.

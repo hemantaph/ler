@@ -214,7 +214,7 @@
     {
      "data": {
       "text/plain": [
-       "dict_keys(['zs', 'geocent_time', 'ra', 'dec', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2', 'L1', 'H1', 'V1', 'optimal_snr_net'])"
+       "dict_keys(['zs', 'geocent_time', 'ra', 'dec', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2', 'L1', 'H1', 'V1', 'snr_net'])"
       ]
      },
      "execution_count": 7,
@@ -264,7 +264,7 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "param_detectable keys: dict_keys(['zs', 'geocent_time', 'ra', 'dec', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2', 'L1', 'H1', 'V1', 'optimal_snr_net'])\n"
+      "param_detectable keys: dict_keys(['zs', 'geocent_time', 'ra', 'dec', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2', 'L1', 'H1', 'V1', 'snr_net'])\n"
      ]
     }
    ],
@@ -294,7 +294,7 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "param_detectable keys: dict_keys(['zs', 'geocent_time', 'ra', 'dec', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2', 'L1', 'H1', 'V1', 'optimal_snr_net'])\n"
+      "param_detectable keys: dict_keys(['zs', 'geocent_time', 'ra', 'dec', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2', 'L1', 'H1', 'V1', 'snr_net'])\n"
      ]
     }
    ],
@@ -1001,7 +1001,7 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "dict_keys(['zs', 'geocent_time', 'ra', 'dec', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2', 'L1', 'H1', 'V1', 'optimal_snr_net'])\n",
+      "dict_keys(['zs', 'geocent_time', 'ra', 'dec', 'phase', 'psi', 'theta_jn', 'luminosity_distance', 'mass_1_source', 'mass_2_source', 'mass_1', 'mass_2', 'L1', 'H1', 'V1', 'snr_net'])\n",
       "size of each parameters=5000\n"
      ]
     }
@@ -1185,7 +1185,7 @@
      "output_type": "stream",
      "text": [
       "pdet: {'L1': array([0, 0, 1, 0]), 'H1': array([0, 0, 0, 0]), 'V1': array([0, 0, 0, 0]), 'pdet_net': array([1, 0, 1, 0])}\n",
-      "inner_product_snr: {'L1': array([ 7.4441411 ,  5.85368923, 10.64502665,  0.        ]), 'H1': array([4.73471203, 3.72313373, 6.77057769, 0.        ]), 'V1': array([2.23257635, 1.73563896, 3.21070702, 0.        ]), 'optimal_snr_net': array([ 9.10039185,  7.15121283, 13.01790898,  0.        ])}\n"
+      "inner_product_snr: {'L1': array([ 7.4441411 ,  5.85368923, 10.64502665,  0.        ]), 'H1': array([4.73471203, 3.72313373, 6.77057769, 0.        ]), 'V1': array([2.23257635, 1.73563896, 3.21070702, 0.        ]), 'snr_net': array([ 9.10039185,  7.15121283, 13.01790898,  0.        ])}\n"
      ]
     },
     {
