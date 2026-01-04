@@ -19,7 +19,7 @@ Classes
 
 
 
-.. py:class:: OpticalDepth(npool=4, z_min=0.0, z_max=10.0, cosmology=None, lens_type='epl_shear_galaxy', lens_functions=None, lens_functions_params=None, lens_param_samplers=None, lens_param_samplers_params=None, directory='./interpolator_pickle', create_new_interpolator=False, verbose=False)
+.. py:class:: OpticalDepth(npool=4, z_min=0.0, z_max=10.0, cosmology=None, lens_type='epl_shear_galaxy', lens_functions=None, lens_functions_params=None, lens_param_samplers=None, lens_param_samplers_params=None, directory='./interpolator_json', create_new_interpolator=False, verbose=False)
 
 
    
@@ -56,7 +56,7 @@ Classes
            Dictionary with parameters for the priors of the samplers.
 
        **directory** : str, optional
-           Directory where the interpolators are saved (default is './interpolator_pickle').
+           Directory where the interpolators are saved (default is './interpolator_json').
            If True, creates a new interpolator (default is False).
 
        **verbose** : bool, optional
@@ -252,10 +252,10 @@ Classes
 
       :Returns:
 
-          **lens_priors_** : `dict`
+          **lens_param_samplers_** : `dict`
               dictionary of priors
 
-          **lens_priors_params_** : `dict`
+          **lens_param_samplers_params_** : `dict`
               dictionary of priors parameters
 
           **lens_sampler_names_** : `dict`
@@ -309,7 +309,7 @@ Classes
    .. py:method:: lens_functions_and_sampler_categorization(lens_param_samplers, lens_param_samplers_params, lens_functions, lens_functions_params)
 
       
-      Function to initialize velocity dispersion sampler with it's settings. The reason I am seperating this from lens_priors_categorization is only a specific parameters needs special attention.
+      Function to initialize velocity dispersion sampler with it's settings. The reason I am seperating this from lens_param_samplers_categorization is only a specific parameters needs special attention.
 
 
       :Parameters:
@@ -426,7 +426,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lens_redshift_SDSS_catalogue_numerical(size=1000, zs=None, get_attribute=False, **kwargs)
+   .. py:method:: lens_redshift_strongly_lensed_numerical(size=1000, zs=None, get_attribute=False, **kwargs)
 
       
       Function to sample lens redshifts, conditioned on the lens being strongly lensed
@@ -460,7 +460,7 @@ Classes
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(lens_redshift="lens_redshift_SDSS_catalogue_numerical"))
+      >>> od = OpticalDepth(lens_param_samplers=dict(lens_redshift="lens_redshift_strongly_lensed_numerical"))
       >>> print(od.lens_redshift(size=10, zs=1.0))
 
 
@@ -468,7 +468,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lens_redshift_SDSS_catalogue_hemanta(size=1000, zs=None, get_attribute=False, **kwargs)
+   .. py:method:: lens_redshift_strongly_lensed_hemanta(size=1000, zs=None, get_attribute=False, **kwargs)
 
       
       Function to sample lens redshifts, conditioned on the lens being strongly lensed
@@ -502,7 +502,7 @@ Classes
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(lens_redshift="lens_redshift_SDSS_catalogue_numerical"))
+      >>> od = OpticalDepth(lens_param_samplers=dict(lens_redshift="lens_redshift_strongly_lensed_numerical"))
       >>> print(od.lens_redshift(size=10, zs=1.0))
 
 
@@ -510,7 +510,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: intrinsic_lens_redshift(size=1000, get_attribute=False, **kwargs)
+   .. py:method:: lens_redshift_intrinsic(size=1000, get_attribute=False, **kwargs)
 
       
       Function to sample intrinsic lens redshifts, based on the intrinsic velocity dispersion of the lens galaxy.
@@ -832,7 +832,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lens_redshift_SDSS_catalogue_sis(size, zs, get_attribute=False, **kwargs)
+   .. py:method:: lens_redshift_sis_haris(size, zs, get_attribute=False, **kwargs)
 
       
       Function to sample lens redshifts, conditioned on the lens being strongly lensed
@@ -864,7 +864,7 @@ Classes
 
       >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
       >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.lens_redshift_SDSS_catalogue_sis(zs=1.0)
+      >>> lens.lens_redshift_sis_haris(zs=1.0)
 
 
 
@@ -1202,7 +1202,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: interpolated_cross_section_function(theta_E, e1, e2, gamma, gamma1, gamma2, get_attribute=False, **kwargs)
+   .. py:method:: cross_section_epl_shear_interpolation(theta_E, e1, e2, gamma, gamma1, gamma2, get_attribute=False, **kwargs)
 
       
       Function to compute the cross-section correction factor

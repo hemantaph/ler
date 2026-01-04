@@ -118,7 +118,7 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "{'npool': '4', 'z_min': '0.0', 'z_max': '10.0', 'size': '100000', 'batch_size': '25000', 'cosmology': 'LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=None)', 'snr_finder': '<bound method GWSNR.snr of <gwsnr.gwsnr.GWSNR object at 0x296eec670>>', 'json_file_names': \"{'gwrates_param': './gwrates_params.json', 'gw_param': './gw_param.json', 'gw_param_detectable': './gw_param_detectable.json'}\", 'directory': './interpolator_pickle', 'gw_param_sampler_dict': {'z_min': '0.0', 'z_max': '10.0', 'event_type': 'BBH', 'source_priors': \"{'merger_rate_density': 'merger_rate_density_bbh_popI_II_oguri2018', 'source_frame_masses': 'binary_masses_BBH_popI_II_powerlaw_gaussian', 'zs': 'sample_source_redshift', 'geocent_time': 'sampler_uniform', 'ra': 'sampler_uniform', 'dec': 'sampler_cosine', 'phase': 'sampler_uniform', 'psi': 'sampler_uniform', 'theta_jn': 'sampler_sine'}\", 'source_priors_params': \"{'merger_rate_density': {'R0': 2.5000000000000002e-08, 'b2': 1.6, 'b3': 2.0, 'b4': 30}, 'source_frame_masses': {'mminbh': 4.98, 'mmaxbh': 112.5, 'alpha': 3.78, 'mu_g': 32.27, 'sigma_g': 3.88, 'lambda_peak': 0.03, 'delta_m': 4.8, 'beta': 0.81}, 'zs': None, 'geocent_time': {'min_': 1238166018, 'max_': 1269702018}, 'ra': {'min_': 0.0, 'max_': 6.283185307179586}, 'dec': None, 'phase': {'min_': 0.0, 'max_': 6.283185307179586}, 'psi': {'min_': 0.0, 'max_': 3.141592653589793}, 'theta_jn': None}\", 'cosmology': 'LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=None)', 'spin_zero': 'True', 'spin_precession': 'False', 'directory': './interpolator_pickle', 'create_new_interpolator': 'False'}, 'snr_calculator_dict': {'npool': '4', 'mtot_min': '2.0', 'mtot_max': '200', 'ratio_min': '0.1', 'ratio_max': '1.0', 'mtot_resolution': '100', 'ratio_resolution': '50', 'sampling_frequency': '2048.0', 'waveform_approximant': 'IMRPhenomD', 'minimum_frequency': '20.0', 'snr_type': 'interpolation', 'psds': \"{'L1': 'aLIGO_O4_high_asd.txt', 'H1': 'aLIGO_O4_high_asd.txt', 'V1': 'AdV_asd.txt'}\", 'isit_psd_file': 'False', 'ifos': 'None', 'interpolator_dir': './interpolator_pickle', 'create_new_interpolator': 'False', 'gwsnr_verbose': 'True', 'multiprocessing_verbose': 'True', 'mtot_cut': 'True'}, 'detectable_gw_rate_per_year': 437.9018524996516, 'detectability_condition': 'step_function'}\n"
+      "{'npool': '4', 'z_min': '0.0', 'z_max': '10.0', 'size': '100000', 'batch_size': '25000', 'cosmology': 'LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=None)', 'snr_finder': '<bound method GWSNR.snr of <gwsnr.gwsnr.GWSNR object at 0x296eec670>>', 'json_file_names': \"{'gwrates_param': './gwrates_params.json', 'gw_param': './gw_param.json', 'gw_param_detectable': './gw_param_detectable.json'}\", 'directory': './interpolator_json', 'gw_param_sampler_dict': {'z_min': '0.0', 'z_max': '10.0', 'event_type': 'BBH', 'source_priors': \"{'merger_rate_density': 'merger_rate_density_bbh_popI_II_oguri2018', 'source_frame_masses': 'binary_masses_BBH_popI_II_powerlaw_gaussian', 'zs': 'sample_source_redshift', 'geocent_time': 'sampler_uniform', 'ra': 'sampler_uniform', 'dec': 'sampler_cosine', 'phase': 'sampler_uniform', 'psi': 'sampler_uniform', 'theta_jn': 'sampler_sine'}\", 'source_priors_params': \"{'merger_rate_density': {'R0': 2.5000000000000002e-08, 'b2': 1.6, 'b3': 2.0, 'b4': 30}, 'source_frame_masses': {'mminbh': 4.98, 'mmaxbh': 112.5, 'alpha': 3.78, 'mu_g': 32.27, 'sigma_g': 3.88, 'lambda_peak': 0.03, 'delta_m': 4.8, 'beta': 0.81}, 'zs': None, 'geocent_time': {'min_': 1238166018, 'max_': 1269702018}, 'ra': {'min_': 0.0, 'max_': 6.283185307179586}, 'dec': None, 'phase': {'min_': 0.0, 'max_': 6.283185307179586}, 'psi': {'min_': 0.0, 'max_': 3.141592653589793}, 'theta_jn': None}\", 'cosmology': 'LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=None)', 'spin_zero': 'True', 'spin_precession': 'False', 'directory': './interpolator_json', 'create_new_interpolator': 'False'}, 'snr_calculator_dict': {'npool': '4', 'mtot_min': '2.0', 'mtot_max': '200', 'ratio_min': '0.1', 'ratio_max': '1.0', 'mtot_resolution': '100', 'ratio_resolution': '50', 'sampling_frequency': '2048.0', 'waveform_approximant': 'IMRPhenomD', 'minimum_frequency': '20.0', 'snr_type': 'interpolation', 'psds': \"{'L1': 'aLIGO_O4_high_asd.txt', 'H1': 'aLIGO_O4_high_asd.txt', 'V1': 'AdV_asd.txt'}\", 'isit_psd_file': 'False', 'ifos': 'None', 'interpolator_dir': './interpolator_json', 'create_new_interpolator': 'False', 'gwsnr_verbose': 'True', 'multiprocessing_verbose': 'True', 'mtot_cut': 'True'}, 'detectable_gw_rate_per_year': 437.9018524996516, 'detectability_condition': 'step_function'}\n"
      ]
     }
    ],
@@ -193,9 +193,9 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "z_to_luminosity_distance interpolator will be loaded from ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_1.pickle\n",
-      "differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_2.pickle\n",
-      "merger_rate_density_bbh_popI_II_oguri2018 interpolator will be loaded from ./interpolator_pickle/merger_rate_density_bbh_popI_II_oguri2018/merger_rate_density_bbh_popI_II_oguri2018_5.pickle\n",
+      "z_to_luminosity_distance interpolator will be loaded from ./interpolator_json/z_to_luminosity_distance/z_to_luminosity_distance_1.pickle\n",
+      "differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_2.pickle\n",
+      "merger_rate_density_bbh_popI_II_oguri2018 interpolator will be loaded from ./interpolator_json/merger_rate_density_bbh_popI_II_oguri2018/merger_rate_density_bbh_popI_II_oguri2018_5.pickle\n",
       "npool:  4\n",
       "snr type:  interpolation\n",
       "waveform approximant:  IMRPhenomD\n",
@@ -208,10 +208,10 @@
       "max(ratio):  1.0\n",
       "mtot resolution:  100\n",
       "ratio resolution:  50\n",
-      "interpolator directory:  ./interpolator_pickle\n",
-      "Interpolator will be loaded for L1 detector from ./interpolator_pickle/L1/halfSNR_dict_4.pickle\n",
-      "Interpolator will be loaded for H1 detector from ./interpolator_pickle/H1/halfSNR_dict_4.pickle\n",
-      "Interpolator will be loaded for V1 detector from ./interpolator_pickle/V1/halfSNR_dict_4.pickle\n",
+      "interpolator directory:  ./interpolator_json\n",
+      "Interpolator will be loaded for L1 detector from ./interpolator_json/L1/halfSNR_dict_4.pickle\n",
+      "Interpolator will be loaded for H1 detector from ./interpolator_json/H1/halfSNR_dict_4.pickle\n",
+      "Interpolator will be loaded for V1 detector from ./interpolator_json/V1/halfSNR_dict_4.pickle\n",
       "\n",
       " GWRATES set up params:\n",
       "npool =  4\n",
@@ -223,7 +223,7 @@
       "cosmology =  LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=None)\n",
       "snr_finder =  <bound method GWSNR.snr of <gwsnr.gwsnr.GWSNR object at 0x29254f610>>\n",
       "json_file_names =  {'gwrates_param': './gwrates_params.json', 'gw_param': './gw_param.json', 'gw_param_detectable': './gw_param_detectable.json'}\n",
-      "directory =  ./interpolator_pickle\n",
+      "directory =  ./interpolator_json\n",
       "\n",
       " GWRATES also takes ler.CBCSourceParameterDistribution params as kwargs, as follows:\n",
       "source_priors= {'merger_rate_density': 'merger_rate_density_bbh_popI_II_oguri2018', 'source_frame_masses': 'binary_masses_BBH_popI_II_powerlaw_gaussian', 'zs': 'sample_source_redshift', 'geocent_time': 'sampler_uniform', 'ra': 'sampler_uniform', 'dec': 'sampler_cosine', 'phase': 'sampler_uniform', 'psi': 'sampler_uniform', 'theta_jn': 'sampler_sine'}\n",
@@ -246,7 +246,7 @@
       "psds =  {'L1': 'aLIGO_O4_high_asd.txt', 'H1': 'aLIGO_O4_high_asd.txt', 'V1': 'AdV_asd.txt'}\n",
       "isit_psd_file =  False\n",
       "ifos =  None\n",
-      "interpolator_dir =  ./interpolator_pickle\n",
+      "interpolator_dir =  ./interpolator_json\n",
       "create_new_interpolator =  False\n",
       "gwsnr_verbose =  True\n",
       "multiprocessing_verbose =  True\n",

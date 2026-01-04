@@ -14,7 +14,11 @@ from scipy.integrate import quad
 from numba import njit
 from importlib import resources
 # import datetime
+from numba.core.registry import CPUDispatcher
 
+
+def is_njitted(func):
+    return isinstance(func, CPUDispatcher)
 
 class NumpyEncoder(json.JSONEncoder):
     """
@@ -216,25 +220,25 @@ def append_json(file_name, new_dictionary, old_dictionary=None, replace=False):
 
     return data
 
-# def add_dict_values(dict1, dict2):
-#     """Adds the values of two dictionaries together.
+def concatenate_dict_values(dict1, dict2):
+    """Adds the values of two dictionaries together.
     
-#     Parameters
-#     ----------
-#     dict1 : `dict`
-#         dictionary to be added.
-#     dict2 : `dict`
-#         dictionary to be added.
+    Parameters
+    ----------
+    dict1 : `dict`
+        dictionary to be added.
+    dict2 : `dict`
+        dictionary to be added.
 
-#     Returns
-#     ----------
-#     dict1 : `dict`
-#         dictionary with added values.
-#     """
-#     data_key = dict1.keys()
-#     for key, value in dict2.items():
-#         if key in data_key:
-#             dict1[key] = np.concatenate((dict1[key], value))
+    Returns
+    ----------
+    dict1 : `dict`
+        dictionary with added values.
+    """
+    data_key = dict1.keys()
+    for key, value in dict2.items():
+        if key in data_key:
+            dict1[key] = np.concatenate((dict1[key], value))
 
     return dict1
 
@@ -709,16 +713,16 @@ def create_conditioned_inv_cdf_array(x, conditioned_y, pdf_func):
         
     return np.array(list_)
 
-def interpolator_from_pickle(
-    param_dict_given, directory, sub_directory, name, x, pdf_func=None, y=None, conditioned_y=None, dimension=1,category="pdf", create_new=False
+def interpolator_from_json(
+    identifier_dict, directory, sub_directory, name, x, pdf_func=None, y=None, conditioned_y=None, dimension=1,category="pdf", create_new=False
 ):
     """
     Function to decide which interpolator to use.
 
     Parameters
     ----------
-    param_dict_given : `dict`
-        dictionary of parameters.
+    identifier_dict : `dict`
+        dictionary of identifiers.
     directory : `str`
         directory to store the interpolator.
     sub_directory : `str`
@@ -746,9 +750,9 @@ def interpolator_from_pickle(
         interpolator function.
     """
 
-    # check first whether the directory, subdirectory and pickle exist
-    path_inv_cdf, it_exist = interpolator_pickle_path(
-        param_dict_given=param_dict_given,
+    # check first whether the directory, subdirectory and json exist
+    path_inv_cdf, it_exist = interpolator_json_path(
+        identifier_dict=identifier_dict,
         directory=directory,
         sub_directory=sub_directory,
         interpolator_name=name,
@@ -759,7 +763,7 @@ def interpolator_from_pickle(
         print(f"{name} interpolator will be loaded from {path_inv_cdf}")
         # load the interpolator
         with open(path_inv_cdf, "rb") as handle:
-            interpolator = pickle.load(handle)
+            interpolator = json.load(handle)
         return interpolator
     else:
         print(f"{name} interpolator will be generated at {path_inv_cdf}")
@@ -786,23 +790,22 @@ def interpolator_from_pickle(
         else:
             raise ValueError("The dimension is not supported.")
         # save the interpolator
-        with open(path_inv_cdf, "wb") as handle:
-            pickle.dump(interpolator, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        save_json(path_inv_cdf, interpolator)
         return interpolator
 
-def interpolator_pickle_path(
-    param_dict_given,
+def interpolator_json_path(
+    identifier_dict,
     directory,
     sub_directory,
     interpolator_name,
 ):
     """
-    Function to create the interpolator pickle file path.
+    Function to create the interpolator json file path.
 
     Parameters
     ----------
-    param_dict_given : `dict`
-        dictionary of parameters.
+    identifier_dict : `dict`
+        dictionary of identifiers.
     directory : `str`
         directory to store the interpolator.
     sub_directory : `str`
@@ -813,10 +816,13 @@ def interpolator_pickle_path(
     Returns
     ----------
     path_inv_cdf : `str`
-        path of the interpolator pickle file.
+        path of the interpolator json file.
     it_exist : `bool`
         if True, the interpolator exists.
     """
+
+    # convert values of identifier_dict to string
+    identifier_dict = {k: str(v) for k, v in identifier_dict.items()}
 
     # check the dir 'interpolator' exist
     full_dir = directory + "/" + sub_directory
@@ -827,21 +833,21 @@ def interpolator_pickle_path(
         if not os.path.exists(full_dir):
             os.makedirs(full_dir)
 
-    # check if param_dict_list.pickle exists
-    path1 = full_dir + "/init_dict.pickle"
+    # check if identifier_dict_list.json exists
+    path1 = full_dir + "/init_dict.json"
     if not os.path.exists(path1):
         dict_list = []
-        save_pickle(path1, dict_list)
+        save_json(path1, dict_list)
 
-    # check if the input dict is the same as one of the dict inside the pickle file
-    param_dict_stored = load_pickle(path1)
+    # check if the input dict is the same as one of the dict inside the json file
+    identifier_dict_stored = load_json(path1)
 
     path2 = full_dir
-    len_ = len(param_dict_stored)
-    if param_dict_given in param_dict_stored:
-        idx = param_dict_stored.index(param_dict_given)
+    len_ = len(identifier_dict_stored)
+    if identifier_dict in identifier_dict_stored:
+        idx = identifier_dict_stored.index(identifier_dict)
         # load the interpolator
-        path_inv_cdf = path2 + "/" + interpolator_name + "_" + str(idx) + ".pickle"
+        path_inv_cdf = path2 + "/" + interpolator_name + "_" + str(idx) + ".json"
         # there will be exception if the file is deleted by mistake
         if os.path.exists(path_inv_cdf):
             it_exist = True
@@ -849,9 +855,9 @@ def interpolator_pickle_path(
             it_exist = False
     else:
         it_exist = False
-        path_inv_cdf = path2 + "/" + interpolator_name + "_" + str(len_) + ".pickle"
-        param_dict_stored.append(param_dict_given)
-        save_pickle(path1, param_dict_stored)
+        path_inv_cdf = path2 + "/" + interpolator_name + "_" + str(len_) + ".json"
+        identifier_dict_stored.append(identifier_dict)
+        save_json(path1, identifier_dict_stored)
 
     return path_inv_cdf, it_exist
 
@@ -1087,6 +1093,49 @@ def cubic_spline_interpolator(xnew, coefficients, x):
     return result
 
 @njit
+def pdf_cubic_spline_interpolator(xnew, norm_const, coefficients, x):
+    """
+    Function to interpolate pdf using cubic spline.
+
+    Parameters
+    ----------
+    xnew : `numpy.ndarray`
+        new x values.
+    coefficients : `numpy.ndarray`
+        coefficients of the cubic spline.
+    x : `numpy.ndarray`
+        x values.
+
+    Returns
+    ----------
+    result : `numpy.ndarray`
+        interpolated values.
+    """
+
+    # Handling extrapolation
+    i = np.searchsorted(x, xnew) - 1
+    idx1 = xnew <= x[0]
+    idx2 = xnew > x[-1]
+    i[idx1] = 0
+    i[idx2] = len(x) - 2
+    #i = np.array(i, dtype=np.int32)
+    # x = np.array(x, dtype=np.float64)
+
+    # Calculate the relative position within the interval
+    #print(f"i = {i}\n xnew = {xnew}\n x = {x}")
+    #print(x[i])
+    dx = xnew - x[i]
+
+    # Calculate the interpolated value
+    # Cubic polynomial: a + b*dx + c*dx^2 + d*dx^3
+    # coefficients = np.array(coefficients, dtype=np.float64)
+    #print(f"coefficients = {coefficients}")
+    a, b, c, d = coefficients[:, i]
+    #result = a + b*dx + c*dx**2 + d*dx**3
+    result = d + c*dx + b*dx**2 + a*dx**3
+    return result/norm_const
+
+@njit
 def pdf_cubic_spline_interpolator2d_array(xnew_array, ynew_array, norm_array, coefficients, x, y):
     """
     Function to calculate the interpolated value of snr_partialscaled given the mass ratio (ynew) and total mass (xnew). This is based off 2D bicubic spline interpolation.
@@ -1121,15 +1170,15 @@ def pdf_cubic_spline_interpolator2d_array(xnew_array, ynew_array, norm_array, co
         if (ynew>y[0]) and (ynew<y[1]):
             if ynew > y[y_idx] + (y[y_idx+1] - y[y_idx]) / 2:
                 y_idx = y_idx + 1
-            result_array.append(cubic_spline_interpolator(np.array([xnew]), coefficients[y_idx], x[y_idx])[0]/norm_array[y_idx])
+            result=pdf_cubic_spline_interpolator(np.array([xnew]), norm_array[y_idx], coefficients[y_idx], x[y_idx])[0]
         elif y_idx == 0:  # lower end point
-            result_array.append(cubic_spline_interpolator(np.array([xnew]), coefficients[0], x[0])[0]/norm_array[0])
+            result=pdf_cubic_spline_interpolator(np.array([xnew]), norm_array[0], coefficients[0], x[0])[0]
             # print("a")
         elif y_idx+1 == len_y:  # upper end point
-            result_array.append(cubic_spline_interpolator(np.array([xnew]), coefficients[-1], x[-1])[0]/norm_array[-1])
+            result=pdf_cubic_spline_interpolator(np.array([xnew]), norm_array[-1], coefficients[-1], x[-1])[0]
             # print("b")
         elif y_idx+2 == len_y:  # upper end point
-            result_array.append(cubic_spline_interpolator(np.array([xnew]), coefficients[-1], x[-1])[0]/norm_array[-1])
+            result=pdf_cubic_spline_interpolator(np.array([xnew]), norm_array[-1], coefficients[-1], x[-1])[0]
             # print("b")
         else:
             y_idx1 = y_idx - 1
@@ -1139,17 +1188,23 @@ def pdf_cubic_spline_interpolator2d_array(xnew_array, ynew_array, norm_array, co
             coeff_low, coeff_high = 4, 8
             # print("c")
             y1, y2, y3, y4 = y[y_idx1], y[y_idx2], y[y_idx3], y[y_idx4]
-            z1 = cubic_spline_interpolator(np.array([xnew]), coefficients[y_idx1], x[y_idx1])[0]/norm_array[y_idx1]
-            z2 = cubic_spline_interpolator(np.array([xnew]), coefficients[y_idx2], x[y_idx2])[0]/norm_array[y_idx2]
-            z3 = cubic_spline_interpolator(np.array([xnew]), coefficients[y_idx3], x[y_idx3])[0]/norm_array[y_idx3]
-            z4 = cubic_spline_interpolator(np.array([xnew]), coefficients[y_idx4], x[y_idx4])[0]/norm_array[y_idx4]
+            z1 = pdf_cubic_spline_interpolator(np.array([xnew]), norm_array[y_idx1], coefficients[y_idx1], x[y_idx1])[0]
+            z2 = pdf_cubic_spline_interpolator(np.array([xnew]), norm_array[y_idx2], coefficients[y_idx2], x[y_idx2])[0]
+            z3 = pdf_cubic_spline_interpolator(np.array([xnew]), norm_array[y_idx3], coefficients[y_idx3], x[y_idx3])[0]
+            z4 = pdf_cubic_spline_interpolator(np.array([xnew]), norm_array[y_idx4], coefficients[y_idx4], x[y_idx4])[0]
 
             coeff = coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4)
             matrixD = coeff[coeff_low:coeff_high]
             matrixB = np.array([ynew**3, ynew**2, ynew, 1])
-            result_array.append(np.dot(matrixB, matrixD))
+            result = np.dot(matrixB, matrixD) 
 
-    return np.array(result_array)
+        result_array.append(result)
+
+    result_array = np.array(result_array)
+    idx = result_array < 0.0
+    result_array[idx] = 0.0
+
+    return result_array
 
 @njit
 def cubic_spline_interpolator2d_array(xnew_array, ynew_array, coefficients, x, y):
@@ -1215,7 +1270,7 @@ def cubic_spline_interpolator2d_array(xnew_array, ynew_array, coefficients, x, y
             matrixB = np.array([ynew**3, ynew**2, ynew, 1])
             result_array.append(np.dot(matrixB, matrixD))
 
-    return result_array
+    return np.array(result_array)
 
 @njit
 def coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4):
@@ -1413,7 +1468,7 @@ def sample_from_powerlaw_distribution(size, alphans, mminns, mmaxns):
     size : int
         Number of samples to generate.
     alphans : float
-        Power-law index (α).
+        Power-law index (alpha).
     mminns : float
         Minimum neutron star mass (lower bound).
     mmaxns : float

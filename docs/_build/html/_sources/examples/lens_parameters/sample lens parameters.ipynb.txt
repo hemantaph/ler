@@ -47,16 +47,16 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "z_to_luminosity_distance interpolator will be loaded from ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_0.pickle\n",
-      "differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_0.pickle\n",
-      "merger_rate_density_bbh_popI_II_oguri2018 interpolator will be loaded from ./interpolator_pickle/merger_rate_density_bbh_popI_II_oguri2018/merger_rate_density_bbh_popI_II_oguri2018_0.pickle\n",
-      "z_to_Dc interpolator will be loaded from ./interpolator_pickle/z_to_Dc/z_to_Dc_0.pickle\n",
-      "Dc_to_z interpolator will be loaded from ./interpolator_pickle/Dc_to_z/Dc_to_z_0.pickle\n",
-      "angular_diameter_distance interpolator will be loaded from ./interpolator_pickle/angular_diameter_distance/angular_diameter_distance_0.pickle\n",
-      "differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_0.pickle\n",
-      "velocity_dispersion_ewoud interpolator will be loaded from ./interpolator_pickle/velocity_dispersion_ewoud/velocity_dispersion_ewoud_0.pickle\n",
-      "SIE interpolator will be loaded from ./interpolator_pickle/SIE/SIE_0.pickle\n",
-      "Dl_to_z interpolator will be loaded from ./interpolator_pickle/Dl_to_z/Dl_to_z_0.pickle\n"
+      "z_to_luminosity_distance interpolator will be loaded from ./interpolator_json/z_to_luminosity_distance/z_to_luminosity_distance_0.pickle\n",
+      "differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_0.pickle\n",
+      "merger_rate_density_bbh_popI_II_oguri2018 interpolator will be loaded from ./interpolator_json/merger_rate_density_bbh_popI_II_oguri2018/merger_rate_density_bbh_popI_II_oguri2018_0.pickle\n",
+      "z_to_Dc interpolator will be loaded from ./interpolator_json/z_to_Dc/z_to_Dc_0.pickle\n",
+      "Dc_to_z interpolator will be loaded from ./interpolator_json/Dc_to_z/Dc_to_z_0.pickle\n",
+      "angular_diameter_distance interpolator will be loaded from ./interpolator_json/angular_diameter_distance/angular_diameter_distance_0.pickle\n",
+      "differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_0.pickle\n",
+      "velocity_dispersion_ewoud interpolator will be loaded from ./interpolator_json/velocity_dispersion_ewoud/velocity_dispersion_ewoud_0.pickle\n",
+      "SIE interpolator will be loaded from ./interpolator_json/SIE/SIE_0.pickle\n",
+      "Dl_to_z interpolator will be loaded from ./interpolator_json/Dl_to_z/Dl_to_z_0.pickle\n"
      ]
     }
    ],
@@ -71,18 +71,18 @@
     "    lens_type=\"epl_galaxy\",\n",
     "    lens_functions\n",
     "    =dict(\n",
-    "            strong_lensing_condition=\"rjs_with_cross_section_SIE\",\n",
+    "            cross_section_based_sampler=\"rejection_sampling_with_cross_section_SIE\",\n",
     "            optical_depth=\"SIE\",\n",
     "        ),\n",
-    "    lens_priors=dict(\n",
+    "    lens_param_samplers=dict(\n",
     "            velocity_dispersion=\"velocity_dispersion_ewoud\",\n",
     "            axis_ratio=\"axis_ratio_rayleigh\",\n",
     "        ),\n",
-    "    lens_priors_params=dict(\n",
+    "    lens_param_samplers_params=dict(\n",
     "            velocity_dispersion=dict(vd_min=0., vd_max=600.),\n",
     "            axis_ratio=dict(q_min=0.2, q_max=1.),\n",
     "        ),\n",
-    "    directory=\"./interpolator_pickle\",\n",
+    "    directory=\"./interpolator_json\",\n",
     "    #create_new_interpolator=True,\n",
     ")"
    ]
@@ -363,8 +363,8 @@
     {
      "data": {
       "text/plain": [
-       "{'strong_lensing_condition': ['rjs_with_cross_section_SIE',\n",
-       "  'rjs_with_cross_section_SIS'],\n",
+       "{'cross_section_based_sampler': ['rejection_sampling_with_cross_section_SIE',\n",
+       "  'rejection_sampling_with_cross_section_SIS'],\n",
        " 'optical_depth': ['SIS',\n",
        "  'optical_depth_SIS_haris',\n",
        "  'optical_depth_SIS_hemanta',\n",
@@ -426,17 +426,17 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "z_to_luminosity_distance interpolator will be generated at ./interpolator_pickle/z_to_luminosity_distance/z_to_luminosity_distance_0.pickle\n",
-      "differential_comoving_volume interpolator will be generated at ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_0.pickle\n",
-      "merger_rate_density_bbh_popI_II_oguri2018 interpolator will be generated at ./interpolator_pickle/merger_rate_density_bbh_popI_II_oguri2018/merger_rate_density_bbh_popI_II_oguri2018_0.pickle\n",
-      "z_to_Dc interpolator will be generated at ./interpolator_pickle/z_to_Dc/z_to_Dc_0.pickle\n",
-      "Dc_to_z interpolator will be generated at ./interpolator_pickle/Dc_to_z/Dc_to_z_0.pickle\n",
-      "angular_diameter_distance interpolator will be generated at ./interpolator_pickle/angular_diameter_distance/angular_diameter_distance_0.pickle\n",
-      "differential_comoving_volume interpolator will be generated at ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_0.pickle\n",
-      "velocity_dispersion_gengamma interpolator will be generated at ./interpolator_pickle/velocity_dispersion_gengamma/velocity_dispersion_gengamma_0.pickle\n",
-      "axis_ratio_spline_coeff interpolator will be generated at ./interpolator_pickle/axis_ratio/axis_ratio_spline_coeff_0.pickle\n",
-      "axis_ratio interpolator will be generated at ./interpolator_pickle/axis_ratio/axis_ratio_1.pickle\n",
-      "Dl_to_z interpolator will be generated at ./interpolator_pickle/Dl_to_z/Dl_to_z_0.pickle\n"
+      "z_to_luminosity_distance interpolator will be generated at ./interpolator_json/z_to_luminosity_distance/z_to_luminosity_distance_0.pickle\n",
+      "differential_comoving_volume interpolator will be generated at ./interpolator_json/differential_comoving_volume/differential_comoving_volume_0.pickle\n",
+      "merger_rate_density_bbh_popI_II_oguri2018 interpolator will be generated at ./interpolator_json/merger_rate_density_bbh_popI_II_oguri2018/merger_rate_density_bbh_popI_II_oguri2018_0.pickle\n",
+      "z_to_Dc interpolator will be generated at ./interpolator_json/z_to_Dc/z_to_Dc_0.pickle\n",
+      "Dc_to_z interpolator will be generated at ./interpolator_json/Dc_to_z/Dc_to_z_0.pickle\n",
+      "angular_diameter_distance interpolator will be generated at ./interpolator_json/angular_diameter_distance/angular_diameter_distance_0.pickle\n",
+      "differential_comoving_volume interpolator will be generated at ./interpolator_json/differential_comoving_volume/differential_comoving_volume_0.pickle\n",
+      "velocity_dispersion_gengamma interpolator will be generated at ./interpolator_json/velocity_dispersion_gengamma/velocity_dispersion_gengamma_0.pickle\n",
+      "axis_ratio_spline_coeff interpolator will be generated at ./interpolator_json/axis_ratio/axis_ratio_spline_coeff_0.pickle\n",
+      "axis_ratio interpolator will be generated at ./interpolator_json/axis_ratio/axis_ratio_1.pickle\n",
+      "Dl_to_z interpolator will be generated at ./interpolator_json/Dl_to_z/Dl_to_z_0.pickle\n"
      ]
     }
    ],
@@ -450,18 +450,18 @@
     "    CBCSourceParameterDistribution_=False,\n",
     "    lens_type=\"epl_galaxy\",\n",
     "    lens_functions=dict(\n",
-    "            strong_lensing_condition=\"rjs_with_cross_section_SIS\",\n",
+    "            cross_section_based_sampler=\"rejection_sampling_with_cross_section_SIS\",\n",
     "            optical_depth=\"optical_depth_SIS_haris\",\n",
     "        ),\n",
-    "    lens_priors=dict(\n",
+    "    lens_param_samplers=dict(\n",
     "            velocity_dispersion=\"velocity_dispersion_gengamma\",\n",
     "            axis_ratio=\"axis_ratio_padilla_strauss\",\n",
     "        ),\n",
-    "    lens_priors_params=dict(\n",
+    "    lens_param_samplers_params=dict(\n",
     "            velocity_dispersion=dict(vd_min=0., vd_max=600.),\n",
     "            axis_ratio=dict(q_min=0.2, q_max=1.),\n",
     "        ),\n",
-    "    directory=\"./interpolator_pickle\",\n",
+    "    directory=\"./interpolator_json\",\n",
     "    create_new_interpolator=True,\n",
     ")"
    ]

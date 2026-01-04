@@ -28,7 +28,7 @@ Classes
 
 
 
-.. py:class:: CBCSourceRedshiftDistribution(npool=4, z_min=0.001, z_max=10.0, event_type='BBH', merger_rate_density=None, merger_rate_density_param=None, cosmology=None, directory='./interpolator_pickle', create_new_interpolator=False)
+.. py:class:: CBCSourceRedshiftDistribution(npool=4, z_min=0.001, z_max=10.0, event_type='BBH', merger_rate_density=None, merger_rate_density_param=None, cosmology=None, directory='./interpolator_json', create_new_interpolator=False)
 
 
    Bases: :py:obj:`object`
@@ -67,7 +67,7 @@ Classes
 
        **directory** : `str`
            Directory to store the interpolator pickle files
-           default: './interpolator_pickle'
+           default: './interpolator_json'
 
        **create_new_interpolator** : `dict`
            Dictionary of interpolator creation parameters

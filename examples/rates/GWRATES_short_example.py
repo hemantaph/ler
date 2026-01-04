@@ -26,7 +26,7 @@ ler = GWRATES(
         unlensed_param_detectable="unlensed_param_detectable.json", # to store only detectable unlensed events
         lensed_param="lensed_param.json", # to store all lensed events 
         lensed_param_detectable="lensed_param_detectable.json"), # to store only detectable lensed events
-    interpolator_directory='./interpolator_pickle', # directory to store the interpolator pickle files. 'ler' uses interpolation to get values of various functions to speed up the calculations (relying on numba njit).
+    interpolator_directory='./interpolator_json', # directory to store the interpolator pickle files. 'ler' uses interpolation to get values of various functions to speed up the calculations (relying on numba njit).
     ler_directory='./ler_data', # directory to store all the outputs
     verbose=True, # if True, will print all information at initialization
 
@@ -49,7 +49,7 @@ ler = GWRATES(
     snr_type = 'interpolation',
     psds = {'L1':'aLIGO_O4_high_asd.txt','H1':'aLIGO_O4_high_asd.txt', 'V1':'AdV_asd.txt', 'K1':'KAGRA_design_asd.txt'},
     ifos = ['L1', 'H1', 'V1'],
-    interpolator_dir = './interpolator_pickle',
+    interpolator_dir = './interpolator_json',
     gwsnr_verbose = False,
     multiprocessing_verbose = True,
     mtot_cut = True,

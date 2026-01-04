@@ -47,14 +47,14 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "dL_to_z interpolator will be loaded from interpolator_pickle/dL_to_z/dL_to_z_0.pickle\n"
+      "dL_to_z interpolator will be loaded from interpolator_json/dL_to_z/dL_to_z_0.pickle\n"
      ]
     }
    ],
    "source": [
     "# let's set up interpolation for with scipy\n",
     "# conversion from luminosity distance to redshift\n",
-    "from ler.utils import  interpolator_from_pickle, cubic_spline_interpolator\n",
+    "from ler.utils import  interpolator_from_json, cubic_spline_interpolator\n",
     "from numba import njit\n",
     "\n",
     "# the follwoing code is to create a spline interpolation\n",
@@ -65,9 +65,9 @@
     "dL = lambda z_: cosmo.luminosity_distance(z_).to(u.Mpc).value  # luminosity distance in Mpc\n",
     "resolution = 1000\n",
     "create_new = False  # important \n",
-    "spline_dL = interpolator_from_pickle(\n",
-    "    param_dict_given= dict(z_min=0.001, z_max=z_max, cosmology=cosmo, resolution=resolution),\n",
-    "    directory='interpolator_pickle',\n",
+    "spline_dL = interpolator_from_json(\n",
+    "    identifier_dict= dict(z_min=0.001, z_max=z_max, cosmology=cosmo, resolution=resolution),\n",
+    "    directory='interpolator_json',\n",
     "    sub_directory=\"dL_to_z\", \n",
     "    name=\"dL_to_z\",\n",
     "    x = np.geomspace(0.001, z_max, resolution),\n",

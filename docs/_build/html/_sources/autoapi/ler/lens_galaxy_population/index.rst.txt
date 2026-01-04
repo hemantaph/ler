@@ -38,14 +38,14 @@ Functions
 
    ler.lens_galaxy_population.add_dictionaries_together
    ler.lens_galaxy_population.trim_dictionary
-   ler.lens_galaxy_population.interpolator_pickle_path
+   ler.lens_galaxy_population.interpolator_json_path
    ler.lens_galaxy_population.phi_cut_SIE
    ler.lens_galaxy_population.phi_q2_ellipticity_hemanta
    ler.lens_galaxy_population.cubic_spline_interpolator
    ler.lens_galaxy_population.inverse_transform_sampler
    ler.lens_galaxy_population.cubic_spline_interpolator2d_array
    ler.lens_galaxy_population.save_pickle
-   ler.lens_galaxy_population.interpolator_pickle_path
+   ler.lens_galaxy_population.interpolator_json_path
    ler.lens_galaxy_population.inverse_transform_sampler2d
    ler.lens_galaxy_population.pdf_cubic_spline_interpolator2d_array
    ler.lens_galaxy_population.normal_pdf
@@ -55,7 +55,7 @@ Functions
    ler.lens_galaxy_population.phi
    ler.lens_galaxy_population.phi_loc_bernardi
    ler.lens_galaxy_population.phi_q2_ellipticity_hemanta
-   ler.lens_galaxy_population.lens_redshift_SDSS_catalogue_sis
+   ler.lens_galaxy_population.lens_redshift_sis_haris
    ler.lens_galaxy_population.phi_cut_SIE
    ler.lens_galaxy_population.phi_q2_ellipticity_hemanta
    ler.lens_galaxy_population.inverse_transform_sampler
@@ -72,13 +72,13 @@ Functions
    ler.lens_galaxy_population.phi_cut_SIE
    ler.lens_galaxy_population.axis_ratio_rayleigh_rvs
    ler.lens_galaxy_population.velocity_dispersion_z_dependent
-   ler.lens_galaxy_population.lens_redshift_SDSS_catalogue_sis
+   ler.lens_galaxy_population.lens_redshift_sis_haris
    ler.lens_galaxy_population.bounded_normal_sample
    ler.lens_galaxy_population.phi_q2_ellipticity_hemanta
 
 
 
-.. py:class:: CBCSourceParameterDistribution(z_min=0.0, z_max=10.0, event_type='BBH', source_priors=None, source_priors_params=None, cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_pickle', create_new_interpolator=False)
+.. py:class:: CBCSourceParameterDistribution(z_min=0.0, z_max=10.0, event_type='BBH', source_priors=None, source_priors_params=None, cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_json', create_new_interpolator=False)
 
 
    Bases: :py:obj:`ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution`
@@ -126,7 +126,7 @@ Functions
 
        **directory** : `str`
            Directory to store the interpolator pickle files
-           default: './interpolator_pickle'
+           default: './interpolator_json'
 
        **create_new_interpolator** : `dict`
            Dictionary of boolean values and resolution to create new interpolator.
@@ -1605,7 +1605,7 @@ Functions
           !! processed by numpydoc !!
 
 
-.. py:class:: OpticalDepth(npool=4, z_min=0.0, z_max=10.0, cosmology=None, lens_type='epl_shear_galaxy', lens_functions=None, lens_functions_params=None, lens_param_samplers=None, lens_param_samplers_params=None, directory='./interpolator_pickle', create_new_interpolator=False, verbose=False)
+.. py:class:: OpticalDepth(npool=4, z_min=0.0, z_max=10.0, cosmology=None, lens_type='epl_shear_galaxy', lens_functions=None, lens_functions_params=None, lens_param_samplers=None, lens_param_samplers_params=None, directory='./interpolator_json', create_new_interpolator=False, verbose=False)
 
 
    
@@ -1642,7 +1642,7 @@ Functions
            Dictionary with parameters for the priors of the samplers.
 
        **directory** : str, optional
-           Directory where the interpolators are saved (default is './interpolator_pickle').
+           Directory where the interpolators are saved (default is './interpolator_json').
            If True, creates a new interpolator (default is False).
 
        **verbose** : bool, optional
@@ -1838,10 +1838,10 @@ Functions
 
       :Returns:
 
-          **lens_priors_** : `dict`
+          **lens_param_samplers_** : `dict`
               dictionary of priors
 
-          **lens_priors_params_** : `dict`
+          **lens_param_samplers_params_** : `dict`
               dictionary of priors parameters
 
           **lens_sampler_names_** : `dict`
@@ -1895,7 +1895,7 @@ Functions
    .. py:method:: lens_functions_and_sampler_categorization(lens_param_samplers, lens_param_samplers_params, lens_functions, lens_functions_params)
 
       
-      Function to initialize velocity dispersion sampler with it's settings. The reason I am seperating this from lens_priors_categorization is only a specific parameters needs special attention.
+      Function to initialize velocity dispersion sampler with it's settings. The reason I am seperating this from lens_param_samplers_categorization is only a specific parameters needs special attention.
 
 
       :Parameters:
@@ -2012,7 +2012,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lens_redshift_SDSS_catalogue_numerical(size=1000, zs=None, get_attribute=False, **kwargs)
+   .. py:method:: lens_redshift_strongly_lensed_numerical(size=1000, zs=None, get_attribute=False, **kwargs)
 
       
       Function to sample lens redshifts, conditioned on the lens being strongly lensed
@@ -2046,7 +2046,7 @@ Functions
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(lens_redshift="lens_redshift_SDSS_catalogue_numerical"))
+      >>> od = OpticalDepth(lens_param_samplers=dict(lens_redshift="lens_redshift_strongly_lensed_numerical"))
       >>> print(od.lens_redshift(size=10, zs=1.0))
 
 
@@ -2054,7 +2054,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lens_redshift_SDSS_catalogue_hemanta(size=1000, zs=None, get_attribute=False, **kwargs)
+   .. py:method:: lens_redshift_strongly_lensed_hemanta(size=1000, zs=None, get_attribute=False, **kwargs)
 
       
       Function to sample lens redshifts, conditioned on the lens being strongly lensed
@@ -2088,7 +2088,7 @@ Functions
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(lens_redshift="lens_redshift_SDSS_catalogue_numerical"))
+      >>> od = OpticalDepth(lens_param_samplers=dict(lens_redshift="lens_redshift_strongly_lensed_numerical"))
       >>> print(od.lens_redshift(size=10, zs=1.0))
 
 
@@ -2096,7 +2096,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: intrinsic_lens_redshift(size=1000, get_attribute=False, **kwargs)
+   .. py:method:: lens_redshift_intrinsic(size=1000, get_attribute=False, **kwargs)
 
       
       Function to sample intrinsic lens redshifts, based on the intrinsic velocity dispersion of the lens galaxy.
@@ -2418,7 +2418,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lens_redshift_SDSS_catalogue_sis(size, zs, get_attribute=False, **kwargs)
+   .. py:method:: lens_redshift_sis_haris(size, zs, get_attribute=False, **kwargs)
 
       
       Function to sample lens redshifts, conditioned on the lens being strongly lensed
@@ -2450,7 +2450,7 @@ Functions
 
       >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
       >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.lens_redshift_SDSS_catalogue_sis(zs=1.0)
+      >>> lens.lens_redshift_sis_haris(zs=1.0)
 
 
 
@@ -2788,7 +2788,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: interpolated_cross_section_function(theta_E, e1, e2, gamma, gamma1, gamma2, get_attribute=False, **kwargs)
+   .. py:method:: cross_section_epl_shear_interpolation(theta_E, e1, e2, gamma, gamma1, gamma2, get_attribute=False, **kwargs)
 
       
       Function to compute the cross-section correction factor
@@ -2838,7 +2838,7 @@ Functions
           !! processed by numpydoc !!
 
 
-.. py:class:: ImageProperties(npool=4, z_min=0.0, z_max=10, n_min_images=2, n_max_images=4, geocent_time_min=1126259462.4, geocent_time_max=1126259462.4 + 365 * 24 * 3600 * 20, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_pickle', create_new_interpolator=False)
+.. py:class:: ImageProperties(npool=4, z_min=0.0, z_max=10, n_min_images=2, n_max_images=4, geocent_time_min=1126259462.4, geocent_time_max=1126259462.4 + 365 * 24 * 3600 * 20, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_json', create_new_interpolator=False)
 
 
    
@@ -2893,7 +2893,7 @@ Functions
 
        **directory** : `str`
            directory to save the interpolator pickle files
-           default: "./interpolator_pickle"
+           default: "./interpolator_json"
 
        **create_new_interpolator** : `dict`
            dictionary to create new interpolator pickle files
@@ -3107,7 +3107,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: interpolator_pickle_path(param_dict_given, directory, sub_directory, interpolator_name)
+.. py:function:: interpolator_json_path(param_dict_given, directory, sub_directory, interpolator_name)
 
    
    Function to create the interpolator pickle file path.
@@ -3218,7 +3218,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:class:: LensGalaxyParameterDistribution(npool=4, z_min=0.0, z_max=10.0, cosmology=None, event_type='BBH', lens_type='epl_shear_galaxy', lens_functions=None, lens_functions_params=None, lens_param_samplers=None, lens_param_samplers_params=None, directory='./interpolator_pickle', create_new_interpolator=False, buffer_size=1000, **kwargs)
+.. py:class:: LensGalaxyParameterDistribution(npool=4, z_min=0.0, z_max=10.0, cosmology=None, event_type='BBH', lens_type='epl_shear_galaxy', lens_functions=None, lens_functions_params=None, lens_param_samplers=None, lens_param_samplers_params=None, directory='./interpolator_json', create_new_interpolator=False, buffer_size=1000, **kwargs)
 
 
    Bases: :py:obj:`ler.gw_source_population.CBCSourceParameterDistribution`, :py:obj:`ler.image_properties.ImageProperties`, :py:obj:`ler.lens_galaxy_population.optical_depth.OpticalDepth`
@@ -3251,19 +3251,19 @@ Functions
            Type of lens galaxy to generate.
            default: 'epl_shear_galaxy'
 
-       **lens_functions, lens_priors, lens_priors_params** : `dict`, `dict`, `dict`
+       **lens_functions, lens_param_samplers, lens_param_samplers_params** : `dict`, `dict`, `dict`
            dictionary of lens functions, priors, and priors parameters
            Check for default/available lens functions, priors and corresponding input parameters by running,
 
            >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
            >>> lens = LensGalaxyParameterDistribution()
            >>> print(lens.lens_functions)
-           >>> print(lens.lens_priors)
-           >>> print(lens.lens_priors_params)
+           >>> print(lens.lens_param_samplers)
+           >>> print(lens.lens_param_samplers_params)
 
        **directory** : `str`
            directory to store the interpolators
-           default: './interpolator_pickle'
+           default: './interpolator_json'
 
        **\*\*kwargs**
            keyword arguments to pass to the parent classes
@@ -3364,10 +3364,10 @@ Functions
    |:meth:`~compute_einstein_radii`      | Function to compute the Einstein |
    |                                     | radii of the lens galaxies       |
    +-------------------------------------+----------------------------------+
-   |:meth:`~rjs_with_cross_section_sis`  | Function to conduct rejection    |
+   |:meth:`~rejection_sampling_with_cross_section_sis`  | Function to conduct rejection    |
    |                                     | sampling wrt einstein radius     |
    +-------------------------------------+----------------------------------+
-   |:meth:`~rjs_with_cross_section_sie`  | Function to conduct rejection    |
+   |:meth:`~rejection_sampling_with_cross_section_sie`  | Function to conduct rejection    |
    |                                     | sampling wrt cross_section       |
    +-------------------------------------+----------------------------------+
    |:attr:`~rejection_sample_sl`         | Function to conduct rejection    |
@@ -3957,7 +3957,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: rjs_with_cross_section_sis(param_dict, cross_section_max=0.0)
+   .. py:method:: rejection_sampling_with_cross_section_sis(param_dict, cross_section_max=0.0)
 
       
       Function to conduct rejection sampling wrt einstein radius
@@ -3988,7 +3988,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: rjs_with_cross_section_sie_feixu(param_dict, cross_section_max=0.0)
+   .. py:method:: rejection_sampling_with_cross_section_sie_feixu(param_dict, cross_section_max=0.0)
 
       
       Function to conduct rejection sampling wrt cross_section
@@ -4019,7 +4019,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: rjs_with_cross_section(param_dict, cross_section_max=0.0)
+   .. py:method:: rejection_sampling_with_cross_section(param_dict, cross_section_max=0.0)
 
       
       Function to conduct rejection sampling wrt cross_section of EPL+Shear lens
@@ -4050,7 +4050,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: rjs_with_cross_section_mp(param_dict, cross_section_max=0.0)
+   .. py:method:: rejection_sampling_with_cross_section(param_dict, cross_section_max=0.0)
 
       
       Function to conduct rejection sampling wrt cross_section, multiprocessing
@@ -4229,7 +4229,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: interpolator_pickle_path(param_dict_given, directory, sub_directory, interpolator_name)
+.. py:function:: interpolator_json_path(param_dict_given, directory, sub_directory, interpolator_name)
 
    
    Function to create the interpolator pickle file path.
@@ -4608,7 +4608,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: lens_redshift_SDSS_catalogue_sis(zs, splineDc, splineDcInv, u, cdf)
+.. py:function:: lens_redshift_sis_haris(zs, splineDc, splineDcInv, u, cdf)
 
    
    Function to sample lens redshift from the SDSS catalogue. Haris et al. (2018) cdf = (10 * u**3 - 15 * u**4 + 6 * u**5)
@@ -4652,7 +4652,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:class:: OpticalDepth(npool=4, z_min=0.0, z_max=10.0, cosmology=None, lens_type='epl_shear_galaxy', lens_functions=None, lens_functions_params=None, lens_param_samplers=None, lens_param_samplers_params=None, directory='./interpolator_pickle', create_new_interpolator=False, verbose=False)
+.. py:class:: OpticalDepth(npool=4, z_min=0.0, z_max=10.0, cosmology=None, lens_type='epl_shear_galaxy', lens_functions=None, lens_functions_params=None, lens_param_samplers=None, lens_param_samplers_params=None, directory='./interpolator_json', create_new_interpolator=False, verbose=False)
 
 
    
@@ -4689,7 +4689,7 @@ Functions
            Dictionary with parameters for the priors of the samplers.
 
        **directory** : str, optional
-           Directory where the interpolators are saved (default is './interpolator_pickle').
+           Directory where the interpolators are saved (default is './interpolator_json').
            If True, creates a new interpolator (default is False).
 
        **verbose** : bool, optional
@@ -4885,10 +4885,10 @@ Functions
 
       :Returns:
 
-          **lens_priors_** : `dict`
+          **lens_param_samplers_** : `dict`
               dictionary of priors
 
-          **lens_priors_params_** : `dict`
+          **lens_param_samplers_params_** : `dict`
               dictionary of priors parameters
 
           **lens_sampler_names_** : `dict`
@@ -4942,7 +4942,7 @@ Functions
    .. py:method:: lens_functions_and_sampler_categorization(lens_param_samplers, lens_param_samplers_params, lens_functions, lens_functions_params)
 
       
-      Function to initialize velocity dispersion sampler with it's settings. The reason I am seperating this from lens_priors_categorization is only a specific parameters needs special attention.
+      Function to initialize velocity dispersion sampler with it's settings. The reason I am seperating this from lens_param_samplers_categorization is only a specific parameters needs special attention.
 
 
       :Parameters:
@@ -5059,7 +5059,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lens_redshift_SDSS_catalogue_numerical(size=1000, zs=None, get_attribute=False, **kwargs)
+   .. py:method:: lens_redshift_strongly_lensed_numerical(size=1000, zs=None, get_attribute=False, **kwargs)
 
       
       Function to sample lens redshifts, conditioned on the lens being strongly lensed
@@ -5093,7 +5093,7 @@ Functions
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(lens_redshift="lens_redshift_SDSS_catalogue_numerical"))
+      >>> od = OpticalDepth(lens_param_samplers=dict(lens_redshift="lens_redshift_strongly_lensed_numerical"))
       >>> print(od.lens_redshift(size=10, zs=1.0))
 
 
@@ -5101,7 +5101,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lens_redshift_SDSS_catalogue_hemanta(size=1000, zs=None, get_attribute=False, **kwargs)
+   .. py:method:: lens_redshift_strongly_lensed_hemanta(size=1000, zs=None, get_attribute=False, **kwargs)
 
       
       Function to sample lens redshifts, conditioned on the lens being strongly lensed
@@ -5135,7 +5135,7 @@ Functions
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(lens_redshift="lens_redshift_SDSS_catalogue_numerical"))
+      >>> od = OpticalDepth(lens_param_samplers=dict(lens_redshift="lens_redshift_strongly_lensed_numerical"))
       >>> print(od.lens_redshift(size=10, zs=1.0))
 
 
@@ -5143,7 +5143,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: intrinsic_lens_redshift(size=1000, get_attribute=False, **kwargs)
+   .. py:method:: lens_redshift_intrinsic(size=1000, get_attribute=False, **kwargs)
 
       
       Function to sample intrinsic lens redshifts, based on the intrinsic velocity dispersion of the lens galaxy.
@@ -5465,7 +5465,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lens_redshift_SDSS_catalogue_sis(size, zs, get_attribute=False, **kwargs)
+   .. py:method:: lens_redshift_sis_haris(size, zs, get_attribute=False, **kwargs)
 
       
       Function to sample lens redshifts, conditioned on the lens being strongly lensed
@@ -5497,7 +5497,7 @@ Functions
 
       >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
       >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.lens_redshift_SDSS_catalogue_sis(zs=1.0)
+      >>> lens.lens_redshift_sis_haris(zs=1.0)
 
 
 
@@ -5835,7 +5835,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: interpolated_cross_section_function(theta_E, e1, e2, gamma, gamma1, gamma2, get_attribute=False, **kwargs)
+   .. py:method:: cross_section_epl_shear_interpolation(theta_E, e1, e2, gamma, gamma1, gamma2, get_attribute=False, **kwargs)
 
       
       Function to compute the cross-section correction factor
@@ -6468,7 +6468,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: lens_redshift_SDSS_catalogue_sis(zs, splineDc, splineDcInv, u, cdf)
+.. py:function:: lens_redshift_sis_haris(zs, splineDc, splineDcInv, u, cdf)
 
    
    Function to sample lens redshift from the SDSS catalogue. Haris et al. (2018) cdf = (10 * u**3 - 15 * u**4 + 6 * u**5)

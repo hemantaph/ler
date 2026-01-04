@@ -49,8 +49,8 @@ Functions
    ler.utils.utils.create_inv_cdf_array
    ler.utils.utils.create_conditioned_pdf
    ler.utils.utils.create_conditioned_inv_cdf_array
-   ler.utils.utils.interpolator_from_pickle
-   ler.utils.utils.interpolator_pickle_path
+   ler.utils.utils.interpolator_from_json
+   ler.utils.utils.interpolator_json_path
    ler.utils.utils.batch_handler
    ler.utils.utils.create_batch_params
    ler.utils.utils.monte_carlo_integration
@@ -869,7 +869,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: interpolator_from_pickle(param_dict_given, directory, sub_directory, name, x, pdf_func=None, y=None, conditioned_y=None, dimension=1, category='pdf', create_new=False)
+.. py:function:: interpolator_from_json(param_dict_given, directory, sub_directory, name, x, pdf_func=None, y=None, conditioned_y=None, dimension=1, category='pdf', create_new=False)
 
    
    Function to decide which interpolator to use.
@@ -930,7 +930,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: interpolator_pickle_path(param_dict_given, directory, sub_directory, interpolator_name)
+.. py:function:: interpolator_json_path(param_dict_given, directory, sub_directory, interpolator_name)
 
    
    Function to create the interpolator pickle file path.

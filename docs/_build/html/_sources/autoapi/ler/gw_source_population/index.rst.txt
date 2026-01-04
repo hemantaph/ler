@@ -36,7 +36,7 @@ Functions
 
 .. autoapisummary::
 
-   ler.gw_source_population.interpolator_pickle_path
+   ler.gw_source_population.interpolator_json_path
    ler.gw_source_population.merger_rate_density_bbh_popI_II_oguri2018
    ler.gw_source_population.sfr_madau_dickinson2014
    ler.gw_source_population.merger_rate_density_bbh_popIII_ken2022
@@ -77,7 +77,7 @@ Functions
 
 
 
-.. py:function:: interpolator_pickle_path(param_dict_given, directory, sub_directory, interpolator_name)
+.. py:function:: interpolator_json_path(param_dict_given, directory, sub_directory, interpolator_name)
 
    
    Function to create the interpolator pickle file path.
@@ -371,7 +371,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:class:: CBCSourceRedshiftDistribution(npool=4, z_min=0.001, z_max=10.0, event_type='BBH', merger_rate_density=None, merger_rate_density_param=None, cosmology=None, directory='./interpolator_pickle', create_new_interpolator=False)
+.. py:class:: CBCSourceRedshiftDistribution(npool=4, z_min=0.001, z_max=10.0, event_type='BBH', merger_rate_density=None, merger_rate_density_param=None, cosmology=None, directory='./interpolator_json', create_new_interpolator=False)
 
 
    Bases: :py:obj:`object`
@@ -410,7 +410,7 @@ Functions
 
        **directory** : `str`
            Directory to store the interpolator pickle files
-           default: './interpolator_pickle'
+           default: './interpolator_json'
 
        **create_new_interpolator** : `dict`
            Dictionary of interpolator creation parameters
@@ -1127,7 +1127,7 @@ Functions
           !! processed by numpydoc !!
 
 
-.. py:class:: CBCSourceRedshiftDistribution(npool=4, z_min=0.001, z_max=10.0, event_type='BBH', merger_rate_density=None, merger_rate_density_param=None, cosmology=None, directory='./interpolator_pickle', create_new_interpolator=False)
+.. py:class:: CBCSourceRedshiftDistribution(npool=4, z_min=0.001, z_max=10.0, event_type='BBH', merger_rate_density=None, merger_rate_density_param=None, cosmology=None, directory='./interpolator_json', create_new_interpolator=False)
 
 
    Bases: :py:obj:`object`
@@ -1166,7 +1166,7 @@ Functions
 
        **directory** : `str`
            Directory to store the interpolator pickle files
-           default: './interpolator_pickle'
+           default: './interpolator_json'
 
        **create_new_interpolator** : `dict`
            Dictionary of interpolator creation parameters
@@ -2031,7 +2031,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:class:: CBCSourceParameterDistribution(z_min=0.0, z_max=10.0, event_type='BBH', source_priors=None, source_priors_params=None, cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_pickle', create_new_interpolator=False)
+.. py:class:: CBCSourceParameterDistribution(z_min=0.0, z_max=10.0, event_type='BBH', source_priors=None, source_priors_params=None, cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_json', create_new_interpolator=False)
 
 
    Bases: :py:obj:`ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution`
@@ -2079,7 +2079,7 @@ Functions
 
        **directory** : `str`
            Directory to store the interpolator pickle files
-           default: './interpolator_pickle'
+           default: './interpolator_json'
 
        **create_new_interpolator** : `dict`
            Dictionary of boolean values and resolution to create new interpolator.

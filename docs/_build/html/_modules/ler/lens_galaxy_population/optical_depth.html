@@ -1,114 +1,174 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.lens_galaxy_population.optical_depth &mdash; ler 0.3.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
 
-  
-      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=4621528c"></script>
-      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="../../../_static/copybutton.js?v=f281be69"></script>
-      <script src="../../../_static/tabs.js?v=3030b3cb"></script>
-      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ler.lens_galaxy_population.optical_depth &mdash; ler 0.3.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
+
+
+    <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../../../_static/documentation_options.js?v=4621528c"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/tabs.js?v=3030b3cb"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA="
+        src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+    <link rel="search" title="Search" href="../../../search.html" />
 </head>
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+<body class="wy-body-for-nav">
+    <div class="wy-grid-for-nav">
+        <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+            <div class="wy-side-scroll">
+                <div class="wy-side-nav-search">
 
-          
-          
-          <a href="../../../index.html" class="icon icon-home">
-            ler
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../Installation2.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">API:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/rates/grb%20detection%20rate.html">Calculation of detectable Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/rates/ler%20bns%20example.html">LeR complete examples of BNS events (O4 design sensitivity)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/rates/rates_with_3G_detectors.html">Event Rates with 3G detectors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/source%20population/merger%20rate%20density%20evolution%20with%20redshift.html">Merger rate density evolution with redshift</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/source%20population/merger%20rate%20density%20model%20comparision.html">Merger rate density model comparision</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/source%20population/merger%20rate%20density%20model%20comparision.html#Primordial-BBH-model,-Ng-et-al.-2022">Primordial BBH model, Ng et al. 2022</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/source%20population/sample%20compact%20binary%20parameters.html">Sampling parameters for a compact binary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/source%20population/statistical%20study%20of%20changing%20mass%20model%20params.html">Statistical study of changing Mass model paramter(s)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/source%20population/statistical%20study%20of%20cosmological%20friction.html">Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/lens_parameters/sample%20lens%20parameters.html">Lens parameter distributions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/optical_depth/validation_SIE.html">Optical depth SIE model validation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/optical_depth/validation_SIS.html">Validation of SIS model (Numerical vs Analytical)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/image_properties/dt_vs_dmu.html">Study of Time delays and magnification of lensed gravitational waves.</a></li>
-</ul>
 
-        </div>
-      </div>
-    </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">ler</a>
-      </nav>
+                    <a href="../../../index.html" class="icon icon-home">
+                        ler
+                    </a>
+                    <div role="search">
+                        <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+                            <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+                        </form>
+                    </div>
+                </div>
+                <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+                    <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+                    <ul>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../Installation2.html">Installation</a></li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a>
+                        </li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code
+                                overview</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../GW_events.html">Gravitational wave event rates</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../GW_equations.html">Gravitational wave events sampling (Analytical
+                                formulation)</a></li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed
+                                event rates</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a>
+                        </li>
+                    </ul>
+                    <p class="caption" role="heading"><span class="caption-text">API:</span></p>
+                    <ul>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../autoapi/ler/rates/index.html"><code
+                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a>
+                        </li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../autoapi/ler/gw_source_population/index.html"><code
+                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a>
+                        </li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../autoapi/ler/lens_galaxy_population/index.html"><code
+                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a>
+                        </li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../autoapi/ler/image_properties/index.html"><code
+                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a>
+                        </li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../autoapi/ler/utils/index.html"><code
+                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a>
+                        </li>
+                    </ul>
+                    <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+                    <ul>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../examples/rates/LeR%20complete%20examples.html">LeR complete examples</a>
+                        </li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../examples/rates/GWRATES%20complete%20exmaples.html">GWRATES complete
+                                exmaples</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../examples/rates/grb%20detection%20rate.html">Calculation of detectable
+                                Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a>
+                        </li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../examples/rates/ler%20bns%20example.html">LeR complete examples of BNS
+                                events (O4 design sensitivity)</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../examples/rates/rates_with_3G_detectors.html">Event Rates with 3G
+                                detectors</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../examples/source%20population/merger%20rate%20density%20evolution%20with%20redshift.html">Merger
+                                rate density evolution with redshift</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../examples/source%20population/merger%20rate%20density%20model%20comparision.html">Merger
+                                rate density model comparision</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../examples/source%20population/merger%20rate%20density%20model%20comparision.html#Primordial-BBH-model,-Ng-et-al.-2022">Primordial
+                                BBH model, Ng et al. 2022</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../examples/source%20population/sample%20compact%20binary%20parameters.html">Sampling
+                                parameters for a compact binary</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../examples/source%20population/statistical%20study%20of%20changing%20mass%20model%20params.html">Statistical
+                                study of changing Mass model paramter(s)</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../examples/source%20population/statistical%20study%20of%20cosmological%20friction.html">Statistical
+                                study of cosmological friction and its effect on the redshift vs inferred chirp-mass
+                                relation of gravitational waves</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../examples/lens_parameters/sample%20lens%20parameters.html">Lens parameter
+                                distributions</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../examples/optical_depth/validation_SIE.html">Optical depth SIE model
+                                validation</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../examples/optical_depth/validation_SIS.html">Validation of SIS model
+                                (Numerical vs Analytical)</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../examples/image_properties/dt_vs_dmu.html">Study of Time delays and
+                                magnification of lensed gravitational waves.</a></li>
+                    </ul>
 
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">ler.lens_galaxy_population.optical_depth</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <h1>Source code for ler.lens_galaxy_population.optical_depth</h1><div class="highlight"><pre>
+                </div>
+            </div>
+        </nav>
+
+        <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+            <nav class="wy-nav-top" aria-label="Mobile navigation menu">
+                <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+                <a href="../../../index.html">ler</a>
+            </nav>
+
+            <div class="wy-nav-content">
+                <div class="rst-content">
+                    <div role="navigation" aria-label="Page navigation">
+                        <ul class="wy-breadcrumbs">
+                            <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+                            <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+                            <li class="breadcrumb-item active">ler.lens_galaxy_population.optical_depth</li>
+                            <li class="wy-breadcrumbs-aside">
+                            </li>
+                        </ul>
+                        <hr />
+                    </div>
+                    <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+                        <div itemprop="articleBody">
+
+                            <h1>Source code for ler.lens_galaxy_population.optical_depth</h1>
+                            <div class="highlight">
+                                <pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
 <span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
@@ -122,9 +182,9 @@
 <span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Polygon</span>
 
 
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">cubic_spline_interpolator</span><span class="p">,</span> <span class="n">inverse_transform_sampler</span><span class="p">,</span> <span class="n">cubic_spline_interpolator2d_array</span><span class="p">,</span> <span class="n">save_pickle</span><span class="p">,</span> <span class="n">interpolator_pickle_path</span><span class="p">,</span> <span class="n">FunctionConditioning</span><span class="p">,</span> <span class="n">inverse_transform_sampler2d</span><span class="p">,</span> <span class="n">pdf_cubic_spline_interpolator2d_array</span><span class="p">,</span> <span class="n">normal_pdf</span><span class="p">,</span> <span class="n">normal_pdf_2d</span><span class="p">,</span> <span class="n">load_txt_from_module</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">cubic_spline_interpolator</span><span class="p">,</span> <span class="n">inverse_transform_sampler</span><span class="p">,</span> <span class="n">cubic_spline_interpolator2d_array</span><span class="p">,</span> <span class="n">save_pickle</span><span class="p">,</span> <span class="n">interpolator_json_path</span><span class="p">,</span> <span class="n">FunctionConditioning</span><span class="p">,</span> <span class="n">inverse_transform_sampler2d</span><span class="p">,</span> <span class="n">pdf_cubic_spline_interpolator2d_array</span><span class="p">,</span> <span class="n">normal_pdf</span><span class="p">,</span> <span class="n">normal_pdf_2d</span><span class="p">,</span> <span class="n">load_txt_from_module</span>
 
-<span class="kn">from</span> <span class="nn">.jit_functions</span> <span class="kn">import</span> <span class="n">phi_cut_SIE</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">phi_loc_bernardi</span><span class="p">,</span> <span class="n">phi_q2_ellipticity_hemanta</span><span class="p">,</span> <span class="n">lens_redshift_SDSS_catalogue_sis</span><span class="p">,</span> <span class="n">axis_ratio_rayleigh_pdf</span>
+<span class="kn">from</span> <span class="nn">.jit_functions</span> <span class="kn">import</span> <span class="n">phi_cut_SIE</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">phi_loc_bernardi</span><span class="p">,</span> <span class="n">phi_q2_ellipticity_hemanta</span><span class="p">,</span> <span class="n">lens_redshift_sis_haris</span><span class="p">,</span> <span class="n">axis_ratio_rayleigh_pdf</span>
 
 <div class="viewcode-block" id="OpticalDepth">
 <a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth">[docs]</a>
@@ -153,7 +213,7 @@
 <span class="sd">        lens_param_samplers_params : dict, optional</span>
 <span class="sd">            Dictionary with parameters for the priors of the samplers.</span>
 <span class="sd">        directory : str, optional</span>
-<span class="sd">            Directory where the interpolators are saved (default is &#39;./interpolator_pickle&#39;).</span>
+<span class="sd">            Directory where the interpolators are saved (default is &#39;./interpolator_json&#39;).</span>
 <span class="sd">            If True, creates a new interpolator (default is False).</span>
 <span class="sd">        verbose : bool, optional</span>
 <span class="sd">            If True, prints additional information during initialization (default is False).</span>
@@ -174,7 +234,7 @@
         <span class="n">lens_functions_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">lens_param_samplers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">lens_param_samplers_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;./interpolator_pickle&quot;</span><span class="p">,</span>
+        <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;./interpolator_json&quot;</span><span class="p">,</span>
         <span class="n">create_new_interpolator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
@@ -204,9 +264,9 @@
         <span class="c1"># setting up astropy cosmology functions</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_lookup_table_fuction</span><span class="p">();</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_functions</span><span class="p">[</span><span class="s1">&#39;cross_section&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;interpolated_cross_section_function&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_functions</span><span class="p">[</span><span class="s1">&#39;cross_section&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;cross_section_epl_shear_interpolation&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">create_cross_section_function</span><span class="p">();</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">cross_section</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;interpolated_cross_section_function&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cross_section</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;cross_section_epl_shear_interpolation&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cross_section</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_functions</span><span class="p">[</span><span class="s1">&#39;cross_section&#39;</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nbrs</span><span class="o">=</span><span class="kc">None</span>
@@ -244,9 +304,9 @@
 
 <span class="sd">            Returns</span>
 <span class="sd">            -------</span>
-<span class="sd">            lens_priors_ : `dict`</span>
+<span class="sd">            lens_param_samplers_ : `dict`</span>
 <span class="sd">                dictionary of priors</span>
-<span class="sd">            lens_priors_params_ : `dict`</span>
+<span class="sd">            lens_param_samplers_params_ : `dict`</span>
 <span class="sd">                dictionary of priors parameters</span>
 <span class="sd">            lens_sampler_names_ : `dict`</span>
 <span class="sd">                dictionary of sampler names</span>
@@ -255,9 +315,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">lens_type</span> <span class="o">==</span> <span class="s2">&quot;epl_shear_galaxy&quot;</span><span class="p">:</span>
-            <span class="n">lens_priors_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">lens_param_samplers_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
                 <span class="n">source_redshift_sl</span><span class="o">=</span><span class="s2">&quot;strongly_lensed_source_redshifts&quot;</span><span class="p">,</span>
-                <span class="n">lens_redshift</span><span class="o">=</span><span class="s2">&quot;lens_redshift_SDSS_catalogue_hemanta&quot;</span><span class="p">,</span> <span class="c1">#&quot;lens_redshift_SDSS_catalogue_numerical&quot;,</span>
+                <span class="n">lens_redshift</span><span class="o">=</span><span class="s2">&quot;lens_redshift_strongly_lensed_hemanta&quot;</span><span class="p">,</span> <span class="c1">#&quot;lens_redshift_strongly_lensed_numerical&quot;,</span>
                 <span class="n">velocity_dispersion</span><span class="o">=</span><span class="s2">&quot;velocity_dispersion_ewoud&quot;</span><span class="p">,</span>
                 <span class="n">axis_ratio</span><span class="o">=</span><span class="s2">&quot;axis_ratio_rayleigh&quot;</span><span class="p">,</span>
                 <span class="n">axis_rotation_angle</span><span class="o">=</span><span class="s2">&quot;axis_rotation_angle_uniform&quot;</span><span class="p">,</span>
@@ -266,7 +326,7 @@
                 <span class="n">external_shear_sl</span><span class="o">=</span><span class="s2">&quot;external_shear_normal&quot;</span><span class="p">,</span>
                 <span class="n">density_profile_slope_sl</span><span class="o">=</span><span class="s2">&quot;density_profile_slope_normal&quot;</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="n">lens_priors_params_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">lens_param_samplers_params_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
                 <span class="n">source_redshift_sl</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">lens_redshift</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">velocity_dispersion</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">sigma_min</span><span class="o">=</span><span class="mf">100.</span><span class="p">,</span> <span class="n">sigma_max</span><span class="o">=</span><span class="mf">400.</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.94</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.85</span><span class="p">,</span> <span class="n">phistar</span><span class="o">=</span><span class="mf">2.099e-2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="o">.</span><span class="n">h</span><span class="o">/</span><span class="mf">0.7</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">sigmastar</span><span class="o">=</span><span class="mf">113.78</span><span class="p">),</span>
@@ -279,20 +339,20 @@
             <span class="p">)</span>
             <span class="n">lens_functions_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
                 <span class="n">param_sampler_type</span><span class="o">=</span><span class="s2">&quot;sample_all_routine_sie_sl&quot;</span><span class="p">,</span>
-                <span class="n">strong_lensing_condition</span><span class="o">=</span><span class="s2">&quot;rjs_with_cross_section_sie_feixu&quot;</span><span class="p">,</span>
+                <span class="n">cross_section_based_sampler</span><span class="o">=</span><span class="s2">&quot;rejection_sampling_with_cross_section_sie_feixu&quot;</span><span class="p">,</span>
                 <span class="n">optical_depth</span><span class="o">=</span><span class="s2">&quot;optical_depth_numerical&quot;</span><span class="p">,</span>
-                <span class="n">cross_section</span><span class="o">=</span><span class="s2">&quot;interpolated_cross_section_function&quot;</span><span class="p">,</span>
+                <span class="n">cross_section</span><span class="o">=</span><span class="s2">&quot;cross_section_epl_shear_interpolation&quot;</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">lens_functions_params_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-                <span class="n">strong_lensing_condition</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">cross_section_based_sampler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">optical_depth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">param_sampler_type</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fast_sampler</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="c1"># not implemented yet</span>
                 <span class="n">cross_section</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="n">lens_type</span> <span class="o">==</span> <span class="s2">&quot;sie_galaxy&quot;</span><span class="p">:</span>
-            <span class="n">lens_priors_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">lens_param_samplers_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
                 <span class="n">source_redshift_sl</span><span class="o">=</span><span class="s2">&quot;strongly_lensed_source_redshifts&quot;</span><span class="p">,</span>
-                <span class="n">lens_redshift</span><span class="o">=</span><span class="s2">&quot;lens_redshift_SDSS_catalogue_hemanta&quot;</span><span class="p">,</span> <span class="c1">#&quot;lens_redshift_SDSS_catalogue_numerical&quot;,</span>
+                <span class="n">lens_redshift</span><span class="o">=</span><span class="s2">&quot;lens_redshift_strongly_lensed_hemanta&quot;</span><span class="p">,</span> <span class="c1">#&quot;lens_redshift_strongly_lensed_numerical&quot;,</span>
                 <span class="n">velocity_dispersion</span><span class="o">=</span><span class="s2">&quot;velocity_dispersion_ewoud&quot;</span><span class="p">,</span>
                 <span class="n">axis_ratio</span><span class="o">=</span><span class="s2">&quot;axis_ratio_rayleigh&quot;</span><span class="p">,</span>
                 <span class="n">axis_rotation_angle</span><span class="o">=</span><span class="s2">&quot;axis_rotation_angle_uniform&quot;</span><span class="p">,</span>
@@ -301,7 +361,7 @@
                 <span class="n">external_shear_sl</span><span class="o">=</span><span class="s2">&quot;external_shear_normal&quot;</span><span class="p">,</span>
                 <span class="n">density_profile_slope_sl</span><span class="o">=</span><span class="s2">&quot;density_profile_slope_normal&quot;</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="n">lens_priors_params_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">lens_param_samplers_params_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
                 <span class="n">source_redshift_sl</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">lens_redshift</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">velocity_dispersion</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">sigma_min</span><span class="o">=</span><span class="mf">100.</span><span class="p">,</span> <span class="n">sigma_max</span><span class="o">=</span><span class="mf">400.</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.94</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.85</span><span class="p">,</span> <span class="n">phistar</span><span class="o">=</span><span class="mf">2.099e-2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="o">.</span><span class="n">h</span><span class="o">/</span><span class="mf">0.7</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">sigmastar</span><span class="o">=</span><span class="mf">113.78</span><span class="p">),</span>
@@ -313,21 +373,21 @@
                 <span class="n">density_profile_slope_sl</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mf">0.</span><span class="p">),</span>
             <span class="p">)</span>
             <span class="n">lens_functions_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-                <span class="n">strong_lensing_condition</span><span class="o">=</span><span class="s2">&quot;rjs_with_cross_section_sie_feixu&quot;</span><span class="p">,</span>
+                <span class="n">cross_section_based_sampler</span><span class="o">=</span><span class="s2">&quot;rejection_sampling_with_cross_section_sie_feixu&quot;</span><span class="p">,</span>
                 <span class="n">optical_depth</span><span class="o">=</span><span class="s2">&quot;optical_depth_numerical&quot;</span><span class="p">,</span>
                 <span class="n">param_sampler_type</span><span class="o">=</span><span class="s2">&quot;sample_all_routine_sie_sl&quot;</span><span class="p">,</span>
                 <span class="n">cross_section</span><span class="o">=</span><span class="s2">&quot;cross_section_sie_feixu&quot;</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">lens_functions_params_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-                <span class="n">strong_lensing_condition</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">cross_section_based_sampler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">optical_depth</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">interpolated_cross_section</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
                 <span class="n">param_sampler_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">cross_section</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="n">lens_type</span> <span class="o">==</span> <span class="s2">&quot;sis_galaxy&quot;</span><span class="p">:</span>
-            <span class="n">lens_priors_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">lens_param_samplers_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
                 <span class="n">source_redshift_sl</span><span class="o">=</span><span class="s2">&quot;strongly_lensed_source_redshifts&quot;</span><span class="p">,</span>
-                <span class="n">lens_redshift</span><span class="o">=</span><span class="s2">&quot;lens_redshift_SDSS_catalogue_numerical&quot;</span><span class="p">,</span>
+                <span class="n">lens_redshift</span><span class="o">=</span><span class="s2">&quot;lens_redshift_strongly_lensed_numerical&quot;</span><span class="p">,</span>
                 <span class="n">velocity_dispersion</span><span class="o">=</span><span class="s2">&quot;velocity_dispersion_choi&quot;</span><span class="p">,</span>
                 <span class="n">axis_ratio</span><span class="o">=</span><span class="s2">&quot;axis_ratio_uniform&quot;</span><span class="p">,</span>
                 <span class="n">axis_rotation_angle</span><span class="o">=</span><span class="s2">&quot;axis_rotation_angle_uniform&quot;</span><span class="p">,</span>
@@ -336,7 +396,7 @@
                 <span class="n">external_shear_sl</span><span class="o">=</span><span class="s2">&quot;external_shear_normal&quot;</span><span class="p">,</span>
                 <span class="n">density_profile_slope_sl</span><span class="o">=</span><span class="s2">&quot;density_profile_slope_normal&quot;</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="n">lens_priors_params_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">lens_param_samplers_params_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
                 <span class="n">source_redshift_sl</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">lens_redshift</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">velocity_dispersion</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">sigma_min</span> <span class="o">=</span> <span class="mf">10.</span><span class="p">,</span> <span class="n">sigma_max</span> <span class="o">=</span> <span class="mf">420.</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">2.32</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">2.67</span><span class="p">,</span> <span class="n">phistar</span> <span class="o">=</span> <span class="mf">8.0e-3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="o">.</span><span class="n">h</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">sigmastar</span> <span class="o">=</span> <span class="mf">161.0</span><span class="p">),</span>
@@ -348,13 +408,13 @@
                 <span class="n">density_profile_slope_sl</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mf">0.</span><span class="p">),</span>
             <span class="p">)</span>
             <span class="n">lens_functions_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-                <span class="n">strong_lensing_condition</span><span class="o">=</span><span class="s2">&quot;rjs_with_cross_section_sis&quot;</span><span class="p">,</span>
+                <span class="n">cross_section_based_sampler</span><span class="o">=</span><span class="s2">&quot;rejection_sampling_with_cross_section_sis&quot;</span><span class="p">,</span>
                 <span class="n">optical_depth</span><span class="o">=</span><span class="s2">&quot;optical_depth_numerical&quot;</span><span class="p">,</span>
                 <span class="n">param_sampler_type</span><span class="o">=</span><span class="s2">&quot;sample_all_routine_sis&quot;</span><span class="p">,</span>
                 <span class="n">cross_section</span><span class="o">=</span><span class="s2">&quot;cross_section_sis&quot;</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">lens_functions_params_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-                <span class="n">strong_lensing_condition</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">cross_section_based_sampler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">optical_depth</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">interpolated_cross_section</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
                 <span class="n">param_sampler_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">cross_section</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -362,7 +422,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;lens_type not recognized&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span><span class="p">(</span><span class="n">lens_priors_</span><span class="p">,</span> <span class="n">lens_priors_params_</span><span class="p">,</span> <span class="n">lens_functions_</span><span class="p">,</span> <span class="n">lens_functions_params_</span><span class="p">)</span></div>
+        <span class="k">return</span><span class="p">(</span><span class="n">lens_param_samplers_</span><span class="p">,</span> <span class="n">lens_param_samplers_params_</span><span class="p">,</span> <span class="n">lens_functions_</span><span class="p">,</span> <span class="n">lens_functions_params_</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="OpticalDepth.initialize_decision_dictionary">
@@ -402,7 +462,7 @@
 <a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.lens_functions_and_sampler_categorization">[docs]</a>
     <span class="k">def</span> <span class="nf">lens_functions_and_sampler_categorization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lens_param_samplers</span><span class="p">,</span> <span class="n">lens_param_samplers_params</span><span class="p">,</span> <span class="n">lens_functions</span><span class="p">,</span> <span class="n">lens_functions_params</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to initialize velocity dispersion sampler with it&#39;s settings. The reason I am seperating this from lens_priors_categorization is only a specific parameters needs special attention.</span>
+<span class="sd">        Function to initialize velocity dispersion sampler with it&#39;s settings. The reason I am seperating this from lens_param_samplers_categorization is only a specific parameters needs special attention.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -476,16 +536,16 @@
         <span class="c1"># setting up multiprocessor function for lens redshift</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_type</span> <span class="o">==</span> <span class="s1">&#39;epl_shear_galaxy&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="p">[</span><span class="s1">&#39;velocity_dispersion&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;velocity_dispersion_ewoud&#39;</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;using lens_redshift_epl_shear2_mp&#39;</span><span class="p">)</span>
-                <span class="kn">from</span> <span class="nn">.mp</span> <span class="kn">import</span> <span class="n">lens_redshift_epl_shear2_mp</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_helper_sl_disribution_mp</span> <span class="o">=</span> <span class="n">lens_redshift_epl_shear2_mp</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;using lens_redshift_strongly_lensed_mp&#39;</span><span class="p">)</span>
+                <span class="kn">from</span> <span class="nn">.mp</span> <span class="kn">import</span> <span class="n">lens_redshift_strongly_lensed_mp</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_helper_sl_disribution_mp</span> <span class="o">=</span> <span class="n">lens_redshift_strongly_lensed_mp</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;using lens_redshift_epl_shear1_mp&#39;</span><span class="p">)</span>
                 <span class="kn">from</span> <span class="nn">.mp</span> <span class="kn">import</span> <span class="n">lens_redshift_epl_shear1_mp</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_helper_sl_disribution_mp</span> <span class="o">=</span> <span class="n">lens_redshift_epl_shear1_mp</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_type</span> <span class="o">==</span> <span class="s1">&#39;sie_galaxy&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="p">[</span><span class="s1">&#39;velocity_dispersion&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;velocity_dispersion_ewoud&#39;</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_functions</span><span class="p">[</span><span class="s1">&#39;cross_section&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;interpolated_cross_section_function&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_functions</span><span class="p">[</span><span class="s1">&#39;cross_section&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;cross_section_epl_shear_interpolation&#39;</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;using lens_redshift_sie4_mp&#39;</span><span class="p">)</span>
                     <span class="kn">from</span> <span class="nn">.mp</span> <span class="kn">import</span> <span class="n">lens_redshift_sie4_mp</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_helper_sl_disribution_mp</span> <span class="o">=</span> <span class="n">lens_redshift_sie4_mp</span>
@@ -494,7 +554,7 @@
                     <span class="kn">from</span> <span class="nn">.mp</span> <span class="kn">import</span> <span class="n">lens_redshift_sie2_mp</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_helper_sl_disribution_mp</span> <span class="o">=</span> <span class="n">lens_redshift_sie2_mp</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_functions</span><span class="p">[</span><span class="s1">&#39;cross_section&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;interpolated_cross_section_function&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_functions</span><span class="p">[</span><span class="s1">&#39;cross_section&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;cross_section_epl_shear_interpolation&#39;</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;using lens_redshift_sie3_mp&#39;</span><span class="p">)</span>
                     <span class="kn">from</span> <span class="nn">.mp</span> <span class="kn">import</span> <span class="n">lens_redshift_sie3_mp</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_helper_sl_disribution_mp</span> <span class="o">=</span> <span class="n">lens_redshift_sie3_mp</span>
@@ -504,13 +564,13 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">_helper_sl_disribution_mp</span> <span class="o">=</span> <span class="n">lens_redshift_sie1_mp</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_type</span> <span class="o">==</span> <span class="s1">&#39;sis_galaxy&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="p">[</span><span class="s1">&#39;velocity_dispersion&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;velocity_dispersion_ewoud&#39;</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;using lens_redshift_sis2_mp&#39;</span><span class="p">)</span>
-                <span class="kn">from</span> <span class="nn">.mp</span> <span class="kn">import</span> <span class="n">lens_redshift_sis2_mp</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_helper_sl_disribution_mp</span> <span class="o">=</span> <span class="n">lens_redshift_sis2_mp</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;using lens_redshift_sis_haris2_mp&#39;</span><span class="p">)</span>
+                <span class="kn">from</span> <span class="nn">.mp</span> <span class="kn">import</span> <span class="n">lens_redshift_sis_haris2_mp</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_helper_sl_disribution_mp</span> <span class="o">=</span> <span class="n">lens_redshift_sis_haris2_mp</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;using lens_redshift_sis1_mp&#39;</span><span class="p">)</span>
-                <span class="kn">from</span> <span class="nn">.mp</span> <span class="kn">import</span> <span class="n">lens_redshift_sis1_mp</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_helper_sl_disribution_mp</span> <span class="o">=</span> <span class="n">lens_redshift_sis1_mp</span></div>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;using lens_redshift_sis_haris1_mp&#39;</span><span class="p">)</span>
+                <span class="kn">from</span> <span class="nn">.mp</span> <span class="kn">import</span> <span class="n">lens_redshift_sis_haris1_mp</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_helper_sl_disribution_mp</span> <span class="o">=</span> <span class="n">lens_redshift_sis_haris1_mp</span></div>
 
 
 
@@ -652,9 +712,9 @@
         <span class="k">return</span> <span class="n">q_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">q_object</span><span class="p">(</span><span class="n">size</span><span class="p">)</span></div>
 
         
-<div class="viewcode-block" id="OpticalDepth.lens_redshift_SDSS_catalogue_numerical">
-<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.lens_redshift_SDSS_catalogue_numerical">[docs]</a>
-    <span class="k">def</span> <span class="nf">lens_redshift_SDSS_catalogue_numerical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">zs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OpticalDepth.lens_redshift_strongly_lensed_numerical">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.lens_redshift_strongly_lensed_numerical">[docs]</a>
+    <span class="k">def</span> <span class="nf">lens_redshift_strongly_lensed_numerical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">zs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to sample lens redshifts, conditioned on the lens being strongly lensed</span>
 
@@ -675,12 +735,12 @@
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; from ler.lens_galaxy_population import OpticalDepth</span>
-<span class="sd">        &gt;&gt;&gt; od = OpticalDepth(lens_param_samplers=dict(lens_redshift=&quot;lens_redshift_SDSS_catalogue_numerical&quot;))</span>
+<span class="sd">        &gt;&gt;&gt; od = OpticalDepth(lens_param_samplers=dict(lens_redshift=&quot;lens_redshift_strongly_lensed_numerical&quot;))</span>
 <span class="sd">        &gt;&gt;&gt; print(od.lens_redshift(size=10, zs=1.0))</span>
 <span class="sd">        &quot;&quot;&quot;</span>
     
         <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;lens_redshift_numerical_&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_type</span>
+        <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;lens_redshift_strongly_lensed_numerical_&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_type</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;lens_redshift&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;z_min&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;z_max&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span>
@@ -701,7 +761,7 @@
         <span class="k">if</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;external_shear&#39;</span><span class="p">]:</span> <span class="c1"># if external_shear is not None</span>
             <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;external_shear&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="p">[</span><span class="s1">&#39;external_shear&#39;</span><span class="p">])</span>
         
-        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_lens_prior_list_and_its_params</span><span class="p">[</span><span class="s2">&quot;lens_redshift&quot;</span><span class="p">][</span><span class="s2">&quot;lens_redshift_SDSS_catalogue_numerical&quot;</span><span class="p">]</span>
+        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_lens_prior_list_and_its_params</span><span class="p">[</span><span class="s2">&quot;lens_redshift&quot;</span><span class="p">][</span><span class="s2">&quot;lens_redshift_strongly_lensed_numerical&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">param_dict</span><span class="p">:</span>
             <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -718,7 +778,7 @@
             <span class="n">zl_scaled2d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">buffer_</span><span class="o">/</span><span class="n">zs_</span><span class="p">)</span>
         <span class="n">zl_scaled2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">zl_scaled2d</span><span class="p">)</span>
 
-        <span class="n">_</span><span class="p">,</span> <span class="n">it_exist</span> <span class="o">=</span> <span class="n">interpolator_pickle_path</span><span class="p">(</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">it_exist</span> <span class="o">=</span> <span class="n">interpolator_json_path</span><span class="p">(</span>
             <span class="n">param_dict_given</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;lens_redshift&quot;</span><span class="p">,</span>
@@ -771,9 +831,9 @@
         <span class="k">return</span> <span class="n">zl_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">zl_object</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">zs</span><span class="p">)</span></div>
 
     
-<div class="viewcode-block" id="OpticalDepth.lens_redshift_SDSS_catalogue_hemanta">
-<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.lens_redshift_SDSS_catalogue_hemanta">[docs]</a>
-    <span class="k">def</span> <span class="nf">lens_redshift_SDSS_catalogue_hemanta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">zs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OpticalDepth.lens_redshift_strongly_lensed_hemanta">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.lens_redshift_strongly_lensed_hemanta">[docs]</a>
+    <span class="k">def</span> <span class="nf">lens_redshift_strongly_lensed_hemanta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">zs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to sample lens redshifts, conditioned on the lens being strongly lensed</span>
 
@@ -794,12 +854,12 @@
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; from ler.lens_galaxy_population import OpticalDepth</span>
-<span class="sd">        &gt;&gt;&gt; od = OpticalDepth(lens_param_samplers=dict(lens_redshift=&quot;lens_redshift_SDSS_catalogue_numerical&quot;))</span>
+<span class="sd">        &gt;&gt;&gt; od = OpticalDepth(lens_param_samplers=dict(lens_redshift=&quot;lens_redshift_strongly_lensed_numerical&quot;))</span>
 <span class="sd">        &gt;&gt;&gt; print(od.lens_redshift(size=10, zs=1.0))</span>
 <span class="sd">        &quot;&quot;&quot;</span>
     
         <span class="c1"># default parameters</span>
-        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;lens_redshift_numerical_epl_shear_galaxy&#39;</span><span class="p">,</span>
+        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;lens_redshift_strongly_lensed_numerical_epl_shear_galaxy&#39;</span><span class="p">,</span>
             <span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
             <span class="s1">&#39;z_min&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
             <span class="s1">&#39;z_max&#39;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
@@ -874,9 +934,9 @@
         <span class="k">return</span> <span class="n">zl_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">zl_object</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">zs</span><span class="p">)</span></div>
 
         
-<div class="viewcode-block" id="OpticalDepth.intrinsic_lens_redshift">
-<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.intrinsic_lens_redshift">[docs]</a>
-    <span class="k">def</span> <span class="nf">intrinsic_lens_redshift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OpticalDepth.lens_redshift_intrinsic">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.lens_redshift_intrinsic">[docs]</a>
+    <span class="k">def</span> <span class="nf">lens_redshift_intrinsic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to sample intrinsic lens redshifts, based on the intrinsic velocity dispersion of the lens galaxy.</span>
 
@@ -895,7 +955,7 @@
 <span class="sd">            lens redshifts</span>
 <span class="sd">        &quot;&quot;&quot;</span>
     
-        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;intrinsic_lens_redshift&quot;</span><span class="p">}</span>
+        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;lens_redshift_intrinsic&quot;</span><span class="p">}</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;z_min&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;z_max&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;cosmology&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span>
@@ -904,14 +964,14 @@
             <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;velocity_dispersion&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="p">[</span><span class="s1">&#39;velocity_dispersion&#39;</span><span class="p">])</span>
 
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">500</span>
-        <span class="c1"># param_dict = self.available_lens_prior_list_and_its_params[&quot;lens_redshift&quot;][&quot;intrinsic_lens_redshift&quot;]</span>
+        <span class="c1"># param_dict = self.available_lens_prior_list_and_its_params[&quot;lens_redshift&quot;][&quot;lens_redshift_intrinsic&quot;]</span>
         <span class="c1"># if param_dict:</span>
         <span class="c1">#     param_dict.update(kwargs)</span>
         <span class="c1"># else:</span>
         <span class="c1">#     param_dict = kwargs</span>
         <span class="c1"># identifier_dict.update(param_dict)</span>
 
-        <span class="n">_</span><span class="p">,</span> <span class="n">it_exist</span> <span class="o">=</span> <span class="n">interpolator_pickle_path</span><span class="p">(</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">it_exist</span> <span class="o">=</span> <span class="n">interpolator_json_path</span><span class="p">(</span>
             <span class="n">param_dict_given</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;lens_redshift&quot;</span><span class="p">,</span>
@@ -1409,9 +1469,9 @@
         <span class="k">return</span> <span class="n">slope_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">slope_object</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="p">)</span></div>
 
     
-<div class="viewcode-block" id="OpticalDepth.lens_redshift_SDSS_catalogue_sis">
-<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.lens_redshift_SDSS_catalogue_sis">[docs]</a>
-    <span class="k">def</span> <span class="nf">lens_redshift_SDSS_catalogue_sis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OpticalDepth.lens_redshift_sis_haris">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.lens_redshift_sis_haris">[docs]</a>
+    <span class="k">def</span> <span class="nf">lens_redshift_sis_haris</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to sample lens redshifts, conditioned on the lens being strongly lensed</span>
 
@@ -1431,7 +1491,7 @@
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; from ler.lens_galaxy_population import LensGalaxyParameterDistribution</span>
 <span class="sd">        &gt;&gt;&gt; lens = LensGalaxyParameterDistribution()</span>
-<span class="sd">        &gt;&gt;&gt; lens.lens_redshift_SDSS_catalogue_sis(zs=1.0)</span>
+<span class="sd">        &gt;&gt;&gt; lens.lens_redshift_sis_haris(zs=1.0)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># # Old way</span>
@@ -1442,13 +1502,13 @@
         <span class="c1"># zs = np.array([zs]).reshape(-1)</span>
 
         <span class="c1"># New way</span>
-        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;lens_redshift_SDSS_catalogue_sis&quot;</span><span class="p">}</span>
+        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;lens_redshift_sis_haris&quot;</span><span class="p">}</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;z_min&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;z_max&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;cosmology&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;velocity_dispersion&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">sigma_min</span> <span class="o">=</span> <span class="mf">10.</span><span class="p">,</span> <span class="n">sigma_max</span> <span class="o">=</span> <span class="mf">420.</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">2.32</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">2.67</span><span class="p">,</span> <span class="n">phistar</span> <span class="o">=</span> <span class="mf">8.0e-3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="o">.</span><span class="n">h</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">sigmastar</span> <span class="o">=</span> <span class="mf">161.0</span><span class="p">)</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;lens_redshift&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
-        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_lens_prior_list_and_its_params</span><span class="p">[</span><span class="s2">&quot;lens_redshift&quot;</span><span class="p">][</span><span class="s2">&quot;lens_redshift_SDSS_catalogue_sis&quot;</span><span class="p">]</span>
+        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_lens_prior_list_and_its_params</span><span class="p">[</span><span class="s2">&quot;lens_redshift&quot;</span><span class="p">][</span><span class="s2">&quot;lens_redshift_sis_haris&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">param_dict</span><span class="p">:</span>
             <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -2084,7 +2144,7 @@
 
         <span class="k">return</span> <span class="n">theta_E</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">,</span> <span class="n">q</span>
     
-    <span class="k">def</span> <span class="nf">cross_section_caustic_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta_E</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cross_section_epl_shear_numerical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta_E</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">):</span>
 
         <span class="n">size</span> <span class="o">=</span> <span class="n">theta_E</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">area_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
@@ -2117,7 +2177,7 @@
             
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">area_list</span><span class="p">)</span>
     
-    <span class="k">def</span> <span class="nf">cross_section_caustic_area_unit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cross_section_epl_shear_numerical_unit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">):</span>
 
         <span class="n">size</span> <span class="o">=</span> <span class="n">e1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">area_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
@@ -2163,7 +2223,7 @@
             <span class="n">q_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;axis_ratio&quot;</span><span class="p">][</span><span class="s1">&#39;q_max&#39;</span><span class="p">],</span>
         <span class="p">)</span>
 
-        <span class="n">file_path</span><span class="p">,</span> <span class="n">it_exist</span> <span class="o">=</span> <span class="n">interpolator_pickle_path</span><span class="p">(</span>
+        <span class="n">file_path</span><span class="p">,</span> <span class="n">it_exist</span> <span class="o">=</span> <span class="n">interpolator_json_path</span><span class="p">(</span>
             <span class="n">param_dict_given</span><span class="o">=</span><span class="n">param_dict_given</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;cross_section_function&quot;</span><span class="p">,</span>
@@ -2180,8 +2240,8 @@
             <span class="c1"># sort</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">theta_E</span><span class="p">)</span>
             <span class="n">theta_E</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span> <span class="o">=</span> <span class="n">theta_E</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">e1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">e2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">gamma</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">gamma1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">gamma2</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-            <span class="n">values1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cross_section_caustic_area</span><span class="p">(</span><span class="n">theta_E</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">)</span>
-            <span class="n">values2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cross_section_caustic_area_unit</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">)</span>
+            <span class="n">values1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cross_section_epl_shear_numerical</span><span class="p">(</span><span class="n">theta_E</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">)</span>
+            <span class="n">values2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cross_section_epl_shear_numerical_unit</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">)</span>
 
             <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">theta_E</span><span class="o">**</span><span class="mi">2</span>
 
@@ -2233,9 +2293,9 @@
             <span class="n">load_</span> <span class="o">=</span> <span class="n">load_pickle</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nbrs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cross_section_spline</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sis_area_array</span> <span class="o">=</span> <span class="n">load_</span>
 
-<div class="viewcode-block" id="OpticalDepth.interpolated_cross_section_function">
-<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.interpolated_cross_section_function">[docs]</a>
-    <span class="k">def</span> <span class="nf">interpolated_cross_section_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta_E</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OpticalDepth.cross_section_epl_shear_interpolation">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/optical_depth/index.html#ler.lens_galaxy_population.OpticalDepth.cross_section_epl_shear_interpolation">[docs]</a>
+    <span class="k">def</span> <span class="nf">cross_section_epl_shear_interpolation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta_E</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to compute the cross-section correction factor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2737,9 +2797,9 @@
                 <span class="n">strongly_lensed_source_redshifts</span><span class="o">=</span><span class="kc">None</span>
             <span class="p">),</span>
             <span class="n">lens_redshift</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-                <span class="n">lens_redshift_SDSS_catalogue_sis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">lens_redshift_SDSS_catalogue_numerical</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">lens_redshift_SDSS_catalogue_hemanta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">lens_redshift_sis_haris</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">lens_redshift_strongly_lensed_numerical</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">lens_redshift_strongly_lensed_hemanta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="n">velocity_dispersion</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
                 <span class="n">velocity_dispersion_gengamma</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -2796,10 +2856,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_available_lens_functions_and_its_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">strong_lensing_condition</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-                <span class="n">rjs_with_cross_section_sie_feixu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">rjs_with_cross_section_sis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">rjs_with_cross_section_mp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">cross_section_based_sampler</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">rejection_sampling_with_cross_section_sie_feixu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">rejection_sampling_with_cross_section_sis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">rejection_sampling_with_cross_section</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="n">optical_depth</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
                 <span class="n">optical_depth_sis_haris</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -2815,8 +2875,8 @@
             <span class="n">cross_section</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
                 <span class="n">cross_section_sie_feixu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">cross_section_sis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">cross_section_caustic_area</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">interpolated_cross_section_function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">cross_section_epl_shear_numerical</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">cross_section_epl_shear_interpolation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="p">),</span>
         <span class="p">)</span>
 
@@ -2832,33 +2892,35 @@
 
 
 
-</pre></div>
+</pre>
+                            </div>
 
-           </div>
-          </div>
-          <footer>
+                        </div>
+                    </div>
+                    <footer>
 
-  <hr/>
+                        <hr />
 
-  <div role="contentinfo">
-    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
-  </div>
+                        <div role="contentinfo">
+                            <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+                        </div>
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+                        Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+                        <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+                        provided by <a href="https://readthedocs.org">Read the Docs</a>.
 
-</footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+
+                    </footer>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
 
 </body>
+
 </html>

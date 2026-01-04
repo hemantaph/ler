@@ -36,7 +36,7 @@ def main():
             unlensed_param_detectable="unlensed_param_detectable.json", # to store only detectable unlensed events
             lensed_param="lensed_param.json", # to store all lensed events 
             lensed_param_detectable="lensed_param_detectable.json"), # to store only detectable lensed events
-        interpolator_directory='./interpolator_pickle', # directory to store the interpolator pickle files. 'ler' uses interpolation to get values of various functions to speed up the calculations (relying on numba njit).
+        interpolator_directory='./interpolator_json', # directory to store the interpolator pickle files. 'ler' uses interpolation to get values of various functions to speed up the calculations (relying on numba njit).
         ler_directory='./ler_data', # directory to store all the outputs
         verbose=True, # if True, will print all information at initialization
 
@@ -48,9 +48,9 @@ def main():
 
         # LensGalaxyParameterDistribution class arguments
         lens_type = 'epl_shear_galaxy',
-        lens_functions =  {'strong_lensing_condition': 'rjs_with_cross_section_SIE', 'optical_depth': 'optical_depth_SIE_hemanta', 'param_sampler_type': 'sample_all_routine'},
-        lens_priors =  {'source_redshift_sl': 'strongly_lensed_source_redshifts', 'lens_redshift': 'lens_redshift_SDSS_catalogue', 'velocity_dispersion': 'velocity_dispersion_ewoud', 'axis_ratio': 'axis_ratio_rayleigh', 'axis_rotation_angle': 'axis_rotation_angle_uniform', 'external_shear': 'shear_norm', 'density_profile_slope': 'density_profile_slope_normal', 'source_parameters': 'sample_gw_parameters'},
-        lens_priors_params =  {'source_redshift_sl': None, 'lens_redshift': None, 'velocity_dispersion': None, 'axis_ratio': {'q_min': 0.2, 'q_max': 1.0}, 'axis_rotation_angle': {'phi_min': 0.0, 'phi_max': 6.283185307179586}, 'external_shear': {'scale': 0.05}, 'density_profile_slope': {'mean': 2.0, 'std': 0.2}, 'source_parameters': None},
+        lens_functions =  {'cross_section_based_sampler': 'rejection_sampling_with_cross_section_SIE', 'optical_depth': 'optical_depth_SIE_hemanta', 'param_sampler_type': 'sample_all_routine'},
+        lens_param_samplers =  {'source_redshift_sl': 'strongly_lensed_source_redshifts', 'lens_redshift': 'lens_redshift_SDSS_catalogue', 'velocity_dispersion': 'velocity_dispersion_ewoud', 'axis_ratio': 'axis_ratio_rayleigh', 'axis_rotation_angle': 'axis_rotation_angle_uniform', 'external_shear': 'shear_norm', 'density_profile_slope': 'density_profile_slope_normal', 'source_parameters': 'sample_gw_parameters'},
+        lens_param_samplers_params =  {'source_redshift_sl': None, 'lens_redshift': None, 'velocity_dispersion': None, 'axis_ratio': {'q_min': 0.2, 'q_max': 1.0}, 'axis_rotation_angle': {'phi_min': 0.0, 'phi_max': 6.283185307179586}, 'external_shear': {'scale': 0.05}, 'density_profile_slope': {'mean': 2.0, 'std': 0.2}, 'source_parameters': None},
 
         # ImageProperties class arguments
         n_min_images = 2,
@@ -72,7 +72,7 @@ def main():
         snr_type = 'interpolation',
         psds = {'L1':'aLIGO_O4_high_asd.txt','H1':'aLIGO_O4_high_asd.txt', 'V1':'AdV_asd.txt', 'K1':'KAGRA_design_asd.txt'},
         ifos = ['L1', 'H1', 'V1'],
-        interpolator_dir = './interpolator_pickle',
+        interpolator_dir = './interpolator_json',
         gwsnr_verbose = False,
         multiprocessing_verbose = True,
         mtot_cut = True,

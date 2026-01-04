@@ -40,12 +40,12 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "z_to_Dc interpolator will be generated at ./interpolator_pickle/z_to_Dc/z_to_Dc_3.pickle\n",
-      "Dc_to_z interpolator will be generated at ./interpolator_pickle/Dc_to_z/Dc_to_z_3.pickle\n",
-      "angular_diameter_distance interpolator will be generated at ./interpolator_pickle/angular_diameter_distance/angular_diameter_distance_3.pickle\n",
-      "differential_comoving_volume interpolator will be generated at ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_3.pickle\n",
-      "velocity_dispersion_gengamma interpolator will be generated at ./interpolator_pickle/velocity_dispersion_gengamma/velocity_dispersion_gengamma_2.pickle\n",
-      "optical_depth_SIS_hemanta interpolator will be generated at ./interpolator_pickle/optical_depth_SIS_hemanta/optical_depth_SIS_hemanta_1.pickle\n"
+      "z_to_Dc interpolator will be generated at ./interpolator_json/z_to_Dc/z_to_Dc_3.pickle\n",
+      "Dc_to_z interpolator will be generated at ./interpolator_json/Dc_to_z/Dc_to_z_3.pickle\n",
+      "angular_diameter_distance interpolator will be generated at ./interpolator_json/angular_diameter_distance/angular_diameter_distance_3.pickle\n",
+      "differential_comoving_volume interpolator will be generated at ./interpolator_json/differential_comoving_volume/differential_comoving_volume_3.pickle\n",
+      "velocity_dispersion_gengamma interpolator will be generated at ./interpolator_json/velocity_dispersion_gengamma/velocity_dispersion_gengamma_2.pickle\n",
+      "optical_depth_SIS_hemanta interpolator will be generated at ./interpolator_json/optical_depth_SIS_hemanta/optical_depth_SIS_hemanta_1.pickle\n"
      ]
     }
    ],
@@ -63,7 +63,7 @@
     "        axis_ratio=dict(q_min=0.2, q_max=1),\n",
     "    ),\n",
     "    cosmology=cosmo,\n",
-    "    directory=\"./interpolator_pickle\",\n",
+    "    directory=\"./interpolator_json\",\n",
     "    #create_new_interpolator=True,\n",
     "    )"
    ]

@@ -62,7 +62,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         default: False
     directory : `str`
         Directory to store the interpolator pickle files
-        default: './interpolator_pickle'
+        default: './interpolator_json'
     create_new_interpolator : `dict`
         Dictionary of boolean values and resolution to create new interpolator.
         default: dict(redshift_distribution=dict(create_new=False, resolution=500), z_to_luminosity_distance=dict(create_new=False, resolution=500), differential_comoving_volume=dict(create_new=False, resolution=500))
@@ -247,9 +247,9 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         source_priors=None,
         source_priors_params=None,
         cosmology=None,
-        spin_zero=True,
+        spin_zero=False,
         spin_precession=False,
-        directory="./interpolator_pickle",
+        directory="./interpolator_json",
         create_new_interpolator=False,
     ):
         # set attributes
@@ -689,7 +689,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         mass_object = FunctionConditioning(
             function=None,
             x_array=None,
-            param_dict_given=identifier_dict,
+            identifier_dict=identifier_dict,
             directory=self.directory,
             sub_directory="source_frame_masses",
             name=identifier_dict['name'],
@@ -771,7 +771,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         mass_object = FunctionConditioning(
             function=None,
             x_array=None,
-            param_dict_given=identifier_dict,
+            identifier_dict=identifier_dict,
             directory=self.directory,
             sub_directory="source_frame_masses",
             name=identifier_dict['name'],
@@ -844,7 +844,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         mass_object = FunctionConditioning(
             function=None,
             x_array=None,
-            param_dict_given=identifier_dict,
+            identifier_dict=identifier_dict,
             directory=self.directory,
             sub_directory="source_frame_masses",
             name=identifier_dict['name'],
@@ -916,7 +916,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
     #     mass_object = FunctionConditioning(
     #         function=None,
     #         x_array=None,
-    #         param_dict_given=identifier_dict,
+    #         identifier_dict=identifier_dict,
     #         directory=self.directory,
     #         sub_directory="source_frame_masses",
     #         name=identifier_dict['name'],
@@ -1009,7 +1009,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         mass_object = FunctionConditioning(
             function=None,
             x_array=None,
-            param_dict_given=identifier_dict,
+            identifier_dict=identifier_dict,
             directory=self.directory,
             sub_directory="source_frame_masses",
             name=identifier_dict['name'],
@@ -1077,7 +1077,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         mass_object = FunctionConditioning(
             function=None,
             x_array=None,
-            param_dict_given=identifier_dict,
+            identifier_dict=identifier_dict,
             directory=self.directory,
             sub_directory="source_frame_masses",
             name=identifier_dict['name'],
@@ -1184,7 +1184,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         mass_object = FunctionConditioning(
             function=model,
             x_array=mass,
-            param_dict_given=identifier_dict,
+            identifier_dict=identifier_dict,
             directory=self.directory,
             sub_directory="source_frame_masses",
             name=identifier_dict['name'],
@@ -1301,7 +1301,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         rvs_ = njit(lambda size: np.random.uniform(xmin, xmax, size=size))
 
         object_ = FunctionConditioning(
-            param_dict_given=identifier_dict,
+            identifier_dict=identifier_dict,
             create_pdf=pdf_,
             create_rvs=rvs_,
             callback='rvs',
@@ -1426,7 +1426,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 )
         elif callable(prior):
             print("using user defined custom source_frame_masses function")
-            self._source_frame_masses = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+            self._source_frame_masses = prior
         elif isinstance(prior, object):
             print("using user defined custom source_frame_masses class/object")
             self._source_frame_masses = prior
@@ -1460,9 +1460,10 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             self._zs = getattr(self, prior)
         elif callable(prior):
             print("using user defined custom zs function")
-            self._zs = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+            self._zs = prior
         elif isinstance(prior, object):
             print("using user defined custom zs class/object")
+            self._zs = prior
         else:
             raise ValueError(
                 "zs prior not available in available_gw_prior_list_and_its_params. Must be a string or a callable function."
@@ -1502,7 +1503,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 )
         elif callable(prior):
             print("using user defined custom geocent_time function")
-            self._geocent_time = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+            self._geocent_time = prior
         elif isinstance(prior, object):
             print("using user defined custom geocent_time class/object")
             self._geocent_time = prior
@@ -1540,7 +1541,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 self._ra = getattr(self, prior)(size=None, get_attribute=True, **args)
         elif callable(prior):
             print("using user defined custom ra function")
-            self._ra = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+            self._ra = prior
         elif isinstance(prior, object):
             print("using user defined custom ra class/object")
             self._ra = prior
@@ -1579,7 +1580,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 self._dec = getattr(self, prior)(size=None, get_attribute=True, **args)
         elif callable(prior):
             print("using user provided custom dec function")
-            self._dec = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+            self._dec = prior
         elif isinstance(prior, object):
             print("using user provided custom dec class/object")
             self._dec = prior
@@ -1618,7 +1619,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 self._phase = getattr(self, prior)(size=None, get_attribute=True, **args)
         elif callable(prior):
             print("using user provided custom phase function")
-            self._phase = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+            self._phase = prior
         elif isinstance(prior, object):
             print("using user provided custom phase class/object")
             self._phase = prior
@@ -1657,7 +1658,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 self._psi = getattr(self, prior)(size=None, get_attribute=True, **args)
         elif callable(prior):
             print("using user provided custom psi function")
-            self._psi = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+            self._psi = prior
         elif isinstance(prior, object):
             print("using user provided custom psi class/object")
             self._psi = prior
@@ -1699,7 +1700,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 )
         elif callable(prior):
             print("using user provided custom theta_jn function")
-            self._theta_jn = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+            self._theta_jn = prior
         elif isinstance(prior, object):
             print("using user provided custom theta_jn class/object")
             self._theta_jn = prior
@@ -1739,7 +1740,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 )
         elif callable(prior):
             print("using user provided custom a_1 function")
-            self._a_1 = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+            self._a_1 = prior
         elif isinstance(prior, object):
             print("using user provided custom a_1 class/object")
             self._a_1 = prior
@@ -1779,7 +1780,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 )
         elif callable(prior):
             print("using user provided custom a_2 function")
-            self._a_2 = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+            self._a_2 = prior
         elif isinstance(prior, object):
             print("using user provided custom a_2 class/object")
             self._a_2 = prior
@@ -1818,7 +1819,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 )
         elif callable(prior):
             print("using user provided custom tilt_1 function")
-            self._tilt_1 = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+            self._tilt_1 = prior
         elif isinstance(prior, object):
             print("using user provided custom tilt_1 class/object")
             self._tilt_1 = prior
@@ -1858,7 +1859,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 )
         elif callable(prior):
             print("using user provided custom tilt_2 function")
-            self._tilt_2 = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+            self._tilt_2 = prior
         elif isinstance(prior, object):
             print("using user provided custom tilt_2 class/object")
             self._tilt_2 = prior
@@ -1898,7 +1899,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 )
         elif callable(prior):
             print("using user provided custom phi_12 function")
-            self._phi_12 = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+            self._phi_12 = prior
         elif isinstance(prior, object):
             print("using user provided custom phi_12 class/object")
             self._phi_12 = prior
@@ -1937,7 +1938,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 )
         elif callable(prior):
             print("using user provided custom phi_jl function")
-            self._phi_jl = FunctionConditioning(function=None, x_array=None, create_rvs=prior)
+            self._phi_jl = prior
         elif isinstance(prior, object):
             print("using user provided custom phi_jl class/object")
             self._phi_jl = prior

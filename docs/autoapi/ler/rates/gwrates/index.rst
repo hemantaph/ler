@@ -24,7 +24,7 @@ Classes
 
 
 
-.. py:class:: GWRATES(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=50000, cosmology=None, snr_finder=None, pdet_finder=None, list_of_detectors=None, json_file_names=None, interpolator_directory='./interpolator_pickle', create_new_interpolator=False, ler_directory='./ler_data', verbose=True, **kwargs)
+.. py:class:: GWRATES(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=50000, cosmology=None, snr_finder=None, pdet_finder=None, list_of_detectors=None, json_file_names=None, interpolator_directory='./interpolator_json', create_new_interpolator=False, ler_directory='./ler_data', verbose=True, **kwargs)
 
 
    Bases: :py:obj:`ler.gw_source_population.CBCSourceParameterDistribution`
@@ -90,7 +90,7 @@ Classes
 
        **interpolator_directory** : `str`
            directory to store the interpolators.
-           default interpolator_directory = './interpolator_pickle'. This is used for storing the various interpolators related to `ler` and `gwsnr` package.
+           default interpolator_directory = './interpolator_json'. This is used for storing the various interpolators related to `ler` and `gwsnr` package.
 
        **ler_directory** : `str`
            directory to store the parameters.

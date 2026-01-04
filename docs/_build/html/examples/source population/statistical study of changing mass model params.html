@@ -1,269 +1,485 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
+
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Statistical study of changing Mass model paramter(s) &mdash; ler 0.3.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=776609e1" />
+  <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+  <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+  <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+  <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+  <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+  <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=776609e1" />
 
-  
-      <script src="../../_static/jquery.js?v=5d32c60e"></script>
-      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=4621528c"></script>
-      <script src="../../_static/doctools.js?v=9a2dae69"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="../../_static/copybutton.js?v=f281be69"></script>
-      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves" href="statistical%20study%20of%20cosmological%20friction.html" />
-    <link rel="prev" title="Sampling parameters for a compact binary" href="sample%20compact%20binary%20parameters.html" /> 
+
+  <script src="../../_static/jquery.js?v=5d32c60e"></script>
+  <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+  <script src="../../_static/documentation_options.js?v=4621528c"></script>
+  <script src="../../_static/doctools.js?v=9a2dae69"></script>
+  <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+  <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+  <script src="../../_static/copybutton.js?v=f281be69"></script>
+  <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA="
+    src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+  <script>window.MathJax = { "tex": { "inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true }, "options": { "ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area" } }</script>
+  <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../_static/js/theme.js"></script>
+  <link rel="index" title="Index" href="../../genindex.html" />
+  <link rel="search" title="Search" href="../../search.html" />
+  <link rel="next"
+    title="Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves"
+    href="statistical%20study%20of%20cosmological%20friction.html" />
+  <link rel="prev" title="Sampling parameters for a compact binary"
+    href="sample%20compact%20binary%20parameters.html" />
 </head>
 
-<body class="wy-body-for-nav"> 
+<body class="wy-body-for-nav">
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search">
 
-          
-          
+
+
           <a href="../../index.html" class="icon icon-home">
             ler
           </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../Installation2.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../code_overview.html">Code overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../Lensed_events.html">Lensed event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">API:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rates/grb%20detection%20rate.html">Calculation of detectable Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rates/ler%20bns%20example.html">LeR complete examples of BNS events (O4 design sensitivity)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rates/rates_with_3G_detectors.html">Event Rates with 3G detectors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="merger%20rate%20density%20evolution%20with%20redshift.html">Merger rate density evolution with redshift</a></li>
-<li class="toctree-l1"><a class="reference internal" href="merger%20rate%20density%20model%20comparision.html">Merger rate density model comparision</a></li>
-<li class="toctree-l1"><a class="reference internal" href="merger%20rate%20density%20model%20comparision.html#Primordial-BBH-model,-Ng-et-al.-2022">Primordial BBH model, Ng et al. 2022</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sample%20compact%20binary%20parameters.html">Sampling parameters for a compact binary</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Statistical study of changing Mass model paramter(s)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Binary-Black-Hole-(BBH)-Mass-Model">Binary Black Hole (BBH) Mass Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Binary-Neutron-Star-(BNS)-Mass-Model">Binary Neutron Star (BNS) Mass Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#BBH">BBH</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#Calculation-of-rates-(per-year)">Calculation of rates (per year)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#BNS">BNS</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#Un-lensed">Un-lensed</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="statistical%20study%20of%20cosmological%20friction.html">Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../lens_parameters/sample%20lens%20parameters.html">Lens parameter distributions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../optical_depth/validation_SIE.html">Optical depth SIE model validation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../optical_depth/validation_SIS.html">Validation of SIS model (Numerical vs Analytical)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html">Study of Time delays and magnification of lensed gravitational waves.</a></li>
-</ul>
+          <div role="search">
+            <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+              <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+              <input type="hidden" name="check_keywords" value="yes" />
+              <input type="hidden" name="area" value="default" />
+            </form>
+          </div>
+        </div>
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+          <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+          <ul>
+            <li class="toctree-l1"><a class="reference internal" href="../../Installation2.html">Installation</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../../Summary.html">Summary</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../../code_overview.html">Code overview</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../../GW_events.html">Gravitational wave event
+                rates</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../../GW_equations.html">Gravitational wave
+                events sampling (Analytical formulation)</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../../Lensed_events.html">Lensed event rates</a>
+            </li>
+            <li class="toctree-l1"><a class="reference internal" href="../../Lensed_equations.html">Lensed event
+                sampling (Analytical formulation)</a></li>
+          </ul>
+          <p class="caption" role="heading"><span class="caption-text">API:</span></p>
+          <ul>
+            <li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/rates/index.html"><code
+                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="../../autoapi/ler/gw_source_population/index.html"><code
+                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a>
+            </li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="../../autoapi/ler/lens_galaxy_population/index.html"><code
+                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a>
+            </li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="../../autoapi/ler/image_properties/index.html"><code
+                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a>
+            </li>
+            <li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/utils/index.html"><code
+                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+          </ul>
+          <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+          <ul class="current">
+            <li class="toctree-l1"><a class="reference internal" href="../rates/LeR%20complete%20examples.html">LeR
+                complete examples</a></li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="../rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../rates/grb%20detection%20rate.html">Calculation
+                of detectable Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a>
+            </li>
+            <li class="toctree-l1"><a class="reference internal" href="../rates/ler%20bns%20example.html">LeR complete
+                examples of BNS events (O4 design sensitivity)</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../rates/rates_with_3G_detectors.html">Event
+                Rates with 3G detectors</a></li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="merger%20rate%20density%20evolution%20with%20redshift.html">Merger rate density evolution with
+                redshift</a></li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="merger%20rate%20density%20model%20comparision.html">Merger rate density model comparision</a></li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="merger%20rate%20density%20model%20comparision.html#Primordial-BBH-model,-Ng-et-al.-2022">Primordial
+                BBH model, Ng et al. 2022</a></li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="sample%20compact%20binary%20parameters.html">Sampling parameters for a compact binary</a></li>
+            <li class="toctree-l1 current"><a class="current reference internal" href="#">Statistical study of changing
+                Mass model paramter(s)</a>
+              <ul>
+                <li class="toctree-l2"><a class="reference internal" href="#Binary-Black-Hole-(BBH)-Mass-Model">Binary
+                    Black Hole (BBH) Mass Model</a></li>
+                <li class="toctree-l2"><a class="reference internal" href="#Binary-Neutron-Star-(BNS)-Mass-Model">Binary
+                    Neutron Star (BNS) Mass Model</a>
+                  <ul>
+                    <li class="toctree-l3"><a class="reference internal" href="#BBH">BBH</a></li>
+                  </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#Calculation-of-rates-(per-year)">Calculation
+                    of rates (per year)</a>
+                  <ul>
+                    <li class="toctree-l3"><a class="reference internal" href="#BNS">BNS</a></li>
+                  </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#Un-lensed">Un-lensed</a></li>
+              </ul>
+            </li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="statistical%20study%20of%20cosmological%20friction.html">Statistical study of cosmological
+                friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves</a></li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="../lens_parameters/sample%20lens%20parameters.html">Lens parameter distributions</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../optical_depth/validation_SIE.html">Optical
+                depth SIE model validation</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../optical_depth/validation_SIS.html">Validation
+                of SIS model (Numerical vs Analytical)</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html">Study of Time
+                delays and magnification of lensed gravitational waves.</a></li>
+          </ul>
 
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">ler</a>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" aria-label="Mobile navigation menu">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">ler</a>
       </nav>
 
       <div class="wy-nav-content">
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Statistical study of changing Mass model paramter(s)</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/examples/source population/statistical study of changing mass model params.ipynb.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
-</div>
+            <ul class="wy-breadcrumbs">
+              <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+              <li class="breadcrumb-item active">Statistical study of changing Mass model paramter(s)</li>
+              <li class="wy-breadcrumbs-aside">
+                <a href="../../_sources/examples/source population/statistical study of changing mass model params.ipynb.txt"
+                  rel="nofollow"> View page source</a>
+              </li>
+            </ul>
+            <hr />
+          </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="Statistical-study-of-changing-Mass-model-paramter(s)">
-<h1>Statistical study of changing Mass model paramter(s)<a class="headerlink" href="#Statistical-study-of-changing-Mass-model-paramter(s)" title="Link to this heading"></a></h1>
-<ul class="simple">
-<li><p>In this notebook I will show the effect of changing mass model parameter on the detectable gravitational waves (GW) event rates per year</p></li>
-</ul>
-<section id="Binary-Black-Hole-(BBH)-Mass-Model">
-<h2>Binary Black Hole (BBH) Mass Model<a class="headerlink" href="#Binary-Black-Hole-(BBH)-Mass-Model" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>I will use the power-law+peak mass model and change the slope of the power-law component (<span class="math notranslate nohighlight">\(\alpha\)</span>) on the mass function.</p></li>
-<li><p>Here is the default parameters and resultant distribution of the chosen mass model:</p></li>
-</ul>
-<table><tr><td><table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Value</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(m_{\text{minbh}}\)</span></p></td>
-<td><p>4.98</p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(m_{\text{maxbh}}\)</span></p></td>
-<td><p>112.5</p></td>
-</tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\alpha\)</span></p></td>
-<td><p>3.78</p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mu_g\)</span></p></td>
-<td><p>32.27</p></td>
-</tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\sigma_g\)</span></p></td>
-<td><p>3.88</p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\lambda_{\text{peak}}\)</span></p></td>
-<td><p>0.03</p></td>
-</tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\delta_m\)</span></p></td>
-<td><p>4.8</p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\beta\)</span></p></td>
-<td><p>0.81</p></td>
-</tr>
-</tbody>
-</table>
-</td><td><p><img alt="mass_bbh" src="../../_images/bbh_mass.png" /></p>
-</td></tr></table></section>
-<section id="Binary-Neutron-Star-(BNS)-Mass-Model">
-<h2>Binary Neutron Star (BNS) Mass Model<a class="headerlink" href="#Binary-Neutron-Star-(BNS)-Mass-Model" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>The mass distribution of neutron stars in binary neutron star (BNS) systems can be characterized by a bimodal distribution, which can be modeled using a double Gaussian distribution. Each normal distribution is independently truncated and normalized in the range [1, 2.3] <span class="math notranslate nohighlight">\(M_{\odot}\)</span>, ensuring that the neutron star masses are within the physically plausible range.</p></li>
-<li><p>This bimodal distribution is thought to reflect the different evolutionary paths that neutron stars can take. For more details, refer to <a class="reference external" href="https://arxiv.org/pdf/1805.06442.pdf">Alsing et al. 2018</a> and <a class="reference external" href="https://arxiv.org/pdf/2005.00032.pdf">M. Farr et al. 2020</a>.</p></li>
-<li><p>I will change the maximum cut (<span class="math notranslate nohighlight">\(m_{\text{max}}\)</span>) on the mass function.</p></li>
-<li><p>Here is the default parameters and resultant distribution of the chosen mass model:</p></li>
-</ul>
-<table><tr><td><table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Value</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(w\)</span></p></td>
-<td><p>0.643</p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mu_L\)</span></p></td>
-<td><p>1.352 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
-</tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\sigma_L\)</span></p></td>
-<td><p>0.08 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mu_R\)</span></p></td>
-<td><p>1.88 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
-</tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\sigma_R\)</span></p></td>
-<td><p>0.3 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(m_{\text{max}}\)</span></p></td>
-<td><p>2.3 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
-</tr>
-</tbody>
-</table>
-</td><td><p><img alt="mass_bns" src="../../_images/bns_mass.png" /></p>
-</td></tr></table><section id="BBH">
-<h3>BBH<a class="headerlink" href="#BBH" title="Link to this heading"></a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+            <div itemprop="articleBody">
+
+              <section id="Statistical-study-of-changing-Mass-model-paramter(s)">
+                <h1>Statistical study of changing Mass model paramter(s)<a class="headerlink"
+                    href="#Statistical-study-of-changing-Mass-model-paramter(s)" title="Link to this heading"></a></h1>
+                <ul class="simple">
+                  <li>
+                    <p>In this notebook I will show the effect of changing mass model parameter on the detectable
+                      gravitational waves (GW) event rates per year</p>
+                  </li>
+                </ul>
+                <section id="Binary-Black-Hole-(BBH)-Mass-Model">
+                  <h2>Binary Black Hole (BBH) Mass Model<a class="headerlink" href="#Binary-Black-Hole-(BBH)-Mass-Model"
+                      title="Link to this heading"></a></h2>
+                  <ul class="simple">
+                    <li>
+                      <p>I will use the power-law+peak mass model and change the slope of the power-law component (<span
+                          class="math notranslate nohighlight">\(\alpha\)</span>) on the mass function.</p>
+                    </li>
+                    <li>
+                      <p>Here is the default parameters and resultant distribution of the chosen mass model:</p>
+                    </li>
+                  </ul>
+                  <table>
+                    <tr>
+                      <td>
+                        <table class="docutils align-default">
+                          <thead>
+                            <tr class="row-odd">
+                              <th class="head">
+                                <p>Parameter</p>
+                              </th>
+                              <th class="head">
+                                <p>Value</p>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr class="row-even">
+                              <td>
+                                <p><span class="math notranslate nohighlight">\(m_{\text{minbh}}\)</span></p>
+                              </td>
+                              <td>
+                                <p>4.98</p>
+                              </td>
+                            </tr>
+                            <tr class="row-odd">
+                              <td>
+                                <p><span class="math notranslate nohighlight">\(m_{\text{maxbh}}\)</span></p>
+                              </td>
+                              <td>
+                                <p>112.5</p>
+                              </td>
+                            </tr>
+                            <tr class="row-even">
+                              <td>
+                                <p><span class="math notranslate nohighlight">\(\alpha\)</span></p>
+                              </td>
+                              <td>
+                                <p>3.78</p>
+                              </td>
+                            </tr>
+                            <tr class="row-odd">
+                              <td>
+                                <p><span class="math notranslate nohighlight">\(\mu_g\)</span></p>
+                              </td>
+                              <td>
+                                <p>32.27</p>
+                              </td>
+                            </tr>
+                            <tr class="row-even">
+                              <td>
+                                <p><span class="math notranslate nohighlight">\(\sigma_g\)</span></p>
+                              </td>
+                              <td>
+                                <p>3.88</p>
+                              </td>
+                            </tr>
+                            <tr class="row-odd">
+                              <td>
+                                <p><span class="math notranslate nohighlight">\(\lambda_{\text{peak}}\)</span></p>
+                              </td>
+                              <td>
+                                <p>0.03</p>
+                              </td>
+                            </tr>
+                            <tr class="row-even">
+                              <td>
+                                <p><span class="math notranslate nohighlight">\(\delta_m\)</span></p>
+                              </td>
+                              <td>
+                                <p>4.8</p>
+                              </td>
+                            </tr>
+                            <tr class="row-odd">
+                              <td>
+                                <p><span class="math notranslate nohighlight">\(\beta\)</span></p>
+                              </td>
+                              <td>
+                                <p>0.81</p>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                      <td>
+                        <p><img alt="mass_bbh" src="../../_images/bbh_mass.png" /></p>
+                      </td>
+                    </tr>
+                  </table>
+                </section>
+                <section id="Binary-Neutron-Star-(BNS)-Mass-Model">
+                  <h2>Binary Neutron Star (BNS) Mass Model<a class="headerlink"
+                      href="#Binary-Neutron-Star-(BNS)-Mass-Model" title="Link to this heading"></a></h2>
+                  <ul class="simple">
+                    <li>
+                      <p>The mass distribution of neutron stars in binary neutron star (BNS) systems can be
+                        characterized by a bimodal distribution, which can be modeled using a double Gaussian
+                        distribution. Each normal distribution is independently truncated and normalized in the range
+                        [1, 2.3] <span class="math notranslate nohighlight">\(M_{\odot}\)</span>, ensuring that the
+                        neutron star masses are within the physically plausible range.</p>
+                    </li>
+                    <li>
+                      <p>This bimodal distribution is thought to reflect the different evolutionary paths that neutron
+                        stars can take. For more details, refer to <a class="reference external"
+                          href="https://arxiv.org/pdf/1805.06442.pdf">Alsing et al. 2018</a> and <a
+                          class="reference external" href="https://arxiv.org/pdf/2005.00032.pdf">M. Farr et al.
+                          2020</a>.</p>
+                    </li>
+                    <li>
+                      <p>I will change the maximum cut (<span
+                          class="math notranslate nohighlight">\(m_{\text{max}}\)</span>) on the mass function.</p>
+                    </li>
+                    <li>
+                      <p>Here is the default parameters and resultant distribution of the chosen mass model:</p>
+                    </li>
+                  </ul>
+                  <table>
+                    <tr>
+                      <td>
+                        <table class="docutils align-default">
+                          <thead>
+                            <tr class="row-odd">
+                              <th class="head">
+                                <p>Parameter</p>
+                              </th>
+                              <th class="head">
+                                <p>Value</p>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr class="row-even">
+                              <td>
+                                <p><span class="math notranslate nohighlight">\(w\)</span></p>
+                              </td>
+                              <td>
+                                <p>0.643</p>
+                              </td>
+                            </tr>
+                            <tr class="row-odd">
+                              <td>
+                                <p><span class="math notranslate nohighlight">\(\mu_L\)</span></p>
+                              </td>
+                              <td>
+                                <p>1.352 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p>
+                              </td>
+                            </tr>
+                            <tr class="row-even">
+                              <td>
+                                <p><span class="math notranslate nohighlight">\(\sigma_L\)</span></p>
+                              </td>
+                              <td>
+                                <p>0.08 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p>
+                              </td>
+                            </tr>
+                            <tr class="row-odd">
+                              <td>
+                                <p><span class="math notranslate nohighlight">\(\mu_R\)</span></p>
+                              </td>
+                              <td>
+                                <p>1.88 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p>
+                              </td>
+                            </tr>
+                            <tr class="row-even">
+                              <td>
+                                <p><span class="math notranslate nohighlight">\(\sigma_R\)</span></p>
+                              </td>
+                              <td>
+                                <p>0.3 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p>
+                              </td>
+                            </tr>
+                            <tr class="row-odd">
+                              <td>
+                                <p><span class="math notranslate nohighlight">\(m_{\text{max}}\)</span></p>
+                              </td>
+                              <td>
+                                <p>2.3 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                      <td>
+                        <p><img alt="mass_bns" src="../../_images/bns_mass.png" /></p>
+                      </td>
+                    </tr>
+                  </table>
+                  <section id="BBH">
+                    <h3>BBH<a class="headerlink" href="#BBH" title="Link to this heading"></a></h3>
+                    <div class="nbinput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[9]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">ler.rates</span> <span class="kn">import</span> <span class="n">GWRATES</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # initialization</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[10]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># # initialization</span>
 <span class="n">ler</span> <span class="o">=</span> <span class="n">GWRATES</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">event_type</span><span class="o">=</span><span class="s1">&#39;BBH&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<ul class="simple">
-<li><p>When <code class="docutils literal notranslate"><span class="pre">LeR</span></code> class is initialized, the mass model is created with the default parameters. This is in the form of a interpolation and the parameters are fixed.</p></li>
-<li><p>I will change the function of the mass model with a default power-law+peak mass model and change the maximum cut (<span class="math notranslate nohighlight">\(m_{\text{maxbh}}\)</span>) on the mass function.</p></li>
-<li><p>Below I will providing an example. But first let me show you which models are available in the <code class="docutils literal notranslate"><span class="pre">ler</span></code>.</p></li>
-</ul>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span><span class="o">.</span><span class="n">available_gw_prior_list_and_its_params</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <ul class="simple">
+                      <li>
+                        <p>When <code class="docutils literal notranslate"><span class="pre">LeR</span></code> class is
+                          initialized, the mass model is created with the default parameters. This is in the form of a
+                          interpolation and the parameters are fixed.</p>
+                      </li>
+                      <li>
+                        <p>I will change the function of the mass model with a default power-law+peak mass model and
+                          change the maximum cut (<span
+                            class="math notranslate nohighlight">\(m_{\text{maxbh}}\)</span>) on the mass function.</p>
+                      </li>
+                      <li>
+                        <p>Below I will providing an example. But first let me show you which models are available in
+                          the <code class="docutils literal notranslate"><span class="pre">ler</span></code>.</p>
+                      </li>
+                    </ul>
+                    <div class="nbinput docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[11]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="n">ler</span><span class="o">.</span><span class="n">available_gw_prior_list_and_its_params</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nboutput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[11]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="output_area docutils container">
+                        <div class="highlight">
+                          <pre>
 dict_keys([&#39;merger_rate_density&#39;, &#39;source_frame_masses&#39;, &#39;zs&#39;, &#39;spin&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;])
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span><span class="o">.</span><span class="n">available_gw_prior_list_and_its_params</span><span class="p">[</span><span class="s1">&#39;source_frame_masses&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[12]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="n">ler</span><span class="o">.</span><span class="n">available_gw_prior_list_and_its_params</span><span class="p">[</span><span class="s1">&#39;source_frame_masses&#39;</span><span class="p">]</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nboutput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[12]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="output_area docutils container">
+                        <div class="highlight">
+                          <pre>
 {&#39;binary_masses_BBH_popI_II_powerlaw_gaussian&#39;: {&#39;mminbh&#39;: 4.98,
   &#39;mmaxbh&#39;: 112.5,
   &#39;alpha&#39;: 3.78,
@@ -284,23 +500,46 @@ dict_keys([&#39;merger_rate_density&#39;, &#39;source_frame_masses&#39;, &#39;zs
   &#39;sigmaR&#39;: 0.3,
   &#39;mmin&#39;: 1.0,
   &#39;mmax&#39;: 2.3}}
-</pre></div></div>
-</div>
-<ul class="simple">
-<li><p>changing mass function parameter <span class="math notranslate nohighlight">\(\alpha\)</span> for sampling. Considered values are,</p>
-<ul>
-<li><p><span class="math notranslate nohighlight">\(\alpha = 3.78\)</span>: default value, from <a class="reference external" href="https://arxiv.org/pdf/2111.03604.pdf">GWTC-3 2021</a> (page-23)</p></li>
-<li><p><span class="math notranslate nohighlight">\(\alpha = 2.63\)</span>: from <a class="reference external" href="https://arxiv.org/pdf/2106.06303.pdf">WIERDA et al. 2021</a> (Appendix B)</p></li>
-</ul>
-</li>
-<li><p>you can have only ‘size’ as input parameter</p></li>
-<li><p>These mass function returns the mass of the binary black hole in the unit of solar mass (<span class="math notranslate nohighlight">\(m_1\)</span>, <span class="math notranslate nohighlight">\(m_2\)</span>).</p></li>
-</ul>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># with default value</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <ul class="simple">
+                      <li>
+                        <p>changing mass function parameter <span class="math notranslate nohighlight">\(\alpha\)</span>
+                          for sampling. Considered values are,</p>
+                        <ul>
+                          <li>
+                            <p><span class="math notranslate nohighlight">\(\alpha = 3.78\)</span>: default value, from
+                              <a class="reference external" href="https://arxiv.org/pdf/2111.03604.pdf">GWTC-3 2021</a>
+                              (page-23)</p>
+                          </li>
+                          <li>
+                            <p><span class="math notranslate nohighlight">\(\alpha = 2.63\)</span>: from <a
+                                class="reference external" href="https://arxiv.org/pdf/2106.06303.pdf">WIERDA et al.
+                                2021</a> (Appendix B)</p>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <p>you can have only ‘size’ as input parameter</p>
+                      </li>
+                      <li>
+                        <p>These mass function returns the mass of the binary black hole in the unit of solar mass
+                          (<span class="math notranslate nohighlight">\(m_1\)</span>, <span
+                            class="math notranslate nohighlight">\(m_2\)</span>).</p>
+                      </li>
+                    </ul>
+                    <div class="nbinput docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[18]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># with default value</span>
 <span class="n">ler</span><span class="o">.</span><span class="n">sample_source_frame_masses</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">ler</span><span class="o">.</span><span class="n">binary_masses_BBH_popI_II_powerlaw_gaussian</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">3.78</span><span class="p">)</span>
 
 <span class="c1"># plot</span>
@@ -318,28 +557,40 @@ dict_keys([&#39;merger_rate_density&#39;, &#39;source_frame_masses&#39;, &#39;zs
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/examples_source_population_statistical_study_of_changing_mass_model_params_9_0.png" src="../../_images/examples_source_population_statistical_study_of_changing_mass_model_params_9_0.png" />
-</div>
-</div>
-<ul class="simple">
-<li><p>let’s make a range of <span class="math notranslate nohighlight">\(\alpha\)</span> between the two values</p></li>
-</ul>
-</section>
-</section>
-<section id="Calculation-of-rates-(per-year)">
-<h2>Calculation of rates (per year)<a class="headerlink" href="#Calculation-of-rates-(per-year)" title="Link to this heading"></a></h2>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alpha_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">2.63</span><span class="p">,</span> <span class="mf">3.78</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nboutput nblast docutils container">
+                      <div class="prompt empty docutils container">
+                      </div>
+                      <div class="output_area docutils container">
+                        <img
+                          alt="../../_images/examples_source_population_statistical_study_of_changing_mass_model_params_9_0.png"
+                          src="../../_images/examples_source_population_statistical_study_of_changing_mass_model_params_9_0.png" />
+                      </div>
+                    </div>
+                    <ul class="simple">
+                      <li>
+                        <p>let’s make a range of <span class="math notranslate nohighlight">\(\alpha\)</span> between
+                          the two values</p>
+                      </li>
+                    </ul>
+                  </section>
+                </section>
+                <section id="Calculation-of-rates-(per-year)">
+                  <h2>Calculation of rates (per year)<a class="headerlink" href="#Calculation-of-rates-(per-year)"
+                      title="Link to this heading"></a></h2>
+                  <div class="nbinput docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[15]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="n">alpha_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">2.63</span><span class="p">,</span> <span class="mf">3.78</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 <span class="n">gw_rates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">alpha_arr</span><span class="p">)</span>
 <span class="n">sample_size</span> <span class="o">=</span> <span class="mi">1000000</span>  <span class="c1"># increase the sample size to 1 million for better statistics</span>
 <span class="n">ler</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">100000</span>
@@ -357,14 +608,16 @@ dict_keys([&#39;merger_rate_density&#39;, &#39;source_frame_masses&#39;, &#39;zs
         <span class="n">rate</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">gw_rate</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="o">=</span><span class="s2">&quot;gw_param_detectable_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;.json&quot;</span><span class="p">)</span>
     <span class="n">gw_rates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rate</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;gw rate per year (alpha=</span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s1">): </span><span class="si">{</span><span class="n">rate</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nboutput nblast docutils container">
+                    <div class="prompt empty docutils container">
+                    </div>
+                    <div class="output_area docutils container">
+                      <div class="highlight">
+                        <pre>
 
  iteration:  0
 gw rate per year (alpha=2.63): 602.399735152594
@@ -395,13 +648,20 @@ gw rate per year (alpha=3.652222222222222): 447.6330047774216
 
  iteration:  9
 gw rate per year (alpha=3.78): 430.13763525675
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># linear fit to the rates</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nbinput docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[19]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="c1"># linear fit to the rates</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">linregress</span>
 
 <span class="n">slope</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">r_value</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">std_err</span> <span class="o">=</span> <span class="n">linregress</span><span class="p">(</span><span class="n">alpha_arr</span><span class="p">,</span> <span class="n">gw_rates</span><span class="p">)</span>
@@ -417,65 +677,104 @@ gw rate per year (alpha=3.78): 430.13763525675
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nboutput docutils container">
+                    <div class="prompt empty docutils container">
+                    </div>
+                    <div class="output_area docutils container">
+                      <div class="highlight">
+                        <pre>
 gw rate: slope=-143.657045929216, intercept=965.3951693918017, r_value=-0.9795941702168517, p_value=7.401514058755967e-07, std_err=10.420797560559112
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/examples_source_population_statistical_study_of_changing_mass_model_params_13_1.png" src="../../_images/examples_source_population_statistical_study_of_changing_mass_model_params_13_1.png" />
-</div>
-</div>
-<ul class="simple">
-<li><p>The change in rate is significant and has a decreasing trend as <span class="math notranslate nohighlight">\(\alpha\)</span> increases.</p></li>
-<li><p>Increasing the value of <span class="math notranslate nohighlight">\(\alpha\)</span> results in more BBH events is mass range [15, 30] <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></li>
-<li><p>You can repeat the same test for other parameters as well.</p></li>
-<li><p>You can repeat the same test for 3G detectors as well.</p></li>
-</ul>
-<section id="BNS">
-<h3>BNS<a class="headerlink" href="#BNS" title="Link to this heading"></a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nboutput nblast docutils container">
+                    <div class="prompt empty docutils container">
+                    </div>
+                    <div class="output_area docutils container">
+                      <img
+                        alt="../../_images/examples_source_population_statistical_study_of_changing_mass_model_params_13_1.png"
+                        src="../../_images/examples_source_population_statistical_study_of_changing_mass_model_params_13_1.png" />
+                    </div>
+                  </div>
+                  <ul class="simple">
+                    <li>
+                      <p>The change in rate is significant and has a decreasing trend as <span
+                          class="math notranslate nohighlight">\(\alpha\)</span> increases.</p>
+                    </li>
+                    <li>
+                      <p>Increasing the value of <span class="math notranslate nohighlight">\(\alpha\)</span> results in
+                        more BBH events is mass range [15, 30] <span
+                          class="math notranslate nohighlight">\(M_{\odot}\)</span></p>
+                    </li>
+                    <li>
+                      <p>You can repeat the same test for other parameters as well.</p>
+                    </li>
+                    <li>
+                      <p>You can repeat the same test for 3G detectors as well.</p>
+                    </li>
+                  </ul>
+                  <section id="BNS">
+                    <h3>BNS<a class="headerlink" href="#BNS" title="Link to this heading"></a></h3>
+                    <div class="nbinput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[20]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">ler.rates</span> <span class="kn">import</span> <span class="n">GWRATES</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # initialization</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[25]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># # initialization</span>
 <span class="n">ler</span> <span class="o">=</span> <span class="n">GWRATES</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">event_type</span><span class="o">=</span><span class="s1">&#39;BNS&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span><span class="o">.</span><span class="n">available_gw_prior_list_and_its_params</span><span class="p">[</span><span class="s1">&#39;source_frame_masses&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[26]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="n">ler</span><span class="o">.</span><span class="n">available_gw_prior_list_and_its_params</span><span class="p">[</span><span class="s1">&#39;source_frame_masses&#39;</span><span class="p">]</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nboutput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[26]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="output_area docutils container">
+                        <div class="highlight">
+                          <pre>
 {&#39;binary_masses_BBH_popI_II_powerlaw_gaussian&#39;: {&#39;mminbh&#39;: 4.98,
   &#39;mmaxbh&#39;: 112.5,
   &#39;alpha&#39;: 3.78,
@@ -496,13 +795,20 @@ gw rate: slope=-143.657045929216, intercept=965.3951693918017, r_value=-0.979594
   &#39;sigmaR&#39;: 0.3,
   &#39;mmin&#39;: 1.0,
   &#39;mmax&#39;: 2.3}}
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># with default value</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[27]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># with default value</span>
 <span class="n">ler</span><span class="o">.</span><span class="n">sample_source_frame_masses</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">ler</span><span class="o">.</span><span class="n">binary_masses_BNS_bimodal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">mmax</span><span class="o">=</span><span class="mf">2.3</span><span class="p">)</span>
 
 <span class="c1"># plot</span>
@@ -519,34 +825,45 @@ gw rate: slope=-143.657045929216, intercept=965.3951693918017, r_value=-0.979594
 
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-binary_masses_BNS_bimodal interpolator will be loaded from ./interpolator_pickle/binary_masses_BNS_bimodal/binary_masses_BNS_bimodal_0.pickle
-binary_masses_BNS_bimodal interpolator will be loaded from ./interpolator_pickle/binary_masses_BNS_bimodal/binary_masses_BNS_bimodal_1.pickle
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/examples_source_population_statistical_study_of_changing_mass_model_params_19_1.png" src="../../_images/examples_source_population_statistical_study_of_changing_mass_model_params_19_1.png" />
-</div>
-</div>
-</section>
-</section>
-<section id="Un-lensed">
-<h2>Un-lensed<a class="headerlink" href="#Un-lensed" title="Link to this heading"></a></h2>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mmax_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">2.3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nboutput docutils container">
+                      <div class="prompt empty docutils container">
+                      </div>
+                      <div class="output_area docutils container">
+                        <div class="highlight">
+                          <pre>
+binary_masses_BNS_bimodal interpolator will be loaded from ./interpolator_json/binary_masses_BNS_bimodal/binary_masses_BNS_bimodal_0.pickle
+binary_masses_BNS_bimodal interpolator will be loaded from ./interpolator_json/binary_masses_BNS_bimodal/binary_masses_BNS_bimodal_1.pickle
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nboutput nblast docutils container">
+                      <div class="prompt empty docutils container">
+                      </div>
+                      <div class="output_area docutils container">
+                        <img
+                          alt="../../_images/examples_source_population_statistical_study_of_changing_mass_model_params_19_1.png"
+                          src="../../_images/examples_source_population_statistical_study_of_changing_mass_model_params_19_1.png" />
+                      </div>
+                    </div>
+                  </section>
+                </section>
+                <section id="Un-lensed">
+                  <h2>Un-lensed<a class="headerlink" href="#Un-lensed" title="Link to this heading"></a></h2>
+                  <div class="nbinput docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[30]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="n">mmax_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">2.3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="n">gw_rates_bns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">mmax_arr</span><span class="p">)</span>
 <span class="n">sample_size</span> <span class="o">=</span> <span class="mi">2000000</span>  <span class="c1"># increase the sample size to 2 million for better statistics</span>
 <span class="n">ler</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">100000</span>
@@ -564,14 +881,16 @@ binary_masses_BNS_bimodal interpolator will be loaded from ./interpolator_pickle
         <span class="n">rate</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">gw_rate</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="o">=</span><span class="s2">&quot;gw_param_bns_detectable_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;.json&quot;</span><span class="p">)</span>
     <span class="n">gw_rates_bns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rate</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;gw rate (mmax=</span><span class="si">{</span><span class="n">mmax</span><span class="si">}</span><span class="s1">): </span><span class="si">{</span><span class="n">rate</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nboutput nblast docutils container">
+                    <div class="prompt empty docutils container">
+                    </div>
+                    <div class="output_area docutils container">
+                      <div class="highlight">
+                        <pre>
 
  iteration:  0
 gw rate (mmax=2.3): 1.9669350348684111
@@ -587,13 +906,20 @@ gw rate (mmax=2.825): 3.8821086214508123
 
  iteration:  4
 gw rate (mmax=3.0): 2.691595310872563
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># linear fit to the rates</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nbinput docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[33]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="c1"># linear fit to the rates</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">linregress</span>
 
 <span class="n">slope</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">r_value</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">std_err</span> <span class="o">=</span> <span class="n">linregress</span><span class="p">(</span><span class="n">mmax_arr</span><span class="p">,</span> <span class="n">gw_rates_bns</span><span class="p">)</span>
@@ -608,33 +934,51 @@ gw rate (mmax=3.0): 2.691595310872563
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nboutput docutils container">
+                    <div class="prompt empty docutils container">
+                    </div>
+                    <div class="output_area docutils container">
+                      <div class="highlight">
+                        <pre>
 gw rate: slope=1.3901646111100057, intercept=-0.8784657223397283, r_value=0.5535928457320664, p_value=0.33301505236005835, std_err=1.2073948295286805
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/examples_source_population_statistical_study_of_changing_mass_model_params_22_1.png" src="../../_images/examples_source_population_statistical_study_of_changing_mass_model_params_22_1.png" />
-</div>
-</div>
-<ul class="simple">
-<li><p>rate and <span class="math notranslate nohighlight">\(m_max\)</span> does not have a strong linear relationship, but an increasing trend is observed.</p></li>
-<li><p>The rate is higher for higher <span class="math notranslate nohighlight">\(m_{\text{max}}\)</span> values. This is because higher mass BBHs have higher SNRs and are detectable at larger distances.</p></li>
-</ul>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">Planck18</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nboutput nblast docutils container">
+                    <div class="prompt empty docutils container">
+                    </div>
+                    <div class="output_area docutils container">
+                      <img
+                        alt="../../_images/examples_source_population_statistical_study_of_changing_mass_model_params_22_1.png"
+                        src="../../_images/examples_source_population_statistical_study_of_changing_mass_model_params_22_1.png" />
+                    </div>
+                  </div>
+                  <ul class="simple">
+                    <li>
+                      <p>rate and <span class="math notranslate nohighlight">\(m_max\)</span> does not have a strong
+                        linear relationship, but an increasing trend is observed.</p>
+                    </li>
+                    <li>
+                      <p>The rate is higher for higher <span
+                          class="math notranslate nohighlight">\(m_{\text{max}}\)</span> values. This is because higher
+                        mass BBHs have higher SNRs and are detectable at larger distances.</p>
+                    </li>
+                  </ul>
+                  <div class="nbinput docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[1]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">Planck18</span>
 
 <span class="c1"># Accessing cosmological parameters</span>
 <span class="n">H0</span> <span class="o">=</span> <span class="n">Planck18</span><span class="o">.</span><span class="n">H0</span>
@@ -644,24 +988,33 @@ gw rate: slope=1.3901646111100057, intercept=-0.8784657223397283, r_value=0.5535
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hubble constant (H0): </span><span class="si">{</span><span class="n">H0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Matter density parameter (Om0): </span><span class="si">{</span><span class="n">Om0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dark energy density parameter (Ode0): </span><span class="si">{</span><span class="n">Ode0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<br/></pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+<br/></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nboutput nblast docutils container">
+                    <div class="prompt empty docutils container">
+                    </div>
+                    <div class="output_area docutils container">
+                      <div class="highlight">
+                        <pre>
 Hubble constant (H0): 67.66 km / (Mpc s)
 Matter density parameter (Om0): 0.30966
 Dark energy density parameter (Ode0): 0.6888463055445441
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nbinput docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[2]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
 <span class="n">cosmo</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
 
 <span class="c1"># Accessing cosmological parameters</span>
@@ -672,59 +1025,75 @@ Dark energy density parameter (Ode0): 0.6888463055445441
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hubble constant (H0): </span><span class="si">{</span><span class="n">H0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Matter density parameter (Om0): </span><span class="si">{</span><span class="n">Om0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dark energy density parameter (Ode0): </span><span class="si">{</span><span class="n">Ode0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nboutput nblast docutils container">
+                    <div class="prompt empty docutils container">
+                    </div>
+                    <div class="output_area docutils container">
+                      <div class="highlight">
+                        <pre>
 Hubble constant (H0): 70.0 km / (Mpc s)
 Matter density parameter (Om0): 0.3
 Dark energy density parameter (Ode0): 0.7
-</pre></div></div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
-</section>
-</section>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nbinput nblast docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[ ]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </section>
 
 
-           </div>
+            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="sample%20compact%20binary%20parameters.html" class="btn btn-neutral float-left" title="Sampling parameters for a compact binary" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="statistical%20study%20of%20cosmological%20friction.html" class="btn btn-neutral float-right" title="Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
+            <div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+              <a href="sample%20compact%20binary%20parameters.html" class="btn btn-neutral float-left"
+                title="Sampling parameters for a compact binary" accesskey="p" rel="prev"><span
+                  class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+              <a href="statistical%20study%20of%20cosmological%20friction.html" class="btn btn-neutral float-right"
+                title="Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves"
+                accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+            </div>
 
-  <hr/>
+            <hr />
 
-  <div role="contentinfo">
-    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
-  </div>
+            <div role="contentinfo">
+              <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+            </div>
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+            <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+            provided by <a href="https://readthedocs.org">Read the Docs</a>.
 
-</footer>
+
+          </footer>
         </div>
       </div>
     </section>
   </div>
   <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+    jQuery(function () {
+      SphinxRtdTheme.Navigation.enable(true);
+    });
+  </script>
 
 </body>
+
 </html>

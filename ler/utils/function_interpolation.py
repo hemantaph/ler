@@ -1,5 +1,5 @@
 
-from .utils import interpolator_pickle_path, cubic_spline_interpolator, cubic_spline_interpolator2d_array, inverse_transform_sampler, pdf_cubic_spline_interpolator2d_array, save_pickle, load_pickle, inverse_transform_sampler2d
+from .utils import interpolator_json_path, cubic_spline_interpolator, pdf_cubic_spline_interpolator, cubic_spline_interpolator2d_array, inverse_transform_sampler, pdf_cubic_spline_interpolator2d_array, save_json, load_json, inverse_transform_sampler2d
 import numpy as np
 from scipy.integrate import quad, cumulative_trapezoid
 from scipy.interpolate import  CubicSpline
@@ -14,10 +14,11 @@ class FunctionConditioning():
         x_array=None,
         conditioned_y_array=None,  # if this is not none, 2D interpolation will be used
         y_array=None,
+        non_zero_function=False,
         gaussian_kde=False,
         gaussian_kde_kwargs={},
-        param_dict_given={},
-        directory='./interpolator_pickle',
+        identifier_dict={},
+        directory='./interpolator_json',
         sub_directory='default',
         name='default',
         create_new=False,
@@ -29,7 +30,7 @@ class FunctionConditioning():
         callback=None,
     ):
         create = self.create_decision_function(create_function, create_function_inverse, create_pdf, create_rvs)
-        self.info = param_dict_given
+        self.info = identifier_dict.copy()
         self.callback = callback
         
         if create:
@@ -38,8 +39,8 @@ class FunctionConditioning():
             input_list_kde = [x_array, y_array, gaussian_kde_kwargs]
 
             # check first whether the directory, subdirectory and pickle exist
-            path_inv_cdf, it_exist = interpolator_pickle_path(
-                param_dict_given=param_dict_given,
+            path_inv_cdf, it_exist = interpolator_json_path(
+                identifier_dict=identifier_dict,
                 directory=directory,
                 sub_directory=sub_directory,
                 interpolator_name=name,
@@ -51,44 +52,100 @@ class FunctionConditioning():
 
             if it_exist:
                 print(f"{name} interpolator will be loaded from {path_inv_cdf}")
-                # load the interpolator
-                interpolator = load_pickle(path_inv_cdf)
+                # load the interpolator, where the interpolator is a dictionary
+                # interpolator = {
+                #     'x_array': x_array,
+                #     'z_array': z_array,
+                #     'conditioned_y_array': conditioned_y_array,
+                #     'function_spline': function_spline,
+                #     'function_inverse_spline': function_inverse_spline,
+                #     'pdf_norm_const': pdf_norm_const,
+                #     'cdf_values': cdf_values,
+                # }
+                interpolator = load_json(path_inv_cdf)
             else:
                 print(f"{name} interpolator will be generated at {path_inv_cdf}")
                 if not gaussian_kde:
                     interpolator = self.create_interpolator(*input_list)
                     # save the interpolator
-                    save_pickle(path_inv_cdf, interpolator)
+                    save_json(path_inv_cdf, interpolator)
                 else:
                     # gaussian KDE
                     interpolator = self.create_gaussian_kde(*input_list_kde)
-                    save_pickle(path_inv_cdf, interpolator)
+
+                    #------------------
+                    # check scipy gaussian kde can be saved as json
+                    #------------------
+                    # save_json(path_inv_cdf, interpolator)
 
             if not gaussian_kde:
-                x_array = interpolator['x_array']
-                z_array = interpolator['z_array']
-                conditioned_y_array = interpolator['conditioned_y_array']
+                # Convert loaded JSON lists to NumPy arrays for Numba compatibility
+                x_array = np.array(interpolator['x_array'])
+                z_array = np.array(interpolator['z_array'])
+                conditioned_y_array = np.array(interpolator['conditioned_y_array']) if interpolator['conditioned_y_array'] is not None else None
                 y_array = None
-                function_spline = interpolator['function_spline']
-                function_inverse_spline = interpolator['function_inverse_spline']
-                pdf_norm_const = interpolator['pdf_norm_const']
-                cdf_values = interpolator['cdf_values']
+                function_spline = np.array(interpolator['function_spline'])
+                function_inverse_spline = np.array(interpolator['function_inverse_spline']) if interpolator['function_inverse_spline'] is not None else None
+                pdf_norm_const = np.array(interpolator['pdf_norm_const']) if interpolator['pdf_norm_const'] is not None else None
+                cdf_values = np.array(interpolator['cdf_values']) if interpolator['cdf_values'] is not None else None
 
                 if conditioned_y_array is None:
                     # function is 1D
-                    self.function = njit(lambda x: cubic_spline_interpolator(x, function_spline, x_array)) if create_function else None
+                    # njit(lambda x: cubic_spline_interpolator(x, function_spline, x_array))
+                    function_any = lambda x: cubic_spline_interpolator(x, function_spline, x_array)
+
+                    def function_non_zero(x):
+                        result = cubic_spline_interpolator(x, function_spline, x_array)
+                        idx = result<0.0
+                        result[idx] = 0.0
+                        return result
+                    
+                    function_final = function_any if non_zero_function else function_non_zero
+
+                    self.function = njit(function_final) if create_function else None
+
                     # inverse function is 1D
-                    self.function_inverse = njit(lambda x: cubic_spline_interpolator(x, function_inverse_spline, z_array)) if create_function_inverse else None
+                    function_any = lambda x: cubic_spline_interpolator(x, function_inverse_spline, z_array)
+
+                    def function_non_zero(x):
+                        result = cubic_spline_interpolator(x, function_inverse_spline, z_array)
+                        idx = result<0.0
+                        result[idx] = 0.0
+                        return result
+
+                    function_final = function_any if non_zero_function else function_non_zero
+
+                    self.function_inverse = njit(function_final) if create_function_inverse else None
 
                     # pdf is 1D
-                    self.pdf = njit(lambda x: cubic_spline_interpolator(x, function_spline, x_array)/pdf_norm_const) if create_pdf else None
+                    self.pdf = njit(lambda x: pdf_cubic_spline_interpolator(x, pdf_norm_const, function_spline, x_array)) if create_pdf else None
                     # sampler is 1D
                     self.rvs = njit(lambda size: inverse_transform_sampler(size, cdf_values, x_array)) if create_rvs else None
                     
                 else:
-                    self.function = njit(lambda x, y: cubic_spline_interpolator2d_array(x, y, function_spline, x_array, conditioned_y_array)) if create_function else None
+                    # function is 2D
+                    function_any = lambda x, y: cubic_spline_interpolator2d_array(x, y, function_spline, x_array, conditioned_y_array)
 
-                    self.function_inverse = njit(lambda x, y: cubic_spline_interpolator2d_array(x, y, function_inverse_spline, z_array, conditioned_y_array)) if create_function_inverse else None
+                    def function_non_zero(x, y):
+                        result = cubic_spline_interpolator2d_array(x, y, function_spline, x_array, conditioned_y_array)
+                        idx = result<0.0
+                        result[idx] = 0.0
+                        return result
+                    
+                    function_final = function_any if non_zero_function else function_non_zero
+                    self.function = njit(function_final) if create_function else None
+
+                    # inverse function is 2D
+                    function_any = lambda x, y: cubic_spline_interpolator2d_array(x, y, function_inverse_spline, z_array, conditioned_y_array)
+
+                    def function_non_zero(x, y):
+                        result = cubic_spline_interpolator2d_array(x, y, function_inverse_spline, z_array, conditioned_y_array)
+                        idx = result<0.0
+                        result[idx] = 0.0
+                        return result
+                    
+                    function_final = function_any if non_zero_function else function_non_zero
+                    self.function_inverse = njit(function_final) if create_function_inverse else None
 
                     self.pdf = njit(lambda x, y: pdf_cubic_spline_interpolator2d_array(x, y, pdf_norm_const, function_spline, x_array, conditioned_y_array)) if create_pdf else None
 
@@ -116,6 +173,11 @@ class FunctionConditioning():
                 self.x_array = x_array
                 self.y_array = y_array
                 self.kde_object = kde_object
+        else:
+            self.conditioned_y_array = None
+            self.x_array = None
+            self.y_array = None
+            self.kde_object = None
 
     def __call__(self, *args):
         args = [np.array(arg).reshape(-1) if isinstance(arg, float) else arg for arg in args]
@@ -292,9 +354,16 @@ class FunctionConditioning():
         return np.array(cdf_values)
     
     def pdf_norm_const_generator(self, x_array, function_spline, conditioned_y_array):
+
         # 1D case
         if conditioned_y_array is None:
-            pdf_unorm = lambda x: cubic_spline_interpolator(np.array([x]), function_spline, x_array)
+            # pdf_unorm = lambda x: cubic_spline_interpolator(np.array([x]), function_spline, x_array)
+            def pdf_unorm(x):
+                result = cubic_spline_interpolator(np.array([x]), function_spline, x_array)
+                idx = result<0.
+                result[idx] = 0.0
+
+                return result
 
             norm = quad(pdf_unorm, min(x_array), max(x_array))[0]
             return norm
@@ -302,7 +371,13 @@ class FunctionConditioning():
         else:
             norm = []
             for i, y in enumerate(conditioned_y_array):
-                pdf_unorm = lambda x: cubic_spline_interpolator(np.array([x]), function_spline[i], x_array[i])
+                # pdf_unorm = lambda x: cubic_spline_interpolator(np.array([x]), function_spline[i], x_array[i])
+                def pdf_unorm(x):
+                    result = cubic_spline_interpolator(np.array([x]), function_spline[i], x_array[i])
+                    idx = result<0.
+                    result[idx] = 0.0
+
+                    return result
 
                 norm.append(quad(pdf_unorm, min(x_array[i]), max(x_array[i]))[0])
 
