@@ -20,10 +20,9 @@ cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
 
 # the following .py file will be called if they are not given in the class initialization
 from .multiprocessing_routine import solve_lens_equation
+from ..lens_galaxy_population.jit_functions import phi_q2_ellipticity_hemanta
 
-
-
-from ..utils import  interpolator_from_pickle, cubic_spline_interpolator
+from ..utils import  FunctionConditioning, luminosity_distance
 
 class ImageProperties():
     """
@@ -66,10 +65,10 @@ class ImageProperties():
         default: False
     directory : `str`
         directory to save the interpolator pickle files
-        default: "./interpolator_pickle"
+        default: "./interpolator_json"
     create_new_interpolator : `dict`
         dictionary to create new interpolator pickle files
-        default: dict(luminosity_distance_to_z=dict(create_new=False, resolution=1000))
+        default: dict(luminosity_distance=dict(create_new=False, resolution=1000))
 
     Examples
     --------
@@ -125,7 +124,7 @@ class ImageProperties():
                  cosmology=None,
                  spin_zero=True,
                  spin_precession=False,
-                 directory="./interpolator_pickle",
+                 directory="./interpolator_json",
                  create_new_interpolator=False,
         ):
 
@@ -136,36 +135,7 @@ class ImageProperties():
         self.spin_zero = spin_zero
         self.spin_precession = spin_precession
         self.time_window = time_window
-        # self.geocent_time_min = geocent_time_min
-        # self.geocent_time_max = geocent_time_max
         self.cosmo = cosmology if cosmology else cosmo
-        
-        # initialize the interpolator's parameters
-        self.create_new_interpolator = dict(
-            luminosity_distance_to_z=dict(create_new=False, resolution=1000),
-        )
-        if isinstance(create_new_interpolator, dict):
-            self.create_new_interpolator.update(create_new_interpolator)
-        elif create_new_interpolator is True:
-            self.create_new_interpolator = dict(
-                luminosity_distance_to_z=dict(create_new=True, resolution=1000)
-            )
-
-        resolution = self.create_new_interpolator["luminosity_distance_to_z"]["resolution"]
-        create_new = self.create_new_interpolator["luminosity_distance_to_z"]["create_new"]
-        spline1 = interpolator_from_pickle(
-            param_dict_given= dict(z_min=z_min, z_max=z_max, cosmology=self.cosmo, resolution=resolution),
-            directory=directory,
-            sub_directory="luminosity_distance_to_z",
-            name="luminosity_distance_to_z",
-            x = np.linspace(z_min, z_max, resolution),
-            pdf_func= lambda z_: cosmo.luminosity_distance(z_).value, 
-            conditioned_y=None, 
-            dimension=1,
-            category="function_inverse",
-            create_new=create_new,
-        )
-        self.luminosity_distance_to_z = njit(lambda z_: cubic_spline_interpolator(z_, spline1[0], spline1[1]))
 
     def image_properties(
             self,
@@ -187,7 +157,7 @@ class ImageProperties():
                 e.g. lens_parameters contains the following keys:\n
                 lens related=>['zs': source redshift, 'zl': lens redshift, 'gamma1': shear component in the x-direction, 'gamma2': shear component in the y-direction, 'e1': ellipticity component in the x-direction, 'e2': ellipticity component in the y-direction, 'gamma': spectral index of the mass density distribution, 'theta_E': einstein radius in radian]\n
                 source related=>['mass_1': mass in detector frame (mass1>mass2), 'mass_2': mass in detector frame, 'mass_1_source':mass in source frame, 'mass_2_source':mass source frame, 'luminosity_distance': luminosity distance, 'theta_jn': inclination angle, 'psi': polarization angle, 'phase': coalesence phase, 'geocent_time': coalensence GPS time at geocenter, 'ra': right ascension, 'dec': declination, 'a_1': spin magnitude of the more massive black hole, 'a2': spin magnitude of the less massive black hole, 'tilt_1': tilt angle of the more massive black hole, 'tilt_2': tilt angle of the less massive black hole, 'phi_12': azimuthal angle between the two spins, 'phi_jl': azimuthal angle between the total angular momentum and the orbital angular momentum]\n
-                image related=>['x_source': source position in the x-direction, 'y_source': source position in the y-direction, 'x0_image_position': image position in the x-direction, 'x1_image_position': image position in the y-direction, 'magnifications': magnifications, 'time_delays': time delays, 'n_images': number of images formed, 'determinant': determinants, 'trace': traces, 'iteration': to keep track of the iteration number
+                image related=>['x_source': source position in the x-direction, 'y_source': source position in the y-direction, 'x0_image_position': image position in the x-direction, 'x1_image_position': image position in the y-direction, 'magnifications': magnifications, 'time_delays': time delays: number of images formed, 'determinant': determinants, 'trace': traces, 'iteration': to keep track of the iteration number
         """
 
         npool = self.npool
@@ -201,7 +171,10 @@ class ImageProperties():
         # external shear params to the 'PEMD' galaxy lens
         gamma1, gamma2 = lens_parameters["gamma1"], lens_parameters["gamma2"]
         # ellipticity of the galaxy lens
-        e1, e2 = lens_parameters["e1"], lens_parameters["e2"]
+        phi = lens_parameters["phi"]
+        q = lens_parameters["q"]
+        e1, e2 = phi_q2_ellipticity_hemanta(phi, q)
+
         gamma = lens_parameters["gamma"]
         einstein_radius = lens_parameters["theta_E"]
         # Create the lens model list (note: can be a different lens model for different samples)
@@ -346,23 +319,18 @@ class ImageProperties():
 
         return lens_parameters
 
-    def get_lensed_snrs(self, lensed_param, list_of_detectors=None, snr_calculator=None, pdet_calculator=None):
+    def get_lensed_snrs(self, lensed_param, pdet_calculator, list_of_detectors=None):
         """
         Function to calculate the signal to noise ratio for each image in each event.
 
         Parameters
         ----------
-            snr_calculator : `function`
-                snr function, as describe in the :class:`~ler.rates.GWRATES` class.
             list_of_detectors : `list`
                 list of detectors
                 e.g. ['H1', 'L1', 'V1']
             lensed_param : `dict`
                 dictionary containing the both already lensed source paramters and image parameters.
                 e.g. lensed_param.keys() = ['mass_1', 'mass_2', 'zs', 'luminosity_distance', 'theta_jn', 'psi', 'phi', 'ra', 'dec', 'geocent_time', 'phase', 'a_1', 'a2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl', 'magnifications', 'time_delays']
-            n_max_images : `int`
-                maximum number of images to consider
-                default: 4
 
         Returns
         -------
@@ -381,6 +349,7 @@ class ImageProperties():
         # image type to morse phase
         imgage_type[imgage_type==1.] = 0.
         imgage_type[imgage_type==2.] = np.pi/2
+        imgage_type[imgage_type==3.] = np.pi
 
         # Get the binary parameters
         number_of_lensed_events = len(magnifications)
@@ -409,21 +378,13 @@ class ImageProperties():
                     lensed_param["phi_jl"],
                 )
         
-        # setting up snr dictionary
-        result_dict = dict()
-        if snr_calculator:
-            result_dict["snr_net"] = (
-                np.ones((number_of_lensed_events, n_max_images)) * np.nan
-            )
         # setting up pdet dictionary
-        elif pdet_calculator:
-            result_dict["pdet_net"] = (
-                np.ones((number_of_lensed_events, n_max_images)) * np.nan
-            )
-        else:
-            raise ValueError("snr_calculator or pdet_calculator not given")
+        result_dict = dict()
+        result_dict["pdet_net"] = (
+            np.ones((number_of_lensed_events, n_max_images)) * np.nan
+        )
         
-        # if detector list are provided for snr or pdet calculation
+        # if detector list are provided for pdet calculation
         if list_of_detectors:
             for detector in list_of_detectors:
                 result_dict[detector] = (
@@ -497,60 +458,31 @@ class ImageProperties():
             # Each image has their own effective luminosity distance and effective geocent time
             if sum(idx) != 0:
                 # Returns a dictionary
-                if snr_calculator:
-                    optimal_snr = snr_calculator(
-                        gw_param_dict= dict(
-                            mass_1=mass_1[idx],
-                            mass_2=mass_2[idx],
-                            luminosity_distance=effective_luminosity_distance[idx],
-                            theta_jn=theta_jn[idx],
-                            psi=psi[idx],
-                            phase= effective_phase[idx],
-                            geocent_time=effective_geocent_time[idx],
-                            ra=ra[idx],
-                            dec=dec[idx],
-                            a_1=a_1[idx],
-                            a_2=a_2[idx],
-                            tilt_1=tilt_1[idx],
-                            tilt_2=tilt_2[idx],
-                            phi_12=phi_12[idx],
-                            phi_jl=phi_jl[idx],
-                        ),
-                        output_jsonfile=False,
-                    )
-                    result_dict["snr_net"][idx, i] = optimal_snr["snr_net"]
+                pdet = pdet_calculator(
+                    gw_param_dict= dict(
+                        mass_1=mass_1[idx],
+                        mass_2=mass_2[idx],
+                        luminosity_distance=effective_luminosity_distance[idx],
+                        theta_jn=theta_jn[idx],
+                        psi=psi[idx],
+                        phase= effective_phase[idx],
+                        geocent_time=effective_geocent_time[idx],
+                        ra=ra[idx],
+                        dec=dec[idx],
+                        a_1=a_1[idx],
+                        a_2=a_2[idx],
+                        tilt_1=tilt_1[idx],
+                        tilt_2=tilt_2[idx],
+                        phi_12=phi_12[idx],
+                        phi_jl=phi_jl[idx],
+                    ),
+                )
+                result_dict["pdet_net"][idx, i] = pdet["pdet_net"]
 
-                    if list_of_detectors:
-                        for detector in list_of_detectors:
-                            if detector in optimal_snr:
-                                result_dict[detector][idx, i] = optimal_snr[detector]
-
-                elif pdet_calculator:
-                    pdet = pdet_calculator(
-                        gw_param_dict= dict(
-                            mass_1=mass_1[idx],
-                            mass_2=mass_2[idx],
-                            luminosity_distance=effective_luminosity_distance[idx],
-                            theta_jn=theta_jn[idx],
-                            psi=psi[idx],
-                            phase= effective_phase[idx],
-                            geocent_time=effective_geocent_time[idx],
-                            ra=ra[idx],
-                            dec=dec[idx],
-                            a_1=a_1[idx],
-                            a_2=a_2[idx],
-                            tilt_1=tilt_1[idx],
-                            tilt_2=tilt_2[idx],
-                            phi_12=phi_12[idx],
-                            phi_jl=phi_jl[idx],
-                        ),
-                    )
-                    result_dict["pdet_net"][idx, i] = pdet["pdet_net"]
-
-                    if list_of_detectors:
-                        for detector in list_of_detectors:
-                            if detector in pdet:
-                                result_dict[detector][idx, i] = pdet[detector]
+                if list_of_detectors:
+                    for detector in list_of_detectors:
+                        if detector in pdet:
+                            result_dict[detector][idx, i] = pdet[detector]
                 
 
                 lensed_param["effective_luminosity_distance"][:, i] = effective_luminosity_distance

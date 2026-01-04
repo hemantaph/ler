@@ -432,8 +432,8 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "binary_masses_BNS_bimodal interpolator will be loaded from ./interpolator_pickle/binary_masses_BNS_bimodal/binary_masses_BNS_bimodal_0.pickle\n",
-      "binary_masses_BNS_bimodal interpolator will be loaded from ./interpolator_pickle/binary_masses_BNS_bimodal/binary_masses_BNS_bimodal_1.pickle\n"
+      "binary_masses_BNS_bimodal interpolator will be loaded from ./interpolator_json/binary_masses_BNS_bimodal/binary_masses_BNS_bimodal_0.pickle\n",
+      "binary_masses_BNS_bimodal interpolator will be loaded from ./interpolator_json/binary_masses_BNS_bimodal/binary_masses_BNS_bimodal_1.pickle\n"
      ]
     },
     {

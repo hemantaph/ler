@@ -24,7 +24,7 @@ Classes
 
 
 
-.. py:class:: CBCSourceParameterDistribution(z_min=0.0, z_max=10.0, event_type='BBH', source_priors=None, source_priors_params=None, cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_pickle', create_new_interpolator=False)
+.. py:class:: CBCSourceParameterDistribution(z_min=0.0, z_max=10.0, event_type='BBH', source_priors=None, source_priors_params=None, cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_json', create_new_interpolator=False)
 
 
    Bases: :py:obj:`ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution`
@@ -72,7 +72,7 @@ Classes
 
        **directory** : `str`
            Directory to store the interpolator pickle files
-           default: './interpolator_pickle'
+           default: './interpolator_json'
 
        **create_new_interpolator** : `dict`
            Dictionary of boolean values and resolution to create new interpolator.

@@ -34,12 +34,12 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "z_to_Dc interpolator will be loaded from ./interpolator_pickle/z_to_Dc/z_to_Dc_1.pickle\n",
-      "Dc_to_z interpolator will be loaded from ./interpolator_pickle/Dc_to_z/Dc_to_z_1.pickle\n",
-      "angular_diameter_distance interpolator will be loaded from ./interpolator_pickle/angular_diameter_distance/angular_diameter_distance_1.pickle\n",
-      "differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_1.pickle\n",
-      "velocity_dispersion_bernardi interpolator will be loaded from ./interpolator_pickle/velocity_dispersion_bernardi/velocity_dispersion_bernardi_0.pickle\n",
-      "optical_depth_SIE_hemanta interpolator will be loaded from ./interpolator_pickle/optical_depth_SIE_hemanta/optical_depth_SIE_hemanta_0.pickle\n"
+      "z_to_Dc interpolator will be loaded from ./interpolator_json/z_to_Dc/z_to_Dc_1.pickle\n",
+      "Dc_to_z interpolator will be loaded from ./interpolator_json/Dc_to_z/Dc_to_z_1.pickle\n",
+      "angular_diameter_distance interpolator will be loaded from ./interpolator_json/angular_diameter_distance/angular_diameter_distance_1.pickle\n",
+      "differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_1.pickle\n",
+      "velocity_dispersion_bernardi interpolator will be loaded from ./interpolator_json/velocity_dispersion_bernardi/velocity_dispersion_bernardi_0.pickle\n",
+      "optical_depth_SIE_hemanta interpolator will be loaded from ./interpolator_json/optical_depth_SIE_hemanta/optical_depth_SIE_hemanta_0.pickle\n"
      ]
     }
    ],
@@ -100,11 +100,11 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "z_to_Dc interpolator will be loaded from ./interpolator_pickle/z_to_Dc/z_to_Dc_1.pickle\n",
-      "Dc_to_z interpolator will be loaded from ./interpolator_pickle/Dc_to_z/Dc_to_z_1.pickle\n",
-      "angular_diameter_distance interpolator will be loaded from ./interpolator_pickle/angular_diameter_distance/angular_diameter_distance_1.pickle\n",
-      "differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_1.pickle\n",
-      "velocity_dispersion_gengamma interpolator will be loaded from ./interpolator_pickle/velocity_dispersion_gengamma/velocity_dispersion_gengamma_1.pickle\n"
+      "z_to_Dc interpolator will be loaded from ./interpolator_json/z_to_Dc/z_to_Dc_1.pickle\n",
+      "Dc_to_z interpolator will be loaded from ./interpolator_json/Dc_to_z/Dc_to_z_1.pickle\n",
+      "angular_diameter_distance interpolator will be loaded from ./interpolator_json/angular_diameter_distance/angular_diameter_distance_1.pickle\n",
+      "differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_1.pickle\n",
+      "velocity_dispersion_gengamma interpolator will be loaded from ./interpolator_json/velocity_dispersion_gengamma/velocity_dispersion_gengamma_1.pickle\n"
      ]
     }
    ],
@@ -123,7 +123,7 @@
     "        axis_ratio=dict(q_min=0.2, q_max=1),\n",
     "    ),\n",
     "    cosmology=cosmo,\n",
-    "    directory=\"./interpolator_pickle\",\n",
+    "    directory=\"./interpolator_json\",\n",
     "    #create_new_interpolator=True,\n",
     "    )"
    ]
@@ -152,12 +152,12 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "z_to_Dc interpolator will be loaded from ./interpolator_pickle/z_to_Dc/z_to_Dc_1.pickle\n",
-      "Dc_to_z interpolator will be loaded from ./interpolator_pickle/Dc_to_z/Dc_to_z_1.pickle\n",
-      "angular_diameter_distance interpolator will be loaded from ./interpolator_pickle/angular_diameter_distance/angular_diameter_distance_1.pickle\n",
-      "differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_1.pickle\n",
-      "velocity_dispersion_bernardi interpolator will be loaded from ./interpolator_pickle/velocity_dispersion_bernardi/velocity_dispersion_bernardi_0.pickle\n",
-      "optical_depth_SIS_hemanta interpolator will be generated at ./interpolator_pickle/optical_depth_SIS_hemanta/optical_depth_SIS_hemanta_0.pickle\n"
+      "z_to_Dc interpolator will be loaded from ./interpolator_json/z_to_Dc/z_to_Dc_1.pickle\n",
+      "Dc_to_z interpolator will be loaded from ./interpolator_json/Dc_to_z/Dc_to_z_1.pickle\n",
+      "angular_diameter_distance interpolator will be loaded from ./interpolator_json/angular_diameter_distance/angular_diameter_distance_1.pickle\n",
+      "differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_1.pickle\n",
+      "velocity_dispersion_bernardi interpolator will be loaded from ./interpolator_json/velocity_dispersion_bernardi/velocity_dispersion_bernardi_0.pickle\n",
+      "optical_depth_SIS_hemanta interpolator will be generated at ./interpolator_json/optical_depth_SIS_hemanta/optical_depth_SIS_hemanta_0.pickle\n"
      ]
     }
    ],
@@ -176,7 +176,7 @@
     "        axis_ratio=dict(q_min=0.2, q_max=1),\n",
     "    ),\n",
     "    cosmology=cosmo,\n",
-    "    directory=\"./interpolator_pickle\",\n",
+    "    directory=\"./interpolator_json\",\n",
     "    #create_new_interpolator=True,\n",
     "    )"
    ]
@@ -205,12 +205,12 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "z_to_Dc interpolator will be loaded from ./interpolator_pickle/z_to_Dc/z_to_Dc_1.pickle\n",
-      "Dc_to_z interpolator will be loaded from ./interpolator_pickle/Dc_to_z/Dc_to_z_1.pickle\n",
-      "angular_diameter_distance interpolator will be loaded from ./interpolator_pickle/angular_diameter_distance/angular_diameter_distance_1.pickle\n",
-      "differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_1.pickle\n",
-      "velocity_dispersion_bernardi interpolator will be loaded from ./interpolator_pickle/velocity_dispersion_bernardi/velocity_dispersion_bernardi_0.pickle\n",
-      "optical_depth_SIE_hemanta interpolator will be loaded from ./interpolator_pickle/optical_depth_SIE_hemanta/optical_depth_SIE_hemanta_0.pickle\n"
+      "z_to_Dc interpolator will be loaded from ./interpolator_json/z_to_Dc/z_to_Dc_1.pickle\n",
+      "Dc_to_z interpolator will be loaded from ./interpolator_json/Dc_to_z/Dc_to_z_1.pickle\n",
+      "angular_diameter_distance interpolator will be loaded from ./interpolator_json/angular_diameter_distance/angular_diameter_distance_1.pickle\n",
+      "differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_1.pickle\n",
+      "velocity_dispersion_bernardi interpolator will be loaded from ./interpolator_json/velocity_dispersion_bernardi/velocity_dispersion_bernardi_0.pickle\n",
+      "optical_depth_SIE_hemanta interpolator will be loaded from ./interpolator_json/optical_depth_SIE_hemanta/optical_depth_SIE_hemanta_0.pickle\n"
      ]
     }
    ],
@@ -229,7 +229,7 @@
     "        axis_ratio=dict(q_min=0.2, q_max=1),\n",
     "    ),\n",
     "    cosmology=cosmo,\n",
-    "    directory=\"./interpolator_pickle\",\n",
+    "    directory=\"./interpolator_json\",\n",
     "    #create_new_interpolator=True,\n",
     "    )"
    ]
@@ -258,12 +258,12 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "z_to_Dc interpolator will be loaded from ./interpolator_pickle/z_to_Dc/z_to_Dc_1.pickle\n",
-      "Dc_to_z interpolator will be loaded from ./interpolator_pickle/Dc_to_z/Dc_to_z_1.pickle\n",
-      "angular_diameter_distance interpolator will be loaded from ./interpolator_pickle/angular_diameter_distance/angular_diameter_distance_1.pickle\n",
-      "differential_comoving_volume interpolator will be loaded from ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_1.pickle\n",
-      "velocity_dispersion_ewoud interpolator will be generated at ./interpolator_pickle/velocity_dispersion_ewoud/velocity_dispersion_ewoud_0.pickle\n",
-      "optical_depth_SIE_hemanta interpolator will be generated at ./interpolator_pickle/optical_depth_SIE_hemanta/optical_depth_SIE_hemanta_1.pickle\n"
+      "z_to_Dc interpolator will be loaded from ./interpolator_json/z_to_Dc/z_to_Dc_1.pickle\n",
+      "Dc_to_z interpolator will be loaded from ./interpolator_json/Dc_to_z/Dc_to_z_1.pickle\n",
+      "angular_diameter_distance interpolator will be loaded from ./interpolator_json/angular_diameter_distance/angular_diameter_distance_1.pickle\n",
+      "differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_1.pickle\n",
+      "velocity_dispersion_ewoud interpolator will be generated at ./interpolator_json/velocity_dispersion_ewoud/velocity_dispersion_ewoud_0.pickle\n",
+      "optical_depth_SIE_hemanta interpolator will be generated at ./interpolator_json/optical_depth_SIE_hemanta/optical_depth_SIE_hemanta_1.pickle\n"
      ]
     }
    ],
@@ -282,7 +282,7 @@
     "        axis_ratio=dict(q_min=0.2, q_max=1),\n",
     "    ),\n",
     "    cosmology=cosmo,\n",
-    "    directory=\"./interpolator_pickle\",\n",
+    "    directory=\"./interpolator_json\",\n",
     "    #create_new_interpolator=True,\n",
     "    )"
    ]
@@ -311,12 +311,12 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "z_to_Dc interpolator will be generated at ./interpolator_pickle/z_to_Dc/z_to_Dc_2.pickle\n",
-      "Dc_to_z interpolator will be generated at ./interpolator_pickle/Dc_to_z/Dc_to_z_2.pickle\n",
-      "angular_diameter_distance interpolator will be generated at ./interpolator_pickle/angular_diameter_distance/angular_diameter_distance_2.pickle\n",
-      "differential_comoving_volume interpolator will be generated at ./interpolator_pickle/differential_comoving_volume/differential_comoving_volume_2.pickle\n",
-      "velocity_dispersion_ewoud interpolator will be generated at ./interpolator_pickle/velocity_dispersion_ewoud/velocity_dispersion_ewoud_1.pickle\n",
-      "optical_depth_SIE_hemanta interpolator will be generated at ./interpolator_pickle/optical_depth_SIE_hemanta/optical_depth_SIE_hemanta_2.pickle\n"
+      "z_to_Dc interpolator will be generated at ./interpolator_json/z_to_Dc/z_to_Dc_2.pickle\n",
+      "Dc_to_z interpolator will be generated at ./interpolator_json/Dc_to_z/Dc_to_z_2.pickle\n",
+      "angular_diameter_distance interpolator will be generated at ./interpolator_json/angular_diameter_distance/angular_diameter_distance_2.pickle\n",
+      "differential_comoving_volume interpolator will be generated at ./interpolator_json/differential_comoving_volume/differential_comoving_volume_2.pickle\n",
+      "velocity_dispersion_ewoud interpolator will be generated at ./interpolator_json/velocity_dispersion_ewoud/velocity_dispersion_ewoud_1.pickle\n",
+      "optical_depth_SIE_hemanta interpolator will be generated at ./interpolator_json/optical_depth_SIE_hemanta/optical_depth_SIE_hemanta_2.pickle\n"
      ]
     }
    ],
@@ -337,7 +337,7 @@
     "        axis_ratio=dict(q_min=0.2, q_max=1),\n",
     "    ),\n",
     "    cosmology=Planck18,\n",
-    "    directory=\"./interpolator_pickle\",\n",
+    "    directory=\"./interpolator_json\",\n",
     "    #create_new_interpolator=True,\n",
     "    )"
    ]

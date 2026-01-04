@@ -47,7 +47,7 @@ Functions
 
 
 
-.. py:class:: LensGalaxyParameterDistribution(npool=4, z_min=0.0, z_max=10.0, cosmology=None, event_type='BBH', lens_type='epl_shear_galaxy', lens_functions=None, lens_functions_params=None, lens_param_samplers=None, lens_param_samplers_params=None, directory='./interpolator_pickle', create_new_interpolator=False, buffer_size=1000, **kwargs)
+.. py:class:: LensGalaxyParameterDistribution(npool=4, z_min=0.0, z_max=10.0, cosmology=None, event_type='BBH', lens_type='epl_shear_galaxy', lens_functions=None, lens_functions_params=None, lens_param_samplers=None, lens_param_samplers_params=None, directory='./interpolator_json', create_new_interpolator=False, buffer_size=1000, **kwargs)
 
 
    Bases: :py:obj:`ler.gw_source_population.CBCSourceParameterDistribution`, :py:obj:`ler.image_properties.ImageProperties`, :py:obj:`ler.lens_galaxy_population.optical_depth.OpticalDepth`
@@ -80,19 +80,19 @@ Functions
            Type of lens galaxy to generate.
            default: 'epl_shear_galaxy'
 
-       **lens_functions, lens_priors, lens_priors_params** : `dict`, `dict`, `dict`
+       **lens_functions, lens_param_samplers, lens_param_samplers_params** : `dict`, `dict`, `dict`
            dictionary of lens functions, priors, and priors parameters
            Check for default/available lens functions, priors and corresponding input parameters by running,
 
            >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
            >>> lens = LensGalaxyParameterDistribution()
            >>> print(lens.lens_functions)
-           >>> print(lens.lens_priors)
-           >>> print(lens.lens_priors_params)
+           >>> print(lens.lens_param_samplers)
+           >>> print(lens.lens_param_samplers_params)
 
        **directory** : `str`
            directory to store the interpolators
-           default: './interpolator_pickle'
+           default: './interpolator_json'
 
        **\*\*kwargs**
            keyword arguments to pass to the parent classes
@@ -193,10 +193,10 @@ Functions
    |:meth:`~compute_einstein_radii`      | Function to compute the Einstein |
    |                                     | radii of the lens galaxies       |
    +-------------------------------------+----------------------------------+
-   |:meth:`~rjs_with_cross_section_sis`  | Function to conduct rejection    |
+   |:meth:`~rejection_sampling_with_cross_section_sis`  | Function to conduct rejection    |
    |                                     | sampling wrt einstein radius     |
    +-------------------------------------+----------------------------------+
-   |:meth:`~rjs_with_cross_section_sie`  | Function to conduct rejection    |
+   |:meth:`~rejection_sampling_with_cross_section_sie`  | Function to conduct rejection    |
    |                                     | sampling wrt cross_section       |
    +-------------------------------------+----------------------------------+
    |:attr:`~rejection_sample_sl`         | Function to conduct rejection    |
@@ -786,7 +786,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: rjs_with_cross_section_sis(param_dict, cross_section_max=0.0)
+   .. py:method:: rejection_sampling_with_cross_section_sis(param_dict, cross_section_max=0.0)
 
       
       Function to conduct rejection sampling wrt einstein radius
@@ -817,7 +817,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: rjs_with_cross_section_sie_feixu(param_dict, cross_section_max=0.0)
+   .. py:method:: rejection_sampling_with_cross_section_sie_feixu(param_dict, cross_section_max=0.0)
 
       
       Function to conduct rejection sampling wrt cross_section
@@ -848,7 +848,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: rjs_with_cross_section(param_dict, cross_section_max=0.0)
+   .. py:method:: rejection_sampling_with_cross_section(param_dict, cross_section_max=0.0)
 
       
       Function to conduct rejection sampling wrt cross_section of EPL+Shear lens
@@ -879,7 +879,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: rjs_with_cross_section_mp(param_dict, cross_section_max=0.0)
+   .. py:method:: rejection_sampling_with_cross_section(param_dict, cross_section_max=0.0)
 
       
       Function to conduct rejection sampling wrt cross_section, multiprocessing
@@ -1063,7 +1063,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:class:: LeR(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=50000, cosmology=None, snr_finder=None, pdet_finder=None, list_of_detectors=None, json_file_names=None, interpolator_directory='./interpolator_pickle', create_new_interpolator=False, ler_directory='./ler_data', verbose=True, **kwargs)
+.. py:class:: LeR(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=50000, cosmology=None, snr_finder=None, pdet_finder=None, list_of_detectors=None, json_file_names=None, interpolator_directory='./interpolator_json', create_new_interpolator=False, ler_directory='./ler_data', verbose=True, **kwargs)
 
 
    Bases: :py:obj:`ler.lens_galaxy_population.LensGalaxyParameterDistribution`
@@ -1133,7 +1133,7 @@ Functions
 
        **interpolator_directory** : `str`
            directory to store the interpolators.
-           default interpolator_directory = './interpolator_pickle'. This is used for storing the various interpolators related to `ler` and `gwsnr` package.
+           default interpolator_directory = './interpolator_json'. This is used for storing the various interpolators related to `ler` and `gwsnr` package.
 
        **create_new_interpolator** : `bool` or `dict`
            default create_new_interpolator = False.
@@ -2792,7 +2792,7 @@ Functions
           !! processed by numpydoc !!
 
 
-.. py:class:: CBCSourceParameterDistribution(z_min=0.0, z_max=10.0, event_type='BBH', source_priors=None, source_priors_params=None, cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_pickle', create_new_interpolator=False)
+.. py:class:: CBCSourceParameterDistribution(z_min=0.0, z_max=10.0, event_type='BBH', source_priors=None, source_priors_params=None, cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_json', create_new_interpolator=False)
 
 
    Bases: :py:obj:`ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution`
@@ -2840,7 +2840,7 @@ Functions
 
        **directory** : `str`
            Directory to store the interpolator pickle files
-           default: './interpolator_pickle'
+           default: './interpolator_json'
 
        **create_new_interpolator** : `dict`
            Dictionary of boolean values and resolution to create new interpolator.
@@ -4471,7 +4471,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:class:: GWRATES(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=50000, cosmology=None, snr_finder=None, pdet_finder=None, list_of_detectors=None, json_file_names=None, interpolator_directory='./interpolator_pickle', create_new_interpolator=False, ler_directory='./ler_data', verbose=True, **kwargs)
+.. py:class:: GWRATES(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=50000, cosmology=None, snr_finder=None, pdet_finder=None, list_of_detectors=None, json_file_names=None, interpolator_directory='./interpolator_json', create_new_interpolator=False, ler_directory='./ler_data', verbose=True, **kwargs)
 
 
    Bases: :py:obj:`ler.gw_source_population.CBCSourceParameterDistribution`
@@ -4537,7 +4537,7 @@ Functions
 
        **interpolator_directory** : `str`
            directory to store the interpolators.
-           default interpolator_directory = './interpolator_pickle'. This is used for storing the various interpolators related to `ler` and `gwsnr` package.
+           default interpolator_directory = './interpolator_json'. This is used for storing the various interpolators related to `ler` and `gwsnr` package.
 
        **ler_directory** : `str`
            directory to store the parameters.

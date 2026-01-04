@@ -34,7 +34,7 @@ Functions
 .. autoapisummary::
 
    ler.image_properties.solve_lens_equation
-   ler.image_properties.interpolator_from_pickle
+   ler.image_properties.interpolator_from_json
    ler.image_properties.cubic_spline_interpolator
    ler.image_properties.solve_lens_equation
 
@@ -126,7 +126,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: interpolator_from_pickle(param_dict_given, directory, sub_directory, name, x, pdf_func=None, y=None, conditioned_y=None, dimension=1, category='pdf', create_new=False)
+.. py:function:: interpolator_from_json(param_dict_given, directory, sub_directory, name, x, pdf_func=None, y=None, conditioned_y=None, dimension=1, category='pdf', create_new=False)
 
    
    Function to decide which interpolator to use.
@@ -224,7 +224,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:class:: ImageProperties(npool=4, z_min=0.0, z_max=10, n_min_images=2, n_max_images=4, geocent_time_min=1126259462.4, geocent_time_max=1126259462.4 + 365 * 24 * 3600 * 20, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_pickle', create_new_interpolator=False)
+.. py:class:: ImageProperties(npool=4, z_min=0.0, z_max=10, n_min_images=2, n_max_images=4, geocent_time_min=1126259462.4, geocent_time_max=1126259462.4 + 365 * 24 * 3600 * 20, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_json', create_new_interpolator=False)
 
 
    
@@ -279,7 +279,7 @@ Functions
 
        **directory** : `str`
            directory to save the interpolator pickle files
-           default: "./interpolator_pickle"
+           default: "./interpolator_json"
 
        **create_new_interpolator** : `dict`
            dictionary to create new interpolator pickle files

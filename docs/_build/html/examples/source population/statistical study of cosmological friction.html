@@ -1,172 +1,267 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
+
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves &mdash; ler 0.3.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=776609e1" />
+  <title>Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of
+    gravitational waves &mdash; ler 0.3.1 documentation</title>
+  <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+  <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+  <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+  <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+  <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+  <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=776609e1" />
 
-  
-      <script src="../../_static/jquery.js?v=5d32c60e"></script>
-      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=4621528c"></script>
-      <script src="../../_static/doctools.js?v=9a2dae69"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="../../_static/copybutton.js?v=f281be69"></script>
-      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Lens parameter distributions" href="../lens_parameters/sample%20lens%20parameters.html" />
-    <link rel="prev" title="Statistical study of changing Mass model paramter(s)" href="statistical%20study%20of%20changing%20mass%20model%20params.html" /> 
+
+  <script src="../../_static/jquery.js?v=5d32c60e"></script>
+  <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+  <script src="../../_static/documentation_options.js?v=4621528c"></script>
+  <script src="../../_static/doctools.js?v=9a2dae69"></script>
+  <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+  <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+  <script src="../../_static/copybutton.js?v=f281be69"></script>
+  <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA="
+    src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+  <script>window.MathJax = { "tex": { "inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true }, "options": { "ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area" } }</script>
+  <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../_static/js/theme.js"></script>
+  <link rel="index" title="Index" href="../../genindex.html" />
+  <link rel="search" title="Search" href="../../search.html" />
+  <link rel="next" title="Lens parameter distributions" href="../lens_parameters/sample%20lens%20parameters.html" />
+  <link rel="prev" title="Statistical study of changing Mass model paramter(s)"
+    href="statistical%20study%20of%20changing%20mass%20model%20params.html" />
 </head>
 
-<body class="wy-body-for-nav"> 
+<body class="wy-body-for-nav">
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search">
 
-          
-          
+
+
           <a href="../../index.html" class="icon icon-home">
             ler
           </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../Installation2.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../code_overview.html">Code overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../Lensed_events.html">Lensed event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">API:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rates/grb%20detection%20rate.html">Calculation of detectable Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rates/ler%20bns%20example.html">LeR complete examples of BNS events (O4 design sensitivity)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rates/rates_with_3G_detectors.html">Event Rates with 3G detectors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="merger%20rate%20density%20evolution%20with%20redshift.html">Merger rate density evolution with redshift</a></li>
-<li class="toctree-l1"><a class="reference internal" href="merger%20rate%20density%20model%20comparision.html">Merger rate density model comparision</a></li>
-<li class="toctree-l1"><a class="reference internal" href="merger%20rate%20density%20model%20comparision.html#Primordial-BBH-model,-Ng-et-al.-2022">Primordial BBH model, Ng et al. 2022</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sample%20compact%20binary%20parameters.html">Sampling parameters for a compact binary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="statistical%20study%20of%20changing%20mass%20model%20params.html">Statistical study of changing Mass model paramter(s)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Function-to-convert-from-luminosity-distance-to-redshift">Function to convert from luminosity distance to redshift</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Functional-form-of-change-in-the-luminosity-distance-due-to-cosmological-friction">Functional form of change in the luminosity distance due to cosmological friction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#BBH-events-(O4-sensitivity)">BBH events (O4 sensitivity)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#rates-of-detectable-events-per-year">rates of detectable events per year</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#redshifts-plot">redshifts plot</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#Inferred-source-chirp-mass-vs-redshift">Inferred source chirp-mass vs redshift</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Contour-plot-of-the-inferred-chirp-mass-vs-redshift">Contour plot of the inferred chirp-mass vs redshift</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Looking-for-outlier-in-the-inferred-chirp-mass-distribution">Looking for outlier in the inferred chirp mass distribution</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#BBH-(3G-sensitivities)">BBH (3G sensitivities)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">redshifts plot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">Contour plot of the inferred chirp-mass vs redshift</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#Rates-of-detectable-events-per-year">Rates of detectable events per year</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../lens_parameters/sample%20lens%20parameters.html">Lens parameter distributions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../optical_depth/validation_SIE.html">Optical depth SIE model validation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../optical_depth/validation_SIS.html">Validation of SIS model (Numerical vs Analytical)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html">Study of Time delays and magnification of lensed gravitational waves.</a></li>
-</ul>
+          <div role="search">
+            <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+              <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+              <input type="hidden" name="check_keywords" value="yes" />
+              <input type="hidden" name="area" value="default" />
+            </form>
+          </div>
+        </div>
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+          <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+          <ul>
+            <li class="toctree-l1"><a class="reference internal" href="../../Installation2.html">Installation</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../../Summary.html">Summary</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../../code_overview.html">Code overview</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../../GW_events.html">Gravitational wave event
+                rates</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../../GW_equations.html">Gravitational wave
+                events sampling (Analytical formulation)</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../../Lensed_events.html">Lensed event rates</a>
+            </li>
+            <li class="toctree-l1"><a class="reference internal" href="../../Lensed_equations.html">Lensed event
+                sampling (Analytical formulation)</a></li>
+          </ul>
+          <p class="caption" role="heading"><span class="caption-text">API:</span></p>
+          <ul>
+            <li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/rates/index.html"><code
+                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="../../autoapi/ler/gw_source_population/index.html"><code
+                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a>
+            </li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="../../autoapi/ler/lens_galaxy_population/index.html"><code
+                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a>
+            </li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="../../autoapi/ler/image_properties/index.html"><code
+                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a>
+            </li>
+            <li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/utils/index.html"><code
+                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+          </ul>
+          <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+          <ul class="current">
+            <li class="toctree-l1"><a class="reference internal" href="../rates/LeR%20complete%20examples.html">LeR
+                complete examples</a></li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="../rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../rates/grb%20detection%20rate.html">Calculation
+                of detectable Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a>
+            </li>
+            <li class="toctree-l1"><a class="reference internal" href="../rates/ler%20bns%20example.html">LeR complete
+                examples of BNS events (O4 design sensitivity)</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../rates/rates_with_3G_detectors.html">Event
+                Rates with 3G detectors</a></li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="merger%20rate%20density%20evolution%20with%20redshift.html">Merger rate density evolution with
+                redshift</a></li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="merger%20rate%20density%20model%20comparision.html">Merger rate density model comparision</a></li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="merger%20rate%20density%20model%20comparision.html#Primordial-BBH-model,-Ng-et-al.-2022">Primordial
+                BBH model, Ng et al. 2022</a></li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="sample%20compact%20binary%20parameters.html">Sampling parameters for a compact binary</a></li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="statistical%20study%20of%20changing%20mass%20model%20params.html">Statistical study of changing
+                Mass model paramter(s)</a></li>
+            <li class="toctree-l1 current"><a class="current reference internal" href="#">Statistical study of
+                cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational
+                waves</a>
+              <ul>
+                <li class="toctree-l2"><a class="reference internal"
+                    href="#Function-to-convert-from-luminosity-distance-to-redshift">Function to convert from luminosity
+                    distance to redshift</a></li>
+                <li class="toctree-l2"><a class="reference internal"
+                    href="#Functional-form-of-change-in-the-luminosity-distance-due-to-cosmological-friction">Functional
+                    form of change in the luminosity distance due to cosmological friction</a></li>
+                <li class="toctree-l2"><a class="reference internal" href="#BBH-events-(O4-sensitivity)">BBH events (O4
+                    sensitivity)</a>
+                  <ul>
+                    <li class="toctree-l3"><a class="reference internal"
+                        href="#rates-of-detectable-events-per-year">rates of detectable events per year</a></li>
+                    <li class="toctree-l3"><a class="reference internal" href="#redshifts-plot">redshifts plot</a></li>
+                  </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal"
+                    href="#Inferred-source-chirp-mass-vs-redshift">Inferred source chirp-mass vs redshift</a>
+                  <ul>
+                    <li class="toctree-l3"><a class="reference internal"
+                        href="#Contour-plot-of-the-inferred-chirp-mass-vs-redshift">Contour plot of the inferred
+                        chirp-mass vs redshift</a></li>
+                    <li class="toctree-l3"><a class="reference internal"
+                        href="#Looking-for-outlier-in-the-inferred-chirp-mass-distribution">Looking for outlier in the
+                        inferred chirp mass distribution</a></li>
+                  </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#BBH-(3G-sensitivities)">BBH (3G
+                    sensitivities)</a>
+                  <ul>
+                    <li class="toctree-l3"><a class="reference internal" href="#id1">redshifts plot</a></li>
+                    <li class="toctree-l3"><a class="reference internal" href="#id2">Contour plot of the inferred
+                        chirp-mass vs redshift</a></li>
+                  </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#Rates-of-detectable-events-per-year">Rates
+                    of detectable events per year</a></li>
+              </ul>
+            </li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="../lens_parameters/sample%20lens%20parameters.html">Lens parameter distributions</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../optical_depth/validation_SIE.html">Optical
+                depth SIE model validation</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../optical_depth/validation_SIS.html">Validation
+                of SIS model (Numerical vs Analytical)</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="../image_properties/dt_vs_dmu.html">Study of Time
+                delays and magnification of lensed gravitational waves.</a></li>
+          </ul>
 
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">ler</a>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" aria-label="Mobile navigation menu">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">ler</a>
       </nav>
 
       <div class="wy-nav-content">
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/examples/source population/statistical study of cosmological friction.ipynb.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
-</div>
+            <ul class="wy-breadcrumbs">
+              <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+              <li class="breadcrumb-item active">Statistical study of cosmological friction and its effect on the
+                redshift vs inferred chirp-mass relation of gravitational waves</li>
+              <li class="wy-breadcrumbs-aside">
+                <a href="../../_sources/examples/source population/statistical study of cosmological friction.ipynb.txt"
+                  rel="nofollow"> View page source</a>
+              </li>
+            </ul>
+            <hr />
+          </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="Statistical-study-of-cosmological-friction-and-its-effect-on-the-redshift-vs-inferred-chirp-mass-relation-of-gravitational-waves">
-<h1>Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves<a class="headerlink" href="#Statistical-study-of-cosmological-friction-and-its-effect-on-the-redshift-vs-inferred-chirp-mass-relation-of-gravitational-waves" title="Link to this heading"></a></h1>
-<ul class="simple">
-<li><p>This is in reference to the <a class="reference external" href="https://arxiv.org/pdf/2309.03833.pdf">paper</a></p></li>
-<li><p>From the paper equation 2.13, we have the following equations for the effect of cosmological friction on the luminosity distance of gravitational waves:</p></li>
-</ul>
-<div class="math notranslate nohighlight">
-\[d^{GW}_{L}(z) = d^{EM}_{L}(z) \exp \left\{ \frac{c_M}{2 \Omega_{\Lambda,0}} \ln \left[ \frac{1+z}{(\Omega_{m,0}(1+z)^3 + \Omega_{\Lambda,0})^{1/3}} \right] \right\}\]</div>
-<ul class="simple">
-<li><p>This represents the relation between the gravitational wave (GW) luminosity distance and the electromagnetic (EM) luminosity distance, taking into account the cosmological parameters for matter <span class="math notranslate nohighlight">\(\Omega_{m,0}\)</span> and dark energy <span class="math notranslate nohighlight">\(\Omega_{\Lambda,0}\)</span>, along with a redshift <span class="math notranslate nohighlight">\(z\)</span> and a constant <span class="math notranslate nohighlight">\(c_M\)</span>.</p></li>
-<li><p>The goal is to study the effect of the cosmological friction term on the luminosity distance of gravitational waves and how it affects the inferred chirp-mass of the gravitational wave source.</p></li>
-</ul>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
+            <div itemprop="articleBody">
+
+              <section
+                id="Statistical-study-of-cosmological-friction-and-its-effect-on-the-redshift-vs-inferred-chirp-mass-relation-of-gravitational-waves">
+                <h1>Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass
+                  relation of gravitational waves<a class="headerlink"
+                    href="#Statistical-study-of-cosmological-friction-and-its-effect-on-the-redshift-vs-inferred-chirp-mass-relation-of-gravitational-waves"
+                    title="Link to this heading"></a></h1>
+                <ul class="simple">
+                  <li>
+                    <p>This is in reference to the <a class="reference external"
+                        href="https://arxiv.org/pdf/2309.03833.pdf">paper</a></p>
+                  </li>
+                  <li>
+                    <p>From the paper equation 2.13, we have the following equations for the effect of cosmological
+                      friction on the luminosity distance of gravitational waves:</p>
+                  </li>
+                </ul>
+                <div class="math notranslate nohighlight">
+                  \[d^{GW}_{L}(z) = d^{EM}_{L}(z) \exp \left\{ \frac{c_M}{2 \Omega_{\Lambda,0}} \ln \left[
+                  \frac{1+z}{(\Omega_{m,0}(1+z)^3 + \Omega_{\Lambda,0})^{1/3}} \right] \right\}\]</div>
+                <ul class="simple">
+                  <li>
+                    <p>This represents the relation between the gravitational wave (GW) luminosity distance and the
+                      electromagnetic (EM) luminosity distance, taking into account the cosmological parameters for
+                      matter <span class="math notranslate nohighlight">\(\Omega_{m,0}\)</span> and dark energy <span
+                        class="math notranslate nohighlight">\(\Omega_{\Lambda,0}\)</span>, along with a redshift <span
+                        class="math notranslate nohighlight">\(z\)</span> and a constant <span
+                        class="math notranslate nohighlight">\(c_M\)</span>.</p>
+                  </li>
+                  <li>
+                    <p>The goal is to study the effect of the cosmological friction term on the luminosity distance of
+                      gravitational waves and how it affects the inferred chirp-mass of the gravitational wave source.
+                    </p>
+                  </li>
+                </ul>
+                <div class="nbinput nblast docutils container">
+                  <div class="prompt highlight-none notranslate">
+                    <div class="highlight">
+                      <pre><span></span>[2]:
+</pre>
+                    </div>
+                  </div>
+                  <div class="input_area highlight-ipython3 notranslate">
+                    <div class="highlight">
+                      <pre><span></span><span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">ler.rates</span> <span class="kn">import</span> <span class="n">LeR</span>
 <span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">get_param_from_json</span>
-</pre></div>
-</div>
-</div>
-<section id="Function-to-convert-from-luminosity-distance-to-redshift">
-<h2>Function to convert from luminosity distance to redshift<a class="headerlink" href="#Function-to-convert-from-luminosity-distance-to-redshift" title="Link to this heading"></a></h2>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># let&#39;s set up interpolation for with scipy</span>
+</pre>
+                    </div>
+                  </div>
+                </div>
+                <section id="Function-to-convert-from-luminosity-distance-to-redshift">
+                  <h2>Function to convert from luminosity distance to redshift<a class="headerlink"
+                      href="#Function-to-convert-from-luminosity-distance-to-redshift"
+                      title="Link to this heading"></a></h2>
+                  <div class="nbinput docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[5]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="c1"># let&#39;s set up interpolation for with scipy</span>
 <span class="c1"># conversion from luminosity distance to redshift</span>
-<span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span>  <span class="n">interpolator_from_pickle</span><span class="p">,</span> <span class="n">cubic_spline_interpolator</span>
+<span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span>  <span class="n">interpolator_from_json</span><span class="p">,</span> <span class="n">cubic_spline_interpolator</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
 
 <span class="c1"># the follwoing code is to create a spline interpolation</span>
@@ -177,9 +272,9 @@
 <span class="n">dL</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z_</span><span class="p">:</span> <span class="n">cosmo</span><span class="o">.</span><span class="n">luminosity_distance</span><span class="p">(</span><span class="n">z_</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">Mpc</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>  <span class="c1"># luminosity distance in Mpc</span>
 <span class="n">resolution</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="n">create_new</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># important</span>
-<span class="n">spline_dL</span> <span class="o">=</span> <span class="n">interpolator_from_pickle</span><span class="p">(</span>
+<span class="n">spline_dL</span> <span class="o">=</span> <span class="n">interpolator_from_json</span><span class="p">(</span>
     <span class="n">param_dict_given</span><span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span> <span class="n">cosmology</span><span class="o">=</span><span class="n">cosmo</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">),</span>
-    <span class="n">directory</span><span class="o">=</span><span class="s1">&#39;interpolator_pickle&#39;</span><span class="p">,</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s1">&#39;interpolator_json&#39;</span><span class="p">,</span>
     <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;dL_to_z&quot;</span><span class="p">,</span>
     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;dL_to_z&quot;</span><span class="p">,</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">),</span>
@@ -190,45 +285,69 @@
     <span class="n">create_new</span><span class="o">=</span> <span class="n">create_new</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">dL_to_z</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">dL_</span><span class="p">:</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span><span class="n">dL_</span><span class="p">,</span> <span class="n">spline_dL</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">spline_dL</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-dL_to_z interpolator will be loaded from interpolator_pickle/dL_to_z/dL_to_z_0.pickle
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># test</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nboutput nblast docutils container">
+                    <div class="prompt empty docutils container">
+                    </div>
+                    <div class="output_area docutils container">
+                      <div class="highlight">
+                        <pre>
+dL_to_z interpolator will be loaded from interpolator_json/dL_to_z/dL_to_z_0.pickle
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nbinput docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[6]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="c1"># test</span>
 <span class="n">z</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">d_L</span> <span class="o">=</span> <span class="n">cosmo</span><span class="o">.</span><span class="n">luminosity_distance</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">Mpc</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
 <span class="n">dL_to_z</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">d_L</span><span class="p">]))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nboutput nblast docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[6]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="output_area docutils container">
+                      <div class="highlight">
+                        <pre>
 array([1.])
-</pre></div></div>
-</div>
-</section>
-<section id="Functional-form-of-change-in-the-luminosity-distance-due-to-cosmological-friction">
-<h2>Functional form of change in the luminosity distance due to cosmological friction<a class="headerlink" href="#Functional-form-of-change-in-the-luminosity-distance-due-to-cosmological-friction" title="Link to this heading"></a></h2>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># here I have consider dL=dL_EM=dL_GW at CM=0; no cosmological friction.</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <section id="Functional-form-of-change-in-the-luminosity-distance-due-to-cosmological-friction">
+                  <h2>Functional form of change in the luminosity distance due to cosmological friction<a
+                      class="headerlink"
+                      href="#Functional-form-of-change-in-the-luminosity-distance-due-to-cosmological-friction"
+                      title="Link to this heading"></a></h2>
+                  <div class="nbinput nblast docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[6]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="c1"># here I have consider dL=dL_EM=dL_GW at CM=0; no cosmological friction.</span>
 <span class="n">Ode0</span> <span class="o">=</span> <span class="n">cosmo</span><span class="o">.</span><span class="n">Ode0</span>  <span class="c1"># dark energy density</span>
 <span class="n">Om0</span> <span class="o">=</span> <span class="n">cosmo</span><span class="o">.</span><span class="n">Om0</span>  <span class="c1"># matter density</span>
 
@@ -240,67 +359,102 @@ array([1.])
                            <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">z</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Om0</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">z</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="n">Ode0</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)))</span>
 
     <span class="k">return</span> <span class="n">dL_GW</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># test</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nbinput docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[7]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="c1"># test</span>
 <span class="n">dL</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1000</span><span class="p">])</span>
 <span class="n">dL_GW_CM</span><span class="p">(</span><span class="n">dL</span><span class="o">=</span><span class="n">dL</span><span class="p">,</span> <span class="n">CM</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nboutput nblast docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[7]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="output_area docutils container">
+                      <div class="highlight">
+                        <pre>
 array([1570.58372199])
-</pre></div></div>
-</div>
-</section>
-<section id="BBH-events-(O4-sensitivity)">
-<h2>BBH events (O4 sensitivity)<a class="headerlink" href="#BBH-events-(O4-sensitivity)" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ler</span></code> initialization</p></li>
-</ul>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <section id="BBH-events-(O4-sensitivity)">
+                  <h2>BBH events (O4 sensitivity)<a class="headerlink" href="#BBH-events-(O4-sensitivity)"
+                      title="Link to this heading"></a></h2>
+                  <ul class="simple">
+                    <li>
+                      <p><code class="docutils literal notranslate"><span class="pre">ler</span></code> initialization
+                      </p>
+                    </li>
+                  </ul>
+                  <div class="nbinput docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[8]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nboutput nblast docutils container">
+                    <div class="prompt empty docutils container">
+                    </div>
+                    <div class="output_area stderr docutils container">
+                      <div class="highlight">
+                        <pre>
 interpolation for each mass_ratios: 100%|███████████████████████████| 50/50 [02:35&lt;00:00,  3.11s/it]
-</pre></div></div>
-</div>
-<ul class="simple">
-<li><p>sample GW source parameters</p></li>
-</ul>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">100000</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <ul class="simple">
+                    <li>
+                      <p>sample GW source parameters</p>
+                    </li>
+                  </ul>
+                  <div class="nbinput docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[10]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="n">ler</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">100000</span>
 <span class="n">unlensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">500000</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="s1">&#39;unlensed_param.json&#39;</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nboutput nblast docutils container">
+                    <div class="prompt empty docutils container">
+                    </div>
+                    <div class="output_area docutils container">
+                      <div class="highlight">
+                        <pre>
 unlensed params will be store in ./ler_data/unlensed_param.json
 chosen batch size = 100000 with total size = 500000
 There will be 5 batche(s)
@@ -320,17 +474,28 @@ Batch no. 5
 sampling gw source params...
 calculating snrs...
 saving all unlensed_params in ./ler_data/unlensed_param.json...
-</pre></div></div>
-</div>
-<ul class="simple">
-<li><p>let’s consider three cases: CM = 0, -1, 2</p></li>
-<li><p>replace the luminosity distance with the one that includes the cosmological friction term</p></li>
-</ul>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_dL_cm_m1</span> <span class="o">=</span> <span class="n">dL_GW_CM</span><span class="p">(</span><span class="n">dL</span><span class="o">=</span><span class="n">unlensed_param</span><span class="p">[</span><span class="s1">&#39;luminosity_distance&#39;</span><span class="p">],</span> <span class="n">CM</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <ul class="simple">
+                    <li>
+                      <p>let’s consider three cases: CM = 0, -1, 2</p>
+                    </li>
+                    <li>
+                      <p>replace the luminosity distance with the one that includes the cosmological friction term</p>
+                    </li>
+                  </ul>
+                  <div class="nbinput nblast docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[17]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="n">new_dL_cm_m1</span> <span class="o">=</span> <span class="n">dL_GW_CM</span><span class="p">(</span><span class="n">dL</span><span class="o">=</span><span class="n">unlensed_param</span><span class="p">[</span><span class="s1">&#39;luminosity_distance&#39;</span><span class="p">],</span> <span class="n">CM</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">new_dL_cm_2</span> <span class="o">=</span> <span class="n">dL_GW_CM</span><span class="p">(</span><span class="n">dL</span><span class="o">=</span><span class="n">unlensed_param</span><span class="p">[</span><span class="s1">&#39;luminosity_distance&#39;</span><span class="p">],</span> <span class="n">CM</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># new luminosity distance</span>
@@ -345,109 +510,153 @@ saving all unlensed_params in ./ler_data/unlensed_param.json...
 <span class="n">snr_cm_2</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">snr</span><span class="p">(</span><span class="n">gw_param_dict</span><span class="o">=</span><span class="n">unlensed_param_cm_2</span><span class="p">)</span>
 <span class="n">unlensed_param_cm_m1</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">snr_cm_m1</span><span class="p">)</span>
 <span class="n">unlensed_param_cm_2</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">snr_cm_2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<section id="rates-of-detectable-events-per-year">
-<h3>rates of detectable events per year<a class="headerlink" href="#rates-of-detectable-events-per-year" title="Link to this heading"></a></h3>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># CM = 0</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <section id="rates-of-detectable-events-per-year">
+                    <h3>rates of detectable events per year<a class="headerlink"
+                        href="#rates-of-detectable-events-per-year" title="Link to this heading"></a></h3>
+                    <div class="nbinput docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[18]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># CM = 0</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">unlensed_param_cm_0_det</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_rate</span><span class="p">(</span>
     <span class="n">unlensed_param</span><span class="o">=</span><span class="n">unlensed_param_cm_0</span><span class="p">,</span>
     <span class="n">output_jsonfile</span><span class="o">=</span><span class="s1">&#39;unlensed_param_cm_0_det.json&#39;</span>
     <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nboutput nblast docutils container">
+                      <div class="prompt empty docutils container">
+                      </div>
+                      <div class="output_area docutils container">
+                        <div class="highlight">
+                          <pre>
 using provided unlensed_param dict...
 given detectability_condition == &#39;step_function&#39;
 total unlensed rate (yr^-1) (with step function): 441.8357225693884
 number of simulated unlensed detectable events: 2134
 number of all simulated unlensed events: 500000
 storing detectable unlensed params in ./ler_data/unlensed_param_cm_0_det.json
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># CM = -1</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[19]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># CM = -1</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">unlensed_param_cm_m1_det</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_rate</span><span class="p">(</span>
     <span class="n">unlensed_param</span><span class="o">=</span><span class="n">unlensed_param_cm_m1</span><span class="p">,</span>
     <span class="n">output_jsonfile</span><span class="o">=</span><span class="s1">&#39;unlensed_param_cm_m1_det.json&#39;</span>
     <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nboutput nblast docutils container">
+                      <div class="prompt empty docutils container">
+                      </div>
+                      <div class="output_area docutils container">
+                        <div class="highlight">
+                          <pre>
 using provided unlensed_param dict...
 given detectability_condition == &#39;step_function&#39;
 total unlensed rate (yr^-1) (with step function): 856.9625378231952
 number of simulated unlensed detectable events: 4139
 number of all simulated unlensed events: 500000
 storing detectable unlensed params in ./ler_data/unlensed_param_cm_m1_det.json
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># CM = 2</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[20]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># CM = 2</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">unlensed_param_cm_2_det</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_rate</span><span class="p">(</span>
     <span class="n">unlensed_param</span><span class="o">=</span><span class="n">unlensed_param_cm_2</span><span class="p">,</span>
     <span class="n">output_jsonfile</span><span class="o">=</span><span class="s1">&#39;unlensed_param_cm_2_det.json&#39;</span>
     <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nboutput nblast docutils container">
+                      <div class="prompt empty docutils container">
+                      </div>
+                      <div class="output_area docutils container">
+                        <div class="highlight">
+                          <pre>
 using provided unlensed_param dict...
 given detectability_condition == &#39;step_function&#39;
 total unlensed rate (yr^-1) (with step function): 112.63291147035956
 number of simulated unlensed detectable events: 544
 number of all simulated unlensed events: 500000
 storing detectable unlensed params in ./ler_data/unlensed_param_cm_2_det.json
-</pre></div></div>
-</div>
-<ul class="simple">
-<li><p>there is significant difference in the rates of detectable events per year for the three cases</p></li>
-</ul>
-</section>
-<section id="redshifts-plot">
-<h3>redshifts plot<a class="headerlink" href="#redshifts-plot" title="Link to this heading"></a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># getting param from json file</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <ul class="simple">
+                      <li>
+                        <p>there is significant difference in the rates of detectable events per year for the three
+                          cases</p>
+                      </li>
+                    </ul>
+                  </section>
+                  <section id="redshifts-plot">
+                    <h3>redshifts plot<a class="headerlink" href="#redshifts-plot" title="Link to this heading"></a>
+                    </h3>
+                    <div class="nbinput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[ ]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># getting param from json file</span>
 <span class="c1"># uncomment the following lines to get the parameters from the json file</span>
 <span class="c1"># unlensed_param_cm_0 = get_param_from_json(&quot;ler_data/unlensed_param_cm_0_det.json&quot;)</span>
 <span class="c1"># unlensed_param_cm_m1 = get_param_from_json(&quot;ler_data/unlensed_param_cm_m1_det.json&quot;)</span>
 <span class="c1"># unlensed_param_cm_2 = get_param_from_json(&quot;ler_data/unlensed_param_cm_2_det.json&quot;)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z1</span> <span class="o">=</span> <span class="n">dL_to_z</span><span class="p">(</span><span class="n">unlensed_param_cm_0</span><span class="p">[</span><span class="s1">&#39;luminosity_distance&#39;</span><span class="p">])</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[21]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="n">z1</span> <span class="o">=</span> <span class="n">dL_to_z</span><span class="p">(</span><span class="n">unlensed_param_cm_0</span><span class="p">[</span><span class="s1">&#39;luminosity_distance&#39;</span><span class="p">])</span>
 <span class="n">z2</span> <span class="o">=</span> <span class="n">dL_to_z</span><span class="p">(</span><span class="n">unlensed_param_cm_m1</span><span class="p">[</span><span class="s1">&#39;luminosity_distance&#39;</span><span class="p">])</span>
 <span class="n">z3</span> <span class="o">=</span> <span class="n">dL_to_z</span><span class="p">(</span><span class="n">unlensed_param_cm_2</span><span class="p">[</span><span class="s1">&#39;luminosity_distance&#39;</span><span class="p">])</span>
 <span class="n">z1_det</span> <span class="o">=</span> <span class="n">dL_to_z</span><span class="p">(</span><span class="n">unlensed_param_cm_0_det</span><span class="p">[</span><span class="s1">&#39;luminosity_distance&#39;</span><span class="p">])</span>
@@ -467,46 +676,71 @@ storing detectable unlensed params in ./ler_data/unlensed_param_cm_2_det.json
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/examples_source_population_statistical_study_of_cosmological_friction_22_0.png" src="../../_images/examples_source_population_statistical_study_of_cosmological_friction_22_0.png" />
-</div>
-</div>
-<ul class="simple">
-<li><p>redshift distribution almost the same, the detectability is limited by the sensitivity of the detector</p></li>
-</ul>
-</section>
-</section>
-<section id="Inferred-source-chirp-mass-vs-redshift">
-<h2>Inferred source chirp-mass vs redshift<a class="headerlink" href="#Inferred-source-chirp-mass-vs-redshift" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>detectable cases only</p></li>
-<li><p>inferred source <span class="math notranslate nohighlight">\(\mathcal{M}_c=\mathcal{M}_c^{obs} / (1+z_s^{obs}\)</span>)</p></li>
-</ul>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># getting param from json file</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nboutput nblast docutils container">
+                      <div class="prompt empty docutils container">
+                      </div>
+                      <div class="output_area docutils container">
+                        <img
+                          alt="../../_images/examples_source_population_statistical_study_of_cosmological_friction_22_0.png"
+                          src="../../_images/examples_source_population_statistical_study_of_cosmological_friction_22_0.png" />
+                      </div>
+                    </div>
+                    <ul class="simple">
+                      <li>
+                        <p>redshift distribution almost the same, the detectability is limited by the sensitivity of the
+                          detector</p>
+                      </li>
+                    </ul>
+                  </section>
+                </section>
+                <section id="Inferred-source-chirp-mass-vs-redshift">
+                  <h2>Inferred source chirp-mass vs redshift<a class="headerlink"
+                      href="#Inferred-source-chirp-mass-vs-redshift" title="Link to this heading"></a></h2>
+                  <ul class="simple">
+                    <li>
+                      <p>detectable cases only</p>
+                    </li>
+                    <li>
+                      <p>inferred source <span class="math notranslate nohighlight">\(\mathcal{M}_c=\mathcal{M}_c^{obs}
+                          / (1+z_s^{obs}\)</span>)</p>
+                    </li>
+                  </ul>
+                  <div class="nbinput nblast docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[22]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="c1"># getting param from json file</span>
 <span class="c1"># unlensed_param_cm_0 = get_param_from_json(&quot;ler_data/unlensed_param_cm_0_det.json&quot;)</span>
 <span class="c1"># unlensed_param_cm_m1 = get_param_from_json(&quot;ler_data/unlensed_param_cm_m1_det.json&quot;)</span>
 <span class="c1"># unlensed_param_cm_2 = get_param_from_json(&quot;ler_data/unlensed_param_cm_2_det.json&quot;)</span>
-</pre></div>
-</div>
-</div>
-<ul class="simple">
-<li><p>for CM = 0</p></li>
-</ul>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># detector frame masses</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <ul class="simple">
+                    <li>
+                      <p>for CM = 0</p>
+                    </li>
+                  </ul>
+                  <div class="nbinput nblast docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[23]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="c1"># detector frame masses</span>
 <span class="n">m1_cm_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">unlensed_param_cm_0</span><span class="p">[</span><span class="s1">&#39;mass_1&#39;</span><span class="p">])</span>
 <span class="n">m2_cm_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">unlensed_param_cm_0</span><span class="p">[</span><span class="s1">&#39;mass_2&#39;</span><span class="p">])</span>
 <span class="c1"># chirp mass</span>
@@ -518,17 +752,25 @@ storing detectable unlensed params in ./ler_data/unlensed_param_cm_2_det.json
 
 <span class="c1"># inferred chirp mass</span>
 <span class="n">mc_inferred_cm_0</span> <span class="o">=</span> <span class="n">mc_cm_0</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">z_cm_0</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<ul class="simple">
-<li><p>for CM = -1</p></li>
-</ul>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># detector frame masses</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <ul class="simple">
+                    <li>
+                      <p>for CM = -1</p>
+                    </li>
+                  </ul>
+                  <div class="nbinput nblast docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[24]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="c1"># detector frame masses</span>
 <span class="n">m1_cm_m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">unlensed_param_cm_m1</span><span class="p">[</span><span class="s1">&#39;mass_1&#39;</span><span class="p">])</span>
 <span class="n">m2_cm_m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">unlensed_param_cm_m1</span><span class="p">[</span><span class="s1">&#39;mass_2&#39;</span><span class="p">])</span>
 <span class="c1"># chirp mass</span>
@@ -540,17 +782,25 @@ storing detectable unlensed params in ./ler_data/unlensed_param_cm_2_det.json
 
 <span class="c1"># inferred chirp mass</span>
 <span class="n">mc_inferred_cm_m1</span> <span class="o">=</span> <span class="n">mc_cm_m1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">z_cm_m1</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<ul class="simple">
-<li><p>for CM = 2</p></li>
-</ul>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># detector frame masses</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <ul class="simple">
+                    <li>
+                      <p>for CM = 2</p>
+                    </li>
+                  </ul>
+                  <div class="nbinput nblast docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[25]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="c1"># detector frame masses</span>
 <span class="n">m1_cm_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">unlensed_param_cm_2</span><span class="p">[</span><span class="s1">&#39;mass_1&#39;</span><span class="p">])</span>
 <span class="n">m2_cm_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">unlensed_param_cm_2</span><span class="p">[</span><span class="s1">&#39;mass_2&#39;</span><span class="p">])</span>
 <span class="c1"># chirp mass</span>
@@ -562,27 +812,41 @@ storing detectable unlensed params in ./ler_data/unlensed_param_cm_2_det.json
 
 <span class="c1"># inferred chirp mass</span>
 <span class="n">mc_inferred_cm_2</span> <span class="o">=</span> <span class="n">mc_cm_2</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">z_cm_2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<section id="Contour-plot-of-the-inferred-chirp-mass-vs-redshift">
-<h3>Contour plot of the inferred chirp-mass vs redshift<a class="headerlink" href="#Contour-plot-of-the-inferred-chirp-mass-vs-redshift" title="Link to this heading"></a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <section id="Contour-plot-of-the-inferred-chirp-mass-vs-redshift">
+                    <h3>Contour plot of the inferred chirp-mass vs redshift<a class="headerlink"
+                        href="#Contour-plot-of-the-inferred-chirp-mass-vs-redshift" title="Link to this heading"></a>
+                    </h3>
+                    <div class="nbinput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[26]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">gaussian_kde</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cm_0</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[27]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># cm_0</span>
 <span class="c1"># Assuming your data is loaded and you have mass, redshift arrays</span>
 <span class="c1"># Replace these with your actual data arrays</span>
 <span class="n">mass</span> <span class="o">=</span> <span class="n">mc_inferred_cm_0</span>  <span class="c1"># Your mass data</span>
@@ -600,14 +864,20 @@ storing detectable unlensed params in ./ler_data/unlensed_param_cm_2_det.json
 <span class="n">ygrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">mass</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">mass</span><span class="p">),</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">X1</span><span class="p">,</span> <span class="n">Y1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">ygrid</span><span class="p">)</span>
 <span class="n">Z1</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">xy</span><span class="p">)(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">X1</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">Y1</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cm_2</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[28]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># cm_2</span>
 <span class="c1"># Assuming your data is loaded and you have mass, redshift arrays</span>
 <span class="c1"># Replace these with your actual data arrays</span>
 <span class="n">mass</span> <span class="o">=</span> <span class="n">mc_inferred_cm_2</span>  <span class="c1"># Your mass data</span>
@@ -625,14 +895,20 @@ storing detectable unlensed params in ./ler_data/unlensed_param_cm_2_det.json
 <span class="n">ygrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">mass</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">mass</span><span class="p">),</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">X2</span><span class="p">,</span> <span class="n">Y2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">ygrid</span><span class="p">)</span>
 <span class="n">Z2</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">xy</span><span class="p">)(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">X2</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">Y2</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X2</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cm_m1</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[29]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># cm_m1</span>
 <span class="c1"># Assuming your data is loaded and you have mass, redshift arrays</span>
 <span class="c1"># Replace these with your actual data arrays</span>
 <span class="n">mass</span> <span class="o">=</span> <span class="n">mc_inferred_cm_m1</span>  <span class="c1"># Your mass data</span>
@@ -650,14 +926,20 @@ storing detectable unlensed params in ./ler_data/unlensed_param_cm_2_det.json
 <span class="n">ygrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">mass</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">mass</span><span class="p">),</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">X3</span><span class="p">,</span> <span class="n">Y3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">ygrid</span><span class="p">)</span>
 <span class="n">Z3</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">xy</span><span class="p">)(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">X3</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">Y3</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X3</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<br/></pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plotting</span>
+<br/></pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[35]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># Plotting</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">Y1</span><span class="p">,</span> <span class="n">Z1</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X3</span><span class="p">,</span> <span class="n">Y3</span><span class="p">,</span> <span class="n">Z3</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
@@ -676,41 +958,64 @@ storing detectable unlensed params in ./ler_data/unlensed_param_cm_2_det.json
 <span class="n">proxy2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;CM=2&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="p">[</span><span class="n">proxy1</span><span class="p">,</span> <span class="n">proxy3</span><span class="p">,</span> <span class="n">proxy2</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nboutput docutils container">
+                      <div class="prompt empty docutils container">
+                      </div>
+                      <div class="output_area docutils container">
+                        <div class="highlight">
+                          <pre>
 INFO:matplotlib.mathtext:Substituting symbol M from STIXNonUnicode
 INFO:matplotlib.mathtext:Substituting symbol M from STIXNonUnicode
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/examples_source_population_statistical_study_of_cosmological_friction_37_1.png" src="../../_images/examples_source_population_statistical_study_of_cosmological_friction_37_1.png" />
-</div>
-</div>
-<ul class="simple">
-<li><p>This plot shows no significant shift in the plots</p></li>
-<li><p>The plot is much different from effect caused by lensed events, as shown below. So we don’t expect significant degeneracy between the two effects, in O4 sensitivity.</p></li>
-</ul>
-<p align="center"><p><img alt="zs" class="no-scaled-link" src="../../_images/mc_vs_zs_2img.png" style="width: 60%;" /></p>
-</p><ul class="simple">
-<li><p>Let’s look at the chirp mass only</p></li>
-</ul>
-</section>
-<section id="Looking-for-outlier-in-the-inferred-chirp-mass-distribution">
-<h3>Looking for outlier in the inferred chirp mass distribution<a class="headerlink" href="#Looking-for-outlier-in-the-inferred-chirp-mass-distribution" title="Link to this heading"></a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create cdf function of mc_source_eff_ distribution</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nboutput nblast docutils container">
+                      <div class="prompt empty docutils container">
+                      </div>
+                      <div class="output_area docutils container">
+                        <img
+                          alt="../../_images/examples_source_population_statistical_study_of_cosmological_friction_37_1.png"
+                          src="../../_images/examples_source_population_statistical_study_of_cosmological_friction_37_1.png" />
+                      </div>
+                    </div>
+                    <ul class="simple">
+                      <li>
+                        <p>This plot shows no significant shift in the plots</p>
+                      </li>
+                      <li>
+                        <p>The plot is much different from effect caused by lensed events, as shown below. So we don’t
+                          expect significant degeneracy between the two effects, in O4 sensitivity.</p>
+                      </li>
+                    </ul>
+                    <p align="center">
+                    <p><img alt="zs" class="no-scaled-link" src="../../_images/mc_vs_zs_2img.png" style="width: 60%;" />
+                    </p>
+                    </p>
+                    <ul class="simple">
+                      <li>
+                        <p>Let’s look at the chirp mass only</p>
+                      </li>
+                    </ul>
+                  </section>
+                  <section id="Looking-for-outlier-in-the-inferred-chirp-mass-distribution">
+                    <h3>Looking for outlier in the inferred chirp mass distribution<a class="headerlink"
+                        href="#Looking-for-outlier-in-the-inferred-chirp-mass-distribution"
+                        title="Link to this heading"></a></h3>
+                    <div class="nbinput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[36]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># create cdf function of mc_source_eff_ distribution</span>
 <span class="k">def</span> <span class="nf">cdf</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Cumulative distribution function of a 1D array &quot;&quot;&quot;</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -721,14 +1026,20 @@ INFO:matplotlib.mathtext:Substituting symbol M from STIXNonUnicode
 <span class="n">x_cm_0</span><span class="p">,</span> <span class="n">y_cm_0</span> <span class="o">=</span> <span class="n">cdf</span><span class="p">(</span><span class="n">mc_inferred_cm_0</span><span class="p">)</span>
 <span class="n">x_cm_m1</span><span class="p">,</span> <span class="n">y_cm_m1</span> <span class="o">=</span> <span class="n">cdf</span><span class="p">(</span><span class="n">mc_inferred_cm_m1</span><span class="p">)</span>
 <span class="n">x_cm_2</span><span class="p">,</span> <span class="n">y_cm_2</span> <span class="o">=</span> <span class="n">cdf</span><span class="p">(</span><span class="n">mc_inferred_cm_2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[46]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># plot</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_cm_0</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">y_cm_0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;cm=0 (inv cdf)&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
@@ -745,64 +1056,98 @@ INFO:matplotlib.mathtext:Substituting symbol M from STIXNonUnicode
 <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">29</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nboutput docutils container">
+                      <div class="prompt empty docutils container">
+                      </div>
+                      <div class="output_area docutils container">
+                        <div class="highlight">
+                          <pre>
 &lt;Figure size 600x400 with 0 Axes&gt;
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/examples_source_population_statistical_study_of_cosmological_friction_41_1.png" src="../../_images/examples_source_population_statistical_study_of_cosmological_friction_41_1.png" />
-</div>
-</div>
-<ul class="simple">
-<li><p>outside 90% of cm=0 distribution, 15% of CM=-1 distribution lie beyond, and thus inferring a higher chirp mass for CM=-1</p></li>
-<li><p>outside 90% of cm=2 distribution, 20% of cm=0 distribution lie beyond, and thus inferring a lower chirp mass for CM=2</p></li>
-</ul>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
-</section>
-</section>
-<section id="BBH-(3G-sensitivities)">
-<h2>BBH (3G sensitivities)<a class="headerlink" href="#BBH-(3G-sensitivities)" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>let’s do the same for 3G sensitivity</p></li>
-</ul>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">ifos</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;CE&#39;</span><span class="p">,</span> <span class="s1">&#39;ET&#39;</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">unlensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">500000</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="s1">&#39;unlensed_param_3G_cosmo.json&#39;</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nboutput nblast docutils container">
+                      <div class="prompt empty docutils container">
+                      </div>
+                      <div class="output_area docutils container">
+                        <img
+                          alt="../../_images/examples_source_population_statistical_study_of_cosmological_friction_41_1.png"
+                          src="../../_images/examples_source_population_statistical_study_of_cosmological_friction_41_1.png" />
+                      </div>
+                    </div>
+                    <ul class="simple">
+                      <li>
+                        <p>outside 90% of cm=0 distribution, 15% of CM=-1 distribution lie beyond, and thus inferring a
+                          higher chirp mass for CM=-1</p>
+                      </li>
+                      <li>
+                        <p>outside 90% of cm=2 distribution, 20% of cm=0 distribution lie beyond, and thus inferring a
+                          lower chirp mass for CM=2</p>
+                      </li>
+                    </ul>
+                    <div class="nbinput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[ ]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </section>
+                <section id="BBH-(3G-sensitivities)">
+                  <h2>BBH (3G sensitivities)<a class="headerlink" href="#BBH-(3G-sensitivities)"
+                      title="Link to this heading"></a></h2>
+                  <ul class="simple">
+                    <li>
+                      <p>let’s do the same for 3G sensitivity</p>
+                    </li>
+                  </ul>
+                  <div class="nbinput nblast docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[57]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">ifos</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;CE&#39;</span><span class="p">,</span> <span class="s1">&#39;ET&#39;</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nbinput docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[58]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="n">unlensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">500000</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="s1">&#39;unlensed_param_3G_cosmo.json&#39;</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">);</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nboutput nblast docutils container">
+                    <div class="prompt empty docutils container">
+                    </div>
+                    <div class="output_area docutils container">
+                      <div class="highlight">
+                        <pre>
 unlensed params will be store in ./ler_data/unlensed_param_3G_cosmo.json
 chosen batch size = 100000 with total size = 500000
 There will be 5 batche(s)
@@ -822,13 +1167,20 @@ Batch no. 5
 sampling gw source params...
 calculating snrs...
 saving all unlensed_params in ./ler_data/unlensed_param_3G_cosmo.json...
-</pre></div></div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_dL_cm_m1</span> <span class="o">=</span> <span class="n">dL_GW_CM</span><span class="p">(</span><span class="n">dL</span><span class="o">=</span><span class="n">unlensed_param</span><span class="p">[</span><span class="s1">&#39;luminosity_distance&#39;</span><span class="p">],</span> <span class="n">CM</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nbinput nblast docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[59]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="n">new_dL_cm_m1</span> <span class="o">=</span> <span class="n">dL_GW_CM</span><span class="p">(</span><span class="n">dL</span><span class="o">=</span><span class="n">unlensed_param</span><span class="p">[</span><span class="s1">&#39;luminosity_distance&#39;</span><span class="p">],</span> <span class="n">CM</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">new_dL_cm_2</span> <span class="o">=</span> <span class="n">dL_GW_CM</span><span class="p">(</span><span class="n">dL</span><span class="o">=</span><span class="n">unlensed_param</span><span class="p">[</span><span class="s1">&#39;luminosity_distance&#39;</span><span class="p">],</span> <span class="n">CM</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># new luminosity distance</span>
@@ -843,91 +1195,124 @@ saving all unlensed_params in ./ler_data/unlensed_param_3G_cosmo.json...
 <span class="n">snr_cm_2</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">snr</span><span class="p">(</span><span class="n">gw_param_dict</span><span class="o">=</span><span class="n">unlensed_param_cm_2</span><span class="p">)</span>
 <span class="n">unlensed_param_cm_m1</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">snr_cm_m1</span><span class="p">)</span>
 <span class="n">unlensed_param_cm_2</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">snr_cm_2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[60]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># CM = 0</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nbinput docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[60]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="c1"># CM = 0</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">unlensed_param_cm_0_det</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_rate</span><span class="p">(</span>
     <span class="n">unlensed_param</span><span class="o">=</span><span class="n">unlensed_param_cm_0</span><span class="p">,</span>
     <span class="n">output_jsonfile</span><span class="o">=</span><span class="s1">&#39;unlensed_param_cm_0_det.json&#39;</span>
     <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nboutput nblast docutils container">
+                    <div class="prompt empty docutils container">
+                    </div>
+                    <div class="output_area docutils container">
+                      <div class="highlight">
+                        <pre>
 using provided unlensed_param dict...
 given detectability_condition == &#39;step_function&#39;
 total unlensed rate (yr^-1) (with step function): 91937.23512506043
 number of simulated unlensed detectable events: 444043
 number of all simulated unlensed events: 500000
 storing detectable unlensed params in ./ler_data/unlensed_param_cm_0_det.json
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[61]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># CM = -1</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nbinput docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[61]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="c1"># CM = -1</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">unlensed_param_cm_m1_det</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_rate</span><span class="p">(</span>
     <span class="n">unlensed_param</span><span class="o">=</span><span class="n">unlensed_param_cm_m1</span><span class="p">,</span>
     <span class="n">output_jsonfile</span><span class="o">=</span><span class="s1">&#39;unlensed_param_cm_m1_det.json&#39;</span>
     <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nboutput nblast docutils container">
+                    <div class="prompt empty docutils container">
+                    </div>
+                    <div class="output_area docutils container">
+                      <div class="highlight">
+                        <pre>
 using provided unlensed_param dict...
 given detectability_condition == &#39;step_function&#39;
 total unlensed rate (yr^-1) (with step function): 93944.75113538507
 number of simulated unlensed detectable events: 453739
 number of all simulated unlensed events: 500000
 storing detectable unlensed params in ./ler_data/unlensed_param_cm_m1_det.json
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># CM = 2</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nbinput docutils container">
+                    <div class="prompt highlight-none notranslate">
+                      <div class="highlight">
+                        <pre><span></span>[62]:
+</pre>
+                      </div>
+                    </div>
+                    <div class="input_area highlight-ipython3 notranslate">
+                      <div class="highlight">
+                        <pre><span></span><span class="c1"># CM = 2</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">unlensed_param_cm_2_det</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_rate</span><span class="p">(</span>
     <span class="n">unlensed_param</span><span class="o">=</span><span class="n">unlensed_param_cm_2</span><span class="p">,</span>
     <span class="n">output_jsonfile</span><span class="o">=</span><span class="s1">&#39;unlensed_param_cm_2_det.json&#39;</span>
     <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nboutput nblast docutils container">
+                    <div class="prompt empty docutils container">
+                    </div>
+                    <div class="output_area docutils container">
+                      <div class="highlight">
+                        <pre>
 using provided unlensed_param dict...
 given detectability_condition == &#39;step_function&#39;
 total unlensed rate (yr^-1) (with step function): 82931.36426067396
 number of simulated unlensed detectable events: 400546
 number of all simulated unlensed events: 500000
 storing detectable unlensed params in ./ler_data/unlensed_param_cm_2_det.json
-</pre></div></div>
-</div>
-<section id="id1">
-<h3>redshifts plot<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[63]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z1</span> <span class="o">=</span> <span class="n">dL_to_z</span><span class="p">(</span><span class="n">unlensed_param_cm_0</span><span class="p">[</span><span class="s1">&#39;luminosity_distance&#39;</span><span class="p">])</span>
+</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <section id="id1">
+                    <h3>redshifts plot<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+                    <div class="nbinput docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[63]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="n">z1</span> <span class="o">=</span> <span class="n">dL_to_z</span><span class="p">(</span><span class="n">unlensed_param_cm_0</span><span class="p">[</span><span class="s1">&#39;luminosity_distance&#39;</span><span class="p">])</span>
 <span class="n">z2</span> <span class="o">=</span> <span class="n">dL_to_z</span><span class="p">(</span><span class="n">unlensed_param_cm_m1</span><span class="p">[</span><span class="s1">&#39;luminosity_distance&#39;</span><span class="p">])</span>
 <span class="n">z3</span> <span class="o">=</span> <span class="n">dL_to_z</span><span class="p">(</span><span class="n">unlensed_param_cm_2</span><span class="p">[</span><span class="s1">&#39;luminosity_distance&#39;</span><span class="p">])</span>
 <span class="n">z1_det</span> <span class="o">=</span> <span class="n">dL_to_z</span><span class="p">(</span><span class="n">unlensed_param_cm_0_det</span><span class="p">[</span><span class="s1">&#39;luminosity_distance&#39;</span><span class="p">])</span>
@@ -947,38 +1332,55 @@ storing detectable unlensed params in ./ler_data/unlensed_param_cm_2_det.json
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/examples_source_population_statistical_study_of_cosmological_friction_52_0.png" src="../../_images/examples_source_population_statistical_study_of_cosmological_friction_52_0.png" />
-</div>
-</div>
-<ul class="simple">
-<li><p>now the detectable redshifts are much different for the three cases</p></li>
-</ul>
-</section>
-<section id="id2">
-<h3>Contour plot of the inferred chirp-mass vs redshift<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># getting param from json file</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nboutput nblast docutils container">
+                      <div class="prompt empty docutils container">
+                      </div>
+                      <div class="output_area docutils container">
+                        <img
+                          alt="../../_images/examples_source_population_statistical_study_of_cosmological_friction_52_0.png"
+                          src="../../_images/examples_source_population_statistical_study_of_cosmological_friction_52_0.png" />
+                      </div>
+                    </div>
+                    <ul class="simple">
+                      <li>
+                        <p>now the detectable redshifts are much different for the three cases</p>
+                      </li>
+                    </ul>
+                  </section>
+                  <section id="id2">
+                    <h3>Contour plot of the inferred chirp-mass vs redshift<a class="headerlink" href="#id2"
+                        title="Link to this heading"></a></h3>
+                    <div class="nbinput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[3]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># getting param from json file</span>
 <span class="c1"># unlensed_param_cm_0 = get_param_from_json(&quot;ler_data/unlensed_param_cm_0_det.json&quot;)</span>
 <span class="c1"># unlensed_param_cm_m1 = get_param_from_json(&quot;ler_data/unlensed_param_cm_m1_det.json&quot;)</span>
 <span class="c1"># unlensed_param_cm_2 = get_param_from_json(&quot;ler_data/unlensed_param_cm_2_det.json&quot;)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># CM = 0</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[7]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># CM = 0</span>
 <span class="c1"># detector frame masses</span>
 <span class="n">m1_cm_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">unlensed_param_cm_0</span><span class="p">[</span><span class="s1">&#39;mass_1&#39;</span><span class="p">])</span>
 <span class="n">m2_cm_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">unlensed_param_cm_0</span><span class="p">[</span><span class="s1">&#39;mass_2&#39;</span><span class="p">])</span>
@@ -1019,25 +1421,37 @@ storing detectable unlensed params in ./ler_data/unlensed_param_cm_2_det.json
 
 <span class="c1"># inferred chirp mass</span>
 <span class="n">mc_inferred_cm_2</span> <span class="o">=</span> <span class="n">mc_cm_2</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">z_cm_2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[8]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">gaussian_kde</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cm_0</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[11]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># cm_0</span>
 <span class="c1"># Assuming your data is loaded and you have mass, redshift arrays</span>
 <span class="c1"># Replace these with your actual data arrays</span>
 <span class="n">mass</span> <span class="o">=</span> <span class="n">mc_inferred_cm_0</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5000</span><span class="p">]</span>  <span class="c1"># Your mass data</span>
@@ -1055,14 +1469,20 @@ storing detectable unlensed params in ./ler_data/unlensed_param_cm_2_det.json
 <span class="n">ygrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">mass</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">mass</span><span class="p">),</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">X1</span><span class="p">,</span> <span class="n">Y1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">ygrid</span><span class="p">)</span>
 <span class="n">Z1</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">xy</span><span class="p">)(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">X1</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">Y1</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cm_2</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[12]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># cm_2</span>
 <span class="c1"># Assuming your data is loaded and you have mass, redshift arrays</span>
 <span class="c1"># Replace these with your actual data arrays</span>
 <span class="n">mass</span> <span class="o">=</span> <span class="n">mc_inferred_cm_2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5000</span><span class="p">]</span>  <span class="c1"># Your mass data</span>
@@ -1080,14 +1500,20 @@ storing detectable unlensed params in ./ler_data/unlensed_param_cm_2_det.json
 <span class="n">ygrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">mass</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">mass</span><span class="p">),</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">X2</span><span class="p">,</span> <span class="n">Y2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">ygrid</span><span class="p">)</span>
 <span class="n">Z2</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">xy</span><span class="p">)(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">X2</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">Y2</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X2</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cm_m1</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput nblast docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[13]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># cm_m1</span>
 <span class="c1"># Assuming your data is loaded and you have mass, redshift arrays</span>
 <span class="c1"># Replace these with your actual data arrays</span>
 <span class="n">mass</span> <span class="o">=</span> <span class="n">mc_inferred_cm_m1</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5000</span><span class="p">]</span>  <span class="c1"># Your mass data</span>
@@ -1105,14 +1531,20 @@ storing detectable unlensed params in ./ler_data/unlensed_param_cm_2_det.json
 <span class="n">ygrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">mass</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">mass</span><span class="p">),</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">X3</span><span class="p">,</span> <span class="n">Y3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">ygrid</span><span class="p">)</span>
 <span class="n">Z3</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">xy</span><span class="p">)(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">X3</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">Y3</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X3</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plotting</span>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nbinput docutils container">
+                      <div class="prompt highlight-none notranslate">
+                        <div class="highlight">
+                          <pre><span></span>[17]:
+</pre>
+                        </div>
+                      </div>
+                      <div class="input_area highlight-ipython3 notranslate">
+                        <div class="highlight">
+                          <pre><span></span><span class="c1"># Plotting</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">Y1</span><span class="p">,</span> <span class="n">Z1</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X3</span><span class="p">,</span> <span class="n">Y3</span><span class="p">,</span> <span class="n">Z3</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
@@ -1131,93 +1563,144 @@ storing detectable unlensed params in ./ler_data/unlensed_param_cm_2_det.json
 <span class="n">proxy2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;CM=2&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="p">[</span><span class="n">proxy1</span><span class="p">,</span> <span class="n">proxy3</span><span class="p">,</span> <span class="n">proxy2</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nboutput docutils container">
+                      <div class="prompt empty docutils container">
+                      </div>
+                      <div class="output_area docutils container">
+                        <div class="highlight">
+                          <pre>
 INFO:matplotlib.mathtext:Substituting symbol M from STIXNonUnicode
 INFO:matplotlib.mathtext:Substituting symbol M from STIXNonUnicode
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/examples_source_population_statistical_study_of_cosmological_friction_61_1.png" src="../../_images/examples_source_population_statistical_study_of_cosmological_friction_61_1.png" />
-</div>
-</div>
-<ul class="simple">
-<li><p>For CM = -1, it significantly overestimates the chirp mass</p></li>
-<li><p>For CM = 2, it significantly underestimates the chirp mass</p></li>
-</ul>
-<p><strong>Conclusion :</strong> The effect of cosmological friction on the redshift vs inferred chirp-mass relation of gravitational waves should be prominent just by comparing high redshift events with low redshift events.</p>
-<p><strong>Note 1:</strong> For low chirp mass high redshift events in CM=2, it can have degeneracies if primordial black holes are considered.</p>
-<p><strong>Note 2:</strong> For high chirp mass low redshift events in CM=-1, it can have degeneracies with lensing events.</p>
-</section>
-</section>
-<section id="Rates-of-detectable-events-per-year">
-<h2>Rates of detectable events per year<a class="headerlink" href="#Rates-of-detectable-events-per-year" title="Link to this heading"></a></h2>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>CM</p></th>
-<th class="head"><p>Rate (O4)</p></th>
-<th class="head"><p>Rate (3G)</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>0</p></td>
-<td><p>441</p></td>
-<td><p>91937</p></td>
-</tr>
-<tr class="row-odd"><td><p>-1</p></td>
-<td><p>857</p></td>
-<td><p>93944</p></td>
-</tr>
-<tr class="row-even"><td><p>2</p></td>
-<td><p>113</p></td>
-<td><p>82931</p></td>
-</tr>
-</tbody>
-</table>
-<ul class="simple">
-<li><p>Rate differences are expected to be more prominent in O4 sensitivities.</p></li>
-</ul>
-</section>
-</section>
+</pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nboutput nblast docutils container">
+                      <div class="prompt empty docutils container">
+                      </div>
+                      <div class="output_area docutils container">
+                        <img
+                          alt="../../_images/examples_source_population_statistical_study_of_cosmological_friction_61_1.png"
+                          src="../../_images/examples_source_population_statistical_study_of_cosmological_friction_61_1.png" />
+                      </div>
+                    </div>
+                    <ul class="simple">
+                      <li>
+                        <p>For CM = -1, it significantly overestimates the chirp mass</p>
+                      </li>
+                      <li>
+                        <p>For CM = 2, it significantly underestimates the chirp mass</p>
+                      </li>
+                    </ul>
+                    <p><strong>Conclusion :</strong> The effect of cosmological friction on the redshift vs inferred
+                      chirp-mass relation of gravitational waves should be prominent just by comparing high redshift
+                      events with low redshift events.</p>
+                    <p><strong>Note 1:</strong> For low chirp mass high redshift events in CM=2, it can have
+                      degeneracies if primordial black holes are considered.</p>
+                    <p><strong>Note 2:</strong> For high chirp mass low redshift events in CM=-1, it can have
+                      degeneracies with lensing events.</p>
+                  </section>
+                </section>
+                <section id="Rates-of-detectable-events-per-year">
+                  <h2>Rates of detectable events per year<a class="headerlink"
+                      href="#Rates-of-detectable-events-per-year" title="Link to this heading"></a></h2>
+                  <table class="docutils align-default">
+                    <thead>
+                      <tr class="row-odd">
+                        <th class="head">
+                          <p>CM</p>
+                        </th>
+                        <th class="head">
+                          <p>Rate (O4)</p>
+                        </th>
+                        <th class="head">
+                          <p>Rate (3G)</p>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="row-even">
+                        <td>
+                          <p>0</p>
+                        </td>
+                        <td>
+                          <p>441</p>
+                        </td>
+                        <td>
+                          <p>91937</p>
+                        </td>
+                      </tr>
+                      <tr class="row-odd">
+                        <td>
+                          <p>-1</p>
+                        </td>
+                        <td>
+                          <p>857</p>
+                        </td>
+                        <td>
+                          <p>93944</p>
+                        </td>
+                      </tr>
+                      <tr class="row-even">
+                        <td>
+                          <p>2</p>
+                        </td>
+                        <td>
+                          <p>113</p>
+                        </td>
+                        <td>
+                          <p>82931</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <ul class="simple">
+                    <li>
+                      <p>Rate differences are expected to be more prominent in O4 sensitivities.</p>
+                    </li>
+                  </ul>
+                </section>
+              </section>
 
 
-           </div>
+            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="statistical%20study%20of%20changing%20mass%20model%20params.html" class="btn btn-neutral float-left" title="Statistical study of changing Mass model paramter(s)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../lens_parameters/sample%20lens%20parameters.html" class="btn btn-neutral float-right" title="Lens parameter distributions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
+            <div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+              <a href="statistical%20study%20of%20changing%20mass%20model%20params.html"
+                class="btn btn-neutral float-left" title="Statistical study of changing Mass model paramter(s)"
+                accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+              <a href="../lens_parameters/sample%20lens%20parameters.html" class="btn btn-neutral float-right"
+                title="Lens parameter distributions" accesskey="n" rel="next">Next <span
+                  class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+            </div>
 
-  <hr/>
+            <hr />
 
-  <div role="contentinfo">
-    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
-  </div>
+            <div role="contentinfo">
+              <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+            </div>
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+            <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+            provided by <a href="https://readthedocs.org">Read the Docs</a>.
 
-</footer>
+
+          </footer>
         </div>
       </div>
     </section>
   </div>
   <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+    jQuery(function () {
+      SphinxRtdTheme.Navigation.enable(true);
+    });
+  </script>
 
 </body>
+
 </html>

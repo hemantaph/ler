@@ -21,7 +21,7 @@ Functions
    ler.lens_galaxy_population.jit_functions.phi_cut_SIE
    ler.lens_galaxy_population.jit_functions.axis_ratio_rayleigh_rvs
    ler.lens_galaxy_population.jit_functions.velocity_dispersion_z_dependent
-   ler.lens_galaxy_population.jit_functions.lens_redshift_SDSS_catalogue_sis
+   ler.lens_galaxy_population.jit_functions.lens_redshift_sis_haris
    ler.lens_galaxy_population.jit_functions.bounded_normal_sample
    ler.lens_galaxy_population.jit_functions.phi_q2_ellipticity_hemanta
 
@@ -231,7 +231,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: lens_redshift_SDSS_catalogue_sis(zs, splineDc, splineDcInv, u, cdf)
+.. py:function:: lens_redshift_sis_haris(zs, splineDc, splineDcInv, u, cdf)
 
    
    Function to sample lens redshift from the SDSS catalogue. Haris et al. (2018) cdf = (10 * u**3 - 15 * u**4 + 6 * u**5)

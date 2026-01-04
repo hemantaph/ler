@@ -41,7 +41,7 @@ class TrainingDataGenerator():
             snr_type="interpolation_aligned_spins",
             psds=None,
             ifos=None,
-            interpolator_dir="./interpolator_pickle",
+            interpolator_dir="./interpolator_json",
             create_new_interpolator=False,
             gwsnr_verbose=True,
             multiprocessing_verbose=True,

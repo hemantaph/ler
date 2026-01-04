@@ -227,41 +227,41 @@ def velocity_dispersion_z_dependent(size, zl, zl_list, vd_inv_cdf):
 
     return samples
 
-@njit
-def lens_redshift_SDSS_catalogue_sis(zs, splineDc, splineDcInv, u, cdf):
-    """
-    Function to sample lens redshift from the SDSS catalogue. Haris et al. (2018) cdf = (10 * u**3 - 15 * u**4 + 6 * u**5)
+# @njit
+# def lens_redshift_sis_haris(zs, splineDc, splineDcInv, u, cdf):
+#     """
+#     Function to sample lens redshift from the SDSS catalogue. Haris et al. (2018) cdf = (10 * u**3 - 15 * u**4 + 6 * u**5)
 
-    Parameters
-    ----------
-    zs: `numpy.ndarray` (1D array of float of size=size)
-        Redshift of the source galaxy
-    splineDc: `list`
-        List of spline coefficients for the comoving distance and redshifts
-    splineDcInv: `list`
-        List of spline coefficients for the inverse of comoving distance and redshifts
-    u: `numpy.ndarray` (1D array of float of size=size)
-        corresponding x values wrt to the cdf values
-        e.g. u = np.linspace(0, 1, 500)
-    cdf: `numpy.ndarray` (1D array of float of size=size)
-        Cumulative distribution function of the lens redshift distribution between 0 and 1
+#     Parameters
+#     ----------
+#     zs: `numpy.ndarray` (1D array of float of size=size)
+#         Redshift of the source galaxy
+#     splineDc: `list`
+#         List of spline coefficients for the comoving distance and redshifts
+#     splineDcInv: `list`
+#         List of spline coefficients for the inverse of comoving distance and redshifts
+#     u: `numpy.ndarray` (1D array of float of size=size)
+#         corresponding x values wrt to the cdf values
+#         e.g. u = np.linspace(0, 1, 500)
+#     cdf: `numpy.ndarray` (1D array of float of size=size)
+#         Cumulative distribution function of the lens redshift distribution between 0 and 1
 
-    Returns
-    ----------
-    zl: `numpy.ndarray` (1D array of float of size=size)
-        Redshift of the lens galaxy corresponding to the zs
-    """
+#     Returns
+#     ----------
+#     zl: `numpy.ndarray` (1D array of float of size=size)
+#         Redshift of the lens galaxy corresponding to the zs
+#     """
 
-    splineDc_coeff = splineDc[0]
-    splineDc_z_list = splineDc[1]
-    splineDcInv_coeff = splineDcInv[0]
-    splineDcInv_z_list = splineDcInv[1]
+#     splineDc_coeff = splineDc[0]
+#     splineDc_z_list = splineDc[1]
+#     splineDcInv_coeff = splineDcInv[0]
+#     splineDcInv_z_list = splineDcInv[1]
 
-    size = len(zs)
-    r = inverse_transform_sampler(size, cdf, u)
-    lens_galaxy_Dc = cubic_spline_interpolator(zs, splineDc_coeff, splineDc_z_list) * r  # corresponding element-wise multiplication between 2 arrays
+#     size = len(zs)
+#     r = inverse_transform_sampler(size, cdf, u)
+#     lens_galaxy_Dc = cubic_spline_interpolator(zs, splineDc_coeff, splineDc_z_list) * r  # corresponding element-wise multiplication between 2 arrays
 
-    return cubic_spline_interpolator(lens_galaxy_Dc, splineDcInv_coeff, splineDcInv_z_list)
+#     return cubic_spline_interpolator(lens_galaxy_Dc, splineDcInv_coeff, splineDcInv_z_list)
 
 @njit
 def bounded_normal_sample(size, mean, std, low, high):

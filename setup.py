@@ -23,7 +23,9 @@ setup(
     url="https://github.com/hemantaph/ler",
     packages=find_packages(),
     package_data={
-        'ler': ['lens_galaxy_population/lens_param_data/*.txt'],
+        'ler': ['rates/ler_data/*'],
+        'ler.rates': ['ler_data/*'],
+        'ler.rates.ler_data': ['*.zip'],
       },
     python_requires='>=3.10',
     install_requires=[
@@ -46,5 +48,6 @@ setup(
         "lenstronomy",
         "pointpats",
         "shapely",
+        "corner",
     ],
 )

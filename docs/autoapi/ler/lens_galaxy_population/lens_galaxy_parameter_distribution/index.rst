@@ -28,7 +28,7 @@ Classes
 
 
 
-.. py:class:: LensGalaxyParameterDistribution(npool=4, z_min=0.0, z_max=10.0, cosmology=None, event_type='BBH', lens_type='epl_shear_galaxy', lens_functions=None, lens_functions_params=None, lens_param_samplers=None, lens_param_samplers_params=None, directory='./interpolator_pickle', create_new_interpolator=False, buffer_size=1000, **kwargs)
+.. py:class:: LensGalaxyParameterDistribution(npool=4, z_min=0.0, z_max=10.0, cosmology=None, event_type='BBH', lens_type='epl_shear_galaxy', lens_functions=None, lens_functions_params=None, lens_param_samplers=None, lens_param_samplers_params=None, directory='./interpolator_json', create_new_interpolator=False, buffer_size=1000, **kwargs)
 
 
    Bases: :py:obj:`ler.gw_source_population.CBCSourceParameterDistribution`, :py:obj:`ler.image_properties.ImageProperties`, :py:obj:`ler.lens_galaxy_population.optical_depth.OpticalDepth`
@@ -61,19 +61,19 @@ Classes
            Type of lens galaxy to generate.
            default: 'epl_shear_galaxy'
 
-       **lens_functions, lens_priors, lens_priors_params** : `dict`, `dict`, `dict`
+       **lens_functions, lens_param_samplers, lens_param_samplers_params** : `dict`, `dict`, `dict`
            dictionary of lens functions, priors, and priors parameters
            Check for default/available lens functions, priors and corresponding input parameters by running,
 
            >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
            >>> lens = LensGalaxyParameterDistribution()
            >>> print(lens.lens_functions)
-           >>> print(lens.lens_priors)
-           >>> print(lens.lens_priors_params)
+           >>> print(lens.lens_param_samplers)
+           >>> print(lens.lens_param_samplers_params)
 
        **directory** : `str`
            directory to store the interpolators
-           default: './interpolator_pickle'
+           default: './interpolator_json'
 
        **\*\*kwargs**
            keyword arguments to pass to the parent classes
@@ -174,10 +174,10 @@ Classes
    |:meth:`~compute_einstein_radii`      | Function to compute the Einstein |
    |                                     | radii of the lens galaxies       |
    +-------------------------------------+----------------------------------+
-   |:meth:`~rjs_with_cross_section_sis`  | Function to conduct rejection    |
+   |:meth:`~rejection_sampling_with_cross_section_sis`  | Function to conduct rejection    |
    |                                     | sampling wrt einstein radius     |
    +-------------------------------------+----------------------------------+
-   |:meth:`~rjs_with_cross_section_sie`  | Function to conduct rejection    |
+   |:meth:`~rejection_sampling_with_cross_section_sie`  | Function to conduct rejection    |
    |                                     | sampling wrt cross_section       |
    +-------------------------------------+----------------------------------+
    |:attr:`~rejection_sample_sl`         | Function to conduct rejection    |
@@ -767,7 +767,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: rjs_with_cross_section_sis(param_dict, cross_section_max=0.0)
+   .. py:method:: rejection_sampling_with_cross_section_sis(param_dict, cross_section_max=0.0)
 
       
       Function to conduct rejection sampling wrt einstein radius
@@ -798,7 +798,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: rjs_with_cross_section_sie_feixu(param_dict, cross_section_max=0.0)
+   .. py:method:: rejection_sampling_with_cross_section_sie_feixu(param_dict, cross_section_max=0.0)
 
       
       Function to conduct rejection sampling wrt cross_section
@@ -829,7 +829,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: rjs_with_cross_section(param_dict, cross_section_max=0.0)
+   .. py:method:: rejection_sampling_with_cross_section(param_dict, cross_section_max=0.0)
 
       
       Function to conduct rejection sampling wrt cross_section of EPL+Shear lens
@@ -860,7 +860,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: rjs_with_cross_section_mp(param_dict, cross_section_max=0.0)
+   .. py:method:: rejection_sampling_with_cross_section(param_dict, cross_section_max=0.0)
 
       
       Function to conduct rejection sampling wrt cross_section, multiprocessing

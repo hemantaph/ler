@@ -66,7 +66,7 @@ class GWRATES(CBCSourceParameterDistribution):
         default json_file_names = {'gwrates_params':'gwrates_params.json', 'gw_param': 'gw_param.json', 'gw_param_detectable': 'gw_param_detectable.json'}.
     interpolator_directory : `str`
         directory to store the interpolators.
-        default interpolator_directory = './interpolator_pickle'. This is used for storing the various interpolators related to `ler` and `gwsnr` package.
+        default interpolator_directory = './interpolator_json'. This is used for storing the various interpolators related to `ler` and `gwsnr` package.
     ler_directory : `str`
         directory to store the parameters.
         default ler_directory = './ler_data'. This is used for storing the parameters of the simulated events.
@@ -283,7 +283,7 @@ class GWRATES(CBCSourceParameterDistribution):
         pdet_finder=None,
         list_of_detectors=None,
         json_file_names=None,
-        interpolator_directory="./interpolator_pickle",
+        interpolator_directory="./interpolator_json",
         create_new_interpolator=False,
         ler_directory="./ler_data",
         verbose=True,
@@ -580,7 +580,7 @@ class GWRATES(CBCSourceParameterDistribution):
             snr_type="interpolation",
             psds=None,
             ifos=None,
-            interpolator_dir="./interpolator_pickle",
+            interpolator_dir="./interpolator_json",
             create_new_interpolator=False,
             gwsnr_verbose=True,
             multiprocessing_verbose=True,
