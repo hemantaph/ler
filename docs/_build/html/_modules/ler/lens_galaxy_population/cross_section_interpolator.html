@@ -1,0 +1,536 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.lens_galaxy_population.cross_section_interpolator &mdash; ler 0.4.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ler.lens_galaxy_population.cross_section_interpolator</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ler.lens_galaxy_population.cross_section_interpolator</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Cross Section Interpolator Module</span>
+<span class="sd">==================================</span>
+
+<span class="sd">This module provides highly optimized Numba-compiled functions for interpolating</span>
+<span class="sd">gravitational lensing cross sections in a 5-dimensional parameter space.</span>
+
+<span class="sd">The module uses cubic B-spline interpolation on prefiltered coefficient grids to</span>
+<span class="sd">achieve efficient and accurate interpolation of cross section values based on:</span>
+<span class="sd">  - Ellipticity components (e1, e2) derived from axis ratio q and position angle phi</span>
+<span class="sd">  - Density profile slope (gamma)</span>
+<span class="sd">  - External shear components (gamma1, gamma2)</span>
+
+<span class="sd">Key Features:</span>
+<span class="sd">-------------</span>
+<span class="sd">- JIT-compiled with Numba for high performance</span>
+<span class="sd">- Parallel processing support for batch evaluations</span>
+<span class="sd">- Cubic B-spline interpolation matching scipy&#39;s map_coordinates behavior</span>
+<span class="sd">- Automatic scaling by Einstein radius and affine calibration</span>
+
+<span class="sd">Author: Hemanta Kumar Phurailatpam</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
+
+<span class="c1"># Import Numba-compatible ellipticity conversion function</span>
+<span class="kn">from</span> <span class="nn">ler.lens_galaxy_population.jit_functions</span> <span class="kn">import</span> <span class="n">phi_q2_ellipticity_hemanta</span>
+<div class="viewcode-block" id="C_LIGHT">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/cross_section_interpolator/index.html#ler.lens_galaxy_population.cross_section_interpolator.C_LIGHT">[docs]</a>
+<span class="n">C_LIGHT</span> <span class="o">=</span> <span class="mf">299792.458</span></div>
+
+
+
+<span class="c1"># ---------------------</span>
+<span class="c1"># Cubic B-spline basis (order=3)</span>
+<span class="c1"># ---------------------</span>
+<span class="nd">@njit</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="s2">&quot;always&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_bspline3</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluate the centered cubic B-spline basis function B3(t).</span>
+
+<span class="sd">    This is the standard cubic B-spline with compact support on [-2, 2].</span>
+<span class="sd">    It provides C2 continuity (twice continuously differentiable) which is</span>
+<span class="sd">    essential for smooth interpolation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : float</span>
+<span class="sd">        Distance from the spline center. The function has compact support,</span>
+<span class="sd">        meaning it returns 0 for |t| &gt;= 2.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The B-spline basis value at position t.</span>
+<span class="sd">        - Maximum value of 2/3 occurs at t=0</span>
+<span class="sd">        - Smoothly decays to 0 at |t|=2</span>
+<span class="sd">        - Returns 0 for |t| &gt;= 2</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The cubic B-spline is defined piecewise:</span>
+<span class="sd">    - For |t| &lt; 1: (4 - 6t² + 3t³) / 6</span>
+<span class="sd">    - For 1 &lt;= |t| &lt; 2: (2-|t|)³ / 6</span>
+<span class="sd">    - For |t| &gt;= 2: 0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">at</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>  <span class="c1"># Use absolute value for symmetric spline</span>
+    <span class="k">if</span> <span class="n">at</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">:</span>
+        <span class="c1"># Central region: polynomial approximation</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mf">4.0</span> <span class="o">-</span> <span class="mf">6.0</span> <span class="o">*</span> <span class="n">at</span> <span class="o">*</span> <span class="n">at</span> <span class="o">+</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="n">at</span> <span class="o">*</span> <span class="n">at</span> <span class="o">*</span> <span class="n">at</span><span class="p">)</span> <span class="o">/</span> <span class="mf">6.0</span>
+    <span class="k">elif</span> <span class="n">at</span> <span class="o">&lt;</span> <span class="mf">2.0</span><span class="p">:</span>
+        <span class="c1"># Outer region: cubic decay</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">at</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">u</span> <span class="o">*</span> <span class="n">u</span> <span class="o">*</span> <span class="n">u</span><span class="p">)</span> <span class="o">/</span> <span class="mf">6.0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Beyond support: zero</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="s2">&quot;always&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_clamp_int</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Clamp an index to valid array bounds using &#39;nearest&#39; boundary mode.</span>
+
+<span class="sd">    This implements the &#39;nearest&#39; boundary condition used in scipy&#39;s</span>
+<span class="sd">    map_coordinates. Out-of-bounds indices are clamped to the nearest</span>
+<span class="sd">    valid index rather than wrapping or raising an error.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    i : int</span>
+<span class="sd">        The index to clamp. Can be negative or exceed array bounds.</span>
+<span class="sd">    n : int</span>
+<span class="sd">        The size of the array dimension (valid indices are 0 to n-1).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">        The clamped index in the range [0, n-1]:</span>
+<span class="sd">        - If i &lt; 0, returns 0</span>
+<span class="sd">        - If i &gt; n-1, returns n-1</span>
+<span class="sd">        - Otherwise returns i unchanged</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>  <span class="c1"># Clamp to lower bound</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># Clamp to upper bound</span>
+    <span class="k">return</span> <span class="n">i</span>  <span class="c1"># Within bounds, return as-is</span>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="s2">&quot;always&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_physical_to_index</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a physical coordinate to a fractional grid index.</span>
+
+<span class="sd">    Maps a value from the physical coordinate space [x0, x1] to the</span>
+<span class="sd">    corresponding fractional index in the discrete grid space [0, n-1].</span>
+<span class="sd">    This is essential for interpolation as it determines which grid points</span>
+<span class="sd">    contribute to the interpolated value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : float</span>
+<span class="sd">        The physical coordinate value to convert.</span>
+<span class="sd">    x0 : float</span>
+<span class="sd">        The minimum physical coordinate (maps to index 0).</span>
+<span class="sd">    x1 : float</span>
+<span class="sd">        The maximum physical coordinate (maps to index n-1).</span>
+<span class="sd">    n : int</span>
+<span class="sd">        The number of grid points in this dimension.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The fractional index in [0, n-1]. Non-integer values indicate</span>
+<span class="sd">        positions between grid points that require interpolation.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; _physical_to_index(0.5, 0.0, 1.0, 11)</span>
+<span class="sd">    5.0  # Exactly at grid point 5</span>
+<span class="sd">    &gt;&gt;&gt; _physical_to_index(0.55, 0.0, 1.0, 11)</span>
+<span class="sd">    5.5  # Halfway between grid points 5 and 6</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span>
+
+
+<span class="c1"># ---------------------</span>
+<span class="c1"># 5D cubic B-spline interpolation on prefiltered coefficients</span>
+<span class="c1"># This matches scipy.ndimage.map_coordinates with:</span>
+<span class="c1">#   order=3 (cubic), mode=&#39;nearest&#39;, prefilter=False</span>
+<span class="c1"># ---------------------</span>
+<span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_map_coordinates_5d_cubic_nearest</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span> <span class="n">ie1</span><span class="p">,</span> <span class="n">ie2</span><span class="p">,</span> <span class="n">ig</span><span class="p">,</span> <span class="n">ig1</span><span class="p">,</span> <span class="n">ig2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform 5D cubic B-spline interpolation on prefiltered coefficients.</span>
+
+<span class="sd">    This function evaluates a cubic (order-3) B-spline interpolation in 5 dimensions.</span>
+<span class="sd">    It matches the behavior of scipy.ndimage.map_coordinates with order=3,</span>
+<span class="sd">    mode=&#39;nearest&#39;, and prefilter=False. The function is parallelized across</span>
+<span class="sd">    the input points for optimal performance.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coeff : ndarray, shape (n1, n2, n3, n4, n5)</span>
+<span class="sd">        Prefiltered B-spline coefficients. This should be the output of</span>
+<span class="sd">        scipy.ndimage.spline_filter(data, order=3) applied to the original</span>
+<span class="sd">        grid data.</span>
+<span class="sd">    ie1, ie2, ig, ig1, ig2 : ndarray, shape (N,)</span>
+<span class="sd">        Fractional indices for each of the 5 dimensions. These are the</span>
+<span class="sd">        positions at which to interpolate, expressed in grid index coordinates.</span>
+<span class="sd">        Values can be non-integer (for positions between grid points) and</span>
+<span class="sd">        can be outside [0, n-1] (will use &#39;nearest&#39; boundary mode).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : ndarray, shape (N,)</span>
+<span class="sd">        Interpolated values at the specified fractional indices.</span>
+
+<span class="sd">    Algorithm</span>
+<span class="sd">    ---------</span>
+<span class="sd">    For each output point:</span>
+<span class="sd">    1. Determine the 4x4x4x4x4 neighborhood of grid points that contribute</span>
+<span class="sd">       to the interpolation (cubic B-spline has compact support of width 4)</span>
+<span class="sd">    2. Compute the B-spline basis weight for each dimension</span>
+<span class="sd">    3. Accumulate the weighted sum of coefficient values</span>
+<span class="sd">    4. Skip zero-weight contributions for efficiency</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - The function uses parallel loops (prange) for processing multiple points</span>
+<span class="sd">    - Zero-weight contributions are skipped to improve performance</span>
+<span class="sd">    - Boundary handling uses &#39;nearest&#39; mode (clamping to valid indices)</span>
+<span class="sd">    - This is significantly faster than scipy for large batches due to JIT compilation</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    scipy.ndimage.map_coordinates : The scipy function this mimics</span>
+<span class="sd">    scipy.ndimage.spline_filter : For computing the prefiltered coefficients</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">,</span> <span class="n">n4</span><span class="p">,</span> <span class="n">n5</span> <span class="o">=</span> <span class="n">coeff</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">ie1</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="c1"># Parallel loop over all interpolation points</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">ie1</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="n">ie2</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">x3</span> <span class="o">=</span> <span class="n">ig</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">x4</span> <span class="o">=</span> <span class="n">ig1</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">x5</span> <span class="o">=</span> <span class="n">ig2</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+        <span class="n">b1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">x1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">b2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">x2</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">b3</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">x3</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">b4</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">x4</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">b5</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">x5</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="n">acc</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="k">for</span> <span class="n">a1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="n">j1</span> <span class="o">=</span> <span class="n">_clamp_int</span><span class="p">(</span><span class="n">b1</span> <span class="o">+</span> <span class="n">a1</span><span class="p">,</span> <span class="n">n1</span><span class="p">)</span>
+            <span class="n">w1</span> <span class="o">=</span> <span class="n">_bspline3</span><span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="p">(</span><span class="n">b1</span> <span class="o">+</span> <span class="n">a1</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">w1</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">for</span> <span class="n">a2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+                <span class="n">j2</span> <span class="o">=</span> <span class="n">_clamp_int</span><span class="p">(</span><span class="n">b2</span> <span class="o">+</span> <span class="n">a2</span><span class="p">,</span> <span class="n">n2</span><span class="p">)</span>
+                <span class="n">w2</span> <span class="o">=</span> <span class="n">_bspline3</span><span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="p">(</span><span class="n">b2</span> <span class="o">+</span> <span class="n">a2</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">w2</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="k">for</span> <span class="n">a3</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+                    <span class="n">j3</span> <span class="o">=</span> <span class="n">_clamp_int</span><span class="p">(</span><span class="n">b3</span> <span class="o">+</span> <span class="n">a3</span><span class="p">,</span> <span class="n">n3</span><span class="p">)</span>
+                    <span class="n">w3</span> <span class="o">=</span> <span class="n">_bspline3</span><span class="p">(</span><span class="n">x3</span> <span class="o">-</span> <span class="p">(</span><span class="n">b3</span> <span class="o">+</span> <span class="n">a3</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">w3</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+                        <span class="k">continue</span>
+
+                    <span class="k">for</span> <span class="n">a4</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+                        <span class="n">j4</span> <span class="o">=</span> <span class="n">_clamp_int</span><span class="p">(</span><span class="n">b4</span> <span class="o">+</span> <span class="n">a4</span><span class="p">,</span> <span class="n">n4</span><span class="p">)</span>
+                        <span class="n">w4</span> <span class="o">=</span> <span class="n">_bspline3</span><span class="p">(</span><span class="n">x4</span> <span class="o">-</span> <span class="p">(</span><span class="n">b4</span> <span class="o">+</span> <span class="n">a4</span><span class="p">))</span>
+                        <span class="k">if</span> <span class="n">w4</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+                            <span class="k">continue</span>
+
+                        <span class="k">for</span> <span class="n">a5</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+                            <span class="n">j5</span> <span class="o">=</span> <span class="n">_clamp_int</span><span class="p">(</span><span class="n">b5</span> <span class="o">+</span> <span class="n">a5</span><span class="p">,</span> <span class="n">n5</span><span class="p">)</span>
+                            <span class="n">w5</span> <span class="o">=</span> <span class="n">_bspline3</span><span class="p">(</span><span class="n">x5</span> <span class="o">-</span> <span class="p">(</span><span class="n">b5</span> <span class="o">+</span> <span class="n">a5</span><span class="p">))</span>
+                            <span class="k">if</span> <span class="n">w5</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+                                <span class="k">continue</span>
+
+                            <span class="n">acc</span> <span class="o">+=</span> <span class="p">(</span><span class="n">w1</span> <span class="o">*</span> <span class="n">w2</span> <span class="o">*</span> <span class="n">w3</span> <span class="o">*</span> <span class="n">w4</span> <span class="o">*</span> <span class="n">w5</span><span class="p">)</span> <span class="o">*</span> <span class="n">coeff</span><span class="p">[</span><span class="n">j1</span><span class="p">,</span> <span class="n">j2</span><span class="p">,</span> <span class="n">j3</span><span class="p">,</span> <span class="n">j4</span><span class="p">,</span> <span class="n">j5</span><span class="p">]</span>
+
+        <span class="n">out</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">acc</span>
+
+    <span class="k">return</span> <span class="n">out</span>
+
+<span class="c1"># ---------------------</span>
+<span class="c1"># User-facing jitted function with the signature you requested</span>
+<span class="c1"># IMPORTANT: Always returns a 1D array (consistent type).</span>
+<span class="c1"># ---------------------</span>
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="cross_section">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/index.html#ler.lens_galaxy_population.cross_section_interpolator.cross_section">[docs]</a>
+<span class="k">def</span> <span class="nf">cross_section</span><span class="p">(</span>
+    <span class="n">zs</span><span class="p">,</span>
+    <span class="n">zl</span><span class="p">,</span>
+    <span class="n">sigma</span><span class="p">,</span>
+    <span class="n">q</span><span class="p">,</span>
+    <span class="n">phi</span><span class="p">,</span>
+    <span class="n">gamma</span><span class="p">,</span>
+    <span class="n">gamma1</span><span class="p">,</span>
+    <span class="n">gamma2</span><span class="p">,</span>
+    <span class="n">e1_grid</span><span class="p">,</span>
+    <span class="n">e2_grid</span><span class="p">,</span>
+    <span class="n">gamma_grid</span><span class="p">,</span>
+    <span class="n">gamma1_grid</span><span class="p">,</span>
+    <span class="n">gamma2_grid</span><span class="p">,</span>
+    <span class="n">cs_spline_coeff_grid</span><span class="p">,</span>
+    <span class="n">Da_instance</span><span class="p">,</span>
+    <span class="n">csunit_to_cs_slope</span><span class="p">,</span>
+    <span class="n">csunit_to_cs_intercept</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    theta_E, gamma, gamma1, gamma2, q, phi: 1D arrays (same length)</span>
+<span class="sd">    grids: 1D</span>
+<span class="sd">    cs_spline_coeff: spline-filtered coefficients (same shape as cs_spline_coeff)</span>
+<span class="sd">    returns: 1D array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># angular diameter distance</span>
+    <span class="n">Ds</span> <span class="o">=</span> <span class="n">Da_instance</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span>
+    <span class="n">Dl</span> <span class="o">=</span> <span class="n">Da_instance</span><span class="p">(</span><span class="n">zl</span><span class="p">)</span>
+    <span class="n">Dls</span> <span class="o">=</span> <span class="p">(</span><span class="n">Ds</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">zs</span><span class="p">)</span> <span class="o">-</span> <span class="n">Dl</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">zl</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">zs</span><span class="p">)</span>
+    <span class="c1"># find theta_E</span>
+    <span class="n">theta_E</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">/</span> <span class="n">C_LIGHT</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">Dls</span> <span class="o">/</span> <span class="n">Ds</span><span class="p">)</span>
+
+    <span class="c1"># Convert (q, phi) -&gt; (e1, e2)</span>
+    <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span> <span class="o">=</span> <span class="n">phi_q2_ellipticity_hemanta</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="n">zs</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="c1"># fractional indices</span>
+    <span class="n">ie1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">ie2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">ig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">ig1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">ig2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="n">e1_min</span><span class="p">,</span> <span class="n">e1_max</span> <span class="o">=</span> <span class="n">e1_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e1_grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">e2_min</span><span class="p">,</span> <span class="n">e2_max</span> <span class="o">=</span> <span class="n">e2_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e2_grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">g_min</span><span class="p">,</span> <span class="n">g_max</span> <span class="o">=</span> <span class="n">gamma_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">gamma_grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">g1_min</span><span class="p">,</span> <span class="n">g1_max</span> <span class="o">=</span> <span class="n">gamma1_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">gamma1_grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">g2_min</span><span class="p">,</span> <span class="n">g2_max</span> <span class="o">=</span> <span class="n">gamma2_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">gamma2_grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">n_e1</span> <span class="o">=</span> <span class="n">e1_grid</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">n_e2</span> <span class="o">=</span> <span class="n">e2_grid</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">n_g</span> <span class="o">=</span> <span class="n">gamma_grid</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">n_g1</span> <span class="o">=</span> <span class="n">gamma1_grid</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">n_g2</span> <span class="o">=</span> <span class="n">gamma2_grid</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">ie1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">_physical_to_index</span><span class="p">(</span><span class="n">e1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">e1_min</span><span class="p">,</span> <span class="n">e1_max</span><span class="p">,</span> <span class="n">n_e1</span><span class="p">)</span>
+        <span class="n">ie2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">_physical_to_index</span><span class="p">(</span><span class="n">e2</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">e2_min</span><span class="p">,</span> <span class="n">e2_max</span><span class="p">,</span> <span class="n">n_e2</span><span class="p">)</span>
+        <span class="n">ig</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">_physical_to_index</span><span class="p">(</span><span class="n">gamma</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">g_min</span><span class="p">,</span> <span class="n">g_max</span><span class="p">,</span> <span class="n">n_g</span><span class="p">)</span>
+        <span class="n">ig1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">_physical_to_index</span><span class="p">(</span><span class="n">gamma1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">g1_min</span><span class="p">,</span> <span class="n">g1_max</span><span class="p">,</span> <span class="n">n_g1</span><span class="p">)</span>
+        <span class="n">ig2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">_physical_to_index</span><span class="p">(</span><span class="n">gamma2</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">g2_min</span><span class="p">,</span> <span class="n">g2_max</span><span class="p">,</span> <span class="n">n_g2</span><span class="p">)</span>
+
+    <span class="c1"># unit cross-section via cubic spline on coefficients</span>
+    <span class="n">cs_unit</span> <span class="o">=</span> <span class="n">_map_coordinates_5d_cubic_nearest</span><span class="p">(</span><span class="n">cs_spline_coeff_grid</span><span class="p">,</span> <span class="n">ie1</span><span class="p">,</span> <span class="n">ie2</span><span class="p">,</span> <span class="n">ig</span><span class="p">,</span> <span class="n">ig1</span><span class="p">,</span> <span class="n">ig2</span><span class="p">)</span>
+
+    <span class="c1"># scaling by area_sis and affine calibration</span>
+    <span class="c1"># out = np.empty(N, dtype=np.float64)</span>
+    <span class="c1"># for i in range(N):</span>
+    <span class="c1">#     area_sis = np.pi * theta_E[i] * theta_E[i]</span>
+    <span class="c1">#     cs = cs_unit[i] * (csunit_to_cs_intercept + csunit_to_cs_slope * area_sis)</span>
+    <span class="c1">#     if cs &lt; 0.0:</span>
+    <span class="c1">#         cs = 0.0</span>
+    <span class="c1">#     out[i] = cs</span>
+    <span class="n">area_sis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">theta_E</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">cs</span> <span class="o">=</span> <span class="n">cs_unit</span> <span class="o">*</span> <span class="p">(</span><span class="n">csunit_to_cs_intercept</span> <span class="o">+</span> <span class="n">csunit_to_cs_slope</span> <span class="o">*</span> <span class="n">area_sis</span><span class="p">)</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">cs</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">cs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="k">return</span> <span class="n">cs</span></div>
+
+
+
+<span class="c1"># ---------------------</span>
+<span class="c1"># Factory: computes coeffs once and returns a reinitialized njit closure</span>
+<span class="c1"># ---------------------</span>
+<div class="viewcode-block" id="make_cross_section_reinit">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/index.html#ler.lens_galaxy_population.cross_section_interpolator.make_cross_section_reinit">[docs]</a>
+<span class="k">def</span> <span class="nf">make_cross_section_reinit</span><span class="p">(</span>
+    <span class="n">e1_grid</span><span class="p">,</span>
+    <span class="n">e2_grid</span><span class="p">,</span>
+    <span class="n">gamma_grid</span><span class="p">,</span>
+    <span class="n">gamma1_grid</span><span class="p">,</span>
+    <span class="n">gamma2_grid</span><span class="p">,</span>
+    <span class="n">cs_spline_coeff_grid</span><span class="p">,</span>
+    <span class="n">Da_instance</span><span class="p">,</span>
+    <span class="n">csunit_to_cs_slope</span><span class="o">=</span><span class="mf">0.31830988618379075</span><span class="p">,</span>
+    <span class="n">csunit_to_cs_intercept</span><span class="o">=-</span><span class="mf">3.2311742677852644e-27</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">e1g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">e1_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">e2g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">e2_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">gg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">gamma_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">g1g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">gamma1_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">g2g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">gamma2_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">cs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cs_spline_coeff_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="c1"># Same preprocessing as your class:</span>
+    <span class="n">cs_coeff</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">spline_filter</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="n">slope_given</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">csunit_to_cs_slope</span><span class="p">)</span>
+    <span class="n">intercept_given</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">csunit_to_cs_intercept</span><span class="p">)</span>
+
+    <span class="n">_Da_instance</span> <span class="o">=</span> <span class="n">Da_instance</span>
+    
+    <span class="n">Da_function</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">_Da_instance</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+
+    <span class="c1"># Close over &quot;given&quot; parameters</span>
+    <span class="nd">@njit</span>
+    <span class="k">def</span> <span class="nf">cross_section_reinit</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cross_section</span><span class="p">(</span>
+            <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
+            <span class="n">zl</span><span class="o">=</span><span class="n">zl</span><span class="p">,</span>
+            <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span>
+            <span class="n">q</span><span class="o">=</span><span class="n">q</span><span class="p">,</span>
+            <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span>
+            <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">,</span>
+            <span class="n">gamma1</span><span class="o">=</span><span class="n">gamma1</span><span class="p">,</span>
+            <span class="n">gamma2</span><span class="o">=</span><span class="n">gamma2</span><span class="p">,</span>
+            <span class="n">e1_grid</span><span class="o">=</span><span class="n">e1g</span><span class="p">,</span>
+            <span class="n">e2_grid</span><span class="o">=</span><span class="n">e2g</span><span class="p">,</span>
+            <span class="n">gamma_grid</span><span class="o">=</span><span class="n">gg</span><span class="p">,</span>
+            <span class="n">gamma1_grid</span><span class="o">=</span><span class="n">g1g</span><span class="p">,</span>
+            <span class="n">gamma2_grid</span><span class="o">=</span><span class="n">g2g</span><span class="p">,</span>
+            <span class="n">cs_spline_coeff_grid</span><span class="o">=</span><span class="n">cs_coeff</span><span class="p">,</span>
+            <span class="n">Da_instance</span><span class="o">=</span><span class="n">Da_function</span><span class="p">,</span>
+            <span class="n">csunit_to_cs_slope</span><span class="o">=</span><span class="n">slope_given</span><span class="p">,</span>
+            <span class="n">csunit_to_cs_intercept</span><span class="o">=</span><span class="n">intercept_given</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cross_section_reinit</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

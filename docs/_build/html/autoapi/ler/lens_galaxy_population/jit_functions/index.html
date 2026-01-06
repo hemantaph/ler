@@ -6,33 +6,39 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.lens_galaxy_population.jit_functions &mdash; ler 0.3.1 documentation</title>
+  <title>ler.lens_galaxy_population.jit_functions &mdash; ler 0.4.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=776609e1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5bfaad31"></script>
       <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../../../_static/copybutton.js?v=f281be69"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" /> 
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution" href="../lens_galaxy_parameter_distribution/index.html" />
+    <link rel="prev" title="ler.lens_galaxy_population.epl_shear_cross_section" href="../epl_shear_cross_section/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
 
           
           
@@ -49,7 +55,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../Installation2.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../GW_events.html">Gravitational wave event rates</a></li>
@@ -58,37 +64,35 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../cross_section_interpolator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../epl_shear_cross_section/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.epl_shear_cross_section</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.jit_functions</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../lens_galaxy_parameter_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_galaxy_parameter_distribution</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lens_parameter_sampler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_parameter_sampler</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mp/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.mp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../optical_depth/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.optical_depth</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/rates/grb%20detection%20rate.html">Calculation of detectable Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/rates/ler%20bns%20example.html">LeR complete examples of BNS events (O4 design sensitivity)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/rates/rates_with_3G_detectors.html">Event Rates with 3G detectors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/source%20population/merger%20rate%20density%20evolution%20with%20redshift.html">Merger rate density evolution with redshift</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/source%20population/merger%20rate%20density%20model%20comparision.html">Merger rate density model comparision</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/source%20population/merger%20rate%20density%20model%20comparision.html#Primordial-BBH-model,-Ng-et-al.-2022">Primordial BBH model, Ng et al. 2022</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/source%20population/sample%20compact%20binary%20parameters.html">Sampling parameters for a compact binary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/source%20population/statistical%20study%20of%20changing%20mass%20model%20params.html">Statistical study of changing Mass model paramter(s)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/source%20population/statistical%20study%20of%20cosmological%20friction.html">Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/lens_parameters/sample%20lens%20parameters.html">Lens parameter distributions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/optical_depth/validation_SIE.html">Optical depth SIE model validation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/optical_depth/validation_SIS.html">Validation of SIS model (Numerical vs Analytical)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/image_properties/dt_vs_dmu.html">Study of Time delays and magnification of lensed gravitational waves.</a></li>
 </ul>
 
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../../index.html">ler</a>
       </nav>
@@ -98,6 +102,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
       <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.jit_functions</span></code></li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../../_sources/autoapi/ler/lens_galaxy_population/jit_functions/index.rst.txt" rel="nofollow"> View page source</a>
@@ -119,6 +124,18 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.axis_ratio_SIS" title="ler.lens_galaxy_population.jit_functions.axis_ratio_SIS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_SIS</span></code></a>(sigma)</p></td>
 <td><p>Function to sample axis ratio from the SIS distribution with given velocity dispersion.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.gamma_" title="ler.lens_galaxy_population.jit_functions.gamma_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gamma_</span></code></a>(x)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.cvdf_fit" title="ler.lens_galaxy_population.jit_functions.cvdf_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cvdf_fit</span></code></a>(log_vd, redshift)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.my_derivative" title="ler.lens_galaxy_population.jit_functions.my_derivative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">my_derivative</span></code></a>(log_vd, redshift, dx)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.pdf_phi_z_div_0" title="ler.lens_galaxy_population.jit_functions.pdf_phi_z_div_0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pdf_phi_z_div_0</span></code></a>(s, z)</p></td>
+<td><p></p></td>
+</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.phi" title="ler.lens_galaxy_population.jit_functions.phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi</span></code></a>(s, z[, alpha, beta, phistar, sigmastar])</p></td>
 <td><p>Function to calculate the lens galaxy velocity dispersion function at redshift z.</p></td>
 </tr>
@@ -131,17 +148,20 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.axis_ratio_rayleigh_rvs" title="ler.lens_galaxy_population.jit_functions.axis_ratio_rayleigh_rvs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_rayleigh_rvs</span></code></a>(sigma[, q_min, q_max])</p></td>
 <td><p>Function to sample axis ratio from rayleigh distribution with given velocity dispersion.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.velocity_dispersion_z_dependent" title="ler.lens_galaxy_population.jit_functions.velocity_dispersion_z_dependent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_dispersion_z_dependent</span></code></a>(size, zl, zl_list, ...)</p></td>
-<td><p>Function to sample velocity dispersion from the interpolator</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.axis_ratio_rayleigh_pdf" title="ler.lens_galaxy_population.jit_functions.axis_ratio_rayleigh_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_rayleigh_pdf</span></code></a>(q, sigma[, q_min, q_max])</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.lens_redshift_sis_haris" title="ler.lens_galaxy_population.jit_functions.lens_redshift_sis_haris"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lens_redshift_sis_haris</span></code></a>(zs, splineDc, ...)</p></td>
-<td><p>Function to sample lens redshift from the SDSS catalogue. Haris et al. (2018) cdf = (10 * u**3 - 15 * u**4 + 6 * u**5)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.velocity_dispersion_z_dependent" title="ler.lens_galaxy_population.jit_functions.velocity_dispersion_z_dependent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_dispersion_z_dependent</span></code></a>(size, zl, zl_list, ...)</p></td>
+<td><p>Function to sample velocity dispersion from the interpolator</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.bounded_normal_sample" title="ler.lens_galaxy_population.jit_functions.bounded_normal_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounded_normal_sample</span></code></a>(size, mean, std, low, high)</p></td>
 <td><p>Function to sample from a normal distribution with bounds.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.phi_q2_ellipticity_hemanta" title="ler.lens_galaxy_population.jit_functions.phi_q2_ellipticity_hemanta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_q2_ellipticity_hemanta</span></code></a>(phi, q)</p></td>
 <td><p>Function to convert phi and q to ellipticity e1 and e2.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.jit_functions.sample_sigma_zl" title="ler.lens_galaxy_population.jit_functions.sample_sigma_zl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample_sigma_zl</span></code></a>(pdf, sigma_min, sigma_max, zl_min, ...)</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -164,6 +184,26 @@
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.jit_functions.gamma_">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.jit_functions.</span></span><span class="sig-name descname"><span class="pre">gamma_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/jit_functions.html#gamma_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.jit_functions.gamma_" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.jit_functions.cvdf_fit">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.jit_functions.</span></span><span class="sig-name descname"><span class="pre">cvdf_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_vd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redshift</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/jit_functions.html#cvdf_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.jit_functions.cvdf_fit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.jit_functions.my_derivative">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.jit_functions.</span></span><span class="sig-name descname"><span class="pre">my_derivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_vd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redshift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/jit_functions.html#my_derivative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.jit_functions.my_derivative" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.jit_functions.pdf_phi_z_div_0">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.jit_functions.</span></span><span class="sig-name descname"><span class="pre">pdf_phi_z_div_0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/jit_functions.html#pdf_phi_z_div_0"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.jit_functions.pdf_phi_z_div_0" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.jit_functions.phi">
@@ -255,6 +295,11 @@ For Choi et al. (2008) model: alpha = 2.32 / 2.67, beta = 2.67, phistar = 8.0e-3
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.jit_functions.axis_ratio_rayleigh_pdf">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.jit_functions.</span></span><span class="sig-name descname"><span class="pre">axis_ratio_rayleigh_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/jit_functions.html#axis_ratio_rayleigh_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.jit_functions.axis_ratio_rayleigh_pdf" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.jit_functions.velocity_dispersion_z_dependent">
 <span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.jit_functions.</span></span><span class="sig-name descname"><span class="pre">velocity_dispersion_z_dependent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vd_inv_cdf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/jit_functions.html#velocity_dispersion_z_dependent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.jit_functions.velocity_dispersion_z_dependent" title="Link to this definition"></a></dt>
 <dd><p>Function to sample velocity dispersion from the interpolator</p>
@@ -270,35 +315,6 @@ For Choi et al. (2008) model: alpha = 2.32 / 2.67, beta = 2.67, phistar = 8.0e-3
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>samples: numpy.ndarray</dt><dd><p>Samples of velocity dispersion</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.jit_functions.lens_redshift_sis_haris">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.jit_functions.</span></span><span class="sig-name descname"><span class="pre">lens_redshift_sis_haris</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splineDc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splineDcInv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/jit_functions.html#lens_redshift_sis_haris"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.jit_functions.lens_redshift_sis_haris" title="Link to this definition"></a></dt>
-<dd><p>Function to sample lens redshift from the SDSS catalogue. Haris et al. (2018) cdf = (10 * u**3 - 15 * u**4 + 6 * u**5)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>zs: `numpy.ndarray` (1D array of float of size=size)</strong></dt><dd><p>Redshift of the source galaxy</p>
-</dd>
-<dt><strong>splineDc: `list`</strong></dt><dd><p>List of spline coefficients for the comoving distance and redshifts</p>
-</dd>
-<dt><strong>splineDcInv: `list`</strong></dt><dd><p>List of spline coefficients for the inverse of comoving distance and redshifts</p>
-</dd>
-<dt><strong>u: `numpy.ndarray` (1D array of float of size=size)</strong></dt><dd><p>corresponding x values wrt to the cdf values
-e.g. u = np.linspace(0, 1, 500)</p>
-</dd>
-<dt><strong>cdf: `numpy.ndarray` (1D array of float of size=size)</strong></dt><dd><p>Cumulative distribution function of the lens redshift distribution between 0 and 1</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>zl: <cite>numpy.ndarray</cite> (1D array of float of size=size)</dt><dd><p>Redshift of the lens galaxy corresponding to the zs</p>
 </dd>
 </dl>
 </dd>
@@ -348,6 +364,11 @@ e.g. u = np.linspace(0, 1, 500)</p>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.jit_functions.sample_sigma_zl">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.jit_functions.</span></span><span class="sig-name descname"><span class="pre">sample_sigma_zl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/jit_functions.html#sample_sigma_zl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.jit_functions.sample_sigma_zl" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 </section>
 </section>
 </section>
@@ -355,7 +376,10 @@ e.g. u = np.linspace(0, 1, 500)</p>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../epl_shear_cross_section/index.html" class="btn btn-neutral float-left" title="ler.lens_galaxy_population.epl_shear_cross_section" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../lens_galaxy_parameter_distribution/index.html" class="btn btn-neutral float-right" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

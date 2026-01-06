@@ -30,9 +30,9 @@ from ler.lens_galaxy_population.jit_functions import phi_q2_ellipticity_hemanta
 C_LIGHT = 299792.458
 
 
-# ---------------------------
+# ---------------------
 # Cubic B-spline basis (order=3)
-# ---------------------------
+# ---------------------
 @njit(inline="always")
 def _bspline3(t):
     """
@@ -144,11 +144,11 @@ def _physical_to_index(x, x0, x1, n):
     return (x - x0) * (n - 1) / (x1 - x0)
 
 
-# ---------------------------
+# ---------------------
 # 5D cubic B-spline interpolation on prefiltered coefficients
 # This matches scipy.ndimage.map_coordinates with:
 #   order=3 (cubic), mode='nearest', prefilter=False
-# ---------------------------
+# ---------------------
 @njit(parallel=True)
 def _map_coordinates_5d_cubic_nearest(coeff, ie1, ie2, ig, ig1, ig2):
     """
@@ -253,10 +253,10 @@ def _map_coordinates_5d_cubic_nearest(coeff, ie1, ie2, ig, ig1, ig2):
 
     return out
 
-# ---------------------------
+# ---------------------
 # User-facing jitted function with the signature you requested
 # IMPORTANT: Always returns a 1D array (consistent type).
-# ---------------------------
+# ---------------------
 @njit
 def cross_section(
     zs,
@@ -341,9 +341,9 @@ def cross_section(
     return cs
 
 
-# ---------------------------
+# ---------------------
 # Factory: computes coeffs once and returns a reinitialized njit closure
-# ---------------------------
+# ---------------------
 def make_cross_section_reinit(
     e1_grid,
     e2_grid,

@@ -1,5 +1,3 @@
-:orphan:
-
 :py:mod:`ler.gw_source_population.sfr_with_time_delay`
 ======================================================
 
@@ -18,6 +16,18 @@ Functions
    ler.gw_source_population.sfr_with_time_delay.sfr_with_time_delay
 
 
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   ler.gw_source_population.sfr_with_time_delay.cosmo
+
+
+.. py:data:: cosmo
+
+   
 
 .. py:function:: sfr_with_time_delay(input_args)
 

@@ -4,7 +4,7 @@
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-# -- Path setup --------------------------------------------------------------
+# -- Path setup --------------------------------------------
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -15,19 +15,27 @@
 # sys.path.insert(0, os.path.abspath('.'))
 
 
-# -- Project information -----------------------------------------------------
+# -- Project information -----------------------------------
 import os
 import sys
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath("../ler")) 
 
+# Import version dynamically
+def get_version():
+    version_file = os.path.join(os.path.dirname(__file__), "..", "ler", "_version.py")
+    version_dict = {}
+    with open(version_file) as f:
+        exec(f.read(), version_dict)
+    return version_dict['__version__']
+
 project = 'ler'
 copyright = '2023, Phurailatpam Hemantakumar'
 author = 'Phurailatpam Hemantakumar'
-release = '0.3.1'
+release = get_version()
 
 
-# -- General configuration ---------------------------------------------------
+# -- General configuration ---------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -45,15 +53,32 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx_copybutton",
     "autoapi.extension",
+    # "sphinxcontrib.mermaid",
     "myst_parser",
+    "sphinx_rtd_dark_mode",
+    "sphinx.ext.githubpages",
 ]
+
+# MathJax configuration for proper math rendering
+mathjax3_config = {
+    "tex": {
+        "inlineMath": [["$", "$"], ["\\(", "\\)"]],
+        "displayMath": [["$$", "$$"], ["\\[", "\\]"]],
+        "processEscapes": True,
+        "processEnvironments": True,
+    },
+    "options": {
+        "ignoreHtmlClass": "tex2jax_ignore",
+        "processHtmlClass": "tex2jax_process",
+    },
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.ipynb_checkpoints','.ipynb', "venv", ".*", '**.ipynb_checkpoints', '**/*.ipynb_checkpoints', '**/**/*.ipynb_checkpoints', '**/**/**/*.ipynb_checkpoints']
 autodoc_member_order = 'bysource'
 numpydoc_show_class_members = False
-autoapi_add_toctree_entry = False
+
 # -- Napoleon options
 napoleon_include_special_with_doc = True
 pygments_style = 'sphinx'
@@ -61,12 +86,56 @@ pygments_style = 'sphinx'
 # Don't mess with double-dash used in CLI options
 smartquotes_action = "qe"
 
-# -- Options for HTML output -------------------------------------------------
+# -- MyST Parser Configuration -----------------------------------
+# myst_fence_as_directive = ["mermaid"]
+myst_enable_extensions = [
+    "amsmath",
+    "colon_fence",
+    "deflist",
+    "dollarmath",
+    "fieldlist",
+    "html_admonition",
+    "html_image",
+    "replacements",
+    "smartquotes",
+    "strikethrough",
+    "substitution",
+    "tasklist",
+]
+
+# Configure math rendering for MyST
+myst_dmath_double_inline = True
+myst_dmath_allow_labels = True
+myst_dmath_allow_space = True
+myst_dmath_allow_digits = True
+myst_update_mathjax = False
+
+# -- Options for HTML output -------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
 html_theme = 'sphinx_rtd_theme'
+
+# -- Dark mode configuration for sphinx_rtd_dark_mode -----------------
+# Enable dark mode toggle
+default_dark_mode = False  # Set to True to default to dark mode
+
+# HTML theme options for better dark mode support
+html_theme_options = {
+    'logo_only': False,
+    'display_version': True,
+    'prev_next_buttons_location': 'bottom',
+    'style_external_links': False,
+    'vcs_pageview_mode': '',
+    'style_nav_header_background': '#2980b9',  # RTD theme blue background
+    # Sidebar navigation
+    'collapse_navigation': True,
+    'sticky_navigation': True,
+    'navigation_depth': 4,
+    'includehidden': True,
+    'titles_only': False
+}
 
 # -- Plausible support
 ENABLE_PLAUSIBLE = os.environ.get("READTHEDOCS_VERSION_TYPE", "") in ["branch", "tag"]
@@ -76,25 +145,26 @@ html_context = {"enable_plausible": ENABLE_PLAUSIBLE}
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
-html_css_files = [
-    'custom.css',  # Add this line to include your custom CSS
-]
 # Add this line to ensure the .nojekyll file is copied
 html_extra_path = ['_static/.nojekyll']
 
-# -- Configure autoapi -------------------------------------------------------
+html_css_files = [
+    'scalefix.css',
+    'custom.css',  # Add this line to include your custom CSS
+]
+
+# -- Configure autoapi -------------------------------------
 autodoc_typehints = "signature"  # autoapi respects this
 
 autoapi_type = "python"
 autoapi_dirs = ["../ler"]
+autoapi_root = "autoapi"             # default output subdir used by toctree refs
 autoapi_template_dir = "_templates/autoapi"
 autoapi_options = [
-    "members",
-    "show-inheritance",
-    "show-module-summary",
-    "imported-members",
-    "special-members",
+    "members", "undoc-members", "show-module-summary",
+    "show-inheritance", "special-members", "imported-members",
 ]
+autoapi_add_toctree_entry = True
 # autoapi_python_use_implicit_namespaces = True
 autoapi_keep_files = True
 # autoapi_generate_api_docs = False
@@ -113,18 +183,13 @@ def skip_member(app, what, name, obj, skip, options):
             skip = True
     return skip
 
-def setup(sphinx):
-    sphinx.connect("autoapi-skip-member", skip_member)
-
 from docutils import nodes
 from docutils.parsers.rst import roles
 
+# orange role
 def orange_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     node = nodes.inline(rawtext, text, classes=["orange"])
     return [node], []
-
-# def setup(app):
-#     roles.register_local_role('orange', orange_role)
 
 def orange_first_letter(role, rawtext, text, lineno, inliner, options={}, content=[]):
     # Create two nodes: one for the first letter with a class and one for the rest
@@ -143,8 +208,48 @@ def red_first_letter(role, rawtext, text, lineno, inliner, options={}, content=[
     rest = nodes.inline(rawtext, text[1:], classes=[])
     return [first_letter, rest], []
 
+# for yellow
+def yellow_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    node = nodes.inline(rawtext, text, classes=["yellow"])
+    return [node], []
+
+def yellow_first_letter(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    # Create two nodes: one for the first letter with a class and one for the rest
+    first_letter = nodes.inline(rawtext, text[0], classes=["yellow"])
+    rest = nodes.inline(rawtext, text[1:], classes=[])
+    return [first_letter, rest], []
+
+# for blue
+def blue_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    node = nodes.inline(rawtext, text, classes=["blue"])
+    return [node], []
+def blue_first(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    # Create two nodes: one for the first letter with a class and one for the rest
+    first_letter = nodes.inline(rawtext, text[0], classes=["blue"])
+    rest = nodes.inline(rawtext, text[1:], classes=[])
+    return [first_letter, rest], []
+
+
+
 def setup(app):
+    # Register autoapi skip member callback
+    app.connect("autoapi-skip-member", skip_member)
+    # Register custom roles
     roles.register_local_role('orange', orange_role)
     roles.register_local_role('orange_first', orange_first_letter)
     roles.register_local_role('red', red_role)
     roles.register_local_role('red_first', red_first_letter)
+    roles.register_local_role('blue', blue_role)
+    roles.register_local_role('blue_first', blue_first) 
+    roles.register_local_role('yellow', yellow_role)
+    roles.register_local_role('yellow_first', yellow_first_letter)
+
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.txt': 'markdown',
+    '.md': 'markdown',
+}
+
+# Configure Mermaid
+# mermaid_cmd = 'mmdc'
+# mermaid_params = ['--theme', 'forest', '--width', '800', '--backgroundColor', 'transparent']

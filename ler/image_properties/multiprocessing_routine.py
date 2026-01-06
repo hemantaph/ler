@@ -94,9 +94,9 @@ def solve_lens_equation(lens_parameters):
     lens_eq_solver = LensEquationSolver(lensModel)
 
     factor = 1.0
-    # ---------------------------------------------------#
+    # ---------------------------------#
     #     x-y position of images in the source plane
-    # ---------------------------------------------------#
+    # ---------------------------------#
     # Get the caustic curve cut by the lens
     # First check if there is any nan in the caustic points
     while True:
@@ -200,9 +200,9 @@ def solve_lens_equation(lens_parameters):
         i += 1
         ##########
 
-    # ---------------------------------------------------#
+    # ---------------------------------#
     #          magnification and time-delay
-    # ---------------------------------------------------#
+    # ---------------------------------#
     # theta_E is in arcsec
     theta_E_nImages = einstein_radius * np.ones(nImages)
     radian_to_arcseconds = 180.0 / np.pi * 3600.0
@@ -217,9 +217,9 @@ def solve_lens_equation(lens_parameters):
         * days_to_seconds
     )
 
-    # ---------------------------------------------------#
+    # ---------------------------------#
     #     Params needed for image-type classification
-    # ---------------------------------------------------#
+    # ---------------------------------#
     # it is faster to use numpy array operation to do image classification
     # return: f_xx, f_xy, f_yx, f_yy components
     hessian = lensModel.hessian(x0_image_position, x1_image_position, kwargs_lens)
@@ -227,6 +227,12 @@ def solve_lens_equation(lens_parameters):
         (1 - hessian[0]) * (1 - hessian[3]) - hessian[1] * hessian[2]
     )
     trace = np.array(2 - hessian[0] - hessian[3])
+
+    # scale source and image positions to arcsec
+    x_source = x_source * einstein_radius
+    y_source = y_source * einstein_radius
+    x0_image_position = x0_image_position * einstein_radius
+    x1_image_position = x1_image_position * einstein_radius
 
     #  return also gamma1, gamma2
     return (

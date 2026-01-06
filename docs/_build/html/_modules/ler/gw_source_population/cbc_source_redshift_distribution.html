@@ -1,182 +1,122 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
-
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ler.gw_source_population.cbc_source_redshift_distribution &mdash; ler 0.3.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.gw_source_population.cbc_source_redshift_distribution &mdash; ler 0.4.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
-
-    <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../../_static/documentation_options.js?v=4621528c"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/tabs.js?v=3030b3cb"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA="
-        src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-    <div class="wy-grid-for-nav">
-        <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-            <div class="wy-side-scroll">
-                <div class="wy-side-nav-search">
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
 
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
 
+        </div>
+      </div>
+    </nav>
 
-                    <a href="../../../index.html" class="icon icon-home">
-                        ler
-                    </a>
-                    <div role="search">
-                        <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-                            <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-                        </form>
-                    </div>
-                </div>
-                <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-                    <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-                    <ul>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../Installation2.html">Installation</a></li>
-                        <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code
-                                overview</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../GW_events.html">Gravitational wave event rates</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../GW_equations.html">Gravitational wave events sampling (Analytical
-                                formulation)</a></li>
-                        <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed
-                                event rates</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a>
-                        </li>
-                    </ul>
-                    <p class="caption" role="heading"><span class="caption-text">API:</span></p>
-                    <ul>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../autoapi/ler/rates/index.html"><code
-                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../autoapi/ler/gw_source_population/index.html"><code
-                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../autoapi/ler/lens_galaxy_population/index.html"><code
-                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../autoapi/ler/image_properties/index.html"><code
-                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../autoapi/ler/utils/index.html"><code
-                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a>
-                        </li>
-                    </ul>
-                    <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
-                    <ul>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/rates/LeR%20complete%20examples.html">LeR complete examples</a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/rates/GWRATES%20complete%20exmaples.html">GWRATES complete
-                                exmaples</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/rates/grb%20detection%20rate.html">Calculation of detectable
-                                Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/rates/ler%20bns%20example.html">LeR complete examples of BNS
-                                events (O4 design sensitivity)</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/rates/rates_with_3G_detectors.html">Event Rates with 3G
-                                detectors</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/source%20population/merger%20rate%20density%20evolution%20with%20redshift.html">Merger
-                                rate density evolution with redshift</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/source%20population/merger%20rate%20density%20model%20comparision.html">Merger
-                                rate density model comparision</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/source%20population/merger%20rate%20density%20model%20comparision.html#Primordial-BBH-model,-Ng-et-al.-2022">Primordial
-                                BBH model, Ng et al. 2022</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/source%20population/sample%20compact%20binary%20parameters.html">Sampling
-                                parameters for a compact binary</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/source%20population/statistical%20study%20of%20changing%20mass%20model%20params.html">Statistical
-                                study of changing Mass model paramter(s)</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/source%20population/statistical%20study%20of%20cosmological%20friction.html">Statistical
-                                study of cosmological friction and its effect on the redshift vs inferred chirp-mass
-                                relation of gravitational waves</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/lens_parameters/sample%20lens%20parameters.html">Lens parameter
-                                distributions</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/optical_depth/validation_SIE.html">Optical depth SIE model
-                                validation</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/optical_depth/validation_SIS.html">Validation of SIS model
-                                (Numerical vs Analytical)</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/image_properties/dt_vs_dmu.html">Study of Time delays and
-                                magnification of lensed gravitational waves.</a></li>
-                    </ul>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ler</a>
+      </nav>
 
-                </div>
-            </div>
-        </nav>
-
-        <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-            <nav class="wy-nav-top" aria-label="Mobile navigation menu">
-                <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-                <a href="../../../index.html">ler</a>
-            </nav>
-
-            <div class="wy-nav-content">
-                <div class="rst-content">
-                    <div role="navigation" aria-label="Page navigation">
-                        <ul class="wy-breadcrumbs">
-                            <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-                            <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-                            <li class="breadcrumb-item active">ler.gw_source_population.cbc_source_redshift_distribution
-                            </li>
-                            <li class="wy-breadcrumbs-aside">
-                            </li>
-                        </ul>
-                        <hr />
-                    </div>
-                    <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-                        <div itemprop="articleBody">
-
-                            <h1>Source code for ler.gw_source_population.cbc_source_redshift_distribution</h1>
-                            <div class="highlight">
-                                <pre>
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ler.gw_source_population.cbc_source_redshift_distribution</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ler.gw_source_population.cbc_source_redshift_distribution</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This module contains the classes to generate source galaxy population model</span>
-<span class="sd">and compact binary population model. The compact binary population model</span>
-<span class="sd">inherits from the source galaxy population model. The source galaxy population</span>
-<span class="sd">model is used to generate the source galaxy population model. The compact binary</span>
-<span class="sd">population model is used to generate the compact binary population model.</span>
+<span class="sd">Module for compact binary coalescence (CBC) source redshift distribution.</span>
+
+<span class="sd">This module provides the :class:`~CBCSourceRedshiftDistribution` class for </span>
+<span class="sd">generating redshift distributions of compact binary sources (BBH, BNS, NSBH) </span>
+<span class="sd">based on various merger rate density models. It supports multiple astrophysical </span>
+<span class="sd">merger rate density prescriptions including PopI/II, PopIII, and primordial </span>
+<span class="sd">black hole models.</span>
+
+<span class="sd">Inheritance hierarchy:</span>
+
+<span class="sd">- :class:`~ler.gw_source_population.CBCSourceParameterDistribution` \n</span>
+<span class="sd">  ↳ inherits from this class</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">    Basic workflow example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population import CBCSourceRedshiftDistribution</span>
+<span class="sd">    &gt;&gt;&gt; cbc = CBCSourceRedshiftDistribution(z_min=0.001, z_max=10)</span>
+<span class="sd">    &gt;&gt;&gt; zs_samples = cbc.source_redshift(size=1000)</span>
+
+<span class="sd">Copyright (C) 2024 Hemantakumar Phurailatpam. Distributed under MIT License.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -190,7 +130,7 @@
 <span class="c1"># for redshift to luminosity distance conversion</span>
 <span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
 
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span>  <span class="n">FunctionConditioning</span><span class="p">,</span> <span class="n">interpolator_json_path</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span>  <span class="n">FunctionConditioning</span><span class="p">,</span> <span class="n">interpolator_json_path</span><span class="p">,</span> <span class="n">luminosity_distance</span><span class="p">,</span> <span class="n">differential_comoving_volume</span>
 <span class="kn">from</span> <span class="nn">.jit_functions</span> <span class="kn">import</span> <span class="n">merger_rate_density_bbh_popI_II_oguri2018</span><span class="p">,</span> <span class="n">sfr_madau_dickinson2014</span><span class="p">,</span> <span class="n">merger_rate_density_bbh_popIII_ken2022</span><span class="p">,</span> <span class="n">merger_rate_density_bbh_primordial_ken2022</span>
 <span class="kn">from</span> <span class="nn">.sfr_with_time_delay</span> <span class="kn">import</span> <span class="n">sfr_with_time_delay</span>
 
@@ -198,178 +138,121 @@
 <div class="viewcode-block" id="CBCSourceRedshiftDistribution">
 <a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution">[docs]</a>
 <span class="k">class</span> <span class="nc">CBCSourceRedshiftDistribution</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to generate a population of source galaxies.</span>
-<span class="sd">    This class is inherited by :class:`~ler.ler.CBCSourceParameterDistribution` and :class:`~ler.ler.LensGalaxyParameterDistribution` class.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for generating compact binary coalescence source redshift distributions.</span>
+
+<span class="sd">    This class generates source redshift distributions for compact binary </span>
+<span class="sd">    coalescence events (BBH, BNS, NSBH) using various astrophysical merger rate </span>
+<span class="sd">    density models. It provides interpolated functions for efficient sampling of </span>
+<span class="sd">    source redshifts weighted by the merger rate density in the detector frame.</span>
+
+<span class="sd">    Key Features: \n</span>
+<span class="sd">    - Multiple merger rate density models (PopI/II, PopIII, Primordial) \n</span>
+<span class="sd">    - Configurable cosmology for distance calculations \n</span>
+<span class="sd">    - Cached interpolators for computational efficiency \n</span>
+<span class="sd">    - Support for user-defined merger rate density functions \n</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    z_min : `float`</span>
-<span class="sd">        Minimum redshift of the source population</span>
-<span class="sd">        default: 0.</span>
-<span class="sd">    z_max : `float`</span>
-<span class="sd">        Maximum redshift of the source population</span>
-<span class="sd">        default: 10.</span>
-<span class="sd">    event_type : `str`</span>
-<span class="sd">        Type of event to generate.</span>
-<span class="sd">        e.g. &#39;BBH&#39;, &#39;BNS&#39;, &#39;NSBH&#39;</span>
-<span class="sd">    cosmology : `astropy.cosmology`</span>
-<span class="sd">        Cosmology to use</span>
-<span class="sd">        default: None/astropy.cosmology.FlatLambdaCDM(H0=70, Om0=0.3)</span>
-<span class="sd">    merger_rate_density : `str` or `function`</span>
-<span class="sd">        Type of merger rate density function to use</span>
-<span class="sd">        default: &#39;merger_rate_density_popI_II_oguri2018&#39;</span>
-<span class="sd">        for others see instance method in :class:`~ler.ler.merger_rate_density_model_list`</span>
-<span class="sd">    merger_rate_density_param : `dict`</span>
-<span class="sd">        Dictionary of merger rate density function parameters</span>
-<span class="sd">        default: None/dict(R0=25 * 1e-9, b2=1.6, b3=2.1, b4=30)</span>
-<span class="sd">    directory : `str`</span>
-<span class="sd">        Directory to store the interpolator pickle files</span>
+<span class="sd">    npool : ``int``</span>
+<span class="sd">        Number of processors to use for multiprocessing. \n</span>
+<span class="sd">        default: 4</span>
+<span class="sd">    z_min : ``float``</span>
+<span class="sd">        Minimum redshift of the source population. \n</span>
+<span class="sd">        default: 0.001</span>
+<span class="sd">    z_max : ``float``</span>
+<span class="sd">        Maximum redshift of the source population. \n</span>
+<span class="sd">        default: 10.0</span>
+<span class="sd">    event_type : ``str``</span>
+<span class="sd">        Type of compact binary event. \n</span>
+<span class="sd">        Options: \n</span>
+<span class="sd">        - &#39;BBH&#39;: Binary black hole \n</span>
+<span class="sd">        - &#39;BNS&#39;: Binary neutron star \n</span>
+<span class="sd">        - &#39;NSBH&#39;: Neutron star-black hole \n</span>
+<span class="sd">        default: &#39;BBH&#39;</span>
+<span class="sd">    merger_rate_density : ``str`` or ``callable`` or ``None``</span>
+<span class="sd">        Merger rate density model to use. \n</span>
+<span class="sd">        Options: \n</span>
+<span class="sd">        - &#39;merger_rate_density_bbh_popI_II_oguri2018&#39;: PopI/II BBH (Oguri 2018) \n</span>
+<span class="sd">        - &#39;sfr_madau_dickinson2014&#39;: Star formation rate (Madau &amp; Dickinson 2014) \n</span>
+<span class="sd">        - &#39;sfr_with_td&#39;: SFR with time delay \n</span>
+<span class="sd">        - &#39;merger_rate_density_bbh_popIII_ken2022&#39;: PopIII BBH (Ng 2022) \n</span>
+<span class="sd">        - &#39;merger_rate_density_bbh_primordial_ken2022&#39;: Primordial BBH (Ng 2022) \n</span>
+<span class="sd">        - callable: User-defined function f(z) -&gt; rate density \n</span>
+<span class="sd">        default: None (uses &#39;merger_rate_density_bbh_popI_II_oguri2018&#39;)</span>
+<span class="sd">    merger_rate_density_param : ``dict`` or ``None``</span>
+<span class="sd">        Parameters for the merger rate density function. \n</span>
+<span class="sd">        default: None (uses dict(R0=23.9 * 1e-9, b2=1.6, b3=2.1, b4=30))</span>
+<span class="sd">    cosmology : ``astropy.cosmology`` or ``None``</span>
+<span class="sd">        Cosmology for distance calculations. \n</span>
+<span class="sd">        default: None (uses LambdaCDM(H0=70, Om0=0.3, Ode0=0.7))</span>
+<span class="sd">    directory : ``str``</span>
+<span class="sd">        Directory to store interpolator JSON files. \n</span>
 <span class="sd">        default: &#39;./interpolator_json&#39;</span>
-<span class="sd">    create_new_interpolator : `dict`</span>
-<span class="sd">        Dictionary of interpolator creation parameters</span>
-<span class="sd">        default: None/dict(redshift_distribution=dict(create_new=False, resolution=1000), z_to_luminosity_distance=dict(create_new=False, resolution=1000), differential_comoving_volume=dict(create_new=False, resolution=1000))</span>
+<span class="sd">    create_new_interpolator : ``dict`` or ``bool``</span>
+<span class="sd">        Control interpolator creation. \n</span>
+<span class="sd">        If ``bool``: Apply to all interpolators. \n</span>
+<span class="sd">        If ``dict``: Per-quantity settings with keys &#39;create_new&#39; and &#39;resolution&#39;. \n</span>
+<span class="sd">        default: False</span>
 
 <span class="sd">    Examples</span>
-<span class="sd">    ----------</span>
+<span class="sd">    --------</span>
+<span class="sd">    Basic usage:</span>
+
 <span class="sd">    &gt;&gt;&gt; from ler.gw_source_population import CBCSourceRedshiftDistribution</span>
-<span class="sd">    &gt;&gt;&gt; cbc = CBCSourceRedshiftDistribution(z_min=0.001, z_max=10, merger_rate_density=&quot;merger_rate_density_bbh_popI_II_oguri2018&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; cbc.merger_rate_density(zs=0.0001) # local merger rate density at low redshift</span>
-
-<span class="sd">    Instance Attributes</span>
-<span class="sd">    ----------</span>
-<span class="sd">    SourceGalaxyPopulationModel has the following instance attributes:\n</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    | Atrributes                          | Type                             |</span>
-<span class="sd">    +=====================================+==================================+</span>
-<span class="sd">    |:attr:`~z_min`                       | `float`                          |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:attr:`~z_max`                       | `float`                          |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:attr:`~directory`                   | `str`                            |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:attr:`~event_type`                  | `str`                            |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:attr:`~cosmo`                       | `astropy.cosmology`              |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:attr:`~merger_rate_density_param`   | `dict`                           |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:attr:`~normalization_pdf_z`         | `float`                          |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:attr:`~merger_rate_density_model_list`                                 |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |                                     | List of available                |</span>
-<span class="sd">    |                                     | merger rate density functions    |</span>
-<span class="sd">    |                                     | and its parameters               |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:attr:`~merger_rate_density`         | `class object`                   |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:attr:`~source_redshift`             | `class object`                   |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:attr:`~luminosity_distance`         | `class object`                   |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:attr:`~differential_comoving_volume`| `class object`                   |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-
+<span class="sd">    &gt;&gt;&gt; cbc = CBCSourceRedshiftDistribution(z_min=0.001, z_max=10)</span>
+<span class="sd">    &gt;&gt;&gt; zs_samples = cbc.source_redshift(size=1000)</span>
+<span class="sd">    &gt;&gt;&gt; rate = cbc.merger_rate_density(zs=0.5)</span>
 
 <span class="sd">    Instance Methods</span>
 <span class="sd">    ----------</span>
-<span class="sd">    SourceGalaxyPopulationModel has the following instance methods:\n</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    | Methods                             | Type                             |</span>
-<span class="sd">    +=====================================+==================================+</span>
-<span class="sd">    |:meth:`~merger_rate_density_detector_frame`                             |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |                                     | Function to compute the merger   |</span>
-<span class="sd">    |                                     | rate density (detector frame)    |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:meth:`~create_lookup_table`         | Function to create a lookup      |</span>
-<span class="sd">    |                                     | table for the differential       |</span>
-<span class="sd">    |                                     | comoving volume and luminosity   |</span>
-<span class="sd">    |                                     | distance wrt redshift            |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:meth:`~merger_rate_density_bbh_popI_II_oguri2018`                      |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |                                     | Function to compute the merger   |</span>
-<span class="sd">    |                                     | rate density (PopI/PopII)        |</span>
-<span class="sd">    |                                     | from Oguri et al. (2018)         |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:meth:`~sfr_madau_dickinson2014`                        |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |                                     | Function to compute star         |</span>
-<span class="sd">    |                                     | formation rate as given in       |</span>
-<span class="sd">    |                                     | Eqn. 15 Madau &amp; Dickinson (2014) |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:meth:`~merger_rate_density_bbh_popIII_ken2022`                         |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |                                     | Function to compute the merger   |</span>
-<span class="sd">    |                                     | rate density (PopIII)            |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |:meth:`~merger_rate_density_bbh_primordial_ken2022`                     |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
-<span class="sd">    |                                     | Function to compute the merger   |</span>
-<span class="sd">    |                                     | rate density (Primordial)        |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    CBCSourceRedshiftDistribution has the following methods: \n</span>
+<span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
+<span class="sd">    | Method                                              | Description                                        |</span>
+<span class="sd">    +=====================================================+====================================================+</span>
+<span class="sd">    | :meth:`~merger_rate_density_detector_frame`         | Compute merger rate density in detector frame      |</span>
+<span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
+<span class="sd">    | :meth:`~merger_rate_density_bbh_popI_II_oguri2018`  | PopI/II merger rate density (Oguri 2018)           |</span>
+<span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
+<span class="sd">    | :meth:`~sfr_madau_dickinson2014`                    | Star formation rate (Madau &amp; Dickinson 2014)       |</span>
+<span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
+<span class="sd">    | :meth:`~sfr_with_td`                                | SFR with time delay convolution                    |</span>
+<span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
+<span class="sd">    | :meth:`~merger_rate_density_bbh_popIII_ken2022`     | PopIII merger rate density (Ng 2022)               |</span>
+<span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
+<span class="sd">    | :meth:`~merger_rate_density_bbh_primordial_ken2022` | Primordial BBH merger rate density (Ng 2022)       |</span>
+<span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># Attributes</span>
-<div class="viewcode-block" id="CBCSourceRedshiftDistribution.z_min">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_min">[docs]</a>
-    <span class="n">z_min</span> <span class="o">=</span> <span class="kc">None</span></div>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;``float`` \n</span>
-<span class="sd">    Minimum redshift of the source population</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="CBCSourceRedshiftDistribution.z_max">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_max">[docs]</a>
-    <span class="n">z_max</span> <span class="o">=</span> <span class="kc">None</span></div>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;``float`` \n</span>
-<span class="sd">    Maximum redshift of the source population</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="CBCSourceRedshiftDistribution.event_type">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.event_type">[docs]</a>
-    <span class="n">event_type</span> <span class="o">=</span> <span class="kc">None</span></div>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;``str`` \n</span>
-<span class="sd">    Type of event to generate. \n</span>
-<span class="sd">    e.g. &#39;BBH&#39;, &#39;BNS&#39;, &#39;NSBH&#39;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="CBCSourceRedshiftDistribution.cosmo">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.cosmo">[docs]</a>
-    <span class="n">cosmo</span> <span class="o">=</span> <span class="kc">None</span></div>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;``astropy.cosmology`` \n</span>
-<span class="sd">    Cosmology to use for the redshift distribution. \n</span>
-<span class="sd">    e.g. Planck18, WMAP9, FlatLambdaCDM(H0=70, Om0=0.3) etc.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_param">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_param">[docs]</a>
-    <span class="n">merger_rate_density_param</span> <span class="o">=</span> <span class="kc">None</span></div>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;``dict`` \n</span>
-<span class="sd">    Dictionary of merger rate density function input parameters</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="CBCSourceRedshiftDistribution.create_new_interpolator">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.create_new_interpolator">[docs]</a>
-    <span class="n">create_new_interpolator</span> <span class="o">=</span> <span class="kc">None</span></div>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;``dict`` \n</span>
-<span class="sd">    Dictionary of interpolator creation parameters. \n</span>
-<span class="sd">    e.g. dict(redshift_distribution=dict(create_new=False, resolution=1000), z_to_luminosity_distance=dict(create_new=False, resolution=1000), differential_comoving_volume=dict(create_new=False, resolution=1000))</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="CBCSourceRedshiftDistribution.normalization_pdf_z">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.normalization_pdf_z">[docs]</a>
-    <span class="n">normalization_pdf_z</span> <span class="o">=</span> <span class="kc">None</span></div>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;``float`` \n</span>
-<span class="sd">    Normalization constant of the pdf p(z)</span>
+<span class="sd">    Instance Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    CBCSourceRedshiftDistribution has the following attributes: \n</span>
+<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
+<span class="sd">    | Attribute                                      | Type                      | Unit  | Description                                  |</span>
+<span class="sd">    +================================================+===========================+=======+==============================================+</span>
+<span class="sd">    | :attr:`~z_min`                                 | ``float``                 |       | Minimum source redshift                      |</span>
+<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
+<span class="sd">    | :attr:`~z_max`                                 | ``float``                 |       | Maximum source redshift                      |</span>
+<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
+<span class="sd">    | :attr:`~event_type`                            | ``str``                   |       | Type of CBC event (BBH/BNS/NSBH)             |</span>
+<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
+<span class="sd">    | :attr:`~cosmo`                                 | ``astropy.cosmology``     |       | Cosmology for calculations                   |</span>
+<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
+<span class="sd">    | :attr:`~directory`                             | ``str``                   |       | Path for storing interpolators               |</span>
+<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
+<span class="sd">    | :attr:`~merger_rate_density_param`             | ``dict``                  |       | Merger rate density parameters               |</span>
+<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
+<span class="sd">    | :attr:`~normalization_pdf_z`                   | ``float``                 |       | Normalization constant for p(z)              |</span>
+<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
+<span class="sd">    | :attr:`~merger_rate_density`                   | ``callable``              |       | Merger rate density function R(z)            |</span>
+<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
+<span class="sd">    | :attr:`~merger_rate_density_model_list`        | ``dict``                  |       | Available merger rate density models         |</span>
+<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
+<span class="sd">    | :attr:`~source_redshift`                       | ``FunctionConditioning``  |       | Source redshift sampler                      |</span>
+<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
+<span class="sd">    | :attr:`~luminosity_distance`                   | ``FunctionConditioning``  |       | Luminosity distance interpolator             |</span>
+<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
+<span class="sd">    | :attr:`~differential_comoving_volume`          | ``FunctionConditioning``  |       | dVc/dz interpolator                          |</span>
+<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -395,38 +278,55 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span> <span class="o">=</span> <span class="n">cosmology</span> <span class="k">if</span> <span class="n">cosmology</span> <span class="k">else</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
 
         <span class="c1"># setting up the interpolator creation parameters</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_decision_dictionary</span><span class="p">(</span><span class="n">create_new_interpolator</span><span class="p">,</span> <span class="n">merger_rate_density</span><span class="p">)</span>
-        
-        <span class="c1"># creating of interpolators for redshift dependent quantities</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">create_lookup_table</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup_decision_dictionary</span><span class="p">(</span><span class="n">create_new_interpolator</span><span class="p">,</span> <span class="n">merger_rate_density</span><span class="p">)</span>
+
+        <span class="c1"># Initialize cosmological functions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">luminosity_distance</span> <span class="o">=</span> <span class="n">luminosity_distance</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">,</span> <span class="n">cosmo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;luminosity_distance&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">],</span> <span class="n">resolution</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;luminosity_distance&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">],</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">differential_comoving_volume</span> <span class="o">=</span> <span class="n">differential_comoving_volume</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">,</span> <span class="n">cosmo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;differential_comoving_volume&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">],</span> <span class="n">resolution</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;differential_comoving_volume&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">],</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># function initialization</span>
-        <span class="n">merger_rate_density</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_priors_categorization</span><span class="p">(</span><span class="n">event_type</span><span class="p">,</span> <span class="n">merger_rate_density</span><span class="p">,</span> <span class="n">merger_rate_density_param</span><span class="p">)</span>
+        <span class="n">merger_rate_density</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merger_rate_density_priors_categorization</span><span class="p">(</span><span class="n">event_type</span><span class="p">,</span> <span class="n">merger_rate_density</span><span class="p">,</span> <span class="n">merger_rate_density_param</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density</span> <span class="o">=</span> <span class="n">merger_rate_density</span> <span class="c1"># this is an initialization, not a variable assignment</span>
 
         <span class="c1"># source redshift distribution initialization</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_detector_frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_detector_frame</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">source_redshift</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_detector_frame</span><span class="o">.</span><span class="n">rvs</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">normalization_pdf_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_detector_frame</span><span class="o">.</span><span class="n">pdf_norm_const</span>
+<div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_detector_frame">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_detector_frame">[docs]</a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_detector_frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_detector_frame</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_redshift</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
+            <span class="n">function</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_detector_frame</span><span class="o">.</span><span class="n">z_array</span><span class="p">,</span>
+            <span class="n">x_array</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_detector_frame</span><span class="o">.</span><span class="n">x_array</span><span class="p">,</span>
+            <span class="n">identifier_dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_detector_frame</span><span class="o">.</span><span class="n">info</span><span class="p">,</span>
+            <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;source_redshift&quot;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;source_redshift&quot;</span><span class="p">,</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">],</span>
+            <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">create_function</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">create_pdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">create_rvs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;rvs&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
 
-<div class="viewcode-block" id="CBCSourceRedshiftDistribution.setup_decision_dictionary">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.setup_decision_dictionary">[docs]</a>
-    <span class="k">def</span> <span class="nf">setup_decision_dictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">create_new_interpolator</span><span class="p">,</span> <span class="n">merger_rate_density</span><span class="p">):</span>
+        <span class="c1"># Normalization of the pdf p(z)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalization_pdf_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_redshift</span><span class="o">.</span><span class="n">pdf_norm_const</span>
+
+    <span class="k">def</span> <span class="nf">_setup_decision_dictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">create_new_interpolator</span><span class="p">,</span> <span class="n">merger_rate_density</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method to set up a decision dictionary for interpolator creation.</span>
+<span class="sd">        Helper to set up a decision dictionary for interpolator creation.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        create_new_interpolator : `dict`, `bool`</span>
-<span class="sd">            If `dict`, dictionary of boolean values and resolution to create new interpolator.</span>
-<span class="sd">            If `bool`, boolean value to create new interpolator for all quantities.</span>
+<span class="sd">        create_new_interpolator : ``dict`` or ``bool``</span>
+<span class="sd">            If ``dict``: Per-quantity settings with &#39;create_new&#39; and &#39;resolution&#39;. </span>
+<span class="sd">            If ``bool``: Apply to all interpolators.</span>
+<span class="sd">        merger_rate_density : ``str`` or ``None``</span>
+<span class="sd">            Merger rate density model name for resolution adjustment.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        create_new_interpolator_ : `dict`</span>
-<span class="sd">            Dictionary of boolean values and resolution to create new interpolator.</span>
-<span class="sd">            e.g. dict(redshift_distribution=dict(create_new=False, resolution=1000), luminosity_distance=dict(create_new=False, resolution=1000), differential_comoving_volume=dict(create_new=False, resolution=1000))</span>
+<span class="sd">        create_new_interpolator_ : ``dict``</span>
+<span class="sd">            Dictionary with interpolator creation settings.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">create_new_interpolator_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">merger_rate_density</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
@@ -445,50 +345,27 @@
             <span class="k">if</span> <span class="n">merger_rate_density</span><span class="o">==</span><span class="s2">&quot;sfr_with_td&quot;</span><span class="p">:</span>
                 <span class="n">create_new_interpolator_</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">48</span>
 
-        <span class="k">return</span> <span class="n">create_new_interpolator_</span></div>
-
+        <span class="k">return</span> <span class="n">create_new_interpolator_</span>
     
-<div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_priors_categorization">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_priors_categorization">[docs]</a>
-    <span class="k">def</span> <span class="nf">merger_rate_density_priors_categorization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_type</span><span class="p">,</span> <span class="n">merger_rate_density</span><span class="p">,</span> <span class="n">merger_rate_density_param</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_merger_rate_density_priors_categorization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_type</span><span class="p">,</span> <span class="n">merger_rate_density</span><span class="p">,</span> <span class="n">merger_rate_density_param</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to categorize the merger rate density and its parameters.</span>
+<span class="sd">        Helper to categorize merger rate density and set default parameters.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        event_type : `str`</span>
-<span class="sd">            Type of event to generate.</span>
-<span class="sd">            e.g. &#39;BBH&#39;, &#39;BNS&#39;, &#39;BBH_popIII&#39;, &#39;BBH_primordial&#39;, &#39;NSBH&#39;</span>
-<span class="sd">        merger_rate_density : `str` or `callable`</span>
-<span class="sd">            Merger rate density function name or function itself.</span>
-<span class="sd">            If `str`, it must be one of the available merger rate density functions.</span>
-<span class="sd">            If `callable`, it must accept a single argument, the redshift.</span>
-<span class="sd">        merger_rate_density_param : `dict`</span>
-<span class="sd">            Dictionary of merger rate density function parameters.</span>
-<span class="sd">            If `None`, use the default parameters for the chosen merger rate density function.</span>
-<span class="sd">            If not `None`, must contain the following parameters:</span>
-<span class="sd">                R0 : `float`</span>
-<span class="sd">                    Normalization constant of the merger rate density.</span>
-<span class="sd">                b2 : `float`</span>
-<span class="sd">                    Power law exponent of the merger rate density.</span>
-<span class="sd">                b3 : `float`</span>
-<span class="sd">                    Power law exponent of the merger rate density.</span>
-<span class="sd">                b4 : `float`</span>
-<span class="sd">                    Power law exponent of the merger rate density.</span>
+<span class="sd">        event_type : ``str``</span>
+<span class="sd">            Type of CBC event (&#39;BBH&#39;, &#39;BNS&#39;, &#39;NSBH&#39;).</span>
+<span class="sd">        merger_rate_density : ``str`` or ``callable`` or ``None``</span>
+<span class="sd">            Merger rate density model name or user function.</span>
+<span class="sd">        merger_rate_density_param : ``dict`` or ``None``</span>
+<span class="sd">            User-provided parameters to override defaults.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        merger_rate_density_ : `str` or `callable`</span>
-<span class="sd">            Merger rate density function name or function itself.</span>
-<span class="sd">        merger_rate_density_param_ : `dict`</span>
-<span class="sd">            Dictionary of merger rate density function parameters.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        If `merger_rate_density` is a string, it must be one of the available merger rate density functions.</span>
-<span class="sd">        If `merger_rate_density` is a callable, it must accept a single argument, the redshift.</span>
-<span class="sd">        If `merger_rate_density_param` is `None`, use the default parameters for the chosen merger rate density function.</span>
-<span class="sd">        If `merger_rate_density_param` is not `None`, it must contain the following parameters: R0, b2, b3, b4.</span>
+<span class="sd">        merger_rate_density_ : ``str`` or ``callable``</span>
+<span class="sd">            Validated merger rate density model or function.</span>
+<span class="sd">        merger_rate_density_param_ : ``dict``</span>
+<span class="sd">            Parameters for the merger rate density function.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># update the merger rate density and its parameters with user provided values</span>
@@ -502,6 +379,7 @@
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">merger_rate_density</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user provided custom merger rate density function&quot;</span><span class="p">)</span>
             <span class="n">merger_rate_density_</span> <span class="o">=</span> <span class="n">merger_rate_density</span>
+            <span class="n">merger_rate_density_param_</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">merger_rate_density_</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_bbh_popI_II_oguri2018&quot;</span>
 
@@ -517,12 +395,7 @@
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;event_type must be &#39;BBH&#39;, &#39;BNS&#39; or &#39;NSBH&#39;&quot;</span><span class="p">)</span>
         
         <span class="c1"># merger rate with time delay; Borhanian &amp; Sathyaprakash (2024)</span>
-        <span class="n">list_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sfr_with_td&#39;</span><span class="p">,</span>
-                  <span class="c1">#&#39;sfr_madau_fragos2017_with_bbh_dt&#39;, </span>
-                  <span class="c1"># &#39;sfr_madau_dickinson2014_with_bbh_dt&#39;,</span>
-                  <span class="c1"># &#39;sfr_madau_fragos2017_with_bns_dt&#39;, </span>
-                  <span class="c1"># &#39;sfr_madau_dickinson2014_with_bns_dt&#39;</span>
-                <span class="p">]</span>
+        <span class="n">list_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sfr_with_td&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">merger_rate_density_</span> <span class="ow">in</span> <span class="n">list_</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">event_type</span> <span class="o">==</span> <span class="s2">&quot;BBH&quot;</span><span class="p">:</span>
                 <span class="n">merger_rate_density_param_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">R0</span><span class="o">=</span><span class="mf">23.9</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">2.6</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">3.2</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">6.2</span><span class="p">,</span> <span class="n">td_min</span><span class="o">=</span><span class="mf">10e-3</span><span class="p">,</span> <span class="n">td_max</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
@@ -535,34 +408,35 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">merger_rate_density_param</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>  <span class="c1"># merger_rate_density_param is user provided</span>
             <span class="n">merger_rate_density_param_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">merger_rate_density_param</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">merger_rate_density_</span><span class="p">,</span> <span class="n">merger_rate_density_param_</span></div>
+        <span class="k">return</span> <span class="n">merger_rate_density_</span><span class="p">,</span> <span class="n">merger_rate_density_param_</span>
 
-
-<div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_detector_frame">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_detector_frame">[docs]</a>
     <span class="k">def</span> <span class="nf">merger_rate_density_detector_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to compute the merger rate density (detector frame). The output is in detector frame and is unnormalized.</span>
+<span class="sd">        Compute the merger rate density in the detector frame.</span>
+
+<span class="sd">        The output is unnormalized and accounts for the (1+z) time dilation </span>
+<span class="sd">        factor and differential comoving volume.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        zs : `float` or `numpy.ndarray` (1D array of floats)</span>
-<span class="sd">            Source redshifts</span>
-<span class="sd">        param : `dict`</span>
-<span class="sd">            Allows to pass in above parameters as dict.</span>
-<span class="sd">            e.g. if the merger_rate_density is merger_rate_density_bbh_popI_II_oguri2018</span>
-<span class="sd">            param = dict(R0=23.9*1e-9, b2=1.6, b3=2.1, b4=30)</span>
+<span class="sd">        zs : ```numpy.ndarray``</span>
+<span class="sd">            Source redshift(s) at which to evaluate the rate density.</span>
+<span class="sd">        get_attribute : ``bool``</span>
+<span class="sd">            If True, return the FunctionConditioning object. </span>
+<span class="sd">            If False, return evaluated values. </span>
+<span class="sd">            default: False</span>
+<span class="sd">        **kwargs : ``dict``</span>
+<span class="sd">            Additional keyword arguments (unused).</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        ----------</span>
-<span class="sd">        rate_density : `numpy.ndarray`</span>
-<span class="sd">            1D array of floats</span>
-<span class="sd">            merger rate density (detector frame) (Mpc^-3 yr^-1)</span>
+<span class="sd">        -------</span>
+<span class="sd">        rate_density : ``numpy.ndarray`` or ``FunctionConditioning``</span>
+<span class="sd">            Merger rate density in detector frame (units: Mpc^-3 yr^-1 sr^-1).</span>
 
 <span class="sd">        Examples</span>
-<span class="sd">        ----------</span>
-<span class="sd">        &gt;&gt;&gt; from ler.gw_source_population import SourceGalaxyPopulationModel</span>
-<span class="sd">        &gt;&gt;&gt; cbc = SourceGalaxyPopulationModel()</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.gw_source_population import CBCSourceRedshiftDistribution</span>
+<span class="sd">        &gt;&gt;&gt; cbc = CBCSourceRedshiftDistribution()</span>
 <span class="sd">        &gt;&gt;&gt; rate_density = cbc.merger_rate_density_detector_frame(zs=0.1)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -574,13 +448,13 @@
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_detector_frame&quot;</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
 
-        <span class="n">zs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;z_min&#39;</span><span class="p">],</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;z_max&#39;</span><span class="p">],</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">])</span>
+        <span class="n">zs_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;z_min&#39;</span><span class="p">],</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;z_max&#39;</span><span class="p">],</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">])</span>
         <span class="n">Pzs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">differential_comoving_volume</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 
         <span class="n">Pzs_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
             <span class="n">function</span><span class="o">=</span><span class="n">Pzs</span><span class="p">,</span>
-            <span class="n">x_array</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
-            <span class="n">param_dict_given</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
+            <span class="n">x_array</span><span class="o">=</span><span class="n">zs_array</span><span class="p">,</span>
+            <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
@@ -592,40 +466,38 @@
             <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;function&#39;</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Pzs_object</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Pzs_object</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span></div>
-
+        <span class="k">return</span> <span class="n">Pzs_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">Pzs_object</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span>
 
 <div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_bbh_popI_II_oguri2018">
 <a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_popI_II_oguri2018">[docs]</a>
     <span class="k">def</span> <span class="nf">merger_rate_density_bbh_popI_II_oguri2018</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to compute the merger rate density (PopI/PopII). Reference: Oguri et al. (2018). The output is in source frame and is unnormalized.</span>
+<span class="sd">        Compute PopI/II BBH merger rate density (Oguri et al. 2018).</span>
+
+<span class="sd">        Returns the source-frame merger rate density following the </span>
+<span class="sd">        Oguri et al. (2018) prescription for PopI/II stellar populations.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        zs : `float` or `numpy.ndarray` (nD array of floats)</span>
-<span class="sd">            Source redshifts</span>
-<span class="sd">        get_attribute : `bool`</span>
-<span class="sd">            If True, returns the merger rate density function instead of the value</span>
+<span class="sd">        zs : ```numpy.ndarray``</span>
+<span class="sd">            Source redshift(s) at which to evaluate.</span>
+<span class="sd">        get_attribute : ``bool``</span>
+<span class="sd">            If True, return the FunctionConditioning object. </span>
 <span class="sd">            default: False</span>
-<span class="sd">        kwargs : `dict`</span>
-<span class="sd">            Dictionary of merger rate density function fitting parameters. </span>
-<span class="sd">            default: R0=23.9*1e-9, b2=1.6, b3=2.1, b4=30</span>
-<span class="sd">            R0 is the local merger rate density at low redshift in Mpc^-3 yr^-1</span>
+<span class="sd">        **kwargs : ``dict``</span>
+<span class="sd">            Override default fitting parameters: </span>
+<span class="sd">            R0=23.9e-9, b2=1.6, b3=2.1, b4=30.</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        ----------</span>
-<span class="sd">        rate_density : `float` or `numpy.ndarray` (nD array of floats)</span>
-<span class="sd">            merger rate density in source frame (Mpc^-3 yr^-1)</span>
+<span class="sd">        -------</span>
+<span class="sd">        rate_density : ```numpy.ndarray`` or ``FunctionConditioning``</span>
+<span class="sd">            Merger rate density in source frame (units: Mpc^-3 yr^-1).</span>
 
 <span class="sd">        Examples</span>
-<span class="sd">        ----------</span>
-<span class="sd">        &gt;&gt;&gt; from ler.gw_source_population import SourceGalaxyPopulationModel</span>
-<span class="sd">        &gt;&gt;&gt; pop = SourceGalaxyPopulationModel(z_min=0.0, z_max=10, event_type = &quot;BBH&quot;, merger_rate_density=&quot;merger_rate_density_bbh_popI_II_oguri2018&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; rate_density = pop.merger_rate_density(zs=0.1)</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.gw_source_population import CBCSourceRedshiftDistribution</span>
+<span class="sd">        &gt;&gt;&gt; cbc = CBCSourceRedshiftDistribution(merger_rate_density=&quot;merger_rate_density_bbh_popI_II_oguri2018&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; rate = cbc.merger_rate_density(zs=0.5)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{}</span>
@@ -635,7 +507,7 @@
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;event_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_bbh_popI_II_oguri2018&quot;</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
-        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_model_list</span><span class="p">[</span><span class="s2">&quot;merger_rate_density_bbh_popI_II_oguri2018&quot;</span><span class="p">]</span>
+        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_model_list</span><span class="p">[</span><span class="s2">&quot;merger_rate_density_bbh_popI_II_oguri2018&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
         
@@ -651,7 +523,7 @@
         <span class="n">Rzs_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
             <span class="n">function</span><span class="o">=</span><span class="n">Rzs</span><span class="p">,</span>
             <span class="n">x_array</span><span class="o">=</span><span class="n">zs_array</span><span class="p">,</span>
-            <span class="n">param_dict_given</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
+            <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
@@ -670,6 +542,26 @@
 <a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.sfr_with_td">[docs]</a>
     <span class="k">def</span> <span class="nf">sfr_with_td</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute merger rate density with time delay convolution.</span>
+
+<span class="sd">        Convolves the star formation rate with a time delay distribution </span>
+<span class="sd">        to compute the merger rate density. Uses multiprocessing for </span>
+<span class="sd">        numerical integration (Borhanian &amp; Sathyaprakash 2024).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        zs : ```numpy.ndarray``</span>
+<span class="sd">            Source redshift(s) at which to evaluate.</span>
+<span class="sd">        get_attribute : ``bool``</span>
+<span class="sd">            If True, return the FunctionConditioning object. </span>
+<span class="sd">            default: False</span>
+<span class="sd">        **kwargs : ``dict``</span>
+<span class="sd">            Override default SFR and time delay parameters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        rate_density : ```numpy.ndarray`` or ``FunctionConditioning``</span>
+<span class="sd">            Merger rate density (units: Mpc^-3 yr^-1).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{}</span>
@@ -679,17 +571,16 @@
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;event_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;sfr_with_td&quot;</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
-        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_model_list</span><span class="p">[</span><span class="s2">&quot;sfr_with_td&quot;</span><span class="p">]</span>
+        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_model_list</span><span class="p">[</span><span class="s2">&quot;sfr_with_td&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">identifier_dict</span><span class="p">)</span>
     
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Numerically solving the merger_rate_density with time delay&quot;</span><span class="p">)</span>
         <span class="n">zs_resolution</span> <span class="o">=</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">]</span>
         <span class="n">zs_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="o">+</span><span class="mf">0.001</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">,</span> <span class="n">zs_resolution</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="o">==</span><span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">,</span> <span class="n">zs_resolution</span><span class="p">)</span>
 
         <span class="n">_</span><span class="p">,</span> <span class="n">it_exist</span> <span class="o">=</span> <span class="n">interpolator_json_path</span><span class="p">(</span>
-            <span class="n">param_dict_given</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
+            <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
             <span class="n">interpolator_name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
@@ -704,7 +595,7 @@
         <span class="n">rate_density_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
             <span class="n">function</span><span class="o">=</span><span class="n">rate_density</span><span class="p">,</span>
             <span class="n">x_array</span><span class="o">=</span><span class="n">zs_array</span><span class="p">,</span>
-            <span class="n">param_dict_given</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
+            <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
@@ -721,22 +612,20 @@
     
     <span class="k">def</span> <span class="nf">_helper_rate_density_multiprocessing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs_array</span><span class="p">,</span> <span class="n">identifier_dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Computes the merger rate density distribution with a time delay applied to the star formation rate (SFR),</span>
-<span class="sd">        utilizing multiprocessing for improved performance.</span>
+<span class="sd">        Helper to compute merger rate density with time delay using multiprocessing.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        zs_array : `numpy.ndarray`</span>
-<span class="sd">            1D array of source redshifts for which the merger rate density is calculated.</span>
-<span class="sd">        identifier_dict : `dict`</span>
-<span class="sd">            Dictionary containing parameters for the computation, including cosmological parameters</span>
-<span class="sd">            (H0, Omega_M, Omega_Lambda), time delay bounds (td_min, td_max), and SFR parameters (a, b, c, d).</span>
+<span class="sd">        zs_array : ``numpy.ndarray``</span>
+<span class="sd">            1D array of source redshifts.</span>
+<span class="sd">        identifier_dict : ``dict``</span>
+<span class="sd">            Parameters including cosmology (H0, Om0, Ode0), </span>
+<span class="sd">            time delay bounds (td_min, td_max), and SFR parameters (a, b, c, d).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        rate_density_array : `numpy.ndarray`</span>
-<span class="sd">            1D array representing the computed merger rate density distribution normalized to the local</span>
-<span class="sd">            merger rate density at low redshift (R0).</span>
+<span class="sd">        rate_density_array : ``numpy.ndarray``</span>
+<span class="sd">            Computed merger rate density normalized to R0.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">zs_array</span><span class="p">)</span>
@@ -783,29 +672,31 @@
 <a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.sfr_madau_dickinson2014">[docs]</a>
     <span class="k">def</span> <span class="nf">sfr_madau_dickinson2014</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Formation rate as given in Eqn. 15 Madau &amp; Dickinson (2014). The output is in detector frame and is unnormalized.</span>
+<span class="sd">        Compute star formation rate following Madau &amp; Dickinson (2014).</span>
+
+<span class="sd">        Returns the cosmic star formation rate density as given in </span>
+<span class="sd">        Equation 15 of Madau &amp; Dickinson (2014).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        zs : `float` or `numpy.ndarray` (nd.array of floats)</span>
-<span class="sd">            Source redshifts</span>
-<span class="sd">        get_attribute : `bool`</span>
-<span class="sd">            If True, returns the merger rate density function instead of the value</span>
+<span class="sd">        zs : ```numpy.ndarray``</span>
+<span class="sd">            Source redshift(s) at which to evaluate.</span>
+<span class="sd">        get_attribute : ``bool``</span>
+<span class="sd">            If True, return the FunctionConditioning object. </span>
 <span class="sd">            default: False</span>
-<span class="sd">        kwargs : `dict`</span>
-<span class="sd">            Dictionary of star formation rate function fitting parameters.</span>
-<span class="sd">            default: af=2.7, bf=5.6, cf=2.9</span>
-<span class="sd">            </span>
+<span class="sd">        **kwargs : ``dict``</span>
+<span class="sd">            Override default fitting parameters: a=0.015, b=2.7, c=2.9, d=5.6.</span>
+
 <span class="sd">        Returns</span>
-<span class="sd">        ----------</span>
-<span class="sd">        rate_density : `float` or `numpy.ndarray` (nD array of floats)</span>
-<span class="sd">            merger rate density in detector frame (Mpc^-3 yr^-1)</span>
+<span class="sd">        -------</span>
+<span class="sd">        rate_density : ```numpy.ndarray`` or ``FunctionConditioning``</span>
+<span class="sd">            Star formation rate density (units: M_sun yr^-1 Mpc^-3).</span>
 
 <span class="sd">        Examples</span>
-<span class="sd">        ----------</span>
-<span class="sd">        &gt;&gt;&gt; from ler.gw_source_population import SourceGalaxyPopulationModel</span>
-<span class="sd">        &gt;&gt;&gt; pop = SourceGalaxyPopulationModel(z_min=5., z_max=40., event_type = &quot;BBH&quot;, merger_rate_density=&quot;sfr_madau_dickinson2014&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; rate_density = pop.merger_rate_density(zs=10)</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.gw_source_population import CBCSourceRedshiftDistribution</span>
+<span class="sd">        &gt;&gt;&gt; cbc = CBCSourceRedshiftDistribution(merger_rate_density=&quot;sfr_madau_dickinson2014&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; sfr = cbc.merger_rate_density(zs=2.0)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{}</span>
@@ -815,12 +706,12 @@
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;event_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;sfr_madau_dickinson2014&quot;</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
-        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_model_list</span><span class="p">[</span><span class="s2">&quot;sfr_madau_dickinson2014&quot;</span><span class="p">]</span>
+        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_model_list</span><span class="p">[</span><span class="s2">&quot;sfr_madau_dickinson2014&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
         
         <span class="n">zs_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;z_min&#39;</span><span class="p">],</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;z_max&#39;</span><span class="p">],</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">])</span>
-        <span class="n">Rzs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">zs</span><span class="p">:</span> <span class="n">sfr_madau_dickinson2014</span><span class="p">(</span>
+        <span class="n">Rzs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">zs</span><span class="p">:</span> <span class="n">sfr_madau_dickinson2014</span><span class="p">(</span>  <span class="c1"># noqa: E731</span>
             <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span> 
             <span class="n">a</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">],</span> 
             <span class="n">b</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">],</span> 
@@ -830,7 +721,7 @@
         <span class="n">Rzs_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
             <span class="n">function</span><span class="o">=</span><span class="n">Rzs</span><span class="p">,</span>
             <span class="n">x_array</span><span class="o">=</span><span class="n">zs_array</span><span class="p">,</span>
-            <span class="n">param_dict_given</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
+            <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
@@ -842,42 +733,42 @@
             <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;function&#39;</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Rzs_object</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Rzs_object</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Rzs_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">Rzs_object</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_bbh_popIII_ken2022">
 <a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_popIII_ken2022">[docs]</a>
     <span class="k">def</span> <span class="nf">merger_rate_density_bbh_popIII_ken2022</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Merger rate density (PopIII). Reference: Ng et al. 2022. The output is in detector frame and is unnormalized.</span>
+<span class="sd">        Compute PopIII BBH merger rate density (Ng et al. 2022).</span>
+
+<span class="sd">        Returns the merger rate density for Population III binary black </span>
+<span class="sd">        holes following the Ng et al. (2022) prescription.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        zs : `float` or `numpy.ndarray` </span>
-<span class="sd">            Source redshifts</span>
-<span class="sd">        get_attribute : `bool`</span>
-<span class="sd">            If True, returns the merger rate density function instead of the value</span>
+<span class="sd">        zs : ```numpy.ndarray``</span>
+<span class="sd">            Source redshift(s) at which to evaluate.</span>
+<span class="sd">        get_attribute : ``bool``</span>
+<span class="sd">            If True, return the FunctionConditioning object. </span>
 <span class="sd">            default: False</span>
-<span class="sd">        kwargs : `dict`</span>
-<span class="sd">            Dictionary of merger rate density function fitting parameters.</span>
-<span class="sd">            default: n0=19.2*1e-9, aIII=0.66, bIII=0.3, zIII=11.6</span>
-<span class="sd">            n0 is the local merger rate density at low redshift in Mpc^-3 yr^-1</span>
+<span class="sd">        **kwargs : ``dict``</span>
+<span class="sd">            Override default fitting parameters: </span>
+<span class="sd">            n0=19.2e-9, aIII=0.66, bIII=0.3, zIII=11.6.</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        ----------</span>
-<span class="sd">        rate_density : `float` or `numpy.ndarray`</span>
-<span class="sd">            merger rate density in detector frame (Mpc^-3 yr^-1)</span>
+<span class="sd">        -------</span>
+<span class="sd">        rate_density : ```numpy.ndarray`` or ``FunctionConditioning``</span>
+<span class="sd">            Merger rate density (units: Mpc^-3 yr^-1).</span>
 
 <span class="sd">        Examples</span>
-<span class="sd">        ----------</span>
-<span class="sd">        &gt;&gt;&gt; from ler.gw_source_population import SourceGalaxyPopulationModel</span>
-<span class="sd">        &gt;&gt;&gt; pop = SourceGalaxyPopulationModel(z_min=5, z_max=40, event_type = &quot;BBH&quot;, merger_rate_density=&quot;merger_rate_density_popIII_ken2022&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; rate_density = pop.merger_rate_density(zs=10)</span>
-<span class="sd">        &gt;&gt;&gt; rate_density  # Mpc^-3 yr^-1</span>
-<span class="sd">        1.5107979464621443e-08</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.gw_source_population import CBCSourceRedshiftDistribution</span>
+<span class="sd">        &gt;&gt;&gt; cbc = CBCSourceRedshiftDistribution(</span>
+<span class="sd">        ...     z_min=5, z_max=40, </span>
+<span class="sd">        ...     merger_rate_density=&quot;merger_rate_density_bbh_popIII_ken2022&quot;</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; rate = cbc.merger_rate_density(zs=10)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{}</span>
@@ -887,7 +778,7 @@
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;event_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_bbh_popIII_ken2022&quot;</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
-        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_model_list</span><span class="p">[</span><span class="s2">&quot;merger_rate_density_bbh_popIII_ken2022&quot;</span><span class="p">]</span>
+        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_model_list</span><span class="p">[</span><span class="s2">&quot;merger_rate_density_bbh_popIII_ken2022&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
 
@@ -903,7 +794,7 @@
         <span class="n">Rzs_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
             <span class="n">function</span><span class="o">=</span><span class="n">Rzs</span><span class="p">,</span>
             <span class="n">x_array</span><span class="o">=</span><span class="n">zs_array</span><span class="p">,</span>
-            <span class="n">param_dict_given</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
+            <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
@@ -915,45 +806,42 @@
             <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;function&#39;</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Rzs_object</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Rzs_object</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Rzs_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">Rzs_object</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span></div>
 
 
-    
 <div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_bbh_primordial_ken2022">
 <a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_primordial_ken2022">[docs]</a>
     <span class="k">def</span> <span class="nf">merger_rate_density_bbh_primordial_ken2022</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to compute the merger rate density (Primordial). Reference: Ng et al. 2022. The output is in detector frame and is unnormalized.</span>
+<span class="sd">        Compute primordial BBH merger rate density (Ng et al. 2022).</span>
+
+<span class="sd">        Returns the merger rate density for primordial binary black holes </span>
+<span class="sd">        following the Ng et al. (2022) prescription.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        zs : `float` or `numpy.ndarray` </span>
-<span class="sd">            Source redshifts</span>
-<span class="sd">        n0 : `float`</span>
-<span class="sd">            normalization constant</span>
-<span class="sd">            default: 0.044*1e-9</span>
-<span class="sd">        t0 : `float`</span>
-<span class="sd">            Present age of the Universe in Gyr</span>
-<span class="sd">            default: 13.786885302009708</span>
-<span class="sd">        param : `dict`</span>
-<span class="sd">            Allows to pass in above parameters as dict.</span>
-<span class="sd">            e.g. param = dict(t0=13.786885302009708)</span>
+<span class="sd">        zs : ```numpy.ndarray``</span>
+<span class="sd">            Source redshift(s) at which to evaluate.</span>
+<span class="sd">        get_attribute : ``bool``</span>
+<span class="sd">            If True, return the FunctionConditioning object. </span>
+<span class="sd">            default: False</span>
+<span class="sd">        **kwargs : ``dict``</span>
+<span class="sd">            Override default fitting parameters: </span>
+<span class="sd">            n0=0.044e-9, t0=13.786885302009708.</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        ----------</span>
-<span class="sd">        rate_density : `float`</span>
-<span class="sd">            merger rate density</span>
+<span class="sd">        -------</span>
+<span class="sd">        rate_density : ```numpy.ndarray`` or ``FunctionConditioning``</span>
+<span class="sd">            Merger rate density (units: Mpc^-3 yr^-1).</span>
 
 <span class="sd">        Examples</span>
-<span class="sd">        ----------</span>
-<span class="sd">        &gt;&gt;&gt; from ler.gw_source_population import SourceGalaxyPopulationModel</span>
-<span class="sd">        &gt;&gt;&gt; pop = SourceGalaxyPopulationModel(z_min=5, z_max=40, event_type = &quot;BBH&quot;, merger_rate_density=&quot;merger_rate_density_bbh_primordial_ken2022&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; rate_density = pop.merger_rate_density(zs=10)</span>
-<span class="sd">        &gt;&gt;&gt; rate_density  # Mpc^-3 yr^-1</span>
-<span class="sd">        9.78691173794454e-10</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from ler.gw_source_population import CBCSourceRedshiftDistribution</span>
+<span class="sd">        &gt;&gt;&gt; cbc = CBCSourceRedshiftDistribution(</span>
+<span class="sd">        ...     z_min=5, z_max=40, </span>
+<span class="sd">        ...     merger_rate_density=&quot;merger_rate_density_bbh_primordial_ken2022&quot;</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; rate = cbc.merger_rate_density(zs=10)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{}</span>
@@ -963,7 +851,7 @@
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;event_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_bbh_primordial_ken2022&quot;</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
-        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_model_list</span><span class="p">[</span><span class="s2">&quot;merger_rate_density_bbh_primordial_ken2022&quot;</span><span class="p">]</span>
+        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_model_list</span><span class="p">[</span><span class="s2">&quot;merger_rate_density_bbh_primordial_ken2022&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
 
@@ -977,7 +865,7 @@
         <span class="n">Rzs_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
             <span class="n">function</span><span class="o">=</span><span class="n">Rzs</span><span class="p">,</span>
             <span class="n">x_array</span><span class="o">=</span><span class="n">zs_array</span><span class="p">,</span>
-            <span class="n">param_dict_given</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
+            <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
@@ -989,119 +877,7 @@
             <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;function&#39;</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Rzs_object</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Rzs_object</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span></div>
-
-    
-<div class="viewcode-block" id="CBCSourceRedshiftDistribution.create_lookup_table">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.create_lookup_table">[docs]</a>
-    <span class="k">def</span> <span class="nf">create_lookup_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to create a lookup table for the differential comoving volume</span>
-<span class="sd">        and luminosity distance wrt redshift.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        z_min : `float`</span>
-<span class="sd">            Minimum redshift of the source population</span>
-<span class="sd">        z_max : `float`</span>
-<span class="sd">            Maximum redshift of the source population</span>
-
-<span class="sd">        Attributes</span>
-<span class="sd">        ----------</span>
-<span class="sd">        z_to_luminosity_distance : `scipy.interpolate.interpolate`</span>
-<span class="sd">            Function to convert redshift to luminosity distance</span>
-<span class="sd">        differential_comoving_volume : `scipy.interpolate.interpolate`</span>
-<span class="sd">            Function to calculate the differential comoving volume</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">z_min</span> <span class="o">=</span> <span class="mf">0.001</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span> <span class="o">==</span> <span class="mf">0.</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span>
-        <span class="n">z_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span>
-
-        <span class="n">resolution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;luminosity_distance&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
-        <span class="n">create_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;luminosity_distance&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">]</span>
-        <span class="n">zs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-        <span class="n">Dl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="o">.</span><span class="n">luminosity_distance</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
-        
-        <span class="bp">self</span><span class="o">.</span><span class="n">luminosity_distance</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
-            <span class="n">function</span><span class="o">=</span><span class="n">Dl</span><span class="p">,</span>
-            <span class="n">x_array</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
-            <span class="n">conditioned_y_array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">param_dict_given</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span> <span class="n">cosmology</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span> <span class="n">details</span><span class="o">=</span><span class="s2">&quot;luminosity_distance from astropy.cosmology&quot;</span><span class="p">),</span>
-            <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;luminosity_distance&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;luminosity_distance&quot;</span><span class="p">,</span>
-            <span class="n">create_new</span><span class="o">=</span><span class="n">create_new</span><span class="p">,</span>
-            <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">create_function</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">create_pdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">create_rvs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;function&#39;</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">luminosity_distance</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">        Redshift to luminosity distance conversion.</span>
-
-<span class="s2">        Parameters</span>
-<span class="s2">        ----------</span>
-<span class="s2">        zs : `numpy.ndarray` or `float`</span>
-<span class="s2">            Source redshifts</span>
-
-<span class="s2">        Returns</span>
-<span class="s2">        ----------</span>
-<span class="s2">        luminosity_distance : `numpy.ndarray`</span>
-<span class="s2">            luminosity distance in Mpc</span>
-
-<span class="s2">        Examples</span>
-<span class="s2">        ----------</span>
-<span class="s2">        &gt;&gt;&gt; from ler.gw_source_population import SourceGalaxyPopulationModel</span>
-<span class="s2">        &gt;&gt;&gt; ler = SourceGalaxyPopulationModel()  # with default LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</span>
-<span class="s2">        &gt;&gt;&gt; luminosity_distance = ler.luminosity_distance(1.)</span>
-<span class="s2">        &gt;&gt;&gt; luminosity_distance = ler.luminosity_distance.function(np.array([1., 2.]))</span>
-<span class="s2">        &gt;&gt;&gt; redshift = ler.luminosity_distance.function_inverse(np.array([100., 200.]))</span>
-<span class="s2">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># get differential co-moving volume interpolator</span>
-        <span class="n">resolution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;differential_comoving_volume&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
-        <span class="n">create_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;differential_comoving_volume&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">]</span>
-        <span class="n">zs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">)</span>
-        <span class="n">dVcdz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="o">.</span><span class="n">differential_comoving_volume</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>  <span class="c1"># volume of shell in Mpc^3</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">differential_comoving_volume</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
-            <span class="n">function</span><span class="o">=</span><span class="n">dVcdz</span><span class="p">,</span>
-            <span class="n">x_array</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
-            <span class="n">conditioned_y_array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">param_dict_given</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span> <span class="n">cosmology</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span> <span class="n">details</span><span class="o">=</span><span class="s2">&quot;differential_comoving_volume from astropy.cosmology&quot;</span><span class="p">),</span>
-            <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;differential_comoving_volume&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;differential_comoving_volume&quot;</span><span class="p">,</span>
-            <span class="n">create_new</span><span class="o">=</span><span class="n">create_new</span><span class="p">,</span>
-            <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">create_function</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">create_pdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">create_rvs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;function&#39;</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">differential_comoving_volume</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">        Redshift to differential comoving volume conversion.</span>
-
-<span class="s2">        Parameters</span>
-<span class="s2">        ----------</span>
-<span class="s2">        zs : `numpy.ndarray` or `float`</span>
-<span class="s2">            Source redshifts</span>
-
-<span class="s2">        Returns</span>
-<span class="s2">        ----------</span>
-<span class="s2">        differential_comoving_volume : `numpy.ndarray`</span>
-<span class="s2">            differential comoving volume in Mpc^3</span>
-
-<span class="s2">        Examples</span>
-<span class="s2">        ----------</span>
-<span class="s2">        &gt;&gt;&gt; from ler.len_galaxy_population import OpticalDepth</span>
-<span class="s2">        &gt;&gt;&gt; ler = OpticalDepth()  # with default LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</span>
-<span class="s2">        &gt;&gt;&gt; differential_comoving_volume = ler.differential_comoving_volume(1.)</span>
-<span class="s2">        &gt;&gt;&gt; differential_comoving_volume = ler.differential_comoving_volume.function(np.array([1., 2.]))</span>
-<span class="s2">        &quot;&quot;&quot;</span></div>
+        <span class="k">return</span> <span class="n">Rzs_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">Rzs_object</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span></div>
 
 
     <span class="nd">@property</span>
@@ -1109,24 +885,13 @@
 <a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density">[docs]</a>
     <span class="k">def</span> <span class="nf">merger_rate_density</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Source frame merger rate density function wrt redshift.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        zs : `float`</span>
-<span class="sd">            1D array of floats</span>
-<span class="sd">            Source redshifts</span>
+<span class="sd">        Source-frame merger rate density function R(z).</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        ----------</span>
-<span class="sd">        merger_rate_density : `float`</span>
-<span class="sd">            merger rate density in detector frame (Mpc^-3 yr^-1)</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        ----------</span>
-<span class="sd">        &gt;&gt;&gt; from ler.gw_source_population import SourceGalaxyPopulationModel</span>
-<span class="sd">        &gt;&gt;&gt; cbc = SourceGalaxyPopulationModel()</span>
-<span class="sd">        &gt;&gt;&gt; merger_rate_density = cbc.merger_rate_density(zs=0.1)</span>
+<span class="sd">        -------</span>
+<span class="sd">        merger_rate_density : ``callable`` or ``FunctionConditioning``</span>
+<span class="sd">            Callable that accepts redshift(s) and returns merger rate density </span>
+<span class="sd">            in source frame (units: Mpc^-3 yr^-1).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merger_rate_density</span></div>
 
@@ -1142,63 +907,286 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_merger_rate_density</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">)(</span><span class="n">zs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
 
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">FunctionConditioning</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user provided FunctionConditioning object&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_merger_rate_density</span> <span class="o">=</span> <span class="n">function</span>
+
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user provided custom merger rate density function&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_merger_rate_density</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span><span class="n">function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">create_function</span><span class="o">=</span><span class="n">function</span><span class="p">)</span>
-
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user provided custom merger rate density class/object&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_merger_rate_density</span> <span class="o">=</span> <span class="n">function</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;merger_rate_density must be a function or a string from the available merger rate density model list&quot;</span><span class="p">)</span>
-    
-    <span class="c1"># @property</span>
-    <span class="c1"># def source_redshift(self):</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     Function to sample source redshifts from pdf of merger rate density (detector frame).</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;merger_rate_density must be a function, FunctionConditioning object, or a string from the available &#39;merger_rate_density_model_list&#39;&quot;</span><span class="p">)</span>
 
-    <span class="c1">#     Parameters</span>
-    <span class="c1">#     ----------</span>
-    <span class="c1">#     size : `int`</span>
-    <span class="c1">#         Number of samples to draw</span>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CBCSourceRedshiftDistribution.npool">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.npool">[docs]</a>
+    <span class="k">def</span> <span class="nf">npool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Number of processors for multiprocessing.</span>
 
-    <span class="c1">#     Returns</span>
-    <span class="c1">#     ----------</span>
-    <span class="c1">#     source_redshift : `numpy.ndarray` (1D array of floats)</span>
-    <span class="c1">#         Array of source redshifts</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        npool : ``int``</span>
+<span class="sd">            Number of parallel processes to use. \n</span>
+<span class="sd">            default: 4</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_npool</span></div>
 
-    <span class="c1">#     return self._source_redshift</span>
-    
-    <span class="c1"># @source_redshift.setter</span>
-    <span class="c1"># def source_redshift(self, prior):</span>
-    <span class="c1">#     if isinstance(prior, str):</span>
-    <span class="c1">#         args = self.gw_param_samplers_params[&quot;source_redshift&quot;]</span>
-    <span class="c1">#         if args is None:</span>
-    <span class="c1">#             self._source_redshift = getattr(self, prior)(</span>
-    <span class="c1">#             size=None, get_attribute=True</span>
-    <span class="c1">#         )</span>
-    <span class="c1">#         else:</span>
-    <span class="c1">#             self._source_redshift = getattr(self, prior)(</span>
-    <span class="c1">#                 size=None, get_attribute=True, param=args</span>
-    <span class="c1">#             )</span>
-    <span class="c1">#     elif isinstance(prior, object):</span>
-    <span class="c1">#         print(&quot;using user provided custom source redshift class/object&quot;)</span>
-    <span class="c1">#         self._source_redshift = prior</span>
-    <span class="c1">#     elif callable(prior):</span>
-    <span class="c1">#         print(&quot;using user provided custom source redshift function&quot;)</span>
-    <span class="c1">#         self._source_redshift = FunctionConditioning(function=None, x_array=None, create_rvs=prior)</span>
-    <span class="c1">#     else:</span>
-    <span class="c1">#         raise ValueError(&quot;Invalid input for source_redshift. Must be a string or a callable function.&quot;)</span>
+
+    <span class="nd">@npool</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">npool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_npool</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CBCSourceRedshiftDistribution.z_min">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_min">[docs]</a>
+    <span class="k">def</span> <span class="nf">z_min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Minimum source redshift.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        z_min : ``float``</span>
+<span class="sd">            Lower bound of the redshift range. \n</span>
+<span class="sd">            default: 0.001</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z_min</span></div>
+
+
+    <span class="nd">@z_min</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">z_min</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_z_min</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CBCSourceRedshiftDistribution.z_max">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_max">[docs]</a>
+    <span class="k">def</span> <span class="nf">z_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maximum source redshift.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        z_max : ``float``</span>
+<span class="sd">            Upper bound of the redshift range. \n</span>
+<span class="sd">            default: 10.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z_max</span></div>
+
+
+    <span class="nd">@z_max</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">z_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_z_max</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CBCSourceRedshiftDistribution.directory">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.directory">[docs]</a>
+    <span class="k">def</span> <span class="nf">directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Directory path for storing interpolator JSON files.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        directory : ``str``</span>
+<span class="sd">            Path to the interpolator storage directory. \n</span>
+<span class="sd">            default: &#39;./interpolator_json&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_directory</span></div>
+
+
+    <span class="nd">@directory</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directory</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CBCSourceRedshiftDistribution.event_type">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.event_type">[docs]</a>
+    <span class="k">def</span> <span class="nf">event_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Type of compact binary coalescence event.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        event_type : ``str``</span>
+<span class="sd">            CBC event type. \n</span>
+<span class="sd">            Options: \n</span>
+<span class="sd">            - &#39;BBH&#39;: Binary black hole \n</span>
+<span class="sd">            - &#39;BNS&#39;: Binary neutron star \n</span>
+<span class="sd">            - &#39;NSBH&#39;: Neutron star-black hole \n</span>
+<span class="sd">            default: &#39;BBH&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_type</span></div>
+
+
+    <span class="nd">@event_type</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">event_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_type</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CBCSourceRedshiftDistribution.cosmo">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.cosmo">[docs]</a>
+    <span class="k">def</span> <span class="nf">cosmo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Astropy cosmology object for distance calculations.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        cosmo : ``astropy.cosmology``</span>
+<span class="sd">            Cosmology used for redshift-distance conversions. \n</span>
+<span class="sd">            default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cosmo</span></div>
+
+
+    <span class="nd">@cosmo</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">cosmo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cosmo</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CBCSourceRedshiftDistribution.create_new_interpolator">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.create_new_interpolator">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_new_interpolator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Dictionary controlling interpolator creation settings.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        create_new_interpolator : ``dict``</span>
+<span class="sd">            Dictionary with that controls the creation of new interpolators. </span>
+<span class="sd">            Default: {&#39;merger_rate_density&#39;: {&#39;create_new&#39;: False, &#39;resolution&#39;: 100}, &#39;luminosity_distance&#39;: {&#39;create_new&#39;: False, &#39;resolution&#39;: 100}, &#39;differential_comoving_volume&#39;: {&#39;create_new&#39;: False, &#39;resolution&#39;: 100}}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_new_interpolator</span></div>
+
+
+    <span class="nd">@create_new_interpolator</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">create_new_interpolator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_new_interpolator</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_param">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_param">[docs]</a>
+    <span class="k">def</span> <span class="nf">merger_rate_density_param</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters for the merger rate density function.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        merger_rate_density_param : ``dict``</span>
+<span class="sd">            Dictionary of parameters for the selected merger rate density model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merger_rate_density_param</span></div>
+
+
+    <span class="nd">@merger_rate_density_param</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">merger_rate_density_param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_merger_rate_density_param</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CBCSourceRedshiftDistribution.luminosity_distance">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.luminosity_distance">[docs]</a>
+    <span class="k">def</span> <span class="nf">luminosity_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Class object (of FunctionConditioning) for the luminosity distance, with function as callback, which converts redshift to luminosity distance (in Mpc) for the selected cosmology. </span>
+<span class="sd">        The class object contains the following attribute methods:</span>
+<span class="sd">        - `function`: returns the luminosity distance distribution function.</span>
+<span class="sd">        - `function_inverse`: returns the inverse luminosity distance distribution function, which converts luminosity distance (in Mpc) to redshift.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        luminosity_distance : ``numpy.ndarray``</span>
+<span class="sd">            Array of luminosity distances (in Mpc).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_luminosity_distance</span></div>
+
+
+    <span class="nd">@luminosity_distance</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">luminosity_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_luminosity_distance</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CBCSourceRedshiftDistribution.differential_comoving_volume">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.differential_comoving_volume">[docs]</a>
+    <span class="k">def</span> <span class="nf">differential_comoving_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Class object (of FunctionConditioning) for the differential comoving volume function, with function as callback, which returns dVc/dz (in Mpc^3 sr^-1) for the selected cosmology. </span>
+<span class="sd">        The class object contains the following attribute methods:</span>
+<span class="sd">        - `function`: returns the differential comoving volume distribution function.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        differential_comoving_volume : ``numpy.ndarray``</span>
+<span class="sd">            Array of differential comoving volumes (in Mpc^3 sr^-1).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_differential_comoving_volume</span></div>
+
+
+    <span class="nd">@differential_comoving_volume</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">differential_comoving_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_differential_comoving_volume</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CBCSourceRedshiftDistribution.source_redshift">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.source_redshift">[docs]</a>
+    <span class="k">def</span> <span class="nf">source_redshift</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Class object (of FunctionConditioning) for the source redshift sampler, with rvs/sampler as callback, which samples source redshifts from p(z) ∝ R(z)/(1+z) dVc/dz , where p(z) is the redshift probability distribution, R(z) is the merger rate density, and dVc/dz is the differential comoving volume. </span>
+<span class="sd">        The class object contains the following attribute methods:</span>
+<span class="sd">        - `rvs`: returns random samples from the source redshift distribution.</span>
+<span class="sd">        - `pdf`: returns the source redshift probability density function.</span>
+<span class="sd">        - `function`: returns the source redshift distribution function.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        source_redshift : ``numpy.ndarray``</span>
+<span class="sd">            Array of source redshifts (detector frame)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_redshift</span></div>
+
+
+    <span class="nd">@source_redshift</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">source_redshift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_source_redshift</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CBCSourceRedshiftDistribution.normalization_pdf_z">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.normalization_pdf_z">[docs]</a>
+    <span class="k">def</span> <span class="nf">normalization_pdf_z</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Normalization constant for the redshift probability distribution.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        normalization_pdf_z : ``float``</span>
+<span class="sd">            Integral of the unnormalized p(z) over [z_min, z_max].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalization_pdf_z</span></div>
+
+
+    <span class="nd">@normalization_pdf_z</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">normalization_pdf_z</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_normalization_pdf_z</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_model_list">
 <a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_model_list">[docs]</a>
     <span class="k">def</span> <span class="nf">merger_rate_density_model_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Dictionary of available merger rate density functions and its parameters.</span>
+<span class="sd">        Dictionary of available merger rate density models and default parameters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        merger_rate_density_model_list : ``dict``</span>
+<span class="sd">            Dictionary with model names as keys and parameter dicts as values. </span>
+<span class="sd">            Available models: </span>
+<span class="sd">            - &#39;merger_rate_density_bbh_popI_II_oguri2018&#39; </span>
+<span class="sd">            - &#39;sfr_madau_dickinson2014&#39; </span>
+<span class="sd">            - &#39;sfr_with_td&#39; </span>
+<span class="sd">            - &#39;merger_rate_density_bbh_popIII_ken2022&#39; </span>
+<span class="sd">            - &#39;merger_rate_density_bbh_primordial_ken2022&#39;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Return cached version if available</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_merger_rate_density_model_list&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merger_rate_density_model_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merger_rate_density_model_list</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_merger_rate_density_model_list</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">merger_rate_density_bbh_popI_II_oguri2018</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
@@ -1236,35 +1224,33 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merger_rate_density_model_list</span></div>
 </div>
 
-</pre>
-                            </div>
+</pre></div>
 
-                        </div>
-                    </div>
-                    <footer>
+           </div>
+          </div>
+          <footer>
 
-                        <hr />
+  <hr/>
 
-                        <div role="contentinfo">
-                            <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
-                        </div>
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
 
-                        Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-                        <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-                        provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
-
-                    </footer>
-                </div>
-            </div>
-        </section>
-    </div>
-    <script>
-        jQuery(function () {
-            SphinxRtdTheme.Navigation.enable(true);
-        });
-    </script>
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
 
 </body>
-
 </html>
