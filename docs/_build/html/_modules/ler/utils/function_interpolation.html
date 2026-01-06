@@ -1,0 +1,556 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.utils.function_interpolation &mdash; ler 0.4.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ler.utils.function_interpolation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ler.utils.function_interpolation</h1><div class="highlight"><pre>
+<span></span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">interpolator_json_path</span><span class="p">,</span> <span class="n">cubic_spline_interpolator</span><span class="p">,</span> <span class="n">pdf_cubic_spline_interpolator</span><span class="p">,</span> <span class="n">cubic_spline_interpolator2d_array</span><span class="p">,</span> <span class="n">inverse_transform_sampler</span><span class="p">,</span> <span class="n">pdf_cubic_spline_interpolator2d_array</span><span class="p">,</span> <span class="n">save_json</span><span class="p">,</span> <span class="n">load_json</span><span class="p">,</span> <span class="n">inverse_transform_sampler2d</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span><span class="p">,</span> <span class="n">cumulative_trapezoid</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span>  <span class="n">CubicSpline</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">gaussian_kde</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
+
+
+<div class="viewcode-block" id="FunctionConditioning">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/index.html#ler.gw_source_population.FunctionConditioning">[docs]</a>
+<span class="k">class</span> <span class="nc">FunctionConditioning</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+        <span class="n">function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># can also be an array of function values </span>
+        <span class="n">x_array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">conditioned_y_array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># if this is not none, 2D interpolation will be used</span>
+        <span class="n">y_array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">non_zero_function</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">gaussian_kde</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">gaussian_kde_kwargs</span><span class="o">=</span><span class="p">{},</span>
+        <span class="n">identifier_dict</span><span class="o">=</span><span class="p">{},</span>
+        <span class="n">directory</span><span class="o">=</span><span class="s1">&#39;./interpolator_json&#39;</span><span class="p">,</span>
+        <span class="n">sub_directory</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span>
+        <span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">create_function</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">create_pdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">create_rvs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">multiprocessing_function</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">create</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_decision_function</span><span class="p">(</span><span class="n">create_function</span><span class="p">,</span> <span class="n">create_function_inverse</span><span class="p">,</span> <span class="n">create_pdf</span><span class="p">,</span> <span class="n">create_rvs</span><span class="p">)</span>
+<div class="viewcode-block" id="FunctionConditioning.info">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/function_interpolation/index.html#ler.gw_source_population.FunctionConditioning.info">[docs]</a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">identifier_dict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FunctionConditioning.callback">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/function_interpolation/index.html#ler.gw_source_population.FunctionConditioning.callback">[docs]</a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span></div>
+
+        
+        <span class="k">if</span> <span class="n">create</span><span class="p">:</span>
+            <span class="c1"># create_interpolator input list</span>
+            <span class="n">input_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">function</span><span class="p">,</span> <span class="n">x_array</span><span class="p">,</span> <span class="n">conditioned_y_array</span><span class="p">,</span> <span class="n">create_function_inverse</span><span class="p">,</span> <span class="n">create_pdf</span><span class="p">,</span> <span class="n">create_rvs</span><span class="p">,</span> <span class="n">multiprocessing_function</span><span class="p">]</span>
+            <span class="n">input_list_kde</span> <span class="o">=</span> <span class="p">[</span><span class="n">x_array</span><span class="p">,</span> <span class="n">y_array</span><span class="p">,</span> <span class="n">gaussian_kde_kwargs</span><span class="p">]</span>
+
+            <span class="c1"># check first whether the directory, subdirectory and pickle exist</span>
+            <span class="n">path_inv_cdf</span><span class="p">,</span> <span class="n">it_exist</span> <span class="o">=</span> <span class="n">interpolator_json_path</span><span class="p">(</span>
+                <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
+                <span class="n">directory</span><span class="o">=</span><span class="n">directory</span><span class="p">,</span>
+                <span class="n">sub_directory</span><span class="o">=</span><span class="n">sub_directory</span><span class="p">,</span>
+                <span class="n">interpolator_name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># if the interpolator exists, load it</span>
+            <span class="k">if</span> <span class="n">create_new</span><span class="p">:</span>
+                <span class="n">it_exist</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="n">it_exist</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> interpolator will be loaded from </span><span class="si">{</span><span class="n">path_inv_cdf</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="c1"># load the interpolator, where the interpolator is a dictionary</span>
+                <span class="c1"># interpolator = {</span>
+                <span class="c1">#     &#39;x_array&#39;: x_array,</span>
+                <span class="c1">#     &#39;z_array&#39;: z_array,</span>
+                <span class="c1">#     &#39;conditioned_y_array&#39;: conditioned_y_array,</span>
+                <span class="c1">#     &#39;function_spline&#39;: function_spline,</span>
+                <span class="c1">#     &#39;function_inverse_spline&#39;: function_inverse_spline,</span>
+                <span class="c1">#     &#39;pdf_norm_const&#39;: pdf_norm_const,</span>
+                <span class="c1">#     &#39;cdf_values&#39;: cdf_values,</span>
+                <span class="c1"># }</span>
+                <span class="n">interpolator</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="n">path_inv_cdf</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> interpolator will be generated at </span><span class="si">{</span><span class="n">path_inv_cdf</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">gaussian_kde</span><span class="p">:</span>
+                    <span class="n">interpolator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_interpolator</span><span class="p">(</span><span class="o">*</span><span class="n">input_list</span><span class="p">)</span>
+                    <span class="c1"># save the interpolator</span>
+                    <span class="n">save_json</span><span class="p">(</span><span class="n">path_inv_cdf</span><span class="p">,</span> <span class="n">interpolator</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># gaussian KDE</span>
+                    <span class="n">interpolator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_gaussian_kde</span><span class="p">(</span><span class="o">*</span><span class="n">input_list_kde</span><span class="p">)</span>
+
+                    <span class="c1">#------------</span>
+                    <span class="c1"># check scipy gaussian kde can be saved as json</span>
+                    <span class="c1">#------------</span>
+                    <span class="c1"># save_json(path_inv_cdf, interpolator)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">gaussian_kde</span><span class="p">:</span>
+                <span class="c1"># Convert loaded JSON lists to NumPy arrays for Numba compatibility</span>
+                <span class="n">x_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">interpolator</span><span class="p">[</span><span class="s1">&#39;x_array&#39;</span><span class="p">])</span>
+                <span class="n">z_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">interpolator</span><span class="p">[</span><span class="s1">&#39;z_array&#39;</span><span class="p">])</span>
+                <span class="n">conditioned_y_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">interpolator</span><span class="p">[</span><span class="s1">&#39;conditioned_y_array&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">interpolator</span><span class="p">[</span><span class="s1">&#39;conditioned_y_array&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">y_array</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">function_spline</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">interpolator</span><span class="p">[</span><span class="s1">&#39;function_spline&#39;</span><span class="p">])</span>
+                <span class="n">function_inverse_spline</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">interpolator</span><span class="p">[</span><span class="s1">&#39;function_inverse_spline&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">interpolator</span><span class="p">[</span><span class="s1">&#39;function_inverse_spline&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">pdf_norm_const</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">interpolator</span><span class="p">[</span><span class="s1">&#39;pdf_norm_const&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">interpolator</span><span class="p">[</span><span class="s1">&#39;pdf_norm_const&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">cdf_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">interpolator</span><span class="p">[</span><span class="s1">&#39;cdf_values&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">interpolator</span><span class="p">[</span><span class="s1">&#39;cdf_values&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+
+                <span class="k">if</span> <span class="n">conditioned_y_array</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># function is 1D</span>
+                    <span class="c1"># njit(lambda x: cubic_spline_interpolator(x, function_spline, x_array))</span>
+                    <span class="n">function_any</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">function_spline</span><span class="p">,</span> <span class="n">x_array</span><span class="p">)</span>
+
+                    <span class="k">def</span> <span class="nf">function_non_zero</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">function_spline</span><span class="p">,</span> <span class="n">x_array</span><span class="p">)</span>
+                        <span class="n">idx</span> <span class="o">=</span> <span class="n">result</span><span class="o">&lt;</span><span class="mf">0.0</span>
+                        <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+                        <span class="k">return</span> <span class="n">result</span>
+                    
+                    <span class="n">function_final</span> <span class="o">=</span> <span class="n">function_any</span> <span class="k">if</span> <span class="n">non_zero_function</span> <span class="k">else</span> <span class="n">function_non_zero</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">function</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="n">function_final</span><span class="p">)</span> <span class="k">if</span> <span class="n">create_function</span> <span class="k">else</span> <span class="kc">None</span>
+
+                    <span class="c1"># inverse function is 1D</span>
+                    <span class="n">function_any</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">function_inverse_spline</span><span class="p">,</span> <span class="n">z_array</span><span class="p">)</span>
+
+                    <span class="k">def</span> <span class="nf">function_non_zero</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">function_inverse_spline</span><span class="p">,</span> <span class="n">z_array</span><span class="p">)</span>
+                        <span class="n">idx</span> <span class="o">=</span> <span class="n">result</span><span class="o">&lt;</span><span class="mf">0.0</span>
+                        <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+                        <span class="k">return</span> <span class="n">result</span>
+
+                    <span class="n">function_final</span> <span class="o">=</span> <span class="n">function_any</span> <span class="k">if</span> <span class="n">non_zero_function</span> <span class="k">else</span> <span class="n">function_non_zero</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">function_inverse</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="n">function_final</span><span class="p">)</span> <span class="k">if</span> <span class="n">create_function_inverse</span> <span class="k">else</span> <span class="kc">None</span>
+
+                    <span class="c1"># pdf is 1D</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">pdf</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">pdf_cubic_spline_interpolator</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pdf_norm_const</span><span class="p">,</span> <span class="n">function_spline</span><span class="p">,</span> <span class="n">x_array</span><span class="p">))</span> <span class="k">if</span> <span class="n">create_pdf</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="c1"># sampler is 1D</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rvs</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">inverse_transform_sampler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">cdf_values</span><span class="p">,</span> <span class="n">x_array</span><span class="p">))</span> <span class="k">if</span> <span class="n">create_rvs</span> <span class="k">else</span> <span class="kc">None</span>
+                    
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># function is 2D</span>
+                    <span class="n">function_any</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">cubic_spline_interpolator2d_array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">function_spline</span><span class="p">,</span> <span class="n">x_array</span><span class="p">,</span> <span class="n">conditioned_y_array</span><span class="p">)</span>
+
+                    <span class="k">def</span> <span class="nf">function_non_zero</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="n">cubic_spline_interpolator2d_array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">function_spline</span><span class="p">,</span> <span class="n">x_array</span><span class="p">,</span> <span class="n">conditioned_y_array</span><span class="p">)</span>
+                        <span class="n">idx</span> <span class="o">=</span> <span class="n">result</span><span class="o">&lt;</span><span class="mf">0.0</span>
+                        <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+                        <span class="k">return</span> <span class="n">result</span>
+                    
+                    <span class="n">function_final</span> <span class="o">=</span> <span class="n">function_any</span> <span class="k">if</span> <span class="n">non_zero_function</span> <span class="k">else</span> <span class="n">function_non_zero</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">function</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="n">function_final</span><span class="p">)</span> <span class="k">if</span> <span class="n">create_function</span> <span class="k">else</span> <span class="kc">None</span>
+
+                    <span class="c1"># inverse function is 2D</span>
+                    <span class="n">function_any</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">cubic_spline_interpolator2d_array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">function_inverse_spline</span><span class="p">,</span> <span class="n">z_array</span><span class="p">,</span> <span class="n">conditioned_y_array</span><span class="p">)</span>
+
+                    <span class="k">def</span> <span class="nf">function_non_zero</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="n">cubic_spline_interpolator2d_array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">function_inverse_spline</span><span class="p">,</span> <span class="n">z_array</span><span class="p">,</span> <span class="n">conditioned_y_array</span><span class="p">)</span>
+                        <span class="n">idx</span> <span class="o">=</span> <span class="n">result</span><span class="o">&lt;</span><span class="mf">0.0</span>
+                        <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+                        <span class="k">return</span> <span class="n">result</span>
+                    
+                    <span class="n">function_final</span> <span class="o">=</span> <span class="n">function_any</span> <span class="k">if</span> <span class="n">non_zero_function</span> <span class="k">else</span> <span class="n">function_non_zero</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">function_inverse</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="n">function_final</span><span class="p">)</span> <span class="k">if</span> <span class="n">create_function_inverse</span> <span class="k">else</span> <span class="kc">None</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">pdf</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pdf_cubic_spline_interpolator2d_array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">pdf_norm_const</span><span class="p">,</span> <span class="n">function_spline</span><span class="p">,</span> <span class="n">x_array</span><span class="p">,</span> <span class="n">conditioned_y_array</span><span class="p">))</span> <span class="k">if</span> <span class="n">create_pdf</span> <span class="k">else</span> <span class="kc">None</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rvs</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">size</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">inverse_transform_sampler2d</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cdf_values</span><span class="p">,</span> <span class="n">x_array</span><span class="p">,</span> <span class="n">conditioned_y_array</span><span class="p">))</span> <span class="k">if</span> <span class="n">create_rvs</span> <span class="k">else</span> <span class="kc">None</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">x_array</span> <span class="o">=</span> <span class="n">x_array</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">z_array</span> <span class="o">=</span> <span class="n">z_array</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">conditioned_y_array</span> <span class="o">=</span> <span class="n">conditioned_y_array</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">function_spline</span> <span class="o">=</span> <span class="n">function_spline</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">function_inverse_spline</span> <span class="o">=</span> <span class="n">function_inverse_spline</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pdf_norm_const</span> <span class="o">=</span> <span class="n">pdf_norm_const</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cdf_values</span> <span class="o">=</span> <span class="n">cdf_values</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">x_array</span> <span class="o">=</span> <span class="n">interpolator</span><span class="p">[</span><span class="s1">&#39;x_array&#39;</span><span class="p">]</span>
+                <span class="n">y_array</span> <span class="o">=</span> <span class="n">interpolator</span><span class="p">[</span><span class="s1">&#39;y_array&#39;</span><span class="p">]</span>
+                <span class="n">kde_object</span> <span class="o">=</span> <span class="n">interpolator</span><span class="p">[</span><span class="s1">&#39;kde_object&#39;</span><span class="p">]</span>
+
+                
+                <span class="bp">self</span><span class="o">.</span><span class="n">pdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">kde_object</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="n">create_pdf</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">y_array</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rvs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">kde_object</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">size</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">create_rvs</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rvs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">kde_object</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="k">if</span> <span class="n">create_rvs</span> <span class="k">else</span> <span class="kc">None</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">x_array</span> <span class="o">=</span> <span class="n">x_array</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">y_array</span> <span class="o">=</span> <span class="n">y_array</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">kde_object</span> <span class="o">=</span> <span class="n">kde_object</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conditioned_y_array</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x_array</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">y_array</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kde_object</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="FunctionConditioning.__call__">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/index.html#ler.gw_source_population.FunctionConditioning.__call__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">else</span> <span class="n">arg</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
+
+            
+
+<div class="viewcode-block" id="FunctionConditioning.create_decision_function">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/index.html#ler.gw_source_population.FunctionConditioning.create_decision_function">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_decision_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">create_function</span><span class="p">,</span> <span class="n">create_function_inverse</span><span class="p">,</span> <span class="n">create_pdf</span><span class="p">,</span> <span class="n">create_rvs</span><span class="p">):</span>
+
+        <span class="n">decision_bool</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">create_function</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="n">create_function</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">function</span> <span class="o">=</span> <span class="n">create_function</span>
+            <span class="n">decision_bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">create_function_inverse</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="n">create_function_inverse</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">function_inverse</span> <span class="o">=</span> <span class="n">create_function_inverse</span>
+            <span class="n">decision_bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">create_pdf</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="n">create_pdf</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pdf</span> <span class="o">=</span> <span class="n">create_pdf</span>
+            <span class="n">decision_bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">create_rvs</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="n">create_rvs</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rvs</span> <span class="o">=</span> <span class="n">create_rvs</span>
+            <span class="n">decision_bool</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="k">return</span> <span class="n">decision_bool</span></div>
+
+
+
+<div class="viewcode-block" id="FunctionConditioning.create_gaussian_kde">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/index.html#ler.gw_source_population.FunctionConditioning.create_gaussian_kde">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_gaussian_kde</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_array</span><span class="p">,</span> <span class="n">y_array</span><span class="p">,</span> <span class="n">gaussian_kde_kwargs</span><span class="p">):</span>
+
+        <span class="c1"># 1d KDE</span>
+        <span class="k">if</span> <span class="n">y_array</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kde</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">x_array</span><span class="p">,</span> <span class="o">**</span><span class="n">gaussian_kde_kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">x_array</span><span class="p">,</span> <span class="n">y_array</span><span class="p">])</span>
+            <span class="n">kde</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">gaussian_kde_kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;x_array&#39;</span><span class="p">:</span> <span class="n">x_array</span><span class="p">,</span>
+            <span class="s1">&#39;y_array&#39;</span><span class="p">:</span> <span class="n">y_array</span><span class="p">,</span>
+            <span class="s1">&#39;kde_object&#39;</span><span class="p">:</span> <span class="n">kde</span><span class="p">,</span>
+        <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="FunctionConditioning.create_interpolator">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/index.html#ler.gw_source_population.FunctionConditioning.create_interpolator">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_interpolator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">x_array</span><span class="p">,</span> <span class="n">conditioned_y_array</span><span class="p">,</span> <span class="n">create_function_inverse</span><span class="p">,</span> <span class="n">create_pdf</span><span class="p">,</span> <span class="n">create_rvs</span><span class="p">,</span> <span class="n">multiprocessing_function</span><span class="p">):</span>
+
+        <span class="c1"># function can be numpy array or callable</span>
+        <span class="c1"># x_array, z_array are 2D arrays if conditioned_y_array is not None</span>
+        <span class="n">x_array</span><span class="p">,</span> <span class="n">z_array</span><span class="p">,</span> <span class="n">conditioned_y_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_z_array</span><span class="p">(</span><span class="n">x_array</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">conditioned_y_array</span><span class="p">,</span> <span class="n">create_pdf</span><span class="p">,</span> <span class="n">create_rvs</span><span class="p">,</span> <span class="n">multiprocessing_function</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">function</span>
+
+        <span class="n">function_spline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">function_spline_generator</span><span class="p">(</span><span class="n">x_array</span><span class="p">,</span> <span class="n">z_array</span><span class="p">,</span> <span class="n">conditioned_y_array</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">create_function_inverse</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">conditioned_y_array</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">idx_sort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">z_array</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">idx_sort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">z_array</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">x_array_</span> <span class="o">=</span> <span class="n">x_array</span><span class="p">[</span><span class="n">idx_sort</span><span class="p">]</span>
+            <span class="n">z_array_</span> <span class="o">=</span> <span class="n">z_array</span><span class="p">[</span><span class="n">idx_sort</span><span class="p">]</span>
+
+            <span class="c1"># check z_array is strictly increasing</span>
+            <span class="c1"># if (not np.all(np.diff(z_array) &gt; 0)) or (not np.all(np.diff(z_array) &lt; 0)):</span>
+            <span class="c1">#     raise ValueError(&quot;z_array must be strictly increasing&quot;)</span>
+            
+            <span class="n">function_inverse_spline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">function_spline_generator</span><span class="p">(</span><span class="n">z_array_</span><span class="p">,</span> <span class="n">x_array_</span><span class="p">,</span> <span class="n">conditioned_y_array</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">function_inverse_spline</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">create_pdf</span> <span class="ow">or</span> <span class="n">create_rvs</span><span class="p">:</span>
+            <span class="c1"># cannot have -ve pdf</span>
+            <span class="n">pdf_norm_const</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdf_norm_const_generator</span><span class="p">(</span><span class="n">x_array</span><span class="p">,</span> <span class="n">function_spline</span><span class="p">,</span> <span class="n">conditioned_y_array</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">create_rvs</span><span class="p">:</span>
+                <span class="n">cdf_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdf_values_generator</span><span class="p">(</span><span class="n">x_array</span><span class="p">,</span> <span class="n">z_array</span><span class="p">,</span> <span class="n">conditioned_y_array</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cdf_values</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pdf_norm_const</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">cdf_values</span> <span class="o">=</span> <span class="kc">None</span>
+            
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;x_array&#39;</span><span class="p">:</span> <span class="n">x_array</span><span class="p">,</span>
+            <span class="s1">&#39;z_array&#39;</span><span class="p">:</span> <span class="n">z_array</span><span class="p">,</span>
+            <span class="s1">&#39;conditioned_y_array&#39;</span><span class="p">:</span> <span class="n">conditioned_y_array</span><span class="p">,</span>
+            <span class="s1">&#39;function_spline&#39;</span><span class="p">:</span> <span class="n">function_spline</span><span class="p">,</span>
+            <span class="s1">&#39;function_inverse_spline&#39;</span><span class="p">:</span> <span class="n">function_inverse_spline</span><span class="p">,</span>
+            <span class="s1">&#39;pdf_norm_const&#39;</span><span class="p">:</span> <span class="n">pdf_norm_const</span><span class="p">,</span>
+            <span class="s1">&#39;cdf_values&#39;</span><span class="p">:</span> <span class="n">cdf_values</span><span class="p">,</span>
+        <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="FunctionConditioning.create_z_array">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/index.html#ler.gw_source_population.FunctionConditioning.create_z_array">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_z_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_array</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">conditioned_y_array</span><span class="p">,</span> <span class="n">create_pdf</span><span class="p">,</span> <span class="n">create_rvs</span><span class="p">,</span> <span class="n">multiprocessing_function</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
+            <span class="c1"># 1D</span>
+            <span class="k">if</span> <span class="n">conditioned_y_array</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">z_array</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">x_array</span><span class="p">)</span>
+                <span class="c1"># remove nan values</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">z_array</span><span class="p">))</span>
+                <span class="n">x_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">x_array</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+                <span class="n">z_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">z_array</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+            <span class="c1"># 2D</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># check if x_array is 2D, if not, make it 2D of shape (len(conditioned_y_array), len(x_array))</span>
+                <span class="k">if</span> <span class="n">x_array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">x_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x_array</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">conditioned_y_array</span><span class="p">))</span>
+
+                <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">conditioned_y_array</span><span class="p">)</span>
+                <span class="n">conditioned_y_array</span> <span class="o">=</span> <span class="n">conditioned_y_array</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                <span class="c1"># x_array is 2D here, each row corresponds to a different y value</span>
+                <span class="n">x_array</span> <span class="o">=</span> <span class="n">x_array</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                <span class="c1"># sort each row of x_array</span>
+                <span class="n">x_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">x_array</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">multiprocessing_function</span><span class="p">:</span>
+                    <span class="n">z_array</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">x_array</span><span class="p">,</span> <span class="n">conditioned_y_array</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">z_list</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">conditioned_y_array</span><span class="p">):</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">z_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">function</span><span class="p">(</span><span class="n">x_array</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x_array</span><span class="p">[</span><span class="n">i</span><span class="p">])))</span>
+                        <span class="k">except</span><span class="p">:</span>
+                            <span class="c1"># print(x_array[i], y)</span>
+                            <span class="n">z_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">function</span><span class="p">(</span><span class="n">x_array</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y</span><span class="p">))</span>
+                    <span class="n">z_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">z_list</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">conditioned_y_array</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">z_array</span> <span class="o">=</span> <span class="n">function</span>
+                <span class="c1"># remove nan values</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">z_array</span><span class="p">))</span>
+                <span class="n">x_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">x_array</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+                <span class="n">z_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">z_array</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">x_array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">x_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x_array</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">conditioned_y_array</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">function</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;function must be 2D array if conditioned_y_array is not None&#39;</span><span class="p">)</span>
+                <span class="c1"># row sort</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">conditioned_y_array</span><span class="p">)</span>
+                <span class="n">conditioned_y_array</span> <span class="o">=</span> <span class="n">conditioned_y_array</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                <span class="c1"># x_array is 2D here, each row corresponds to a different y value</span>
+                <span class="n">x_array</span> <span class="o">=</span> <span class="n">x_array</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                <span class="n">z_array</span> <span class="o">=</span> <span class="n">function</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+                <span class="n">z_list</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">x_list</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">conditioned_y_array</span><span class="p">)):</span>
+                    <span class="c1"># column sort</span>
+                    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">x_array</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                    <span class="n">x_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_array</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">idx</span><span class="p">])</span>
+                    <span class="n">z_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z_array</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">idx</span><span class="p">])</span>
+                <span class="n">x_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x_list</span><span class="p">)</span>
+                <span class="n">z_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">z_list</span><span class="p">)</span>
+
+        <span class="c1"># cannot have -ve pdf</span>
+        <span class="k">if</span> <span class="n">create_pdf</span> <span class="ow">or</span> <span class="n">create_rvs</span><span class="p">:</span>
+            <span class="n">z_array</span><span class="p">[</span><span class="n">z_array</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="k">return</span> <span class="n">x_array</span><span class="p">,</span> <span class="n">z_array</span><span class="p">,</span> <span class="n">conditioned_y_array</span></div>
+
+
+<div class="viewcode-block" id="FunctionConditioning.cdf_values_generator">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/index.html#ler.gw_source_population.FunctionConditioning.cdf_values_generator">[docs]</a>
+    <span class="k">def</span> <span class="nf">cdf_values_generator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_array</span><span class="p">,</span> <span class="n">z_array</span><span class="p">,</span> <span class="n">conditioned_y_array</span><span class="p">):</span>
+        <span class="c1"># 1D case</span>
+        <span class="k">if</span> <span class="n">conditioned_y_array</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># z_array[z_array&lt;0.] = 0. # already done</span>
+            <span class="n">cdf_values</span> <span class="o">=</span> <span class="n">cumulative_trapezoid</span><span class="p">(</span><span class="n">z_array</span><span class="p">,</span> <span class="n">x_array</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">cdf_values</span> <span class="o">=</span> <span class="n">cdf_values</span><span class="o">/</span><span class="n">cdf_values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># 2D case</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cdf_values</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">conditioned_y_array</span><span class="p">):</span>
+                <span class="n">z_array_</span> <span class="o">=</span> <span class="n">z_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">z_array_</span><span class="p">[</span><span class="n">z_array_</span><span class="o">&lt;</span><span class="mf">0.</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
+                <span class="n">cdfs_</span> <span class="o">=</span> <span class="n">cumulative_trapezoid</span><span class="p">(</span><span class="n">z_array_</span><span class="p">,</span> <span class="n">x_array</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">initial</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+                <span class="n">cdf_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cdfs_</span><span class="o">/</span><span class="n">cdfs_</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="c1"># cdf_values.append(cdfs_)</span>
+        
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cdf_values</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="FunctionConditioning.pdf_norm_const_generator">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/index.html#ler.gw_source_population.FunctionConditioning.pdf_norm_const_generator">[docs]</a>
+    <span class="k">def</span> <span class="nf">pdf_norm_const_generator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_array</span><span class="p">,</span> <span class="n">function_spline</span><span class="p">,</span> <span class="n">conditioned_y_array</span><span class="p">):</span>
+
+        <span class="c1"># 1D case</span>
+        <span class="k">if</span> <span class="n">conditioned_y_array</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># pdf_unorm = lambda x: cubic_spline_interpolator(np.array([x]), function_spline, x_array)</span>
+            <span class="k">def</span> <span class="nf">pdf_unorm</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">]),</span> <span class="n">function_spline</span><span class="p">,</span> <span class="n">x_array</span><span class="p">)</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="n">result</span><span class="o">&lt;</span><span class="mf">0.</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+                <span class="k">return</span> <span class="n">result</span>
+
+            <span class="n">norm</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">pdf_unorm</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">x_array</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">x_array</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">norm</span>
+        <span class="c1"># 2D case</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">norm</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">conditioned_y_array</span><span class="p">):</span>
+                <span class="c1"># pdf_unorm = lambda x: cubic_spline_interpolator(np.array([x]), function_spline[i], x_array[i])</span>
+                <span class="k">def</span> <span class="nf">pdf_unorm</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">]),</span> <span class="n">function_spline</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_array</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                    <span class="n">idx</span> <span class="o">=</span> <span class="n">result</span><span class="o">&lt;</span><span class="mf">0.</span>
+                    <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+                    <span class="k">return</span> <span class="n">result</span>
+
+                <span class="n">norm</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">quad</span><span class="p">(</span><span class="n">pdf_unorm</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">x_array</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="nb">max</span><span class="p">(</span><span class="n">x_array</span><span class="p">[</span><span class="n">i</span><span class="p">]))[</span><span class="mi">0</span><span class="p">])</span>
+
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">norm</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="FunctionConditioning.function_spline_generator">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/index.html#ler.gw_source_population.FunctionConditioning.function_spline_generator">[docs]</a>
+    <span class="k">def</span> <span class="nf">function_spline_generator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_array</span><span class="p">,</span> <span class="n">z_array</span><span class="p">,</span> <span class="n">conditioned_y_array</span><span class="p">):</span>
+        <span class="c1"># 1D case</span>
+        <span class="k">if</span> <span class="n">conditioned_y_array</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">function_spline</span> <span class="o">=</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">x_array</span><span class="p">,</span> <span class="n">z_array</span><span class="p">)</span><span class="o">.</span><span class="n">c</span>
+        <span class="c1"># 2D case</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">function_spline</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">conditioned_y_array</span><span class="p">):</span>
+                
+                <span class="n">function_spline</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">CubicSpline</span><span class="p">(</span><span class="n">x_array</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">z_array</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">c</span><span class="p">)</span>
+            
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">function_spline</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

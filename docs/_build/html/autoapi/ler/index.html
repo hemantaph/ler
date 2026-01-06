@@ -6,23 +6,27 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler &mdash; ler 0.3.1 documentation</title>
+  <title>ler &mdash; ler 0.4.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/scalefix.css" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=776609e1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../_static/documentation_options.js?v=5bfaad31"></script>
       <script src="../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=f281be69"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -32,7 +36,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
 
           
           
@@ -49,7 +53,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../Installation2.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../GW_events.html">Gravitational wave event rates</a></li>
@@ -65,30 +69,12 @@
 <li class="toctree-l1"><a class="reference internal" href="image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/rates/grb%20detection%20rate.html">Calculation of detectable Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/rates/ler%20bns%20example.html">LeR complete examples of BNS events (O4 design sensitivity)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/rates/rates_with_3G_detectors.html">Event Rates with 3G detectors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/source%20population/merger%20rate%20density%20evolution%20with%20redshift.html">Merger rate density evolution with redshift</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/source%20population/merger%20rate%20density%20model%20comparision.html">Merger rate density model comparision</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/source%20population/merger%20rate%20density%20model%20comparision.html#Primordial-BBH-model,-Ng-et-al.-2022">Primordial BBH model, Ng et al. 2022</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/source%20population/sample%20compact%20binary%20parameters.html">Sampling parameters for a compact binary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/source%20population/statistical%20study%20of%20changing%20mass%20model%20params.html">Statistical study of changing Mass model paramter(s)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/source%20population/statistical%20study%20of%20cosmological%20friction.html">Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/lens_parameters/sample%20lens%20parameters.html">Lens parameter distributions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/optical_depth/validation_SIE.html">Optical depth SIE model validation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/optical_depth/validation_SIS.html">Validation of SIS model (Numerical vs Analytical)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/image_properties/dt_vs_dmu.html">Study of Time delays and magnification of lensed gravitational waves.</a></li>
-</ul>
 
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">ler</a>
       </nav>
@@ -110,7 +96,1468 @@
              
   <section id="module-ler">
 <span id="ler"></span><h1><a class="reference internal" href="#module-ler" title="ler"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler</span></code></a><a class="headerlink" href="#module-ler" title="Link to this heading"></a></h1>
-<p>LeR</p>
+<p>ler: LVK (LIGO-Virgo-KAGRA collaboration) Event (compact-binary mergers) Rate calculator and simulator</p>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gw_source_population/cbc_source_parameter_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_parameter_distribution</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="gw_source_population/cbc_source_redshift_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_redshift_distribution</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="gw_source_population/jit_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.jit_functions</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="gw_source_population/sfr_with_time_delay/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.sfr_with_time_delay</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="image_properties/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.image_properties</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="image_properties/multiprocessing_routine/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.multiprocessing_routine</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lens_galaxy_population/cross_section_interpolator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="lens_galaxy_population/epl_shear_cross_section/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.epl_shear_cross_section</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="lens_galaxy_population/jit_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.jit_functions</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="lens_galaxy_population/lens_galaxy_parameter_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_galaxy_parameter_distribution</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="lens_galaxy_population/lens_parameter_sampler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_parameter_sampler</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="lens_galaxy_population/mp/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.mp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="lens_galaxy_population/optical_depth/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.optical_depth</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rates/gwrates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates.gwrates</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rates/ler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates.ler</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utils/cosmological_coversions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.cosmological_coversions</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/function_interpolation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.function_interpolation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/gwsnr_training_data_generator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.gwsnr_training_data_generator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/plots/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.plots</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.utils</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.LeR" title="ler.LeR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LeR</span></code></a></p></td>
+<td><p>Class to sample lensed and unlensed GW events and calculate their detection rates.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ler.LeR">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.</span></span><span class="sig-name descname"><span class="pre">LeR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">int(4)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BBH'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'epl_shear_galaxy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_finder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolator_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./interpolator_json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_new_interpolator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ler_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./ler_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/rates/ler.html#LeR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.LeR" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="lens_galaxy_population/index.html#ler.lens_galaxy_population.LensGalaxyParameterDistribution" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.LensGalaxyParameterDistribution</span></code></a></p>
+<p>Class to sample lensed and unlensed GW events and calculate their detection rates.</p>
+<p>This class provides functionality for sampling gravitational wave source parameters,
+detection probabilities, and computing detection rates for both lensed and unlensed
+compact binary coalescence events.
+Parameters of simulated events are stored in JSON files (not as class attributes)
+to conserve RAM memory.</p>
+<p>Key Features:</p>
+<ul class="simple">
+<li><p>Sampling of unlensed and lensed CBC event parameters</p></li>
+<li><p>Detection probability calculation using <code class="docutils literal notranslate"><span class="pre">gwsnr</span></code> package or custom functions</p></li>
+<li><p>Rate calculation for detectable events</p></li>
+<li><p>Batch processing for memory efficiency</p></li>
+<li><p>JSON-based parameter storage for reproducibility</p></li>
+</ul>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>npool</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of cores to use for parallel processing.</p>
+<p>default: 4</p>
+</dd>
+<dt><strong>z_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum redshift of the source population.</p>
+<p>default: 0.0</p>
+</dd>
+<dt><strong>z_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum redshift of the source population.</p>
+<p>default: 10.0</p>
+</dd>
+<dt><strong>event_type</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Type of event to generate. source_priors and source_priors_params will be set accordingly.</p>
+<p>Options:</p>
+<ul class="simple">
+<li><p>‘BBH’: Binary Black Hole</p></li>
+<li><p>‘BNS’: Binary Neutron Star</p></li>
+<li><p>‘NSBH’: Neutron Star-Black Hole</p></li>
+</ul>
+<p>default: ‘BBH’</p>
+</dd>
+<dt><strong>lens_type</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Type of lens model to use. lens_functions, lens_functions_params, lens_param_samplers and lens_param_samplers_params will be set accordingly.</p>
+<p>Options:</p>
+<ul class="simple">
+<li><p>‘epl_shear_galaxy’: Exponential Power Law Shear Galaxy</p></li>
+<li><p>‘sie_galaxy’: Singular Isothermal Ellipsoid Galaxy</p></li>
+<li><p>‘sis_galaxy’: Singular Isothermal Sphere Galaxy</p></li>
+</ul>
+<p>default: ‘epl_shear_galaxy’</p>
+</dd>
+<dt><strong>cosmology</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">astropy.cosmology</span></code></span></dt><dd><p>Cosmology to use for the calculation.</p>
+<p>default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</p>
+</dd>
+<dt><strong>pdet_finder</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">function</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Custom detection probability finder function.</p>
+<p>If None, uses gwsnr’s pdet calculator.</p>
+<p>The function should follow the signature:</p>
+<p><code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">pdet_finder(gw_param_dict):</span> <span class="pre">return</span> <span class="pre">pdet_net_dict</span></code></p>
+<p>where pdet_net_dict.keys = [‘pdet_net’].</p>
+<p>default: None</p>
+</dd>
+<dt><strong>json_file_names</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Names of the JSON files to store the necessary parameters.</p>
+<dl class="simple">
+<dt>default: dict(</dt><dd><p>ler_params=”ler_params.json”,
+unlensed_param=”unlensed_param.json”,
+unlensed_param_detectable=”unlensed_param_detectable.json”,
+lensed_param=”lensed_param.json”,
+lensed_param_detectable=”lensed_param_detectable.json”</p>
+</dd>
+</dl>
+<p>)</p>
+</dd>
+<dt><strong>interpolator_directory</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Directory to store the interpolators.</p>
+<p>default: ‘./interpolator_json’</p>
+</dd>
+<dt><strong>create_new_interpolator</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Whether to create new interpolators. Look at <code class="xref py py-meth docutils literal notranslate"><span class="pre">create_new_interpolator()</span></code> for details.</p>
+<p>Options:</p>
+<ul class="simple">
+<li><p>True: Create all interpolators anew</p></li>
+<li><p>False: Load existing interpolators if available</p></li>
+<li><p>dict: Specify which interpolators to create new</p></li>
+</ul>
+<p>default: False</p>
+</dd>
+<dt><strong>ler_directory</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Directory to store the output parameters.</p>
+<p>default: ‘./ler_data’</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, print all chosen parameters during initialization.</p>
+<p>default: True</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Additional keyword arguments passed to parent classes:</p>
+<p><a class="reference internal" href="lens_galaxy_population/index.html#ler.lens_galaxy_population.LensGalaxyParameterDistribution" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code></a>,</p>
+<p><a class="reference internal" href="gw_source_population/index.html#ler.gw_source_population.CBCSourceParameterDistribution" title="ler.gw_source_population.CBCSourceParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code></a>,</p>
+<p><a class="reference internal" href="image_properties/index.html#ler.image_properties.ImageProperties" title="ler.image_properties.ImageProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageProperties</span></code></a>, and</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">GWSNR</span></code> (if snr_finder=’gwsnr’).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">LeR</span></code> class inherits from <a class="reference internal" href="lens_galaxy_population/index.html#ler.lens_galaxy_population.LensGalaxyParameterDistribution" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code></a>.</p>
+<p>Refer to that class for additional inherited attributes and methods.</p>
+</li>
+<li><p>Parameters are stored in JSON files for memory efficiency and reproducibility.</p></li>
+<li><p>For stable rate estimates, use size &gt;= 1e6 samples.</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<p>Basic usage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unlensed_params</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span><span class="o">.</span><span class="n">unlensed_rate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lensed_params</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">lensed_cbc_statistics</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span><span class="o">.</span><span class="n">lensed_rate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span><span class="o">.</span><span class="n">rate_ratio</span><span class="p">()</span>
+</pre></div>
+</div>
+<section id="instance-methods">
+<h4>Instance Methods<a class="headerlink" href="#instance-methods" title="Link to this heading"></a></h4>
+<p>LeR class has the following methods:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.unlensed_cbc_statistics" title="LeR.unlensed_cbc_statistics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">unlensed_cbc_statistics()</span></code></a></p></td>
+<td><p>Generate unlensed GW source parameters</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.unlensed_sampling_routine" title="LeR.unlensed_sampling_routine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">unlensed_sampling_routine()</span></code></a></p></td>
+<td><p>Generate unlensed parameters with batching</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.unlensed_rate" title="LeR.unlensed_rate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">unlensed_rate()</span></code></a></p></td>
+<td><p>Calculate the unlensed detection rate</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.lensed_cbc_statistics" title="LeR.lensed_cbc_statistics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lensed_cbc_statistics()</span></code></a></p></td>
+<td><p>Generate lensed GW source parameters</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.lensed_sampling_routine" title="LeR.lensed_sampling_routine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lensed_sampling_routine()</span></code></a></p></td>
+<td><p>Generate lensed parameters with batching</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.lensed_rate" title="LeR.lensed_rate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lensed_rate()</span></code></a></p></td>
+<td><p>Calculate the lensed detection rate</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.LeR.rate_function" title="ler.LeR.rate_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rate_function()</span></code></a></p></td>
+<td><p>General helper for rate calculation</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.rate_ratio" title="LeR.rate_ratio"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rate_ratio()</span></code></a></p></td>
+<td><p>Calculate lensed/unlensed rate ratio</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.rate_comparison_with_rate_calculation" title="LeR.rate_comparison_with_rate_calculation"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rate_comparison_with_rate_calculation()</span></code></a></p></td>
+<td><p>Calculate and compare lensed/unlensed rates</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.selecting_n_unlensed_detectable_events" title="LeR.selecting_n_unlensed_detectable_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">selecting_n_unlensed_detectable_events()</span></code></a></p></td>
+<td><p>Select n unlensed detectable events</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.selecting_n_lensed_detectable_events" title="LeR.selecting_n_lensed_detectable_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">selecting_n_lensed_detectable_events()</span></code></a></p></td>
+<td><p>Select n lensed detectable events</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="instance-attributes">
+<h4>Instance Attributes<a class="headerlink" href="#instance-attributes" title="Link to this heading"></a></h4>
+<p>LeR class has the following attributes:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Attribute</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Unit</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.npool" title="LeR.npool"><code class="xref py py-meth docutils literal notranslate"><span class="pre">npool()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td></td>
+<td><p>Number of parallel processing cores</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.z_min" title="LeR.z_min"><code class="xref py py-meth docutils literal notranslate"><span class="pre">z_min()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td></td>
+<td><p>Minimum source redshift</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.z_max" title="LeR.z_max"><code class="xref py py-meth docutils literal notranslate"><span class="pre">z_max()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td></td>
+<td><p>Maximum source redshift</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.event_type" title="LeR.event_type"><code class="xref py py-meth docutils literal notranslate"><span class="pre">event_type()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td></td>
+<td><p>Type of CBC event (BBH, BNS, NSBH)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.LeR.lens_type" title="ler.LeR.lens_type"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lens_type()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td></td>
+<td><p>Type of lens galaxy model</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.cosmo" title="LeR.cosmo"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cosmo()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Cosmology</span></code></p></td>
+<td></td>
+<td><p>Astropy cosmology object</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.json_file_names" title="LeR.json_file_names"><code class="xref py py-meth docutils literal notranslate"><span class="pre">json_file_names()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
+<td></td>
+<td><p>JSON file names for parameter storage</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.interpolator_directory" title="LeR.interpolator_directory"><code class="xref py py-meth docutils literal notranslate"><span class="pre">interpolator_directory()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td></td>
+<td><p>Directory for interpolator files</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.ler_directory" title="LeR.ler_directory"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ler_directory()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td></td>
+<td><p>Directory for output parameter files</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rates/ler-copy/index.html#LeR.list_of_detectors" title="LeR.list_of_detectors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">list_of_detectors()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
+<td></td>
+<td><p>List of detector names</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.LeR.pdet_finder" title="ler.LeR.pdet_finder"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pdet_finder()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
+<td></td>
+<td><p>Detection probability finder function</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.LeR.ler_args" title="ler.LeR.ler_args"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ler_args()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
+<td></td>
+<td><p>All LeR initialization arguments</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.LeR.create_new_interpolator" title="ler.LeR.create_new_interpolator"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_new_interpolator()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
+<td></td>
+<td><p>Interpolator creation settings</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.LeR.npool">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">npool</span></span><a class="headerlink" href="#ler.LeR.npool" title="Link to this definition"></a></dt>
+<dd><p>Number of parallel processing cores.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>npool</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of logical cores to use for multiprocessing.</p>
+<p>default: 4</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.LeR.z_min">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">z_min</span></span><a class="headerlink" href="#ler.LeR.z_min" title="Link to this definition"></a></dt>
+<dd><p>Minimum redshift of the source population.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>z_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum source redshift for sampling.</p>
+<p>default: 0.0</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.LeR.z_max">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">z_max</span></span><a class="headerlink" href="#ler.LeR.z_max" title="Link to this definition"></a></dt>
+<dd><p>Maximum redshift of the source population.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>z_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum source redshift for sampling.</p>
+<p>default: 10.0</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.LeR.event_type">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">event_type</span></span><a class="headerlink" href="#ler.LeR.event_type" title="Link to this definition"></a></dt>
+<dd><p>Type of compact binary coalescence event.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>event_type</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Type of CBC event.</p>
+<p>Options:</p>
+<ul class="simple">
+<li><p>‘BBH’: Binary Black Hole</p></li>
+<li><p>‘BNS’: Binary Neutron Star</p></li>
+<li><p>‘NSBH’: Neutron Star-Black Hole</p></li>
+</ul>
+<p>default: ‘BBH’</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.LeR.lens_type">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lens_type</span></span><a class="headerlink" href="#ler.LeR.lens_type" title="Link to this definition"></a></dt>
+<dd><p>Type of lens galaxy model.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>lens_type</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Type of lens model.</p>
+<p>Options:</p>
+<ul class="simple">
+<li><p>‘epl_shear_galaxy’: Elliptical Power Law with external shear</p></li>
+<li><p>‘sie_galaxy’: Singular Isothermal Ellipsoid</p></li>
+<li><p>‘sis_galaxy’: Singular Isothermal Sphere</p></li>
+</ul>
+<p>default: ‘epl_shear_galaxy’</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.LeR.cosmo">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cosmo</span></span><a class="headerlink" href="#ler.LeR.cosmo" title="Link to this definition"></a></dt>
+<dd><p>Astropy cosmology object for distance calculations.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>cosmo</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">astropy.cosmology</span></code></span></dt><dd><p>Cosmology used for luminosity distance and comoving volume calculations.</p>
+<p>default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.LeR.json_file_names">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">json_file_names</span></span><a class="headerlink" href="#ler.LeR.json_file_names" title="Link to this definition"></a></dt>
+<dd><p>Dictionary of JSON file names for parameter storage.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>json_file_names</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary with keys:</p>
+<ul class="simple">
+<li><p>‘ler_params’: LeR initialization parameters</p></li>
+<li><p>‘unlensed_param’: Unlensed event parameters</p></li>
+<li><p>‘unlensed_param_detectable’: Detectable unlensed events</p></li>
+<li><p>‘lensed_param’: Lensed event parameters</p></li>
+<li><p>‘lensed_param_detectable’: Detectable lensed events</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.LeR.interpolator_directory">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">interpolator_directory</span></span><a class="headerlink" href="#ler.LeR.interpolator_directory" title="Link to this definition"></a></dt>
+<dd><p>Directory path for interpolator JSON files.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>interpolator_directory</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Path to directory containing interpolator data files.</p>
+<p>default: ‘./interpolator_json’</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.LeR.ler_directory">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ler_directory</span></span><a class="headerlink" href="#ler.LeR.ler_directory" title="Link to this definition"></a></dt>
+<dd><p>Directory path for LeR output files.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>ler_directory</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Path to directory for storing output parameter files.</p>
+<p>default: ‘./ler_data’</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.LeR.create_new_interpolator">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_new_interpolator</span></span><a class="headerlink" href="#ler.LeR.create_new_interpolator" title="Link to this definition"></a></dt>
+<dd><p>Configuration dictionary for interpolator creation settings.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>create_new_interpolator</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary specifying which interpolators to create.</p>
+<p>Each key is an interpolator name, and values are dicts with:</p>
+<ul class="simple">
+<li><p>‘create_new’: bool - Whether to create new interpolator</p></li>
+<li><p>‘resolution’: int or list - Grid resolution for interpolation</p></li>
+</ul>
+<p>Special key ‘gwsnr’ is a bool for GWSNR interpolator creation.
+Default: dict(</p>
+<blockquote>
+<div><p>merger_rate_density = {‘create_new’: False, ‘resolution’: 500},
+redshift_distribution = {‘create_new’: False, ‘resolution’: 500},
+luminosity_distance = {‘create_new’: False, ‘resolution’: 500},
+differential_comoving_volume = {‘create_new’: False, ‘resolution’: 500},
+source_frame_masses = {‘create_new’: False, ‘resolution’: 500},
+geocent_time = {‘create_new’: False, ‘resolution’: 500},
+ra = {‘create_new’: False, ‘resolution’: 500},
+dec = {‘create_new’: False, ‘resolution’: 500},
+phase = {‘create_new’: False, ‘resolution’: 500},
+psi = {‘create_new’: False, ‘resolution’: 500},
+theta_jn = {‘create_new’: False, ‘resolution’: 500},
+a_1 = {‘create_new’: False, ‘resolution’: 500},
+a_2 = {‘create_new’: False, ‘resolution’: 500},
+tilt_1 = {‘create_new’: False, ‘resolution’: 500},
+tilt_2 = {‘create_new’: False, ‘resolution’: 500},
+phi_12 = {‘create_new’: False, ‘resolution’: 500},
+phi_jl = {‘create_new’: False, ‘resolution’: 500},
+velocity_dispersion = {‘create_new’: False, ‘resolution’: 500, ‘zl_resolution’: 48},
+axis_ratio = {‘create_new’: False, ‘resolution’: 500, ‘sigma_resolution’: 48},
+lens_redshift = {‘create_new’: False, ‘resolution’: 48, ‘zl_resolution’: 48},
+lens_redshift_intrinsic = {‘create_new’: False, ‘resolution’: 500},
+optical_depth = {‘create_new’: False, ‘resolution’: 48},
+comoving_distance = {‘create_new’: False, ‘resolution’: 500},
+angular_diameter_distance = {‘create_new’: False, ‘resolution’: 500},
+angular_diameter_distance_z1z2 = {‘create_new’: False, ‘resolution’: 500},
+density_profile_slope = {‘create_new’: False, ‘resolution’: 100},
+lens_parameters_kde_sl = {‘create_new’: False, ‘resolution’: 5000},
+cross_section = {‘create_new’: False, ‘resolution’: [25, 25, 45, 15, 15]},
+gwsnr = False,</p>
+</div></blockquote>
+<p>)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.LeR.list_of_detectors">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_of_detectors</span></span><a class="headerlink" href="#ler.LeR.list_of_detectors" title="Link to this definition"></a></dt>
+<dd><p>List of gravitational wave detector names.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>list_of_detectors</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">list</span></code></span></dt><dd><p>List of detector identifiers used for pdet calculations.</p>
+<p>Typically set from gwsnr.detector_list during initialization.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.LeR.pdet_finder">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pdet_finder</span></span><a class="headerlink" href="#ler.LeR.pdet_finder" title="Link to this definition"></a></dt>
+<dd><p>Detection probability finder function.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>pdet_finder</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function that calculates detection probability for GW events.</p>
+<p>The function signature should be:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pdet_finder(gw_param_dict)</span> <span class="pre">-&gt;</span> <span class="pre">dict</span></code> with key ‘pdet_net’.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.LeR.ler_args">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ler_args</span></span><a class="headerlink" href="#ler.LeR.ler_args" title="Link to this definition"></a></dt>
+<dd><p>Dictionary of all LeR initialization arguments.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>ler_args</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary containing all parameters used to initialize LeR and</p>
+<p>its parent classes, useful for reproducibility.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.LeR.unlensed_cbc_statistics">
+<span class="sig-name descname"><span class="pre">unlensed_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/rates/ler.html#LeR.unlensed_cbc_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.LeR.unlensed_cbc_statistics" title="Link to this definition"></a></dt>
+<dd><p>Generate unlensed GW source parameters.</p>
+<p>This function calls the unlensed_sampling_routine function to generate
+the parameters in batches. The generated parameters are stored in a JSON
+file; and if save_batch=True, it keeps updating the file in batches.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to generate.</p>
+<p>default: 100000</p>
+</dd>
+<dt><strong>batch_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Batch size for sampling.</p>
+<p>default: 50000</p>
+</dd>
+<dt><strong>resume</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, the function will resume from the last batch.</p>
+<p>default: True</p>
+</dd>
+<dt><strong>save_batch</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, saves parameters in batches during sampling.</p>
+<p>If False, saves all parameters at the end (faster).</p>
+<p>default: False</p>
+</dd>
+<dt><strong>output_jsonfile</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>JSON file name for storing the parameters.</p>
+<p>default: None (uses self.json_file_names[“unlensed_param”])</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>unlensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of unlensed GW source parameters. The included parameters and their units are as follows (for default settings):</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Units</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>zs</p></td>
+<td></td>
+<td><p>redshift of the source</p></td>
+</tr>
+<tr class="row-odd"><td><p>geocent_time</p></td>
+<td><p>s</p></td>
+<td><p>GPS time of coalescence</p></td>
+</tr>
+<tr class="row-even"><td><p>ra</p></td>
+<td><p>rad</p></td>
+<td><p>right ascension</p></td>
+</tr>
+<tr class="row-odd"><td><p>dec</p></td>
+<td><p>rad</p></td>
+<td><p>declination</p></td>
+</tr>
+<tr class="row-even"><td><p>phase</p></td>
+<td><p>rad</p></td>
+<td><p>phase of GW at reference frequency</p></td>
+</tr>
+<tr class="row-odd"><td><p>psi</p></td>
+<td><p>rad</p></td>
+<td><p>polarization angle</p></td>
+</tr>
+<tr class="row-even"><td><p>theta_jn</p></td>
+<td><p>rad</p></td>
+<td><p>inclination angle</p></td>
+</tr>
+<tr class="row-odd"><td><p>a_1</p></td>
+<td></td>
+<td><p>spin_1 of the compact binary</p></td>
+</tr>
+<tr class="row-even"><td><p>a_2</p></td>
+<td></td>
+<td><p>spin_2 of the compact binary</p></td>
+</tr>
+<tr class="row-odd"><td><p>luminosity_distance</p></td>
+<td><p>Mpc</p></td>
+<td><p>luminosity distance</p></td>
+</tr>
+<tr class="row-even"><td><p>mass_1_source</p></td>
+<td><p>Msun</p></td>
+<td><p>mass_1 of the compact binary
+(source frame)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mass_2_source</p></td>
+<td><p>Msun</p></td>
+<td><p>mass_2 of the compact binary
+(source frame)</p></td>
+</tr>
+<tr class="row-even"><td><p>mass_1</p></td>
+<td><p>Msun</p></td>
+<td><p>mass_1 of the compact binary
+(detector frame)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mass_2</p></td>
+<td><p>Msun</p></td>
+<td><p>mass_2 of the compact binary
+(detector frame)</p></td>
+</tr>
+<tr class="row-even"><td><p>pdet_L1</p></td>
+<td></td>
+<td><p>pdet of L1</p></td>
+</tr>
+<tr class="row-odd"><td><p>pdet_H1</p></td>
+<td></td>
+<td><p>pdet of H1</p></td>
+</tr>
+<tr class="row-even"><td><p>pdet_V1</p></td>
+<td></td>
+<td><p>pdet of V1</p></td>
+</tr>
+<tr class="row-odd"><td><p>pdet_net</p></td>
+<td></td>
+<td><p>pdet of the network</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unlensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.LeR.unlensed_sampling_routine">
+<span class="sig-name descname"><span class="pre">unlensed_sampling_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/rates/ler.html#LeR.unlensed_sampling_routine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.LeR.unlensed_sampling_routine" title="Link to this definition"></a></dt>
+<dd><p>Generate unlensed GW source parameters for a single batch.</p>
+<p>This is the core sampling routine called by unlensed_cbc_statistics.
+It samples GW source parameters and calculates detection probabilities.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to generate.</p>
+</dd>
+<dt><strong>output_jsonfile</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>JSON file name for storing the parameters.</p>
+</dd>
+<dt><strong>resume</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, appends new samples to existing JSON file.</p>
+<p>default: True</p>
+</dd>
+<dt><strong>save_batch</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, saves parameters in batches during sampling.</p>
+<p>default: True</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>unlensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of unlensed GW source parameters.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.LeR.unlensed_rate">
+<span class="sig-name descname"><span class="pre">unlensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unlensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'boolean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/rates/ler.html#LeR.unlensed_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.LeR.unlensed_rate" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the unlensed rate.</p>
+<p>This function calculates the detection rate for unlensed events and stores
+the parameters of the detectable events in a JSON file.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>unlensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code> or <code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Dictionary of GW source parameters or JSON file name.</p>
+<p>default: None (uses self.json_file_names[“unlensed_param”])</p>
+</dd>
+<dt><strong>pdet_threshold</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Threshold for detection probability.</p>
+<p>default: 0.5</p>
+</dd>
+<dt><strong>pdet_type</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Detectability condition type.</p>
+<p>Options:</p>
+<ul class="simple">
+<li><p>‘boolean’: Binary detection based on pdet_threshold</p></li>
+<li><p>‘probability_distribution’: Uses pdet values directly</p></li>
+</ul>
+<p>default: ‘boolean’</p>
+</dd>
+<dt><strong>output_jsonfile</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>JSON file name for storing the parameters of the detectable events.</p>
+<p>default: None (uses self.json_file_names[“unlensed_param_detectable”])</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>total_rate</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Total unlensed rate (yr^-1).</p>
+</dd>
+<dt><strong>unlensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of unlensed GW source parameters of the detectable events.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">total_rate</span><span class="p">,</span> <span class="n">unlensed_param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_rate</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.LeR.rate_function">
+<span class="sig-name descname"><span class="pre">rate_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detectable_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'unlensed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/rates/ler.html#LeR.rate_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.LeR.rate_function" title="Link to this definition"></a></dt>
+<dd><p>Calculate the detection rate for unlensed or lensed events.</p>
+<p>This is a general helper function that computes the rate based on
+Monte Carlo integration using the ratio of detectable to total events.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>detectable_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Number of detectable events (or sum of pdet values).</p>
+</dd>
+<dt><strong>total_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Total number of simulated events.</p>
+</dd>
+<dt><strong>param_type</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Type of parameters.</p>
+<p>Options:</p>
+<ul class="simple">
+<li><p>‘unlensed’: Use unlensed normalization</p></li>
+<li><p>‘lensed’: Use lensed normalization</p></li>
+</ul>
+<p>default: ‘unlensed’</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, print rate information.</p>
+<p>default: True</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>rate</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Event rate (yr^-1).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rate</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">rate_function</span><span class="p">(</span><span class="n">detectable_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">total_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.LeR.lensed_cbc_statistics">
+<span class="sig-name descname"><span class="pre">lensed_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/rates/ler.html#LeR.lensed_cbc_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.LeR.lensed_cbc_statistics" title="Link to this definition"></a></dt>
+<dd><p>Generate lensed GW source parameters.</p>
+<p>This function calls the lensed_sampling_routine function to generate
+the parameters in batches. The generated parameters are stored in a JSON
+file; and if save_batch=True, it keeps updating the file in batches.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to generate.</p>
+<p>default: 100000</p>
+</dd>
+<dt><strong>batch_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Batch size for sampling.</p>
+<p>default: 50000</p>
+</dd>
+<dt><strong>save_batch</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, saves parameters in batches during sampling.</p>
+<p>If False, saves all parameters at the end (faster).</p>
+<p>default: True</p>
+</dd>
+<dt><strong>resume</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, the function will resume from the last batch.</p>
+<p>default: True</p>
+</dd>
+<dt><strong>output_jsonfile</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>JSON file name for storing the parameters.</p>
+<p>default: None (uses self.json_file_names[“lensed_param”])</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>lensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of lensed GW source parameters. The included parameters and their units are as follows (for default settings):</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Units</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>zl</p></td>
+<td></td>
+<td><p>redshift of the lens</p></td>
+</tr>
+<tr class="row-odd"><td><p>zs</p></td>
+<td></td>
+<td><p>redshift of the source</p></td>
+</tr>
+<tr class="row-even"><td><p>sigma</p></td>
+<td><p>km s^-1</p></td>
+<td><p>velocity dispersion</p></td>
+</tr>
+<tr class="row-odd"><td><p>q</p></td>
+<td></td>
+<td><p>axis ratio</p></td>
+</tr>
+<tr class="row-even"><td><p>theta_E</p></td>
+<td><p>arcsec</p></td>
+<td><p>Einstein radius</p></td>
+</tr>
+<tr class="row-odd"><td><p>phi</p></td>
+<td><p>rad</p></td>
+<td><p>axis rotation angle. counter-clockwise from the
+positive x-axis (RA-like axis) to the major axis of
+the projected mass distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p>gamma</p></td>
+<td></td>
+<td><p>density profile slope of EPL galaxy</p></td>
+</tr>
+<tr class="row-odd"><td><p>gamma1</p></td>
+<td></td>
+<td><p>external shear component in the x-direction
+(RA-like axis)</p></td>
+</tr>
+<tr class="row-even"><td><p>gamma2</p></td>
+<td></td>
+<td><p>external shear component in the y-direction
+(Dec-like axis)</p></td>
+</tr>
+<tr class="row-odd"><td><p>geocent_time</p></td>
+<td><p>s</p></td>
+<td><p>geocent time</p></td>
+</tr>
+<tr class="row-even"><td><p>ra</p></td>
+<td><p>rad</p></td>
+<td><p>right ascension</p></td>
+</tr>
+<tr class="row-odd"><td><p>dec</p></td>
+<td><p>rad</p></td>
+<td><p>declination</p></td>
+</tr>
+<tr class="row-even"><td><p>phase</p></td>
+<td><p>rad</p></td>
+<td><p>phase of GW at reference freq</p></td>
+</tr>
+<tr class="row-odd"><td><p>psi</p></td>
+<td><p>rad</p></td>
+<td><p>polarization angle</p></td>
+</tr>
+<tr class="row-even"><td><p>theta_jn</p></td>
+<td><p>rad</p></td>
+<td><p>inclination angle</p></td>
+</tr>
+<tr class="row-odd"><td><p>a_1</p></td>
+<td></td>
+<td><p>spin of the primary compact binary</p></td>
+</tr>
+<tr class="row-even"><td><p>a_2</p></td>
+<td></td>
+<td><p>spin of the secondary compact binary</p></td>
+</tr>
+<tr class="row-odd"><td><p>mass_1_source</p></td>
+<td><p>Msun</p></td>
+<td><p>mass of the primary compact binary (source frame)</p></td>
+</tr>
+<tr class="row-even"><td><p>mass_2_source</p></td>
+<td><p>Msun</p></td>
+<td><p>mass of the secondary compact binary (source frame)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mass_1</p></td>
+<td><p>Msun</p></td>
+<td><p>mass of the primary compact binary (detector frame)</p></td>
+</tr>
+<tr class="row-even"><td><p>mass_2</p></td>
+<td><p>Msun</p></td>
+<td><p>mass of the secondary compact binary (detector frame)</p></td>
+</tr>
+<tr class="row-odd"><td><p>x0_image_positions</p></td>
+<td><p>arcsec</p></td>
+<td><p>x-coordinate (RA-like axis) of the images</p></td>
+</tr>
+<tr class="row-even"><td><p>x1_image_positions</p></td>
+<td><p>arcsec</p></td>
+<td><p>y-coordinate (Dec-like axis) of the images</p></td>
+</tr>
+<tr class="row-odd"><td><p>magnifications</p></td>
+<td></td>
+<td><p>magnifications</p></td>
+</tr>
+<tr class="row-even"><td><p>time_delays</p></td>
+<td></td>
+<td><p>time delays</p></td>
+</tr>
+<tr class="row-odd"><td><p>image_type</p></td>
+<td></td>
+<td><p>image type</p></td>
+</tr>
+<tr class="row-even"><td><p>n_images</p></td>
+<td></td>
+<td><p>number of images</p></td>
+</tr>
+<tr class="row-odd"><td><p>x_source</p></td>
+<td><p>arcsec</p></td>
+<td><p>x-coordinate (RA-like axis) of the source</p></td>
+</tr>
+<tr class="row-even"><td><p>y_source</p></td>
+<td><p>arcsec</p></td>
+<td><p>y-coordinate (Dec-like axis) of the source</p></td>
+</tr>
+<tr class="row-odd"><td><p>effective_luminosity_distance</p></td>
+<td><p>Mpc</p></td>
+<td><p>effective luminosity distance of the images</p></td>
+</tr>
+<tr class="row-even"><td><p>effective_geocent_time</p></td>
+<td><p>s</p></td>
+<td><p>effective GPS time of coalescence of the images</p></td>
+</tr>
+<tr class="row-odd"><td><p>pdet_L1</p></td>
+<td></td>
+<td><p>detection probability of L1</p></td>
+</tr>
+<tr class="row-even"><td><p>pdet_H1</p></td>
+<td></td>
+<td><p>detection probability of H1</p></td>
+</tr>
+<tr class="row-odd"><td><p>pdet_V1</p></td>
+<td></td>
+<td><p>detection probability of V1</p></td>
+</tr>
+<tr class="row-even"><td><p>pdet_net</p></td>
+<td></td>
+<td><p>detection probability of the network</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">lensed_cbc_statistics</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.LeR.lensed_sampling_routine">
+<span class="sig-name descname"><span class="pre">lensed_sampling_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/rates/ler.html#LeR.lensed_sampling_routine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.LeR.lensed_sampling_routine" title="Link to this definition"></a></dt>
+<dd><p>Generate lensed GW source parameters for a single batch.</p>
+<p>This is the core sampling routine called by lensed_cbc_statistics.
+It samples lens parameters, calculates image properties, and computes
+detection probabilities for the images of lensed events.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to generate.</p>
+</dd>
+<dt><strong>output_jsonfile</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>JSON file name for storing the parameters.</p>
+</dd>
+<dt><strong>save_batch</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, saves parameters in batches during sampling.</p>
+<p>default: True</p>
+</dd>
+<dt><strong>resume</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, appends new samples to existing JSON file.</p>
+<p>default: True</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>lensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of lensed GW source parameters.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.LeR.lensed_rate">
+<span class="sig-name descname"><span class="pre">lensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.5,</span> <span class="pre">0.5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan_to_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'boolean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/rates/ler.html#LeR.lensed_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.LeR.lensed_rate" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the lensed rate.</p>
+<p>This function calculates the detection rate for lensed events and stores
+the parameters of the detectable events in a JSON file.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>lensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code> or <code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Dictionary of lensed GW source parameters or JSON file name.</p>
+<p>default: None (uses self.json_file_names[“lensed_param”])</p>
+</dd>
+<dt><strong>pdet_threshold</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">list</span></code></span></dt><dd><p>Threshold for detection probability.</p>
+<p>default: [0.5, 0.5]</p>
+</dd>
+<dt><strong>num_img</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">list</span></code></span></dt><dd><p>Number of images corresponding to the pdet_threshold.</p>
+<p>Together with pdet_threshold = [0.5, 0.5], it means that two images with pdet &gt; 0.5.</p>
+<p>Same condition can also be represented by pdet_threshold = 0.5 and num_img = 2.</p>
+<p>default: [1, 1]</p>
+</dd>
+<dt><strong>output_jsonfile</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>JSON file name for storing the parameters of the detectable events.</p>
+<p>default: None (uses self.json_file_names[“lensed_param_detectable”])</p>
+</dd>
+<dt><strong>nan_to_num</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, NaN values will be converted to 0.</p>
+<p>default: True</p>
+</dd>
+<dt><strong>pdet_type</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Detectability condition type.</p>
+<p>Options:</p>
+<ul class="simple">
+<li><p>‘boolean’: Binary detection based on pdet_threshold</p></li>
+<li><p>‘probability_distribution’: Uses pdet values directly</p></li>
+</ul>
+<p>default: ‘boolean’</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>total_rate</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Total lensed rate (yr^-1).</p>
+</dd>
+<dt><strong>lensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of lensed GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Units</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>zl</p></td>
+<td></td>
+<td><p>redshift of the lens</p></td>
+</tr>
+<tr class="row-odd"><td><p>zs</p></td>
+<td></td>
+<td><p>redshift of the source</p></td>
+</tr>
+<tr class="row-even"><td><p>sigma</p></td>
+<td><p>km s^-1</p></td>
+<td><p>velocity dispersion</p></td>
+</tr>
+<tr class="row-odd"><td><p>q</p></td>
+<td></td>
+<td><p>axis ratio</p></td>
+</tr>
+<tr class="row-even"><td><p>theta_E</p></td>
+<td><p>arcsec</p></td>
+<td><p>Einstein radius</p></td>
+</tr>
+<tr class="row-odd"><td><p>phi</p></td>
+<td><p>rad</p></td>
+<td><p>axis rotation angle. counter-clockwise from the
+positive x-axis (RA-like axis) to the major axis of
+the projected mass distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p>gamma</p></td>
+<td></td>
+<td><p>density profile slope of EPL galaxy</p></td>
+</tr>
+<tr class="row-odd"><td><p>gamma1</p></td>
+<td></td>
+<td><p>external shear component in the x-direction
+(RA-like axis)</p></td>
+</tr>
+<tr class="row-even"><td><p>gamma2</p></td>
+<td></td>
+<td><p>external shear component in the y-direction
+(Dec-like axis)</p></td>
+</tr>
+<tr class="row-odd"><td><p>geocent_time</p></td>
+<td><p>s</p></td>
+<td><p>geocent time</p></td>
+</tr>
+<tr class="row-even"><td><p>ra</p></td>
+<td><p>rad</p></td>
+<td><p>right ascension</p></td>
+</tr>
+<tr class="row-odd"><td><p>dec</p></td>
+<td><p>rad</p></td>
+<td><p>declination</p></td>
+</tr>
+<tr class="row-even"><td><p>phase</p></td>
+<td><p>rad</p></td>
+<td><p>phase of GW at reference freq</p></td>
+</tr>
+<tr class="row-odd"><td><p>psi</p></td>
+<td><p>rad</p></td>
+<td><p>polarization angle</p></td>
+</tr>
+<tr class="row-even"><td><p>theta_jn</p></td>
+<td><p>rad</p></td>
+<td><p>inclination angle</p></td>
+</tr>
+<tr class="row-odd"><td><p>a_1</p></td>
+<td></td>
+<td><p>spin of the primary compact binary</p></td>
+</tr>
+<tr class="row-even"><td><p>a_2</p></td>
+<td></td>
+<td><p>spin of the secondary compact binary</p></td>
+</tr>
+<tr class="row-odd"><td><p>mass_1_source</p></td>
+<td><p>Msun</p></td>
+<td><p>mass of the primary compact binary (source frame)</p></td>
+</tr>
+<tr class="row-even"><td><p>mass_2_source</p></td>
+<td><p>Msun</p></td>
+<td><p>mass of the secondary compact binary (source frame)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mass_1</p></td>
+<td><p>Msun</p></td>
+<td><p>mass of the primary compact binary (detector frame)</p></td>
+</tr>
+<tr class="row-even"><td><p>mass_2</p></td>
+<td><p>Msun</p></td>
+<td><p>mass of the secondary compact binary (detector frame)</p></td>
+</tr>
+<tr class="row-odd"><td><p>x0_image_positions</p></td>
+<td><p>arcsec</p></td>
+<td><p>x-coordinate (RA-like axis) of the images</p></td>
+</tr>
+<tr class="row-even"><td><p>x1_image_positions</p></td>
+<td><p>arcsec</p></td>
+<td><p>y-coordinate (Dec-like axis) of the images</p></td>
+</tr>
+<tr class="row-odd"><td><p>magnifications</p></td>
+<td></td>
+<td><p>magnifications</p></td>
+</tr>
+<tr class="row-even"><td><p>time_delays</p></td>
+<td></td>
+<td><p>time delays</p></td>
+</tr>
+<tr class="row-odd"><td><p>image_type</p></td>
+<td></td>
+<td><p>image type</p></td>
+</tr>
+<tr class="row-even"><td><p>n_images</p></td>
+<td></td>
+<td><p>number of images</p></td>
+</tr>
+<tr class="row-odd"><td><p>x_source</p></td>
+<td><p>arcsec</p></td>
+<td><p>x-coordinate (RA-like axis) of the source</p></td>
+</tr>
+<tr class="row-even"><td><p>y_source</p></td>
+<td><p>arcsec</p></td>
+<td><p>y-coordinate (Dec-like axis) of the source</p></td>
+</tr>
+<tr class="row-odd"><td><p>effective_luminosity_distance</p></td>
+<td><p>Mpc</p></td>
+<td><p>effective luminosity distance of the images</p></td>
+</tr>
+<tr class="row-even"><td><p>effective_geocent_time</p></td>
+<td><p>s</p></td>
+<td><p>effective GPS time of coalescence of the images</p></td>
+</tr>
+<tr class="row-odd"><td><p>pdet_L1</p></td>
+<td></td>
+<td><p>detection probability of L1</p></td>
+</tr>
+<tr class="row-even"><td><p>pdet_H1</p></td>
+<td></td>
+<td><p>detection probability of H1</p></td>
+</tr>
+<tr class="row-odd"><td><p>pdet_V1</p></td>
+<td></td>
+<td><p>detection probability of V1</p></td>
+</tr>
+<tr class="row-even"><td><p>pdet_net</p></td>
+<td></td>
+<td><p>detection probability of the network</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span><span class="o">.</span><span class="n">lensed_cbc_statistics</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">total_rate</span><span class="p">,</span> <span class="n">lensed_param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">lensed_rate</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.LeR.rate_comparison_with_rate_calculation">
+<span class="sig-name descname"><span class="pre">rate_comparison_with_rate_calculation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unlensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_threshold_unlensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile_unlensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_threshold_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.5,</span> <span class="pre">0.5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile_lensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan_to_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'boolean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/rates/ler.html#LeR.rate_comparison_with_rate_calculation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.LeR.rate_comparison_with_rate_calculation" title="Link to this definition"></a></dt>
+<dd><p>Calculate and compare unlensed and lensed detection rates.</p>
+<p>This function calculates both unlensed and lensed rates and computes
+their ratio. It stores the parameters of the detectable events in JSON
+files. Using this function eliminates the need to call unlensed_rate
+and lensed_rate separately.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>unlensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code> or <code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Dictionary of GW source parameters or JSON file name.</p>
+<p>default: None (uses self.json_file_names[“unlensed_param”])</p>
+</dd>
+<dt><strong>pdet_threshold_unlensed</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Detection probability threshold for unlensed events.</p>
+<p>default: 0.5</p>
+</dd>
+<dt><strong>output_jsonfile_unlensed</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>JSON file name for storing detectable unlensed parameters.</p>
+<p>default: None</p>
+</dd>
+<dt><strong>lensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code> or <code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Dictionary of lensed GW source parameters or JSON file name.</p>
+<p>default: None (uses self.json_file_names[“lensed_param”])</p>
+</dd>
+<dt><strong>pdet_threshold_lensed</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">list</span></code></span></dt><dd><p>Detection probability threshold for lensed events.</p>
+<p>default: [0.5, 0.5]</p>
+</dd>
+<dt><strong>num_img_lensed</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">list</span></code></span></dt><dd><p>Number of images for lensed events.</p>
+<p>default: [1, 1]</p>
+</dd>
+<dt><strong>output_jsonfile_lensed</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>JSON file name for storing detectable lensed parameters.</p>
+<p>default: None</p>
+</dd>
+<dt><strong>nan_to_num</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, NaN values will be converted to 0.</p>
+<p>default: True</p>
+</dd>
+<dt><strong>pdet_type</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Detectability condition type.</p>
+<p>Options:</p>
+<ul class="simple">
+<li><p>‘boolean’: Binary detection based on pdet_threshold</p></li>
+<li><p>‘probability_distribution’: Uses pdet values directly</p></li>
+</ul>
+<p>default: ‘boolean’</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>rate_ratio</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Ratio of unlensed rate to lensed rate.</p>
+</dd>
+<dt><strong>unlensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of detectable unlensed GW source parameters.</p>
+</dd>
+<dt><strong>lensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of detectable lensed GW source parameters.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span><span class="o">.</span><span class="n">lensed_cbc_statistics</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_ratio</span><span class="p">,</span> <span class="n">unlensed_param</span><span class="p">,</span> <span class="n">lensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">rate_comparison_with_rate_calculation</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.LeR.rate_ratio">
+<span class="sig-name descname"><span class="pre">rate_ratio</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/rates/ler.html#LeR.rate_ratio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.LeR.rate_ratio" title="Link to this definition"></a></dt>
+<dd><p>Calculate and display the unlensed to lensed merger rate ratio.</p>
+<p>This function retrieves the unlensed_rate and lensed_rate from the
+JSON file specified in self.json_file_names[“ler_params”] and computes
+their ratio.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>rate_ratio</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Ratio of unlensed rate to lensed rate.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span><span class="o">.</span><span class="n">lensed_cbc_statistics</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span><span class="o">.</span><span class="n">unlensed_rate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span><span class="o">.</span><span class="n">lensed_rate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span><span class="o">.</span><span class="n">rate_ratio</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.LeR.selecting_n_unlensed_detectable_events">
+<span class="sig-name descname"><span class="pre">selecting_n_unlensed_detectable_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stopping_criteria</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">dict(relative_diff_percentage=0.5,</span> <span class="pre">number_of_last_batches_to_check=4)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'n_unlensed_param_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_data_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'meta_unlensed.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'boolean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trim_to_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/rates/ler.html#LeR.selecting_n_unlensed_detectable_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.LeR.selecting_n_unlensed_detectable_events" title="Link to this definition"></a></dt>
+<dd><p>Generate a target number of detectable unlensed events by sampling in batches, with the option to stop once the cumulative rate has stabilized.</p>
+<p>This function samples unlensed parameters and saves only the detectable
+events in a JSON file. It also records metadata including the total
+number of events and the cumulative rate.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Target number of detectable samples to collect.</p>
+<p>default: 100</p>
+</dd>
+<dt><strong>batch_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Batch size for sampling.</p>
+<p>default: 50000</p>
+</dd>
+<dt><strong>stopping_criteria</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Criteria for stopping sample collection (but will not stop until n&gt;size).</p>
+<p>Keys:</p>
+<ul class="simple">
+<li><p>‘relative_diff_percentage’: Maximum relative difference in rate (float)</p></li>
+<li><p>‘number_of_last_batches_to_check’: Number of batches for comparison (int)</p></li>
+</ul>
+<p>If None, stops when detectable events exceed size.</p>
+<p>default: dict(relative_diff_percentage=0.5, number_of_last_batches_to_check=4)</p>
+</dd>
+<dt><strong>pdet_threshold</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Detection probability threshold.</p>
+<p>default: 0.5</p>
+</dd>
+<dt><strong>resume</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, resumes from last saved batch.</p>
+<p>default: True</p>
+</dd>
+<dt><strong>output_jsonfile</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>JSON file name for storing detectable parameters.</p>
+<p>default: ‘n_unlensed_param_detectable.json’</p>
+</dd>
+<dt><strong>meta_data_file</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>JSON file name for storing metadata.</p>
+<p>default: ‘meta_unlensed.json’</p>
+</dd>
+<dt><strong>pdet_type</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Detectability condition type.</p>
+<p>Options:</p>
+<ul class="simple">
+<li><p>‘boolean’: Binary detection based on pdet_threshold</p></li>
+<li><p>‘probability_distribution’: Uses pdet values directly</p></li>
+</ul>
+<p>default: ‘boolean’</p>
+</dd>
+<dt><strong>trim_to_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, trims final result to exactly size events.</p>
+<p>default: False</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>param_final</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of unlensed GW source parameters of detectable events.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unlensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">selecting_n_unlensed_detectable_events</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.LeR.selecting_n_lensed_detectable_events">
+<span class="sig-name descname"><span class="pre">selecting_n_lensed_detectable_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stopping_criteria</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">dict(relative_diff_percentage=2,</span> <span class="pre">number_of_last_batches_to_check=4)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.5,</span> <span class="pre">0.5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'boolean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'n_lensed_params_detectable.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_data_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'meta_lensed.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trim_to_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan_to_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ler/rates/ler.html#LeR.selecting_n_lensed_detectable_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.LeR.selecting_n_lensed_detectable_events" title="Link to this definition"></a></dt>
+<dd><p>Generate a target number of detectable lensed events by sampling in batches, with the option to stop once the cumulative rate has stabilized.</p>
+<p>This function samples lensed parameters and saves only the detectable
+events in a JSON file. It also records metadata including the total
+number of events and the cumulative rate.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Target number of detectable samples to collect.</p>
+<p>default: 100</p>
+</dd>
+<dt><strong>stopping_criteria</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Criteria for stopping sample collection (but will not stop until n&gt;size).</p>
+<p>Keys:</p>
+<ul class="simple">
+<li><p>‘relative_diff_percentage’: Maximum relative difference in rate (float)</p></li>
+<li><p>‘number_of_last_batches_to_check’: Number of batches for comparison (int)</p></li>
+</ul>
+<p>If None, stops when detectable events exceed size.</p>
+<p>default: dict(relative_diff_percentage=2, number_of_last_batches_to_check=4)</p>
+</dd>
+<dt><strong>batch_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Batch size for sampling.</p>
+<p>default: 50000</p>
+</dd>
+<dt><strong>pdet_threshold</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">list</span></code></span></dt><dd><p>Detection probability threshold.</p>
+<p>default: [0.5, 0.5]</p>
+</dd>
+<dt><strong>num_img</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">list</span></code></span></dt><dd><p>Number of images corresponding to each pdet_threshold.</p>
+<p>default: [1, 1]</p>
+</dd>
+<dt><strong>resume</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, resumes from last saved batch.</p>
+<p>default: True</p>
+</dd>
+<dt><strong>pdet_type</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Detectability condition type.</p>
+<p>Options:</p>
+<ul class="simple">
+<li><p>‘boolean’: Binary detection based on pdet_threshold</p></li>
+<li><p>‘probability_distribution’: Uses pdet values directly</p></li>
+</ul>
+<p>default: ‘boolean’</p>
+</dd>
+<dt><strong>output_jsonfile</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>JSON file name for storing detectable parameters.</p>
+<p>default: ‘n_lensed_params_detectable.json’</p>
+</dd>
+<dt><strong>meta_data_file</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>JSON file name for storing metadata.</p>
+<p>default: ‘meta_lensed.json’</p>
+</dd>
+<dt><strong>trim_to_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, trims final result to exactly size events.</p>
+<p>default: False</p>
+</dd>
+<dt><strong>nan_to_num</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, NaN values will be converted to 0.</p>
+<p>default: False</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>param_final</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of lensed GW source parameters of detectable events.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">selecting_n_lensed_detectable_events</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+</section>
 </section>
 
 

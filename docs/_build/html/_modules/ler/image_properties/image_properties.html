@@ -1,174 +1,99 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
-
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ler.image_properties.image_properties &mdash; ler 0.3.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.image_properties.image_properties &mdash; ler 0.4.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
-
-    <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../../_static/documentation_options.js?v=4621528c"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/tabs.js?v=3030b3cb"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA="
-        src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-    <div class="wy-grid-for-nav">
-        <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-            <div class="wy-side-scroll">
-                <div class="wy-side-nav-search">
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
 
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
 
+        </div>
+      </div>
+    </nav>
 
-                    <a href="../../../index.html" class="icon icon-home">
-                        ler
-                    </a>
-                    <div role="search">
-                        <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-                            <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-                        </form>
-                    </div>
-                </div>
-                <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-                    <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-                    <ul>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../Installation2.html">Installation</a></li>
-                        <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code
-                                overview</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../GW_events.html">Gravitational wave event rates</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../GW_equations.html">Gravitational wave events sampling (Analytical
-                                formulation)</a></li>
-                        <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed
-                                event rates</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a>
-                        </li>
-                    </ul>
-                    <p class="caption" role="heading"><span class="caption-text">API:</span></p>
-                    <ul>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../autoapi/ler/rates/index.html"><code
-                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../autoapi/ler/gw_source_population/index.html"><code
-                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../autoapi/ler/lens_galaxy_population/index.html"><code
-                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../autoapi/ler/image_properties/index.html"><code
-                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../autoapi/ler/utils/index.html"><code
-                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a>
-                        </li>
-                    </ul>
-                    <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
-                    <ul>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/rates/LeR%20complete%20examples.html">LeR complete examples</a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/rates/GWRATES%20complete%20exmaples.html">GWRATES complete
-                                exmaples</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/rates/grb%20detection%20rate.html">Calculation of detectable
-                                Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/rates/ler%20bns%20example.html">LeR complete examples of BNS
-                                events (O4 design sensitivity)</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/rates/rates_with_3G_detectors.html">Event Rates with 3G
-                                detectors</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/source%20population/merger%20rate%20density%20evolution%20with%20redshift.html">Merger
-                                rate density evolution with redshift</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/source%20population/merger%20rate%20density%20model%20comparision.html">Merger
-                                rate density model comparision</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/source%20population/merger%20rate%20density%20model%20comparision.html#Primordial-BBH-model,-Ng-et-al.-2022">Primordial
-                                BBH model, Ng et al. 2022</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/source%20population/sample%20compact%20binary%20parameters.html">Sampling
-                                parameters for a compact binary</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/source%20population/statistical%20study%20of%20changing%20mass%20model%20params.html">Statistical
-                                study of changing Mass model paramter(s)</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/source%20population/statistical%20study%20of%20cosmological%20friction.html">Statistical
-                                study of cosmological friction and its effect on the redshift vs inferred chirp-mass
-                                relation of gravitational waves</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/lens_parameters/sample%20lens%20parameters.html">Lens parameter
-                                distributions</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/optical_depth/validation_SIE.html">Optical depth SIE model
-                                validation</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/optical_depth/validation_SIS.html">Validation of SIS model
-                                (Numerical vs Analytical)</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/image_properties/dt_vs_dmu.html">Study of Time delays and
-                                magnification of lensed gravitational waves.</a></li>
-                    </ul>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ler</a>
+      </nav>
 
-                </div>
-            </div>
-        </nav>
-
-        <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-            <nav class="wy-nav-top" aria-label="Mobile navigation menu">
-                <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-                <a href="../../../index.html">ler</a>
-            </nav>
-
-            <div class="wy-nav-content">
-                <div class="rst-content">
-                    <div role="navigation" aria-label="Page navigation">
-                        <ul class="wy-breadcrumbs">
-                            <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-                            <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-                            <li class="breadcrumb-item active">ler.image_properties.image_properties</li>
-                            <li class="wy-breadcrumbs-aside">
-                            </li>
-                        </ul>
-                        <hr />
-                    </div>
-                    <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-                        <div itemprop="articleBody">
-
-                            <h1>Source code for ler.image_properties.image_properties</h1>
-                            <div class="highlight">
-                                <pre>
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ler.image_properties.image_properties</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ler.image_properties.image_properties</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module contains the LensGalaxyPopulation class, which is used to sample lens galaxy parameters, source parameters conditioned on the source being strongly lensed, image properties, and lensed SNRs. \n</span>
@@ -187,14 +112,16 @@
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
 
 <span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
-<span class="n">cosmo</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<div class="viewcode-block" id="cosmo">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/index.html#ler.image_properties.image_properties.cosmo">[docs]</a>
+<span class="n">cosmo</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span></div>
+
 
 <span class="c1"># the following .py file will be called if they are not given in the class initialization</span>
 <span class="kn">from</span> <span class="nn">.multiprocessing_routine</span> <span class="kn">import</span> <span class="n">solve_lens_equation</span>
+<span class="kn">from</span> <span class="nn">..lens_galaxy_population.jit_functions</span> <span class="kn">import</span> <span class="n">phi_q2_ellipticity_hemanta</span>
 
-
-
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span>  <span class="n">interpolator_from_json</span><span class="p">,</span> <span class="n">cubic_spline_interpolator</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span>  <span class="n">FunctionConditioning</span><span class="p">,</span> <span class="n">luminosity_distance</span>
 
 <div class="viewcode-block" id="ImageProperties">
 <a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/index.html#ler.image_properties.image_properties.ImageProperties">[docs]</a>
@@ -242,7 +169,7 @@
 <span class="sd">        default: &quot;./interpolator_json&quot;</span>
 <span class="sd">    create_new_interpolator : `dict`</span>
 <span class="sd">        dictionary to create new interpolator pickle files</span>
-<span class="sd">        default: dict(luminosity_distance_to_z=dict(create_new=False, resolution=1000))</span>
+<span class="sd">        default: dict(luminosity_distance=dict(create_new=False, resolution=1000))</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -255,35 +182,35 @@
 <span class="sd">    Instance Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    ImageProperties has the following instance attributes:\n</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    | Atrributes                          | Type                             |</span>
 <span class="sd">    +=====================================+==================================+</span>
 <span class="sd">    |:attr:`npool`                        | `int`                            |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`z_min`                        | `float`                          |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`z_max`                        | `float`                          |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`n_min_images`                 | `int`                            |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`n_max_images`                 | `int`                            |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`geocent_time_min`             | `float`                          |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`geocent_time_max`             | `float`                          |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`lens_model_list`              | `list`                           |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`cosmo`                        | `astropy.cosmology`              |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`spin_zero`                    | `bool`                           |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`spin_precession`              | `bool`                           |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`directory`                    | `str`                            |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`create_new_interpolator`      | `dict`                           |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -293,8 +220,7 @@
                  <span class="n">z_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
                  <span class="n">n_min_images</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
                  <span class="n">n_max_images</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-                 <span class="n">geocent_time_min</span><span class="o">=</span><span class="mf">1126259462.4</span><span class="p">,</span>
-                 <span class="n">geocent_time_max</span><span class="o">=</span><span class="mf">1126259462.4</span><span class="o">+</span><span class="mi">365</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">3600</span><span class="o">*</span><span class="mi">20</span><span class="p">,</span>
+                 <span class="n">time_window</span><span class="o">=</span><span class="mi">365</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">3600</span><span class="o">*</span><span class="mi">20</span><span class="p">,</span>
                  <span class="n">lens_model_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span>
                  <span class="n">cosmology</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">spin_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -303,42 +229,38 @@
                  <span class="n">create_new_interpolator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">):</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">npool</span> <span class="o">=</span> <span class="n">npool</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_min_images</span> <span class="o">=</span> <span class="n">n_min_images</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span> <span class="o">=</span> <span class="n">n_max_images</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lens_model_list</span> <span class="o">=</span> <span class="n">lens_model_list</span>  <span class="c1"># list of lens models</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">spin_zero</span> <span class="o">=</span> <span class="n">spin_zero</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">spin_precession</span> <span class="o">=</span> <span class="n">spin_precession</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">geocent_time_min</span> <span class="o">=</span> <span class="n">geocent_time_min</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">geocent_time_max</span> <span class="o">=</span> <span class="n">geocent_time_max</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span> <span class="o">=</span> <span class="n">cosmology</span> <span class="k">if</span> <span class="n">cosmology</span> <span class="k">else</span> <span class="n">cosmo</span>
-        
-        <span class="c1"># initialize the interpolator&#39;s parameters</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">luminosity_distance_to_z</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">1000</span><span class="p">),</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">create_new_interpolator</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">create_new_interpolator</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">create_new_interpolator</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-                <span class="n">luminosity_distance_to_z</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
-            <span class="p">)</span>
+<div class="viewcode-block" id="ImageProperties.npool">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.npool">[docs]</a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">npool</span> <span class="o">=</span> <span class="n">npool</span></div>
 
-        <span class="n">resolution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;luminosity_distance_to_z&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
-        <span class="n">create_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;luminosity_distance_to_z&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">]</span>
-        <span class="n">spline1</span> <span class="o">=</span> <span class="n">interpolator_from_json</span><span class="p">(</span>
-            <span class="n">param_dict_given</span><span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span> <span class="n">cosmology</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">),</span>
-            <span class="n">directory</span><span class="o">=</span><span class="n">directory</span><span class="p">,</span>
-            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;luminosity_distance_to_z&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;luminosity_distance_to_z&quot;</span><span class="p">,</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">),</span>
-            <span class="n">pdf_func</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">z_</span><span class="p">:</span> <span class="n">cosmo</span><span class="o">.</span><span class="n">luminosity_distance</span><span class="p">(</span><span class="n">z_</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> 
-            <span class="n">conditioned_y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
-            <span class="n">dimension</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">category</span><span class="o">=</span><span class="s2">&quot;function_inverse&quot;</span><span class="p">,</span>
-            <span class="n">create_new</span><span class="o">=</span><span class="n">create_new</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">luminosity_distance_to_z</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">z_</span><span class="p">:</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span><span class="n">z_</span><span class="p">,</span> <span class="n">spline1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">spline1</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<div class="viewcode-block" id="ImageProperties.n_min_images">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.n_min_images">[docs]</a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_min_images</span> <span class="o">=</span> <span class="n">n_min_images</span></div>
+
+<div class="viewcode-block" id="ImageProperties.n_max_images">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.n_max_images">[docs]</a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span> <span class="o">=</span> <span class="n">n_max_images</span></div>
+
+<div class="viewcode-block" id="ImageProperties.lens_model_list">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.lens_model_list">[docs]</a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lens_model_list</span> <span class="o">=</span> <span class="n">lens_model_list</span>  <span class="c1"># list of lens models</span></div>
+
+<div class="viewcode-block" id="ImageProperties.spin_zero">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.spin_zero">[docs]</a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spin_zero</span> <span class="o">=</span> <span class="n">spin_zero</span></div>
+
+<div class="viewcode-block" id="ImageProperties.spin_precession">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.spin_precession">[docs]</a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spin_precession</span> <span class="o">=</span> <span class="n">spin_precession</span></div>
+
+<div class="viewcode-block" id="ImageProperties.time_window">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.time_window">[docs]</a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_window</span> <span class="o">=</span> <span class="n">time_window</span></div>
+
+<div class="viewcode-block" id="ImageProperties.cosmo">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.cosmo">[docs]</a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span> <span class="o">=</span> <span class="n">cosmology</span> <span class="k">if</span> <span class="n">cosmology</span> <span class="k">else</span> <span class="n">cosmo</span></div>
+
 
 <div class="viewcode-block" id="ImageProperties.image_properties">
 <a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/index.html#ler.image_properties.image_properties.ImageProperties.image_properties">[docs]</a>
@@ -362,7 +284,7 @@
 <span class="sd">                e.g. lens_parameters contains the following keys:\n</span>
 <span class="sd">                lens related=&gt;[&#39;zs&#39;: source redshift, &#39;zl&#39;: lens redshift, &#39;gamma1&#39;: shear component in the x-direction, &#39;gamma2&#39;: shear component in the y-direction, &#39;e1&#39;: ellipticity component in the x-direction, &#39;e2&#39;: ellipticity component in the y-direction, &#39;gamma&#39;: spectral index of the mass density distribution, &#39;theta_E&#39;: einstein radius in radian]\n</span>
 <span class="sd">                source related=&gt;[&#39;mass_1&#39;: mass in detector frame (mass1&gt;mass2), &#39;mass_2&#39;: mass in detector frame, &#39;mass_1_source&#39;:mass in source frame, &#39;mass_2_source&#39;:mass source frame, &#39;luminosity_distance&#39;: luminosity distance, &#39;theta_jn&#39;: inclination angle, &#39;psi&#39;: polarization angle, &#39;phase&#39;: coalesence phase, &#39;geocent_time&#39;: coalensence GPS time at geocenter, &#39;ra&#39;: right ascension, &#39;dec&#39;: declination, &#39;a_1&#39;: spin magnitude of the more massive black hole, &#39;a2&#39;: spin magnitude of the less massive black hole, &#39;tilt_1&#39;: tilt angle of the more massive black hole, &#39;tilt_2&#39;: tilt angle of the less massive black hole, &#39;phi_12&#39;: azimuthal angle between the two spins, &#39;phi_jl&#39;: azimuthal angle between the total angular momentum and the orbital angular momentum]\n</span>
-<span class="sd">                image related=&gt;[&#39;x_source&#39;: source position in the x-direction, &#39;y_source&#39;: source position in the y-direction, &#39;x0_image_position&#39;: image position in the x-direction, &#39;x1_image_position&#39;: image position in the y-direction, &#39;magnifications&#39;: magnifications, &#39;time_delays&#39;: time delays, &#39;n_images&#39;: number of images formed, &#39;determinant&#39;: determinants, &#39;trace&#39;: traces, &#39;iteration&#39;: to keep track of the iteration number</span>
+<span class="sd">                image related=&gt;[&#39;x_source&#39;: source position in the x-direction, &#39;y_source&#39;: source position in the y-direction, &#39;x0_image_position&#39;: image position in the x-direction, &#39;x1_image_position&#39;: image position in the y-direction, &#39;magnifications&#39;: magnifications, &#39;time_delays&#39;: time delays: number of images formed, &#39;determinant&#39;: determinants, &#39;trace&#39;: traces, &#39;iteration&#39;: to keep track of the iteration number</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">npool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">npool</span>
@@ -376,7 +298,10 @@
         <span class="c1"># external shear params to the &#39;PEMD&#39; galaxy lens</span>
         <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;gamma1&quot;</span><span class="p">],</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;gamma2&quot;</span><span class="p">]</span>
         <span class="c1"># ellipticity of the galaxy lens</span>
-        <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;e1&quot;</span><span class="p">],</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;e2&quot;</span><span class="p">]</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;phi&quot;</span><span class="p">]</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;q&quot;</span><span class="p">]</span>
+        <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span> <span class="o">=</span> <span class="n">phi_q2_ellipticity_hemanta</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+
         <span class="n">gamma</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;gamma&quot;</span><span class="p">]</span>
         <span class="n">einstein_radius</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;theta_E&quot;</span><span class="p">]</span>
         <span class="c1"># Create the lens model list (note: can be a different lens model for different samples)</span>
@@ -524,29 +449,24 @@
 
 <div class="viewcode-block" id="ImageProperties.get_lensed_snrs">
 <a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/index.html#ler.image_properties.image_properties.ImageProperties.get_lensed_snrs">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_lensed_snrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">list_of_detectors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">snr_calculator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pdet_calculator</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_lensed_snrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">pdet_calculator</span><span class="p">,</span> <span class="n">list_of_detectors</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to calculate the signal to noise ratio for each image in each event.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">            snr_calculator : `function`</span>
-<span class="sd">                snr function, as describe in the :class:`~ler.rates.GWRATES` class.</span>
 <span class="sd">            list_of_detectors : `list`</span>
 <span class="sd">                list of detectors</span>
 <span class="sd">                e.g. [&#39;H1&#39;, &#39;L1&#39;, &#39;V1&#39;]</span>
 <span class="sd">            lensed_param : `dict`</span>
 <span class="sd">                dictionary containing the both already lensed source paramters and image parameters.</span>
 <span class="sd">                e.g. lensed_param.keys() = [&#39;mass_1&#39;, &#39;mass_2&#39;, &#39;zs&#39;, &#39;luminosity_distance&#39;, &#39;theta_jn&#39;, &#39;psi&#39;, &#39;phi&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;geocent_time&#39;, &#39;phase&#39;, &#39;a_1&#39;, &#39;a2&#39;, &#39;tilt_1&#39;, &#39;tilt_2&#39;, &#39;phi_12&#39;, &#39;phi_jl&#39;, &#39;magnifications&#39;, &#39;time_delays&#39;]</span>
-<span class="sd">            n_max_images : `int`</span>
-<span class="sd">                maximum number of images to consider</span>
-<span class="sd">                default: 4</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">            snrs : `dict`</span>
 <span class="sd">                signal to noise ratio for each image in each event.</span>
-<span class="sd">                (dictionary containing &#39;H1&#39;, &#39;L1&#39;, ..., and &#39;optimal_snr_net&#39;, which is the network snr, for each image as an array with dimensions (number_of_lensed_events,n_max_images) )</span>
+<span class="sd">                (dictionary containing &#39;H1&#39;, &#39;L1&#39;, ..., and &#39;snr_net&#39;, which is the network snr, for each image as an array with dimensions (number_of_lensed_events,n_max_images) )</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># needed to calculate effective luminosity distance and effective time delay</span>
@@ -559,6 +479,7 @@
         <span class="c1"># image type to morse phase</span>
         <span class="n">imgage_type</span><span class="p">[</span><span class="n">imgage_type</span><span class="o">==</span><span class="mf">1.</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
         <span class="n">imgage_type</span><span class="p">[</span><span class="n">imgage_type</span><span class="o">==</span><span class="mf">2.</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">imgage_type</span><span class="p">[</span><span class="n">imgage_type</span><span class="o">==</span><span class="mf">3.</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
 
         <span class="c1"># Get the binary parameters</span>
         <span class="n">number_of_lensed_events</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">magnifications</span><span class="p">)</span>
@@ -587,21 +508,13 @@
                     <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;phi_jl&quot;</span><span class="p">],</span>
                 <span class="p">)</span>
         
-        <span class="c1"># setting up snr dictionary</span>
-        <span class="n">result_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">snr_calculator</span><span class="p">:</span>
-            <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">number_of_lensed_events</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-            <span class="p">)</span>
         <span class="c1"># setting up pdet dictionary</span>
-        <span class="k">elif</span> <span class="n">pdet_calculator</span><span class="p">:</span>
-            <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">number_of_lensed_events</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;snr_calculator or pdet_calculator not given&quot;</span><span class="p">)</span>
+        <span class="n">result_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">number_of_lensed_events</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="p">)</span>
         
-        <span class="c1"># if detector list are provided for snr or pdet calculation</span>
+        <span class="c1"># if detector list are provided for pdet calculation</span>
         <span class="k">if</span> <span class="n">list_of_detectors</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">list_of_detectors</span><span class="p">:</span>
                 <span class="n">result_dict</span><span class="p">[</span><span class="n">detector</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
@@ -642,6 +555,9 @@
 
         <span class="c1"># Get the optimal signal to noise ratios for each image</span>
         <span class="c1"># iterate over the image type (column)</span>
+        <span class="n">geocent_time_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">geocent_time</span><span class="p">)</span>
+        <span class="n">geocent_time_max</span> <span class="o">=</span> <span class="n">geocent_time_min</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_window</span>
+
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_max_images</span><span class="p">):</span>
             
             <span class="c1"># get the effective time for each image type</span>
@@ -649,8 +565,10 @@
                 <span class="n">effective_geocent_time</span> <span class="o">=</span> <span class="n">geocent_time</span> <span class="o">+</span> <span class="n">time_delays</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">effective_geocent_time</span> <span class="o">=</span> <span class="n">time_eff</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+                
             <span class="c1"># choose only the events that are within the time range and also not nan</span>
-            <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">effective_geocent_time</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geocent_time_max</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">effective_geocent_time</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geocent_time_min</span><span class="p">)</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">effective_geocent_time</span> <span class="o">&lt;=</span> <span class="n">geocent_time_max</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">effective_geocent_time</span> <span class="o">&gt;=</span> <span class="n">geocent_time_min</span><span class="p">)</span>
+
             <span class="c1"># get the effective luminosity distance for each image type</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">dl_eff_present</span><span class="p">:</span>
                 <span class="n">effective_luminosity_distance</span> <span class="o">=</span> <span class="n">luminosity_distance</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
@@ -668,62 +586,33 @@
             <span class="n">idx</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">effective_luminosity_distance</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">effective_geocent_time</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">effective_phase</span><span class="p">)</span>
 
             <span class="c1"># Each image has their own effective luminosity distance and effective geocent time</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">effective_luminosity_distance</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="c1"># Returns a dictionary</span>
-                <span class="k">if</span> <span class="n">snr_calculator</span><span class="p">:</span>
-                    <span class="n">optimal_snr</span> <span class="o">=</span> <span class="n">snr_calculator</span><span class="p">(</span>
-                        <span class="n">gw_param_dict</span><span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-                            <span class="n">mass_1</span><span class="o">=</span><span class="n">mass_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">mass_2</span><span class="o">=</span><span class="n">mass_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">luminosity_distance</span><span class="o">=</span><span class="n">effective_luminosity_distance</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">theta_jn</span><span class="o">=</span><span class="n">theta_jn</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">psi</span><span class="o">=</span><span class="n">psi</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">phase</span><span class="o">=</span> <span class="n">effective_phase</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">geocent_time</span><span class="o">=</span><span class="n">effective_geocent_time</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">ra</span><span class="o">=</span><span class="n">ra</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">dec</span><span class="o">=</span><span class="n">dec</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">a_1</span><span class="o">=</span><span class="n">a_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">a_2</span><span class="o">=</span><span class="n">a_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">tilt_1</span><span class="o">=</span><span class="n">tilt_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">tilt_2</span><span class="o">=</span><span class="n">tilt_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">phi_12</span><span class="o">=</span><span class="n">phi_12</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">phi_jl</span><span class="o">=</span><span class="n">phi_jl</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                        <span class="p">),</span>
-                        <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                    <span class="p">)</span>
-                    <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimal_snr</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span>
+                <span class="n">pdet</span> <span class="o">=</span> <span class="n">pdet_calculator</span><span class="p">(</span>
+                    <span class="n">gw_param_dict</span><span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                        <span class="n">mass_1</span><span class="o">=</span><span class="n">mass_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                        <span class="n">mass_2</span><span class="o">=</span><span class="n">mass_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                        <span class="n">luminosity_distance</span><span class="o">=</span><span class="n">effective_luminosity_distance</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                        <span class="n">theta_jn</span><span class="o">=</span><span class="n">theta_jn</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                        <span class="n">psi</span><span class="o">=</span><span class="n">psi</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                        <span class="n">phase</span><span class="o">=</span> <span class="n">effective_phase</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                        <span class="n">geocent_time</span><span class="o">=</span><span class="n">effective_geocent_time</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                        <span class="n">ra</span><span class="o">=</span><span class="n">ra</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                        <span class="n">dec</span><span class="o">=</span><span class="n">dec</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                        <span class="n">a_1</span><span class="o">=</span><span class="n">a_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                        <span class="n">a_2</span><span class="o">=</span><span class="n">a_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                        <span class="n">tilt_1</span><span class="o">=</span><span class="n">tilt_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                        <span class="n">tilt_2</span><span class="o">=</span><span class="n">tilt_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                        <span class="n">phi_12</span><span class="o">=</span><span class="n">phi_12</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                        <span class="n">phi_jl</span><span class="o">=</span><span class="n">phi_jl</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+                <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdet</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">]</span>
 
-                    <span class="k">if</span> <span class="n">list_of_detectors</span><span class="p">:</span>
-                        <span class="k">for</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">list_of_detectors</span><span class="p">:</span>
-                            <span class="k">if</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">optimal_snr</span><span class="p">:</span>
-                                <span class="n">result_dict</span><span class="p">[</span><span class="n">detector</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimal_snr</span><span class="p">[</span><span class="n">detector</span><span class="p">]</span>
-
-                <span class="k">elif</span> <span class="n">pdet_calculator</span><span class="p">:</span>
-                    <span class="n">pdet</span> <span class="o">=</span> <span class="n">pdet_calculator</span><span class="p">(</span>
-                        <span class="n">gw_param_dict</span><span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-                            <span class="n">mass_1</span><span class="o">=</span><span class="n">mass_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">mass_2</span><span class="o">=</span><span class="n">mass_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">luminosity_distance</span><span class="o">=</span><span class="n">effective_luminosity_distance</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">theta_jn</span><span class="o">=</span><span class="n">theta_jn</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">psi</span><span class="o">=</span><span class="n">psi</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">phase</span><span class="o">=</span> <span class="n">effective_phase</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">geocent_time</span><span class="o">=</span><span class="n">effective_geocent_time</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">ra</span><span class="o">=</span><span class="n">ra</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">dec</span><span class="o">=</span><span class="n">dec</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">a_1</span><span class="o">=</span><span class="n">a_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">a_2</span><span class="o">=</span><span class="n">a_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">tilt_1</span><span class="o">=</span><span class="n">tilt_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">tilt_2</span><span class="o">=</span><span class="n">tilt_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">phi_12</span><span class="o">=</span><span class="n">phi_12</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                            <span class="n">phi_jl</span><span class="o">=</span><span class="n">phi_jl</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                        <span class="p">),</span>
-                    <span class="p">)</span>
-                    <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdet</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">]</span>
-
-                    <span class="k">if</span> <span class="n">list_of_detectors</span><span class="p">:</span>
-                        <span class="k">for</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">list_of_detectors</span><span class="p">:</span>
-                            <span class="k">if</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">pdet</span><span class="p">:</span>
-                                <span class="n">result_dict</span><span class="p">[</span><span class="n">detector</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdet</span><span class="p">[</span><span class="n">detector</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">list_of_detectors</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">list_of_detectors</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">pdet</span><span class="p">:</span>
+                            <span class="n">result_dict</span><span class="p">[</span><span class="n">detector</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdet</span><span class="p">[</span><span class="n">detector</span><span class="p">]</span>
                 
 
                 <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_luminosity_distance&quot;</span><span class="p">][:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">effective_luminosity_distance</span>
@@ -740,35 +629,33 @@
         <span class="k">return</span> <span class="n">result_dict</span><span class="p">,</span> <span class="n">lensed_param</span></div>
 </div>
 
-</pre>
-                            </div>
+</pre></div>
 
-                        </div>
-                    </div>
-                    <footer>
+           </div>
+          </div>
+          <footer>
 
-                        <hr />
+  <hr/>
 
-                        <div role="contentinfo">
-                            <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
-                        </div>
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
 
-                        Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-                        <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-                        provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
-
-                    </footer>
-                </div>
-            </div>
-        </section>
-    </div>
-    <script>
-        jQuery(function () {
-            SphinxRtdTheme.Navigation.enable(true);
-        });
-    </script>
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
 
 </body>
-
 </html>

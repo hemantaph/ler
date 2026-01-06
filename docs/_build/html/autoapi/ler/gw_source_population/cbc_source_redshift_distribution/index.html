@@ -1,1287 +1,764 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../../">
-
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.gw_source_population.cbc_source_redshift_distribution &mdash; ler 0.3.1 documentation</title>
-  <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
-  <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
-  <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
-  <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-  <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css?v=a5c4661c" />
-  <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=776609e1" />
+  <title>ler.gw_source_population.cbc_source_redshift_distribution &mdash; ler 0.4.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=776609e1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
-
-  <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
-  <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-  <script src="../../../../_static/documentation_options.js?v=4621528c"></script>
-  <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
-  <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-  <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
-  <script src="../../../../_static/copybutton.js?v=f281be69"></script>
-  <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA="
-    src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-  <script src="../../../../_static/js/theme.js"></script>
-  <link rel="index" title="Index" href="../../../../genindex.html" />
-  <link rel="search" title="Search" href="../../../../search.html" />
-  <link rel="next" title="ler.gw_source_population.jit_functions" href="../jit_functions/index.html" />
-  <link rel="prev" title="ler.gw_source_population.cbc_source_parameter_distribution"
-    href="../cbc_source_parameter_distribution/index.html" />
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="ler.gw_source_population.jit_functions" href="../jit_functions/index.html" />
+    <link rel="prev" title="ler.gw_source_population.cbc_source_parameter_distribution" href="../cbc_source_parameter_distribution/index.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
 
-
-
+          
+          
           <a href="../../../../index.html" class="icon icon-home">
             ler
           </a>
-          <div role="search">
-            <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-              <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-              <input type="hidden" name="check_keywords" value="yes" />
-              <input type="hidden" name="area" value="default" />
-            </form>
-          </div>
-        </div>
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-          <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-          <ul>
-            <li class="toctree-l1"><a class="reference internal" href="../../../../Installation2.html">Installation</a>
-            </li>
-            <li class="toctree-l1"><a class="reference internal" href="../../../../Summary.html">Summary</a></li>
-            <li class="toctree-l1"><a class="reference internal" href="../../../../code_overview.html">Code overview</a>
-            </li>
-            <li class="toctree-l1"><a class="reference internal" href="../../../../GW_events.html">Gravitational wave
-                event rates</a></li>
-            <li class="toctree-l1"><a class="reference internal" href="../../../../GW_equations.html">Gravitational wave
-                events sampling (Analytical formulation)</a></li>
-            <li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_events.html">Lensed event
-                rates</a></li>
-            <li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_equations.html">Lensed event
-                sampling (Analytical formulation)</a></li>
-          </ul>
-          <p class="caption" role="heading"><span class="caption-text">API:</span></p>
-          <ul class="current">
-            <li class="toctree-l1"><a class="reference internal" href="../../rates/index.html"><code
-                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
-            <li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code
-                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a>
-              <ul class="current">
-                <li class="toctree-l2 current"><a class="reference internal"
-                    href="../index.html#submodules">Submodules</a>
-                  <ul class="current">
-                    <li class="toctree-l3"><a class="reference internal"
-                        href="../cbc_source_parameter_distribution/index.html"><code
-                          class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_parameter_distribution</span></code></a>
-                    </li>
-                    <li class="toctree-l3 current"><a class="current reference internal" href="#"><code
-                          class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_redshift_distribution</span></code></a>
-                      <ul>
-                        <li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li class="toctree-l3"><a class="reference internal" href="../jit_functions/index.html"><code
-                          class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.jit_functions</span></code></a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="toctree-l2"><a class="reference internal" href="../index.html#package-contents">Package
-                    Contents</a></li>
-              </ul>
-            </li>
-            <li class="toctree-l1"><a class="reference internal" href="../../lens_galaxy_population/index.html"><code
-                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a>
-            </li>
-            <li class="toctree-l1"><a class="reference internal" href="../../image_properties/index.html"><code
-                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a>
-            </li>
-            <li class="toctree-l1"><a class="reference internal" href="../../utils/index.html"><code
-                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
-          </ul>
-          <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
-          <ul>
-            <li class="toctree-l1"><a class="reference internal"
-                href="../../../../examples/rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
-            <li class="toctree-l1"><a class="reference internal"
-                href="../../../../examples/rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
-            <li class="toctree-l1"><a class="reference internal"
-                href="../../../../examples/rates/grb%20detection%20rate.html">Calculation of detectable Gamma ray burst
-                (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a></li>
-            <li class="toctree-l1"><a class="reference internal"
-                href="../../../../examples/rates/ler%20bns%20example.html">LeR complete examples of BNS events (O4
-                design sensitivity)</a></li>
-            <li class="toctree-l1"><a class="reference internal"
-                href="../../../../examples/rates/rates_with_3G_detectors.html">Event Rates with 3G detectors</a></li>
-            <li class="toctree-l1"><a class="reference internal"
-                href="../../../../examples/source%20population/merger%20rate%20density%20evolution%20with%20redshift.html">Merger
-                rate density evolution with redshift</a></li>
-            <li class="toctree-l1"><a class="reference internal"
-                href="../../../../examples/source%20population/merger%20rate%20density%20model%20comparision.html">Merger
-                rate density model comparision</a></li>
-            <li class="toctree-l1"><a class="reference internal"
-                href="../../../../examples/source%20population/merger%20rate%20density%20model%20comparision.html#Primordial-BBH-model,-Ng-et-al.-2022">Primordial
-                BBH model, Ng et al. 2022</a></li>
-            <li class="toctree-l1"><a class="reference internal"
-                href="../../../../examples/source%20population/sample%20compact%20binary%20parameters.html">Sampling
-                parameters for a compact binary</a></li>
-            <li class="toctree-l1"><a class="reference internal"
-                href="../../../../examples/source%20population/statistical%20study%20of%20changing%20mass%20model%20params.html">Statistical
-                study of changing Mass model paramter(s)</a></li>
-            <li class="toctree-l1"><a class="reference internal"
-                href="../../../../examples/source%20population/statistical%20study%20of%20cosmological%20friction.html">Statistical
-                study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of
-                gravitational waves</a></li>
-            <li class="toctree-l1"><a class="reference internal"
-                href="../../../../examples/lens_parameters/sample%20lens%20parameters.html">Lens parameter
-                distributions</a></li>
-            <li class="toctree-l1"><a class="reference internal"
-                href="../../../../examples/optical_depth/validation_SIE.html">Optical depth SIE model validation</a>
-            </li>
-            <li class="toctree-l1"><a class="reference internal"
-                href="../../../../examples/optical_depth/validation_SIS.html">Validation of SIS model (Numerical vs
-                Analytical)</a></li>
-            <li class="toctree-l1"><a class="reference internal"
-                href="../../../../examples/image_properties/dt_vs_dmu.html">Study of Time delays and magnification of
-                lensed gravitational waves.</a></li>
-          </ul>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../cbc_source_parameter_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_parameter_distribution</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_redshift_distribution</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../jit_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.jit_functions</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sfr_with_time_delay/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.sfr_with_time_delay</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
 
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-      <nav class="wy-nav-top" aria-label="Mobile navigation menu">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../../../index.html">ler</a>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ler</a>
       </nav>
 
       <div class="wy-nav-content">
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
-            <ul class="wy-breadcrumbs">
-              <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-              <li class="breadcrumb-item"><a href="../index.html"><code
-                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a>
-              </li>
-              <li class="breadcrumb-item active"><code
-                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_redshift_distribution</span></code>
-              </li>
-              <li class="wy-breadcrumbs-aside">
-                <a href="../../../../_sources/autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.rst.txt"
-                  rel="nofollow"> View page source</a>
-              </li>
-            </ul>
-            <hr />
-          </div>
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_redshift_distribution</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-            <div itemprop="articleBody">
+           <div itemprop="articleBody">
+             
+  <section id="module-ler.gw_source_population.cbc_source_redshift_distribution">
+<span id="ler-gw-source-population-cbc-source-redshift-distribution"></span><h1><a class="reference internal" href="#module-ler.gw_source_population.cbc_source_redshift_distribution" title="ler.gw_source_population.cbc_source_redshift_distribution"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_redshift_distribution</span></code></a><a class="headerlink" href="#module-ler.gw_source_population.cbc_source_redshift_distribution" title="Link to this heading"></a></h1>
+<p>Module for compact binary coalescence (CBC) source redshift distribution.</p>
+<p>This module provides the <a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceRedshiftDistribution</span></code></a> class for
+generating redshift distributions of compact binary sources (BBH, BNS, NSBH)
+based on various merger rate density models. It supports multiple astrophysical
+merger rate density prescriptions including PopI/II, PopIII, and primordial
+black hole models.</p>
+<p>Inheritance hierarchy:</p>
+<ul>
+<li><p><a class="reference internal" href="../index.html#ler.gw_source_population.CBCSourceParameterDistribution" title="ler.gw_source_population.CBCSourceParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code></a></p>
+<p>↳ inherits from this class</p>
+</li>
+</ul>
+<dl>
+<dt>Usage:</dt><dd><p>Basic workflow example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceRedshiftDistribution</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceRedshiftDistribution</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zs_samples</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">source_redshift</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Copyright (C) 2024 Hemantakumar Phurailatpam. Distributed under MIT License.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CBCSourceRedshiftDistribution</span></code></a></p></td>
+<td><p>Class for generating compact binary coalescence source redshift distributions.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.cbc_source_redshift_distribution.</span></span><span class="sig-name descname"><span class="pre">CBCSourceRedshiftDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BBH'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merger_rate_density_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./interpolator_json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_new_interpolator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for generating compact binary coalescence source redshift distributions.</p>
+<p>This class generates source redshift distributions for compact binary
+coalescence events (BBH, BNS, NSBH) using various astrophysical merger rate
+density models. It provides interpolated functions for efficient sampling of
+source redshifts weighted by the merger rate density in the detector frame.</p>
+<p>Key Features:</p>
+<ul class="simple">
+<li><p>Multiple merger rate density models (PopI/II, PopIII, Primordial)</p></li>
+<li><p>Configurable cosmology for distance calculations</p></li>
+<li><p>Cached interpolators for computational efficiency</p></li>
+<li><p>Support for user-defined merger rate density functions</p></li>
+</ul>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>npool</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of processors to use for multiprocessing.</p>
+<p>default: 4</p>
+</dd>
+<dt><strong>z_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum redshift of the source population.</p>
+<p>default: 0.001</p>
+</dd>
+<dt><strong>z_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum redshift of the source population.</p>
+<p>default: 10.0</p>
+</dd>
+<dt><strong>event_type</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Type of compact binary event.</p>
+<p>Options:</p>
+<ul class="simple">
+<li><p>‘BBH’: Binary black hole</p></li>
+<li><p>‘BNS’: Binary neutron star</p></li>
+<li><p>‘NSBH’: Neutron star-black hole</p></li>
+</ul>
+<p>default: ‘BBH’</p>
+</dd>
+<dt><strong>merger_rate_density</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">callable</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Merger rate density model to use.</p>
+<p>Options:</p>
+<ul class="simple">
+<li><p>‘merger_rate_density_bbh_popI_II_oguri2018’: PopI/II BBH (Oguri 2018)</p></li>
+<li><p>‘sfr_madau_dickinson2014’: Star formation rate (Madau &amp; Dickinson 2014)</p></li>
+<li><p>‘sfr_with_td’: SFR with time delay</p></li>
+<li><p>‘merger_rate_density_bbh_popIII_ken2022’: PopIII BBH (Ng 2022)</p></li>
+<li><p>‘merger_rate_density_bbh_primordial_ken2022’: Primordial BBH (Ng 2022)</p></li>
+<li><p>callable: User-defined function f(z) -&gt; rate density</p></li>
+</ul>
+<p>default: None (uses ‘merger_rate_density_bbh_popI_II_oguri2018’)</p>
+</dd>
+<dt><strong>merger_rate_density_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Parameters for the merger rate density function.</p>
+<p>default: None (uses dict(R0=23.9 * 1e-9, b2=1.6, b3=2.1, b4=30))</p>
+</dd>
+<dt><strong>cosmology</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">astropy.cosmology</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Cosmology for distance calculations.</p>
+<p>default: None (uses LambdaCDM(H0=70, Om0=0.3, Ode0=0.7))</p>
+</dd>
+<dt><strong>directory</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Directory to store interpolator JSON files.</p>
+<p>default: ‘./interpolator_json’</p>
+</dd>
+<dt><strong>create_new_interpolator</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code> or <code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>Control interpolator creation.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">bool</span></code>: Apply to all interpolators.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">dict</span></code>: Per-quantity settings with keys ‘create_new’ and ‘resolution’.</p>
+<p>default: False</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Basic usage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceRedshiftDistribution</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceRedshiftDistribution</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zs_samples</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">source_redshift</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rate</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="instance-methods">
+<h4>Instance Methods<a class="headerlink" href="#instance-methods" title="Link to this heading"></a></h4>
+<p>CBCSourceRedshiftDistribution has the following methods:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_detector_frame" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_detector_frame"><code class="xref py py-meth docutils literal notranslate"><span class="pre">merger_rate_density_detector_frame()</span></code></a></p></td>
+<td><p>Compute merger rate density in detector frame</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_popI_II_oguri2018" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_popI_II_oguri2018"><code class="xref py py-meth docutils literal notranslate"><span class="pre">merger_rate_density_bbh_popI_II_oguri2018()</span></code></a></p></td>
+<td><p>PopI/II merger rate density (Oguri 2018)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.sfr_madau_dickinson2014" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.sfr_madau_dickinson2014"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sfr_madau_dickinson2014()</span></code></a></p></td>
+<td><p>Star formation rate (Madau &amp; Dickinson 2014)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.sfr_with_td" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.sfr_with_td"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sfr_with_td()</span></code></a></p></td>
+<td><p>SFR with time delay convolution</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_popIII_ken2022" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_popIII_ken2022"><code class="xref py py-meth docutils literal notranslate"><span class="pre">merger_rate_density_bbh_popIII_ken2022()</span></code></a></p></td>
+<td><p>PopIII merger rate density (Ng 2022)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_primordial_ken2022" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_primordial_ken2022"><code class="xref py py-meth docutils literal notranslate"><span class="pre">merger_rate_density_bbh_primordial_ken2022()</span></code></a></p></td>
+<td><p>Primordial BBH merger rate density (Ng 2022)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="instance-attributes">
+<h4>Instance Attributes<a class="headerlink" href="#instance-attributes" title="Link to this heading"></a></h4>
+<p>CBCSourceRedshiftDistribution has the following attributes:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Attribute</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Unit</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_min" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_min"><code class="xref py py-attr docutils literal notranslate"><span class="pre">z_min</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td></td>
+<td><p>Minimum source redshift</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_max" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_max"><code class="xref py py-attr docutils literal notranslate"><span class="pre">z_max</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td></td>
+<td><p>Maximum source redshift</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.event_type" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.event_type"><code class="xref py py-attr docutils literal notranslate"><span class="pre">event_type</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td></td>
+<td><p>Type of CBC event (BBH/BNS/NSBH)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.cosmo" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.cosmo"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cosmo</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">astropy.cosmology</span></code></p></td>
+<td></td>
+<td><p>Cosmology for calculations</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.directory" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.directory"><code class="xref py py-attr docutils literal notranslate"><span class="pre">directory</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td></td>
+<td><p>Path for storing interpolators</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_param" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_param"><code class="xref py py-attr docutils literal notranslate"><span class="pre">merger_rate_density_param</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
+<td></td>
+<td><p>Merger rate density parameters</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.normalization_pdf_z" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.normalization_pdf_z"><code class="xref py py-attr docutils literal notranslate"><span class="pre">normalization_pdf_z</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td></td>
+<td><p>Normalization constant for p(z)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density"><code class="xref py py-attr docutils literal notranslate"><span class="pre">merger_rate_density</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
+<td></td>
+<td><p>Merger rate density function R(z)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_model_list" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_model_list"><code class="xref py py-attr docutils literal notranslate"><span class="pre">merger_rate_density_model_list</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
+<td></td>
+<td><p>Available merger rate density models</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.source_redshift" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.source_redshift"><code class="xref py py-attr docutils literal notranslate"><span class="pre">source_redshift</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FunctionConditioning</span></code></p></td>
+<td></td>
+<td><p>Source redshift sampler</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.luminosity_distance" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.luminosity_distance"><code class="xref py py-attr docutils literal notranslate"><span class="pre">luminosity_distance</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FunctionConditioning</span></code></p></td>
+<td></td>
+<td><p>Luminosity distance interpolator</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.differential_comoving_volume" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.differential_comoving_volume"><code class="xref py py-attr docutils literal notranslate"><span class="pre">differential_comoving_volume</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FunctionConditioning</span></code></p></td>
+<td></td>
+<td><p>dVc/dz interpolator</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.npool">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">npool</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.npool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.npool" title="Link to this definition"></a></dt>
+<dd><p>Number of processors for multiprocessing.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>npool</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of parallel processes to use.</p>
+<p>default: 4</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
-              <section id="module-ler.gw_source_population.cbc_source_redshift_distribution">
-                <span id="ler-gw-source-population-cbc-source-redshift-distribution"></span>
-                <h1><a class="reference internal"
-                    href="#module-ler.gw_source_population.cbc_source_redshift_distribution"
-                    title="ler.gw_source_population.cbc_source_redshift_distribution"><code
-                      class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_redshift_distribution</span></code></a><a
-                    class="headerlink" href="#module-ler.gw_source_population.cbc_source_redshift_distribution"
-                    title="Link to this heading"></a></h1>
-                <p>This module contains the classes to generate source galaxy population model
-                  and compact binary population model. The compact binary population model
-                  inherits from the source galaxy population model. The source galaxy population
-                  model is used to generate the source galaxy population model. The compact binary
-                  population model is used to generate the compact binary population model.</p>
-                <section id="module-contents">
-                  <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a>
-                  </h2>
-                  <section id="classes">
-                    <h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
-                    <table class="autosummary longtable docutils align-default">
-                      <tbody>
-                        <tr class="row-odd">
-                          <td>
-                            <p><a class="reference internal"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution"
-                                title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution"><code
-                                  class="xref py py-obj docutils literal notranslate"><span class="pre">CBCSourceRedshiftDistribution</span></code></a>
-                            </p>
-                          </td>
-                          <td>
-                            <p>Class to generate a population of source galaxies.</p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <dl class="py class">
-                      <dt class="sig sig-object py"
-                        id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution">
-                        <em class="property"><span class="pre">class</span><span class="w"> </span></em><span
-                          class="sig-prename descclassname"><span
-                            class="pre">ler.gw_source_population.cbc_source_redshift_distribution.</span></span><span
-                          class="sig-name descname"><span class="pre">CBCSourceRedshiftDistribution</span></span><span
-                          class="sig-paren">(</span><em class="sig-param"><span class="n"><span
-                              class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span
-                            class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span
-                            class="n"><span class="pre">z_min</span></span><span class="o"><span
-                              class="pre">=</span></span><span class="default_value"><span
-                              class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span
-                              class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span
-                            class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span
-                            class="n"><span class="pre">event_type</span></span><span class="o"><span
-                              class="pre">=</span></span><span class="default_value"><span
-                              class="pre">'BBH'</span></span></em>, <em class="sig-param"><span class="n"><span
-                              class="pre">merger_rate_density</span></span><span class="o"><span
-                              class="pre">=</span></span><span class="default_value"><span
-                              class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span
-                              class="pre">merger_rate_density_param</span></span><span class="o"><span
-                              class="pre">=</span></span><span class="default_value"><span
-                              class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span
-                              class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span
-                            class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span
-                            class="n"><span class="pre">directory</span></span><span class="o"><span
-                              class="pre">=</span></span><span class="default_value"><span
-                              class="pre">'./interpolator_json'</span></span></em>, <em class="sig-param"><span
-                            class="n"><span class="pre">create_new_interpolator</span></span><span class="o"><span
-                              class="pre">=</span></span><span class="default_value"><span
-                              class="pre">False</span></span></em><span class="sig-paren">)</span><a
-                          class="reference internal"
-                          href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution"><span
-                            class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
-                          href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution"
-                          title="Link to this definition"></a>
-                      </dt>
-                      <dd>
-                        <p>Bases: <code
-                            class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code>
-                        </p>
-                        <p>Class to generate a population of source galaxies.
-                          This class is inherited by <code
-                            class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code>
-                          and <code
-                            class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code>
-                          class.</p>
-                        <dl class="field-list">
-                          <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-                          <dd class="field-odd">
-                            <dl>
-                              <dt><strong>z_min</strong><span class="classifier"><cite>float</cite></span></dt>
-                              <dd>
-                                <p>Minimum redshift of the source population
-                                  default: 0.</p>
-                              </dd>
-                              <dt><strong>z_max</strong><span class="classifier"><cite>float</cite></span></dt>
-                              <dd>
-                                <p>Maximum redshift of the source population
-                                  default: 10.</p>
-                              </dd>
-                              <dt><strong>event_type</strong><span class="classifier"><cite>str</cite></span></dt>
-                              <dd>
-                                <p>Type of event to generate.
-                                  e.g. ‘BBH’, ‘BNS’, ‘NSBH’</p>
-                              </dd>
-                              <dt><strong>cosmology</strong><span
-                                  class="classifier"><cite>astropy.cosmology</cite></span></dt>
-                              <dd>
-                                <p>Cosmology to use
-                                  default: None/astropy.cosmology.FlatLambdaCDM(H0=70, Om0=0.3)</p>
-                              </dd>
-                              <dt><strong>merger_rate_density</strong><span class="classifier"><cite>str</cite> or
-                                  <cite>function</cite></span></dt>
-                              <dd>
-                                <p>Type of merger rate density function to use
-                                  default: ‘merger_rate_density_popI_II_oguri2018’
-                                  for others see instance method in <code
-                                    class="xref py py-class docutils literal notranslate"><span class="pre">merger_rate_density_model_list</span></code>
-                                </p>
-                              </dd>
-                              <dt><strong>merger_rate_density_param</strong><span
-                                  class="classifier"><cite>dict</cite></span></dt>
-                              <dd>
-                                <p>Dictionary of merger rate density function parameters
-                                  default: None/dict(R0=25 * 1e-9, b2=1.6, b3=2.1, b4=30)</p>
-                              </dd>
-                              <dt><strong>directory</strong><span class="classifier"><cite>str</cite></span></dt>
-                              <dd>
-                                <p>Directory to store the interpolator pickle files
-                                  default: ‘./interpolator_json’</p>
-                              </dd>
-                              <dt><strong>create_new_interpolator</strong><span
-                                  class="classifier"><cite>dict</cite></span></dt>
-                              <dd>
-                                <p>Dictionary of interpolator creation parameters
-                                  default: None/dict(redshift_distribution=dict(create_new=False, resolution=1000),
-                                  z_to_luminosity_distance=dict(create_new=False, resolution=1000),
-                                  differential_comoving_volume=dict(create_new=False, resolution=1000))</p>
-                              </dd>
-                            </dl>
-                          </dd>
-                        </dl>
-                        <p class="rubric">Examples</p>
-                        <div class="doctest highlight-default notranslate">
-                          <div class="highlight">
-                            <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceRedshiftDistribution</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceRedshiftDistribution</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">merger_rate_density</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_bbh_popI_II_oguri2018&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">)</span> <span class="c1"># local merger rate density at low redshift</span>
-</pre>
-                          </div>
-                        </div>
-                        <section id="instance-attributes">
-                          <h4>Instance Attributes<a class="headerlink" href="#instance-attributes"
-                              title="Link to this heading"></a></h4>
-                          <p>SourceGalaxyPopulationModel has the following instance attributes:</p>
-                          <table class="docutils align-default">
-                            <thead>
-                              <tr class="row-odd">
-                                <th class="head">
-                                  <p>Atrributes</p>
-                                </th>
-                                <th class="head">
-                                  <p>Type</p>
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr class="row-even">
-                                <td>
-                                  <p><a class="reference internal"
-                                      href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_min"
-                                      title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_min"><code
-                                        class="xref py py-attr docutils literal notranslate"><span class="pre">z_min</span></code></a>
-                                  </p>
-                                </td>
-                                <td>
-                                  <p><cite>float</cite></p>
-                                </td>
-                              </tr>
-                              <tr class="row-odd">
-                                <td>
-                                  <p><a class="reference internal"
-                                      href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_max"
-                                      title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_max"><code
-                                        class="xref py py-attr docutils literal notranslate"><span class="pre">z_max</span></code></a>
-                                  </p>
-                                </td>
-                                <td>
-                                  <p><cite>float</cite></p>
-                                </td>
-                              </tr>
-                              <tr class="row-even">
-                                <td>
-                                  <p><code
-                                      class="xref py py-attr docutils literal notranslate"><span class="pre">directory</span></code>
-                                  </p>
-                                </td>
-                                <td>
-                                  <p><cite>str</cite></p>
-                                </td>
-                              </tr>
-                              <tr class="row-odd">
-                                <td>
-                                  <p><a class="reference internal"
-                                      href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.event_type"
-                                      title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.event_type"><code
-                                        class="xref py py-attr docutils literal notranslate"><span class="pre">event_type</span></code></a>
-                                  </p>
-                                </td>
-                                <td>
-                                  <p><cite>str</cite></p>
-                                </td>
-                              </tr>
-                              <tr class="row-even">
-                                <td>
-                                  <p><a class="reference internal"
-                                      href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.cosmo"
-                                      title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.cosmo"><code
-                                        class="xref py py-attr docutils literal notranslate"><span class="pre">cosmo</span></code></a>
-                                  </p>
-                                </td>
-                                <td>
-                                  <p><cite>astropy.cosmology</cite></p>
-                                </td>
-                              </tr>
-                              <tr class="row-odd">
-                                <td>
-                                  <p><a class="reference internal"
-                                      href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_param"
-                                      title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_param"><code
-                                        class="xref py py-attr docutils literal notranslate"><span class="pre">merger_rate_density_param</span></code></a>
-                                  </p>
-                                </td>
-                                <td>
-                                  <p><cite>dict</cite></p>
-                                </td>
-                              </tr>
-                              <tr class="row-even">
-                                <td>
-                                  <p><a class="reference internal"
-                                      href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.normalization_pdf_z"
-                                      title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.normalization_pdf_z"><code
-                                        class="xref py py-attr docutils literal notranslate"><span class="pre">normalization_pdf_z</span></code></a>
-                                  </p>
-                                </td>
-                                <td>
-                                  <p><cite>float</cite></p>
-                                </td>
-                              </tr>
-                              <tr class="row-odd">
-                                <td colspan="2">
-                                  <p><a class="reference internal"
-                                      href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_model_list"
-                                      title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_model_list"><code
-                                        class="xref py py-attr docutils literal notranslate"><span class="pre">merger_rate_density_model_list</span></code></a>
-                                  </p>
-                                </td>
-                              </tr>
-                              <tr class="row-even">
-                                <td></td>
-                                <td>
-                                  <p>List of available
-                                    merger rate density functions
-                                    and its parameters</p>
-                                </td>
-                              </tr>
-                              <tr class="row-odd">
-                                <td>
-                                  <p><a class="reference internal"
-                                      href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density"
-                                      title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density"><code
-                                        class="xref py py-attr docutils literal notranslate"><span class="pre">merger_rate_density</span></code></a>
-                                  </p>
-                                </td>
-                                <td>
-                                  <p><cite>class object</cite></p>
-                                </td>
-                              </tr>
-                              <tr class="row-even">
-                                <td>
-                                  <p><code
-                                      class="xref py py-attr docutils literal notranslate"><span class="pre">source_redshift</span></code>
-                                  </p>
-                                </td>
-                                <td>
-                                  <p><cite>class object</cite></p>
-                                </td>
-                              </tr>
-                              <tr class="row-odd">
-                                <td>
-                                  <p><code
-                                      class="xref py py-attr docutils literal notranslate"><span class="pre">luminosity_distance</span></code>
-                                  </p>
-                                </td>
-                                <td>
-                                  <p><cite>class object</cite></p>
-                                </td>
-                              </tr>
-                              <tr class="row-even">
-                                <td>
-                                  <p><code
-                                      class="xref py py-attr docutils literal notranslate"><span class="pre">differential_comoving_volume</span></code>
-                                  </p>
-                                </td>
-                                <td>
-                                  <p><cite>class object</cite></p>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </section>
-                        <section id="instance-methods">
-                          <h4>Instance Methods<a class="headerlink" href="#instance-methods"
-                              title="Link to this heading"></a></h4>
-                          <p>SourceGalaxyPopulationModel has the following instance methods:</p>
-                          <dl class="py property">
-                            <dt class="sig sig-object py"
-                              id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density">
-                              <em class="property"><span class="pre">property</span><span class="w"> </span></em><span
-                                class="sig-name descname"><span class="pre">merger_rate_density</span></span><a
-                                class="reference internal"
-                                href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.merger_rate_density"><span
-                                  class="viewcode-link"><span class="pre">[source]</span></span></a><a
-                                class="headerlink"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density"
-                                title="Link to this definition"></a>
-                            </dt>
-                            <dd>
-                              <p>Source frame merger rate density function wrt redshift.</p>
-                              <dl class="field-list">
-                                <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-                                <dd class="field-odd">
-                                  <dl>
-                                    <dt><strong>zs</strong><span class="classifier"><cite>float</cite></span></dt>
-                                    <dd>
-                                      <p>1D array of floats
-                                        Source redshifts</p>
-                                    </dd>
-                                  </dl>
-                                </dd>
-                                <dt class="field-even">Returns<span class="colon">:</span></dt>
-                                <dd class="field-even">
-                                  <dl>
-                                    <dt><strong>merger_rate_density</strong><span
-                                        class="classifier"><cite>float</cite></span></dt>
-                                    <dd>
-                                      <p>merger rate density in detector frame (Mpc^-3 yr^-1)</p>
-                                    </dd>
-                                  </dl>
-                                </dd>
-                              </dl>
-                              <p class="rubric">Examples</p>
-                              <div class="doctest highlight-default notranslate">
-                                <div class="highlight">
-                                  <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">SourceGalaxyPopulationModel</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">SourceGalaxyPopulationModel</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">merger_rate_density</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-</pre>
-                                </div>
-                              </div>
-                            </dd>
-                          </dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_min">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">z_min</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.z_min"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_min" title="Link to this definition"></a></dt>
+<dd><p>Minimum source redshift.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>z_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Lower bound of the redshift range.</p>
+<p>default: 0.001</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
-                          <dl class="py property">
-                            <dt class="sig sig-object py"
-                              id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_model_list">
-                              <em class="property"><span class="pre">property</span><span class="w"> </span></em><span
-                                class="sig-name descname"><span
-                                  class="pre">merger_rate_density_model_list</span></span><a class="reference internal"
-                                href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.merger_rate_density_model_list"><span
-                                  class="viewcode-link"><span class="pre">[source]</span></span></a><a
-                                class="headerlink"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_model_list"
-                                title="Link to this definition"></a>
-                            </dt>
-                            <dd>
-                              <p>Dictionary of available merger rate density functions and its parameters.</p>
-                            </dd>
-                          </dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_max">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">z_max</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.z_max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_max" title="Link to this definition"></a></dt>
+<dd><p>Maximum source redshift.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>z_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Upper bound of the redshift range.</p>
+<p>default: 10.0</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
-                          <dl class="py attribute">
-                            <dt class="sig sig-object py"
-                              id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_min">
-                              <span class="sig-name descname"><span class="pre">z_min</span></span><a
-                                class="reference internal"
-                                href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.z_min"><span
-                                  class="viewcode-link"><span class="pre">[source]</span></span></a><a
-                                class="headerlink"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_min"
-                                title="Link to this definition"></a>
-                            </dt>
-                            <dd>
-                              <p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
-                              <p>Minimum redshift of the source population</p>
-                            </dd>
-                          </dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.directory">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">directory</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.directory" title="Link to this definition"></a></dt>
+<dd><p>Directory path for storing interpolator JSON files.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>directory</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Path to the interpolator storage directory.</p>
+<p>default: ‘./interpolator_json’</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
-                          <dl class="py attribute">
-                            <dt class="sig sig-object py"
-                              id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_max">
-                              <span class="sig-name descname"><span class="pre">z_max</span></span><a
-                                class="reference internal"
-                                href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.z_max"><span
-                                  class="viewcode-link"><span class="pre">[source]</span></span></a><a
-                                class="headerlink"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.z_max"
-                                title="Link to this definition"></a>
-                            </dt>
-                            <dd>
-                              <p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
-                              <p>Maximum redshift of the source population</p>
-                            </dd>
-                          </dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.event_type">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">event_type</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.event_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.event_type" title="Link to this definition"></a></dt>
+<dd><p>Type of compact binary coalescence event.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>event_type</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>CBC event type.</p>
+<p>Options:</p>
+<ul class="simple">
+<li><p>‘BBH’: Binary black hole</p></li>
+<li><p>‘BNS’: Binary neutron star</p></li>
+<li><p>‘NSBH’: Neutron star-black hole</p></li>
+</ul>
+<p>default: ‘BBH’</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
-                          <dl class="py attribute">
-                            <dt class="sig sig-object py"
-                              id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.event_type">
-                              <span class="sig-name descname"><span class="pre">event_type</span></span><a
-                                class="reference internal"
-                                href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.event_type"><span
-                                  class="viewcode-link"><span class="pre">[source]</span></span></a><a
-                                class="headerlink"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.event_type"
-                                title="Link to this definition"></a>
-                            </dt>
-                            <dd>
-                              <p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
-                              <p>Type of event to generate.</p>
-                              <p>e.g. ‘BBH’, ‘BNS’, ‘NSBH’</p>
-                            </dd>
-                          </dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.cosmo">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cosmo</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.cosmo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.cosmo" title="Link to this definition"></a></dt>
+<dd><p>Astropy cosmology object for distance calculations.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>cosmo</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">astropy.cosmology</span></code></span></dt><dd><p>Cosmology used for redshift-distance conversions.</p>
+<p>default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
-                          <dl class="py attribute">
-                            <dt class="sig sig-object py"
-                              id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.cosmo">
-                              <span class="sig-name descname"><span class="pre">cosmo</span></span><a
-                                class="reference internal"
-                                href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.cosmo"><span
-                                  class="viewcode-link"><span class="pre">[source]</span></span></a><a
-                                class="headerlink"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.cosmo"
-                                title="Link to this definition"></a>
-                            </dt>
-                            <dd>
-                              <p><code
-                                  class="docutils literal notranslate"><span class="pre">astropy.cosmology</span></code>
-                              </p>
-                              <p>Cosmology to use for the redshift distribution.</p>
-                              <p>e.g. Planck18, WMAP9, FlatLambdaCDM(H0=70, Om0=0.3) etc.</p>
-                            </dd>
-                          </dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.create_new_interpolator">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_new_interpolator</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.create_new_interpolator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.create_new_interpolator" title="Link to this definition"></a></dt>
+<dd><p>Dictionary controlling interpolator creation settings.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>create_new_interpolator</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary with that controls the creation of new interpolators.
+Default: {‘merger_rate_density’: {‘create_new’: False, ‘resolution’: 100}, ‘luminosity_distance’: {‘create_new’: False, ‘resolution’: 100}, ‘differential_comoving_volume’: {‘create_new’: False, ‘resolution’: 100}}</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
-                          <dl class="py attribute">
-                            <dt class="sig sig-object py"
-                              id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_param">
-                              <span class="sig-name descname"><span
-                                  class="pre">merger_rate_density_param</span></span><a class="reference internal"
-                                href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.merger_rate_density_param"><span
-                                  class="viewcode-link"><span class="pre">[source]</span></span></a><a
-                                class="headerlink"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_param"
-                                title="Link to this definition"></a>
-                            </dt>
-                            <dd>
-                              <p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
-                              <p>Dictionary of merger rate density function input parameters</p>
-                            </dd>
-                          </dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.luminosity_distance">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">luminosity_distance</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.luminosity_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.luminosity_distance" title="Link to this definition"></a></dt>
+<dd><p>Class object (of FunctionConditioning) for the luminosity distance, with function as callback, which converts redshift to luminosity distance (in Mpc) for the selected cosmology.
+The class object contains the following attribute methods:
+- <cite>function</cite>: returns the luminosity distance distribution function.
+- <cite>function_inverse</cite>: returns the inverse luminosity distance distribution function, which converts luminosity distance (in Mpc) to redshift.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>luminosity_distance</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of luminosity distances (in Mpc).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
-                          <dl class="py attribute">
-                            <dt class="sig sig-object py"
-                              id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.create_new_interpolator">
-                              <span class="sig-name descname"><span class="pre">create_new_interpolator</span></span><a
-                                class="reference internal"
-                                href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.create_new_interpolator"><span
-                                  class="viewcode-link"><span class="pre">[source]</span></span></a><a
-                                class="headerlink"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.create_new_interpolator"
-                                title="Link to this definition"></a>
-                            </dt>
-                            <dd>
-                              <p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
-                              <p>Dictionary of interpolator creation parameters.</p>
-                              <p>e.g. dict(redshift_distribution=dict(create_new=False, resolution=1000),
-                                z_to_luminosity_distance=dict(create_new=False, resolution=1000),
-                                differential_comoving_volume=dict(create_new=False, resolution=1000))</p>
-                            </dd>
-                          </dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.differential_comoving_volume">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">differential_comoving_volume</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.differential_comoving_volume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.differential_comoving_volume" title="Link to this definition"></a></dt>
+<dd><p>Class object (of FunctionConditioning) for the differential comoving volume function, with function as callback, which returns dVc/dz (in Mpc^3 sr^-1) for the selected cosmology.
+The class object contains the following attribute methods:
+- <cite>function</cite>: returns the differential comoving volume distribution function.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>differential_comoving_volume</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of differential comoving volumes (in Mpc^3 sr^-1).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
-                          <dl class="py attribute">
-                            <dt class="sig sig-object py"
-                              id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.normalization_pdf_z">
-                              <span class="sig-name descname"><span class="pre">normalization_pdf_z</span></span><a
-                                class="reference internal"
-                                href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.normalization_pdf_z"><span
-                                  class="viewcode-link"><span class="pre">[source]</span></span></a><a
-                                class="headerlink"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.normalization_pdf_z"
-                                title="Link to this definition"></a>
-                            </dt>
-                            <dd>
-                              <p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
-                              <p>Normalization constant of the pdf p(z)</p>
-                            </dd>
-                          </dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">merger_rate_density</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.merger_rate_density"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density" title="Link to this definition"></a></dt>
+<dd><p>Source-frame merger rate density function R(z).</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>merger_rate_density</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code> or <code class="docutils literal notranslate"><span class="pre">FunctionConditioning</span></code></span></dt><dd><p>Callable that accepts redshift(s) and returns merger rate density
+in source frame (units: Mpc^-3 yr^-1).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
-                          <dl class="py method">
-                            <dt class="sig sig-object py"
-                              id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.setup_decision_dictionary">
-                              <span class="sig-name descname"><span
-                                  class="pre">setup_decision_dictionary</span></span><span class="sig-paren">(</span><em
-                                class="sig-param"><span class="n"><span
-                                    class="pre">create_new_interpolator</span></span></em>, <em class="sig-param"><span
-                                  class="n"><span class="pre">merger_rate_density</span></span></em><span
-                                class="sig-paren">)</span><a class="reference internal"
-                                href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.setup_decision_dictionary"><span
-                                  class="viewcode-link"><span class="pre">[source]</span></span></a><a
-                                class="headerlink"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.setup_decision_dictionary"
-                                title="Link to this definition"></a>
-                            </dt>
-                            <dd>
-                              <p>Method to set up a decision dictionary for interpolator creation.</p>
-                              <dl class="field-list">
-                                <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-                                <dd class="field-odd">
-                                  <dl>
-                                    <dt><strong>create_new_interpolator</strong><span
-                                        class="classifier"><cite>dict</cite>, <cite>bool</cite></span></dt>
-                                    <dd>
-                                      <p>If <cite>dict</cite>, dictionary of boolean values and resolution to create new
-                                        interpolator.
-                                        If <cite>bool</cite>, boolean value to create new interpolator for all
-                                        quantities.</p>
-                                    </dd>
-                                  </dl>
-                                </dd>
-                                <dt class="field-even">Returns<span class="colon">:</span></dt>
-                                <dd class="field-even">
-                                  <dl>
-                                    <dt><strong>create_new_interpolator_</strong><span
-                                        class="classifier"><cite>dict</cite></span></dt>
-                                    <dd>
-                                      <p>Dictionary of boolean values and resolution to create new interpolator.
-                                        e.g. dict(redshift_distribution=dict(create_new=False, resolution=1000),
-                                        luminosity_distance=dict(create_new=False, resolution=1000),
-                                        differential_comoving_volume=dict(create_new=False, resolution=1000))</p>
-                                    </dd>
-                                  </dl>
-                                </dd>
-                              </dl>
-                            </dd>
-                          </dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.source_redshift">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source_redshift</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.source_redshift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.source_redshift" title="Link to this definition"></a></dt>
+<dd><p>Class object (of FunctionConditioning) for the source redshift sampler, with rvs/sampler as callback, which samples source redshifts from p(z) ∝ R(z)/(1+z) dVc/dz , where p(z) is the redshift probability distribution, R(z) is the merger rate density, and dVc/dz is the differential comoving volume.
+The class object contains the following attribute methods:
+- <cite>rvs</cite>: returns random samples from the source redshift distribution.
+- <cite>pdf</cite>: returns the source redshift probability density function.
+- <cite>function</cite>: returns the source redshift distribution function.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>source_redshift</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of source redshifts (detector frame)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
-                          <dl class="py method">
-                            <dt class="sig sig-object py"
-                              id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_priors_categorization">
-                              <span class="sig-name descname"><span
-                                  class="pre">merger_rate_density_priors_categorization</span></span><span
-                                class="sig-paren">(</span><em class="sig-param"><span class="n"><span
-                                    class="pre">event_type</span></span></em>, <em class="sig-param"><span
-                                  class="n"><span class="pre">merger_rate_density</span></span></em>, <em
-                                class="sig-param"><span class="n"><span
-                                    class="pre">merger_rate_density_param</span></span></em><span
-                                class="sig-paren">)</span><a class="reference internal"
-                                href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.merger_rate_density_priors_categorization"><span
-                                  class="viewcode-link"><span class="pre">[source]</span></span></a><a
-                                class="headerlink"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_priors_categorization"
-                                title="Link to this definition"></a>
-                            </dt>
-                            <dd>
-                              <p>Function to categorize the merger rate density and its parameters.</p>
-                              <dl class="field-list">
-                                <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-                                <dd class="field-odd">
-                                  <dl>
-                                    <dt><strong>event_type</strong><span class="classifier"><cite>str</cite></span></dt>
-                                    <dd>
-                                      <p>Type of event to generate.
-                                        e.g. ‘BBH’, ‘BNS’, ‘BBH_popIII’, ‘BBH_primordial’, ‘NSBH’</p>
-                                    </dd>
-                                    <dt><strong>merger_rate_density</strong><span class="classifier"><cite>str</cite> or
-                                        <cite>callable</cite></span></dt>
-                                    <dd>
-                                      <p>Merger rate density function name or function itself.
-                                        If <cite>str</cite>, it must be one of the available merger rate density
-                                        functions.
-                                        If <cite>callable</cite>, it must accept a single argument, the redshift.</p>
-                                    </dd>
-                                    <dt><strong>merger_rate_density_param</strong><span
-                                        class="classifier"><cite>dict</cite></span></dt>
-                                    <dd>
-                                      <p>Dictionary of merger rate density function parameters.
-                                        If <cite>None</cite>, use the default parameters for the chosen merger rate
-                                        density function.
-                                        If not <cite>None</cite>, must contain the following parameters:</p>
-                                      <blockquote>
-                                        <div>
-                                          <dl>
-                                            <dt>R0<span class="classifier"><cite>float</cite></span></dt>
-                                            <dd>
-                                              <p>Normalization constant of the merger rate density.</p>
-                                            </dd>
-                                            <dt>b2<span class="classifier"><cite>float</cite></span></dt>
-                                            <dd>
-                                              <p>Power law exponent of the merger rate density.</p>
-                                            </dd>
-                                            <dt>b3<span class="classifier"><cite>float</cite></span></dt>
-                                            <dd>
-                                              <p>Power law exponent of the merger rate density.</p>
-                                            </dd>
-                                            <dt>b4<span class="classifier"><cite>float</cite></span></dt>
-                                            <dd>
-                                              <p>Power law exponent of the merger rate density.</p>
-                                            </dd>
-                                          </dl>
-                                        </div>
-                                      </blockquote>
-                                    </dd>
-                                  </dl>
-                                </dd>
-                                <dt class="field-even">Returns<span class="colon">:</span></dt>
-                                <dd class="field-even">
-                                  <dl>
-                                    <dt><strong>merger_rate_density_</strong><span class="classifier"><cite>str</cite>
-                                        or <cite>callable</cite></span></dt>
-                                    <dd>
-                                      <p>Merger rate density function name or function itself.</p>
-                                    </dd>
-                                    <dt><strong>merger_rate_density_param_</strong><span
-                                        class="classifier"><cite>dict</cite></span></dt>
-                                    <dd>
-                                      <p>Dictionary of merger rate density function parameters.</p>
-                                    </dd>
-                                  </dl>
-                                </dd>
-                              </dl>
-                              <p class="rubric">Notes</p>
-                              <p>If <cite>merger_rate_density</cite> is a string, it must be one of the available merger
-                                rate density functions.
-                                If <cite>merger_rate_density</cite> is a callable, it must accept a single argument, the
-                                redshift.
-                                If <cite>merger_rate_density_param</cite> is <cite>None</cite>, use the default
-                                parameters for the chosen merger rate density function.
-                                If <cite>merger_rate_density_param</cite> is not <cite>None</cite>, it must contain the
-                                following parameters: R0, b2, b3, b4.</p>
-                            </dd>
-                          </dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.normalization_pdf_z">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">normalization_pdf_z</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.normalization_pdf_z"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.normalization_pdf_z" title="Link to this definition"></a></dt>
+<dd><p>Normalization constant for the redshift probability distribution.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>normalization_pdf_z</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Integral of the unnormalized p(z) over [z_min, z_max].</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
-                          <dl class="py method">
-                            <dt class="sig sig-object py"
-                              id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_detector_frame">
-                              <span class="sig-name descname"><span
-                                  class="pre">merger_rate_density_detector_frame</span></span><span
-                                class="sig-paren">(</span><em class="sig-param"><span class="n"><span
-                                    class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span
-                                    class="pre">get_attribute</span></span><span class="o"><span
-                                    class="pre">=</span></span><span class="default_value"><span
-                                    class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span
-                                    class="pre">**</span></span><span class="n"><span
-                                    class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a
-                                class="reference internal"
-                                href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.merger_rate_density_detector_frame"><span
-                                  class="viewcode-link"><span class="pre">[source]</span></span></a><a
-                                class="headerlink"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_detector_frame"
-                                title="Link to this definition"></a>
-                            </dt>
-                            <dd>
-                              <p>Function to compute the merger rate density (detector frame). The output is in detector
-                                frame and is unnormalized.</p>
-                              <dl class="field-list">
-                                <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-                                <dd class="field-odd">
-                                  <dl>
-                                    <dt><strong>zs</strong><span class="classifier"><cite>float</cite> or
-                                        <cite>numpy.ndarray</cite> (1D array of floats)</span></dt>
-                                    <dd>
-                                      <p>Source redshifts</p>
-                                    </dd>
-                                    <dt><strong>param</strong><span class="classifier"><cite>dict</cite></span></dt>
-                                    <dd>
-                                      <p>Allows to pass in above parameters as dict.
-                                        e.g. if the merger_rate_density is merger_rate_density_bbh_popI_II_oguri2018
-                                        param = dict(R0=23.9*1e-9, b2=1.6, b3=2.1, b4=30)</p>
-                                    </dd>
-                                  </dl>
-                                </dd>
-                                <dt class="field-even">Returns<span class="colon">:</span></dt>
-                                <dd class="field-even">
-                                  <dl>
-                                    <dt><strong>rate_density</strong><span
-                                        class="classifier"><cite>numpy.ndarray</cite></span></dt>
-                                    <dd>
-                                      <p>1D array of floats
-                                        merger rate density (detector frame) (Mpc^-3 yr^-1)</p>
-                                    </dd>
-                                  </dl>
-                                </dd>
-                              </dl>
-                              <p class="rubric">Examples</p>
-                              <div class="doctest highlight-default notranslate">
-                                <div class="highlight">
-                                  <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">SourceGalaxyPopulationModel</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">SourceGalaxyPopulationModel</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_density</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">merger_rate_density_detector_frame</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-</pre>
-                                </div>
-                              </div>
-                            </dd>
-                          </dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_param">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">merger_rate_density_param</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.merger_rate_density_param"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_param" title="Link to this definition"></a></dt>
+<dd><p>Parameters for the merger rate density function.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>merger_rate_density_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of parameters for the selected merger rate density model.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
-                          <dl class="py method">
-                            <dt class="sig sig-object py"
-                              id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_popI_II_oguri2018">
-                              <span class="sig-name descname"><span
-                                  class="pre">merger_rate_density_bbh_popI_II_oguri2018</span></span><span
-                                class="sig-paren">(</span><em class="sig-param"><span class="n"><span
-                                    class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span
-                                    class="pre">get_attribute</span></span><span class="o"><span
-                                    class="pre">=</span></span><span class="default_value"><span
-                                    class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span
-                                    class="pre">**</span></span><span class="n"><span
-                                    class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a
-                                class="reference internal"
-                                href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.merger_rate_density_bbh_popI_II_oguri2018"><span
-                                  class="viewcode-link"><span class="pre">[source]</span></span></a><a
-                                class="headerlink"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_popI_II_oguri2018"
-                                title="Link to this definition"></a>
-                            </dt>
-                            <dd>
-                              <p>Function to compute the merger rate density (PopI/PopII). Reference: Oguri et al.
-                                (2018). The output is in source frame and is unnormalized.</p>
-                              <dl class="field-list">
-                                <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-                                <dd class="field-odd">
-                                  <dl>
-                                    <dt><strong>zs</strong><span class="classifier"><cite>float</cite> or
-                                        <cite>numpy.ndarray</cite> (nD array of floats)</span></dt>
-                                    <dd>
-                                      <p>Source redshifts</p>
-                                    </dd>
-                                    <dt><strong>get_attribute</strong><span class="classifier"><cite>bool</cite></span>
-                                    </dt>
-                                    <dd>
-                                      <p>If True, returns the merger rate density function instead of the value
-                                        default: False</p>
-                                    </dd>
-                                    <dt><strong>kwargs</strong><span class="classifier"><cite>dict</cite></span></dt>
-                                    <dd>
-                                      <p>Dictionary of merger rate density function fitting parameters.
-                                        default: R0=23.9*1e-9, b2=1.6, b3=2.1, b4=30
-                                        R0 is the local merger rate density at low redshift in Mpc^-3 yr^-1</p>
-                                    </dd>
-                                  </dl>
-                                </dd>
-                                <dt class="field-even">Returns<span class="colon">:</span></dt>
-                                <dd class="field-even">
-                                  <dl>
-                                    <dt><strong>rate_density</strong><span class="classifier"><cite>float</cite> or
-                                        <cite>numpy.ndarray</cite> (nD array of floats)</span></dt>
-                                    <dd>
-                                      <p>merger rate density in source frame (Mpc^-3 yr^-1)</p>
-                                    </dd>
-                                  </dl>
-                                </dd>
-                              </dl>
-                              <p class="rubric">Examples</p>
-                              <div class="doctest highlight-default notranslate">
-                                <div class="highlight">
-                                  <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">SourceGalaxyPopulationModel</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pop</span> <span class="o">=</span> <span class="n">SourceGalaxyPopulationModel</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">event_type</span> <span class="o">=</span> <span class="s2">&quot;BBH&quot;</span><span class="p">,</span> <span class="n">merger_rate_density</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_bbh_popI_II_oguri2018&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_density</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-</pre>
-                                </div>
-                              </div>
-                            </dd>
-                          </dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_model_list">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">merger_rate_density_model_list</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.merger_rate_density_model_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_model_list" title="Link to this definition"></a></dt>
+<dd><p>Dictionary of available merger rate density models and default parameters.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>merger_rate_density_model_list</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary with model names as keys and parameter dicts as values.
+Available models:
+- ‘merger_rate_density_bbh_popI_II_oguri2018’
+- ‘sfr_madau_dickinson2014’
+- ‘sfr_with_td’
+- ‘merger_rate_density_bbh_popIII_ken2022’
+- ‘merger_rate_density_bbh_primordial_ken2022’</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
-                          <dl class="py method">
-                            <dt class="sig sig-object py"
-                              id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.sfr_with_td">
-                              <span class="sig-name descname"><span class="pre">sfr_with_td</span></span><span
-                                class="sig-paren">(</span><em class="sig-param"><span class="n"><span
-                                    class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span
-                                    class="pre">get_attribute</span></span><span class="o"><span
-                                    class="pre">=</span></span><span class="default_value"><span
-                                    class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span
-                                    class="pre">**</span></span><span class="n"><span
-                                    class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a
-                                class="reference internal"
-                                href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.sfr_with_td"><span
-                                  class="viewcode-link"><span class="pre">[source]</span></span></a><a
-                                class="headerlink"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.sfr_with_td"
-                                title="Link to this definition"></a>
-                            </dt>
-                            <dd></dd>
-                          </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_detector_frame">
+<span class="sig-name descname"><span class="pre">merger_rate_density_detector_frame</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.merger_rate_density_detector_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_detector_frame" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
-                          <dl class="py method">
-                            <dt class="sig sig-object py"
-                              id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.sfr_madau_dickinson2014">
-                              <span class="sig-name descname"><span
-                                  class="pre">sfr_madau_dickinson2014</span></span><span class="sig-paren">(</span><em
-                                class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em
-                                class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span
-                                  class="o"><span class="pre">=</span></span><span class="default_value"><span
-                                    class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span
-                                    class="pre">**</span></span><span class="n"><span
-                                    class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a
-                                class="reference internal"
-                                href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.sfr_madau_dickinson2014"><span
-                                  class="viewcode-link"><span class="pre">[source]</span></span></a><a
-                                class="headerlink"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.sfr_madau_dickinson2014"
-                                title="Link to this definition"></a>
-                            </dt>
-                            <dd>
-                              <p>Formation rate as given in Eqn. 15 Madau &amp; Dickinson (2014). The output is in
-                                detector frame and is unnormalized.</p>
-                              <dl class="field-list">
-                                <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-                                <dd class="field-odd">
-                                  <dl>
-                                    <dt><strong>zs</strong><span class="classifier"><cite>float</cite> or
-                                        <cite>numpy.ndarray</cite> (nd.array of floats)</span></dt>
-                                    <dd>
-                                      <p>Source redshifts</p>
-                                    </dd>
-                                    <dt><strong>get_attribute</strong><span class="classifier"><cite>bool</cite></span>
-                                    </dt>
-                                    <dd>
-                                      <p>If True, returns the merger rate density function instead of the value
-                                        default: False</p>
-                                    </dd>
-                                    <dt><strong>kwargs</strong><span class="classifier"><cite>dict</cite></span></dt>
-                                    <dd>
-                                      <p>Dictionary of star formation rate function fitting parameters.
-                                        default: af=2.7, bf=5.6, cf=2.9</p>
-                                    </dd>
-                                  </dl>
-                                </dd>
-                                <dt class="field-even">Returns<span class="colon">:</span></dt>
-                                <dd class="field-even">
-                                  <dl>
-                                    <dt><strong>rate_density</strong><span class="classifier"><cite>float</cite> or
-                                        <cite>numpy.ndarray</cite> (nD array of floats)</span></dt>
-                                    <dd>
-                                      <p>merger rate density in detector frame (Mpc^-3 yr^-1)</p>
-                                    </dd>
-                                  </dl>
-                                </dd>
-                              </dl>
-                              <p class="rubric">Examples</p>
-                              <div class="doctest highlight-default notranslate">
-                                <div class="highlight">
-                                  <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">SourceGalaxyPopulationModel</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pop</span> <span class="o">=</span> <span class="n">SourceGalaxyPopulationModel</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mf">5.</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mf">40.</span><span class="p">,</span> <span class="n">event_type</span> <span class="o">=</span> <span class="s2">&quot;BBH&quot;</span><span class="p">,</span> <span class="n">merger_rate_density</span><span class="o">=</span><span class="s2">&quot;sfr_madau_dickinson2014&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_density</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-</pre>
-                                </div>
-                              </div>
-                            </dd>
-                          </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_popI_II_oguri2018">
+<span class="sig-name descname"><span class="pre">merger_rate_density_bbh_popI_II_oguri2018</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.merger_rate_density_bbh_popI_II_oguri2018"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_popI_II_oguri2018" title="Link to this definition"></a></dt>
+<dd><p>Compute PopI/II BBH merger rate density (Oguri et al. 2018).</p>
+<p>Returns the source-frame merger rate density following the
+Oguri et al. (2018) prescription for PopI/II stellar populations.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>zs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">`numpy.ndarray</span></code></span></dt><dd><p>Source redshift(s) at which to evaluate.</p>
+</dd>
+<dt><strong>get_attribute</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, return the FunctionConditioning object.
+default: False</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Override default fitting parameters:
+R0=23.9e-9, b2=1.6, b3=2.1, b4=30.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>rate_density</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">`numpy.ndarray</span></code> or <code class="docutils literal notranslate"><span class="pre">FunctionConditioning</span></code></span></dt><dd><p>Merger rate density in source frame (units: Mpc^-3 yr^-1).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceRedshiftDistribution</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceRedshiftDistribution</span><span class="p">(</span><span class="n">merger_rate_density</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_bbh_popI_II_oguri2018&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rate</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
 
-                          <dl class="py method">
-                            <dt class="sig sig-object py"
-                              id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_popIII_ken2022">
-                              <span class="sig-name descname"><span
-                                  class="pre">merger_rate_density_bbh_popIII_ken2022</span></span><span
-                                class="sig-paren">(</span><em class="sig-param"><span class="n"><span
-                                    class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span
-                                    class="pre">get_attribute</span></span><span class="o"><span
-                                    class="pre">=</span></span><span class="default_value"><span
-                                    class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span
-                                    class="pre">**</span></span><span class="n"><span
-                                    class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a
-                                class="reference internal"
-                                href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.merger_rate_density_bbh_popIII_ken2022"><span
-                                  class="viewcode-link"><span class="pre">[source]</span></span></a><a
-                                class="headerlink"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_popIII_ken2022"
-                                title="Link to this definition"></a>
-                            </dt>
-                            <dd>
-                              <p>Merger rate density (PopIII). Reference: Ng et al. 2022. The output is in detector
-                                frame and is unnormalized.</p>
-                              <dl class="field-list">
-                                <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-                                <dd class="field-odd">
-                                  <dl>
-                                    <dt><strong>zs</strong><span class="classifier"><cite>float</cite> or
-                                        <cite>numpy.ndarray</cite></span></dt>
-                                    <dd>
-                                      <p>Source redshifts</p>
-                                    </dd>
-                                    <dt><strong>get_attribute</strong><span class="classifier"><cite>bool</cite></span>
-                                    </dt>
-                                    <dd>
-                                      <p>If True, returns the merger rate density function instead of the value
-                                        default: False</p>
-                                    </dd>
-                                    <dt><strong>kwargs</strong><span class="classifier"><cite>dict</cite></span></dt>
-                                    <dd>
-                                      <p>Dictionary of merger rate density function fitting parameters.
-                                        default: n0=19.2*1e-9, aIII=0.66, bIII=0.3, zIII=11.6
-                                        n0 is the local merger rate density at low redshift in Mpc^-3 yr^-1</p>
-                                    </dd>
-                                  </dl>
-                                </dd>
-                                <dt class="field-even">Returns<span class="colon">:</span></dt>
-                                <dd class="field-even">
-                                  <dl>
-                                    <dt><strong>rate_density</strong><span class="classifier"><cite>float</cite> or
-                                        <cite>numpy.ndarray</cite></span></dt>
-                                    <dd>
-                                      <p>merger rate density in detector frame (Mpc^-3 yr^-1)</p>
-                                    </dd>
-                                  </dl>
-                                </dd>
-                              </dl>
-                              <p class="rubric">Examples</p>
-                              <div class="doctest highlight-default notranslate">
-                                <div class="highlight">
-                                  <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">SourceGalaxyPopulationModel</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pop</span> <span class="o">=</span> <span class="n">SourceGalaxyPopulationModel</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">event_type</span> <span class="o">=</span> <span class="s2">&quot;BBH&quot;</span><span class="p">,</span> <span class="n">merger_rate_density</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_popIII_ken2022&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_density</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_density</span>  <span class="c1"># Mpc^-3 yr^-1</span>
-<span class="go">1.5107979464621443e-08</span>
-</pre>
-                                </div>
-                              </div>
-                            </dd>
-                          </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.sfr_with_td">
+<span class="sig-name descname"><span class="pre">sfr_with_td</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.sfr_with_td"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.sfr_with_td" title="Link to this definition"></a></dt>
+<dd><p>Compute merger rate density with time delay convolution.</p>
+<p>Convolves the star formation rate with a time delay distribution
+to compute the merger rate density. Uses multiprocessing for
+numerical integration (Borhanian &amp; Sathyaprakash 2024).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>zs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">`numpy.ndarray</span></code></span></dt><dd><p>Source redshift(s) at which to evaluate.</p>
+</dd>
+<dt><strong>get_attribute</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, return the FunctionConditioning object.
+default: False</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Override default SFR and time delay parameters.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>rate_density</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">`numpy.ndarray</span></code> or <code class="docutils literal notranslate"><span class="pre">FunctionConditioning</span></code></span></dt><dd><p>Merger rate density (units: Mpc^-3 yr^-1).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
-                          <dl class="py method">
-                            <dt class="sig sig-object py"
-                              id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_primordial_ken2022">
-                              <span class="sig-name descname"><span
-                                  class="pre">merger_rate_density_bbh_primordial_ken2022</span></span><span
-                                class="sig-paren">(</span><em class="sig-param"><span class="n"><span
-                                    class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span
-                                    class="pre">get_attribute</span></span><span class="o"><span
-                                    class="pre">=</span></span><span class="default_value"><span
-                                    class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span
-                                    class="pre">**</span></span><span class="n"><span
-                                    class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a
-                                class="reference internal"
-                                href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.merger_rate_density_bbh_primordial_ken2022"><span
-                                  class="viewcode-link"><span class="pre">[source]</span></span></a><a
-                                class="headerlink"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_primordial_ken2022"
-                                title="Link to this definition"></a>
-                            </dt>
-                            <dd>
-                              <p>Function to compute the merger rate density (Primordial). Reference: Ng et al. 2022.
-                                The output is in detector frame and is unnormalized.</p>
-                              <dl class="field-list">
-                                <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-                                <dd class="field-odd">
-                                  <dl>
-                                    <dt><strong>zs</strong><span class="classifier"><cite>float</cite> or
-                                        <cite>numpy.ndarray</cite></span></dt>
-                                    <dd>
-                                      <p>Source redshifts</p>
-                                    </dd>
-                                    <dt><strong>n0</strong><span class="classifier"><cite>float</cite></span></dt>
-                                    <dd>
-                                      <p>normalization constant
-                                        default: 0.044*1e-9</p>
-                                    </dd>
-                                    <dt><strong>t0</strong><span class="classifier"><cite>float</cite></span></dt>
-                                    <dd>
-                                      <p>Present age of the Universe in Gyr
-                                        default: 13.786885302009708</p>
-                                    </dd>
-                                    <dt><strong>param</strong><span class="classifier"><cite>dict</cite></span></dt>
-                                    <dd>
-                                      <p>Allows to pass in above parameters as dict.
-                                        e.g. param = dict(t0=13.786885302009708)</p>
-                                    </dd>
-                                  </dl>
-                                </dd>
-                                <dt class="field-even">Returns<span class="colon">:</span></dt>
-                                <dd class="field-even">
-                                  <dl>
-                                    <dt><strong>rate_density</strong><span class="classifier"><cite>float</cite></span>
-                                    </dt>
-                                    <dd>
-                                      <p>merger rate density</p>
-                                    </dd>
-                                  </dl>
-                                </dd>
-                              </dl>
-                              <p class="rubric">Examples</p>
-                              <div class="doctest highlight-default notranslate">
-                                <div class="highlight">
-                                  <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">SourceGalaxyPopulationModel</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pop</span> <span class="o">=</span> <span class="n">SourceGalaxyPopulationModel</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">event_type</span> <span class="o">=</span> <span class="s2">&quot;BBH&quot;</span><span class="p">,</span> <span class="n">merger_rate_density</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_bbh_primordial_ken2022&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_density</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_density</span>  <span class="c1"># Mpc^-3 yr^-1</span>
-<span class="go">9.78691173794454e-10</span>
-</pre>
-                                </div>
-                              </div>
-                            </dd>
-                          </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.sfr_madau_dickinson2014">
+<span class="sig-name descname"><span class="pre">sfr_madau_dickinson2014</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.sfr_madau_dickinson2014"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.sfr_madau_dickinson2014" title="Link to this definition"></a></dt>
+<dd><p>Compute star formation rate following Madau &amp; Dickinson (2014).</p>
+<p>Returns the cosmic star formation rate density as given in
+Equation 15 of Madau &amp; Dickinson (2014).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>zs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">`numpy.ndarray</span></code></span></dt><dd><p>Source redshift(s) at which to evaluate.</p>
+</dd>
+<dt><strong>get_attribute</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, return the FunctionConditioning object.
+default: False</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Override default fitting parameters: a=0.015, b=2.7, c=2.9, d=5.6.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>rate_density</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">`numpy.ndarray</span></code> or <code class="docutils literal notranslate"><span class="pre">FunctionConditioning</span></code></span></dt><dd><p>Star formation rate density (units: M_sun yr^-1 Mpc^-3).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceRedshiftDistribution</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceRedshiftDistribution</span><span class="p">(</span><span class="n">merger_rate_density</span><span class="o">=</span><span class="s2">&quot;sfr_madau_dickinson2014&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sfr</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
 
-                          <dl class="py method">
-                            <dt class="sig sig-object py"
-                              id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.create_lookup_table">
-                              <span class="sig-name descname"><span class="pre">create_lookup_table</span></span><span
-                                class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal"
-                                href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.create_lookup_table"><span
-                                  class="viewcode-link"><span class="pre">[source]</span></span></a><a
-                                class="headerlink"
-                                href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.create_lookup_table"
-                                title="Link to this definition"></a>
-                            </dt>
-                            <dd>
-                              <p>Function to create a lookup table for the differential comoving volume
-                                and luminosity distance wrt redshift.</p>
-                              <dl class="field-list">
-                                <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-                                <dd class="field-odd">
-                                  <dl>
-                                    <dt><strong>z_min</strong><span class="classifier"><cite>float</cite></span></dt>
-                                    <dd>
-                                      <p>Minimum redshift of the source population</p>
-                                    </dd>
-                                    <dt><strong>z_max</strong><span class="classifier"><cite>float</cite></span></dt>
-                                    <dd>
-                                      <p>Maximum redshift of the source population</p>
-                                    </dd>
-                                  </dl>
-                                </dd>
-                                <dt class="field-even">Attributes<span class="colon">:</span></dt>
-                                <dd class="field-even">
-                                  <dl>
-                                    <dt><strong>z_to_luminosity_distance</strong><span
-                                        class="classifier"><cite>scipy.interpolate.interpolate</cite></span></dt>
-                                    <dd>
-                                      <p>Function to convert redshift to luminosity distance</p>
-                                    </dd>
-                                    <dt><strong>differential_comoving_volume</strong><span
-                                        class="classifier"><cite>scipy.interpolate.interpolate</cite></span></dt>
-                                    <dd>
-                                      <p>Function to calculate the differential comoving volume</p>
-                                    </dd>
-                                  </dl>
-                                </dd>
-                              </dl>
-                            </dd>
-                          </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_popIII_ken2022">
+<span class="sig-name descname"><span class="pre">merger_rate_density_bbh_popIII_ken2022</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.merger_rate_density_bbh_popIII_ken2022"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_popIII_ken2022" title="Link to this definition"></a></dt>
+<dd><p>Compute PopIII BBH merger rate density (Ng et al. 2022).</p>
+<p>Returns the merger rate density for Population III binary black
+holes following the Ng et al. (2022) prescription.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>zs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">`numpy.ndarray</span></code></span></dt><dd><p>Source redshift(s) at which to evaluate.</p>
+</dd>
+<dt><strong>get_attribute</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, return the FunctionConditioning object.
+default: False</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Override default fitting parameters:
+n0=19.2e-9, aIII=0.66, bIII=0.3, zIII=11.6.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>rate_density</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">`numpy.ndarray</span></code> or <code class="docutils literal notranslate"><span class="pre">FunctionConditioning</span></code></span></dt><dd><p>Merger rate density (units: Mpc^-3 yr^-1).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceRedshiftDistribution</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceRedshiftDistribution</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">z_min</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">merger_rate_density</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_bbh_popIII_ken2022&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rate</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
 
-                        </section>
-                      </dd>
-                    </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_primordial_ken2022">
+<span class="sig-name descname"><span class="pre">merger_rate_density_bbh_primordial_ken2022</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.merger_rate_density_bbh_primordial_ken2022"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_primordial_ken2022" title="Link to this definition"></a></dt>
+<dd><p>Compute primordial BBH merger rate density (Ng et al. 2022).</p>
+<p>Returns the merger rate density for primordial binary black holes
+following the Ng et al. (2022) prescription.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>zs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">`numpy.ndarray</span></code></span></dt><dd><p>Source redshift(s) at which to evaluate.</p>
+</dd>
+<dt><strong>get_attribute</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, return the FunctionConditioning object.
+default: False</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Override default fitting parameters:
+n0=0.044e-9, t0=13.786885302009708.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>rate_density</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">`numpy.ndarray</span></code> or <code class="docutils literal notranslate"><span class="pre">FunctionConditioning</span></code></span></dt><dd><p>Merger rate density (units: Mpc^-3 yr^-1).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceRedshiftDistribution</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceRedshiftDistribution</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">z_min</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">merger_rate_density</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_bbh_primordial_ken2022&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rate</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
 
-                  </section>
-                </section>
-              </section>
+</section>
+</dd></dl>
+
+</section>
+</section>
+</section>
 
 
-            </div>
+           </div>
           </div>
-          <footer>
-            <div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-              <a href="../cbc_source_parameter_distribution/index.html" class="btn btn-neutral float-left"
-                title="ler.gw_source_population.cbc_source_parameter_distribution" accesskey="p" rel="prev"><span
-                  class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-              <a href="../jit_functions/index.html" class="btn btn-neutral float-right"
-                title="ler.gw_source_population.jit_functions" accesskey="n" rel="next">Next <span
-                  class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-            </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../cbc_source_parameter_distribution/index.html" class="btn btn-neutral float-left" title="ler.gw_source_population.cbc_source_parameter_distribution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../jit_functions/index.html" class="btn btn-neutral float-right" title="ler.gw_source_population.jit_functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
-            <hr />
+  <hr/>
 
-            <div role="contentinfo">
-              <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
-            </div>
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
 
-            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-            <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-            provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
-
-          </footer>
+</footer>
         </div>
       </div>
     </section>
   </div>
   <script>
-    jQuery(function () {
-      SphinxRtdTheme.Navigation.enable(true);
-    });
-  </script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
 
 </body>
-
 </html>

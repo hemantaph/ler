@@ -1,5 +1,3 @@
-:orphan:
-
 :py:mod:`ler.lens_galaxy_population.jit_functions`
 ==================================================
 
@@ -16,14 +14,19 @@ Functions
 .. autoapisummary::
 
    ler.lens_galaxy_population.jit_functions.axis_ratio_SIS
+   ler.lens_galaxy_population.jit_functions.gamma_
+   ler.lens_galaxy_population.jit_functions.cvdf_fit
+   ler.lens_galaxy_population.jit_functions.my_derivative
+   ler.lens_galaxy_population.jit_functions.pdf_phi_z_div_0
    ler.lens_galaxy_population.jit_functions.phi
    ler.lens_galaxy_population.jit_functions.phi_loc_bernardi
    ler.lens_galaxy_population.jit_functions.phi_cut_SIE
    ler.lens_galaxy_population.jit_functions.axis_ratio_rayleigh_rvs
+   ler.lens_galaxy_population.jit_functions.axis_ratio_rayleigh_pdf
    ler.lens_galaxy_population.jit_functions.velocity_dispersion_z_dependent
-   ler.lens_galaxy_population.jit_functions.lens_redshift_sis_haris
    ler.lens_galaxy_population.jit_functions.bounded_normal_sample
    ler.lens_galaxy_population.jit_functions.phi_q2_ellipticity_hemanta
+   ler.lens_galaxy_population.jit_functions.sample_sigma_zl
 
 
 
@@ -57,6 +60,18 @@ Functions
 
    ..
        !! processed by numpydoc !!
+
+.. py:function:: gamma_(x)
+
+
+.. py:function:: cvdf_fit(log_vd, redshift)
+
+
+.. py:function:: my_derivative(log_vd, redshift, dx)
+
+
+.. py:function:: pdf_phi_z_div_0(s, z)
+
 
 .. py:function:: phi(s, z, alpha=0.94, beta=1.85, phistar=0.02099, sigmastar=113.78)
 
@@ -197,6 +212,9 @@ Functions
    ..
        !! processed by numpydoc !!
 
+.. py:function:: axis_ratio_rayleigh_pdf(q, sigma, q_min=0.2, q_max=1.0)
+
+
 .. py:function:: velocity_dispersion_z_dependent(size, zl, zl_list, vd_inv_cdf)
 
    
@@ -215,50 +233,6 @@ Functions
 
        samples: numpy.ndarray
            Samples of velocity dispersion
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: lens_redshift_sis_haris(zs, splineDc, splineDcInv, u, cdf)
-
-   
-   Function to sample lens redshift from the SDSS catalogue. Haris et al. (2018) cdf = (10 * u**3 - 15 * u**4 + 6 * u**5)
-
-
-   :Parameters:
-
-       **zs: `numpy.ndarray` (1D array of float of size=size)**
-           Redshift of the source galaxy
-
-       **splineDc: `list`**
-           List of spline coefficients for the comoving distance and redshifts
-
-       **splineDcInv: `list`**
-           List of spline coefficients for the inverse of comoving distance and redshifts
-
-       **u: `numpy.ndarray` (1D array of float of size=size)**
-           corresponding x values wrt to the cdf values
-           e.g. u = np.linspace(0, 1, 500)
-
-       **cdf: `numpy.ndarray` (1D array of float of size=size)**
-           Cumulative distribution function of the lens redshift distribution between 0 and 1
-
-   :Returns:
-
-       zl: `numpy.ndarray` (1D array of float of size=size)
-           Redshift of the lens galaxy corresponding to the zs
 
 
 
@@ -347,4 +321,7 @@ Functions
 
    ..
        !! processed by numpydoc !!
+
+.. py:function:: sample_sigma_zl(pdf, sigma_min, sigma_max, zl_min, zl_max, zs, chunk_size=10000)
+
 

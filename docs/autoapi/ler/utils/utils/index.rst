@@ -28,6 +28,7 @@ Functions
 
 .. autoapisummary::
 
+   ler.utils.utils.is_njitted
    ler.utils.utils.load_pickle
    ler.utils.utils.save_pickle
    ler.utils.utils.load_hdf5
@@ -35,6 +36,7 @@ Functions
    ler.utils.utils.load_json
    ler.utils.utils.save_json
    ler.utils.utils.append_json
+   ler.utils.utils.concatenate_dict_values
    ler.utils.utils.get_param_from_json
    ler.utils.utils.load_txt_from_module
    ler.utils.utils.rejection_sample
@@ -55,6 +57,7 @@ Functions
    ler.utils.utils.create_batch_params
    ler.utils.utils.monte_carlo_integration
    ler.utils.utils.cubic_spline_interpolator
+   ler.utils.utils.pdf_cubic_spline_interpolator
    ler.utils.utils.pdf_cubic_spline_interpolator2d_array
    ler.utils.utils.cubic_spline_interpolator2d_array
    ler.utils.utils.coefficients_generator_ler
@@ -66,6 +69,9 @@ Functions
    ler.utils.utils.cumulative_trapezoid
    ler.utils.utils.sample_from_powerlaw_distribution
 
+
+
+.. py:function:: is_njitted(func)
 
 
 .. py:class:: NumpyEncoder(*, skipkeys=False, ensure_ascii=True, check_circular=True, allow_nan=True, sort_keys=False, indent=None, separators=None, default=None)
@@ -333,6 +339,40 @@ Functions
        **replace** : `bool`, optional
            If True, replace the json file with the dictionary. Default is False.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: concatenate_dict_values(dict1, dict2)
+
+   
+   Adds the values of two dictionaries together.
+
+
+   :Parameters:
+
+       **dict1** : `dict`
+           dictionary to be added.
+
+       **dict2** : `dict`
+           dictionary to be added.
+
+   :Returns:
+
+       **dict1** : `dict`
+           dictionary with added values.
 
 
 
@@ -869,7 +909,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: interpolator_from_json(param_dict_given, directory, sub_directory, name, x, pdf_func=None, y=None, conditioned_y=None, dimension=1, category='pdf', create_new=False)
+.. py:function:: interpolator_from_json(identifier_dict, directory, sub_directory, name, x, pdf_func=None, y=None, conditioned_y=None, dimension=1, category='pdf', create_new=False)
 
    
    Function to decide which interpolator to use.
@@ -877,8 +917,8 @@ Functions
 
    :Parameters:
 
-       **param_dict_given** : `dict`
-           dictionary of parameters.
+       **identifier_dict** : `dict`
+           dictionary of identifiers.
 
        **directory** : `str`
            directory to store the interpolator.
@@ -930,16 +970,16 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: interpolator_json_path(param_dict_given, directory, sub_directory, interpolator_name)
+.. py:function:: interpolator_json_path(identifier_dict, directory, sub_directory, interpolator_name)
 
    
-   Function to create the interpolator pickle file path.
+   Function to create the interpolator json file path.
 
 
    :Parameters:
 
-       **param_dict_given** : `dict`
-           dictionary of parameters.
+       **identifier_dict** : `dict`
+           dictionary of identifiers.
 
        **directory** : `str`
            directory to store the interpolator.
@@ -953,7 +993,7 @@ Functions
    :Returns:
 
        **path_inv_cdf** : `str`
-           path of the interpolator pickle file.
+           path of the interpolator json file.
 
        **it_exist** : `bool`
            if True, the interpolator exists.
@@ -1109,6 +1149,43 @@ Functions
 
    
    Function to interpolate using cubic spline.
+
+
+   :Parameters:
+
+       **xnew** : `numpy.ndarray`
+           new x values.
+
+       **coefficients** : `numpy.ndarray`
+           coefficients of the cubic spline.
+
+       **x** : `numpy.ndarray`
+           x values.
+
+   :Returns:
+
+       **result** : `numpy.ndarray`
+           interpolated values.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: pdf_cubic_spline_interpolator(xnew, norm_const, coefficients, x)
+
+   
+   Function to interpolate pdf using cubic spline.
 
 
    :Parameters:
@@ -1480,7 +1557,7 @@ Functions
            Number of samples to generate.
 
        **alphans** : float
-           Power-law index (α).
+           Power-law index (alpha).
 
        **mminns** : float
            Minimum neutron star mass (lower bound).

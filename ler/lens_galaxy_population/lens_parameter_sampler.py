@@ -2,9 +2,9 @@ from numba import njit, prange
 import numpy as np
 C_LIGHT = 299792.458  # km/s
 
-# ----------------------------
+# ----------------------
 # Rejection sampler
-# ----------------------------
+# ----------------------
 def rejection_sampler(
     zs, 
     zl,
@@ -126,9 +126,9 @@ def create_rejection_sampler(
     return rejection_sampler_wrapper
 
 
-# ----------------------------
+# ----------------------
 # Importance sampler
-# ----------------------------
+# ----------------------
 @njit
 def sigma_proposal_uniform(n, sigma_min, sigma_max):
     return sigma_min + (sigma_max - sigma_min) * np.random.random(n)
@@ -157,9 +157,9 @@ def weighted_choice_1d(weights):
     return weights.size - 1  # numerical fallback
 
 
-# ----------------------------
+# ----------------------
 # Importance sampler
-# ----------------------------
+# ----------------------
 def importance_sampler(
     zs,
     zl,

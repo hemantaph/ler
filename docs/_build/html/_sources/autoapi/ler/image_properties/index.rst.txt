@@ -1,5 +1,3 @@
-:orphan:
-
 :py:mod:`ler.image_properties`
 ==============================
 
@@ -24,6 +22,7 @@ Classes
 
 .. autoapisummary::
 
+   ler.image_properties.FunctionConditioning
    ler.image_properties.ImageProperties
 
 
@@ -34,11 +33,23 @@ Functions
 .. autoapisummary::
 
    ler.image_properties.solve_lens_equation
-   ler.image_properties.interpolator_from_json
-   ler.image_properties.cubic_spline_interpolator
+   ler.image_properties.phi_q2_ellipticity_hemanta
+   ler.image_properties.luminosity_distance
    ler.image_properties.solve_lens_equation
 
 
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   ler.image_properties.cosmo
+
+
+.. py:data:: cosmo
+
+   
 
 .. py:function:: solve_lens_equation(lens_parameters)
 
@@ -126,51 +137,27 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: interpolator_from_json(param_dict_given, directory, sub_directory, name, x, pdf_func=None, y=None, conditioned_y=None, dimension=1, category='pdf', create_new=False)
+.. py:function:: phi_q2_ellipticity_hemanta(phi, q)
 
    
-   Function to decide which interpolator to use.
+   Function to convert phi and q to ellipticity e1 and e2.
 
 
    :Parameters:
 
-       **param_dict_given** : `dict`
-           dictionary of parameters.
+       **phi** : `float: array`
+           angle of the major axis in radians
 
-       **directory** : `str`
-           directory to store the interpolator.
-
-       **sub_directory** : `str`
-           sub-directory to store the interpolator.
-
-       **name** : `str`
-           name of the interpolator.
-
-       **x** : `numpy.ndarray`
-           x values.
-
-       **pdf_func** : `function`
-           function to calculate the pdf of x given y.
-
-       **y** : `numpy.ndarray`
-           y values.
-
-       **conditioned_y** : `numpy.ndarray`
-           conditioned y values.
-
-       **dimension** : `int`
-           dimension of the interpolator. Default is 1.
-
-       **category** : `str`
-           category of the function. Default is "pdf".
-
-       **create_new** : `bool`
-           if True, create a new interpolator. Default is False.
+       **q** : `float: array`
+           axis ratio
 
    :Returns:
 
-       **interpolator** : `function`
-           interpolator function.
+       **e1** : `float: array`
+           ellipticity component 1
+
+       **e2** : `float: array`
+           ..
 
 
 
@@ -187,27 +174,59 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: cubic_spline_interpolator(xnew, coefficients, x)
+.. py:class:: FunctionConditioning(function=None, x_array=None, conditioned_y_array=None, y_array=None, non_zero_function=False, gaussian_kde=False, gaussian_kde_kwargs={}, identifier_dict={}, directory='./interpolator_json', sub_directory='default', name='default', create_new=False, create_function=False, create_function_inverse=False, create_pdf=False, create_rvs=False, multiprocessing_function=False, callback=None)
+
+
+   .. py:attribute:: info
+
+      
+
+   .. py:attribute:: callback
+      :value: 'None'
+
+      
+
+   .. py:method:: __call__(*args)
+
+
+   .. py:method:: create_decision_function(create_function, create_function_inverse, create_pdf, create_rvs)
+
+
+   .. py:method:: create_gaussian_kde(x_array, y_array, gaussian_kde_kwargs)
+
+
+   .. py:method:: create_interpolator(function, x_array, conditioned_y_array, create_function_inverse, create_pdf, create_rvs, multiprocessing_function)
+
+
+   .. py:method:: create_z_array(x_array, function, conditioned_y_array, create_pdf, create_rvs, multiprocessing_function)
+
+
+   .. py:method:: cdf_values_generator(x_array, z_array, conditioned_y_array)
+
+
+   .. py:method:: pdf_norm_const_generator(x_array, function_spline, conditioned_y_array)
+
+
+   .. py:method:: function_spline_generator(x_array, z_array, conditioned_y_array)
+
+
+
+.. py:function:: luminosity_distance(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
 
    
-   Function to interpolate using cubic spline.
+   Function to create a lookup table for the luminosity distance wrt redshift.
 
 
    :Parameters:
 
-       **xnew** : `numpy.ndarray`
-           new x values.
+       **z** : `numpy.ndarray` or `float`
+           Source redshifts
 
-       **coefficients** : `numpy.ndarray`
-           coefficients of the cubic spline.
+       **z_min** : `float`
+           Minimum redshift of the source population
 
-       **x** : `numpy.ndarray`
-           x values.
-
-   :Returns:
-
-       **result** : `numpy.ndarray`
-           interpolated values.
+       **z_max** : `float`
+           Maximum redshift of the source population
 
 
 
@@ -219,12 +238,17 @@ Functions
 
 
 
+
+   :Attributes:
+
+       **z_to_luminosity_distance** : `ler.utils.FunctionConditioning`
+           Object of FunctionConditioning class containing the luminosity distance wrt redshift
 
 
    ..
        !! processed by numpydoc !!
 
-.. py:class:: ImageProperties(npool=4, z_min=0.0, z_max=10, n_min_images=2, n_max_images=4, geocent_time_min=1126259462.4, geocent_time_max=1126259462.4 + 365 * 24 * 3600 * 20, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_json', create_new_interpolator=False)
+.. py:class:: ImageProperties(npool=4, z_min=0.0, z_max=10, n_min_images=2, n_max_images=4, time_window=365 * 24 * 3600 * 20, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_json', create_new_interpolator=False)
 
 
    
@@ -283,7 +307,7 @@ Functions
 
        **create_new_interpolator** : `dict`
            dictionary to create new interpolator pickle files
-           default: dict(luminosity_distance_to_z=dict(create_new=False, resolution=1000))
+           default: dict(luminosity_distance=dict(create_new=False, resolution=1000))
 
 
 
@@ -307,40 +331,79 @@ Functions
    ----------
    ImageProperties has the following instance attributes:
 
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    | Atrributes                          | Type                             |
    +=====================================+==================================+
    |:attr:`npool`                        | `int`                            |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`z_min`                        | `float`                          |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`z_max`                        | `float`                          |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`n_min_images`                 | `int`                            |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`n_max_images`                 | `int`                            |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`geocent_time_min`             | `float`                          |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`geocent_time_max`             | `float`                          |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`lens_model_list`              | `list`                           |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`cosmo`                        | `astropy.cosmology`              |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`spin_zero`                    | `bool`                           |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`spin_precession`              | `bool`                           |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`directory`                    | `str`                            |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`create_new_interpolator`      | `dict`                           |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
 
 
 
    ..
        !! processed by numpydoc !!
+   .. py:attribute:: npool
+      :value: '4'
+
+      
+
+   .. py:attribute:: n_min_images
+      :value: '2'
+
+      
+
+   .. py:attribute:: n_max_images
+      :value: '4'
+
+      
+
+   .. py:attribute:: lens_model_list
+      :value: "['EPL_NUMBA', 'SHEAR']"
+
+      
+
+   .. py:attribute:: spin_zero
+      :value: 'True'
+
+      
+
+   .. py:attribute:: spin_precession
+      :value: 'False'
+
+      
+
+   .. py:attribute:: time_window
+      :value: '630720000'
+
+      
+
+   .. py:attribute:: cosmo
+
+      
+
    .. py:method:: image_properties(lens_parameters)
 
       
@@ -363,7 +426,7 @@ Functions
 
               source related=>['mass_1': mass in detector frame (mass1>mass2), 'mass_2': mass in detector frame, 'mass_1_source':mass in source frame, 'mass_2_source':mass source frame, 'luminosity_distance': luminosity distance, 'theta_jn': inclination angle, 'psi': polarization angle, 'phase': coalesence phase, 'geocent_time': coalensence GPS time at geocenter, 'ra': right ascension, 'dec': declination, 'a_1': spin magnitude of the more massive black hole, 'a2': spin magnitude of the less massive black hole, 'tilt_1': tilt angle of the more massive black hole, 'tilt_2': tilt angle of the less massive black hole, 'phi_12': azimuthal angle between the two spins, 'phi_jl': azimuthal angle between the total angular momentum and the orbital angular momentum]
 
-              image related=>['x_source': source position in the x-direction, 'y_source': source position in the y-direction, 'x0_image_position': image position in the x-direction, 'x1_image_position': image position in the y-direction, 'magnifications': magnifications, 'time_delays': time delays, 'n_images': number of images formed, 'determinant': determinants, 'trace': traces, 'iteration': to keep track of the iteration number
+              image related=>['x_source': source position in the x-direction, 'y_source': source position in the y-direction, 'x0_image_position': image position in the x-direction, 'x1_image_position': image position in the y-direction, 'magnifications': magnifications, 'time_delays': time delays: number of images formed, 'determinant': determinants, 'trace': traces, 'iteration': to keep track of the iteration number
 
 
 
@@ -380,16 +443,13 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_lensed_snrs(lensed_param, list_of_detectors=None, snr_calculator=None, pdet_calculator=None)
+   .. py:method:: get_lensed_snrs(lensed_param, pdet_calculator, list_of_detectors=None)
 
       
       Function to calculate the signal to noise ratio for each image in each event.
 
 
       :Parameters:
-
-          **snr_calculator** : `function`
-              snr function, as describe in the :class:`~ler.rates.GWRATES` class.
 
           **list_of_detectors** : `list`
               list of detectors
@@ -398,10 +458,6 @@ Functions
           **lensed_param** : `dict`
               dictionary containing the both already lensed source paramters and image parameters.
               e.g. lensed_param.keys() = ['mass_1', 'mass_2', 'zs', 'luminosity_distance', 'theta_jn', 'psi', 'phi', 'ra', 'dec', 'geocent_time', 'phase', 'a_1', 'a2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl', 'magnifications', 'time_delays']
-
-          **n_max_images** : `int`
-              maximum number of images to consider
-              default: 4
 
       :Returns:
 

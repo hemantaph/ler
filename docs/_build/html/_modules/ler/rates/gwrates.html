@@ -1,174 +1,99 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
-
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ler.rates.gwrates &mdash; ler 0.3.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.rates.gwrates &mdash; ler 0.4.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
-
-    <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../../_static/documentation_options.js?v=4621528c"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/tabs.js?v=3030b3cb"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA="
-        src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-    <div class="wy-grid-for-nav">
-        <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-            <div class="wy-side-scroll">
-                <div class="wy-side-nav-search">
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
 
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
 
+        </div>
+      </div>
+    </nav>
 
-                    <a href="../../../index.html" class="icon icon-home">
-                        ler
-                    </a>
-                    <div role="search">
-                        <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-                            <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-                        </form>
-                    </div>
-                </div>
-                <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-                    <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-                    <ul>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../Installation2.html">Installation</a></li>
-                        <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code
-                                overview</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../GW_events.html">Gravitational wave event rates</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../GW_equations.html">Gravitational wave events sampling (Analytical
-                                formulation)</a></li>
-                        <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed
-                                event rates</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a>
-                        </li>
-                    </ul>
-                    <p class="caption" role="heading"><span class="caption-text">API:</span></p>
-                    <ul>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../autoapi/ler/rates/index.html"><code
-                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../autoapi/ler/gw_source_population/index.html"><code
-                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../autoapi/ler/lens_galaxy_population/index.html"><code
-                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../autoapi/ler/image_properties/index.html"><code
-                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../autoapi/ler/utils/index.html"><code
-                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a>
-                        </li>
-                    </ul>
-                    <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
-                    <ul>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/rates/LeR%20complete%20examples.html">LeR complete examples</a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/rates/GWRATES%20complete%20exmaples.html">GWRATES complete
-                                exmaples</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/rates/grb%20detection%20rate.html">Calculation of detectable
-                                Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a>
-                        </li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/rates/ler%20bns%20example.html">LeR complete examples of BNS
-                                events (O4 design sensitivity)</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/rates/rates_with_3G_detectors.html">Event Rates with 3G
-                                detectors</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/source%20population/merger%20rate%20density%20evolution%20with%20redshift.html">Merger
-                                rate density evolution with redshift</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/source%20population/merger%20rate%20density%20model%20comparision.html">Merger
-                                rate density model comparision</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/source%20population/merger%20rate%20density%20model%20comparision.html#Primordial-BBH-model,-Ng-et-al.-2022">Primordial
-                                BBH model, Ng et al. 2022</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/source%20population/sample%20compact%20binary%20parameters.html">Sampling
-                                parameters for a compact binary</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/source%20population/statistical%20study%20of%20changing%20mass%20model%20params.html">Statistical
-                                study of changing Mass model paramter(s)</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/source%20population/statistical%20study%20of%20cosmological%20friction.html">Statistical
-                                study of cosmological friction and its effect on the redshift vs inferred chirp-mass
-                                relation of gravitational waves</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/lens_parameters/sample%20lens%20parameters.html">Lens parameter
-                                distributions</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/optical_depth/validation_SIE.html">Optical depth SIE model
-                                validation</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/optical_depth/validation_SIS.html">Validation of SIS model
-                                (Numerical vs Analytical)</a></li>
-                        <li class="toctree-l1"><a class="reference internal"
-                                href="../../../examples/image_properties/dt_vs_dmu.html">Study of Time delays and
-                                magnification of lensed gravitational waves.</a></li>
-                    </ul>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ler</a>
+      </nav>
 
-                </div>
-            </div>
-        </nav>
-
-        <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-            <nav class="wy-nav-top" aria-label="Mobile navigation menu">
-                <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-                <a href="../../../index.html">ler</a>
-            </nav>
-
-            <div class="wy-nav-content">
-                <div class="rst-content">
-                    <div role="navigation" aria-label="Page navigation">
-                        <ul class="wy-breadcrumbs">
-                            <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-                            <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-                            <li class="breadcrumb-item active">ler.rates.gwrates</li>
-                            <li class="wy-breadcrumbs-aside">
-                            </li>
-                        </ul>
-                        <hr />
-                    </div>
-                    <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-                        <div itemprop="articleBody">
-
-                            <h1>Source code for ler.rates.gwrates</h1>
-                            <div class="highlight">
-                                <pre>
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ler.rates.gwrates</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ler.rates.gwrates</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module contains the main class for calculating the rates of detectable gravitational waves events. The class inherits the :class:`~ler.gw_source_population.CBCSourceParameterDistribution` class for source parameters sampling and uses `gwsnr` package for SNR calculation. </span>
@@ -226,7 +151,7 @@
 <span class="sd">        def snr_finder(gw_param_dict):</span>
 <span class="sd">            ...</span>
 <span class="sd">            return optimal_snr_dict</span>
-<span class="sd">        where optimal_snr_dict.keys = [&#39;optimal_snr_net&#39;]. Refer to `gwsnr` package&#39;s GWSNR.snr attribute for more details.</span>
+<span class="sd">        where optimal_snr_dict.keys = [&#39;snr_net&#39;]. Refer to `gwsnr` package&#39;s GWSNR.snr attribute for more details.</span>
 <span class="sd">    pdet_finder : `function`</span>
 <span class="sd">        default pdet_finder = None.</span>
 <span class="sd">        The rate calculation uses either the pdet_finder or the snr_finder to calculate the detectable events. The custom pdet finder function should follow the following signature:</span>
@@ -260,76 +185,76 @@
 <span class="sd">    Instance Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    LeR class has the following attributes:\n</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    | Atrributes                          | Type                             |</span>
 <span class="sd">    +=====================================+==================================+</span>
 <span class="sd">    |:attr:`~npool`                       | `int`                            |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`~z_min`                       | `float`                          |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`~z_max`                       | `float`                          |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`~event_type`                  | `str`                            |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`~cosmo`                       | `astropy.cosmology`              |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`~size`                        | `int`                            |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`~batch_size`                  | `int`                            |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`~json_file_names`             | `dict`                           |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`~interpolator_directory`      | `str`                            |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`~ler_directory`               | `str`                            |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`~gwsnr`                       | `bool`                           |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`~gw_param_sampler_dict`       | `dict`                           |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`~snr_calculator_dict`         | `dict`                           |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`~gw_param`                    | `dict`                           |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:attr:`~gw_param_detectable`         | `dict`                           |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 
 <span class="sd">    Instance Methods</span>
 <span class="sd">    ----------</span>
 <span class="sd">    LeR class has the following methods:\n</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    | Methods                             | Description                      |</span>
 <span class="sd">    +=====================================+==================================+</span>
 <span class="sd">    |:meth:`~class_initialization`        | Function to initialize the       |</span>
 <span class="sd">    |                                     | parent classes                   |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:meth:`~gwsnr_initialization`         | Function to initialize the       |</span>
 <span class="sd">    |                                     | gwsnr class                      |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:meth:`~snr`                         | Function to get the snr with the |</span>
 <span class="sd">    |                                     | given parameters.                |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:meth:`~store_gwrates_params`        | Function to store the all the    |</span>
 <span class="sd">    |                                     | necessary parameters.            |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:meth:`~gw_cbc_statistics`           | Function to generate gw          |</span>
 <span class="sd">    |                                     | GW source parameters.            |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:meth:`~gw_sampling_routine`         | Function to generate gw          |</span>
 <span class="sd">    |                                     | GW source parameters.            |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:meth:`~gw_rate`                     | Function to calculate the        |</span>
 <span class="sd">    |                                     | gw rate.                         |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:meth:`~selecting_n_gw_detectable_events`                               |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |                                     | Function to select n gw    |</span>
 <span class="sd">    |                                     | detectable events.               |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    |:meth:`~gw_param_plot`               | Function to plot the             |</span>
 <span class="sd">    |                                     | distribution of the GW source    |</span>
 <span class="sd">    |                                     | parameters.                      |</span>
-<span class="sd">    +-------------------------------------+----------------------------------+</span>
+<span class="sd">    +-------------------------+----------------------+</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Attributes</span>
@@ -430,57 +355,51 @@
 <span class="sd">    Dictionary of parameters to initialize the ``GWSNR`` class.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="GWRATES.gw_param">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/gwrates/index.html#ler.rates.gwrates.GWRATES.gw_param">[docs]</a>
-    <span class="n">gw_param</span> <span class="o">=</span> <span class="kc">None</span></div>
-
+    <span class="n">gw_param</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``dict`` \n</span>
 <span class="sd">    Dictionary of GW source parameters. The included parameters and their units are as follows (for default settings):\n</span>
-<span class="sd">    +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">    +--------------+--------------+--------------------------+</span>
 <span class="sd">    | Parameter          | Units        | Description                          |</span>
 <span class="sd">    +====================+==============+======================================+</span>
 <span class="sd">    | zs                 |              | redshift of the source               |</span>
-<span class="sd">    +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">    +--------------+--------------+--------------------------+</span>
 <span class="sd">    | geocent_time       | s            | GPS time of coalescence              |</span>
-<span class="sd">    +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">    +--------------+--------------+--------------------------+</span>
 <span class="sd">    | ra                 | rad          | right ascension                      |</span>
-<span class="sd">    +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">    +--------------+--------------+--------------------------+</span>
 <span class="sd">    | dec                | rad          | declination                          |</span>
-<span class="sd">    +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">    +--------------+--------------+--------------------------+</span>
 <span class="sd">    | phase              | rad          | phase of GW at reference frequency   |</span>
-<span class="sd">    +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">    +--------------+--------------+--------------------------+</span>
 <span class="sd">    | psi                | rad          | polarization angle                   |</span>
-<span class="sd">    +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">    +--------------+--------------+--------------------------+</span>
 <span class="sd">    | theta_jn           | rad          | inclination angle                    |</span>
-<span class="sd">    +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">    +--------------+--------------+--------------------------+</span>
 <span class="sd">    | luminosity_distance| Mpc          | luminosity distance                  |</span>
-<span class="sd">    +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">    +--------------+--------------+--------------------------+</span>
 <span class="sd">    | mass_1_source      | Msun         | mass_1 of the compact binary         |</span>
 <span class="sd">    |                    |              | (source frame)                       |</span>
-<span class="sd">    +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">    +--------------+--------------+--------------------------+</span>
 <span class="sd">    | mass_2_source      | Msun         | mass_2 of the compact binary         |</span>
 <span class="sd">    |                    |              | (source frame)                       |</span>
-<span class="sd">    +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">    +--------------+--------------+--------------------------+</span>
 <span class="sd">    | mass_1             | Msun         | mass_1 of the compact binary         |</span>
 <span class="sd">    |                    |              | (detector frame)                     |</span>
-<span class="sd">    +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">    +--------------+--------------+--------------------------+</span>
 <span class="sd">    | mass_2             | Msun         | mass_2 of the compact binary         |</span>
 <span class="sd">    |                    |              | (detector frame)                     |</span>
-<span class="sd">    +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">    +--------------+--------------+--------------------------+</span>
 <span class="sd">    | L1                 |              | optimal snr of L1                    |</span>
-<span class="sd">    +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">    +--------------+--------------+--------------------------+</span>
 <span class="sd">    | H1                 |              | optimal snr of H1                    |</span>
-<span class="sd">    +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">    +--------------+--------------+--------------------------+</span>
 <span class="sd">    | V1                 |              | optimal snr of V1                    |</span>
-<span class="sd">    +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">    +--------------+--------------+--------------------------+</span>
 <span class="sd">    | optimal_snr_net    |              | optimal snr of the network           |</span>
-<span class="sd">    +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">    +--------------+--------------+--------------------------+</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="GWRATES.gw_param_detectable">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/gwrates/index.html#ler.rates.gwrates.GWRATES.gw_param_detectable">[docs]</a>
-    <span class="n">gw_param_detectable</span> <span class="o">=</span> <span class="kc">None</span></div>
-
+    <span class="n">gw_param_detectable</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``dict`` \n</span>
 <span class="sd">    Dictionary of detectable GW source parameters. It includes the same parameters as the :attr:`~gw_param` attribute.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -506,7 +425,10 @@
     <span class="p">):</span>
         
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Initializing GWRATES class...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">npool</span> <span class="o">=</span> <span class="n">npool</span>
+<div class="viewcode-block" id="GWRATES.npool">
+<a class="viewcode-back" href="../../../autoapi/ler/rates/gwrates/index.html#ler.rates.gwrates.GWRATES.npool">[docs]</a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">npool</span> <span class="o">=</span> <span class="n">npool</span></div>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span> <span class="o">=</span> <span class="n">z_min</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span> <span class="o">=</span> <span class="n">z_max</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span> <span class="o">=</span> <span class="n">event_type</span>
@@ -698,6 +620,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_snr</span> <span class="o">=</span> <span class="n">snr_finder</span>
 
     <span class="nd">@property</span>
+<div class="viewcode-block" id="GWRATES.gw_param">
+<a class="viewcode-back" href="../../../autoapi/ler/rates/gwrates/index.html#ler.rates.gwrates.GWRATES.gw_param">[docs]</a>
     <span class="k">def</span> <span class="nf">gw_param</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to get data from the json file self.json_file_names[&quot;gw_param&quot;].</span>
@@ -708,9 +632,12 @@
 <span class="sd">            dictionary of gw GW source parameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;gw_param&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;gw_param&quot;</span><span class="p">])</span></div>
+
     
     <span class="nd">@property</span>
+<div class="viewcode-block" id="GWRATES.gw_param_detectable">
+<a class="viewcode-back" href="../../../autoapi/ler/rates/gwrates/index.html#ler.rates.gwrates.GWRATES.gw_param_detectable">[docs]</a>
     <span class="k">def</span> <span class="nf">gw_param_detectable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to get data from the json file self.json_file_names[&quot;gw_param_detectable&quot;].</span>
@@ -721,7 +648,8 @@
 <span class="sd">            dictionary of gw GW source parameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;gw_param_detectable&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;gw_param_detectable&quot;</span><span class="p">])</span></div>
+
 
 <div class="viewcode-block" id="GWRATES.class_initialization">
 <a class="viewcode-back" href="../../../autoapi/ler/rates/index.html#ler.rates.gwrates.GWRATES.class_initialization">[docs]</a>
@@ -1035,7 +963,7 @@
     <span class="k">def</span> <span class="nf">gw_rate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">gw_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">snr_threshold</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
+        <span class="n">snr_threshold</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
         <span class="n">pdet_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
         <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">detectability_condition</span><span class="o">=</span><span class="s2">&quot;step_function&quot;</span><span class="p">,</span>
@@ -1157,7 +1085,7 @@
 <span class="sd">            dictionary of GW source parameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">snr_param</span> <span class="o">=</span> <span class="n">gw_param</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span>
+        <span class="n">snr_param</span> <span class="o">=</span> <span class="n">gw_param</span><span class="p">[</span><span class="s2">&quot;snr_net&quot;</span><span class="p">]</span>
         <span class="n">idx_detectable</span> <span class="o">=</span> <span class="p">(</span><span class="n">snr_param</span> <span class="o">&gt;</span> <span class="n">snr_threshold_recalculation</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">snr_param</span> <span class="o">&lt;</span> <span class="n">snr_threshold_recalculation</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="c1"># reduce the size of the dict</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">gw_param</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -1191,15 +1119,15 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">snr</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;optimal_snr_net&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">gw_param</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;optimal_snr_net&#39; not in gw param dict provided&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;snr_net&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">gw_param</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;snr_net&#39; not in gw param dict provided&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">detectability_condition</span> <span class="o">==</span> <span class="s2">&quot;step_function&quot;</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;given detectability_condition == &#39;step_function&#39;&quot;</span><span class="p">)</span>
-                <span class="n">param</span> <span class="o">=</span> <span class="n">gw_param</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span>
+                <span class="n">param</span> <span class="o">=</span> <span class="n">gw_param</span><span class="p">[</span><span class="s2">&quot;snr_net&quot;</span><span class="p">]</span>
                 <span class="n">threshold</span> <span class="o">=</span> <span class="n">snr_threshold</span>
             <span class="k">elif</span> <span class="n">detectability_condition</span> <span class="o">==</span> <span class="s2">&quot;pdet&quot;</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;given detectability_condition == &#39;pdet&#39;&quot;</span><span class="p">)</span>
-                <span class="n">param</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">snr_threshold</span> <span class="o">-</span> <span class="n">gw_param</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">])</span>
+                <span class="n">param</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">snr_threshold</span> <span class="o">-</span> <span class="n">gw_param</span><span class="p">[</span><span class="s2">&quot;snr_net&quot;</span><span class="p">])</span>
                 <span class="n">gw_param</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">param</span>
                 <span class="n">threshold</span> <span class="o">=</span> <span class="n">pdet_threshold</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdet</span><span class="p">:</span>
@@ -1330,7 +1258,7 @@
             <span class="n">relative_diff_percentage</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
             <span class="n">number_of_last_batches_to_check</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
         <span class="p">),</span>
-        <span class="n">snr_threshold</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
+        <span class="n">snr_threshold</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
         <span class="n">pdet_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
         <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">output_jsonfile</span><span class="o">=</span><span class="s2">&quot;gw_params_n_detectable.json&quot;</span><span class="p">,</span>
@@ -1625,35 +1553,33 @@
 
         <span class="k">return</span> <span class="n">dict_</span></div>
 
-</pre>
-                            </div>
+</pre></div>
 
-                        </div>
-                    </div>
-                    <footer>
+           </div>
+          </div>
+          <footer>
 
-                        <hr />
+  <hr/>
 
-                        <div role="contentinfo">
-                            <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
-                        </div>
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
 
-                        Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-                        <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-                        provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
-
-                    </footer>
-                </div>
-            </div>
-        </section>
-    </div>
-    <script>
-        jQuery(function () {
-            SphinxRtdTheme.Navigation.enable(true);
-        });
-    </script>
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
 
 </body>
-
 </html>

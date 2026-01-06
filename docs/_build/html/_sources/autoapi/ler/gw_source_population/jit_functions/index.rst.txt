@@ -21,6 +21,7 @@ Functions
 .. autoapisummary::
 
    ler.gw_source_population.jit_functions.cumulative_trapezoid
+   ler.gw_source_population.jit_functions.sample_source_redshift
    ler.gw_source_population.jit_functions.merger_rate_density_bbh_popI_II_oguri2018
    ler.gw_source_population.jit_functions.merger_rate_density_bbh_popIII_ken2022
    ler.gw_source_population.jit_functions.sfr_madau_fragos2017_with_bbh_td
@@ -32,8 +33,13 @@ Functions
    ler.gw_source_population.jit_functions.merger_rate_density_bbh_primordial_ken2022
    ler.gw_source_population.jit_functions.lognormal_distribution_2D
    ler.gw_source_population.jit_functions.inverse_transform_sampler_m1m2
+   ler.gw_source_population.jit_functions.erf
+   ler.gw_source_population.jit_functions.compute_normalization_factor
+   ler.gw_source_population.jit_functions.bns_bimodal_pdf
+   ler.gw_source_population.jit_functions.smoothing_S
    ler.gw_source_population.jit_functions.powerlaw_with_smoothing
    ler.gw_source_population.jit_functions.inverse_transform_sampler
+   ler.gw_source_population.jit_functions.broken_powerlaw_cdf
    ler.gw_source_population.jit_functions.sample_broken_powerlaw
    ler.gw_source_population.jit_functions.sample_broken_powerlaw_nsbh_masses
    ler.gw_source_population.jit_functions.broken_powerlaw_pdf
@@ -44,9 +50,22 @@ Functions
    ler.gw_source_population.jit_functions.powerlaw_gaussian_cdf
    ler.gw_source_population.jit_functions.sample_powerlaw_gaussian
    ler.gw_source_population.jit_functions.sample_powerlaw_gaussian_source_bbh_masses
+   ler.gw_source_population.jit_functions.sample_mass_ratio
    ler.gw_source_population.jit_functions.powerlaw_gaussian_unnormalized
 
 
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   ler.gw_source_population.jit_functions.cosmo
+
+
+.. py:data:: cosmo
+
+   
 
 .. py:function:: cumulative_trapezoid(y, x=None, dx=1.0, initial=0.0)
 
@@ -70,6 +89,9 @@ Functions
 
    ..
        !! processed by numpydoc !!
+
+.. py:function:: sample_source_redshift(size, zs_inv_cdf=None)
+
 
 .. py:function:: merger_rate_density_bbh_popI_II_oguri2018(zs, R0=23.9 * 1e-09, b2=1.6, b3=2.1, b4=30)
 
@@ -476,6 +498,18 @@ Functions
    ..
        !! processed by numpydoc !!
 
+.. py:function:: erf(x)
+
+
+.. py:function:: compute_normalization_factor(mu, sigma, mmin, mmax)
+
+
+.. py:function:: bns_bimodal_pdf(m, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3)
+
+
+.. py:function:: smoothing_S(m, mmin, delta_m, threshold=709.0)
+
+
 .. py:function:: powerlaw_with_smoothing(m, mmin, alpha, delta_m)
 
    
@@ -521,6 +555,9 @@ Functions
 
    ..
        !! processed by numpydoc !!
+
+.. py:function:: broken_powerlaw_cdf(size=1000, mminbh=26, mmaxbh=125, alpha_1=6.75, alpha_2=0.0, b=0.5, delta_m=5)
+
 
 .. py:function:: sample_broken_powerlaw(size=1000, mminbh=26.0, mmaxbh=125.0, alpha_1=6.75, alpha_2=0.0, b=0.5, delta_m=5.0, normalization_size=1000)
 
@@ -751,6 +788,9 @@ Functions
 
    ..
        !! processed by numpydoc !!
+
+.. py:function:: sample_mass_ratio(m1, mminbh, beta, delta_m)
+
 
 .. py:function:: powerlaw_gaussian_unnormalized(m, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m)
 

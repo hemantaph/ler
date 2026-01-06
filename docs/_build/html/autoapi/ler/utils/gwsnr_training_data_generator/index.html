@@ -6,33 +6,39 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.utils.gwsnr_training_data_generator &mdash; ler 0.3.1 documentation</title>
+  <title>ler.utils.gwsnr_training_data_generator &mdash; ler 0.4.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=776609e1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5bfaad31"></script>
       <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../../../_static/copybutton.js?v=f281be69"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" /> 
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="ler.utils.plots" href="../plots/index.html" />
+    <link rel="prev" title="ler.utils.function_interpolation" href="../function_interpolation/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
 
           
           
@@ -49,7 +55,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../Installation2.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../GW_events.html">Gravitational wave event rates</a></li>
@@ -58,37 +64,33 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../cosmological_coversions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.cosmological_coversions</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../function_interpolation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.function_interpolation</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.gwsnr_training_data_generator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/rates/grb%20detection%20rate.html">Calculation of detectable Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/rates/ler%20bns%20example.html">LeR complete examples of BNS events (O4 design sensitivity)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/rates/rates_with_3G_detectors.html">Event Rates with 3G detectors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/source%20population/merger%20rate%20density%20evolution%20with%20redshift.html">Merger rate density evolution with redshift</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/source%20population/merger%20rate%20density%20model%20comparision.html">Merger rate density model comparision</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/source%20population/merger%20rate%20density%20model%20comparision.html#Primordial-BBH-model,-Ng-et-al.-2022">Primordial BBH model, Ng et al. 2022</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/source%20population/sample%20compact%20binary%20parameters.html">Sampling parameters for a compact binary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/source%20population/statistical%20study%20of%20changing%20mass%20model%20params.html">Statistical study of changing Mass model paramter(s)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/source%20population/statistical%20study%20of%20cosmological%20friction.html">Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/lens_parameters/sample%20lens%20parameters.html">Lens parameter distributions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/optical_depth/validation_SIE.html">Optical depth SIE model validation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/optical_depth/validation_SIS.html">Validation of SIS model (Numerical vs Analytical)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/image_properties/dt_vs_dmu.html">Study of Time delays and magnification of lensed gravitational waves.</a></li>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../plots/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.plots</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.utils</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
 </ul>
 
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../../index.html">ler</a>
       </nav>
@@ -98,6 +100,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
       <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.gwsnr_training_data_generator</span></code></li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../../_sources/autoapi/ler/utils/gwsnr_training_data_generator/index.rst.txt" rel="nofollow"> View page source</a>
@@ -110,12 +113,78 @@
              
   <section id="module-ler.utils.gwsnr_training_data_generator">
 <span id="ler-utils-gwsnr-training-data-generator"></span><h1><a class="reference internal" href="#module-ler.utils.gwsnr_training_data_generator" title="ler.utils.gwsnr_training_data_generator"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.gwsnr_training_data_generator</span></code></a><a class="headerlink" href="#module-ler.utils.gwsnr_training_data_generator" title="Link to this heading"></a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator" title="ler.utils.gwsnr_training_data_generator.TrainingDataGenerator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TrainingDataGenerator</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ler.utils.gwsnr_training_data_generator.TrainingDataGenerator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.utils.gwsnr_training_data_generator.</span></span><span class="sig-name descname"><span class="pre">TrainingDataGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/gwsnr_training_data_generator.html#TrainingDataGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.npool">
+<span class="sig-name descname"><span class="pre">npool</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'4'</span></em><a class="reference internal" href="../../../../_modules/ler/utils/gwsnr_training_data_generator.html#TrainingDataGenerator.npool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.npool" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.z_min">
+<span class="sig-name descname"><span class="pre">z_min</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0.0'</span></em><a class="reference internal" href="../../../../_modules/ler/utils/gwsnr_training_data_generator.html#TrainingDataGenerator.z_min"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.z_min" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.z_max">
+<span class="sig-name descname"><span class="pre">z_max</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'5.0'</span></em><a class="reference internal" href="../../../../_modules/ler/utils/gwsnr_training_data_generator.html#TrainingDataGenerator.z_max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.z_max" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.verbose">
+<span class="sig-name descname"><span class="pre">verbose</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'True'</span></em><a class="reference internal" href="../../../../_modules/ler/utils/gwsnr_training_data_generator.html#TrainingDataGenerator.verbose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.verbose" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.ler_init_args">
+<span class="sig-name descname"><span class="pre">ler_init_args</span></span><a class="reference internal" href="../../../../_modules/ler/utils/gwsnr_training_data_generator.html#TrainingDataGenerator.ler_init_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.ler_init_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.gw_parameters_generator">
+<span class="sig-name descname"><span class="pre">gw_parameters_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_recalculation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trim_to_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_distribution_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">2,</span> <span class="pre">4,</span> <span class="pre">6,</span> <span class="pre">8,</span> <span class="pre">10,</span> <span class="pre">12,</span> <span class="pre">14,</span> <span class="pre">16,</span> <span class="pre">100]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gw_parameters.json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/gwsnr_training_data_generator.html#TrainingDataGenerator.gw_parameters_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.gw_parameters_generator" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.helper_data_distribution">
+<span class="sig-name descname"><span class="pre">helper_data_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gw_param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_distribution_range</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/gwsnr_training_data_generator.html#TrainingDataGenerator.helper_data_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.helper_data_distribution" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.combine_dicts">
+<span class="sig-name descname"><span class="pre">combine_dicts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameter_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['mass_1',</span> <span class="pre">'mass_2',</span> <span class="pre">'luminosity_distance',</span> <span class="pre">'theta_jn',</span> <span class="pre">'psi',</span> <span class="pre">'geocent_time',</span> <span class="pre">'ra',</span> <span class="pre">'dec',</span> <span class="pre">'a_1',</span> <span class="pre">'a_2',</span> <span class="pre">'tilt_1',</span> <span class="pre">'tilt_2']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'combined_data.json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/gwsnr_training_data_generator.html#TrainingDataGenerator.combine_dicts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.combine_dicts" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.delete_json_file">
+<span class="sig-name descname"><span class="pre">delete_json_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/gwsnr_training_data_generator.html#TrainingDataGenerator.delete_json_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.delete_json_file" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../function_interpolation/index.html" class="btn btn-neutral float-left" title="ler.utils.function_interpolation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../plots/index.html" class="btn btn-neutral float-right" title="ler.utils.plots" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

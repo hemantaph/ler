@@ -6,35 +6,41 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Summary &mdash; ler 0.3.1 documentation</title>
+  <title>Summary &mdash; ler 0.4.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="_static/scalefix.css" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css?v=776609e1" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=4621528c"></script>
+      <script src="_static/documentation_options.js?v=5bfaad31"></script>
       <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="_static/copybutton.js?v=f281be69"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "processEnvironments": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore", "processHtmlClass": "tex2jax_process"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Code overview" href="code_overview.html" />
-    <link rel="prev" title="Installation" href="Installation2.html" /> 
+    <link rel="prev" title="Installation" href="Installation.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
 
           
           
@@ -51,7 +57,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="Installation2.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Summary</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#sampling-gravitational-wave-source-properties">Sampling Gravitational Wave Source Properties:</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#lensing-related">Lensing Related:</a></li>
@@ -73,30 +79,12 @@
 <li class="toctree-l1"><a class="reference internal" href="autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="examples/rates/LeR%20complete%20examples.html">LeR complete examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/rates/GWRATES%20complete%20exmaples.html">GWRATES complete exmaples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/rates/grb%20detection%20rate.html">Calculation of detectable Gamma ray burst (GRB) event rate associated with Binary Neutron Star (BNS) mergers.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/rates/ler%20bns%20example.html">LeR complete examples of BNS events (O4 design sensitivity)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/rates/rates_with_3G_detectors.html">Event Rates with 3G detectors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/merger%20rate%20density%20evolution%20with%20redshift.html">Merger rate density evolution with redshift</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/merger%20rate%20density%20model%20comparision.html">Merger rate density model comparision</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/merger%20rate%20density%20model%20comparision.html#Primordial-BBH-model,-Ng-et-al.-2022">Primordial BBH model, Ng et al. 2022</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/sample%20compact%20binary%20parameters.html">Sampling parameters for a compact binary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/statistical%20study%20of%20changing%20mass%20model%20params.html">Statistical study of changing Mass model paramter(s)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/source%20population/statistical%20study%20of%20cosmological%20friction.html">Statistical study of cosmological friction and its effect on the redshift vs inferred chirp-mass relation of gravitational waves</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/lens_parameters/sample%20lens%20parameters.html">Lens parameter distributions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/optical_depth/validation_SIE.html">Optical depth SIE model validation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/optical_depth/validation_SIS.html">Validation of SIS model (Numerical vs Analytical)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/image_properties/dt_vs_dmu.html">Study of Time delays and magnification of lensed gravitational waves.</a></li>
-</ul>
 
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">ler</a>
       </nav>
@@ -132,8 +120,8 @@
 <section id="sampling-gravitational-wave-source-properties">
 <h2>Sampling Gravitational Wave Source Properties:<a class="headerlink" href="#sampling-gravitational-wave-source-properties" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>The source’s redshift ($z_s$) sampling distribution, $R_m^U(z_s)$, is derived from the merger rate density of compact binaries, which is based on the star formation rate. The code is designed for easy integration of future updates or user-specified distributions.</p></li>
-<li><p>The sampling of both intrinsic and extrinsic parameters of GW sources, represented by $\theta_i$, utilizes the prior distributions ( $P\left(\theta_i \right)$ ) available within the <code class="docutils literal notranslate"><span class="pre">gwcosmo</span></code> and <code class="docutils literal notranslate"><span class="pre">bilby</span></code> Python packages. Users can manually alter any relevant parameters as needed.</p></li>
+<li><p>The source’s redshift (<span class="math notranslate nohighlight">\(z_s\)</span>) sampling distribution, <span class="math notranslate nohighlight">\(R_m^U(z_s)\)</span>, is derived from the merger rate density of compact binaries, which is based on the star formation rate. The code is designed for easy integration of future updates or user-specified distributions.</p></li>
+<li><p>The sampling of both intrinsic and extrinsic parameters of GW sources, represented by <span class="math notranslate nohighlight">\(\theta_i\)</span>, utilizes the prior distributions ( <span class="math notranslate nohighlight">\(P\left(\theta_i \right)\)</span> ) available within the <code class="docutils literal notranslate"><span class="pre">gwcosmo</span></code> and <code class="docutils literal notranslate"><span class="pre">bilby</span></code> Python packages. Users can manually alter any relevant parameters as needed.</p></li>
 </ul>
 </section>
 <section id="lensing-related">
@@ -141,15 +129,15 @@
 <ul class="simple">
 <li><p><strong>Sampling of Lens Galaxies Attributes and Source Redshifts:</strong></p>
 <ul>
-<li><p>For lensed cases, the source redshift ($z_s$) is sampled under the strong lensing condition (SL) based on the precomputed probability of strong lensing with source at $z_s$ ( optical depth: $P\left(\text{SL}|z_s\right)$ ). This probability can be recalculated for specified configurations of lens galaxies, leveraging multiprocessing and njit functionalities for efficiency.</p></li>
-<li><p>The package uses the Elliptical Power Law with external shear (EPL+Shear) model for galaxy parameter ($\theta_L$) sampling, following <a class="reference external" href="https://arxiv.org/abs/2106.06303">Wierda et. al 2021</a>. Rejection sampling is applied to these samples based on whether the event is strongly lensed or not, $P\left(\text{SL}|z_s,\theta_L\right)$.</p></li>
+<li><p>For lensed cases, the source redshift (<span class="math notranslate nohighlight">\(z_s\)</span>) is sampled under the strong lensing condition (SL) based on the precomputed probability of strong lensing with source at <span class="math notranslate nohighlight">\(z_s\)</span> ( optical depth: <span class="math notranslate nohighlight">\(P\left(\text{SL}|z_s\right)\)</span> ). This probability can be recalculated for specified configurations of lens galaxies, leveraging multiprocessing and njit functionalities for efficiency.</p></li>
+<li><p>The package uses the Elliptical Power Law with external shear (EPL+Shear) model for galaxy parameter (<span class="math notranslate nohighlight">\(\theta_L\)</span>) sampling, following <a class="reference external" href="https://arxiv.org/abs/2106.06303">Wierda et. al 2021</a>. Rejection sampling is applied to these samples based on whether the event is strongly lensed or not, <span class="math notranslate nohighlight">\(P\left(\text{SL}|z_s,\theta_L\right)\)</span>.</p></li>
 </ul>
 </li>
 <li><p><strong>Generation of Image Properties:</strong></p>
 <ul>
-<li><p>Source position ($\beta$) is sampled from the caustic in the source plane.</p></li>
+<li><p>Source position (<span class="math notranslate nohighlight">\(\beta\)</span>) is sampled from the caustic in the source plane.</p></li>
 <li><p>Sampled lens properties and source position are fed into <code class="docutils literal notranslate"><span class="pre">Lenstronomy</span></code> to generate image properties. This is the slowest part of the simulation, which LeR tackles through parallelization with multiprocessing.</p></li>
-<li><p>Image properties like magnification ($\mu_i$) and time delay ($\Delta t_i$) modify the original source signal strength, affecting the signal-to-noise ratio (SNR) and our ability to detect.</p></li>
+<li><p>Image properties like magnification (<span class="math notranslate nohighlight">\(\mu_i\)</span>) and time delay (<span class="math notranslate nohighlight">\(\Delta t_i\)</span>) modify the original source signal strength, affecting the signal-to-noise ratio (SNR) and our ability to detect.</p></li>
 </ul>
 </li>
 </ul>
@@ -157,7 +145,7 @@
 <section id="calculation-of-detectable-merger-rates-per-year">
 <h2>Calculation of Detectable Merger Rates Per Year:<a class="headerlink" href="#calculation-of-detectable-merger-rates-per-year" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>The calculation of rates involves integration over simulated events that meet specific detection criteria, including computing SNRs ($\rho$) for each event or its lensed images and assessing them against a predetermined threshold ($\rho_{th}$).</p></li>
+<li><p>The calculation of rates involves integration over simulated events that meet specific detection criteria, including computing SNRs (<span class="math notranslate nohighlight">\(\rho\)</span>) for each event or its lensed images and assessing them against a predetermined threshold (<span class="math notranslate nohighlight">\(\rho_{th}\)</span>).</p></li>
 <li><p>SNR calculations are optimized using <a class="reference external" href="https://github.com/hemantaph/gwsnr">gwsnr</a>, leveraging interpolation, artificial neural networks, and multiprocessing for accuracy and speed.</p></li>
 <li><p>Simulated events and rate results, along with input configurations, are systematically archived for easy access and future analysis. All interpolators used in the process are preserved for future applications.</p></li>
 </ul>
@@ -166,21 +154,23 @@
 <p>For more information and usage examples, please refer to the other sections of the documentation.</p>
 <!-- [LeR documentation](https://arxiv.org/abs/2306.03827). -->
 <p><strong>Detectable Gravitational Wave Event Rates:</strong></p>
-<p>\begin{equation*}
-R_U = \int dz_s R_m^U(z_s)\left{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right}
-\end{equation*}</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+R_U = \int dz_s R_m^U(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\}
+\end{equation*}\]</div>
 <ul class="simple">
-<li><p>$z_s$: GW source redshift, $R_m^U(z_s)$: source frame merger rate density in the co-moving volume at $z_s$, $\theta$: GW source parameters, $P$: probability distribution, $\rho$: SNR, $\rho_{th}$: SNR threshold, $\Theta$: Heaviside function to select detectable events.</p></li>
+<li><p><span class="math notranslate nohighlight">\(z_s\)</span>: GW source redshift, <span class="math notranslate nohighlight">\(R_m^U(z_s)\)</span>: source frame merger rate density in the co-moving volume at <span class="math notranslate nohighlight">\(z_s\)</span>, <span class="math notranslate nohighlight">\(\theta\)</span>: GW source parameters, <span class="math notranslate nohighlight">\(P\)</span>: probability distribution, <span class="math notranslate nohighlight">\(\rho\)</span>: SNR, <span class="math notranslate nohighlight">\(\rho_{th}\)</span>: SNR threshold, <span class="math notranslate nohighlight">\(\Theta\)</span>: Heaviside function to select detectable events.</p></li>
 </ul>
 <p><strong>Detectable Lensed Gravitational Wave Event Rates:</strong></p>
-<p>\begin{equation*}
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
 \begin{split}
-R_L = \int &amp; dz_s R_m^L(z_s) ,\mathcal{O}<em>{images}(z_s,\theta,\mu_i,\Delta t_i, \rho</em>{th}) , \
-&amp; , P(\theta) P(\theta_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta d\theta_L dz_s
+R_L = \int &amp; dz_s R_m^L(z_s) \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \, \\ 
+&amp; \, P(\theta) P(\theta_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta d\theta_L dz_s 
 \end{split}
-\end{equation*}</p>
+\end{equation*}\]</div>
 <ul class="simple">
-<li><p>$R_m^L(z_s)$: strongly lensed source frame merger rate density in the co-moving volume at $z_s$, $\theta_L$: lens parameters, $\beta$: image properties, $\mu$: image magnification, $\Delta t$: image time delay, $\mathcal{O}$: logical OR operator applied across all $\Theta_i$ of the images, $\text{SL}$: strong lensing condition.</p></li>
+<li><p><span class="math notranslate nohighlight">\(R_m^L(z_s)\)</span>: strongly lensed source frame merger rate density in the co-moving volume at <span class="math notranslate nohighlight">\(z_s\)</span>, <span class="math notranslate nohighlight">\(\theta_L\)</span>: lens parameters, <span class="math notranslate nohighlight">\(\beta\)</span>: image properties, <span class="math notranslate nohighlight">\(\mu\)</span>: image magnification, <span class="math notranslate nohighlight">\(\Delta t\)</span>: image time delay, <span class="math notranslate nohighlight">\(\mathcal{O}\)</span>: logical OR operator applied across all <span class="math notranslate nohighlight">\(\Theta_i\)</span> of the images, <span class="math notranslate nohighlight">\(\text{SL}\)</span>: strong lensing condition.</p></li>
 </ul>
 </section>
 <section id="distribution-binary-black-hole-bbh-in-terms-of-redshift">
@@ -197,7 +187,7 @@ R_L = \int &amp; dz_s R_m^L(z_s) ,\mathcal{O}<em>{images}(z_s,\theta,\mu_i,\Delt
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Installation2.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="code_overview.html" class="btn btn-neutral float-right" title="Code overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

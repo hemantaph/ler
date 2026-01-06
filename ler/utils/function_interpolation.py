@@ -73,9 +73,9 @@ class FunctionConditioning():
                     # gaussian KDE
                     interpolator = self.create_gaussian_kde(*input_list_kde)
 
-                    #------------------
+                    #------------
                     # check scipy gaussian kde can be saved as json
-                    #------------------
+                    #------------
                     # save_json(path_inv_cdf, interpolator)
 
             if not gaussian_kde:

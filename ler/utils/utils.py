@@ -1376,6 +1376,10 @@ def inverse_transform_sampler(size, cdf, x):
 
     u = np.random.uniform(0, 1, size)
     idx = np.searchsorted(cdf, u)
+    # Clip idx to valid range to prevent boundary issues:
+    # - When idx=0 (u <= cdf[0]), idx-1 would wrap to -1 (last element)
+    # - When idx=len(cdf) (u > cdf[-1]), idx would be out of bounds
+    idx = np.clip(idx, 1, len(cdf) - 1)
     x1, x0, y1, y0 = cdf[idx], cdf[idx-1], x[idx], x[idx-1]
     samples = y0 + (y1 - y0) * (u - x0) / (x1 - x0)
     return samples

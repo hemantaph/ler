@@ -1,0 +1,191 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation &mdash; ler 0.4.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="_static/scalefix.css" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=776609e1" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="_static/tabs.js?v=3030b3cb"></script>
+      <script src="_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Summary" href="Summary.html" />
+    <link rel="prev" title="Welcome to ler’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ler-for-development">ler for development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-of-numba-with-conda">Installation of numba with conda</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Installation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">ler</span></code> supports Python 3.10+ (but 3.11 recommended) and utilizes multi-core CPUs and multi-threaded CPUs when available.</p>
+<p>For package development and contribution refer here (<a class="reference internal" href="#development"><span class="std std-ref">ler for development</span></a>).</p>
+</div>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-cGlwIChzdGFuZGFyZCk=" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-cGlwIChzdGFuZGFyZCk=" name="cGlwIChzdGFuZGFyZCk=" role="tab" tabindex="0">pip (standard)</button><button aria-controls="panel-0-cGlwICh3aXRoIGd3c25yIEpBWCBiYWNrZW5kKQ==" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-cGlwICh3aXRoIGd3c25yIEpBWCBiYWNrZW5kKQ==" name="cGlwICh3aXRoIGd3c25yIEpBWCBiYWNrZW5kKQ==" role="tab" tabindex="-1">pip (with gwsnr JAX backend)</button><button aria-controls="panel-0-cGlwICh3aXRoIGd3c25yIE1MWCBiYWNrZW5kOyBBcHBsZSBTaWxpY29uKQ==" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-cGlwICh3aXRoIGd3c25yIE1MWCBiYWNrZW5kOyBBcHBsZSBTaWxpY29uKQ==" name="cGlwICh3aXRoIGd3c25yIE1MWCBiYWNrZW5kOyBBcHBsZSBTaWxpY29uKQ==" role="tab" tabindex="-1">pip (with gwsnr MLX backend; Apple Silicon)</button><button aria-controls="panel-0-cGlwICh3aXRoIHRlbnNvcmZsb3cgYmFzZWQgQU5OKQ==" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-cGlwICh3aXRoIHRlbnNvcmZsb3cgYmFzZWQgQU5OKQ==" name="cGlwICh3aXRoIHRlbnNvcmZsb3cgYmFzZWQgQU5OKQ==" role="tab" tabindex="-1">pip (with tensorflow based ANN)</button></div><div aria-labelledby="tab-0-cGlwIChzdGFuZGFyZCk=" class="sphinx-tabs-panel code-tab group-tab" id="panel-0-cGlwIChzdGFuZGFyZCk=" name="cGlwIChzdGFuZGFyZCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>ler
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-cGlwICh3aXRoIGd3c25yIEpBWCBiYWNrZW5kKQ==" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-0-cGlwICh3aXRoIGd3c25yIEpBWCBiYWNrZW5kKQ==" name="cGlwICh3aXRoIGd3c25yIEpBWCBiYWNrZW5kKQ==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>ler<span class="w"> </span>jax<span class="w"> </span>jaxlib
+pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span><span class="s2">&quot;jax[cuda12]&quot;</span><span class="w"> </span><span class="c1"># optional, for Nvidia GPU support</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-cGlwICh3aXRoIGd3c25yIE1MWCBiYWNrZW5kOyBBcHBsZSBTaWxpY29uKQ==" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-0-cGlwICh3aXRoIGd3c25yIE1MWCBiYWNrZW5kOyBBcHBsZSBTaWxpY29uKQ==" name="cGlwICh3aXRoIGd3c25yIE1MWCBiYWNrZW5kOyBBcHBsZSBTaWxpY29uKQ==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>ler<span class="w"> </span>mlx
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-cGlwICh3aXRoIHRlbnNvcmZsb3cgYmFzZWQgQU5OKQ==" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-0-cGlwICh3aXRoIHRlbnNvcmZsb3cgYmFzZWQgQU5OKQ==" name="cGlwICh3aXRoIHRlbnNvcmZsb3cgYmFzZWQgQU5OKQ==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>ler<span class="w"> </span>scikit-learn<span class="w"> </span>tensorflow
+pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>ml-dtypes<span class="w"> </span><span class="c1"># optional, for compatibility</span>
+</pre></div>
+</div>
+</div></div>
+<p>This will also install the dependencies needed by the lastest <code class="docutils literal notranslate"><span class="pre">ler</span></code> version.</p>
+<section id="ler-for-development">
+<span id="development"></span><h2>ler for development<a class="headerlink" href="#ler-for-development" title="Link to this heading"></a></h2>
+<p>To install <code class="docutils literal notranslate"><span class="pre">ler</span></code> for development purposes use <a class="reference external" href="https://github.com/hemantaph/ler/">github.ler</a>. Use conda environment to avoid dependency error.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-d2l0aCBuZXcgY29uZGEgZW52" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-d2l0aCBuZXcgY29uZGEgZW52" name="d2l0aCBuZXcgY29uZGEgZW52" role="tab" tabindex="0">with new conda env</button><button aria-controls="panel-1-d2l0aCBleGlzdGluZyBjb25kYSBlbnY=" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-d2l0aCBleGlzdGluZyBjb25kYSBlbnY=" name="d2l0aCBleGlzdGluZyBjb25kYSBlbnY=" role="tab" tabindex="-1">with existing conda env</button></div><div aria-labelledby="tab-1-d2l0aCBuZXcgY29uZGEgZW52" class="sphinx-tabs-panel code-tab group-tab" id="panel-1-d2l0aCBuZXcgY29uZGEgZW52" name="d2l0aCBuZXcgY29uZGEgZW52" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/hemantaph/ler.git
+<span class="nb">cd</span><span class="w"> </span>ler
+conda<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>ler.yml
+conda<span class="w"> </span>activate<span class="w"> </span>ler
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-d2l0aCBleGlzdGluZyBjb25kYSBlbnY=" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-1-d2l0aCBleGlzdGluZyBjb25kYSBlbnY=" name="d2l0aCBleGlzdGluZyBjb25kYSBlbnY=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/hemantaph/ler.git
+<span class="nb">cd</span><span class="w"> </span>ler
+conda<span class="w"> </span>env<span class="w"> </span>update<span class="w"> </span>--file<span class="w"> </span>ler.yml
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="installation-of-numba-with-conda">
+<span id="dependencies"></span><h2>Installation of numba with conda<a class="headerlink" href="#installation-of-numba-with-conda" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>numba
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For arm64 architecture processor (e.g. Apple Silicon) you might need to install some specific dependencies with conda. There can be errors related to multiprocessing on either arm64 or x86_64 architecture. This can be resolved by using the <cite>main()</cite> function as shown in this <a class="reference external" href="https://github.com/hemantaph/ler/blob/main/examples/rates/LeR_short_example.py">example</a>.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to ler’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Summary.html" class="btn btn-neutral float-right" title="Summary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

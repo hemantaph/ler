@@ -1,0 +1,457 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.lens_galaxy_population.lens_parameter_sampler &mdash; ler 0.4.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ler.lens_galaxy_population.lens_parameter_sampler</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ler.lens_galaxy_population.lens_parameter_sampler</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="viewcode-block" id="C_LIGHT">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/lens_parameter_sampler/index.html#ler.lens_galaxy_population.C_LIGHT">[docs]</a>
+<span class="n">C_LIGHT</span> <span class="o">=</span> <span class="mf">299792.458</span>  <span class="c1"># km/s</span></div>
+
+
+<span class="c1"># ----------------------</span>
+<span class="c1"># Rejection sampler</span>
+<span class="c1"># ----------------------</span>
+<div class="viewcode-block" id="rejection_sampler">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/lens_parameter_sampler/index.html#ler.lens_galaxy_population.rejection_sampler">[docs]</a>
+<span class="k">def</span> <span class="nf">rejection_sampler</span><span class="p">(</span>
+    <span class="n">zs</span><span class="p">,</span> 
+    <span class="n">zl</span><span class="p">,</span>
+    <span class="n">sigma_max</span><span class="p">,</span>
+    <span class="n">sigma_rvs</span><span class="p">,</span>
+    <span class="n">q_rvs</span><span class="p">,</span>
+    <span class="n">phi_rvs</span><span class="p">,</span>
+    <span class="n">gamma_rvs</span><span class="p">,</span>
+    <span class="n">shear_rvs</span><span class="p">,</span>
+    <span class="n">cross_section</span><span class="p">,</span>
+    <span class="n">saftey_factor</span> <span class="o">=</span> <span class="mf">1.2</span>
+<span class="p">):</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">zl</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="n">sigma_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">q_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">phi_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">gamma_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">gamma1_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">gamma2_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">idx_remaining</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+    <span class="c1"># Compute the maximum cross section</span>
+    <span class="c1"># to be used as the upper bound for the rejection sampler</span>
+    <span class="n">cs_max</span> <span class="o">=</span> <span class="n">cross_section</span><span class="p">(</span>
+                <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
+                <span class="n">zl</span><span class="o">=</span><span class="n">zl</span><span class="p">,</span>
+                <span class="n">sigma</span><span class="o">=</span><span class="n">sigma_max</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="p">),</span>
+                <span class="n">q</span><span class="o">=</span><span class="mf">0.9</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="p">),</span>
+                <span class="n">phi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">),</span>
+                <span class="n">gamma</span><span class="o">=</span><span class="mf">2.645</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="p">),</span>
+                <span class="n">gamma1</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">),</span>
+                <span class="n">gamma2</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+              <span class="p">)</span> <span class="o">*</span> <span class="n">saftey_factor</span>
+
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_remaining</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">n_remaining</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_remaining</span><span class="p">)</span>
+        <span class="n">sigma_samples</span> <span class="o">=</span> <span class="n">sigma_rvs</span><span class="p">(</span><span class="n">n_remaining</span><span class="p">,</span> <span class="n">zl</span><span class="p">[</span><span class="n">idx_remaining</span><span class="p">])</span>
+        <span class="n">q_samples</span> <span class="o">=</span> <span class="n">q_rvs</span><span class="p">(</span><span class="n">n_remaining</span><span class="p">,</span> <span class="n">sigma_samples</span><span class="p">)</span>
+        <span class="n">phi_samples</span> <span class="o">=</span> <span class="n">phi_rvs</span><span class="p">(</span><span class="n">n_remaining</span><span class="p">)</span>
+        <span class="n">gamma_samples</span> <span class="o">=</span> <span class="n">gamma_rvs</span><span class="p">(</span><span class="n">n_remaining</span><span class="p">)</span>
+        <span class="n">gamma1_samples</span><span class="p">,</span> <span class="n">gamma2_samples</span> <span class="o">=</span> <span class="n">shear_rvs</span><span class="p">(</span><span class="n">n_remaining</span><span class="p">)</span>
+
+        <span class="n">cs</span> <span class="o">=</span> <span class="n">cross_section</span><span class="p">(</span>
+            <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">[</span><span class="n">idx_remaining</span><span class="p">],</span>
+            <span class="n">zl</span><span class="o">=</span><span class="n">zl</span><span class="p">[</span><span class="n">idx_remaining</span><span class="p">],</span>
+            <span class="n">sigma</span><span class="o">=</span><span class="n">sigma_samples</span><span class="p">,</span>
+            <span class="n">q</span><span class="o">=</span><span class="n">q_samples</span><span class="p">,</span>
+            <span class="n">phi</span><span class="o">=</span><span class="n">phi_samples</span><span class="p">,</span>
+            <span class="n">gamma</span><span class="o">=</span><span class="n">gamma_samples</span><span class="p">,</span>
+            <span class="n">gamma1</span><span class="o">=</span><span class="n">gamma1_samples</span><span class="p">,</span>
+            <span class="n">gamma2</span><span class="o">=</span><span class="n">gamma2_samples</span>
+        <span class="p">)</span>
+
+        <span class="n">accept</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n_remaining</span><span class="p">)</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">cs</span> <span class="o">/</span> <span class="n">cs_max</span><span class="p">[</span><span class="n">idx_remaining</span><span class="p">])</span>
+
+        <span class="n">accepted_indices</span> <span class="o">=</span> <span class="n">idx_remaining</span><span class="p">[</span><span class="n">accept</span><span class="p">]</span>
+        <span class="n">sigma_array</span><span class="p">[</span><span class="n">accepted_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma_samples</span><span class="p">[</span><span class="n">accept</span><span class="p">]</span>
+        <span class="n">q_array</span><span class="p">[</span><span class="n">accepted_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">q_samples</span><span class="p">[</span><span class="n">accept</span><span class="p">]</span>
+        <span class="n">phi_array</span><span class="p">[</span><span class="n">accepted_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">phi_samples</span><span class="p">[</span><span class="n">accept</span><span class="p">]</span>
+        <span class="n">gamma_array</span><span class="p">[</span><span class="n">accepted_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">gamma_samples</span><span class="p">[</span><span class="n">accept</span><span class="p">]</span>
+        <span class="n">gamma1_array</span><span class="p">[</span><span class="n">accepted_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">gamma1_samples</span><span class="p">[</span><span class="n">accept</span><span class="p">]</span>
+        <span class="n">gamma2_array</span><span class="p">[</span><span class="n">accepted_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">gamma2_samples</span><span class="p">[</span><span class="n">accept</span><span class="p">]</span>
+
+        <span class="n">idx_remaining</span> <span class="o">=</span> <span class="n">idx_remaining</span><span class="p">[</span><span class="o">~</span><span class="n">accept</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">sigma_array</span><span class="p">,</span> <span class="n">q_array</span><span class="p">,</span> <span class="n">phi_array</span><span class="p">,</span> <span class="n">gamma_array</span><span class="p">,</span> <span class="n">gamma1_array</span><span class="p">,</span> <span class="n">gamma2_array</span></div>
+
+
+<div class="viewcode-block" id="create_rejection_sampler">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/lens_parameter_sampler/index.html#ler.lens_galaxy_population.create_rejection_sampler">[docs]</a>
+<span class="k">def</span> <span class="nf">create_rejection_sampler</span><span class="p">(</span>
+    <span class="n">sigma_max</span><span class="p">,</span>
+    <span class="n">sigma_rvs</span><span class="p">,</span>
+    <span class="n">q_rvs</span><span class="p">,</span>
+    <span class="n">phi_rvs</span><span class="p">,</span>
+    <span class="n">gamma_rvs</span><span class="p">,</span>
+    <span class="n">shear_rvs</span><span class="p">,</span>
+    <span class="n">cross_section</span><span class="p">,</span>
+    <span class="n">saftey_factor</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span>
+    <span class="n">use_njit_sampler</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">):</span>
+    
+    <span class="k">if</span> <span class="n">use_njit_sampler</span><span class="p">:</span>
+        <span class="n">_base_sampler</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="n">rejection_sampler</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Faster, njitted and rejection sampling based lens parameter sampler will be used.&quot;</span><span class="p">)</span>
+
+        <span class="nd">@njit</span>
+        <span class="k">def</span> <span class="nf">rejection_sampler_wrapper</span><span class="p">(</span>
+            <span class="n">zs</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="n">_base_sampler</span><span class="p">(</span>
+                <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
+                <span class="n">zl</span><span class="o">=</span><span class="n">zl</span><span class="p">,</span>
+                <span class="n">sigma_max</span><span class="o">=</span><span class="n">sigma_max</span><span class="p">,</span>
+                <span class="n">sigma_rvs</span><span class="o">=</span><span class="n">sigma_rvs</span><span class="p">,</span>
+                <span class="n">q_rvs</span><span class="o">=</span><span class="n">q_rvs</span><span class="p">,</span>
+                <span class="n">phi_rvs</span><span class="o">=</span><span class="n">phi_rvs</span><span class="p">,</span>
+                <span class="n">gamma_rvs</span><span class="o">=</span><span class="n">gamma_rvs</span><span class="p">,</span>
+                <span class="n">shear_rvs</span><span class="o">=</span><span class="n">shear_rvs</span><span class="p">,</span>
+                <span class="n">cross_section</span><span class="o">=</span><span class="n">cross_section</span><span class="p">,</span>
+                <span class="n">saftey_factor</span><span class="o">=</span><span class="n">saftey_factor</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Slower, non-njit and rejection sampling based lens parameter sampler will be used.&quot;</span><span class="p">)</span>   
+        <span class="k">def</span> <span class="nf">rejection_sampler_wrapper</span><span class="p">(</span>
+            <span class="n">zs</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="n">rejection_sampler</span><span class="p">(</span>
+                <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
+                <span class="n">zl</span><span class="o">=</span><span class="n">zl</span><span class="p">,</span>
+                <span class="n">sigma_max</span><span class="o">=</span><span class="n">sigma_max</span><span class="p">,</span>
+                <span class="n">sigma_rvs</span><span class="o">=</span><span class="n">sigma_rvs</span><span class="p">,</span>
+                <span class="n">q_rvs</span><span class="o">=</span><span class="n">q_rvs</span><span class="p">,</span>
+                <span class="n">phi_rvs</span><span class="o">=</span><span class="n">phi_rvs</span><span class="p">,</span>
+                <span class="n">gamma_rvs</span><span class="o">=</span><span class="n">gamma_rvs</span><span class="p">,</span>
+                <span class="n">shear_rvs</span><span class="o">=</span><span class="n">shear_rvs</span><span class="p">,</span>
+                <span class="n">cross_section</span><span class="o">=</span><span class="n">cross_section</span><span class="p">,</span>
+                <span class="n">saftey_factor</span><span class="o">=</span><span class="n">saftey_factor</span>
+            <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">rejection_sampler_wrapper</span></div>
+
+
+
+<span class="c1"># ----------------------</span>
+<span class="c1"># Importance sampler</span>
+<span class="c1"># ----------------------</span>
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="sigma_proposal_uniform">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/lens_parameter_sampler/index.html#ler.lens_galaxy_population.sigma_proposal_uniform">[docs]</a>
+<span class="k">def</span> <span class="nf">sigma_proposal_uniform</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">sigma_min</span><span class="p">,</span> <span class="n">sigma_max</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">sigma_min</span> <span class="o">+</span> <span class="p">(</span><span class="n">sigma_max</span> <span class="o">-</span> <span class="n">sigma_min</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@njit</span>
+<div class="viewcode-block" id="weighted_choice_1d">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/lens_parameter_sampler/index.html#ler.lens_galaxy_population.weighted_choice_1d">[docs]</a>
+<span class="k">def</span> <span class="nf">weighted_choice_1d</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Draw an index with probability proportional to &#39;weights&#39; (assumed &gt;=0).</span>
+<span class="sd">    Numba-safe replacement for np.random.choice(n, p=weights).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="c1"># If all weights are zero (or NaN-ish), fall back to uniform.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">total</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="n">total</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+        <span class="n">c</span> <span class="o">+=</span> <span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">u</span> <span class="o">&lt;=</span> <span class="n">c</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">i</span>
+    <span class="k">return</span> <span class="n">weights</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># numerical fallback</span></div>
+
+
+
+<span class="c1"># ----------------------</span>
+<span class="c1"># Importance sampler</span>
+<span class="c1"># ----------------------</span>
+<div class="viewcode-block" id="importance_sampler">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/lens_parameter_sampler/index.html#ler.lens_galaxy_population.importance_sampler">[docs]</a>
+<span class="k">def</span> <span class="nf">importance_sampler</span><span class="p">(</span>
+    <span class="n">zs</span><span class="p">,</span>
+    <span class="n">zl</span><span class="p">,</span>
+    <span class="n">sigma_min</span><span class="p">,</span>
+    <span class="n">sigma_max</span><span class="p">,</span>
+    <span class="n">q_rvs</span><span class="p">,</span>
+    <span class="n">phi_rvs</span><span class="p">,</span>
+    <span class="n">gamma_rvs</span><span class="p">,</span>
+    <span class="n">shear_rvs</span><span class="p">,</span>
+    <span class="n">sigma_pdf</span><span class="p">,</span>
+    <span class="n">cross_section</span><span class="p">,</span>
+    <span class="n">n_prop</span><span class="p">,</span>
+<span class="p">):</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="n">zl</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="n">sigma_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">q_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">phi_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">gamma_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">gamma1_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">gamma2_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+
+    <span class="n">p0</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma_max</span> <span class="o">-</span> <span class="n">sigma_min</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="c1"># (1) draw proposals</span>
+        <span class="n">sigma_prop</span> <span class="o">=</span> <span class="n">sigma_proposal_uniform</span><span class="p">(</span><span class="n">n_prop</span><span class="p">,</span> <span class="n">sigma_min</span><span class="p">,</span> <span class="n">sigma_max</span><span class="p">)</span>
+
+        <span class="c1"># draw other parameters from their priors</span>
+        <span class="n">q_prop</span> <span class="o">=</span> <span class="n">q_rvs</span><span class="p">(</span><span class="n">n_prop</span><span class="p">,</span> <span class="n">sigma_prop</span><span class="p">)</span>
+        <span class="n">phi_prop</span> <span class="o">=</span> <span class="n">phi_rvs</span><span class="p">(</span><span class="n">n_prop</span><span class="p">)</span>
+        <span class="n">gamma_prop</span> <span class="o">=</span> <span class="n">gamma_rvs</span><span class="p">(</span><span class="n">n_prop</span><span class="p">)</span>
+        <span class="n">gamma1_prop</span><span class="p">,</span> <span class="n">gamma2_prop</span> <span class="o">=</span> <span class="n">shear_rvs</span><span class="p">(</span><span class="n">n_prop</span><span class="p">)</span>
+
+        <span class="c1"># (2) compute cross sections</span>
+        <span class="c1"># cross_section expects (zs, zl, sigma, q, phi, gamma, gamma1, gamma2)</span>
+        <span class="n">zs_arr</span> <span class="o">=</span> <span class="n">zs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_prop</span><span class="p">)</span>
+        <span class="n">zl_arr</span> <span class="o">=</span> <span class="n">zl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_prop</span><span class="p">)</span>
+
+        <span class="n">cs</span> <span class="o">=</span> <span class="n">cross_section</span><span class="p">(</span>
+            <span class="n">zs_arr</span><span class="p">,</span> <span class="n">zl_arr</span><span class="p">,</span> <span class="n">sigma_prop</span><span class="p">,</span> <span class="n">q_prop</span><span class="p">,</span> <span class="n">phi_prop</span><span class="p">,</span> <span class="n">gamma_prop</span><span class="p">,</span> <span class="n">gamma1_prop</span><span class="p">,</span> <span class="n">gamma2_prop</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Stabilize: normalize cs to avoid overflow in weights</span>
+        <span class="n">cs_sum</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cs</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">cs_sum</span> <span class="o">+=</span> <span class="n">cs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">cs_sum</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cs</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+                <span class="n">cs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">cs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">/</span> <span class="n">cs_sum</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># if cs all zeros, sampling should revert to prior/proposal only</span>
+            <span class="c1"># which is p_sigma/p0; keep cs = 1 so w ∝ p_sigma/p0</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cs</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+                <span class="n">cs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+        <span class="c1"># (3) compute weights: w = cs * (p_sigma / p0)</span>
+        <span class="n">zl_vec</span> <span class="o">=</span> <span class="n">zl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_prop</span><span class="p">)</span>
+        <span class="n">p_sigma</span> <span class="o">=</span> <span class="n">sigma_pdf</span><span class="p">(</span><span class="n">sigma_prop</span><span class="p">,</span> <span class="n">zl_vec</span><span class="p">)</span>
+
+        <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_prop</span><span class="p">)</span>
+        <span class="n">w_sum</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_prop</span><span class="p">):</span>
+            <span class="n">wk</span> <span class="o">=</span> <span class="n">cs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">p_sigma</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">/</span> <span class="n">p0</span><span class="p">)</span>
+            <span class="c1"># guard against negatives / NaNs</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">wk</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">):</span>
+                <span class="n">wk</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">wk</span>
+            <span class="n">w_sum</span> <span class="o">+=</span> <span class="n">wk</span>
+
+        <span class="c1"># normalize weights</span>
+        <span class="k">if</span> <span class="n">w_sum</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_prop</span><span class="p">):</span>
+                <span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">/=</span> <span class="n">w_sum</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># fully degenerate case -&gt; uniform</span>
+            <span class="n">inv</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">n_prop</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_prop</span><span class="p">):</span>
+                <span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">inv</span>
+
+        <span class="c1"># (4) draw 1 posterior sample via weighted choice</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">weighted_choice_1d</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+        <span class="n">sigma_post</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma_prop</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">q_post</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">q_prop</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">phi_post</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">phi_prop</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">gamma_post</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">gamma_prop</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">gamma1_post</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">gamma1_prop</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">gamma2_post</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">gamma2_prop</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">sigma_post</span><span class="p">,</span> <span class="n">q_post</span><span class="p">,</span> <span class="n">phi_post</span><span class="p">,</span> <span class="n">gamma_post</span><span class="p">,</span> <span class="n">gamma1_post</span><span class="p">,</span> <span class="n">gamma2_post</span></div>
+
+
+
+<div class="viewcode-block" id="create_importance_sampler">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/lens_parameter_sampler/index.html#ler.lens_galaxy_population.create_importance_sampler">[docs]</a>
+<span class="k">def</span> <span class="nf">create_importance_sampler</span><span class="p">(</span>
+    <span class="n">sigma_min</span><span class="p">,</span>
+    <span class="n">sigma_max</span><span class="p">,</span>
+    <span class="n">q_rvs</span><span class="p">,</span>
+    <span class="n">phi_rvs</span><span class="p">,</span>
+    <span class="n">gamma_rvs</span><span class="p">,</span>
+    <span class="n">shear_rvs</span><span class="p">,</span>
+    <span class="n">sigma_pdf</span><span class="p">,</span>
+    <span class="n">cross_section</span><span class="p">,</span>
+    <span class="n">n_prop</span><span class="p">,</span>
+    <span class="n">use_njit_sampler</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="k">if</span> <span class="n">use_njit_sampler</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Faster, njitted and importance sampling based lens parameter sampler will be used.&quot;</span><span class="p">)</span>
+        <span class="n">_base_sampler</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">importance_sampler</span><span class="p">)</span>
+
+        <span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">importance_sampler_wrapper</span><span class="p">(</span>
+            <span class="n">zs</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="n">_base_sampler</span><span class="p">(</span>
+                <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
+                <span class="n">zl</span><span class="o">=</span><span class="n">zl</span><span class="p">,</span>
+                <span class="n">sigma_min</span><span class="o">=</span><span class="n">sigma_min</span><span class="p">,</span>
+                <span class="n">sigma_max</span><span class="o">=</span><span class="n">sigma_max</span><span class="p">,</span>
+                <span class="n">q_rvs</span><span class="o">=</span><span class="n">q_rvs</span><span class="p">,</span>
+                <span class="n">phi_rvs</span><span class="o">=</span><span class="n">phi_rvs</span><span class="p">,</span>
+                <span class="n">gamma_rvs</span><span class="o">=</span><span class="n">gamma_rvs</span><span class="p">,</span>
+                <span class="n">shear_rvs</span><span class="o">=</span><span class="n">shear_rvs</span><span class="p">,</span>
+                <span class="n">sigma_pdf</span><span class="o">=</span><span class="n">sigma_pdf</span><span class="p">,</span>
+                <span class="n">cross_section</span><span class="o">=</span><span class="n">cross_section</span><span class="p">,</span>
+                <span class="n">n_prop</span><span class="o">=</span><span class="n">n_prop</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Slower, non-njit and importance sampling based lens parameter sampler will be used.&quot;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">importance_sampler_wrapper</span><span class="p">(</span>
+            <span class="n">zs</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="n">importance_sampler</span><span class="p">(</span>
+                <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
+                <span class="n">zl</span><span class="o">=</span><span class="n">zl</span><span class="p">,</span>
+                <span class="n">sigma_min</span><span class="o">=</span><span class="n">sigma_min</span><span class="p">,</span>
+                <span class="n">sigma_max</span><span class="o">=</span><span class="n">sigma_max</span><span class="p">,</span>
+                <span class="n">q_rvs</span><span class="o">=</span><span class="n">q_rvs</span><span class="p">,</span>
+                <span class="n">phi_rvs</span><span class="o">=</span><span class="n">phi_rvs</span><span class="p">,</span>
+                <span class="n">gamma_rvs</span><span class="o">=</span><span class="n">gamma_rvs</span><span class="p">,</span>
+                <span class="n">shear_rvs</span><span class="o">=</span><span class="n">shear_rvs</span><span class="p">,</span>
+                <span class="n">sigma_pdf</span><span class="o">=</span><span class="n">sigma_pdf</span><span class="p">,</span>
+                <span class="n">cross_section</span><span class="o">=</span><span class="n">cross_section</span><span class="p">,</span>
+                <span class="n">n_prop</span><span class="o">=</span><span class="n">n_prop</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">importance_sampler_wrapper</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

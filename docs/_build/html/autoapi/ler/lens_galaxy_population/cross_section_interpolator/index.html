@@ -1,0 +1,218 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.lens_galaxy_population.cross_section_interpolator &mdash; ler 0.4.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=776609e1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="ler.lens_galaxy_population.epl_shear_cross_section" href="../epl_shear_cross_section/index.html" />
+    <link rel="prev" title="ler.lens_galaxy_population" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#key-features">Key Features:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../epl_shear_cross_section/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.epl_shear_cross_section</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jit_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.jit_functions</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lens_galaxy_parameter_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_galaxy_parameter_distribution</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lens_parameter_sampler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_parameter_sampler</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mp/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.mp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../optical_depth/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.optical_depth</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/autoapi/ler/lens_galaxy_population/cross_section_interpolator/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ler.lens_galaxy_population.cross_section_interpolator">
+<span id="ler-lens-galaxy-population-cross-section-interpolator"></span><h1><a class="reference internal" href="#module-ler.lens_galaxy_population.cross_section_interpolator" title="ler.lens_galaxy_population.cross_section_interpolator"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator</span></code></a><a class="headerlink" href="#module-ler.lens_galaxy_population.cross_section_interpolator" title="Link to this heading"></a></h1>
+<p>This module provides highly optimized Numba-compiled functions for interpolating
+gravitational lensing cross sections in a 5-dimensional parameter space.</p>
+<p>The module uses cubic B-spline interpolation on prefiltered coefficient grids to
+achieve efficient and accurate interpolation of cross section values based on:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Ellipticity components (e1, e2) derived from axis ratio q and position angle phi</p></li>
+<li><p>Density profile slope (gamma)</p></li>
+<li><p>External shear components (gamma1, gamma2)</p></li>
+</ul>
+</div></blockquote>
+<section id="key-features">
+<h2>Key Features:<a class="headerlink" href="#key-features" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>JIT-compiled with Numba for high performance</p></li>
+<li><p>Parallel processing support for batch evaluations</p></li>
+<li><p>Cubic B-spline interpolation matching scipy’s map_coordinates behavior</p></li>
+<li><p>Automatic scaling by Einstein radius and affine calibration</p></li>
+</ul>
+<p>Author: Hemanta Kumar Phurailatpam</p>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.cross_section_interpolator.cross_section" title="ler.lens_galaxy_population.cross_section_interpolator.cross_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_section</span></code></a>(zs, zl, sigma, q, phi, gamma, gamma1, ...)</p></td>
+<td><p>theta_E, gamma, gamma1, gamma2, q, phi: 1D arrays (same length)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.cross_section_interpolator.make_cross_section_reinit" title="ler.lens_galaxy_population.cross_section_interpolator.make_cross_section_reinit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_cross_section_reinit</span></code></a>(e1_grid, e2_grid, ...[, ...])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.cross_section_interpolator.C_LIGHT" title="ler.lens_galaxy_population.cross_section_interpolator.C_LIGHT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">C_LIGHT</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.cross_section_interpolator.C_LIGHT">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator.</span></span><span class="sig-name descname"><span class="pre">C_LIGHT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'299792.458'</span></em><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/cross_section_interpolator.html#C_LIGHT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.cross_section_interpolator.C_LIGHT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.cross_section_interpolator.cross_section">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator.</span></span><span class="sig-name descname"><span class="pre">cross_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e1_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e2_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma1_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma2_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cs_spline_coeff_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Da_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csunit_to_cs_slope</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csunit_to_cs_intercept</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/cross_section_interpolator.html#cross_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.cross_section_interpolator.cross_section" title="Link to this definition"></a></dt>
+<dd><p>theta_E, gamma, gamma1, gamma2, q, phi: 1D arrays (same length)
+grids: 1D
+cs_spline_coeff: spline-filtered coefficients (same shape as cs_spline_coeff)
+returns: 1D array</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.cross_section_interpolator.make_cross_section_reinit">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator.</span></span><span class="sig-name descname"><span class="pre">make_cross_section_reinit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e1_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e2_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma1_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma2_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cs_spline_coeff_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Da_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csunit_to_cs_slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.31830988618379075</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csunit_to_cs_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-3.2311742677852644e-27</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/cross_section_interpolator.html#make_cross_section_reinit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.cross_section_interpolator.make_cross_section_reinit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="ler.lens_galaxy_population" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../epl_shear_cross_section/index.html" class="btn btn-neutral float-right" title="ler.lens_galaxy_population.epl_shear_cross_section" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,5 +1,3 @@
-:orphan:
-
 :py:mod:`ler.utils`
 ===================
 
@@ -12,6 +10,9 @@ Submodules
    :titlesonly:
    :maxdepth: 1
 
+   cosmological_coversions/index.rst
+   function_interpolation/index.rst
+   gwsnr_training_data_generator/index.rst
    plots/index.rst
    utils/index.rst
 
@@ -25,6 +26,9 @@ Classes
 .. autoapisummary::
 
    ler.utils.NumpyEncoder
+   ler.utils.TrainingDataGenerator
+   ler.utils.FunctionConditioning
+   ler.utils.FunctionConditioning
 
 
 
@@ -33,6 +37,7 @@ Functions
 
 .. autoapisummary::
 
+   ler.utils.is_njitted
    ler.utils.load_pickle
    ler.utils.save_pickle
    ler.utils.load_hdf5
@@ -40,6 +45,7 @@ Functions
    ler.utils.load_json
    ler.utils.save_json
    ler.utils.append_json
+   ler.utils.concatenate_dict_values
    ler.utils.get_param_from_json
    ler.utils.load_txt_from_module
    ler.utils.rejection_sample
@@ -60,6 +66,7 @@ Functions
    ler.utils.create_batch_params
    ler.utils.monte_carlo_integration
    ler.utils.cubic_spline_interpolator
+   ler.utils.pdf_cubic_spline_interpolator
    ler.utils.pdf_cubic_spline_interpolator2d_array
    ler.utils.cubic_spline_interpolator2d_array
    ler.utils.coefficients_generator_ler
@@ -78,13 +85,23 @@ Functions
    ler.utils.get_param_from_json
    ler.utils.interpolator_json_path
    ler.utils.cubic_spline_interpolator
+   ler.utils.pdf_cubic_spline_interpolator
    ler.utils.cubic_spline_interpolator2d_array
    ler.utils.inverse_transform_sampler
    ler.utils.pdf_cubic_spline_interpolator2d_array
-   ler.utils.save_pickle
-   ler.utils.load_pickle
+   ler.utils.save_json
+   ler.utils.load_json
    ler.utils.inverse_transform_sampler2d
+   ler.utils.redshift_optimal_spacing
+   ler.utils.luminosity_distance
+   ler.utils.differential_comoving_volume
+   ler.utils.comoving_distance
+   ler.utils.angular_diameter_distance
+   ler.utils.angular_diameter_distance_z1z2
 
+
+
+.. py:function:: is_njitted(func)
 
 
 .. py:class:: NumpyEncoder(*, skipkeys=False, ensure_ascii=True, check_circular=True, allow_nan=True, sort_keys=False, indent=None, separators=None, default=None)
@@ -352,6 +369,40 @@ Functions
        **replace** : `bool`, optional
            If True, replace the json file with the dictionary. Default is False.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: concatenate_dict_values(dict1, dict2)
+
+   
+   Adds the values of two dictionaries together.
+
+
+   :Parameters:
+
+       **dict1** : `dict`
+           dictionary to be added.
+
+       **dict2** : `dict`
+           dictionary to be added.
+
+   :Returns:
+
+       **dict1** : `dict`
+           dictionary with added values.
 
 
 
@@ -873,7 +924,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: interpolator_from_json(param_dict_given, directory, sub_directory, name, x, pdf_func=None, y=None, conditioned_y=None, dimension=1, category='pdf', create_new=False)
+.. py:function:: interpolator_from_json(identifier_dict, directory, sub_directory, name, x, pdf_func=None, y=None, conditioned_y=None, dimension=1, category='pdf', create_new=False)
 
    
    Function to decide which interpolator to use.
@@ -881,8 +932,8 @@ Functions
 
    :Parameters:
 
-       **param_dict_given** : `dict`
-           dictionary of parameters.
+       **identifier_dict** : `dict`
+           dictionary of identifiers.
 
        **directory** : `str`
            directory to store the interpolator.
@@ -934,16 +985,16 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: interpolator_json_path(param_dict_given, directory, sub_directory, interpolator_name)
+.. py:function:: interpolator_json_path(identifier_dict, directory, sub_directory, interpolator_name)
 
    
-   Function to create the interpolator pickle file path.
+   Function to create the interpolator json file path.
 
 
    :Parameters:
 
-       **param_dict_given** : `dict`
-           dictionary of parameters.
+       **identifier_dict** : `dict`
+           dictionary of identifiers.
 
        **directory** : `str`
            directory to store the interpolator.
@@ -957,7 +1008,7 @@ Functions
    :Returns:
 
        **path_inv_cdf** : `str`
-           path of the interpolator pickle file.
+           path of the interpolator json file.
 
        **it_exist** : `bool`
            if True, the interpolator exists.
@@ -1113,6 +1164,43 @@ Functions
 
    
    Function to interpolate using cubic spline.
+
+
+   :Parameters:
+
+       **xnew** : `numpy.ndarray`
+           new x values.
+
+       **coefficients** : `numpy.ndarray`
+           coefficients of the cubic spline.
+
+       **x** : `numpy.ndarray`
+           x values.
+
+   :Returns:
+
+       **result** : `numpy.ndarray`
+           interpolated values.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: pdf_cubic_spline_interpolator(xnew, norm_const, coefficients, x)
+
+   
+   Function to interpolate pdf using cubic spline.
 
 
    :Parameters:
@@ -1462,7 +1550,7 @@ Functions
            Number of samples to generate.
 
        **alphans** : float
-           Power-law index (α).
+           Power-law index (alpha).
 
        **mminns** : float
            Minimum neutron star mass (lower bound).
@@ -1827,16 +1915,56 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: interpolator_json_path(param_dict_given, directory, sub_directory, interpolator_name)
+.. py:class:: TrainingDataGenerator(npool=4, z_min=0.0, z_max=5.0, verbose=True, **kwargs)
+
+
+   .. py:attribute:: npool
+      :value: '4'
+
+      
+
+   .. py:attribute:: z_min
+      :value: '0.0'
+
+      
+
+   .. py:attribute:: z_max
+      :value: '5.0'
+
+      
+
+   .. py:attribute:: verbose
+      :value: 'True'
+
+      
+
+   .. py:attribute:: ler_init_args
+
+      
+
+   .. py:method:: gw_parameters_generator(size, batch_size=100000, snr_recalculation=True, trim_to_size=False, verbose=True, replace=False, data_distribution_range=[0, 2, 4, 6, 8, 10, 12, 14, 16, 100], output_jsonfile='gw_parameters.json')
+
+
+   .. py:method:: helper_data_distribution(gw_param, data_distribution_range)
+
+
+   .. py:method:: combine_dicts(file_name_list=None, path_list=None, detector='L1', parameter_list=['mass_1', 'mass_2', 'luminosity_distance', 'theta_jn', 'psi', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2'], output_jsonfile='combined_data.json')
+
+
+   .. py:method:: delete_json_file(path_list)
+
+
+
+.. py:function:: interpolator_json_path(identifier_dict, directory, sub_directory, interpolator_name)
 
    
-   Function to create the interpolator pickle file path.
+   Function to create the interpolator json file path.
 
 
    :Parameters:
 
-       **param_dict_given** : `dict`
-           dictionary of parameters.
+       **identifier_dict** : `dict`
+           dictionary of identifiers.
 
        **directory** : `str`
            directory to store the interpolator.
@@ -1850,7 +1978,7 @@ Functions
    :Returns:
 
        **path_inv_cdf** : `str`
-           path of the interpolator pickle file.
+           path of the interpolator json file.
 
        **it_exist** : `bool`
            if True, the interpolator exists.
@@ -1874,6 +2002,43 @@ Functions
 
    
    Function to interpolate using cubic spline.
+
+
+   :Parameters:
+
+       **xnew** : `numpy.ndarray`
+           new x values.
+
+       **coefficients** : `numpy.ndarray`
+           coefficients of the cubic spline.
+
+       **x** : `numpy.ndarray`
+           x values.
+
+   :Returns:
+
+       **result** : `numpy.ndarray`
+           interpolated values.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: pdf_cubic_spline_interpolator(xnew, norm_const, coefficients, x)
+
+   
+   Function to interpolate pdf using cubic spline.
 
 
    :Parameters:
@@ -2030,19 +2195,19 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: save_pickle(file_name, param)
+.. py:function:: save_json(file_name, param)
 
    
-   Save a dictionary as a pickle file.
+   Save a dictionary as a json file.
 
 
    :Parameters:
 
        **file_name** : `str`
-           pickle file name for storing the parameters.
+           json file name for storing the parameters.
 
        **param** : `dict`
-           dictionary to be saved as a pickle file.
+           dictionary to be saved as a json file.
 
 
 
@@ -2060,16 +2225,16 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: load_pickle(file_name)
+.. py:function:: load_json(file_name)
 
    
-   Load a pickle file.
+   Load a json file.
 
 
    :Parameters:
 
        **file_name** : `str`
-           pickle file name for storing the parameters.
+           json file name for storing the parameters.
 
    :Returns:
 
@@ -2133,4 +2298,130 @@ Functions
 
    ..
        !! processed by numpydoc !!
+
+.. py:class:: FunctionConditioning(function=None, x_array=None, conditioned_y_array=None, y_array=None, non_zero_function=False, gaussian_kde=False, gaussian_kde_kwargs={}, identifier_dict={}, directory='./interpolator_json', sub_directory='default', name='default', create_new=False, create_function=False, create_function_inverse=False, create_pdf=False, create_rvs=False, multiprocessing_function=False, callback=None)
+
+
+   .. py:attribute:: info
+
+      
+
+   .. py:attribute:: callback
+      :value: 'None'
+
+      
+
+   .. py:method:: __call__(*args)
+
+
+   .. py:method:: create_decision_function(create_function, create_function_inverse, create_pdf, create_rvs)
+
+
+   .. py:method:: create_gaussian_kde(x_array, y_array, gaussian_kde_kwargs)
+
+
+   .. py:method:: create_interpolator(function, x_array, conditioned_y_array, create_function_inverse, create_pdf, create_rvs, multiprocessing_function)
+
+
+   .. py:method:: create_z_array(x_array, function, conditioned_y_array, create_pdf, create_rvs, multiprocessing_function)
+
+
+   .. py:method:: cdf_values_generator(x_array, z_array, conditioned_y_array)
+
+
+   .. py:method:: pdf_norm_const_generator(x_array, function_spline, conditioned_y_array)
+
+
+   .. py:method:: function_spline_generator(x_array, z_array, conditioned_y_array)
+
+
+
+.. py:class:: FunctionConditioning(function=None, x_array=None, conditioned_y_array=None, y_array=None, non_zero_function=False, gaussian_kde=False, gaussian_kde_kwargs={}, identifier_dict={}, directory='./interpolator_json', sub_directory='default', name='default', create_new=False, create_function=False, create_function_inverse=False, create_pdf=False, create_rvs=False, multiprocessing_function=False, callback=None)
+
+
+   .. py:attribute:: info
+
+      
+
+   .. py:attribute:: callback
+      :value: 'None'
+
+      
+
+   .. py:method:: __call__(*args)
+
+
+   .. py:method:: create_decision_function(create_function, create_function_inverse, create_pdf, create_rvs)
+
+
+   .. py:method:: create_gaussian_kde(x_array, y_array, gaussian_kde_kwargs)
+
+
+   .. py:method:: create_interpolator(function, x_array, conditioned_y_array, create_function_inverse, create_pdf, create_rvs, multiprocessing_function)
+
+
+   .. py:method:: create_z_array(x_array, function, conditioned_y_array, create_pdf, create_rvs, multiprocessing_function)
+
+
+   .. py:method:: cdf_values_generator(x_array, z_array, conditioned_y_array)
+
+
+   .. py:method:: pdf_norm_const_generator(x_array, function_spline, conditioned_y_array)
+
+
+   .. py:method:: function_spline_generator(x_array, z_array, conditioned_y_array)
+
+
+
+.. py:function:: redshift_optimal_spacing(z_min, z_max, resolution)
+
+
+.. py:function:: luminosity_distance(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
+
+   
+   Function to create a lookup table for the luminosity distance wrt redshift.
+
+
+   :Parameters:
+
+       **z** : `numpy.ndarray` or `float`
+           Source redshifts
+
+       **z_min** : `float`
+           Minimum redshift of the source population
+
+       **z_max** : `float`
+           Maximum redshift of the source population
+
+
+
+
+
+
+
+
+
+
+
+
+   :Attributes:
+
+       **z_to_luminosity_distance** : `ler.utils.FunctionConditioning`
+           Object of FunctionConditioning class containing the luminosity distance wrt redshift
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: differential_comoving_volume(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
+
+
+.. py:function:: comoving_distance(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
+
+
+.. py:function:: angular_diameter_distance(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
+
+
+.. py:function:: angular_diameter_distance_z1z2(z1=None, z2=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
+
 

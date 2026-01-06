@@ -125,82 +125,136 @@ Classes
    ----------
    LeR class has the following attributes:
 
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    | Atrributes                          | Type                             |
    +=====================================+==================================+
    |:attr:`~npool`                       | `int`                            |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`~z_min`                       | `float`                          |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`~z_max`                       | `float`                          |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`~event_type`                  | `str`                            |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`~cosmo`                       | `astropy.cosmology`              |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`~size`                        | `int`                            |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`~batch_size`                  | `int`                            |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`~json_file_names`             | `dict`                           |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`~interpolator_directory`      | `str`                            |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`~ler_directory`               | `str`                            |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`~gwsnr`                       | `bool`                           |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`~gw_param_sampler_dict`       | `dict`                           |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`~snr_calculator_dict`         | `dict`                           |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`~gw_param`                    | `dict`                           |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:attr:`~gw_param_detectable`         | `dict`                           |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
 
    Instance Methods
    ----------
    LeR class has the following methods:
 
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    | Methods                             | Description                      |
    +=====================================+==================================+
    |:meth:`~class_initialization`        | Function to initialize the       |
    |                                     | parent classes                   |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:meth:`~gwsnr_initialization`         | Function to initialize the       |
    |                                     | gwsnr class                      |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:meth:`~snr`                         | Function to get the snr with the |
    |                                     | given parameters.                |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:meth:`~store_gwrates_params`        | Function to store the all the    |
    |                                     | necessary parameters.            |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:meth:`~gw_cbc_statistics`           | Function to generate gw          |
    |                                     | GW source parameters.            |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:meth:`~gw_sampling_routine`         | Function to generate gw          |
    |                                     | GW source parameters.            |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:meth:`~gw_rate`                     | Function to calculate the        |
    |                                     | gw rate.                         |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:meth:`~selecting_n_gw_detectable_events`                               |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |                                     | Function to select n gw    |
    |                                     | detectable events.               |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
    |:meth:`~gw_param_plot`               | Function to plot the             |
    |                                     | distribution of the GW source    |
    |                                     | parameters.                      |
-   +-------------------------------------+----------------------------------+
+   +-------------------------+----------------------+
 
 
 
    ..
        !! processed by numpydoc !!
+   .. py:property:: gw_param
+
+      
+      Function to get data from the json file self.json_file_names["gw_param"].
+
+
+
+      :Returns:
+
+          **gw_param** : `dict`
+              dictionary of gw GW source parameters.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: gw_param_detectable
+
+      
+      Function to get data from the json file self.json_file_names["gw_param_detectable"].
+
+
+
+      :Returns:
+
+          **gw_param_detectable** : `dict`
+              dictionary of gw GW source parameters.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
    .. py:property:: snr
 
       
@@ -270,61 +324,8 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: gw_param
-
-      
-      Function to get data from the json file self.json_file_names["gw_param"].
-
-
-
-      :Returns:
-
-          **gw_param** : `dict`
-              dictionary of gw GW source parameters.
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: gw_param_detectable
-
-      
-      Function to get data from the json file self.json_file_names["gw_param_detectable"].
-
-
-
-      :Returns:
-
-          **gw_param_detectable** : `dict`
-              dictionary of gw GW source parameters.
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
    .. py:attribute:: z_min
+      :value: 'None'
 
       
       ``float``
@@ -349,6 +350,7 @@ Classes
           !! processed by numpydoc !!
 
    .. py:attribute:: z_max
+      :value: 'None'
 
       
       ``float``
@@ -373,6 +375,7 @@ Classes
           !! processed by numpydoc !!
 
    .. py:attribute:: event_type
+      :value: 'None'
 
       
       ``str``
@@ -399,6 +402,7 @@ Classes
           !! processed by numpydoc !!
 
    .. py:attribute:: cosmo
+      :value: 'None'
 
       
       ``astropy.cosmology``
@@ -423,6 +427,7 @@ Classes
           !! processed by numpydoc !!
 
    .. py:attribute:: size
+      :value: 'None'
 
       
       ``int``
@@ -447,6 +452,7 @@ Classes
           !! processed by numpydoc !!
 
    .. py:attribute:: batch_size
+      :value: 'None'
 
       
       ``int``
@@ -471,6 +477,7 @@ Classes
           !! processed by numpydoc !!
 
    .. py:attribute:: json_file_names
+      :value: 'None'
 
       
       ``dict``
@@ -495,6 +502,7 @@ Classes
           !! processed by numpydoc !!
 
    .. py:attribute:: interpolator_directory
+      :value: 'None'
 
       
       ``str``
@@ -519,6 +527,7 @@ Classes
           !! processed by numpydoc !!
 
    .. py:attribute:: ler_directory
+      :value: 'None'
 
       
       ``str``
@@ -543,6 +552,7 @@ Classes
           !! processed by numpydoc !!
 
    .. py:attribute:: gwsnr
+      :value: 'None'
 
       
       ``bool``
@@ -567,6 +577,7 @@ Classes
           !! processed by numpydoc !!
 
    .. py:attribute:: gw_param_sampler_dict
+      :value: 'None'
 
       
       ``dict``
@@ -591,6 +602,7 @@ Classes
           !! processed by numpydoc !!
 
    .. py:attribute:: snr_calculator_dict
+      :value: 'None'
 
       
       ``dict``
@@ -614,78 +626,20 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:attribute:: gw_param
+   .. py:attribute:: npool
+      :value: '4'
 
       
-      ``dict``
-
-      Dictionary of GW source parameters. The included parameters and their units are as follows (for default settings):
-
-      +--------------------+--------------+--------------------------------------+
-      | Parameter          | Units        | Description                          |
-      +====================+==============+======================================+
-      | zs                 |              | redshift of the source               |
-      +--------------------+--------------+--------------------------------------+
-      | geocent_time       | s            | GPS time of coalescence              |
-      +--------------------+--------------+--------------------------------------+
-      | ra                 | rad          | right ascension                      |
-      +--------------------+--------------+--------------------------------------+
-      | dec                | rad          | declination                          |
-      +--------------------+--------------+--------------------------------------+
-      | phase              | rad          | phase of GW at reference frequency   |
-      +--------------------+--------------+--------------------------------------+
-      | psi                | rad          | polarization angle                   |
-      +--------------------+--------------+--------------------------------------+
-      | theta_jn           | rad          | inclination angle                    |
-      +--------------------+--------------+--------------------------------------+
-      | luminosity_distance| Mpc          | luminosity distance                  |
-      +--------------------+--------------+--------------------------------------+
-      | mass_1_source      | Msun         | mass_1 of the compact binary         |
-      |                    |              | (source frame)                       |
-      +--------------------+--------------+--------------------------------------+
-      | mass_2_source      | Msun         | mass_2 of the compact binary         |
-      |                    |              | (source frame)                       |
-      +--------------------+--------------+--------------------------------------+
-      | mass_1             | Msun         | mass_1 of the compact binary         |
-      |                    |              | (detector frame)                     |
-      +--------------------+--------------+--------------------------------------+
-      | mass_2             | Msun         | mass_2 of the compact binary         |
-      |                    |              | (detector frame)                     |
-      +--------------------+--------------+--------------------------------------+
-      | L1                 |              | optimal snr of L1                    |
-      +--------------------+--------------+--------------------------------------+
-      | H1                 |              | optimal snr of H1                    |
-      +--------------------+--------------+--------------------------------------+
-      | V1                 |              | optimal snr of V1                    |
-      +--------------------+--------------+--------------------------------------+
-      | optimal_snr_net    |              | optimal snr of the network           |
-      +--------------------+--------------+--------------------------------------+
+      Number of processors for multiprocessing.
 
 
 
+      :Returns:
 
+          **npool** : ``int``
+              Number of parallel processes to use.
 
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:attribute:: gw_param_detectable
-
-      
-      ``dict``
-
-      Dictionary of detectable GW source parameters. It includes the same parameters as the :attr:`~gw_param` attribute.
-
-
+              default: 4
 
 
 
