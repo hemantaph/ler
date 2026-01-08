@@ -94,19 +94,27 @@
            <div itemprop="articleBody">
              
   <h1>Source code for ler.lens_galaxy_population.lens_parameter_sampler</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module for lens parameter sampling using rejection and importance sampling methods.</span>
+
+<span class="sd">This module provides functions to sample lens galaxy parameters (velocity dispersion,</span>
+<span class="sd">axis ratio, orientation, power-law index, and external shear) weighted by the </span>
+<span class="sd">gravitational lensing cross section. Two sampling strategies are implemented:</span>
+
+<span class="sd">- Rejection sampling: Uses accept/reject method with cross section as the target density \n</span>
+<span class="sd">- Importance sampling: Uses uniform proposal with cross section-based importance weights \n</span>
+
+<span class="sd">Both samplers can be optionally JIT-compiled using Numba for improved performance.</span>
+
+<span class="sd">Copyright (C) 2024 LeR Team. Distributed under MIT License.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<div class="viewcode-block" id="C_LIGHT">
-<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/lens_parameter_sampler/index.html#ler.lens_galaxy_population.C_LIGHT">[docs]</a>
-<span class="n">C_LIGHT</span> <span class="o">=</span> <span class="mf">299792.458</span>  <span class="c1"># km/s</span></div>
 
 
-<span class="c1"># ----------------------</span>
-<span class="c1"># Rejection sampler</span>
-<span class="c1"># ----------------------</span>
-<div class="viewcode-block" id="rejection_sampler">
-<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/lens_parameter_sampler/index.html#ler.lens_galaxy_population.rejection_sampler">[docs]</a>
-<span class="k">def</span> <span class="nf">rejection_sampler</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">_rejection_sampler</span><span class="p">(</span>
     <span class="n">zs</span><span class="p">,</span> 
     <span class="n">zl</span><span class="p">,</span>
     <span class="n">sigma_max</span><span class="p">,</span>
@@ -116,30 +124,75 @@
     <span class="n">gamma_rvs</span><span class="p">,</span>
     <span class="n">shear_rvs</span><span class="p">,</span>
     <span class="n">cross_section</span><span class="p">,</span>
-    <span class="n">saftey_factor</span> <span class="o">=</span> <span class="mf">1.2</span>
+    <span class="n">safety_factor</span><span class="o">=</span><span class="mf">1.2</span>
 <span class="p">):</span>
-    <span class="n">size</span> <span class="o">=</span> <span class="n">zl</span><span class="o">.</span><span class="n">size</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Core rejection sampling algorithm for lens parameters.</span>
+<span class="sd">    </span>
+<span class="sd">    Samples lens parameters from their prior distributions and accepts/rejects</span>
+<span class="sd">    based on the ratio of cross section to maximum cross section.</span>
 
-    <span class="n">sigma_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-    <span class="n">q_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-    <span class="n">phi_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-    <span class="n">gamma_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-    <span class="n">gamma1_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-    <span class="n">gamma2_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-    <span class="n">idx_remaining</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    zs : ``numpy.ndarray``</span>
+<span class="sd">        Source redshifts.</span>
+<span class="sd">    zl : ``numpy.ndarray``</span>
+<span class="sd">        Lens redshifts.</span>
+<span class="sd">    sigma_max : ``float``</span>
+<span class="sd">        Maximum velocity dispersion (km/s) for computing upper bound.</span>
+<span class="sd">    sigma_rvs : ``callable``</span>
+<span class="sd">        Function to sample velocity dispersion: sigma_rvs(n, zl) -&gt; array.</span>
+<span class="sd">    q_rvs : ``callable``</span>
+<span class="sd">        Function to sample axis ratio: q_rvs(n, sigma) -&gt; array.</span>
+<span class="sd">    phi_rvs : ``callable``</span>
+<span class="sd">        Function to sample orientation angle: phi_rvs(n) -&gt; array.</span>
+<span class="sd">    gamma_rvs : ``callable``</span>
+<span class="sd">        Function to sample power-law index: gamma_rvs(n) -&gt; array.</span>
+<span class="sd">    shear_rvs : ``callable``</span>
+<span class="sd">        Function to sample external shear: shear_rvs(n) -&gt; (gamma1, gamma2).</span>
+<span class="sd">    cross_section : ``callable``</span>
+<span class="sd">        Function to compute cross section.</span>
+<span class="sd">    safety_factor : ``float``</span>
+<span class="sd">        Multiplicative safety factor for the upper bound. \n</span>
+<span class="sd">        default: 1.2</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sigma_array : ``numpy.ndarray``</span>
+<span class="sd">        Sampled velocity dispersions (km/s).</span>
+<span class="sd">    q_array : ``numpy.ndarray``</span>
+<span class="sd">        Sampled axis ratios.</span>
+<span class="sd">    phi_array : ``numpy.ndarray``</span>
+<span class="sd">        Sampled orientation angles (rad).</span>
+<span class="sd">    gamma_array : ``numpy.ndarray``</span>
+<span class="sd">        Sampled power-law indices.</span>
+<span class="sd">    gamma1_array : ``numpy.ndarray``</span>
+<span class="sd">        Sampled external shear component 1.</span>
+<span class="sd">    gamma2_array : ``numpy.ndarray``</span>
+<span class="sd">        Sampled external shear component 2.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_samples</span> <span class="o">=</span> <span class="n">zl</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="n">sigma_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+    <span class="n">q_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+    <span class="n">phi_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+    <span class="n">gamma_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+    <span class="n">gamma1_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+    <span class="n">gamma2_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+    <span class="n">idx_remaining</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
 
     <span class="c1"># Compute the maximum cross section</span>
     <span class="c1"># to be used as the upper bound for the rejection sampler</span>
     <span class="n">cs_max</span> <span class="o">=</span> <span class="n">cross_section</span><span class="p">(</span>
                 <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
                 <span class="n">zl</span><span class="o">=</span><span class="n">zl</span><span class="p">,</span>
-                <span class="n">sigma</span><span class="o">=</span><span class="n">sigma_max</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="p">),</span>
-                <span class="n">q</span><span class="o">=</span><span class="mf">0.9</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="p">),</span>
-                <span class="n">phi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">),</span>
-                <span class="n">gamma</span><span class="o">=</span><span class="mf">2.645</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="p">),</span>
-                <span class="n">gamma1</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">),</span>
-                <span class="n">gamma2</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-              <span class="p">)</span> <span class="o">*</span> <span class="n">saftey_factor</span>
+                <span class="n">sigma</span><span class="o">=</span><span class="n">sigma_max</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_samples</span><span class="p">),</span>
+                <span class="n">q</span><span class="o">=</span><span class="mf">0.9</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_samples</span><span class="p">),</span>
+                <span class="n">phi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="p">),</span>
+                <span class="n">gamma</span><span class="o">=</span><span class="mf">2.645</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_samples</span><span class="p">),</span>
+                <span class="n">gamma1</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="p">),</span>
+                <span class="n">gamma2</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+              <span class="p">)</span> <span class="o">*</span> <span class="n">safety_factor</span>
 
     <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_remaining</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">n_remaining</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_remaining</span><span class="p">)</span>
@@ -172,7 +225,7 @@
 
         <span class="n">idx_remaining</span> <span class="o">=</span> <span class="n">idx_remaining</span><span class="p">[</span><span class="o">~</span><span class="n">accept</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">sigma_array</span><span class="p">,</span> <span class="n">q_array</span><span class="p">,</span> <span class="n">phi_array</span><span class="p">,</span> <span class="n">gamma_array</span><span class="p">,</span> <span class="n">gamma1_array</span><span class="p">,</span> <span class="n">gamma2_array</span></div>
+    <span class="k">return</span> <span class="n">sigma_array</span><span class="p">,</span> <span class="n">q_array</span><span class="p">,</span> <span class="n">phi_array</span><span class="p">,</span> <span class="n">gamma_array</span><span class="p">,</span> <span class="n">gamma1_array</span><span class="p">,</span> <span class="n">gamma2_array</span>
 
 
 <div class="viewcode-block" id="create_rejection_sampler">
@@ -185,12 +238,45 @@
     <span class="n">gamma_rvs</span><span class="p">,</span>
     <span class="n">shear_rvs</span><span class="p">,</span>
     <span class="n">cross_section</span><span class="p">,</span>
-    <span class="n">saftey_factor</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span>
+    <span class="n">safety_factor</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span>
     <span class="n">use_njit_sampler</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">):</span>
-    
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a rejection sampler for lens parameters weighted by cross section.</span>
+
+<span class="sd">    Returns a callable that samples lens parameters using rejection sampling,</span>
+<span class="sd">    optionally JIT-compiled for improved performance.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sigma_max : ``float``</span>
+<span class="sd">        Maximum velocity dispersion (km/s) for computing upper bound.</span>
+<span class="sd">    sigma_rvs : ``callable``</span>
+<span class="sd">        Function to sample velocity dispersion: sigma_rvs(n, zl) -&gt; array.</span>
+<span class="sd">    q_rvs : ``callable``</span>
+<span class="sd">        Function to sample axis ratio: q_rvs(n, sigma) -&gt; array.</span>
+<span class="sd">    phi_rvs : ``callable``</span>
+<span class="sd">        Function to sample orientation angle: phi_rvs(n) -&gt; array.</span>
+<span class="sd">    gamma_rvs : ``callable``</span>
+<span class="sd">        Function to sample power-law index: gamma_rvs(n) -&gt; array.</span>
+<span class="sd">    shear_rvs : ``callable``</span>
+<span class="sd">        Function to sample external shear: shear_rvs(n) -&gt; (gamma1, gamma2).</span>
+<span class="sd">    cross_section : ``callable``</span>
+<span class="sd">        Function to compute cross section.</span>
+<span class="sd">    safety_factor : ``float``</span>
+<span class="sd">        Multiplicative safety factor for the upper bound. \n</span>
+<span class="sd">        default: 1.2</span>
+<span class="sd">    use_njit_sampler : ``bool``</span>
+<span class="sd">        If True, uses Numba JIT compilation for faster execution. \n</span>
+<span class="sd">        default: True</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    rejection_sampler_wrapper : ``callable``</span>
+<span class="sd">        Function with signature (zs, zl) -&gt; (sigma, q, phi, gamma, gamma1, gamma2).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">use_njit_sampler</span><span class="p">:</span>
-        <span class="n">_base_sampler</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="n">rejection_sampler</span><span class="p">)</span>
+        <span class="n">_base_sampler</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="n">_rejection_sampler</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Faster, njitted and rejection sampling based lens parameter sampler will be used.&quot;</span><span class="p">)</span>
 
         <span class="nd">@njit</span>
@@ -207,14 +293,14 @@
                 <span class="n">gamma_rvs</span><span class="o">=</span><span class="n">gamma_rvs</span><span class="p">,</span>
                 <span class="n">shear_rvs</span><span class="o">=</span><span class="n">shear_rvs</span><span class="p">,</span>
                 <span class="n">cross_section</span><span class="o">=</span><span class="n">cross_section</span><span class="p">,</span>
-                <span class="n">saftey_factor</span><span class="o">=</span><span class="n">saftey_factor</span>
+                <span class="n">safety_factor</span><span class="o">=</span><span class="n">safety_factor</span>
             <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Slower, non-njit and rejection sampling based lens parameter sampler will be used.&quot;</span><span class="p">)</span>   
         <span class="k">def</span> <span class="nf">rejection_sampler_wrapper</span><span class="p">(</span>
             <span class="n">zs</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span>
         <span class="p">):</span>
-            <span class="k">return</span> <span class="n">rejection_sampler</span><span class="p">(</span>
+            <span class="k">return</span> <span class="n">_rejection_sampler</span><span class="p">(</span>
                 <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
                 <span class="n">zl</span><span class="o">=</span><span class="n">zl</span><span class="p">,</span>
                 <span class="n">sigma_max</span><span class="o">=</span><span class="n">sigma_max</span><span class="p">,</span>
@@ -224,31 +310,51 @@
                 <span class="n">gamma_rvs</span><span class="o">=</span><span class="n">gamma_rvs</span><span class="p">,</span>
                 <span class="n">shear_rvs</span><span class="o">=</span><span class="n">shear_rvs</span><span class="p">,</span>
                 <span class="n">cross_section</span><span class="o">=</span><span class="n">cross_section</span><span class="p">,</span>
-                <span class="n">saftey_factor</span><span class="o">=</span><span class="n">saftey_factor</span>
+                <span class="n">safety_factor</span><span class="o">=</span><span class="n">safety_factor</span>
             <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">rejection_sampler_wrapper</span></div>
 
 
 
-<span class="c1"># ----------------------</span>
-<span class="c1"># Importance sampler</span>
-<span class="c1"># ----------------------</span>
 <span class="nd">@njit</span>
-<div class="viewcode-block" id="sigma_proposal_uniform">
-<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/lens_parameter_sampler/index.html#ler.lens_galaxy_population.sigma_proposal_uniform">[docs]</a>
-<span class="k">def</span> <span class="nf">sigma_proposal_uniform</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">sigma_min</span><span class="p">,</span> <span class="n">sigma_max</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">sigma_min</span> <span class="o">+</span> <span class="p">(</span><span class="n">sigma_max</span> <span class="o">-</span> <span class="n">sigma_min</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
-
-
-
-<span class="nd">@njit</span>
-<div class="viewcode-block" id="weighted_choice_1d">
-<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/lens_parameter_sampler/index.html#ler.lens_galaxy_population.weighted_choice_1d">[docs]</a>
-<span class="k">def</span> <span class="nf">weighted_choice_1d</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_sigma_proposal_uniform</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">sigma_min</span><span class="p">,</span> <span class="n">sigma_max</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Draw an index with probability proportional to &#39;weights&#39; (assumed &gt;=0).</span>
+<span class="sd">    Draw uniform samples for velocity dispersion proposal.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : ``int``</span>
+<span class="sd">        Number of samples to draw.</span>
+<span class="sd">    sigma_min : ``float``</span>
+<span class="sd">        Minimum velocity dispersion (km/s).</span>
+<span class="sd">    sigma_max : ``float``</span>
+<span class="sd">        Maximum velocity dispersion (km/s).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sigma : ``numpy.ndarray``</span>
+<span class="sd">        Uniform samples in [sigma_min, sigma_max].</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">sigma_min</span> <span class="o">+</span> <span class="p">(</span><span class="n">sigma_max</span> <span class="o">-</span> <span class="n">sigma_min</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">_weighted_choice_1d</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Draw an index with probability proportional to weights.</span>
+<span class="sd">    </span>
 <span class="sd">    Numba-safe replacement for np.random.choice(n, p=weights).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    weights : ``numpy.ndarray``</span>
+<span class="sd">        Non-negative weights (need not be normalized).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    idx : ``int``</span>
+<span class="sd">        Randomly selected index.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">total</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
@@ -264,16 +370,10 @@
         <span class="n">c</span> <span class="o">+=</span> <span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">u</span> <span class="o">&lt;=</span> <span class="n">c</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">i</span>
-    <span class="k">return</span> <span class="n">weights</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># numerical fallback</span></div>
+    <span class="k">return</span> <span class="n">weights</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># numerical fallback</span>
 
 
-
-<span class="c1"># ----------------------</span>
-<span class="c1"># Importance sampler</span>
-<span class="c1"># ----------------------</span>
-<div class="viewcode-block" id="importance_sampler">
-<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/lens_parameter_sampler/index.html#ler.lens_galaxy_population.importance_sampler">[docs]</a>
-<span class="k">def</span> <span class="nf">importance_sampler</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">_importance_sampler</span><span class="p">(</span>
     <span class="n">zs</span><span class="p">,</span>
     <span class="n">zl</span><span class="p">,</span>
     <span class="n">sigma_min</span><span class="p">,</span>
@@ -286,21 +386,66 @@
     <span class="n">cross_section</span><span class="p">,</span>
     <span class="n">n_prop</span><span class="p">,</span>
 <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Core importance sampling algorithm for lens parameters.</span>
+<span class="sd">    </span>
+<span class="sd">    Uses uniform proposal for velocity dispersion and reweights samples based on</span>
+<span class="sd">    the product of cross section and the target sigma PDF.</span>
 
-    <span class="n">N</span> <span class="o">=</span> <span class="n">zl</span><span class="o">.</span><span class="n">size</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    zs : ``numpy.ndarray``</span>
+<span class="sd">        Source redshifts.</span>
+<span class="sd">    zl : ``numpy.ndarray``</span>
+<span class="sd">        Lens redshifts.</span>
+<span class="sd">    sigma_min : ``float``</span>
+<span class="sd">        Minimum velocity dispersion (km/s) for uniform proposal.</span>
+<span class="sd">    sigma_max : ``float``</span>
+<span class="sd">        Maximum velocity dispersion (km/s) for uniform proposal.</span>
+<span class="sd">    q_rvs : ``callable``</span>
+<span class="sd">        Function to sample axis ratio: q_rvs(n, sigma) -&gt; array.</span>
+<span class="sd">    phi_rvs : ``callable``</span>
+<span class="sd">        Function to sample orientation angle: phi_rvs(n) -&gt; array.</span>
+<span class="sd">    gamma_rvs : ``callable``</span>
+<span class="sd">        Function to sample power-law index: gamma_rvs(n) -&gt; array.</span>
+<span class="sd">    shear_rvs : ``callable``</span>
+<span class="sd">        Function to sample external shear: shear_rvs(n) -&gt; (gamma1, gamma2).</span>
+<span class="sd">    sigma_pdf : ``callable``</span>
+<span class="sd">        PDF of velocity dispersion: sigma_pdf(sigma, zl) -&gt; array.</span>
+<span class="sd">    cross_section : ``callable``</span>
+<span class="sd">        Function to compute cross section.</span>
+<span class="sd">    n_prop : ``int``</span>
+<span class="sd">        Number of proposal samples per lens.</span>
 
-    <span class="n">sigma_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-    <span class="n">q_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-    <span class="n">phi_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-    <span class="n">gamma_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-    <span class="n">gamma1_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-    <span class="n">gamma2_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sigma_post : ``numpy.ndarray``</span>
+<span class="sd">        Sampled velocity dispersions (km/s).</span>
+<span class="sd">    q_post : ``numpy.ndarray``</span>
+<span class="sd">        Sampled axis ratios.</span>
+<span class="sd">    phi_post : ``numpy.ndarray``</span>
+<span class="sd">        Sampled orientation angles (rad).</span>
+<span class="sd">    gamma_post : ``numpy.ndarray``</span>
+<span class="sd">        Sampled power-law indices.</span>
+<span class="sd">    gamma1_post : ``numpy.ndarray``</span>
+<span class="sd">        Sampled external shear component 1.</span>
+<span class="sd">    gamma2_post : ``numpy.ndarray``</span>
+<span class="sd">        Sampled external shear component 2.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_samples</span> <span class="o">=</span> <span class="n">zl</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="n">sigma_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+    <span class="n">q_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+    <span class="n">phi_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+    <span class="n">gamma_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+    <span class="n">gamma1_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+    <span class="n">gamma2_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
 
     <span class="n">p0</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma_max</span> <span class="o">-</span> <span class="n">sigma_min</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">n_samples</span><span class="p">):</span>
         <span class="c1"># (1) draw proposals</span>
-        <span class="n">sigma_prop</span> <span class="o">=</span> <span class="n">sigma_proposal_uniform</span><span class="p">(</span><span class="n">n_prop</span><span class="p">,</span> <span class="n">sigma_min</span><span class="p">,</span> <span class="n">sigma_max</span><span class="p">)</span>
+        <span class="n">sigma_prop</span> <span class="o">=</span> <span class="n">_sigma_proposal_uniform</span><span class="p">(</span><span class="n">n_prop</span><span class="p">,</span> <span class="n">sigma_min</span><span class="p">,</span> <span class="n">sigma_max</span><span class="p">)</span>
 
         <span class="c1"># draw other parameters from their priors</span>
         <span class="n">q_prop</span> <span class="o">=</span> <span class="n">q_rvs</span><span class="p">(</span><span class="n">n_prop</span><span class="p">,</span> <span class="n">sigma_prop</span><span class="p">)</span>
@@ -309,7 +454,6 @@
         <span class="n">gamma1_prop</span><span class="p">,</span> <span class="n">gamma2_prop</span> <span class="o">=</span> <span class="n">shear_rvs</span><span class="p">(</span><span class="n">n_prop</span><span class="p">)</span>
 
         <span class="c1"># (2) compute cross sections</span>
-        <span class="c1"># cross_section expects (zs, zl, sigma, q, phi, gamma, gamma1, gamma2)</span>
         <span class="n">zs_arr</span> <span class="o">=</span> <span class="n">zs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_prop</span><span class="p">)</span>
         <span class="n">zl_arr</span> <span class="o">=</span> <span class="n">zl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_prop</span><span class="p">)</span>
 
@@ -326,14 +470,12 @@
             <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cs</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
                 <span class="n">cs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">cs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">/</span> <span class="n">cs_sum</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># if cs all zeros, sampling should revert to prior/proposal only</span>
-            <span class="c1"># which is p_sigma/p0; keep cs = 1 so w ∝ p_sigma/p0</span>
+            <span class="c1"># if cs all zeros, sampling reverts to prior/proposal only</span>
             <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cs</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
                 <span class="n">cs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
 
         <span class="c1"># (3) compute weights: w = cs * (p_sigma / p0)</span>
-        <span class="n">zl_vec</span> <span class="o">=</span> <span class="n">zl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_prop</span><span class="p">)</span>
-        <span class="n">p_sigma</span> <span class="o">=</span> <span class="n">sigma_pdf</span><span class="p">(</span><span class="n">sigma_prop</span><span class="p">,</span> <span class="n">zl_vec</span><span class="p">)</span>
+        <span class="n">p_sigma</span> <span class="o">=</span> <span class="n">sigma_pdf</span><span class="p">(</span><span class="n">sigma_prop</span><span class="p">,</span> <span class="n">zl_arr</span><span class="p">)</span>
 
         <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_prop</span><span class="p">)</span>
         <span class="n">w_sum</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -356,7 +498,7 @@
                 <span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">inv</span>
 
         <span class="c1"># (4) draw 1 posterior sample via weighted choice</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="n">weighted_choice_1d</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">_weighted_choice_1d</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
 
         <span class="n">sigma_post</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma_prop</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
         <span class="n">q_post</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">q_prop</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
@@ -365,8 +507,7 @@
         <span class="n">gamma1_post</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">gamma1_prop</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
         <span class="n">gamma2_post</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">gamma2_prop</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">sigma_post</span><span class="p">,</span> <span class="n">q_post</span><span class="p">,</span> <span class="n">phi_post</span><span class="p">,</span> <span class="n">gamma_post</span><span class="p">,</span> <span class="n">gamma1_post</span><span class="p">,</span> <span class="n">gamma2_post</span></div>
-
+    <span class="k">return</span> <span class="n">sigma_post</span><span class="p">,</span> <span class="n">q_post</span><span class="p">,</span> <span class="n">phi_post</span><span class="p">,</span> <span class="n">gamma_post</span><span class="p">,</span> <span class="n">gamma1_post</span><span class="p">,</span> <span class="n">gamma2_post</span>
 
 
 <div class="viewcode-block" id="create_importance_sampler">
@@ -383,9 +524,44 @@
     <span class="n">n_prop</span><span class="p">,</span>
     <span class="n">use_njit_sampler</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create an importance sampler for lens parameters weighted by cross section.</span>
+
+<span class="sd">    Returns a callable that samples lens parameters using importance sampling</span>
+<span class="sd">    with uniform proposal, optionally JIT-compiled for improved performance.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sigma_min : ``float``</span>
+<span class="sd">        Minimum velocity dispersion (km/s) for uniform proposal.</span>
+<span class="sd">    sigma_max : ``float``</span>
+<span class="sd">        Maximum velocity dispersion (km/s) for uniform proposal.</span>
+<span class="sd">    q_rvs : ``callable``</span>
+<span class="sd">        Function to sample axis ratio: q_rvs(n, sigma) -&gt; array.</span>
+<span class="sd">    phi_rvs : ``callable``</span>
+<span class="sd">        Function to sample orientation angle: phi_rvs(n) -&gt; array.</span>
+<span class="sd">    gamma_rvs : ``callable``</span>
+<span class="sd">        Function to sample power-law index: gamma_rvs(n) -&gt; array.</span>
+<span class="sd">    shear_rvs : ``callable``</span>
+<span class="sd">        Function to sample external shear: shear_rvs(n) -&gt; (gamma1, gamma2).</span>
+<span class="sd">    sigma_pdf : ``callable``</span>
+<span class="sd">        PDF of velocity dispersion: sigma_pdf(sigma, zl) -&gt; array.</span>
+<span class="sd">    cross_section : ``callable``</span>
+<span class="sd">        Function to compute cross section.</span>
+<span class="sd">    n_prop : ``int``</span>
+<span class="sd">        Number of proposal samples per lens.</span>
+<span class="sd">    use_njit_sampler : ``bool``</span>
+<span class="sd">        If True, uses Numba JIT compilation for faster execution. \n</span>
+<span class="sd">        default: True</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    importance_sampler_wrapper : ``callable``</span>
+<span class="sd">        Function with signature (zs, zl) -&gt; (sigma, q, phi, gamma, gamma1, gamma2).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">use_njit_sampler</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Faster, njitted and importance sampling based lens parameter sampler will be used.&quot;</span><span class="p">)</span>
-        <span class="n">_base_sampler</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">importance_sampler</span><span class="p">)</span>
+        <span class="n">_base_sampler</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">_importance_sampler</span><span class="p">)</span>
 
         <span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">importance_sampler_wrapper</span><span class="p">(</span>
@@ -409,7 +585,7 @@
         <span class="k">def</span> <span class="nf">importance_sampler_wrapper</span><span class="p">(</span>
             <span class="n">zs</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span>
         <span class="p">):</span>
-            <span class="k">return</span> <span class="n">importance_sampler</span><span class="p">(</span>
+            <span class="k">return</span> <span class="n">_importance_sampler</span><span class="p">(</span>
                 <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
                 <span class="n">zl</span><span class="o">=</span><span class="n">zl</span><span class="p">,</span>
                 <span class="n">sigma_min</span><span class="o">=</span><span class="n">sigma_min</span><span class="p">,</span>

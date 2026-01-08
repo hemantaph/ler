@@ -30,7 +30,7 @@
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="ler.lens_galaxy_population.epl_shear_cross_section" href="../epl_shear_cross_section/index.html" />
+    <link rel="next" title="ler.lens_galaxy_population.jit_functions" href="../jit_functions/index.html" />
     <link rel="prev" title="ler.lens_galaxy_population" href="../index.html" /> 
 </head>
 
@@ -70,11 +70,9 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#key-features">Key Features:</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../epl_shear_cross_section/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.epl_shear_cross_section</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../jit_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.jit_functions</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../lens_galaxy_parameter_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_galaxy_parameter_distribution</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../lens_parameter_sampler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_parameter_sampler</span></code></a></li>
@@ -116,38 +114,41 @@
              
   <section id="module-ler.lens_galaxy_population.cross_section_interpolator">
 <span id="ler-lens-galaxy-population-cross-section-interpolator"></span><h1><a class="reference internal" href="#module-ler.lens_galaxy_population.cross_section_interpolator" title="ler.lens_galaxy_population.cross_section_interpolator"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator</span></code></a><a class="headerlink" href="#module-ler.lens_galaxy_population.cross_section_interpolator" title="Link to this heading"></a></h1>
+<p>Module for gravitational lensing cross section interpolation.</p>
 <p>This module provides highly optimized Numba-compiled functions for interpolating
-gravitational lensing cross sections in a 5-dimensional parameter space.</p>
-<p>The module uses cubic B-spline interpolation on prefiltered coefficient grids to
-achieve efficient and accurate interpolation of cross section values based on:</p>
-<blockquote>
-<div><ul class="simple">
+gravitational lensing cross sections in a 5-dimensional parameter space using
+cubic B-spline interpolation on prefiltered coefficient grids.</p>
+<p>The interpolation is performed based on:</p>
+<ul class="simple">
 <li><p>Ellipticity components (e1, e2) derived from axis ratio q and position angle phi</p></li>
 <li><p>Density profile slope (gamma)</p></li>
 <li><p>External shear components (gamma1, gamma2)</p></li>
 </ul>
-</div></blockquote>
-<section id="key-features">
-<h2>Key Features:<a class="headerlink" href="#key-features" title="Link to this heading"></a></h2>
+<p>Key Features:</p>
 <ul class="simple">
 <li><p>JIT-compiled with Numba for high performance</p></li>
 <li><p>Parallel processing support for batch evaluations</p></li>
 <li><p>Cubic B-spline interpolation matching scipy’s map_coordinates behavior</p></li>
 <li><p>Automatic scaling by Einstein radius and affine calibration</p></li>
 </ul>
-<p>Author: Hemanta Kumar Phurailatpam</p>
-</section>
+<dl>
+<dt>Usage:</dt><dd><p>Basic workflow example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.lens_galaxy_population.cross_section_interpolator</span> <span class="kn">import</span> <span class="n">make_cross_section_reinit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cs_func</span> <span class="o">=</span> <span class="n">make_cross_section_reinit</span><span class="p">(</span><span class="n">e1_grid</span><span class="p">,</span> <span class="n">e2_grid</span><span class="p">,</span> <span class="n">gamma_grid</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cross_sections</span> <span class="o">=</span> <span class="n">cs_func</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Copyright (C) 2024 Hemanta Kumar Phurailatpam. Distributed under MIT License.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.cross_section_interpolator.cross_section" title="ler.lens_galaxy_population.cross_section_interpolator.cross_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_section</span></code></a>(zs, zl, sigma, q, phi, gamma, gamma1, ...)</p></td>
-<td><p>theta_E, gamma, gamma1, gamma2, q, phi: 1D arrays (same length)</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.cross_section_interpolator.make_cross_section_reinit" title="ler.lens_galaxy_population.cross_section_interpolator.make_cross_section_reinit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_cross_section_reinit</span></code></a>(e1_grid, e2_grid, ...[, ...])</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.cross_section_interpolator.make_cross_section_reinit" title="ler.lens_galaxy_population.cross_section_interpolator.make_cross_section_reinit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_cross_section_reinit</span></code></a>(e1_grid, e2_grid, ...[, ...])</p></td>
+<td><p>Factory function to create a JIT-compiled cross section calculator.</p></td>
 </tr>
 </tbody>
 </table>
@@ -167,18 +168,58 @@ achieve efficient and accurate interpolation of cross section values based on:</
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.cross_section_interpolator.cross_section">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator.</span></span><span class="sig-name descname"><span class="pre">cross_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e1_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e2_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma1_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma2_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cs_spline_coeff_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Da_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csunit_to_cs_slope</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csunit_to_cs_intercept</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/cross_section_interpolator.html#cross_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.cross_section_interpolator.cross_section" title="Link to this definition"></a></dt>
-<dd><p>theta_E, gamma, gamma1, gamma2, q, phi: 1D arrays (same length)
-grids: 1D
-cs_spline_coeff: spline-filtered coefficients (same shape as cs_spline_coeff)
-returns: 1D array</p>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.cross_section_interpolator.make_cross_section_reinit">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator.</span></span><span class="sig-name descname"><span class="pre">make_cross_section_reinit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e1_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e2_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma1_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma2_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cs_spline_coeff_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Da_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csunit_to_cs_slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.31830988618379075</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csunit_to_cs_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-3.2311742677852644e-27</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/cross_section_interpolator.html#make_cross_section_reinit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.cross_section_interpolator.make_cross_section_reinit" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator.</span></span><span class="sig-name descname"><span class="pre">make_cross_section_reinit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e1_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e2_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma1_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma2_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cs_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Da_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csunit_to_cs_slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.31830988618379075</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csunit_to_cs_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-3.2311742677852644e-27</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/cross_section_interpolator.html#make_cross_section_reinit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.cross_section_interpolator.make_cross_section_reinit" title="Link to this definition"></a></dt>
+<dd><p>Factory function to create a JIT-compiled cross section calculator.</p>
+<p>This function precomputes B-spline coefficients and creates a closure
+that captures the grid parameters, returning a fast Numba-compiled
+function for computing cross sections.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>e1_grid</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Grid values for ellipticity component e1, shape (n_e1,).</p>
+</dd>
+<dt><strong>e2_grid</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Grid values for ellipticity component e2, shape (n_e2,).</p>
+</dd>
+<dt><strong>gamma_grid</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Grid values for density slope gamma, shape (n_g,).</p>
+</dd>
+<dt><strong>gamma1_grid</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Grid values for shear component gamma1, shape (n_g1,).</p>
+</dd>
+<dt><strong>gamma2_grid</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Grid values for shear component gamma2, shape (n_g2,).</p>
+</dd>
+<dt><strong>cs_grid</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Raw cross section grid data (before spline filtering),</p>
+<p>shape (n_e1, n_e2, n_g, n_g1, n_g2).</p>
+</dd>
+<dt><strong>Da_instance</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Angular diameter distance function.</p>
+<p>Signature: <code class="docutils literal notranslate"><span class="pre">Da_instance(z)</span> <span class="pre">-&gt;</span> <span class="pre">distance</span></code></p>
+</dd>
+<dt><strong>csunit_to_cs_slope</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Slope for affine calibration from unit cross section.</p>
+<p>default: 0.31830988618379075</p>
+</dd>
+<dt><strong>csunit_to_cs_intercept</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Intercept for affine calibration from unit cross section.</p>
+<p>default: -3.2311742677852644e-27</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>cross_section_reinit</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>JIT-compiled function with signature:</p>
+<p><code class="docutils literal notranslate"><span class="pre">cross_section_reinit(zs,</span> <span class="pre">zl,</span> <span class="pre">sigma,</span> <span class="pre">q,</span> <span class="pre">phi,</span> <span class="pre">gamma,</span> <span class="pre">gamma1,</span> <span class="pre">gamma2)</span></code></p>
+<p>Returns cross sections as <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> of shape (N,).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.lens_galaxy_population.cross_section_interpolator</span> <span class="kn">import</span> <span class="n">make_cross_section_reinit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cs_func</span> <span class="o">=</span> <span class="n">make_cross_section_reinit</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">e1_grid</span><span class="p">,</span> <span class="n">e2_grid</span><span class="p">,</span> <span class="n">gamma_grid</span><span class="p">,</span> <span class="n">gamma1_grid</span><span class="p">,</span> <span class="n">gamma2_grid</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">cs_grid</span><span class="p">,</span> <span class="n">Da_instance</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cross_sections</span> <span class="o">=</span> <span class="n">cs_func</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
 
 </section>
 </section>
@@ -189,7 +230,7 @@ returns: 1D array</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../index.html" class="btn btn-neutral float-left" title="ler.lens_galaxy_population" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../epl_shear_cross_section/index.html" class="btn btn-neutral float-right" title="ler.lens_galaxy_population.epl_shear_cross_section" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../jit_functions/index.html" class="btn btn-neutral float-right" title="ler.lens_galaxy_population.jit_functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -24,7 +24,7 @@
 
      - :class:`~ler.gw_source_population.CBCSourceRedshiftDistribution`
 
-   - Uses the ``gwsnr`` package for SNR calculation.
+   - Uses the ``gwsnr`` package for pdet calculation.
 
    Usage:
        Basic workflow for rate calculation:

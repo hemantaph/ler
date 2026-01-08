@@ -94,59 +94,70 @@
            <div itemprop="articleBody">
              
   <h1>Source code for ler.gw_source_population.sfr_with_time_delay</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module for computing star formation rates with time delays.</span>
+
+<span class="sd">This module provides functions for computing the star formation rate at a given</span>
+<span class="sd">redshift, accounting for time delays between formation and observation. The time</span>
+<span class="sd">delay distribution follows a 1/t power-law form, and the formation redshift is</span>
+<span class="sd">computed using the cosmological age-redshift relation.</span>
+
+<span class="sd">Key Features: \n</span>
+<span class="sd">- Time-delayed star formation rate computation \n</span>
+<span class="sd">- Integration with Madau &amp; Fragos (2017) SFR model \n</span>
+<span class="sd">- Monte Carlo integration for time delay averaging \n</span>
+<span class="sd">- Cosmological calculations using Astropy \n</span>
+
+<span class="sd">Copyright (C) 2026 Hemanta Ph. Distributed under MIT License.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">fsolve</span>
 <span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
-<div class="viewcode-block" id="cosmo">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/sfr_with_time_delay/index.html#ler.gw_source_population.cosmo">[docs]</a>
-<span class="n">cosmo</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span></div>
 
-<span class="c1"># from scipy.interpolate import interp1d</span>
 <span class="kn">from</span> <span class="nn">.jit_functions</span> <span class="kn">import</span> <span class="n">sfr_madau_fragos2017</span>
+
 
 <div class="viewcode-block" id="sfr_with_time_delay">
 <a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/sfr_with_time_delay/index.html#ler.gw_source_population.sfr_with_time_delay">[docs]</a>
 <span class="k">def</span> <span class="nf">sfr_with_time_delay</span><span class="p">(</span><span class="n">input_args</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute the star formation rate at redshift z, given parameters a, b, c, and d, </span>
-<span class="sd">    and cosmological parameters H0, Omega_M, and Omega_Lambda. </span>
-<span class="sd">    The star formation rate is time-delayed relative to the observed redshift, </span>
-<span class="sd">    with a time delay uniformly distributed between td_min and td_max. </span>
-<span class="sd">    The time delay is computed using the cosmology provided by astropy.</span>
+<span class="sd">    Compute star formation rate at observed redshift with time delay.</span>
+
+<span class="sd">    The star formation rate is time-delayed relative to the observed redshift,</span>
+<span class="sd">    with a time delay uniformly distributed between td_min and td_max. The</span>
+<span class="sd">    formation redshift is computed using the cosmological age-redshift relation.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    input_args : list</span>
-<span class="sd">        z : float</span>
-<span class="sd">            observed redshift</span>
-<span class="sd">        idx : int</span>
-<span class="sd">            index of the galaxy</span>
-<span class="sd">        td_min : float</span>
-<span class="sd">            minimum time delay in Gyr</span>
-<span class="sd">        td_max : float</span>
-<span class="sd">            maximum time delay in Gyr</span>
-<span class="sd">        H0 : float</span>
-<span class="sd">            Hubble constant in km/s/Mpc</span>
-<span class="sd">        Omega_M : float</span>
-<span class="sd">            matter density parameter</span>
-<span class="sd">        Omega_Lambda : float</span>
-<span class="sd">            dark energy density parameter</span>
-<span class="sd">        a : float</span>
-<span class="sd">            parameter of the Madau-Fragos star formation rate</span>
-<span class="sd">        b : float</span>
-<span class="sd">            parameter of the Madau-Fragos star formation rate</span>
-<span class="sd">        c : float</span>
-<span class="sd">            parameter of the Madau-Fragos star formation rate</span>
-<span class="sd">        d : float</span>
-<span class="sd">            parameter of the Madau-Fragos star formation rate</span>
+<span class="sd">    input_args : ``list``</span>
+<span class="sd">        List containing the following elements in order: \n</span>
+<span class="sd">        - z (``float``): Observed redshift \n</span>
+<span class="sd">        - idx (``int``): Index identifier for the computation \n</span>
+<span class="sd">        - td_min (``float``): Minimum time delay (Gyr) \n</span>
+<span class="sd">        - td_max (``float``): Maximum time delay (Gyr) \n</span>
+<span class="sd">        - H0 (``float``): Hubble constant (km/s/Mpc) \n</span>
+<span class="sd">        - Omega_M (``float``): Matter density parameter \n</span>
+<span class="sd">        - Omega_Lambda (``float``): Dark energy density parameter \n</span>
+<span class="sd">        - a (``float``): Madau-Fragos SFR normalization parameter \n</span>
+<span class="sd">        - b (``float``): Madau-Fragos low-z power-law slope \n</span>
+<span class="sd">        - c (``float``): Madau-Fragos turnover parameter \n</span>
+<span class="sd">        - d (``float``): Madau-Fragos high-z power-law slope \n</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    idx : int</span>
-<span class="sd">        index of the galaxy</span>
-<span class="sd">    result : float</span>
-<span class="sd">        star formation rate at observed redshift z</span>
+<span class="sd">    idx : ``int``</span>
+<span class="sd">        Index identifier (same as input).</span>
+<span class="sd">    result : ``float``</span>
+<span class="sd">        Time-averaged star formation rate at observed redshift z.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population.sfr_with_time_delay import sfr_with_time_delay</span>
+<span class="sd">    &gt;&gt;&gt; args = [0.5, 0, 0.02, 13.0, 70.0, 0.3, 0.7, 0.01, 2.6, 3.2, 6.2]</span>
+<span class="sd">    &gt;&gt;&gt; idx, sfr = sfr_with_time_delay(args)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">input_args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">idx</span> <span class="o">=</span> <span class="n">input_args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -160,51 +171,64 @@
     <span class="n">c</span> <span class="o">=</span> <span class="n">input_args</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span>
     <span class="n">d</span> <span class="o">=</span> <span class="n">input_args</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">E</span><span class="p">(</span><span class="n">z_prime</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Hubble parameter as a function of redshift.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_E</span><span class="p">(</span><span class="n">z_prime</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute dimensionless Hubble parameter E(z).&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Omega_M</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">z_prime</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="n">Omega_Lambda</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">integrand</span><span class="p">(</span><span class="n">z_prime</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Integrand for the equation.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">H0</span><span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">z_prime</span><span class="p">)</span> <span class="o">*</span> <span class="n">E</span><span class="p">(</span><span class="n">z_prime</span><span class="p">))</span> <span class="o">*</span> <span class="mf">977.813</span> 
+    <span class="k">def</span> <span class="nf">_integrand</span><span class="p">(</span><span class="n">z_prime</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute integrand for lookback time calculation.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">H0</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">z_prime</span><span class="p">)</span> <span class="o">*</span> <span class="n">_E</span><span class="p">(</span><span class="n">z_prime</span><span class="p">))</span> <span class="o">*</span> <span class="mf">977.813</span>
 
-    <span class="k">def</span> <span class="nf">time_delay</span><span class="p">(</span><span class="n">zform</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Time delay between formation and observation.&quot;&quot;&quot;</span>
-        <span class="n">integral</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">integrand</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">zform</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_time_delay</span><span class="p">(</span><span class="n">zform</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute time delay between formation and observation redshifts.&quot;&quot;&quot;</span>
+        <span class="n">integral</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">_integrand</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">zform</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">integral</span>
 
-    <span class="k">def</span> <span class="nf">equation_to_solve</span><span class="p">(</span><span class="n">zform</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">td</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Equation to solve for zform.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">td</span> <span class="o">-</span> <span class="n">time_delay</span><span class="p">(</span><span class="n">zform</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
-    
-    <span class="k">def</span> <span class="nf">find_zform</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">td</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find zform using grid search and linear interpolation.&quot;&quot;&quot;</span>
-        <span class="n">zform_solution</span> <span class="o">=</span> <span class="n">fsolve</span><span class="p">(</span><span class="n">equation_to_solve</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">td</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">zform_solution</span>
-    
-    <span class="c1"># montecalo integration</span>
-    <span class="k">def</span> <span class="nf">integrand_rates</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">zform_max</span><span class="o">=</span><span class="mf">1000.</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_equation_to_solve</span><span class="p">(</span><span class="n">zform</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">td</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Residual equation for finding formation redshift.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">td</span> <span class="o">-</span> <span class="n">_time_delay</span><span class="p">(</span><span class="n">zform</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">_find_zform</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">td</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find formation redshift for given observation redshift and time delay.&quot;&quot;&quot;</span>
+        <span class="n">zform_solution</span> <span class="o">=</span> <span class="n">fsolve</span><span class="p">(</span><span class="n">_equation_to_solve</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">td</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">zform_solution</span>
+
+    <span class="k">def</span> <span class="nf">_integrand_rates</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">zform_max</span><span class="o">=</span><span class="mf">1000.</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute time-averaged SFR using Monte Carlo integration.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        z : ``float``</span>
+<span class="sd">            Observed redshift.</span>
+<span class="sd">        size : ``int``</span>
+<span class="sd">            Number of Monte Carlo samples. \n</span>
+<span class="sd">            default: 100000</span>
+<span class="sd">        zform_max : ``float``</span>
+<span class="sd">            Maximum formation redshift cutoff. \n</span>
+<span class="sd">            default: 1000.0</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        integral : ``float``</span>
+<span class="sd">            Time-averaged star formation rate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">td</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">td_min</span><span class="p">,</span> <span class="n">td_max</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
-        <span class="n">td_max_allowed</span> <span class="o">=</span> <span class="n">time_delay</span><span class="p">(</span><span class="n">zform_max</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
-        <span class="c1"># idx = td &lt; td_max_allowed</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">td</span> <span class="o">&lt;</span> <span class="n">td_max_allowed</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">td_max_allowed</span> <span class="o">=</span> <span class="n">_time_delay</span><span class="p">(</span><span class="n">zform_max</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+        <span class="n">idx_valid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">td</span> <span class="o">&lt;</span> <span class="n">td_max_allowed</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">P_td</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">td</span><span class="p">)</span>
-        <span class="c1"># print(&#39;idx&#39;, idx)</span>
-        <span class="c1"># print(&#39;td&#39;, td)</span>
-        <span class="c1"># print(&#39;td_max_allowed&#39;, td_max_allowed)</span>
-        <span class="n">P_td</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">td_max</span><span class="o">/</span><span class="n">td_min</span><span class="p">)</span> <span class="o">*</span> <span class="n">td</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> 
+        <span class="n">P_td</span><span class="p">[</span><span class="n">idx_valid</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">td_max</span> <span class="o">/</span> <span class="n">td_min</span><span class="p">)</span> <span class="o">*</span> <span class="n">td</span><span class="p">[</span><span class="n">idx_valid</span><span class="p">])</span>
 
         <span class="n">zform</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">td</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">idx_</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">:</span>
-            <span class="n">zform</span><span class="p">[</span><span class="n">idx_</span><span class="p">]</span> <span class="o">=</span> <span class="n">find_zform</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">td</span><span class="p">[</span><span class="n">idx_</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">idx_</span> <span class="ow">in</span> <span class="n">idx_valid</span><span class="p">:</span>
+            <span class="n">zform</span><span class="p">[</span><span class="n">idx_</span><span class="p">]</span> <span class="o">=</span> <span class="n">_find_zform</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">td</span><span class="p">[</span><span class="n">idx_</span><span class="p">])</span>
 
         <span class="n">psi</span> <span class="o">=</span> <span class="n">sfr_madau_fragos2017</span><span class="p">(</span><span class="n">zform</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
 
-        <span class="n">integral</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">td_max</span> <span class="o">-</span> <span class="n">td_min</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">P_td</span> <span class="o">*</span> <span class="n">psi</span><span class="p">)</span>
+        <span class="n">integral</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">td_max</span> <span class="o">-</span> <span class="n">td_min</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">P_td</span> <span class="o">*</span> <span class="n">psi</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">integral</span>
 
-    <span class="n">result</span> <span class="o">=</span> <span class="n">integrand_rates</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">_integrand_rates</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span> <span class="n">result</span></div>
 
 </pre></div>

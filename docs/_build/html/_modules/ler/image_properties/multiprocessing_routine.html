@@ -96,84 +96,135 @@
   <h1>Source code for ler.image_properties.multiprocessing_routine</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This sub-module contains the functions to solve the lens equation for a given set of lens parameters. The lens equation is solved using the analytical solver in lenstronomy. The functions in this sub-module are used in the multiprocessing routine to solve the lens equation for a given set of lens parameters.</span>
+<span class="sd">Module for solving lens equations using multiprocessing.</span>
+
+<span class="sd">This sub-module contains functions to solve the lens equation for a given set</span>
+<span class="sd">of lens parameters. The lens equation is solved using the analytical solver in</span>
+<span class="sd">lenstronomy. These functions are used in the multiprocessing routine within</span>
+<span class="sd">the ImageProperties class.</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">    Basic workflow example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from ler.image_properties.multiprocessing_routine import solve_lens_equation</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from multiprocessing import Pool</span>
+<span class="sd">    &gt;&gt;&gt; lens_params = np.array([2, 0.02, -0.01, 1.9, 0.1, 0.09, 0.25, 0.94, 1e-6, 0, &#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;], dtype=object)</span>
+<span class="sd">    &gt;&gt;&gt; result = solve_lens_equation(lens_params)</span>
+
+<span class="sd">Copyright (C) 2026 Phurailatpam Hemanta Kumar. Distributed under MIT License.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">lenstronomy.LensModel.lens_model</span> <span class="kn">import</span> <span class="n">LensModel</span>
 <span class="kn">from</span> <span class="nn">lenstronomy.LensModel.Solver.lens_equation_solver</span> <span class="kn">import</span> <span class="n">LensEquationSolver</span>
 <span class="kn">from</span> <span class="nn">lenstronomy.LensModel.Solver.epl_shear_solver</span> <span class="kn">import</span> <span class="n">caustics_epl_shear</span>
-<span class="c1"># from lenstronomy.Util.param_util import phi_q2_ellipticity</span>
-<span class="c1"># from ..lens_galaxy_population.jit_functions import axis_ratio_rayleigh</span>
 
 <span class="c1"># For sampling from caustic</span>
 <span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Polygon</span>
 <span class="kn">import</span> <span class="nn">pointpats</span>
+
+<span class="c1"># Constants</span>
+<div class="viewcode-block" id="MAX_RETRIES">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/multiprocessing_routine/index.html#ler.image_properties.MAX_RETRIES">[docs]</a>
+<span class="n">MAX_RETRIES</span> <span class="o">=</span> <span class="mi">100</span></div>
+
+<div class="viewcode-block" id="MIN_MAGNIFICATION">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/multiprocessing_routine/index.html#ler.image_properties.MIN_MAGNIFICATION">[docs]</a>
+<span class="n">MIN_MAGNIFICATION</span> <span class="o">=</span> <span class="mf">0.01</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_create_nan_result</span><span class="p">(</span><span class="n">iteration</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a NaN-filled result tuple for invalid lens configurations.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    iteration : ``int``</span>
+<span class="sd">        The iteration number to include in the result.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result : ``tuple``</span>
+<span class="sd">        A tuple with NaN values for all output parameters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nan_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="n">nan_array</span><span class="p">,</span>
+        <span class="n">nan_array</span><span class="p">,</span>
+        <span class="n">nan_array</span><span class="p">,</span>
+        <span class="n">nan_array</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">nan_array</span><span class="p">,</span>
+        <span class="n">nan_array</span><span class="p">,</span>
+        <span class="n">iteration</span><span class="p">,</span>
+    <span class="p">)</span>
 
 
 <div class="viewcode-block" id="solve_lens_equation">
 <a class="viewcode-back" href="../../../autoapi/ler/image_properties/multiprocessing_routine/index.html#ler.image_properties.solve_lens_equation">[docs]</a>
 <span class="k">def</span> <span class="nf">solve_lens_equation</span><span class="p">(</span><span class="n">lens_parameters</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Function to solve the lens equation (min_image = 2)</span>
+<span class="sd">    Solve the lens equation to find image properties.</span>
+
+<span class="sd">    Uses the analytical solver from lenstronomy to find image positions,</span>
+<span class="sd">    magnifications, time delays, and hessian properties for strongly</span>
+<span class="sd">    lensed sources. Source positions are sampled from within the caustic</span>
+<span class="sd">    region to ensure multiple imaging.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    lens_parameters : `list`</span>
-<span class="sd">        a list of parameters</span>
-<span class="sd">        lens_parameters[0] = min_images : minimum number of images</span>
-<span class="sd">        lens_parameters[1] = e1 : ellipticity</span>
-<span class="sd">        lens_parameters[2] = e2 : ellipticity</span>
-<span class="sd">        lens_parameters[3] = gamma : power-law index</span>
-<span class="sd">        lens_parameters[4] = gamma1 : shear</span>
-<span class="sd">        lens_parameters[5] = gamma2 : shear</span>
-<span class="sd">        lens_parameters[6] = zl : redshift of the lens</span>
-<span class="sd">        lens_parameters[7] = zs : redshift of the source</span>
-<span class="sd">        lens_parameters[8] = einstein_radius : Einstein radius</span>
-<span class="sd">        lens_parameters[9] = iteration : iteration number</span>
-<span class="sd">        lens_parameters[10:] = lens_model_list : numpy array of lens models</span>
+<span class="sd">    lens_parameters : ``numpy.ndarray``</span>
+<span class="sd">        Array of lens configuration parameters with the following structure: \n</span>
+<span class="sd">        - [0]: n_min_images - minimum number of images required \n</span>
+<span class="sd">        - [1]: e1 - ellipticity component 1 \n</span>
+<span class="sd">        - [2]: e2 - ellipticity component 2 \n</span>
+<span class="sd">        - [3]: gamma - power-law slope of mass density \n</span>
+<span class="sd">        - [4]: gamma1 - external shear component 1 \n</span>
+<span class="sd">        - [5]: gamma2 - external shear component 2 \n</span>
+<span class="sd">        - [6]: zl - lens redshift \n</span>
+<span class="sd">        - [7]: zs - source redshift \n</span>
+<span class="sd">        - [8]: einstein_radius - Einstein radius (units: arcsec) \n</span>
+<span class="sd">        - [9]: iteration - iteration index for tracking \n</span>
+<span class="sd">        - [10:]: lens_model_list - lens model names (e.g., &#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;) \n</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    x_source : `float`</span>
-<span class="sd">        x position of the source in the source plane, unit: arcsec</span>
-<span class="sd">    y_source : `float`</span>
-<span class="sd">        y position of the source in the source plane</span>
-<span class="sd">    x0_image_position : `float`</span>
-<span class="sd">        x position of the images in the source plane</span>
-<span class="sd">    x1_image_position : `float`</span>
-<span class="sd">        y position of the images in the source plane</span>
-<span class="sd">    magnifications : `float`</span>
-<span class="sd">        magnification of the images</span>
-<span class="sd">    time_delays : `float`</span>
-<span class="sd">        time-delay of the images</span>
-<span class="sd">    nImages : `int`</span>
-<span class="sd">        number of images</span>
-<span class="sd">    determinant : `float`</span>
-<span class="sd">        determinant of the hessian matrix</span>
-<span class="sd">    trace : `float`</span>
-<span class="sd">        trace of the hessian matrix</span>
-<span class="sd">    iteration : `int`</span>
-<span class="sd">        iteration number</span>
+<span class="sd">    x_source : ``float``</span>
+<span class="sd">        Source x-position (units: arcsec).</span>
+<span class="sd">    y_source : ``float``</span>
+<span class="sd">        Source y-position (units: arcsec).</span>
+<span class="sd">    x0_image_position : ``numpy.ndarray``</span>
+<span class="sd">        Image x-positions (units: arcsec).</span>
+<span class="sd">    x1_image_position : ``numpy.ndarray``</span>
+<span class="sd">        Image y-positions (units: arcsec).</span>
+<span class="sd">    magnifications : ``numpy.ndarray``</span>
+<span class="sd">        Magnification factors for each image.</span>
+<span class="sd">    time_delays : ``numpy.ndarray``</span>
+<span class="sd">        Time delays for each image (units: seconds).</span>
+<span class="sd">    nImages : ``int``</span>
+<span class="sd">        Number of images formed.</span>
+<span class="sd">    determinant : ``numpy.ndarray``</span>
+<span class="sd">        Determinant of the lensing Jacobian for each image.</span>
+<span class="sd">    trace : ``numpy.ndarray``</span>
+<span class="sd">        Trace of the lensing Jacobian for each image.</span>
+<span class="sd">    iteration : ``int``</span>
+<span class="sd">        Iteration index passed through for tracking.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; from ler.image_properties.multiprocessing_routine import solve_lens_equation</span>
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">    &gt;&gt;&gt; from multiprocessing import Pool</span>
-<span class="sd">    &gt;&gt;&gt; # lens parameters input contains 12 parameters [e1, e2, gamma, gamma1, gamma2, zl, zs, einstein_radius, iteration, lens_model_list]</span>
-<span class="sd">    &gt;&gt;&gt; lens_parameters1 = np.array([2, 0.024069457093642648, -0.016002190961948142, 1.8945414936459974, 0.10117465203892329, 0.09600089396968613, 0.2503743800068136, 0.9418211055453296, 2.5055790287104725e-06, 0, &#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;], dtype=object)</span>
-<span class="sd">    &gt;&gt;&gt; lens_parameters2 = np.array([2, -0.04030088581646998, -0.01419438113690042, 2.0068239327017, 0.08482718989370612, -0.015393332086560785, 1.0952303138971118, 2.5534097159384417, 1.0125570159563301e-06, 1, &#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;], dtype=object)</span>
+<span class="sd">    &gt;&gt;&gt; lens_parameters1 = np.array([2, 0.024, -0.016, 1.89, 0.10, 0.09, 0.25, 0.94, 2.5e-06, 0, &#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;], dtype=object)</span>
+<span class="sd">    &gt;&gt;&gt; lens_parameters2 = np.array([2, -0.040, -0.014, 2.00, 0.08, -0.01, 1.09, 2.55, 1.0e-06, 1, &#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;], dtype=object)</span>
 <span class="sd">    &gt;&gt;&gt; input_arguments = np.vstack((lens_parameters1, lens_parameters2))</span>
-<span class="sd">    &gt;&gt;&gt; # solve the lens equation for each set of lens parameters</span>
 <span class="sd">    &gt;&gt;&gt; with Pool(2) as p:</span>
-<span class="sd">    ...     result = p.map(solve_lens_equation1, input_arguments)</span>
-<span class="sd">    &gt;&gt;&gt; # result is a list of tuples</span>
-<span class="sd">    &gt;&gt;&gt; # each tuple contains the output parameters of the function</span>
-<span class="sd">    &gt;&gt;&gt; # each output parameter contains x_source, y_source, x0_image_position, x1_image_position, magnifications, time_delays, nImages, determinant, trace, iteration</span>
-<span class="sd">    &gt;&gt;&gt; print(f&quot;magnification of images with lens parameters &#39;lens_parameters1&#39; is {result[0][6]}&quot;)</span>
-<span class="sd">    magnification of images with lens parameters &#39;lens_parameters1&#39; is [ 2.18973765 -1.27542831]</span>
-
+<span class="sd">    ...     result = p.map(solve_lens_equation, input_arguments)</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;Number of images: {result[0][6]}&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">n_min_images</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lens_parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">zl</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
@@ -181,76 +232,49 @@
     <span class="n">einstein_radius</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
     <span class="n">iteration</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span>
 
-    <span class="c1"># define return value if strong lensing condition not satisfied</span>
-
-    <span class="c1"># lensModel parameters are the same for the three functions used for image param calculation</span>
-    <span class="c1"># 1. x-y position of images in the source plane, 2. magnifications, 3. time-delays (relative)</span>
+    <span class="c1"># Initialize lens model for image position, magnification, and time-delay calculations</span>
     <span class="n">lensModel</span> <span class="o">=</span> <span class="n">LensModel</span><span class="p">(</span>
         <span class="n">lens_model_list</span><span class="o">=</span><span class="n">lens_parameters</span><span class="p">[</span><span class="mi">10</span><span class="p">:]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">z_lens</span><span class="o">=</span><span class="n">zl</span><span class="p">,</span> <span class="n">z_source</span><span class="o">=</span><span class="n">zs</span>
     <span class="p">)</span>
-
     <span class="n">lens_eq_solver</span> <span class="o">=</span> <span class="n">LensEquationSolver</span><span class="p">(</span><span class="n">lensModel</span><span class="p">)</span>
 
+    <span class="c1"># Build lens model parameters</span>
     <span class="n">factor</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="c1"># ---------------------------------#</span>
-    <span class="c1">#     x-y position of images in the source plane</span>
-    <span class="c1"># ---------------------------------#</span>
-    <span class="c1"># Get the caustic curve cut by the lens</span>
-    <span class="c1"># First check if there is any nan in the caustic points</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">kwargs_lens</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">{</span>
-                <span class="s2">&quot;theta_E&quot;</span><span class="p">:</span> <span class="n">factor</span><span class="p">,</span>
-                <span class="s2">&quot;e1&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-                <span class="s2">&quot;e2&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
-                <span class="s2">&quot;gamma&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
-                <span class="s2">&quot;center_x&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-                <span class="s2">&quot;center_y&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-            <span class="p">},</span>
-            <span class="p">{</span>
-                <span class="s2">&quot;gamma1&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span>
-                <span class="s2">&quot;gamma2&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span>
-                <span class="s2">&quot;ra_0&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s2">&quot;dec_0&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="p">},</span>
-        <span class="p">]</span>
-        <span class="n">caustic_double_points</span> <span class="o">=</span> <span class="n">caustics_epl_shear</span><span class="p">(</span>
-            <span class="n">kwargs_lens</span><span class="p">,</span> <span class="n">return_which</span><span class="o">=</span><span class="s2">&quot;double&quot;</span><span class="p">,</span> <span class="n">maginf</span><span class="o">=-</span><span class="mi">100</span>
-        <span class="p">)</span>
-        <span class="n">caustic</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">caustic_double_points</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">())</span>
+    <span class="n">kwargs_lens</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;theta_E&quot;</span><span class="p">:</span> <span class="n">factor</span><span class="p">,</span>
+            <span class="s2">&quot;e1&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="s2">&quot;e2&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+            <span class="s2">&quot;gamma&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+            <span class="s2">&quot;center_x&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;center_y&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;gamma1&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span>
+            <span class="s2">&quot;gamma2&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span>
+            <span class="s2">&quot;ra_0&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;dec_0&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
 
-        <span class="c1"># If there is a nan, caustic=False, this batch will be ignored and resampled outside in lens_parameters sampling</span>
-        <span class="k">if</span> <span class="n">caustic</span><span class="p">:</span>
-            <span class="k">break</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># print(&quot;Found invalid caustic. Will resample parameters.&quot;)</span>
-            <span class="k">return</span> <span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
-                <span class="mi">0</span><span class="p">,</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
-                <span class="n">iteration</span><span class="p">,</span>
-            <span class="p">)</span>
+    <span class="c1"># Get the caustic curve for double-imaging region</span>
+    <span class="n">caustic_double_points</span> <span class="o">=</span> <span class="n">caustics_epl_shear</span><span class="p">(</span>
+        <span class="n">kwargs_lens</span><span class="p">,</span> <span class="n">return_which</span><span class="o">=</span><span class="s2">&quot;double&quot;</span><span class="p">,</span> <span class="n">maginf</span><span class="o">=-</span><span class="mi">100</span>
+    <span class="p">)</span>
+    <span class="n">caustic_is_valid</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">caustic_double_points</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
 
-    <span class="c1"># define region in the source plane where 2 or more images are formed</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">caustic_is_valid</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_create_nan_result</span><span class="p">(</span><span class="n">iteration</span><span class="p">)</span>
+
+    <span class="c1"># Define region where 2+ images form</span>
     <span class="n">caustic_double</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">caustic_double_points</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 
-    <span class="c1"># check for strong lensed condition</span>
+    <span class="c1"># Sample source positions until strong lensing condition is satisfied</span>
     <span class="n">strongly_lensed</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="n">strongly_lensed</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
-        <span class="c1"># Draw random points within the caustic</span>
-        <span class="c1"># sometimes x_source, y_source positions are at same location and the solver fails</span>
-        <span class="c1"># so we use a try-except block to catch the error and draw a new point</span>
-        <span class="c1"># try:</span>
+    <span class="n">retry_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">strongly_lensed</span><span class="p">:</span>
         <span class="n">x_source</span><span class="p">,</span> <span class="n">y_source</span> <span class="o">=</span> <span class="n">pointpats</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">caustic_double</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="c1"># Solve the lens equation</span>
-        <span class="k">try</span><span class="p">:</span>  <span class="c1"># this to catch this error: &quot;ValueError: Signs are not different&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
             <span class="p">(</span>
                 <span class="n">x0_image_position</span><span class="p">,</span>
                 <span class="n">x1_image_position</span><span class="p">,</span>
@@ -259,53 +283,25 @@
                 <span class="n">sourcePos_y</span><span class="o">=</span><span class="n">y_source</span><span class="p">,</span>
                 <span class="n">kwargs_lens</span><span class="o">=</span><span class="n">kwargs_lens</span><span class="p">,</span>
                 <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;analytical&quot;</span><span class="p">,</span>
-                <span class="n">magnification_limit</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">,</span>
+                <span class="n">magnification_limit</span><span class="o">=</span><span class="n">MIN_MAGNIFICATION</span><span class="p">,</span>
                 <span class="n">arrival_time_sort</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
-                <span class="mi">0</span><span class="p">,</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
-                <span class="n">iteration</span><span class="p">,</span>
-            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_create_nan_result</span><span class="p">(</span><span class="n">iteration</span><span class="p">)</span>
 
-        <span class="n">nImages</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x0_image_position</span><span class="p">)</span>  <span class="c1"># shows how many images</span>
+        <span class="n">nImages</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x0_image_position</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">nImages</span> <span class="o">&gt;=</span> <span class="n">n_min_images</span><span class="p">:</span>
             <span class="n">strongly_lensed</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="c1"># check 100 times if strongly lensed condition is not satisfied</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
-            <span class="c1"># print(&quot;Cannot satisfy strong lensing condition. Will resample parameters.&quot;)</span>
-            <span class="k">return</span> <span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
-                <span class="mi">0</span><span class="p">,</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]),</span>
-                <span class="n">iteration</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="c1">##########</span>
+        <span class="k">if</span> <span class="n">retry_count</span> <span class="o">&gt;</span> <span class="n">MAX_RETRIES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_create_nan_result</span><span class="p">(</span><span class="n">iteration</span><span class="p">)</span>
+        <span class="n">retry_count</span> <span class="o">+=</span> <span class="mi">1</span>
 
-    <span class="c1"># ---------------------------------#</span>
-    <span class="c1">#          magnification and time-delay</span>
-    <span class="c1"># ---------------------------------#</span>
-    <span class="c1"># theta_E is in arcsec</span>
+    <span class="c1"># Compute magnifications and time delays</span>
     <span class="n">theta_E_nImages</span> <span class="o">=</span> <span class="n">einstein_radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">nImages</span><span class="p">)</span>
     <span class="n">radian_to_arcseconds</span> <span class="o">=</span> <span class="mf">180.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">3600.0</span>
     <span class="n">days_to_seconds</span> <span class="o">=</span> <span class="mf">24.0</span> <span class="o">*</span> <span class="mf">3600.0</span>
-    <span class="c1"># can have multiple magnification</span>
+
     <span class="n">magnifications</span> <span class="o">=</span> <span class="n">lensModel</span><span class="o">.</span><span class="n">magnification</span><span class="p">(</span>
         <span class="n">x0_image_position</span><span class="p">,</span> <span class="n">x1_image_position</span><span class="p">,</span> <span class="n">kwargs_lens</span>
     <span class="p">)</span>
@@ -315,24 +311,19 @@
         <span class="o">*</span> <span class="n">days_to_seconds</span>
     <span class="p">)</span>
 
-    <span class="c1"># ---------------------------------#</span>
-    <span class="c1">#     Params needed for image-type classification</span>
-    <span class="c1"># ---------------------------------#</span>
-    <span class="c1"># it is faster to use numpy array operation to do image classification</span>
-    <span class="c1"># return: f_xx, f_xy, f_yx, f_yy components</span>
+    <span class="c1"># Compute hessian properties for image type classification</span>
     <span class="n">hessian</span> <span class="o">=</span> <span class="n">lensModel</span><span class="o">.</span><span class="n">hessian</span><span class="p">(</span><span class="n">x0_image_position</span><span class="p">,</span> <span class="n">x1_image_position</span><span class="p">,</span> <span class="n">kwargs_lens</span><span class="p">)</span>
     <span class="n">determinant</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
         <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">hessian</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">hessian</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">-</span> <span class="n">hessian</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">hessian</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
     <span class="p">)</span>
     <span class="n">trace</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mi">2</span> <span class="o">-</span> <span class="n">hessian</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">hessian</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
 
-    <span class="c1"># scale source and image positions to arcsec</span>
+    <span class="c1"># Scale positions to physical units</span>
     <span class="n">x_source</span> <span class="o">=</span> <span class="n">x_source</span> <span class="o">*</span> <span class="n">einstein_radius</span>
     <span class="n">y_source</span> <span class="o">=</span> <span class="n">y_source</span> <span class="o">*</span> <span class="n">einstein_radius</span>
     <span class="n">x0_image_position</span> <span class="o">=</span> <span class="n">x0_image_position</span> <span class="o">*</span> <span class="n">einstein_radius</span>
     <span class="n">x1_image_position</span> <span class="o">=</span> <span class="n">x1_image_position</span> <span class="o">*</span> <span class="n">einstein_radius</span>
 
-    <span class="c1">#  return also gamma1, gamma2</span>
     <span class="k">return</span> <span class="p">(</span>
         <span class="n">x_source</span><span class="p">,</span>
         <span class="n">y_source</span><span class="p">,</span>
@@ -345,8 +336,6 @@
         <span class="n">trace</span><span class="p">,</span>
         <span class="n">iteration</span><span class="p">,</span>
     <span class="p">)</span></div>
-
-
 
 </pre></div>
 

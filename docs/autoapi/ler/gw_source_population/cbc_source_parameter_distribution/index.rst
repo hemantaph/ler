@@ -259,11 +259,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for source redshift, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the redshift distribution
-      - `pdf`: returns the probability density function of the redshift distribution
-      - `function`: returns the redshift distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the redshift distribution
+
+      - `pdf`: returns the probability density function of the redshift distribution
+
+      - `function`: returns the redshift distribution function.
 
 
       :Returns:
@@ -290,9 +293,10 @@ Attributes
 
       
       Class object (of FunctionConditioning) for source frame masses, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the density profile slope distribution
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the density profile slope distribution
 
 
       :Returns:
@@ -327,11 +331,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for geocentric time, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the geocentric time distribution
-      - `pdf`: returns the probability density function of the geocentric time distribution
-      - `function`: returns the geocentric time distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the geocentric time distribution
+
+      - `pdf`: returns the probability density function of the geocentric time distribution
+
+      - `function`: returns the geocentric time distribution function.
 
 
       :Returns:
@@ -358,11 +365,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for right ascension, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the right ascension distribution
-      - `pdf`: returns the probability density function of the right ascension distribution
-      - `function`: returns the right ascension distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the right ascension distribution
+
+      - `pdf`: returns the probability density function of the right ascension distribution
+
+      - `function`: returns the right ascension distribution function.
 
 
       :Returns:
@@ -389,11 +399,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for declination, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the declination distribution
-      - `pdf`: returns the probability density function of the declination distribution
-      - `function`: returns the declination distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the declination distribution
+
+      - `pdf`: returns the probability density function of the declination distribution
+
+      - `function`: returns the declination distribution function.
 
 
       :Returns:
@@ -420,11 +433,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for coalescence phase, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the coalescence phase distribution
-      - `pdf`: returns the probability density function of the coalescence phase distribution
-      - `function`: returns the coalescence phase distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the coalescence phase distribution
+
+      - `pdf`: returns the probability density function of the coalescence phase distribution
+
+      - `function`: returns the coalescence phase distribution function.
 
 
       :Returns:
@@ -451,11 +467,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for polarization angle, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the polarization angle distribution
-      - `pdf`: returns the probability density function of the polarization angle distribution
-      - `function`: returns the polarization angle distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the polarization angle distribution
+
+      - `pdf`: returns the probability density function of the polarization angle distribution
+
+      - `function`: returns the polarization angle distribution function.
 
 
       :Returns:
@@ -482,11 +501,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for inclination angle, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the inclination angle distribution
-      - `pdf`: returns the probability density function of the inclination angle distribution
-      - `function`: returns the inclination angle distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the inclination angle distribution
+
+      - `pdf`: returns the probability density function of the inclination angle distribution
+
+      - `function`: returns the inclination angle distribution function.
 
 
       :Returns:
@@ -513,11 +535,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for spin1 magnitude, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the spin1 magnitude distribution
-      - `pdf`: returns the probability density function of the spin1 magnitude distribution
-      - `function`: returns the spin1 magnitude distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the spin1 magnitude distribution
+
+      - `pdf`: returns the probability density function of the spin1 magnitude distribution
+
+      - `function`: returns the spin1 magnitude distribution function.
 
 
       :Returns:
@@ -544,11 +569,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for spin2 magnitude, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the spin2 magnitude distribution
-      - `pdf`: returns the probability density function of the spin2 magnitude distribution
-      - `function`: returns the spin2 magnitude distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the spin2 magnitude distribution
+
+      - `pdf`: returns the probability density function of the spin2 magnitude distribution
+
+      - `function`: returns the spin2 magnitude distribution function.
 
 
       :Returns:
@@ -575,11 +603,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for tilt1 angle, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the tilt1 angle distribution
-      - `pdf`: returns the probability density function of the tilt1 angle distribution
-      - `function`: returns the tilt1 angle distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the tilt1 angle distribution
+
+      - `pdf`: returns the probability density function of the tilt1 angle distribution
+
+      - `function`: returns the tilt1 angle distribution function.
 
 
       :Returns:
@@ -606,11 +637,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for tilt2 angle, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the tilt2 angle distribution
-      - `pdf`: returns the probability density function of the tilt2 angle distribution
-      - `function`: returns the tilt2 angle distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the tilt2 angle distribution
+
+      - `pdf`: returns the probability density function of the tilt2 angle distribution
+
+      - `function`: returns the tilt2 angle distribution function.
 
 
       :Returns:
@@ -637,11 +671,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for phi_12 angle, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the phi_12 angle distribution
-      - `pdf`: returns the probability density function of the phi_12 angle distribution
-      - `function`: returns the phi_12 angle distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the phi_12 angle distribution
+
+      - `pdf`: returns the probability density function of the phi_12 angle distribution
+
+      - `function`: returns the phi_12 angle distribution function.
 
 
       :Returns:
@@ -668,11 +705,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for phi_jl angle, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the phi_jl angle distribution
-      - `pdf`: returns the probability density function of the phi_jl angle distribution
-      - `function`: returns the phi_jl angle distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the phi_jl angle distribution
+
+      - `pdf`: returns the probability density function of the phi_jl angle distribution
+
+      - `function`: returns the phi_jl angle distribution function.
 
 
       :Returns:

@@ -5,7 +5,23 @@
 
 .. autoapi-nested-parse::
 
-   This sub-module contains the functions to solve the lens equation for a given set of lens parameters. The lens equation is solved using the analytical solver in lenstronomy. The functions in this sub-module are used in the multiprocessing routine to solve the lens equation for a given set of lens parameters.
+   Module for solving lens equations using multiprocessing.
+
+   This sub-module contains functions to solve the lens equation for a given set
+   of lens parameters. The lens equation is solved using the analytical solver in
+   lenstronomy. These functions are used in the multiprocessing routine within
+   the ImageProperties class.
+
+   Usage:
+       Basic workflow example:
+
+       >>> from ler.image_properties.multiprocessing_routine import solve_lens_equation
+       >>> import numpy as np
+       >>> from multiprocessing import Pool
+       >>> lens_params = np.array([2, 0.02, -0.01, 1.9, 0.1, 0.09, 0.25, 0.94, 1e-6, 0, 'EPL_NUMBA', 'SHEAR'], dtype=object)
+       >>> result = solve_lens_equation(lens_params)
+
+   Copyright (C) 2026 Phurailatpam Hemanta Kumar. Distributed under MIT License.
 
    ..
        !! processed by numpydoc !!
@@ -24,59 +40,93 @@ Functions
 
 
 
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   ler.image_properties.multiprocessing_routine.MAX_RETRIES
+   ler.image_properties.multiprocessing_routine.MIN_MAGNIFICATION
+
+
+.. py:data:: MAX_RETRIES
+   :value: '100'
+
+   
+
+.. py:data:: MIN_MAGNIFICATION
+   :value: '0.01'
+
+   
+
 .. py:function:: solve_lens_equation(lens_parameters)
 
    
-   Function to solve the lens equation (min_image = 2)
+   Solve the lens equation to find image properties.
 
+   Uses the analytical solver from lenstronomy to find image positions,
+   magnifications, time delays, and hessian properties for strongly
+   lensed sources. Source positions are sampled from within the caustic
+   region to ensure multiple imaging.
 
    :Parameters:
 
-       **lens_parameters** : `list`
-           a list of parameters
-           lens_parameters[0] = min_images : minimum number of images
-           lens_parameters[1] = e1 : ellipticity
-           lens_parameters[2] = e2 : ellipticity
-           lens_parameters[3] = gamma : power-law index
-           lens_parameters[4] = gamma1 : shear
-           lens_parameters[5] = gamma2 : shear
-           lens_parameters[6] = zl : redshift of the lens
-           lens_parameters[7] = zs : redshift of the source
-           lens_parameters[8] = einstein_radius : Einstein radius
-           lens_parameters[9] = iteration : iteration number
-           lens_parameters[10:] = lens_model_list : numpy array of lens models
+       **lens_parameters** : ``numpy.ndarray``
+           Array of lens configuration parameters with the following structure:
+
+           - [0]: n_min_images - minimum number of images required
+
+           - [1]: e1 - ellipticity component 1
+
+           - [2]: e2 - ellipticity component 2
+
+           - [3]: gamma - power-law slope of mass density
+
+           - [4]: gamma1 - external shear component 1
+
+           - [5]: gamma2 - external shear component 2
+
+           - [6]: zl - lens redshift
+
+           - [7]: zs - source redshift
+
+           - [8]: einstein_radius - Einstein radius (units: arcsec)
+
+           - [9]: iteration - iteration index for tracking
+
+           - [10:]: lens_model_list - lens model names (e.g., 'EPL_NUMBA', 'SHEAR')
 
    :Returns:
 
-       **x_source** : `float`
-           x position of the source in the source plane, unit: arcsec
+       **x_source** : ``float``
+           Source x-position (units: arcsec).
 
-       **y_source** : `float`
-           y position of the source in the source plane
+       **y_source** : ``float``
+           Source y-position (units: arcsec).
 
-       **x0_image_position** : `float`
-           x position of the images in the source plane
+       **x0_image_position** : ``numpy.ndarray``
+           Image x-positions (units: arcsec).
 
-       **x1_image_position** : `float`
-           y position of the images in the source plane
+       **x1_image_position** : ``numpy.ndarray``
+           Image y-positions (units: arcsec).
 
-       **magnifications** : `float`
-           magnification of the images
+       **magnifications** : ``numpy.ndarray``
+           Magnification factors for each image.
 
-       **time_delays** : `float`
-           time-delay of the images
+       **time_delays** : ``numpy.ndarray``
+           Time delays for each image (units: seconds).
 
-       **nImages** : `int`
-           number of images
+       **nImages** : ``int``
+           Number of images formed.
 
-       **determinant** : `float`
-           determinant of the hessian matrix
+       **determinant** : ``numpy.ndarray``
+           Determinant of the lensing Jacobian for each image.
 
-       **trace** : `float`
-           trace of the hessian matrix
+       **trace** : ``numpy.ndarray``
+           Trace of the lensing Jacobian for each image.
 
-       **iteration** : `int`
-           iteration number
+       **iteration** : ``int``
+           Iteration index passed through for tracking.
 
 
 
@@ -92,18 +142,12 @@ Functions
    >>> from ler.image_properties.multiprocessing_routine import solve_lens_equation
    >>> import numpy as np
    >>> from multiprocessing import Pool
-   >>> # lens parameters input contains 12 parameters [e1, e2, gamma, gamma1, gamma2, zl, zs, einstein_radius, iteration, lens_model_list]
-   >>> lens_parameters1 = np.array([2, 0.024069457093642648, -0.016002190961948142, 1.8945414936459974, 0.10117465203892329, 0.09600089396968613, 0.2503743800068136, 0.9418211055453296, 2.5055790287104725e-06, 0, 'EPL_NUMBA', 'SHEAR'], dtype=object)
-   >>> lens_parameters2 = np.array([2, -0.04030088581646998, -0.01419438113690042, 2.0068239327017, 0.08482718989370612, -0.015393332086560785, 1.0952303138971118, 2.5534097159384417, 1.0125570159563301e-06, 1, 'EPL_NUMBA', 'SHEAR'], dtype=object)
+   >>> lens_parameters1 = np.array([2, 0.024, -0.016, 1.89, 0.10, 0.09, 0.25, 0.94, 2.5e-06, 0, 'EPL_NUMBA', 'SHEAR'], dtype=object)
+   >>> lens_parameters2 = np.array([2, -0.040, -0.014, 2.00, 0.08, -0.01, 1.09, 2.55, 1.0e-06, 1, 'EPL_NUMBA', 'SHEAR'], dtype=object)
    >>> input_arguments = np.vstack((lens_parameters1, lens_parameters2))
-   >>> # solve the lens equation for each set of lens parameters
    >>> with Pool(2) as p:
-   ...     result = p.map(solve_lens_equation1, input_arguments)
-   >>> # result is a list of tuples
-   >>> # each tuple contains the output parameters of the function
-   >>> # each output parameter contains x_source, y_source, x0_image_position, x1_image_position, magnifications, time_delays, nImages, determinant, trace, iteration
-   >>> print(f"magnification of images with lens parameters 'lens_parameters1' is {result[0][6]}")
-   magnification of images with lens parameters 'lens_parameters1' is [ 2.18973765 -1.27542831]
+   ...     result = p.map(solve_lens_equation, input_arguments)
+   >>> print(f"Number of images: {result[0][6]}")
 
 
 

@@ -51,64 +51,106 @@ Functions
    Bases: :py:obj:`ler.gw_source_population.CBCSourceParameterDistribution`, :py:obj:`ler.image_properties.ImageProperties`, :py:obj:`ler.lens_galaxy_population.optical_depth.OpticalDepth`
 
    
-   Class to sample lens galaxy parameters and source parameters conditioned on the source being strongly lensed.
+   Sample lens galaxy parameters conditioned on strong lensing.
 
-   This class deals with the distribution of lens galaxy parameters, such as velocity dispersion,
-   axis ratio, axis rotation angle, shear, and density profile slope. It also handles the
-   sampling of source parameters conditioned on the source being strongly lensed.
+   This class handles the distribution of lens galaxy parameters such as velocity
+   dispersion, axis ratio, axis rotation angle, shear, and density profile slope.
+   It samples source parameters conditioned on the source being strongly lensed
+   using cross-section based rejection or importance sampling.
+
+   Key Features:
+
+   - Samples lens parameters using EPL+shear galaxy model
+
+   - Supports rejection and importance sampling based on cross-section
+
+   - Computes optical depth weighted source redshift distributions
+
+   - Integrates with GW source population and image property calculations
 
    :Parameters:
 
-       **npool** : int, optional
-           Number of processors to use.
-           Default is 4.
+       **npool** : ``int``
+           Number of processors to use for parallel sampling.
 
-       **z_min** : float, optional
-           Minimum redshift.
-           Default is 0.0.
+           default: 4
 
-       **z_max** : float, optional
-           Maximum redshift.
-           Default is 10.0.
+       **z_min** : ``float``
+           Minimum redshift for source and lens populations.
 
-       **cosmology** : astropy.cosmology, optional
-           Cosmology to use.
-           Default is None, which falls back to ``astropy.cosmology.FlatLambdaCDM(H0=70, Om0=0.3)``.
+           default: 0.0
 
-       **event_type** : str, optional
-           Type of event to generate. e.g. 'BBH', 'BNS', 'NSBH'.
-           Default is 'BBH'.
+       **z_max** : ``float``
+           Maximum redshift for source and lens populations.
 
-       **lens_type** : str, optional
-           Type of lens galaxy to generate.
-           Default is 'epl_shear_galaxy'.
+           default: 10.0
 
-       **lens_functions** : dict, optional
-           Dictionary of lens functions.
+       **cosmology** : ``astropy.cosmology`` or ``None``
+           Cosmology object for distance calculations.
 
-       **lens_functions_params** : dict, optional
-           Dictionary of parameters for lens functions.
+           default: None (uses FlatLambdaCDM with H0=70, Om0=0.3)
 
-       **lens_param_samplers** : dict, optional
-           Dictionary of lens parameter samplers.
+       **event_type** : ``str``
+           Type of compact binary coalescence event.
 
-       **lens_param_samplers_params** : dict, optional
-           Dictionary of parameters for lens parameter samplers.
+           Options:
 
-       **directory** : str, optional
-           Directory to store the interpolators.
-           Default is './interpolator_json'.
+           - 'BBH': Binary black hole
 
-       **create_new_interpolator** : bool, optional
-           If True, creates a new interpolator.
-           Default is False.
+           - 'BNS': Binary neutron star
 
-       **buffer_size** : int, optional
-           Buffer size for sampling lens parameters.
-           Default is 1000.
+           - 'NSBH': Neutron star-black hole
 
-       **\*\*kwargs**
-           Keyword arguments to pass to the parent classes.
+           default: 'BBH'
+
+       **lens_type** : ``str``
+           Type of lens galaxy model to use.
+
+           default: 'epl_shear_galaxy'
+
+       **lens_functions** : ``dict`` or ``None``
+           Dictionary specifying lens-related functions.
+
+           default: None (uses defaults from OpticalDepth)
+
+       **lens_functions_params** : ``dict`` or ``None``
+           Parameters for lens functions.
+
+           default: None
+
+       **lens_param_samplers** : ``dict`` or ``None``
+           Dictionary specifying lens parameter sampling functions.
+
+           default: None (uses defaults from OpticalDepth)
+
+       **lens_param_samplers_params** : ``dict`` or ``None``
+           Parameters for lens parameter samplers.
+
+           default: None
+
+       **directory** : ``str``
+           Directory for storing interpolator files.
+
+           default: './interpolator_json'
+
+       **create_new_interpolator** : ``bool``
+           If True, recreates interpolators even if files exist.
+
+           default: False
+
+       **buffer_size** : ``int``
+           Buffer size for batch sampling of lens parameters.
+
+           default: 1000
+
+       **\*\*kwargs** : ``dict``
+           Additional keyword arguments passed to parent classes:
+
+           :class:`~ler.gw_source_population.CBCSourceParameterDistribution`,
+
+           :class:`~ler.image_properties.ImageProperties`,
+
+           :class:`~ler.lens_galaxy_population.OpticalDepth`.
 
 
 
@@ -122,57 +164,79 @@ Functions
 
    .. rubric:: Examples
 
+   Basic usage:
+
    >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
    >>> lens = LensGalaxyParameterDistribution()
    >>> lensed_params = lens.sample_lens_parameters(size=1000)
    >>> print(lensed_params.keys())
 
-   :Attributes:
+   Instance Methods
+   ----------
+   LensGalaxyParameterDistribution has the following methods:
 
-       **npool** : int
-           Number of processors to use.
+   +-----------------------------------------------------+------------------------------------------------+
+   | Method                                              | Description                                    |
+   +=====================================================+================================================+
+   | :meth:`~sample_lens_parameters`                     | Sample lens and source parameters              |
+   +-----------------------------------------------------+------------------------------------------------+
+   | :meth:`~sample_all_routine_epl_shear_intrinsic`    | Sample EPL+shear lens parameters from intrinsic |
+   |                                                     | distributions                                  |
+   +-----------------------------------------------------+------------------------------------------------+
+   | :meth:`~sample_all_routine_epl_shear_sl`            | Sample EPL+shear lens parameters with strong   |
+   |                                                     | lensing condition                              |
+   +-----------------------------------------------------+------------------------------------------------+
+   | :meth:`~strongly_lensed_source_redshifts`           | Sample source redshifts with lensing condition |
+   +-----------------------------------------------------+------------------------------------------------+
 
-       **z_min** : float
-           Minimum redshift.
+   Instance Attributes
+   ----------
+   LensGalaxyParameterDistribution has the following attributes:
 
-       **z_max** : float
-           Maximum redshift.
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | Attribute                                      | Type                 | Unit  | Description                                    |
+   +================================================+======================+=======+================================================+
+   | :attr:`~npool`                                 | ``int``              |       | Number of processors for parallel computation  |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | :attr:`~z_min`                                 | ``float``            |       | Minimum redshift                               |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | :attr:`~z_max`                                 | ``float``            |       | Maximum redshift                               |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | :attr:`~cosmo`                                 | ``astropy.cosmology``|       | Cosmology object for calculations              |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | :attr:`~event_type`                            | ``str``              |       | Type of CBC event (BBH, BNS, NSBH)             |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | :attr:`~directory`                             | ``str``              |       | Path to interpolator storage directory         |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | :attr:`~lens_param_samplers`                   | ``dict``             |       | Dictionary of lens parameter sampler names     |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | :attr:`~lens_param_samplers_params`            | ``dict``             |       | Parameters for lens parameter samplers         |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | :attr:`~lens_functions`                        | ``dict``             |       | Dictionary of lens function names              |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | :attr:`~normalization_pdf_z_lensed`            | ``float``            |       | Normalization constant for lensed source z pdf |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
 
-       **cosmo** : astropy.cosmology
-           Cosmology object.
-
-       **event_type** : str
-           Type of event to generate.
-
-       **directory** : str
-           Directory to store the interpolators.
-
-       **create_new_interpolator** : dict
-           Dictionary to check if new interpolator is created.
-
-       **lens_param_samplers** : dict
-           Dictionary of lens parameter samplers.
-
-       **lens_param_samplers_params** : dict
-           Dictionary of lens parameter sampler parameters.
-
-       **lens_functions** : dict
-           Dictionary of lens functions.
-
-       **normalization_pdf_z_lensed** : float
-           Normalization constant of the pdf p(z) for lensed events.
 
 
    ..
        !! processed by numpydoc !!
-   .. py:attribute:: cbc_pop
-      :value: 'None'
+   .. py:property:: normalization_pdf_z_lensed
 
       
-      Inherited class for sampling source parameters.
+      Normalization constant for the lensed source redshift pdf.
+
+      This constant is used to normalize the probability distribution
+
+      of source redshifts conditioned on strong lensing. It is computed
+
+      by integrating the merger rate density times optical depth.
 
 
+      :Returns:
 
+          **normalization_pdf_z_lensed** : ``float``
+              Normalization constant for lensed redshift distribution.
 
 
 
@@ -189,16 +253,23 @@ Functions
       ..
           !! processed by numpydoc !!
 
-      :type: :class:`~ler.gw_source_population.CBCSourceParameterDistribution`
-
-   .. py:attribute:: z_min
-      :value: 'None'
+   .. py:property:: lens_param_samplers
 
       
-      Minimum redshift.
+      Dictionary of lens parameter sampler function names.
 
 
 
+      :Returns:
+
+          **lens_param_samplers** : ``dict``
+              Dictionary mapping parameter names to sampler function names.
+
+              Keys include: 'source_redshift_sl', 'lens_redshift',
+
+              'velocity_dispersion', 'axis_ratio', 'axis_rotation_angle',
+
+              'external_shear', 'density_profile_slope'.
 
 
 
@@ -215,16 +286,19 @@ Functions
       ..
           !! processed by numpydoc !!
 
-      :type: float
-
-   .. py:attribute:: z_max
-      :value: 'None'
+   .. py:property:: lens_param_samplers_params
 
       
-      Maximum redshift.
+      Dictionary of parameters for lens parameter samplers.
 
 
 
+      :Returns:
+
+          **lens_param_samplers_params** : ``dict``
+              Dictionary with sampler parameters.
+
+              Each key corresponds to a sampler in lens_param_samplers.
 
 
 
@@ -241,16 +315,21 @@ Functions
       ..
           !! processed by numpydoc !!
 
-      :type: float
-
-   .. py:attribute:: m_min
-      :value: 'None'
+   .. py:property:: lens_functions
 
       
-      Minimum mass in detector frame.
+      Dictionary of lens-related function names.
 
 
 
+      :Returns:
+
+          **lens_functions** : ``dict``
+              Dictionary mapping function types to function names.
+
+              Keys include: 'param_sampler_type', 'cross_section_based_sampler',
+
+              'optical_depth', 'cross_section'.
 
 
 
@@ -266,60 +345,6 @@ Functions
 
       ..
           !! processed by numpydoc !!
-
-      :type: float
-
-   .. py:attribute:: m_max
-      :value: 'None'
-
-      
-      Maximum mass in detector frame.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-      :type: float
-
-   .. py:attribute:: normalization_pdf_z
-      :value: 'None'
-
-      
-      Normalization constant of the pdf p(z).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-      :type: float
 
    .. py:attribute:: event_type
       :value: "'BBH'"
@@ -360,110 +385,78 @@ Functions
 
       
 
-   .. py:attribute:: normalization_pdf_z_lensed
-
-      
-      Normalization constant of the pdf p(z) for lensed events.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-      :type: float
-
-   .. py:method:: class_initialization_lens(npool, z_min, z_max, cosmology, lens_type, lens_functions, lens_functions_params, lens_param_samplers, lens_param_samplers_params, directory, create_new_interpolator, params)
-
-      
-      Initialize the LensGalaxyParameterDistribution class.
-
-
-      :Parameters:
-
-          **npool** : int
-              Number of processors to use for sampling.
-
-          **z_min** : float
-              Minimum redshift of the lens galaxy.
-
-          **z_max** : float
-              Maximum redshift of the lens galaxy.
-
-          **cosmology** : astropy.cosmology
-              Cosmology object.
-
-          **lens_type** : str
-              Type of the lens galaxy.
-
-          **lens_functions** : dict
-              Dictionary with the lens related functions.
-
-          **lens_functions_params** : dict
-              Dictionary with the parameters for the lens related functions.
-
-          **lens_param_samplers** : dict
-              Dictionary with the priors for the sampler.
-
-          **lens_param_samplers_params** : dict
-              Dictionary with the parameters for the priors of the sampler.
-
-          **directory** : str
-              Directory where the interpolators are saved.
-
-          **create_new_interpolator** : bool
-              If True, creates a new interpolator.
-
-          **params** : dict
-              Additional parameters for the ``CBCSourceParameterDistribution`` and ``ImageProperties`` classes.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
    .. py:method:: sample_lens_parameters(size=1000)
 
       
-      Sample lens galaxy parameters along with the source parameters, conditioned on the source being strongly lensed.
+      Sample lens galaxy and source parameters conditioned on strong lensing.
 
+      This method samples both lens galaxy parameters (velocity dispersion, axis
+      ratio, shear, etc.) and gravitational wave source parameters, with the
+      source redshift distribution weighted by strong lensing optical depth.
 
       :Parameters:
 
-          **size** : int, optional
-              Number of lens parameters to sample.
-              Default is 1000.
+          **size** : ``int``
+              Number of lens-source parameter sets to sample.
+
+              default: 1000
 
       :Returns:
 
-          **lens_parameters** : dict
-              Dictionary of sampled lens parameters and source parameters.
-              Keys include ``zl``, ``zs``, ``sigma``, ``q``, ``theta_E``, ``phi``, ``e1``, ``e2``,
-              ``gamma1``, ``gamma2``, ``gamma``, ``geocent_time``, ``phase``, ``psi``, ``theta_jn``,
-              ``luminosity_distance``, ``mass_1_source``, ``mass_2_source``, ``ra``, ``dec``.
+          **lens_parameters** : ``dict``
+              Dictionary containing sampled lens and source parameters.
+
+              The included parameters and their units are as follows (for default settings):
+
+              +------------------------------+-----------+-------------------------------------------------------+
+              | Parameter                    | Units     | Description                                           |
+              +==============================+===========+=======================================================+
+              | zl                           |           | redshift of the lens                                  |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | zs                           |           | redshift of the source                                |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | sigma                        | km s^-1   | velocity dispersion                                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | q                            |           | axis ratio                                            |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | theta_E                      | arcsec    | Einstein radius                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
+              |                              |           | positive x-axis (RA-like axis) to the major axis of   |
+              |                              |           | the projected mass distribution.                      |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma                        |           | density profile slope of EPL galaxy                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma1                       |           | external shear component in the x-direction           |
+              |                              |           | (RA-like axis)                                        |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma2                       |           | external shear component in the y-direction           |
+              |                              |           | (Dec-like axis)                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | geocent_time                 | s         | geocent time                                          |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | ra                           | rad       | right ascension                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | dec                          | rad       | declination                                           |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | phase                        | rad       | phase of GW at reference freq                         |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | psi                          | rad       | polarization angle                                    |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | theta_jn                     | rad       | inclination angle                                     |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | a_1                          |           | spin of the primary compact binary                    |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | a_2                          |           | spin of the secondary compact binary                  |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | mass_1_source                | Msun      | mass of the primary compact binary (source frame)     |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | mass_2_source                | Msun      | mass of the secondary compact binary (source frame)   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | mass_1                       | Msun      | mass of the primary compact binary (detector frame)   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | mass_2                       | Msun      | mass of the secondary compact binary (detector frame) |
+              +------------------------------+-----------+-------------------------------------------------------+
 
 
 
@@ -477,8 +470,9 @@ Functions
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> od = LensGalaxyParameterDistribution(lens_param_samplers=dict(velocity_dispersion="velocity_dispersion_ewoud"))
-      >>> print(od.sample_lens_parameters(size=10))
+      >>> lens = LensGalaxyParameterDistribution()
+      >>> params = lens.sample_lens_parameters(size=1000)
+      >>> print(params.keys())
 
 
 
@@ -488,21 +482,48 @@ Functions
    .. py:method:: sample_all_routine_epl_shear_sl(size=1000)
 
       
-      Sample galaxy lens parameters. EPL shear cross section is used for rejection sampling.
+      Sample EPL+shear galaxy lens parameters with strong lensing condition.
 
 
       :Parameters:
 
-          **size** : int, optional
+          **size** : ``int``
               Number of lens parameters to sample.
-              Default is 1000.
+
+              default: 1000
 
       :Returns:
 
-          **lens_parameters** : dict
-              Dictionary of lens parameters and source parameters (lens conditions applied).
-              Keys include ``zl``, ``zs``, ``sigma``, ``q``, ``theta_E``, ``phi``, ``e1``, ``e2``,
-              ``gamma1``, ``gamma2``, ``gamma``.
+          **lens_parameters** : ``dict``
+              Dictionary of sampled lens parameters.
+
+              The included parameters and their units are as follows (for default settings):
+
+              +------------------------------+-----------+-------------------------------------------------------+
+              | Parameter                    | Units     | Description                                           |
+              +==============================+===========+=======================================================+
+              | zl                           |           | redshift of the lens                                  |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | zs                           |           | redshift of the source                                |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | sigma                        | km s^-1   | velocity dispersion                                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | q                            |           | axis ratio                                            |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | theta_E                      | arcsec    | Einstein radius                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
+              |                              |           | positive x-axis (RA-like axis) to the major axis of   |
+              |                              |           | the projected mass distribution.                      |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma                        |           | density profile slope of EPL galaxy                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma1                       |           | external shear component in the x-direction           |
+              |                              |           | (RA-like axis)                                        |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma2                       |           | external shear component in the y-direction           |
+              |                              |           | (Dec-like axis)                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
 
 
 
@@ -513,11 +534,6 @@ Functions
 
 
 
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.sample_all_routine_epl_shear_sl(size=1000)
 
 
 
@@ -527,19 +543,22 @@ Functions
    .. py:method:: strongly_lensed_source_redshifts(size=1000)
 
       
-      Sample source redshifts, conditioned on the source being strongly lensed.
+      Sample source redshifts conditioned on strong lensing.
 
+      Uses rejection sampling to generate source redshifts from the CBC source
+      population weighted by the optical depth, which increases with redshift.
 
       :Parameters:
 
-          **size** : int, optional
-              Number of lens parameters to sample.
-              Default is 1000.
+          **size** : ``int``
+              Number of redshifts to sample.
+
+              default: 1000
 
       :Returns:
 
-          **redshifts** : numpy.ndarray
-              Source redshifts conditioned on the source being strongly lensed.
+          **redshifts** : ``numpy.ndarray``
+              Array of source redshifts conditioned on strong lensing.
 
 
 
@@ -554,7 +573,8 @@ Functions
 
       >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
       >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.strongly_lensed_source_redshifts(size=1000)
+      >>> zs = lens.strongly_lensed_source_redshifts(size=1000)
+      >>> print(f"Mean source redshift: {zs.mean():.2f}")
 
 
 
@@ -564,21 +584,50 @@ Functions
    .. py:method:: sample_all_routine_epl_shear_intrinsic(size=1000)
 
       
-      Sample galaxy lens parameters. EPL shear cross section is used for rejection sampling.
+      Sample EPL+shear galaxy lens parameters from intrinsic distributions.
 
+      Samples lens parameters from their intrinsic distributions without
+      applying strong lensing cross-section weighting.
 
       :Parameters:
 
-          **size** : int, optional
+          **size** : ``int``
               Number of lens parameters to sample.
-              Default is 1000.
+
+              default: 1000
 
       :Returns:
 
-          **lens_parameters** : dict
-              Dictionary of lens parameters and source parameters (lens conditions applied).
-              Keys include ``zl``, ``zs``, ``sigma``, ``q``, ``theta_E``, ``phi``, ``e1``, ``e2``,
-              ``gamma1``, ``gamma2``, ``gamma``.
+          **lens_parameters** : ``dict``
+              Dictionary of sampled lens parameters.
+
+              The included parameters and their units are as follows (for default settings):
+
+              +------------------------------+-----------+-------------------------------------------------------+
+              | Parameter                    | Units     | Description                                           |
+              +==============================+===========+=======================================================+
+              | zl                           |           | redshift of the lens                                  |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | zs                           |           | redshift of the source                                |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | sigma                        | km s^-1   | velocity dispersion                                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | q                            |           | axis ratio                                            |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | theta_E                      | arcsec    | Einstein radius                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
+              |                              |           | positive x-axis (RA-like axis) to the major axis of   |
+              |                              |           | the projected mass distribution.                      |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma                        |           | density profile slope of EPL galaxy                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma1                       |           | external shear component in the x-direction           |
+              |                              |           | (RA-like axis)                                        |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma2                       |           | external shear component in the y-direction           |
+              |                              |           | (Dec-like axis)                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
 
 
 
@@ -589,11 +638,6 @@ Functions
 
 
 
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.sample_all_routine_epl_shear_intrinsic(size=1000)
 
 
 
@@ -2589,11 +2633,14 @@ Functions
 
       
       Class object (of FunctionConditioning) for source redshift, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the redshift distribution
-      - `pdf`: returns the probability density function of the redshift distribution
-      - `function`: returns the redshift distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the redshift distribution
+
+      - `pdf`: returns the probability density function of the redshift distribution
+
+      - `function`: returns the redshift distribution function.
 
 
       :Returns:
@@ -2620,9 +2667,10 @@ Functions
 
       
       Class object (of FunctionConditioning) for source frame masses, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the density profile slope distribution
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the density profile slope distribution
 
 
       :Returns:
@@ -2657,11 +2705,14 @@ Functions
 
       
       Class object (of FunctionConditioning) for geocentric time, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the geocentric time distribution
-      - `pdf`: returns the probability density function of the geocentric time distribution
-      - `function`: returns the geocentric time distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the geocentric time distribution
+
+      - `pdf`: returns the probability density function of the geocentric time distribution
+
+      - `function`: returns the geocentric time distribution function.
 
 
       :Returns:
@@ -2688,11 +2739,14 @@ Functions
 
       
       Class object (of FunctionConditioning) for right ascension, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the right ascension distribution
-      - `pdf`: returns the probability density function of the right ascension distribution
-      - `function`: returns the right ascension distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the right ascension distribution
+
+      - `pdf`: returns the probability density function of the right ascension distribution
+
+      - `function`: returns the right ascension distribution function.
 
 
       :Returns:
@@ -2719,11 +2773,14 @@ Functions
 
       
       Class object (of FunctionConditioning) for declination, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the declination distribution
-      - `pdf`: returns the probability density function of the declination distribution
-      - `function`: returns the declination distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the declination distribution
+
+      - `pdf`: returns the probability density function of the declination distribution
+
+      - `function`: returns the declination distribution function.
 
 
       :Returns:
@@ -2750,11 +2807,14 @@ Functions
 
       
       Class object (of FunctionConditioning) for coalescence phase, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the coalescence phase distribution
-      - `pdf`: returns the probability density function of the coalescence phase distribution
-      - `function`: returns the coalescence phase distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the coalescence phase distribution
+
+      - `pdf`: returns the probability density function of the coalescence phase distribution
+
+      - `function`: returns the coalescence phase distribution function.
 
 
       :Returns:
@@ -2781,11 +2841,14 @@ Functions
 
       
       Class object (of FunctionConditioning) for polarization angle, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the polarization angle distribution
-      - `pdf`: returns the probability density function of the polarization angle distribution
-      - `function`: returns the polarization angle distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the polarization angle distribution
+
+      - `pdf`: returns the probability density function of the polarization angle distribution
+
+      - `function`: returns the polarization angle distribution function.
 
 
       :Returns:
@@ -2812,11 +2875,14 @@ Functions
 
       
       Class object (of FunctionConditioning) for inclination angle, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the inclination angle distribution
-      - `pdf`: returns the probability density function of the inclination angle distribution
-      - `function`: returns the inclination angle distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the inclination angle distribution
+
+      - `pdf`: returns the probability density function of the inclination angle distribution
+
+      - `function`: returns the inclination angle distribution function.
 
 
       :Returns:
@@ -2843,11 +2909,14 @@ Functions
 
       
       Class object (of FunctionConditioning) for spin1 magnitude, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the spin1 magnitude distribution
-      - `pdf`: returns the probability density function of the spin1 magnitude distribution
-      - `function`: returns the spin1 magnitude distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the spin1 magnitude distribution
+
+      - `pdf`: returns the probability density function of the spin1 magnitude distribution
+
+      - `function`: returns the spin1 magnitude distribution function.
 
 
       :Returns:
@@ -2874,11 +2943,14 @@ Functions
 
       
       Class object (of FunctionConditioning) for spin2 magnitude, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the spin2 magnitude distribution
-      - `pdf`: returns the probability density function of the spin2 magnitude distribution
-      - `function`: returns the spin2 magnitude distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the spin2 magnitude distribution
+
+      - `pdf`: returns the probability density function of the spin2 magnitude distribution
+
+      - `function`: returns the spin2 magnitude distribution function.
 
 
       :Returns:
@@ -2905,11 +2977,14 @@ Functions
 
       
       Class object (of FunctionConditioning) for tilt1 angle, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the tilt1 angle distribution
-      - `pdf`: returns the probability density function of the tilt1 angle distribution
-      - `function`: returns the tilt1 angle distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the tilt1 angle distribution
+
+      - `pdf`: returns the probability density function of the tilt1 angle distribution
+
+      - `function`: returns the tilt1 angle distribution function.
 
 
       :Returns:
@@ -2936,11 +3011,14 @@ Functions
 
       
       Class object (of FunctionConditioning) for tilt2 angle, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the tilt2 angle distribution
-      - `pdf`: returns the probability density function of the tilt2 angle distribution
-      - `function`: returns the tilt2 angle distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the tilt2 angle distribution
+
+      - `pdf`: returns the probability density function of the tilt2 angle distribution
+
+      - `function`: returns the tilt2 angle distribution function.
 
 
       :Returns:
@@ -2967,11 +3045,14 @@ Functions
 
       
       Class object (of FunctionConditioning) for phi_12 angle, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the phi_12 angle distribution
-      - `pdf`: returns the probability density function of the phi_12 angle distribution
-      - `function`: returns the phi_12 angle distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the phi_12 angle distribution
+
+      - `pdf`: returns the probability density function of the phi_12 angle distribution
+
+      - `function`: returns the phi_12 angle distribution function.
 
 
       :Returns:
@@ -2998,11 +3079,14 @@ Functions
 
       
       Class object (of FunctionConditioning) for phi_jl angle, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the phi_jl angle distribution
-      - `pdf`: returns the probability density function of the phi_jl angle distribution
-      - `function`: returns the phi_jl angle distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the phi_jl angle distribution
+
+      - `pdf`: returns the probability density function of the phi_jl angle distribution
+
+      - `function`: returns the phi_jl angle distribution function.
 
 
       :Returns:
@@ -4020,85 +4104,110 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:class:: GWRATES(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', size=100000, batch_size=50000, cosmology=None, snr_finder=None, pdet_finder=None, list_of_detectors=None, json_file_names=None, interpolator_directory='./interpolator_json', create_new_interpolator=False, ler_directory='./ler_data', verbose=True, **kwargs)
+.. py:class:: GWRATES(npool=int(4), z_min=0.0, z_max=10.0, event_type='BBH', cosmology=None, pdet_finder=None, json_file_names=None, interpolator_directory='./interpolator_json', create_new_interpolator=False, ler_directory='./ler_data', verbose=True, **kwargs)
 
 
    Bases: :py:obj:`ler.gw_source_population.CBCSourceParameterDistribution`
 
    
-   Class to calculate both the rates of lensed and gw events. Please note that parameters of the simulated events are stored in json file but not as an attribute of the class. This saves RAM memory.
+   Class to sample GW events and calculate their detection rates.
 
+   This class provides functionality for sampling gravitational wave source
+   parameters, detection probabilities, and computing detection rates for
+   compact binary coalescence events. Parameters of simulated events are
+   stored in JSON files (not as class attributes) to conserve RAM memory.
+
+   Key Features:
+
+   - Sampling of GW event parameters
+
+   - Detection probability calculation using ``gwsnr`` package or custom functions
+
+   - Rate calculation for detectable events
+
+   - Batch processing for memory efficiency
+
+   - JSON-based parameter storage for reproducibility
 
    :Parameters:
 
-       **npool** : `int`
-           number of cores to use.
-           default npool = 4.
+       **npool** : ``int``
+           Number of cores to use for parallel processing.
 
-       **z_min** : `float`
-           minimum redshift.
-           default z_min = 0.
-           for popI_II, popIII, primordial, BNS z_min = 0., 5., 5., 0. respectively.
+           default: 4
 
-       **z_max** : `float`
-           maximum redshift.
-           default z_max = 10.
-           for popI_II, popIII, primordial, BNS z_max = 10., 40., 40., 5. respectively.
+       **z_min** : ``float``
+           Minimum redshift of the source population.
 
-       **event_type** : `str`
-           type of event to generate.
-           default event_type = 'BBH'. Other options are 'BNS', 'NSBH'.
+           default: 0.0
 
-       **size** : `int`
-           number of samples for sampling.
-           default size = 100000. To get stable rates, size should be large (>=1e6).
+       **z_max** : ``float``
+           Maximum redshift of the source population.
 
-       **batch_size** : `int`
-           batch size for SNR calculation.
-           default batch_size = 50000.
-           reduce the batch size if you are getting memory error.
-           recommended batch_size = 200000, if size = 1000000.
+           default: 10.0
 
-       **cosmology** : `astropy.cosmology`
-           cosmology to use for the calculation.
-           default cosmology = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7).
+       **event_type** : ``str``
+           Type of event to generate.
 
-       **snr_finder** : `str` or `function`
-           default snr_finder = 'gwsnr'.
-           if None, the SNR will be calculated using the gwsnr package.
-           if custom snr finder function is provided, the SNR will be calculated using a custom function. The custom function should follow the following signature:
-           def snr_finder(gw_param_dict):
-               ...
-               return optimal_snr_dict
-           where optimal_snr_dict.keys = ['snr_net']. Refer to `gwsnr` package's GWSNR.snr attribute for more details.
+           Options:
 
-       **pdet_finder** : `function`
-           default pdet_finder = None.
-           The rate calculation uses either the pdet_finder or the snr_finder to calculate the detectable events. The custom pdet finder function should follow the following signature:
-           def pdet_finder(gw_param_dict):
-               ...
-               return pdet_net_dict
-           where pdet_net_dict.keys = ['pdet_net']. For example uses, refer to [GRB pdet example](https://ler.readthedocs.io/en/latest/examples/rates/grb%20detection%20rate.html).
+           - 'BBH': Binary Black Hole
 
-       **json_file_names: `dict`**
-           names of the json files to strore the necessary parameters.
-           default json_file_names = {'gwrates_params':'gwrates_params.json', 'gw_param': 'gw_param.json', 'gw_param_detectable': 'gw_param_detectable.json'}.
+           - 'BNS': Binary Neutron Star
 
-       **interpolator_directory** : `str`
-           directory to store the interpolators.
-           default interpolator_directory = './interpolator_json'. This is used for storing the various interpolators related to `ler` and `gwsnr` package.
+           - 'NSBH': Neutron Star-Black Hole
 
-       **ler_directory** : `str`
-           directory to store the parameters.
-           default ler_directory = './ler_data'. This is used for storing the parameters of the simulated events.
+           default: 'BBH'
 
-       **verbose** : `bool`
-           default verbose = True.
-           if True, the function will print all chosen parameters.
-           Choose False to prevent anything from printing.
+       **cosmology** : ``astropy.cosmology`` or ``None``
+           Cosmology to use for the calculation.
 
-       **kwargs** : `keyword arguments`
-           Note : kwargs takes input for initializing the :class:`~ler.gw_source_population.CBCSourceParameterDistribution` and :class:`~ler.gw_source_population.CBCSourceRedshiftDistribution` classes. If snr_finder='gwsnr', then kwargs also takes input for initializing the :class:`~gwsnr.GWSNR` class. Please refer to the respective classes for more details.
+           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+
+       **pdet_finder** : ``callable`` or ``None``
+           Custom detection probability finder function.
+
+           If None, uses gwsnr's pdet calculator.
+
+           The function should follow the signature:
+
+           ``def pdet_finder(gw_param_dict): return pdet_net_dict``
+
+           where pdet_net_dict.keys = ['pdet_net'].
+
+           default: None
+
+       **json_file_names** : ``dict`` or ``None``
+           Names of the JSON files to store the necessary parameters.
+
+           default: dict(gwrates_params="gwrates_params.json", gw_param="gw_param.json", gw_param_detectable="gw_param_detectable.json")
+
+       **interpolator_directory** : ``str``
+           Directory to store the interpolators.
+
+           default: './interpolator_json'
+
+       **create_new_interpolator** : ``bool`` or ``dict``
+           Whether to create new interpolators.
+
+           default: False
+
+       **ler_directory** : ``str``
+           Directory to store the output parameters.
+
+           default: './ler_data'
+
+       **verbose** : ``bool``
+           If True, print all chosen parameters during initialization.
+
+           default: True
+
+       **\*\*kwargs** : ``dict``
+           Additional keyword arguments passed to parent classes:
+
+           :class:`~ler.gw_source_population.CBCSourceParameterDistribution` and
+
+           :class:`~gwsnr.GWSNR` (if pdet_finder is not provided).
 
 
 
@@ -4108,532 +4217,85 @@ Functions
 
 
 
+   .. rubric:: Notes
+
+   - ``GWRATES`` class inherits from :class:`~ler.gw_source_population.CBCSourceParameterDistribution`.
+
+     Refer to that class for additional inherited attributes and methods.
+
+   - Parameters are stored in JSON files for memory efficiency and reproducibility.
+
+   - For stable rate estimates, use size >= 1e6 samples.
 
 
    .. rubric:: Examples
 
+   Basic usage:
+
    >>> from ler.rates import GWRATES
-   >>> ler = GWRATES()
-   >>> ler.gw_cbc_statistics();
-   >>> ler.gw_rate();
-
-   Instance Attributes
-   ----------
-   LeR class has the following attributes:
-
-   +-------------------------+----------------------+
-   | Atrributes                          | Type                             |
-   +=====================================+==================================+
-   |:attr:`~npool`                       | `int`                            |
-   +-------------------------+----------------------+
-   |:attr:`~z_min`                       | `float`                          |
-   +-------------------------+----------------------+
-   |:attr:`~z_max`                       | `float`                          |
-   +-------------------------+----------------------+
-   |:attr:`~event_type`                  | `str`                            |
-   +-------------------------+----------------------+
-   |:attr:`~cosmo`                       | `astropy.cosmology`              |
-   +-------------------------+----------------------+
-   |:attr:`~size`                        | `int`                            |
-   +-------------------------+----------------------+
-   |:attr:`~batch_size`                  | `int`                            |
-   +-------------------------+----------------------+
-   |:attr:`~json_file_names`             | `dict`                           |
-   +-------------------------+----------------------+
-   |:attr:`~interpolator_directory`      | `str`                            |
-   +-------------------------+----------------------+
-   |:attr:`~ler_directory`               | `str`                            |
-   +-------------------------+----------------------+
-   |:attr:`~gwsnr`                       | `bool`                           |
-   +-------------------------+----------------------+
-   |:attr:`~gw_param_sampler_dict`       | `dict`                           |
-   +-------------------------+----------------------+
-   |:attr:`~snr_calculator_dict`         | `dict`                           |
-   +-------------------------+----------------------+
-   |:attr:`~gw_param`                    | `dict`                           |
-   +-------------------------+----------------------+
-   |:attr:`~gw_param_detectable`         | `dict`                           |
-   +-------------------------+----------------------+
+   >>> gwrates = GWRATES()
+   >>> gw_params = gwrates.gw_cbc_statistics()
+   >>> gwrates.gw_rate()
 
    Instance Methods
    ----------
-   LeR class has the following methods:
+   GWRATES class has the following methods:
 
-   +-------------------------+----------------------+
-   | Methods                             | Description                      |
-   +=====================================+==================================+
-   |:meth:`~class_initialization`        | Function to initialize the       |
-   |                                     | parent classes                   |
-   +-------------------------+----------------------+
-   |:meth:`~gwsnr_initialization`         | Function to initialize the       |
-   |                                     | gwsnr class                      |
-   +-------------------------+----------------------+
-   |:meth:`~snr`                         | Function to get the snr with the |
-   |                                     | given parameters.                |
-   +-------------------------+----------------------+
-   |:meth:`~store_gwrates_params`        | Function to store the all the    |
-   |                                     | necessary parameters.            |
-   +-------------------------+----------------------+
-   |:meth:`~gw_cbc_statistics`           | Function to generate gw          |
-   |                                     | GW source parameters.            |
-   +-------------------------+----------------------+
-   |:meth:`~gw_sampling_routine`         | Function to generate gw          |
-   |                                     | GW source parameters.            |
-   +-------------------------+----------------------+
-   |:meth:`~gw_rate`                     | Function to calculate the        |
-   |                                     | gw rate.                         |
-   +-------------------------+----------------------+
-   |:meth:`~selecting_n_gw_detectable_events`                               |
-   +-------------------------+----------------------+
-   |                                     | Function to select n gw    |
-   |                                     | detectable events.               |
-   +-------------------------+----------------------+
-   |:meth:`~gw_param_plot`               | Function to plot the             |
-   |                                     | distribution of the GW source    |
-   |                                     | parameters.                      |
-   +-------------------------+----------------------+
+   +-----------------------------------------------------+------------------------------------------------+
+   | Method                                              | Description                                    |
+   +=====================================================+================================================+
+   | :meth:`~gw_cbc_statistics`                          | Generate GW source parameters                  |
+   +-----------------------------------------------------+------------------------------------------------+
+   | :meth:`~gw_rate`                                    | Calculate the GW detection rate                |
+   +-----------------------------------------------------+------------------------------------------------+
+   | :meth:`~selecting_n_gw_detectable_events`           | Select n GW detectable events                  |
+   +-----------------------------------------------------+------------------------------------------------+
+
+   Instance Attributes
+   ----------
+   GWRATES class has the following attributes:
+
+   +------------------------------------------------+------------------+-------+------------------------------------------------+
+   | Attribute                                      | Type             | Unit  | Description                                    |
+   +================================================+==================+=======+================================================+
+   | :meth:`~npool`                                 | ``int``          |       | Number of parallel processing cores            |
+   +------------------------------------------------+------------------+-------+------------------------------------------------+
+   | :meth:`~z_min`                                 | ``float``        |       | Minimum source redshift                        |
+   +------------------------------------------------+------------------+-------+------------------------------------------------+
+   | :meth:`~z_max`                                 | ``float``        |       | Maximum source redshift                        |
+   +------------------------------------------------+------------------+-------+------------------------------------------------+
+   | :meth:`~event_type`                            | ``str``          |       | Type of CBC event                              |
+   +------------------------------------------------+------------------+-------+------------------------------------------------+
+   | :meth:`~cosmo`                                 | ``astropy.cosmology`` |  | Cosmology for calculations                     |
+   +------------------------------------------------+------------------+-------+------------------------------------------------+
+   | :meth:`~json_file_names`                       | ``dict``         |       | JSON file names for parameter storage          |
+   +------------------------------------------------+------------------+-------+------------------------------------------------+
+   | :meth:`~interpolator_directory`                | ``str``          |       | Directory for interpolator files               |
+   +------------------------------------------------+------------------+-------+------------------------------------------------+
+   | :meth:`~ler_directory`                         | ``str``          |       | Directory for output parameter files           |
+   +------------------------------------------------+------------------+-------+------------------------------------------------+
+   | :meth:`~list_of_detectors`                     | ``list``         |       | List of detector names                         |
+   +------------------------------------------------+------------------+-------+------------------------------------------------+
+   | :meth:`~pdet_finder`                           | ``callable``     |       | Detection probability finder function          |
+   +------------------------------------------------+------------------+-------+------------------------------------------------+
+   | :meth:`~gwrates_args`                          | ``dict``         |       | All GWRATES initialization arguments           |
+   +------------------------------------------------+------------------+-------+------------------------------------------------+
 
 
 
    ..
        !! processed by numpydoc !!
-   .. py:property:: gw_param
+   .. py:property:: npool
 
       
-      Function to get data from the json file self.json_file_names["gw_param"].
-
-
-
-      :Returns:
-
-          **gw_param** : `dict`
-              dictionary of gw GW source parameters.
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: gw_param_detectable
-
-      
-      Function to get data from the json file self.json_file_names["gw_param_detectable"].
-
-
-
-      :Returns:
-
-          **gw_param_detectable** : `dict`
-              dictionary of gw GW source parameters.
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: snr
-
-      
-      Function to get the snr with the given parameters.
-
-
-      :Parameters:
-
-          **gw_param_dict** : `dict`
-              dictionary of GW source parameters.
-              mass_1 : `numpy.ndarray` or `float`
-                  mass_1 of the compact binary (detector frame) (Msun).
-              mass_2 : `numpy.ndarray` or `float`
-                  mass_2 of the compact binary (detector frame) (Msun).
-              luminosity_distance : `numpy.ndarray` or `float`
-                  luminosity distance of the source (Mpc).
-              theta_jn : `numpy.ndarray` or `float`
-                  inclination angle of the source (rad).
-              psi : `numpy.ndarray` or `float`
-                  polarization angle of the source (rad).
-              phase : `numpy.ndarray` or `float`
-                  phase of GW at reference frequency  (rad).
-              geocent_time : `numpy.ndarray` or `float`
-                  GPS time of coalescence (s).
-              ra : `numpy.ndarray` or `float`
-                  right ascension of the source (rad).
-              dec : `numpy.ndarray` or `float`
-                  declination of the source (rad).
-              a_1 : `numpy.ndarray` or `float`
-                  dimensionless spin magnitude of the more massive object.
-              a_2 : `numpy.ndarray` or `float`
-                  dimensionless spin magnitude of the less massive object.
-              tilt_1 : `numpy.ndarray` or `float`
-                  tilt angle of the more massive object spin.
-              tilt_2 : `numpy.ndarray` or `float`
-                  tilt angle of the less massive object spin.
-              phi_12 : `numpy.ndarray` or `float`
-                  azimuthal angle between the two spin vectors.
-              phi_jl : `numpy.ndarray` or `float`
-                  azimuthal angle between total angular momentum and the orbital angular momentum.
-
-      :Returns:
-
-          **optimal_snr_list** : `list`
-              e.g. [optimal_snr_net, 'L1', 'H1', 'V1']
-              optimal_snr_net : `numpy.ndarray` or `float`
-                  optimal snr of the network.
-              'H1' : `numpy.ndarray` or `float`
-                  optimal snr of H1.
-              'L1' : `numpy.ndarray` or `float`
-                  optimal snr of L1.
-              'V1' : `numpy.ndarray` or `float`
-                  optimal snr of V1.
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:attribute:: z_min
-      :value: 'None'
-
-      
-      ``float``
-
-      Minimum redshift of the source population
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:attribute:: z_max
-      :value: 'None'
-
-      
-      ``float``
-
-      Maximum redshift of the source population
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:attribute:: event_type
-      :value: 'None'
-
-      
-      ``str``
-
-      Type of event to generate.
-
-      e.g. 'BBH', 'BNS', 'NSBH'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:attribute:: cosmo
-      :value: 'None'
-
-      
-      ``astropy.cosmology``
-
-      Cosmology to use for the calculation.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:attribute:: size
-      :value: 'None'
-
-      
-      ``int``
-
-      Number of samples for sampling.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:attribute:: batch_size
-      :value: 'None'
-
-      
-      ``int``
-
-      Batch size for sampling.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:attribute:: json_file_names
-      :value: 'None'
-
-      
-      ``dict``
-
-      Names of the json files to store the necessary parameters.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:attribute:: interpolator_directory
-      :value: 'None'
-
-      
-      ``str``
-
-      Directory to store the interpolators.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:attribute:: ler_directory
-      :value: 'None'
-
-      
-      ``str``
-
-      Directory to store the parameters.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:attribute:: gwsnr
-      :value: 'None'
-
-      
-      ``bool``
-
-      If True, the SNR will be calculated using the gwsnr package.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:attribute:: gw_param_sampler_dict
-      :value: 'None'
-
-      
-      ``dict``
-
-      Dictionary of parameters to initialize the ``CBCSourceParameterDistribution`` class.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:attribute:: snr_calculator_dict
-      :value: 'None'
-
-      
-      ``dict``
-
-      Dictionary of parameters to initialize the ``GWSNR`` class.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:attribute:: npool
-      :value: '4'
-
-      
-      Number of processors for multiprocessing.
+      Number of parallel processing cores.
 
 
 
       :Returns:
 
           **npool** : ``int``
-              Number of parallel processes to use.
+              Number of logical cores to use for multiprocessing.
 
               default: 4
 
@@ -4652,137 +4314,450 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: print_all_params_ler()
+   .. py:property:: z_min
 
       
-      Function to print all the parameters.
+      Minimum redshift of the source population.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: class_initialization(params=None)
-
-      
-      Function to initialize the parent classes.
-
-
-      :Parameters:
-
-          **params** : `dict`
-              dictionary of parameters to initialize the parent classes
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: gwsnr_initialization(params=None)
-
-      
-      Function to initialize the GWSNR class from the `gwsnr` package.
-
-
-      :Parameters:
-
-          **params** : `dict`
-              dictionary of parameters to initialize the gwsnr class
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: store_gwrates_params(output_jsonfile='gwrates_params.json')
-
-      
-      Function to store the all the necessary parameters. This is useful for reproducing the results. All the parameters stored are in string format to make it json compatible.
-
-
-      :Parameters:
-
-          **output_jsonfile** : `str`
-              name of the json file to store the parameters
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: gw_cbc_statistics(size=None, resume=False, save_batch=False, output_jsonfile=None)
-
-      
-      Function to generate gw GW source parameters. This function calls the gw_sampling_routine function to generate the parameters in batches. The generated parameters are stored in a json file; and if save_batch=True, it keeps updating the file in batches.
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of samples.
-              default size = 100000.
-
-          **resume** : `bool`
-              resume = False (default) or True.
-              if True, the function will resume from the last batch.
-
-          **save_batch** : `bool`
-              if True, the function will save the parameters in batches. if False, the function will save all the parameters at the end of sampling. save_batch=False is faster.
-
-          **output_jsonfile** : `str`
-              json file name for storing the parameters.
-              default output_jsonfile = 'gw_params.json'. Note that this file will be stored in the self.ler_directory.
 
       :Returns:
 
-          **gw_param** : `dict`
-              dictionary of gw GW source parameters. Refer to :attr:`~gw_param` for details.
+          **z_min** : ``float``
+              Minimum source redshift for sampling.
+
+              default: 0.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: z_max
+
+      
+      Maximum redshift of the source population.
+
+
+
+      :Returns:
+
+          **z_max** : ``float``
+              Maximum source redshift for sampling.
+
+              default: 10.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: event_type
+
+      
+      Type of compact binary coalescence event.
+
+
+
+      :Returns:
+
+          **event_type** : ``str``
+              Type of CBC event.
+
+              Options:
+
+              - 'BBH': Binary Black Hole
+
+              - 'BNS': Binary Neutron Star
+
+              - 'NSBH': Neutron Star-Black Hole
+
+              default: 'BBH'
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: cosmo
+
+      
+      Astropy cosmology object for distance calculations.
+
+
+
+      :Returns:
+
+          **cosmo** : ``astropy.cosmology``
+              Cosmology used for luminosity distance and comoving volume calculations.
+
+              default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: json_file_names
+
+      
+      Dictionary of JSON file names for parameter storage.
+
+
+
+      :Returns:
+
+          **json_file_names** : ``dict``
+              Dictionary with keys:
+
+              - 'gwrates_params': GWRATES initialization parameters
+
+              - 'gw_param': GW event parameters
+
+              - 'gw_param_detectable': Detectable GW events
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: interpolator_directory
+
+      
+      Directory path for interpolator JSON files.
+
+
+
+      :Returns:
+
+          **interpolator_directory** : ``str``
+              Path to directory containing interpolator data files.
+
+              default: './interpolator_json'
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: ler_directory
+
+      
+      Directory path for LeR output files.
+
+
+
+      :Returns:
+
+          **ler_directory** : ``str``
+              Path to directory for storing output parameter files.
+
+              default: './ler_data'
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: create_new_interpolator
+
+      
+      Configuration dictionary for interpolator creation settings.
+
+
+
+      :Returns:
+
+          **create_new_interpolator** : ``dict``
+              Dictionary specifying which interpolators to create.
+
+              Each key is an interpolator name, and values are dicts with:
+
+              - 'create_new': bool - Whether to create new interpolator
+
+              - 'resolution': int or list - Grid resolution for interpolation
+
+              Special key 'gwsnr' is a bool for GWSNR interpolator creation.
+              Default: dict(
+                  merger_rate_density = {'create_new': False, 'resolution': 500},
+                  redshift_distribution = {'create_new': False, 'resolution': 500},
+                  luminosity_distance = {'create_new': False, 'resolution': 500},
+                  differential_comoving_volume = {'create_new': False, 'resolution': 500},
+                  source_frame_masses = {'create_new': False, 'resolution': 500},
+                  geocent_time = {'create_new': False, 'resolution': 500},
+                  ra = {'create_new': False, 'resolution': 500},
+                  dec = {'create_new': False, 'resolution': 500},
+                  phase = {'create_new': False, 'resolution': 500},
+                  psi = {'create_new': False, 'resolution': 500},
+                  theta_jn = {'create_new': False, 'resolution': 500},
+                  a_1 = {'create_new': False, 'resolution': 500},
+                  a_2 = {'create_new': False, 'resolution': 500},
+                  tilt_1 = {'create_new': False, 'resolution': 500},
+                  tilt_2 = {'create_new': False, 'resolution': 500},
+                  phi_12 = {'create_new': False, 'resolution': 500},
+                  phi_jl = {'create_new': False, 'resolution': 500},
+              )
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: list_of_detectors
+
+      
+      List of gravitational wave detector names.
+
+
+
+      :Returns:
+
+          **list_of_detectors** : ``list``
+              List of detector identifiers used for pdet calculations.
+
+              Typically set from gwsnr.detector_list during initialization.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: pdet_finder
+
+      
+      Detection probability finder function.
+
+
+
+      :Returns:
+
+          **pdet_finder** : ``callable``
+              Function that calculates detection probability for GW events.
+
+              The function signature should be:
+
+              ``pdet_finder(gw_param_dict) -> dict`` with key 'pdet_net'.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: gwrates_args
+
+      
+      Dictionary of all GWRATES initialization arguments.
+
+
+
+      :Returns:
+
+          **gwrates_args** : ``dict``
+              Dictionary containing all parameters used to initialize GWRATES and
+
+              its parent classes, useful for reproducibility.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: gw_cbc_statistics(size=100000, batch_size=50000, resume=True, save_batch=False, output_jsonfile=None)
+
+      
+      Generate GW source parameters with detection probabilities.
+
+      This function calls the _gw_sampling_routine function to generate
+      the parameters in batches. The generated parameters are stored in
+      a JSON file; if save_batch=True, it updates the file after each batch.
+
+      :Parameters:
+
+          **size** : ``int``
+              Number of samples to generate.
+
+              default: 100000
+
+          **batch_size** : ``int``
+              Batch size for sampling.
+
+              default: 50000
+
+          **resume** : ``bool``
+              If True, resume from the last batch.
+
+              default: True
+
+          **save_batch** : ``bool``
+              If True, save parameters after each batch.
+
+              If False, save all parameters at the end (faster).
+
+              default: False
+
+          **output_jsonfile** : ``str`` or ``None``
+              JSON file name for storing the parameters.
+
+              default: 'gw_param.json' (stored in ler_directory)
+
+      :Returns:
+
+          **gw_param** : ``dict``
+              dictionary of GW source parameters. The included parameters and their units are as follows (for default settings):
+
+              +--------------------+--------------+--------------------------------------+
+              | Parameter          | Units        | Description                          |
+              +====================+==============+======================================+
+              | zs                 |              | redshift of the source               |
+              +--------------------+--------------+--------------------------------------+
+              | geocent_time       | s            | GPS time of coalescence              |
+              +--------------------+--------------+--------------------------------------+
+              | ra                 | rad          | right ascension                      |
+              +--------------------+--------------+--------------------------------------+
+              | dec                | rad          | declination                          |
+              +--------------------+--------------+--------------------------------------+
+              | phase              | rad          | phase of GW at reference frequency   |
+              +--------------------+--------------+--------------------------------------+
+              | psi                | rad          | polarization angle                   |
+              +--------------------+--------------+--------------------------------------+
+              | theta_jn           | rad          | inclination angle                    |
+              +--------------------+--------------+--------------------------------------+
+              | a_1                |              | spin of the primary compact binary         |
+              +--------------------+--------------+--------------------------------------+
+              | a_2                |              | spin_2 of the compact binary         |
+              +--------------------+--------------+--------------------------------------+
+              | luminosity_distance| Mpc          | luminosity distance                  |
+              +--------------------+--------------+--------------------------------------+
+              | mass_1_source      | Msun         | mass_1 of the compact binary         |
+              |                    |              | (source frame)                       |
+              +--------------------+--------------+--------------------------------------+
+              | mass_2_source      | Msun         | mass_2 of the compact binary         |
+              |                    |              | (source frame)                       |
+              +--------------------+--------------+--------------------------------------+
+              | mass_1             | Msun         | mass_1 of the compact binary         |
+              |                    |              | (detector frame)                     |
+              +--------------------+--------------+--------------------------------------+
+              | mass_2             | Msun         | mass_2 of the compact binary         |
+              |                    |              | (detector frame)                     |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_L1            |              | pdet of L1                           |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_H1            |              | pdet of H1                           |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_V1            |              | pdet of V1                           |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_net           |              | pdet of the network                  |
+              +--------------------+--------------+--------------------------------------+
 
 
 
@@ -4796,105 +4771,101 @@ Functions
       .. rubric:: Examples
 
       >>> from ler.rates import GWRATES
-      >>> ler = GWRATES()
-      >>> param = ler.gw_cbc_statistics()
+      >>> gwrates = GWRATES()
+      >>> param = gwrates.gw_cbc_statistics()
 
 
 
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: gw_sampling_routine(size, output_jsonfile, resume=False, save_batch=True)
+   .. py:method:: gw_rate(gw_param=None, pdet_threshold=0.5, pdet_type='boolean', output_jsonfile=None)
 
       
-      Function to generate GW source parameters. This function also stores the parameters in json file in the current batch if save_batch=True.
+      Calculate the GW detection rate.
 
+      This function calculates the detection rate and stores the parameters
+      of detectable events in a JSON file.
 
       :Parameters:
 
-          **size** : `int`
-              number of samples.
-              default size = 100000.
+          **gw_param** : ``dict`` or ``str`` or ``None``
+              Dictionary of GW source parameters or JSON file name.
 
-          **output_jsonfile** : `str`
-              json file name for storing the parameters.
-              default output_jsonfile = 'gw_params.json'. Note that this file will be stored in the self.ler_directory.
+              default: None (uses self.json_file_names["gw_param"])
 
-          **resume** : `bool`
-              resume = False (default) or True.
-              if True, it appends the new samples to the existing json file.
+          **pdet_threshold** : ``float``
+              Threshold for detection probability.
 
-          **save_batch** : `bool`
-              if True, the function will save the parameters in batches. if False, the function will save all the parameters at the end of sampling. save_batch=False is faster.
+              default: 0.5
 
-      :Returns:
+          **pdet_type** : ``str``
+              Detectability condition type.
 
-          **gw_param** : `dict`
-              dictionary of gw GW source parameters. Refer to :attr:`~gw_param` for details.
+              Options:
 
+              - 'boolean': Binary detection based on pdet_threshold
 
+              - 'probability_distribution': Uses pdet values directly
 
+              default: 'boolean'
 
+          **output_jsonfile** : ``str`` or ``None``
+              JSON file name for storing detectable event parameters.
 
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: gw_rate(gw_param=None, snr_threshold=10.0, pdet_threshold=0.5, output_jsonfile=None, detectability_condition='step_function', snr_recalculation=False, snr_threshold_recalculation=[4, 20])
-
-      
-      Function to calculate the GW rate. This function also stores the parameters of the detectable events in json file. There are two conditions for detectability: 'step_function' and 'pdet'.
-
-      1. 'step_function': If two images have SNR>8.0, then the event is detectable. This is a step function. This is with the assumption that SNR function is provided and not None.
-      2. 'pdet':
-          i) If self.pdet is None and self.snr is not None, then it will calculate the pdet from the snr. There is no hard cut for this pdet and can have value ranging from 0 to 1 near the threshold.
-          ii) If self.pdet is not None, then it will use the generated pdet.
-
-      :Parameters:
-
-          **gw_param** : `dict` or `str`
-              dictionary of GW source parameters or json file name.
-              default gw_param = self.json_file_names["gw_param"]
-
-          **snr_threshold** : `float`
-              threshold for detection signal to noise ratio.
-              e.g. snr_threshold = 8.
-
-          **pdet_threshold** : `float`
-              threshold for detection probability.
-              e.g. pdet_threshold = 0.5.
-
-          **output_jsonfile** : `str`
-              json file name for storing the parameters of the detectable events.
-              default output_jsonfile = 'gw_params_detectable.json'.
-
-          **detectability_condition** : `str`
-              detectability condition.
-              default detectability_condition = 'step_function'.
-              other options are 'pdet'.
-
-          **snr_recalculation** : `bool`
-              if True, the SNR of centain events (snr>snr_threshold_recalculation)will be recalculate with 'inner-product' method. This is useful when the snr is calculated with 'ann' method.
-              default snr_recalculation = False.
-
-          **snr_threshold_recalculation** : `list`
-              lower and upper threshold for recalculation of detection signal to noise ratio.
-              default snr_threshold_recalculation = [4, 20].
+              default: 'gw_param_detectable.json'
 
       :Returns:
 
-          **total_rate** : `float`
-              total gw rate (Mpc^-3 yr^-1).
+          **total_rate** : ``float``
+              Total GW detection rate (yr^-1).
 
-          **gw_param** : `dict`
-              dictionary of gw GW source parameters of the detectable events. Refer to :attr:`~gw_param` for details.
+          **gw_param** : ``dict``
+              dictionary of GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):
+
+              +--------------------+--------------+--------------------------------------+
+              | Parameter          | Units        | Description                          |
+              +====================+==============+======================================+
+              | zs                 |              | redshift of the source               |
+              +--------------------+--------------+--------------------------------------+
+              | geocent_time       | s            | GPS time of coalescence              |
+              +--------------------+--------------+--------------------------------------+
+              | ra                 | rad          | right ascension                      |
+              +--------------------+--------------+--------------------------------------+
+              | dec                | rad          | declination                          |
+              +--------------------+--------------+--------------------------------------+
+              | phase              | rad          | phase of GW at reference frequency   |
+              +--------------------+--------------+--------------------------------------+
+              | psi                | rad          | polarization angle                   |
+              +--------------------+--------------+--------------------------------------+
+              | theta_jn           | rad          | inclination angle                    |
+              +--------------------+--------------+--------------------------------------+
+              | a_1                |              | spin of the primary compact binary         |
+              +--------------------+--------------+--------------------------------------+
+              | a_2                |              | spin_2 of the compact binary         |
+              +--------------------+--------------+--------------------------------------+
+              | luminosity_distance| Mpc          | luminosity distance                  |
+              +--------------------+--------------+--------------------------------------+
+              | mass_1_source      | Msun         | mass_1 of the compact binary         |
+              |                    |              | (source frame)                       |
+              +--------------------+--------------+--------------------------------------+
+              | mass_2_source      | Msun         | mass_2 of the compact binary         |
+              |                    |              | (source frame)                       |
+              +--------------------+--------------+--------------------------------------+
+              | mass_1             | Msun         | mass_1 of the compact binary         |
+              |                    |              | (detector frame)                     |
+              +--------------------+--------------+--------------------------------------+
+              | mass_2             | Msun         | mass_2 of the compact binary         |
+              |                    |              | (detector frame)                     |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_L1            |              | pdet of L1                           |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_H1            |              | pdet of H1                           |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_V1            |              | pdet of V1                           |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_net           |              | pdet of the network                  |
+              +--------------------+--------------+--------------------------------------+
 
 
 
@@ -4908,9 +4879,9 @@ Functions
       .. rubric:: Examples
 
       >>> from ler.rates import GWRATES
-      >>> ler = GWRATES()
-      >>> ler.gw_cbc_statistics();
-      >>> total_rate, gw_param = ler.gw_rate()
+      >>> gwrates = GWRATES()
+      >>> gwrates.gw_cbc_statistics()
+      >>> total_rate, gw_param = gwrates.gw_rate()
 
 
 
@@ -4920,24 +4891,26 @@ Functions
    .. py:method:: rate_function(detectable_size, total_size, verbose=True)
 
       
-      General helper function to calculate the rate for GW events.
+      Helper function to calculate the detection rate via Monte Carlo integration.
 
 
       :Parameters:
 
-          **detectable_size** : `int`
-              number of detectable events.
+          **detectable_size** : ``int`` or ``float``
+              Number of detectable events.
 
-          **total_size** : `int`
-              total number of events.
+          **total_size** : ``int``
+              Total number of simulated events.
 
-          **param_type** : `str`
-              type of parameters.
+          **verbose** : ``bool``
+              If True, print rate information.
+
+              default: True
 
       :Returns:
 
-          **rate** : `float`
-              rate of the events.
+          **rate** : ``float``
+              Detection rate (yr^-1).
 
 
 
@@ -4948,74 +4921,130 @@ Functions
 
 
 
-      .. rubric:: Examples
-
-      >>> from ler.rates import LeR
-      >>> ler = LeR()
-      >>> rate = ler.rate_function(detectable_size=100, total_size=1000)
 
 
 
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_gw_detectable_events(size=100, batch_size=None, stopping_criteria=dict(relative_diff_percentage=0.5, number_of_last_batches_to_check=4), snr_threshold=10.0, pdet_threshold=0.5, resume=False, output_jsonfile='gw_params_n_detectable.json', meta_data_file='meta_gw.json', detectability_condition='step_function', trim_to_size=False, snr_recalculation=False, snr_threshold_recalculation=[4, 12])
+   .. py:method:: selecting_n_gw_detectable_events(size=100, batch_size=50000, stopping_criteria=dict(relative_diff_percentage=0.5, number_of_last_batches_to_check=4), pdet_threshold=0.5, resume=True, output_jsonfile='gw_params_n_detectable.json', meta_data_file='meta_gw.json', pdet_type='boolean', trim_to_size=False)
 
       
-      Function to generate n GW detectable events. This fuction samples the GW parameters and save only the detectable events in json file. It also records metadata in the JSON file, which includes the total number of events and the cumulative rate of events. This functionality is particularly useful for generating a fixed or large number of detectable events until the event rates stabilize.
+      Generate a target number of detectable GW events by iterative batch sampling.
 
+      This function samples GW parameters in batches and saves only the
+      detectable events to a JSON file. It optionally stops when the
+      cumulative rate has stabilized based on the stopping criteria.
 
       :Parameters:
 
-          **size** : `int`
-              number of samples to be selected.
-              default size = 100.
+          **size** : ``int``
+              Target number of detectable samples to collect.
 
-          **batch_size** : `int`
-              batch size for sampling.
-              default batch_size = 50000.
+              default: 100
 
-          **snr_threshold** : `float`
-              threshold for detection signal to noise ratio.
-              e.g. snr_threshold = 8.
+          **batch_size** : ``int``
+              Batch size for sampling.
 
-          **pdet_threshold** : `float`
-              threshold for detection probability.
-              default pdet_threshold = 0.5.
+              default: 50000
 
-          **resume** : `bool`
-              resume = False (default) or True.
-              if True, the function will resume from the last batch.
+          **stopping_criteria** : ``dict`` or ``None``
+              Criteria for stopping sample collection (but will not stop until n>size).
 
-          **output_jsonfile** : `str`
-              json file name for storing the parameters of the detectable events.
-              default output_jsonfile = 'n_gw_param_detectable.json'.
+              Keys:
 
-          **meta_data_file** : `str`
-              json file name for storing the metadata.
-              default meta_data_file = 'meta_gw.json'.
+              - 'relative_diff_percentage': Maximum relative difference in rate (float)
 
-          **detectability_condition** : `str`
-              detectability condition.
-              default detectability_condition = 'step_function'.
-              other options are 'pdet'.
+              - 'number_of_last_batches_to_check': Number of batches for comparison (int)
 
-          **trim_to_size** : `bool`
-              if True, the final result will be trimmed to size.
-              default trim_to_size = True.
+              If None, stops when detectable events exceed size.
 
-          **snr_recalculation** : `bool`
-              if True, the SNR of centain events (snr>snr_threshold_recalculation)will be recalculate with 'inner-product' method. This is useful when the snr is calculated with 'ann' method of `gwsnr`.
-              default snr_recalculation = False.
+              default: dict(relative_diff_percentage=0.5, number_of_last_batches_to_check=4)
 
-          **snr_threshold_recalculation** : `list`
-              lower and upper threshold for recalculation of detection signal to noise ratio.
-              default snr_threshold_recalculation = [4, 12].
+          **pdet_threshold** : ``float``
+              Threshold for detection probability.
+
+              default: 0.5
+
+          **resume** : ``bool``
+              If True, resume from the last batch.
+
+              default: True
+
+          **output_jsonfile** : ``str``
+              JSON file name for storing detectable event parameters.
+
+              default: 'gw_params_n_detectable.json'
+
+          **meta_data_file** : ``str``
+              JSON file name for storing metadata.
+
+              default: 'meta_gw.json'
+
+          **pdet_type** : ``str``
+              Detectability condition type.
+
+              Options:
+
+              - 'boolean': Binary detection based on pdet_threshold
+
+              - 'probability_distribution': Uses pdet values directly
+
+              default: 'boolean'
+
+          **trim_to_size** : ``bool``
+              If True, trim final result to exactly the specified size.
+
+              default: False
 
       :Returns:
 
-          **param_final** : `dict`
-              dictionary of gw GW source parameters of the detectable events. Refer to :attr:`~gw_param` for details.
+          **param_final** : ``dict``
+              dictionary of GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):
+
+              +--------------------+--------------+--------------------------------------+
+              | Parameter          | Units        | Description                          |
+              +====================+==============+======================================+
+              | zs                 |              | redshift of the source               |
+              +--------------------+--------------+--------------------------------------+
+              | geocent_time       | s            | GPS time of coalescence              |
+              +--------------------+--------------+--------------------------------------+
+              | ra                 | rad          | right ascension                      |
+              +--------------------+--------------+--------------------------------------+
+              | dec                | rad          | declination                          |
+              +--------------------+--------------+--------------------------------------+
+              | phase              | rad          | phase of GW at reference frequency   |
+              +--------------------+--------------+--------------------------------------+
+              | psi                | rad          | polarization angle                   |
+              +--------------------+--------------+--------------------------------------+
+              | theta_jn           | rad          | inclination angle                    |
+              +--------------------+--------------+--------------------------------------+
+              | a_1                |              | spin of the primary compact binary   |
+              +--------------------+--------------+--------------------------------------+
+              | a_2                |              | spin of the secondary compact binary |
+              +--------------------+--------------+--------------------------------------+
+              | luminosity_distance| Mpc          | luminosity distance                  |
+              +--------------------+--------------+--------------------------------------+
+              | mass_1_source      | Msun         | mass of the primary compact binary   |
+              |                    |              | (source frame)                       |
+              +--------------------+--------------+--------------------------------------+
+              | mass_2_source      | Msun         | mass of the secondary compact binary |
+              |                    |              | (source frame)                       |
+              +--------------------+--------------+--------------------------------------+
+              | mass_1             | Msun         | mass_1 of the compact binary         |
+              |                    |              | (detector frame)                     |
+              +--------------------+--------------+--------------------------------------+
+              | mass_2             | Msun         | mass_2 of the compact binary         |
+              |                    |              | (detector frame)                     |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_L1            |              | pdet of L1                           |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_H1            |              | pdet of H1                           |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_V1            |              | pdet of V1                           |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_net           |              | pdet of the network                  |
+              +--------------------+--------------+--------------------------------------+
 
 
 
@@ -5028,9 +5057,9 @@ Functions
 
       .. rubric:: Examples
 
-      >>> from ler.rates import LeR
-      >>> ler = LeR()
-      >>> gw_param = ler.selecting_n_gw_detectable_events(size=100)
+      >>> from ler.rates import GWRATES
+      >>> gwrates = GWRATES()
+      >>> gw_param = gwrates.selecting_n_gw_detectable_events(size=100)
 
 
 

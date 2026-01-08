@@ -110,7 +110,7 @@
 <span class="sd">  - :class:`~ler.image_properties.ImageProperties` \n</span>
 <span class="sd">  - :class:`~ler.gw_source_population.CBCSourceParameterDistribution` \n</span>
 <span class="sd">  - :class:`~ler.gw_source_population.CBCSourceRedshiftDistribution` \n</span>
-<span class="sd">- Uses the ``gwsnr`` package for SNR calculation.</span>
+<span class="sd">- Uses the ``gwsnr`` package for pdet calculation.</span>
 
 <span class="sd">Usage:</span>
 <span class="sd">    Basic workflow for rate calculation:</span>
@@ -131,7 +131,7 @@
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">zipfile</span>
-<span class="kn">from</span> <span class="nn">importlib_resources</span> <span class="kn">import</span> <span class="n">path</span>
+<span class="kn">from</span> <span class="nn">importlib_resources</span> <span class="kn">import</span> <span class="n">files</span> <span class="k">as</span> <span class="n">resources_files</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;numexpr.utils&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
@@ -332,16 +332,16 @@
         <span class="c1"># getting interpolator data from the package</span>
         <span class="c1"># first check if the interpolator directory &#39;./interpolator_json&#39; exists</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">interpolator_directory</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="c1"># Get the path to the zip resource</span>
-            <span class="k">with</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;ler.rates.ler_data&#39;</span><span class="p">,</span> <span class="s1">&#39;interpolator_json.zip&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_path</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Extracting interpolator data from </span><span class="si">{</span><span class="n">zip_path</span><span class="si">}</span><span class="s2"> to the current working directory.&quot;</span><span class="p">)</span>
-                <span class="n">zip_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">zip_path</span><span class="p">)</span>  <span class="c1"># Ensure it&#39;s a Path object</span>
-
+            <span class="c1"># Get the path to the zip resource using importlib_resources</span>
+            <span class="n">zip_resource</span> <span class="o">=</span> <span class="n">resources_files</span><span class="p">(</span><span class="s1">&#39;ler.rates&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;ler_data&#39;</span><span class="p">,</span> <span class="s1">&#39;interpolator_json.zip&#39;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">zip_resource</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_file</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Extracting interpolator data from package to the current working directory.&quot;</span><span class="p">)</span>
+                
                 <span class="c1"># Define destination path (current working directory)</span>
                 <span class="n">dest_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
 
                 <span class="c1"># Extract the zip file, skipping __MACOSX metadata</span>
-                <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">zip_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_ref</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">zip_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_ref</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">zip_ref</span><span class="o">.</span><span class="n">namelist</span><span class="p">():</span>
                         <span class="c1"># Skip __MACOSX directory and its contents</span>
                         <span class="k">if</span> <span class="n">member</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__MACOSX&#39;</span><span class="p">):</span>
@@ -453,8 +453,7 @@
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">input_params</span><span class="p">:</span>
                     <span class="n">input_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="c1"># save input_params to self.ler_args</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span> <span class="o">=</span> <span class="n">input_params</span>
+    
         <span class="c1"># initialization of parent class</span>
         <span class="n">LensGalaxyParameterDistribution</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
@@ -484,15 +483,17 @@
             <span class="n">spin_precession</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;spin_precession&quot;</span><span class="p">],</span>
         <span class="p">)</span>
 
-        <span class="c1"># save input_params to self.ler_args</span>
         <span class="c1"># some of the None values will have default values after initialization</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;source_priors&quot;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;source_priors_params&quot;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;lens_param_samplers&quot;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;lens_param_samplers_params&quot;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;lens_functions&quot;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_functions</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;lens_functions_params&quot;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_functions_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span>
+        <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;source_priors&quot;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;source_priors_params&quot;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_param_samplers&quot;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_param_samplers_params&quot;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_functions&quot;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_functions</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_functions_params&quot;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_functions_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span>
+
+        <span class="c1"># save input_params to self.ler_args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span> <span class="o">=</span> <span class="n">input_params</span>
 
     <span class="k">def</span> <span class="nf">_gwsnr_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -627,7 +628,7 @@
 
         <span class="k">return</span> <span class="n">gwsnr</span><span class="o">.</span><span class="n">pdet</span>
 
-    <span class="k">def</span> <span class="nf">_print_all_init_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_print_all_init_args</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to print all the parameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -701,63 +702,6 @@
                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    ),&quot;</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> For reference, the chosen source parameters are listed below:&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;merger_rate_density = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s1">&#39;merger_rate_density&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;merger_rate_density_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;source_frame_masses = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s1">&#39;source_frame_masses&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;source_frame_masses_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;geocent_time = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s1">&#39;geocent_time&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;geocent_time_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;geocent_time&quot;</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ra = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s1">&#39;ra&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ra_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;ra&quot;</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;dec = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;dec_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;dec&quot;</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;phase = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s1">&#39;phase&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;phase_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;phase&quot;</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;psi = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s1">&#39;psi&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;psi_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;psi&quot;</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;theta_jn = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s1">&#39;theta_jn&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;theta_jn_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;theta_jn&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin_zero</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a_1 = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s1">&#39;a_1&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a_1_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;a_1&quot;</span><span class="p">])</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a_2 = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s1">&#39;a_2&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a_2_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;a_2&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin_precession</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;tilt_1 = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s1">&#39;tilt_1&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;tilt_1_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;tilt_1&quot;</span><span class="p">])</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;tilt_2 = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s1">&#39;tilt_2&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;tilt_2_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;tilt_2&quot;</span><span class="p">])</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;phi_12 = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s1">&#39;phi_12&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;phi_12_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;phi_12&quot;</span><span class="p">])</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;phi_jl = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s1">&#39;phi_jl&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;phi_jl_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;phi_jl&quot;</span><span class="p">])</span>
-
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> For reference, the chosen lens related parameters and functions are listed below:&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;lens_redshift = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="p">[</span><span class="s1">&#39;lens_redshift&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;lens_redshift_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;lens_redshift&quot;</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;velocity_dispersion = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="p">[</span><span class="s1">&#39;velocity_dispersion&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;velocity_dispersion_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;velocity_dispersion&quot;</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;axis_ratio = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="p">[</span><span class="s1">&#39;axis_ratio&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;axis_ratio_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;axis_ratio&quot;</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;axis_rotation_angle = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="p">[</span><span class="s1">&#39;axis_rotation_angle&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;axis_rotation_angle_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;axis_rotation_angle&quot;</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;external_shear = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="p">[</span><span class="s1">&#39;external_shear&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;external_shear_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers_params</span><span class="p">[</span><span class="s1">&#39;external_shear&#39;</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;density_profile_slope = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="p">[</span><span class="s1">&#39;density_profile_slope&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;density_profile_slope_params = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;density_profile_slope&quot;</span><span class="p">])</span>
-            <span class="c1"># lens functions</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Lens functions:&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cross_section_based_sampler = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_functions</span><span class="p">[</span><span class="s1">&#39;cross_section_based_sampler&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cross_section_based_sampler_params = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_functions_params</span><span class="p">[</span><span class="s1">&#39;cross_section_based_sampler&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>    
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;optical_depth = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_functions</span><span class="p">[</span><span class="s1">&#39;optical_depth&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;optical_depth_params = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_functions_params</span><span class="p">[</span><span class="s1">&#39;optical_depth&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;param_sampler_type = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_functions</span><span class="p">[</span><span class="s1">&#39;param_sampler_type&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cross_section = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_functions</span><span class="p">[</span><span class="s1">&#39;cross_section&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cross_section_params = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_functions_params</span><span class="p">[</span><span class="s1">&#39;cross_section&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_store_ler_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -856,6 +800,7 @@
 <span class="sd">            +--------------------+--------------+--------------------------------------+</span>
 <span class="sd">            | pdet_net           |              | pdet of the network                  |</span>
 <span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -1260,6 +1205,7 @@
 <span class="sd">            | pdet_net                     |           | detection probability of the network                  |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 
+
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; from ler import LeR</span>
@@ -1325,7 +1271,7 @@
             <span class="c1"># get lensed params</span>
             <span class="n">lensed_param_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_lens_parameters</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
             <span class="c1"># now get (strongly lensed) image paramters along with lens parameters</span>
-            <span class="n">lensed_param_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_properties</span><span class="p">(</span><span class="n">lensed_param_</span><span class="p">)</span>
+            <span class="n">lensed_param_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_properties</span><span class="p">(</span><span class="n">lensed_param_</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># if empty</span>
                     <span class="n">lensed_param</span> <span class="o">=</span> <span class="n">lensed_param_</span>
@@ -1346,7 +1292,7 @@
                 <span class="n">size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;calculating pdet...&quot;</span><span class="p">)</span>
-        <span class="n">pdet</span><span class="p">,</span> <span class="n">lensed_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lensed_snrs</span><span class="p">(</span>
+        <span class="n">pdet</span><span class="p">,</span> <span class="n">lensed_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_lensed_snrs</span><span class="p">(</span>
             <span class="n">lensed_param</span><span class="o">=</span><span class="n">lensed_param</span><span class="p">,</span>
             <span class="n">list_of_detectors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">list_of_detectors</span><span class="p">,</span>
             <span class="n">pdet_calculator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder</span><span class="p">,</span>
@@ -1482,6 +1428,7 @@
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | pdet_net                     |           | detection probability of the network                  |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
+<span class="sd">            </span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -2053,15 +2000,15 @@
 <span class="sd">        resume : ``bool``</span>
 <span class="sd">            resume = False (default) or True.</span>
 <span class="sd">            if True, the function will resume from the last batch.</span>
-<span class="sd">        batch_size : `int`</span>
+<span class="sd">        batch_size : ``int``</span>
 <span class="sd">            batch size for sampling.</span>
 <span class="sd">            default batch_size = 50000.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        ----------</span>
-<span class="sd">        n : `int`</span>
+<span class="sd">        n : ``int``</span>
 <span class="sd">            iterator.</span>
-<span class="sd">        events_total : `int`</span>
+<span class="sd">        events_total : ``int``</span>
 <span class="sd">            total number of events.</span>
 <span class="sd">        output_path : ``str``</span>
 <span class="sd">            path to the output json file.</span>
@@ -2166,7 +2113,7 @@
 <span class="sd">        param_final : ``dict``</span>
 <span class="sd">            dictionary of GW source parameters of the detectable events. Refer to :meth:`~unlensed_param` or :meth:`~lensed_param` for details.</span>
 <span class="sd">        new_total_rate : ``float``</span>
-<span class="sd">            total rate (Mpc^-3 yr^-1).</span>
+<span class="sd">            total rate (yr^-1).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> trmming final result to size=</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -2215,10 +2162,8 @@
 <span class="sd">        events_total : `int`</span>
 <span class="sd">            total number of events.</span>
 <span class="sd">        total_rate : ``float``</span>
-<span class="sd">            total rate (Mpc^-3 yr^-1).</span>
+<span class="sd">            total rate (yr^-1).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># print(&quot;event total = &quot;, events_total)</span>
 
         <span class="c1"># save meta data</span>
         <span class="n">meta_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">events_total</span><span class="o">=</span><span class="p">[</span><span class="n">events_total</span><span class="p">],</span> <span class="n">detectable_events</span><span class="o">=</span><span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">n</span><span class="p">)],</span> <span class="n">total_rate</span><span class="o">=</span><span class="p">[</span><span class="n">total_rate</span><span class="p">])</span>

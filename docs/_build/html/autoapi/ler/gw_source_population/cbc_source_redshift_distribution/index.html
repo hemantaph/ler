@@ -438,10 +438,12 @@ Default: {‘merger_rate_density’: {‘create_new’: False, ‘resolution’:
 <dl class="py property">
 <dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.luminosity_distance">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">luminosity_distance</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.luminosity_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.luminosity_distance" title="Link to this definition"></a></dt>
-<dd><p>Class object (of FunctionConditioning) for the luminosity distance, with function as callback, which converts redshift to luminosity distance (in Mpc) for the selected cosmology.
-The class object contains the following attribute methods:
-- <cite>function</cite>: returns the luminosity distance distribution function.
-- <cite>function_inverse</cite>: returns the inverse luminosity distance distribution function, which converts luminosity distance (in Mpc) to redshift.</p>
+<dd><p>Class object (of FunctionConditioning) for the luminosity distance, with function as callback, which converts redshift to luminosity distance (in Mpc) for the selected cosmology.</p>
+<p>The class object contains the following attribute methods:</p>
+<ul class="simple">
+<li><p><cite>function</cite>: returns the luminosity distance distribution function.</p></li>
+<li><p><cite>function_inverse</cite>: returns the inverse luminosity distance distribution function, which converts luminosity distance (in Mpc) to redshift.</p></li>
+</ul>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -455,9 +457,11 @@ The class object contains the following attribute methods:
 <dl class="py property">
 <dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.differential_comoving_volume">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">differential_comoving_volume</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.differential_comoving_volume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.differential_comoving_volume" title="Link to this definition"></a></dt>
-<dd><p>Class object (of FunctionConditioning) for the differential comoving volume function, with function as callback, which returns dVc/dz (in Mpc^3 sr^-1) for the selected cosmology.
-The class object contains the following attribute methods:
-- <cite>function</cite>: returns the differential comoving volume distribution function.</p>
+<dd><p>Class object (of FunctionConditioning) for the differential comoving volume function, with function as callback, which returns dVc/dz (in Mpc^3 sr^-1) for the selected cosmology.</p>
+<p>The class object contains the following attribute methods:</p>
+<ul class="simple">
+<li><p><cite>function</cite>: returns the differential comoving volume distribution function.</p></li>
+</ul>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -486,11 +490,13 @@ in source frame (units: Mpc^-3 yr^-1).</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.source_redshift">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source_redshift</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.source_redshift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.source_redshift" title="Link to this definition"></a></dt>
-<dd><p>Class object (of FunctionConditioning) for the source redshift sampler, with rvs/sampler as callback, which samples source redshifts from p(z) ∝ R(z)/(1+z) dVc/dz , where p(z) is the redshift probability distribution, R(z) is the merger rate density, and dVc/dz is the differential comoving volume.
-The class object contains the following attribute methods:
-- <cite>rvs</cite>: returns random samples from the source redshift distribution.
-- <cite>pdf</cite>: returns the source redshift probability density function.
-- <cite>function</cite>: returns the source redshift distribution function.</p>
+<dd><p>Class object (of FunctionConditioning) for the source redshift sampler, with rvs/sampler as callback, which samples source redshifts from p(z) ∝ R(z)/(1+z) dVc/dz , where p(z) is the redshift probability distribution, R(z) is the merger rate density, and dVc/dz is the differential comoving volume.</p>
+<p>The class object contains the following attribute methods:</p>
+<ul class="simple">
+<li><p><cite>rvs</cite>: returns random samples from the source redshift distribution.</p></li>
+<li><p><cite>pdf</cite>: returns the source redshift probability density function.</p></li>
+<li><p><cite>function</cite>: returns the source redshift distribution function.</p></li>
+</ul>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -536,13 +542,15 @@ The class object contains the following attribute methods:
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>merger_rate_density_model_list</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary with model names as keys and parameter dicts as values.
-Available models:
-- ‘merger_rate_density_bbh_popI_II_oguri2018’
-- ‘sfr_madau_dickinson2014’
-- ‘sfr_with_td’
-- ‘merger_rate_density_bbh_popIII_ken2022’
-- ‘merger_rate_density_bbh_primordial_ken2022’</p>
+<dt><strong>merger_rate_density_model_list</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary with model names as keys and parameter dicts as values.</p>
+<p>Available models:</p>
+<ul class="simple">
+<li><p>‘merger_rate_density_bbh_popI_II_oguri2018’</p></li>
+<li><p>‘sfr_madau_dickinson2014’</p></li>
+<li><p>‘sfr_with_td’</p></li>
+<li><p>‘merger_rate_density_bbh_popIII_ken2022’</p></li>
+<li><p>‘merger_rate_density_bbh_primordial_ken2022’</p></li>
+</ul>
 </dd>
 </dl>
 </dd>
