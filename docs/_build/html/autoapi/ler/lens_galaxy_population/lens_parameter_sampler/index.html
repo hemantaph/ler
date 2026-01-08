@@ -70,7 +70,6 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../cross_section_interpolator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../epl_shear_cross_section/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.epl_shear_cross_section</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../jit_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.jit_functions</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../lens_galaxy_parameter_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_galaxy_parameter_distribution</span></code></a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_parameter_sampler</span></code></a><ul>
@@ -115,78 +114,110 @@
              
   <section id="module-ler.lens_galaxy_population.lens_parameter_sampler">
 <span id="ler-lens-galaxy-population-lens-parameter-sampler"></span><h1><a class="reference internal" href="#module-ler.lens_galaxy_population.lens_parameter_sampler" title="ler.lens_galaxy_population.lens_parameter_sampler"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_parameter_sampler</span></code></a><a class="headerlink" href="#module-ler.lens_galaxy_population.lens_parameter_sampler" title="Link to this heading"></a></h1>
+<p>Module for lens parameter sampling using rejection and importance sampling methods.</p>
+<p>This module provides functions to sample lens galaxy parameters (velocity dispersion,
+axis ratio, orientation, power-law index, and external shear) weighted by the
+gravitational lensing cross section. Two sampling strategies are implemented:</p>
+<ul class="simple">
+<li><p>Rejection sampling: Uses accept/reject method with cross section as the target density</p></li>
+<li><p>Importance sampling: Uses uniform proposal with cross section-based importance weights</p></li>
+</ul>
+<p>Both samplers can be optionally JIT-compiled using Numba for improved performance.</p>
+<p>Copyright (C) 2024 LeR Team. Distributed under MIT License.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_parameter_sampler.rejection_sampler" title="ler.lens_galaxy_population.lens_parameter_sampler.rejection_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rejection_sampler</span></code></a>(zs, zl, sigma_max, sigma_rvs, q_rvs, ...)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_parameter_sampler.create_rejection_sampler" title="ler.lens_galaxy_population.lens_parameter_sampler.create_rejection_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_rejection_sampler</span></code></a>(sigma_max, sigma_rvs, q_rvs, ...)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_parameter_sampler.sigma_proposal_uniform" title="ler.lens_galaxy_population.lens_parameter_sampler.sigma_proposal_uniform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sigma_proposal_uniform</span></code></a>(n, sigma_min, sigma_max)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_parameter_sampler.weighted_choice_1d" title="ler.lens_galaxy_population.lens_parameter_sampler.weighted_choice_1d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weighted_choice_1d</span></code></a>(weights)</p></td>
-<td><p>Draw an index with probability proportional to 'weights' (assumed &gt;=0).</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_parameter_sampler.importance_sampler" title="ler.lens_galaxy_population.lens_parameter_sampler.importance_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">importance_sampler</span></code></a>(zs, zl, sigma_min, sigma_max, ...)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_parameter_sampler.create_rejection_sampler" title="ler.lens_galaxy_population.lens_parameter_sampler.create_rejection_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_rejection_sampler</span></code></a>(sigma_max, sigma_rvs, q_rvs, ...)</p></td>
+<td><p>Create a rejection sampler for lens parameters weighted by cross section.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_parameter_sampler.create_importance_sampler" title="ler.lens_galaxy_population.lens_parameter_sampler.create_importance_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_importance_sampler</span></code></a>(sigma_min, sigma_max, q_rvs, ...)</p></td>
-<td><p></p></td>
+<td><p>Create an importance sampler for lens parameters weighted by cross section.</p></td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h3>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_parameter_sampler.C_LIGHT" title="ler.lens_galaxy_population.lens_parameter_sampler.C_LIGHT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">C_LIGHT</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py data">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_parameter_sampler.C_LIGHT">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.lens_parameter_sampler.</span></span><span class="sig-name descname"><span class="pre">C_LIGHT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'299792.458'</span></em><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_parameter_sampler.html#C_LIGHT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_parameter_sampler.C_LIGHT" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_parameter_sampler.rejection_sampler">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.lens_parameter_sampler.</span></span><span class="sig-name descname"><span class="pre">rejection_sampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saftey_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_parameter_sampler.html#rejection_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_parameter_sampler.rejection_sampler" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_parameter_sampler.create_rejection_sampler">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.lens_parameter_sampler.</span></span><span class="sig-name descname"><span class="pre">create_rejection_sampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saftey_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_njit_sampler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_parameter_sampler.html#create_rejection_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_parameter_sampler.create_rejection_sampler" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_parameter_sampler.sigma_proposal_uniform">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.lens_parameter_sampler.</span></span><span class="sig-name descname"><span class="pre">sigma_proposal_uniform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_max</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_parameter_sampler.html#sigma_proposal_uniform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_parameter_sampler.sigma_proposal_uniform" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_parameter_sampler.weighted_choice_1d">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.lens_parameter_sampler.</span></span><span class="sig-name descname"><span class="pre">weighted_choice_1d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_parameter_sampler.html#weighted_choice_1d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_parameter_sampler.weighted_choice_1d" title="Link to this definition"></a></dt>
-<dd><p>Draw an index with probability proportional to ‘weights’ (assumed &gt;=0).
-Numba-safe replacement for np.random.choice(n, p=weights).</p>
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.lens_parameter_sampler.</span></span><span class="sig-name descname"><span class="pre">create_rejection_sampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safety_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_njit_sampler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_parameter_sampler.html#create_rejection_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_parameter_sampler.create_rejection_sampler" title="Link to this definition"></a></dt>
+<dd><p>Create a rejection sampler for lens parameters weighted by cross section.</p>
+<p>Returns a callable that samples lens parameters using rejection sampling,
+optionally JIT-compiled for improved performance.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>sigma_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum velocity dispersion (km/s) for computing upper bound.</p>
+</dd>
+<dt><strong>sigma_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample velocity dispersion: sigma_rvs(n, zl) -&gt; array.</p>
+</dd>
+<dt><strong>q_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample axis ratio: q_rvs(n, sigma) -&gt; array.</p>
+</dd>
+<dt><strong>phi_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample orientation angle: phi_rvs(n) -&gt; array.</p>
+</dd>
+<dt><strong>gamma_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample power-law index: gamma_rvs(n) -&gt; array.</p>
+</dd>
+<dt><strong>shear_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample external shear: shear_rvs(n) -&gt; (gamma1, gamma2).</p>
+</dd>
+<dt><strong>cross_section</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to compute cross section.</p>
+</dd>
+<dt><strong>safety_factor</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Multiplicative safety factor for the upper bound.</p>
+<p>default: 1.2</p>
+</dd>
+<dt><strong>use_njit_sampler</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, uses Numba JIT compilation for faster execution.</p>
+<p>default: True</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>rejection_sampler_wrapper</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function with signature (zs, zl) -&gt; (sigma, q, phi, gamma, gamma1, gamma2).</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_parameter_sampler.importance_sampler">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.lens_parameter_sampler.</span></span><span class="sig-name descname"><span class="pre">importance_sampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_pdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_prop</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_parameter_sampler.html#importance_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_parameter_sampler.importance_sampler" title="Link to this definition"></a></dt>
-<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_parameter_sampler.create_importance_sampler">
 <span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.lens_parameter_sampler.</span></span><span class="sig-name descname"><span class="pre">create_importance_sampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_pdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_prop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_njit_sampler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_parameter_sampler.html#create_importance_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_parameter_sampler.create_importance_sampler" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Create an importance sampler for lens parameters weighted by cross section.</p>
+<p>Returns a callable that samples lens parameters using importance sampling
+with uniform proposal, optionally JIT-compiled for improved performance.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>sigma_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum velocity dispersion (km/s) for uniform proposal.</p>
+</dd>
+<dt><strong>sigma_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum velocity dispersion (km/s) for uniform proposal.</p>
+</dd>
+<dt><strong>q_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample axis ratio: q_rvs(n, sigma) -&gt; array.</p>
+</dd>
+<dt><strong>phi_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample orientation angle: phi_rvs(n) -&gt; array.</p>
+</dd>
+<dt><strong>gamma_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample power-law index: gamma_rvs(n) -&gt; array.</p>
+</dd>
+<dt><strong>shear_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample external shear: shear_rvs(n) -&gt; (gamma1, gamma2).</p>
+</dd>
+<dt><strong>sigma_pdf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>PDF of velocity dispersion: sigma_pdf(sigma, zl) -&gt; array.</p>
+</dd>
+<dt><strong>cross_section</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to compute cross section.</p>
+</dd>
+<dt><strong>n_prop</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of proposal samples per lens.</p>
+</dd>
+<dt><strong>use_njit_sampler</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, uses Numba JIT compilation for faster execution.</p>
+<p>default: True</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>importance_sampler_wrapper</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function with signature (zs, zl) -&gt; (sigma, q, phi, gamma, gamma1, gamma2).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 </section>

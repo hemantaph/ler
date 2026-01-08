@@ -82,7 +82,7 @@ Classes
            def pdet_finder(gw_param_dict):
                ...
                return pdet_net_dict
-           where pdet_net_dict.keys = ['pdet_net']. For example uses, refer to [GRB pdet example](https://ler.readthedocs.io/en/latest/examples/rates/grb%20detection%20rate.html).
+           where pdet_net_dict.keys = ['pdet_net']. For example uses, refer to [GRB pdet example](https://ler.hemantaph.comexamples/rates/grb%20detection%20rate.html).
 
        **list_of_detectors** : `list`
            list of detectors.

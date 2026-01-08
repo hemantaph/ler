@@ -430,10 +430,12 @@ Classes
 
       
       Class object (of FunctionConditioning) for the luminosity distance, with function as callback, which converts redshift to luminosity distance (in Mpc) for the selected cosmology.
-      The class object contains the following attribute methods:
-      - `function`: returns the luminosity distance distribution function.
-      - `function_inverse`: returns the inverse luminosity distance distribution function, which converts luminosity distance (in Mpc) to redshift.
 
+      The class object contains the following attribute methods:
+
+      - `function`: returns the luminosity distance distribution function.
+
+      - `function_inverse`: returns the inverse luminosity distance distribution function, which converts luminosity distance (in Mpc) to redshift.
 
 
       :Returns:
@@ -460,9 +462,10 @@ Classes
 
       
       Class object (of FunctionConditioning) for the differential comoving volume function, with function as callback, which returns dVc/dz (in Mpc^3 sr^-1) for the selected cosmology.
-      The class object contains the following attribute methods:
-      - `function`: returns the differential comoving volume distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `function`: returns the differential comoving volume distribution function.
 
 
       :Returns:
@@ -517,11 +520,14 @@ Classes
 
       
       Class object (of FunctionConditioning) for the source redshift sampler, with rvs/sampler as callback, which samples source redshifts from p(z) ∝ R(z)/(1+z) dVc/dz , where p(z) is the redshift probability distribution, R(z) is the merger rate density, and dVc/dz is the differential comoving volume.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the source redshift distribution.
-      - `pdf`: returns the source redshift probability density function.
-      - `function`: returns the source redshift distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the source redshift distribution.
+
+      - `pdf`: returns the source redshift probability density function.
+
+      - `function`: returns the source redshift distribution function.
 
 
       :Returns:
@@ -609,11 +615,17 @@ Classes
 
           **merger_rate_density_model_list** : ``dict``
               Dictionary with model names as keys and parameter dicts as values.
+
               Available models:
+
               - 'merger_rate_density_bbh_popI_II_oguri2018'
+
               - 'sfr_madau_dickinson2014'
+
               - 'sfr_with_td'
+
               - 'merger_rate_density_bbh_popIII_ken2022'
+
               - 'merger_rate_density_bbh_primordial_ken2022'
 
 

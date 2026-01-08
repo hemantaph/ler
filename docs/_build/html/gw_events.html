@@ -115,8 +115,8 @@
              
   <section id="Gravitational-wave-event-rates">
 <h1>Gravitational wave event rates<a class="headerlink" href="#Gravitational-wave-event-rates" title="Link to this heading"></a></h1>
-<p>This document outlines the default settings for calculating detectable gravitational wave event rates (per year) in <a class="reference external" href="https://ler.readthedocs.io/en/latest/index.html">ler</a>.</p>
-<p>Refer to documentation page on <a class="reference external" href="https://ler.readthedocs.io/en/latest/GW_equations.html">Analytical formulation</a> for the detailed derivation of the rate equation.</p>
+<p>This document outlines the default settings for calculating detectable gravitational wave event rates (per year) in <a class="reference external" href="https://ler.hemantaph.comindex.html">ler</a>.</p>
+<p>Refer to documentation page on <a class="reference external" href="https://ler.hemantaph.comGW_equations.html">Analytical formulation</a> for the detailed derivation of the rate equation.</p>
 <p><strong>Parameters Considered:</strong></p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(z_s\)</span>: Source redshift.</p></li>
@@ -221,7 +221,7 @@ Sampling of the source redshift $z_s$ is based on the inverse transform sampling
 <li><p><span class="math notranslate nohighlight">\(\delta_m\)</span>: Smoothing parameter for the transition between the power-law and Gaussian components.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\beta\)</span>: Exponent for the mass ratio distribution.</p></li>
 </ul>
-<p>For analytical expressions and details on the PowerLaw+Peak model, refer to the <a class="reference external" href="https://arxiv.org/pdf/2010.14533.pdf">GWTC-2 2021</a> (Appendix B3). The default values for the parameters are based on <a class="reference external" href="https://arxiv.org/pdf/2111.03604.pdf">GWTC-3 2021</a> (page-23). <a class="reference external" href="https://ler.readthedocs.io/en/latest/index.html">ler</a> uses this model through <a class="reference external" href="https://lscsoft.docs.ligo.org/gwcosmo/">gwcosmo</a>.</p>
+<p>For analytical expressions and details on the PowerLaw+Peak model, refer to the <a class="reference external" href="https://arxiv.org/pdf/2010.14533.pdf">GWTC-2 2021</a> (Appendix B3). The default values for the parameters are based on <a class="reference external" href="https://arxiv.org/pdf/2111.03604.pdf">GWTC-3 2021</a> (page-23). <a class="reference external" href="https://ler.hemantaph.comindex.html">ler</a> uses this model through <a class="reference external" href="https://lscsoft.docs.ligo.org/gwcosmo/">gwcosmo</a>.</p>
 <p>Here is the default parameters and resultant distribution:</p>
 <table><tr><td><table class="docutils align-default">
 <thead>
@@ -355,7 +355,7 @@ p(m) = wN (\mu_L, \sigma_L) + (1 − w)N (\mu_R, \sigma_R)
 </tr>
 </tbody>
 </table>
-<p><code class="docutils literal notranslate"><span class="pre">ler</span></code> by default consider non-spinning sources. However, spin parameters can be included in <code class="docutils literal notranslate"><span class="pre">ler</span></code> initialization as given in the <a class="reference external" href="https://ler.readthedocs.io/en/latest/examples/rates/LeR%20complete%20examples.html#Custom-functions">example</a>. Below is the default sampling method for the related parameters.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ler</span></code> by default consider non-spinning sources. However, spin parameters can be included in <code class="docutils literal notranslate"><span class="pre">ler</span></code> initialization as given in the <a class="reference external" href="https://ler.hemantaph.comexamples/rates/LeR%20complete%20examples.html#Custom-functions">example</a>. Below is the default sampling method for the related parameters.</p>
 <p><strong>Case I:</strong> Aligned-spins sources (<span class="math notranslate nohighlight">\(a_1,\,a_2\)</span>: Dimensionless spin parameter for the more and less massive object respectively.)</p>
 <table class="docutils align-default">
 <thead>

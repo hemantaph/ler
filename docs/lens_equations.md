@@ -173,7 +173,7 @@ P(z_s|SL) &= \frac{P(SL|z_s) P(z_s)}{P(SL)} \\
 \end{equation}
 $$
 
-In the above expression, I have used the redshift prior $P(z_s)$ of unlensed events as given in Eqn(6) of [Analytical formulation of the un-lensed event sampling](https://ler.readthedocs.io/en/latest/GW_equations.html#Gravitational-wave-events-sampling-(Analytical-formulation)). 
+In the above expression, I have used the redshift prior $P(z_s)$ of unlensed events as given in Eqn(6) of [Analytical formulation of the un-lensed event sampling](https://ler.hemantaph.comGW_equations.html#Gravitational-wave-events-sampling-(Analytical-formulation)). 
 
 $$
 \begin{equation}

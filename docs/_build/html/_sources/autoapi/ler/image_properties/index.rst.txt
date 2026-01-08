@@ -22,7 +22,6 @@ Classes
 
 .. autoapisummary::
 
-   ler.image_properties.FunctionConditioning
    ler.image_properties.ImageProperties
 
 
@@ -34,7 +33,6 @@ Functions
 
    ler.image_properties.solve_lens_equation
    ler.image_properties.phi_q2_ellipticity_hemanta
-   ler.image_properties.luminosity_distance
    ler.image_properties.solve_lens_equation
 
 
@@ -45,6 +43,8 @@ Attributes
 .. autoapisummary::
 
    ler.image_properties.cosmo
+   ler.image_properties.MAX_RETRIES
+   ler.image_properties.MIN_MAGNIFICATION
 
 
 .. py:data:: cosmo
@@ -54,56 +54,71 @@ Attributes
 .. py:function:: solve_lens_equation(lens_parameters)
 
    
-   Function to solve the lens equation (min_image = 2)
+   Solve the lens equation to find image properties.
 
+   Uses the analytical solver from lenstronomy to find image positions,
+   magnifications, time delays, and hessian properties for strongly
+   lensed sources. Source positions are sampled from within the caustic
+   region to ensure multiple imaging.
 
    :Parameters:
 
-       **lens_parameters** : `list`
-           a list of parameters
-           lens_parameters[0] = min_images : minimum number of images
-           lens_parameters[1] = e1 : ellipticity
-           lens_parameters[2] = e2 : ellipticity
-           lens_parameters[3] = gamma : power-law index
-           lens_parameters[4] = gamma1 : shear
-           lens_parameters[5] = gamma2 : shear
-           lens_parameters[6] = zl : redshift of the lens
-           lens_parameters[7] = zs : redshift of the source
-           lens_parameters[8] = einstein_radius : Einstein radius
-           lens_parameters[9] = iteration : iteration number
-           lens_parameters[10:] = lens_model_list : numpy array of lens models
+       **lens_parameters** : ``numpy.ndarray``
+           Array of lens configuration parameters with the following structure:
+
+           - [0]: n_min_images - minimum number of images required
+
+           - [1]: e1 - ellipticity component 1
+
+           - [2]: e2 - ellipticity component 2
+
+           - [3]: gamma - power-law slope of mass density
+
+           - [4]: gamma1 - external shear component 1
+
+           - [5]: gamma2 - external shear component 2
+
+           - [6]: zl - lens redshift
+
+           - [7]: zs - source redshift
+
+           - [8]: einstein_radius - Einstein radius (units: arcsec)
+
+           - [9]: iteration - iteration index for tracking
+
+           - [10:]: lens_model_list - lens model names (e.g., 'EPL_NUMBA', 'SHEAR')
 
    :Returns:
 
-       **x_source** : `float`
-           x position of the source in the source plane, unit: arcsec
+       **x_source** : ``float``
+           Source x-position (units: arcsec).
 
-       **y_source** : `float`
-           y position of the source in the source plane
+       **y_source** : ``float``
+           Source y-position (units: arcsec).
 
-       **x0_image_position** : `float`
-           x position of the images in the source plane
+       **x0_image_position** : ``numpy.ndarray``
+           Image x-positions (units: arcsec).
 
-       **x1_image_position** : `float`
-           y position of the images in the source plane
+       **x1_image_position** : ``numpy.ndarray``
+           Image y-positions (units: arcsec).
 
-       **magnifications** : `float`
-           magnification of the images
+       **magnifications** : ``numpy.ndarray``
+           Magnification factors for each image.
 
-       **time_delays** : `float`
-           time-delay of the images
+       **time_delays** : ``numpy.ndarray``
+           Time delays for each image (units: seconds).
 
-       **nImages** : `int`
-           number of images
+       **nImages** : ``int``
+           Number of images formed.
 
-       **determinant** : `float`
-           determinant of the hessian matrix
+       **determinant** : ``numpy.ndarray``
+           Determinant of the lensing Jacobian for each image.
 
-       **trace** : `float`
-           trace of the hessian matrix
+       **trace** : ``numpy.ndarray``
+           Trace of the lensing Jacobian for each image.
 
-       **iteration** : `int`
-           iteration number
+       **iteration** : ``int``
+           Iteration index passed through for tracking.
 
 
 
@@ -119,18 +134,12 @@ Attributes
    >>> from ler.image_properties.multiprocessing_routine import solve_lens_equation
    >>> import numpy as np
    >>> from multiprocessing import Pool
-   >>> # lens parameters input contains 12 parameters [e1, e2, gamma, gamma1, gamma2, zl, zs, einstein_radius, iteration, lens_model_list]
-   >>> lens_parameters1 = np.array([2, 0.024069457093642648, -0.016002190961948142, 1.8945414936459974, 0.10117465203892329, 0.09600089396968613, 0.2503743800068136, 0.9418211055453296, 2.5055790287104725e-06, 0, 'EPL_NUMBA', 'SHEAR'], dtype=object)
-   >>> lens_parameters2 = np.array([2, -0.04030088581646998, -0.01419438113690042, 2.0068239327017, 0.08482718989370612, -0.015393332086560785, 1.0952303138971118, 2.5534097159384417, 1.0125570159563301e-06, 1, 'EPL_NUMBA', 'SHEAR'], dtype=object)
+   >>> lens_parameters1 = np.array([2, 0.024, -0.016, 1.89, 0.10, 0.09, 0.25, 0.94, 2.5e-06, 0, 'EPL_NUMBA', 'SHEAR'], dtype=object)
+   >>> lens_parameters2 = np.array([2, -0.040, -0.014, 2.00, 0.08, -0.01, 1.09, 2.55, 1.0e-06, 1, 'EPL_NUMBA', 'SHEAR'], dtype=object)
    >>> input_arguments = np.vstack((lens_parameters1, lens_parameters2))
-   >>> # solve the lens equation for each set of lens parameters
    >>> with Pool(2) as p:
-   ...     result = p.map(solve_lens_equation1, input_arguments)
-   >>> # result is a list of tuples
-   >>> # each tuple contains the output parameters of the function
-   >>> # each output parameter contains x_source, y_source, x0_image_position, x1_image_position, magnifications, time_delays, nImages, determinant, trace, iteration
-   >>> print(f"magnification of images with lens parameters 'lens_parameters1' is {result[0][6]}")
-   magnification of images with lens parameters 'lens_parameters1' is [ 2.18973765 -1.27542831]
+   ...     result = p.map(solve_lens_equation, input_arguments)
+   >>> print(f"Number of images: {result[0][6]}")
 
 
 
@@ -174,140 +183,71 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:class:: FunctionConditioning(function=None, x_array=None, conditioned_y_array=None, y_array=None, non_zero_function=False, gaussian_kde=False, gaussian_kde_kwargs={}, identifier_dict={}, directory='./interpolator_json', sub_directory='default', name='default', create_new=False, create_function=False, create_function_inverse=False, create_pdf=False, create_rvs=False, multiprocessing_function=False, callback=None)
-
-
-   .. py:attribute:: info
-
-      
-
-   .. py:attribute:: callback
-      :value: 'None'
-
-      
-
-   .. py:method:: __call__(*args)
-
-
-   .. py:method:: create_decision_function(create_function, create_function_inverse, create_pdf, create_rvs)
-
-
-   .. py:method:: create_gaussian_kde(x_array, y_array, gaussian_kde_kwargs)
-
-
-   .. py:method:: create_interpolator(function, x_array, conditioned_y_array, create_function_inverse, create_pdf, create_rvs, multiprocessing_function)
-
-
-   .. py:method:: create_z_array(x_array, function, conditioned_y_array, create_pdf, create_rvs, multiprocessing_function)
-
-
-   .. py:method:: cdf_values_generator(x_array, z_array, conditioned_y_array)
-
-
-   .. py:method:: pdf_norm_const_generator(x_array, function_spline, conditioned_y_array)
-
-
-   .. py:method:: function_spline_generator(x_array, z_array, conditioned_y_array)
-
-
-
-.. py:function:: luminosity_distance(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
-
-   
-   Function to create a lookup table for the luminosity distance wrt redshift.
-
-
-   :Parameters:
-
-       **z** : `numpy.ndarray` or `float`
-           Source redshifts
-
-       **z_min** : `float`
-           Minimum redshift of the source population
-
-       **z_max** : `float`
-           Maximum redshift of the source population
-
-
-
-
-
-
-
-
-
-
-
-
-   :Attributes:
-
-       **z_to_luminosity_distance** : `ler.utils.FunctionConditioning`
-           Object of FunctionConditioning class containing the luminosity distance wrt redshift
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:class:: ImageProperties(npool=4, z_min=0.0, z_max=10, n_min_images=2, n_max_images=4, time_window=365 * 24 * 3600 * 20, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_json', create_new_interpolator=False)
+.. py:class:: ImageProperties(npool=4, n_min_images=2, n_max_images=4, time_window=365 * 24 * 3600 * 20, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, spin_zero=True, spin_precession=False)
 
 
    
-   Class to find the image properties of a lensed event. Image properties include image positions, magnifications, time delays, etc.
+   Class to compute image properties of strongly lensed gravitational wave events.
 
+   This class solves the lens equation to find image positions, magnifications,
+   time delays, and image types (morse phase) for strongly lensed sources. It uses
+   multiprocessing for efficient computation of large samples.
+
+   Key Features:
+
+   - Solves lens equations using multiprocessing for efficiency
+
+   - Computes image positions, magnifications, and time delays
+
+   - Classifies image types using morse phase
+
+   - Calculates detection probabilities for lensed images
 
    :Parameters:
 
-       **npool** : `int`
-           number of processes to use
+       **npool** : ``int``
+           Number of processes for multiprocessing.
+
            default: 4
 
-       **z_min** : `float`
-           minimum redshift to consider
-           default: 0.0
+       **n_min_images** : ``int``
+           Minimum number of images required for a valid lensing event.
 
-       **z_max** : `float`
-           maximum redshift to consider
-           default: 10.0
-
-       **n_min_images** : `int`
-           minimum number of images to consider
            default: 2
 
-       **n_max_images** : `int`
-           maximum number of images to consider
+       **n_max_images** : ``int``
+           Maximum number of images to consider per event.
+
            default: 4
 
-       **geocent_time_min** : `float`
-           minimum geocent time to consider
-           default: 1126259462.4 , which is the GPS time of the first GW detection
+       **time_window** : ``float``
+           Time window for lensed events (units: seconds).
 
-       **geocent_time_max** : `float`
-           maximum geocent time to consider
-           default: 1126259462.4+365*24*3600*100 , which is the GPS time of the first GW detection + 100 years. Some time delays can be very large.
+           default: 365*24*3600*20 (20 years)
 
-       **lens_model_list** : `list`
-           list of lens models
+       **lens_model_list** : ``list``
+           List of lens models to use.
+
            default: ['EPL_NUMBA', 'SHEAR']
 
-       **cosmology** : `astropy.cosmology`
-           cosmology
-           default: None/astropy.cosmology.LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+       **cosmology** : ``astropy.cosmology`` or ``None``
+           Cosmology for distance calculations.
 
-       **spin_zero** : `bool`
-           whether to assume spin zero or not
-           default: True
+           If None, uses default LambdaCDM.
 
-       **spin_precession** : `bool`
-           whether to assume spin precession or not
+           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+
+       **spin_zero** : ``bool``
+           If True, spin parameters are set to zero (no spin sampling).
+
            default: False
 
-       **directory** : `str`
-           directory to save the interpolator pickle files
-           default: "./interpolator_json"
+       **spin_precession** : ``bool``
+           If True (and spin_zero=False), sample precessing spin parameters.
 
-       **create_new_interpolator** : `dict`
-           dictionary to create new interpolator pickle files
-           default: dict(luminosity_distance=dict(create_new=False, resolution=1000))
+           If False (and spin_zero=False), sample aligned/anti-aligned spins.
+
+           default: False
 
 
 
@@ -321,112 +261,352 @@ Attributes
 
    .. rubric:: Examples
 
+   Basic usage:
+
    >>> from ler.image_properties import ImageProperties
-   >>> image_properties = ImageProperties()
-   >>> lens_parameters = dict(zs=2.0, zl=0.5, gamma1=0.0, gamma2=0.0, e1=0.0, e2=0.0, gamma=2.0, theta_E=1.0)
-   >>> lens_parameters = image_properties.image_properties(lens_parameters)
-   >>> print(lens_parameters.keys())
+   >>> ip = ImageProperties()
+   >>> lens_parameters = dict(
+   ...     zs=np.array([2.0]),
+   ...     zl=np.array([0.5]),
+   ...     gamma1=np.array([0.0]),
+   ...     gamma2=np.array([0.0]),
+   ...     phi=np.array([0.0]),
+   ...     q=np.array([0.8]),
+   ...     gamma=np.array([2.0]),
+   ...     theta_E=np.array([1.0])
+   ... )
+   >>> result = ip.image_properties(lens_parameters)
+   >>> print(result.keys())
+
+   Instance Methods
+   ----------
+   ImageProperties has the following methods:
+
+   +-----------------------------------------------------+------------------------------------------------+
+   | Method                                              | Description                                    |
+   +=====================================================+================================================+
+   | :meth:`~image_properties`                           | Compute image properties for lensed events     |
+   +-----------------------------------------------------+------------------------------------------------+
+   | :meth:`~get_lensed_snrs`                            | Compute detection probability for lensed images|
+   +-----------------------------------------------------+------------------------------------------------+
 
    Instance Attributes
    ----------
-   ImageProperties has the following instance attributes:
+   ImageProperties has the following attributes:
 
-   +-------------------------+----------------------+
-   | Atrributes                          | Type                             |
-   +=====================================+==================================+
-   |:attr:`npool`                        | `int`                            |
-   +-------------------------+----------------------+
-   |:attr:`z_min`                        | `float`                          |
-   +-------------------------+----------------------+
-   |:attr:`z_max`                        | `float`                          |
-   +-------------------------+----------------------+
-   |:attr:`n_min_images`                 | `int`                            |
-   +-------------------------+----------------------+
-   |:attr:`n_max_images`                 | `int`                            |
-   +-------------------------+----------------------+
-   |:attr:`geocent_time_min`             | `float`                          |
-   +-------------------------+----------------------+
-   |:attr:`geocent_time_max`             | `float`                          |
-   +-------------------------+----------------------+
-   |:attr:`lens_model_list`              | `list`                           |
-   +-------------------------+----------------------+
-   |:attr:`cosmo`                        | `astropy.cosmology`              |
-   +-------------------------+----------------------+
-   |:attr:`spin_zero`                    | `bool`                           |
-   +-------------------------+----------------------+
-   |:attr:`spin_precession`              | `bool`                           |
-   +-------------------------+----------------------+
-   |:attr:`directory`                    | `str`                            |
-   +-------------------------+----------------------+
-   |:attr:`create_new_interpolator`      | `dict`                           |
-   +-------------------------+----------------------+
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   | Attribute                                           | Type                      | Unit     | Description                                    |
+   +=====================================================+===========================+==========+================================================+
+   | :attr:`~npool`                                      | ``int``                   |          | Number of multiprocessing workers              |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   | :attr:`~n_min_images`                               | ``int``                   |          | Minimum number of images required              |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   | :attr:`~n_max_images`                               | ``int``                   |          | Maximum number of images per event             |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   | :attr:`~time_window`                                | ``float``                 | s        | Time window for lensed events                  |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   | :attr:`~lens_model_list`                            | ``list``                  |          | List of lens models                            |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   | :attr:`~cosmo`                                      | ``astropy.cosmology``     |          | Cosmology for calculations                     |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   | :attr:`~spin_zero`                                  | ``bool``                  |          | Flag for zero spin assumption                  |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   | :attr:`~spin_precession`                            | ``bool``                  |          | Flag for spin precession                       |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
 
 
 
    ..
        !! processed by numpydoc !!
-   .. py:attribute:: npool
-      :value: '4'
+   .. py:property:: npool
 
       
+      Number of multiprocessing workers.
 
-   .. py:attribute:: n_min_images
-      :value: '2'
 
-      
 
-   .. py:attribute:: n_max_images
-      :value: '4'
+      :Returns:
 
-      
+          **npool** : ``int``
+              Number of processes for multiprocessing.
 
-   .. py:attribute:: lens_model_list
-      :value: "['EPL_NUMBA', 'SHEAR']"
+              default: 4
 
-      
 
-   .. py:attribute:: spin_zero
-      :value: 'True'
 
-      
 
-   .. py:attribute:: spin_precession
-      :value: 'False'
 
-      
 
-   .. py:attribute:: time_window
-      :value: '630720000'
 
-      
 
-   .. py:attribute:: cosmo
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: n_min_images
 
       
+      Minimum number of images required for a valid lensing event.
+
+
+
+      :Returns:
+
+          **n_min_images** : ``int``
+              Minimum number of images required.
+
+              default: 2
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: n_max_images
+
+      
+      Maximum number of images per event.
+
+
+
+      :Returns:
+
+          **n_max_images** : ``int``
+              Maximum number of images to consider per event.
+
+              default: 4
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: lens_model_list
+
+      
+      List of lens models to use.
+
+
+
+      :Returns:
+
+          **lens_model_list** : ``list``
+              List of lens model names.
+
+              default: ['EPL_NUMBA', 'SHEAR']
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: spin_zero
+
+      
+      Flag for zero spin assumption.
+
+
+
+      :Returns:
+
+          **spin_zero** : ``bool``
+              Whether to assume zero spin for compact objects.
+
+              If True, spin parameters are set to zero (no spin sampling).
+
+              If False, spin parameters are sampled.
+
+              default: False
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: spin_precession
+
+      
+      Flag for spin precession.
+
+
+
+      :Returns:
+
+          **spin_precession** : ``bool``
+              Whether to include spin precession effects.
+
+              If True (and spin_zero=False), sample precessing spin parameters.
+
+              If False (and spin_zero=False), sample aligned/anti-aligned spins.
+
+              default: False
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: time_window
+
+      
+      Time window for lensed events.
+
+
+
+      :Returns:
+
+          **time_window** : ``float``
+              Time window for lensed events (units: s).
+
+              default: 365*24*3600*20 (20 years)
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: cosmo
+
+      
+      Astropy cosmology object for calculations.
+
+
+
+      :Returns:
+
+          **cosmo** : ``astropy.cosmology``
+              Cosmology used for distance calculations.
+
+              default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
 
    .. py:method:: image_properties(lens_parameters)
 
       
-      Function to get the image properties e.g. image positions, magnifications, time delays, etc.
+      Compute image properties for strongly lensed events.
 
+      Solves the lens equation using multiprocessing to find image positions,
+      magnifications, time delays, and image types for each lensing event.
 
       :Parameters:
 
-          **lens_parameters** : `dict`
-              dictionary of lens parameters
-              e.g. lens_parameters.keys() = ['zs', 'zl', 'gamma1', 'gamma2', 'e1', 'e2', 'gamma', 'theta_E']
+          **lens_parameters** : ``dict``
+              Dictionary containing lens and source parameters with keys:
+
+              - 'zs': source redshift (array)
+
+              - 'zl': lens redshift (array)
+
+              - 'gamma1': external shear component 1 (array)
+
+              - 'gamma2': external shear component 2 (array)
+
+              - 'phi': position angle of lens ellipticity (array)
+
+              - 'q': axis ratio of lens (array)
+
+              - 'gamma': power-law slope of mass density (array)
+
+              - 'theta_E': Einstein radius in radians (array)
 
       :Returns:
 
-          **lens_parameters** : `dict`
-              dictionary of lens parameters and image properties
-              e.g. lens_parameters contains the following keys:
+          **lens_parameters** : ``dict``
+              Updated dictionary with additional image properties:
 
-              lens related=>['zs': source redshift, 'zl': lens redshift, 'gamma1': shear component in the x-direction, 'gamma2': shear component in the y-direction, 'e1': ellipticity component in the x-direction, 'e2': ellipticity component in the y-direction, 'gamma': spectral index of the mass density distribution, 'theta_E': einstein radius in radian]
+              - 'x0_image_positions': x-coordinates of images (shape: size x n_max_images)
 
-              source related=>['mass_1': mass in detector frame (mass1>mass2), 'mass_2': mass in detector frame, 'mass_1_source':mass in source frame, 'mass_2_source':mass source frame, 'luminosity_distance': luminosity distance, 'theta_jn': inclination angle, 'psi': polarization angle, 'phase': coalesence phase, 'geocent_time': coalensence GPS time at geocenter, 'ra': right ascension, 'dec': declination, 'a_1': spin magnitude of the more massive black hole, 'a2': spin magnitude of the less massive black hole, 'tilt_1': tilt angle of the more massive black hole, 'tilt_2': tilt angle of the less massive black hole, 'phi_12': azimuthal angle between the two spins, 'phi_jl': azimuthal angle between the total angular momentum and the orbital angular momentum]
+              - 'x1_image_positions': y-coordinates of images (shape: size x n_max_images)
 
-              image related=>['x_source': source position in the x-direction, 'y_source': source position in the y-direction, 'x0_image_position': image position in the x-direction, 'x1_image_position': image position in the y-direction, 'magnifications': magnifications, 'time_delays': time delays: number of images formed, 'determinant': determinants, 'trace': traces, 'iteration': to keep track of the iteration number
+              - 'magnifications': magnification factors (shape: size x n_max_images)
+
+              - 'time_delays': time delays relative to first image (shape: size x n_max_images, units: s)
+
+              - 'image_type': morse phase classification (1=minimum, 2=saddle, 3=maximum)
+
+              - 'n_images': number of images per event (array)
+
+              - 'x_source': source x-position (array)
+
+              - 'y_source': source y-position (array)
 
 
 
@@ -446,24 +626,58 @@ Attributes
    .. py:method:: get_lensed_snrs(lensed_param, pdet_calculator, list_of_detectors=None)
 
       
-      Function to calculate the signal to noise ratio for each image in each event.
+      Compute detection probability for each lensed image.
 
+      Calculates the effective luminosity distance, geocent time, and phase
+      for each image accounting for magnification and morse phase, then
+      computes detection probabilities using the provided calculator.
 
       :Parameters:
 
-          **list_of_detectors** : `list`
-              list of detectors
-              e.g. ['H1', 'L1', 'V1']
+          **lensed_param** : ``dict``
+              Dictionary containing lensed source and image parameters with keys:
 
-          **lensed_param** : `dict`
-              dictionary containing the both already lensed source paramters and image parameters.
-              e.g. lensed_param.keys() = ['mass_1', 'mass_2', 'zs', 'luminosity_distance', 'theta_jn', 'psi', 'phi', 'ra', 'dec', 'geocent_time', 'phase', 'a_1', 'a2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl', 'magnifications', 'time_delays']
+              - 'mass_1', 'mass_2': detector-frame masses (array)
+
+              - 'luminosity_distance' or 'effective_luminosity_distance': distance (array)
+
+              - 'geocent_time' or 'effective_geocent_time': GPS time (array)
+
+              - 'phase' or 'effective_phase': coalescence phase (array)
+
+              - 'theta_jn', 'psi', 'ra', 'dec': orientation and position (arrays)
+
+              - 'magnifications': image magnifications (shape: size x n_max_images)
+
+              - 'time_delays': image time delays (shape: size x n_max_images)
+
+              - 'image_type': morse phase type (shape: size x n_max_images)
+
+          **pdet_calculator** : ``callable``
+              Function that computes detection probability given GW parameters.
+
+          **list_of_detectors** : ``list`` or ``None``
+              List of detector names (e.g., ['H1', 'L1', 'V1']) for per-detector results.
+
+              default: None
 
       :Returns:
 
-          **snrs** : `dict`
-              signal to noise ratio for each image in each event.
-              (dictionary containing 'H1', 'L1', ..., and 'snr_net', which is the network snr, for each image as an array with dimensions (number_of_lensed_events,n_max_images) )
+          **result_dict** : ``dict``
+              Dictionary containing:
+
+              - 'pdet_net': network detection probability (shape: size x n_max_images)
+
+              - Individual detector probabilities if list_of_detectors provided
+
+          **lensed_param** : ``dict``
+              Updated dictionary with effective parameters:
+
+              - 'effective_luminosity_distance': magnification-corrected distance
+
+              - 'effective_geocent_time': time-delay-corrected GPS time
+
+              - 'effective_phase': morse-phase-corrected coalescence phase
 
 
 
@@ -481,59 +695,84 @@ Attributes
           !! processed by numpydoc !!
 
 
+.. py:data:: MAX_RETRIES
+   :value: '100'
+
+   
+
+.. py:data:: MIN_MAGNIFICATION
+   :value: '0.01'
+
+   
+
 .. py:function:: solve_lens_equation(lens_parameters)
 
    
-   Function to solve the lens equation (min_image = 2)
+   Solve the lens equation to find image properties.
 
+   Uses the analytical solver from lenstronomy to find image positions,
+   magnifications, time delays, and hessian properties for strongly
+   lensed sources. Source positions are sampled from within the caustic
+   region to ensure multiple imaging.
 
    :Parameters:
 
-       **lens_parameters** : `list`
-           a list of parameters
-           lens_parameters[0] = min_images : minimum number of images
-           lens_parameters[1] = e1 : ellipticity
-           lens_parameters[2] = e2 : ellipticity
-           lens_parameters[3] = gamma : power-law index
-           lens_parameters[4] = gamma1 : shear
-           lens_parameters[5] = gamma2 : shear
-           lens_parameters[6] = zl : redshift of the lens
-           lens_parameters[7] = zs : redshift of the source
-           lens_parameters[8] = einstein_radius : Einstein radius
-           lens_parameters[9] = iteration : iteration number
-           lens_parameters[10:] = lens_model_list : numpy array of lens models
+       **lens_parameters** : ``numpy.ndarray``
+           Array of lens configuration parameters with the following structure:
+
+           - [0]: n_min_images - minimum number of images required
+
+           - [1]: e1 - ellipticity component 1
+
+           - [2]: e2 - ellipticity component 2
+
+           - [3]: gamma - power-law slope of mass density
+
+           - [4]: gamma1 - external shear component 1
+
+           - [5]: gamma2 - external shear component 2
+
+           - [6]: zl - lens redshift
+
+           - [7]: zs - source redshift
+
+           - [8]: einstein_radius - Einstein radius (units: arcsec)
+
+           - [9]: iteration - iteration index for tracking
+
+           - [10:]: lens_model_list - lens model names (e.g., 'EPL_NUMBA', 'SHEAR')
 
    :Returns:
 
-       **x_source** : `float`
-           x position of the source in the source plane, unit: arcsec
+       **x_source** : ``float``
+           Source x-position (units: arcsec).
 
-       **y_source** : `float`
-           y position of the source in the source plane
+       **y_source** : ``float``
+           Source y-position (units: arcsec).
 
-       **x0_image_position** : `float`
-           x position of the images in the source plane
+       **x0_image_position** : ``numpy.ndarray``
+           Image x-positions (units: arcsec).
 
-       **x1_image_position** : `float`
-           y position of the images in the source plane
+       **x1_image_position** : ``numpy.ndarray``
+           Image y-positions (units: arcsec).
 
-       **magnifications** : `float`
-           magnification of the images
+       **magnifications** : ``numpy.ndarray``
+           Magnification factors for each image.
 
-       **time_delays** : `float`
-           time-delay of the images
+       **time_delays** : ``numpy.ndarray``
+           Time delays for each image (units: seconds).
 
-       **nImages** : `int`
-           number of images
+       **nImages** : ``int``
+           Number of images formed.
 
-       **determinant** : `float`
-           determinant of the hessian matrix
+       **determinant** : ``numpy.ndarray``
+           Determinant of the lensing Jacobian for each image.
 
-       **trace** : `float`
-           trace of the hessian matrix
+       **trace** : ``numpy.ndarray``
+           Trace of the lensing Jacobian for each image.
 
-       **iteration** : `int`
-           iteration number
+       **iteration** : ``int``
+           Iteration index passed through for tracking.
 
 
 
@@ -549,18 +788,12 @@ Attributes
    >>> from ler.image_properties.multiprocessing_routine import solve_lens_equation
    >>> import numpy as np
    >>> from multiprocessing import Pool
-   >>> # lens parameters input contains 12 parameters [e1, e2, gamma, gamma1, gamma2, zl, zs, einstein_radius, iteration, lens_model_list]
-   >>> lens_parameters1 = np.array([2, 0.024069457093642648, -0.016002190961948142, 1.8945414936459974, 0.10117465203892329, 0.09600089396968613, 0.2503743800068136, 0.9418211055453296, 2.5055790287104725e-06, 0, 'EPL_NUMBA', 'SHEAR'], dtype=object)
-   >>> lens_parameters2 = np.array([2, -0.04030088581646998, -0.01419438113690042, 2.0068239327017, 0.08482718989370612, -0.015393332086560785, 1.0952303138971118, 2.5534097159384417, 1.0125570159563301e-06, 1, 'EPL_NUMBA', 'SHEAR'], dtype=object)
+   >>> lens_parameters1 = np.array([2, 0.024, -0.016, 1.89, 0.10, 0.09, 0.25, 0.94, 2.5e-06, 0, 'EPL_NUMBA', 'SHEAR'], dtype=object)
+   >>> lens_parameters2 = np.array([2, -0.040, -0.014, 2.00, 0.08, -0.01, 1.09, 2.55, 1.0e-06, 1, 'EPL_NUMBA', 'SHEAR'], dtype=object)
    >>> input_arguments = np.vstack((lens_parameters1, lens_parameters2))
-   >>> # solve the lens equation for each set of lens parameters
    >>> with Pool(2) as p:
-   ...     result = p.map(solve_lens_equation1, input_arguments)
-   >>> # result is a list of tuples
-   >>> # each tuple contains the output parameters of the function
-   >>> # each output parameter contains x_source, y_source, x0_image_position, x1_image_position, magnifications, time_delays, nImages, determinant, trace, iteration
-   >>> print(f"magnification of images with lens parameters 'lens_parameters1' is {result[0][6]}")
-   magnification of images with lens parameters 'lens_parameters1' is [ 2.18973765 -1.27542831]
+   ...     result = p.map(solve_lens_equation, input_arguments)
+   >>> print(f"Number of images: {result[0][6]}")
 
 
 

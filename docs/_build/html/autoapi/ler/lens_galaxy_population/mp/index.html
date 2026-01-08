@@ -70,7 +70,6 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../cross_section_interpolator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../epl_shear_cross_section/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.epl_shear_cross_section</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../jit_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.jit_functions</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../lens_galaxy_parameter_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_galaxy_parameter_distribution</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../lens_parameter_sampler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_parameter_sampler</span></code></a></li>
@@ -115,6 +114,18 @@
              
   <section id="module-ler.lens_galaxy_population.mp">
 <span id="ler-lens-galaxy-population-mp"></span><h1><a class="reference internal" href="#module-ler.lens_galaxy_population.mp" title="ler.lens_galaxy_population.mp"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.mp</span></code></a><a class="headerlink" href="#module-ler.lens_galaxy_population.mp" title="Link to this heading"></a></h1>
+<p>Multiprocessing helper functions for lens galaxy population calculations.</p>
+<p>This module provides parallelized functions for computing optical depth
+and cross-sections for strong gravitational lensing. These functions are
+designed to be used with Python’s multiprocessing module for efficient
+Monte Carlo integration over lens parameters.</p>
+<p>Key Features:</p>
+<ul class="simple">
+<li><p>JIT-compiled parallel function for lens redshift sampling</p></li>
+<li><p>Multiprocessing-compatible wrapper functions for optical depth</p></li>
+<li><p>Cross-section calculation using EPL+Shear lens models</p></li>
+</ul>
+<p>Copyright (C) 2026 Phurailatpam Hemantakumar. Distributed under MIT License.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <section id="functions">
@@ -122,46 +133,209 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_njit" title="ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_njit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lens_redshift_strongly_lensed_njit</span></code></a>(zs_array, ...)</p></td>
-<td><p></p></td>
+<td><p>JIT-compiled parallel computation of lens redshift optical depth.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_mp" title="ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_mp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lens_redshift_strongly_lensed_mp</span></code></a>(params)</p></td>
-<td><p></p></td>
+<td><p>Multiprocessing worker for lens redshift optical depth calculation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.mp.cross_section_unit_mp" title="ler.lens_galaxy_population.mp.cross_section_unit_mp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_section_unit_mp</span></code></a>(params)</p></td>
-<td><p></p></td>
+<td><p>Multiprocessing worker for unit Einstein radius cross-section.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.mp.cross_section_mp" title="ler.lens_galaxy_population.mp.cross_section_mp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_section_mp</span></code></a>(params)</p></td>
-<td><p></p></td>
+<td><p>Multiprocessing worker for cross-section calculation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.mp.cross_section" title="ler.lens_galaxy_population.mp.cross_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_section</span></code></a>(theta_E, e1, e2, gamma, gamma1, gamma2)</p></td>
+<td><p>Compute the strong lensing cross-section for an EPL+Shear lens.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.mp.CS_UNIT_SLOPE" title="ler.lens_galaxy_population.mp.CS_UNIT_SLOPE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CS_UNIT_SLOPE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.mp.CS_UNIT_INTERCEPT" title="ler.lens_galaxy_population.mp.CS_UNIT_INTERCEPT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CS_UNIT_INTERCEPT</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py data">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.mp.CS_UNIT_SLOPE">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.mp.</span></span><span class="sig-name descname"><span class="pre">CS_UNIT_SLOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0.31830988618379075'</span></em><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/mp.html#CS_UNIT_SLOPE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.mp.CS_UNIT_SLOPE" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.mp.CS_UNIT_INTERCEPT">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.mp.</span></span><span class="sig-name descname"><span class="pre">CS_UNIT_INTERCEPT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'-3.2311742677852644e-27'</span></em><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/mp.html#CS_UNIT_INTERCEPT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.mp.CS_UNIT_INTERCEPT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_njit">
 <span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.mp.</span></span><span class="sig-name descname"><span class="pre">lens_redshift_strongly_lensed_njit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl_scaled</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dVcdz_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integration_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/mp.html#lens_redshift_strongly_lensed_njit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_njit" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>JIT-compiled parallel computation of lens redshift optical depth.</p>
+<p>Computes the differential optical depth for strong lensing as a function
+of source and lens redshifts using Monte Carlo integration with parallel
+execution over source redshifts.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>zs_array</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>1D array of source redshifts.</p>
+</dd>
+<dt><strong>zl_scaled</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>2D array of scaled lens redshifts (zl/zs).</p>
+</dd>
+<dt><strong>sigma_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum velocity dispersion (km/s).</p>
+</dd>
+<dt><strong>sigma_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum velocity dispersion (km/s).</p>
+</dd>
+<dt><strong>q_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample axis ratios given size and sigma.</p>
+</dd>
+<dt><strong>phi_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample axis rotation angles.</p>
+</dd>
+<dt><strong>gamma_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample density profile slopes.</p>
+</dd>
+<dt><strong>shear_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample external shear components (gamma1, gamma2).</p>
+</dd>
+<dt><strong>number_density</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to compute velocity dispersion number density.</p>
+</dd>
+<dt><strong>cross_section</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to compute lensing cross-section.</p>
+</dd>
+<dt><strong>dVcdz_function</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to compute differential comoving volume.</p>
+</dd>
+<dt><strong>integration_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of Monte Carlo samples per (zs, zl) pair.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result_array</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>2D array of optical depth values with shape (len(zs_array), len(zl_scaled[0])).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_mp">
 <span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.mp.</span></span><span class="sig-name descname"><span class="pre">lens_redshift_strongly_lensed_mp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/mp.html#lens_redshift_strongly_lensed_mp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_mp" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Multiprocessing worker for lens redshift optical depth calculation.</p>
+<p>Computes the differential optical depth for a single source redshift
+across multiple lens redshifts. Designed to be called via multiprocessing
+Pool.map() for parallel computation.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>params</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></span></dt><dd><p>Packed parameters tuple containing:</p>
+<ul class="simple">
+<li><p>params[0]: Source redshift (float)</p></li>
+<li><p>params[1]: Scaled lens redshift array (1D array)</p></li>
+<li><p>params[2]: Sigma args (min, max, spline_z, spline_z2d, spline_coeff)</p></li>
+<li><p>params[3]: Axis ratio args (type, min/spline, max/coeff, coeff_2d)</p></li>
+<li><p>params[4]: Angular diameter distance args (x_values, coeffs)</p></li>
+<li><p>params[5]: dVcdz args (x_values, coeffs)</p></li>
+<li><p>params[6]: Worker index (int)</p></li>
+<li><p>params[7]: Cross-section args (type, json_path)</p></li>
+<li><p>params[8]: Axis rotation args (type, min, max or spline)</p></li>
+<li><p>params[9]: Shear args (type, loc, scale)</p></li>
+<li><p>params[10]: Slope args (type, loc/spline, scale/coeff)</p></li>
+<li><p>params[11]: Integration size (int)</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>idx</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Worker index for result ordering.</p>
+</dd>
+<dt><strong>result_array</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>1D array of optical depth values for each lens redshift.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.mp.cross_section_unit_mp">
 <span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.mp.</span></span><span class="sig-name descname"><span class="pre">cross_section_unit_mp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/mp.html#cross_section_unit_mp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.mp.cross_section_unit_mp" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Multiprocessing worker for unit Einstein radius cross-section.</p>
+<p>Computes the lensing cross-section for a lens with unit Einstein radius
+(theta_E = 1). Used for building cross-section interpolation grids.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>params</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></span></dt><dd><p>Packed parameters (e1, e2, gamma, gamma1, gamma2, idx).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>idx</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Worker index for result ordering.</p>
+</dd>
+<dt><strong>area</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Cross-section area in square arcseconds.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.mp.cross_section_mp">
 <span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.mp.</span></span><span class="sig-name descname"><span class="pre">cross_section_mp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/mp.html#cross_section_mp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.mp.cross_section_mp" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Multiprocessing worker for cross-section calculation.</p>
+<p>Computes the lensing cross-section for given lens parameters.
+Designed to be called via multiprocessing Pool.map().</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>params</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></span></dt><dd><p>Packed parameters (theta_E, e1, e2, gamma, gamma1, gamma2, idx).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>idx</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Worker index for result ordering.</p>
+</dd>
+<dt><strong>area</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Cross-section area in square arcseconds.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.mp.cross_section">
 <span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.mp.</span></span><span class="sig-name descname"><span class="pre">cross_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta_E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/mp.html#cross_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.mp.cross_section" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Compute the strong lensing cross-section for an EPL+Shear lens.</p>
+<p>Uses lenstronomy to compute the caustic structure and returns the
+area enclosed by the double-image (outer) caustic.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>theta_E</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Einstein radius in arcseconds.</p>
+</dd>
+<dt><strong>e1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>First ellipticity component.</p>
+</dd>
+<dt><strong>e2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Second ellipticity component.</p>
+</dd>
+<dt><strong>gamma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Power-law density profile slope.</p>
+</dd>
+<dt><strong>gamma1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>First external shear component.</p>
+</dd>
+<dt><strong>gamma2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Second external shear component.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>area</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Cross-section area in square arcseconds.</p>
+<p>Returns 0.0 if caustic computation fails.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 </section>

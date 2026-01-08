@@ -11,7 +11,6 @@ Submodules
    :maxdepth: 1
 
    cross_section_interpolator/index.rst
-   epl_shear_cross_section/index.rst
    jit_functions/index.rst
    lens_galaxy_parameter_distribution/index.rst
    lens_parameter_sampler/index.rst
@@ -63,7 +62,6 @@ Functions
    ler.lens_galaxy_population.phi_loc_bernardi
    ler.lens_galaxy_population.phi_q2_ellipticity_hemanta
    ler.lens_galaxy_population.axis_ratio_rayleigh_pdf
-   ler.lens_galaxy_population.cross_section_mp
    ler.lens_galaxy_population.phi_cut_SIE
    ler.lens_galaxy_population.phi_q2_ellipticity_hemanta
    ler.lens_galaxy_population.inverse_transform_sampler
@@ -94,13 +92,8 @@ Functions
    ler.lens_galaxy_population.phi_q2_ellipticity_hemanta
    ler.lens_galaxy_population.sample_sigma_zl
    ler.lens_galaxy_population.phi_q2_ellipticity_hemanta
-   ler.lens_galaxy_population.cross_section
    ler.lens_galaxy_population.make_cross_section_reinit
-   ler.lens_galaxy_population.rejection_sampler
    ler.lens_galaxy_population.create_rejection_sampler
-   ler.lens_galaxy_population.sigma_proposal_uniform
-   ler.lens_galaxy_population.weighted_choice_1d
-   ler.lens_galaxy_population.importance_sampler
    ler.lens_galaxy_population.create_importance_sampler
 
 
@@ -110,7 +103,8 @@ Attributes
 
 .. autoapisummary::
 
-   ler.lens_galaxy_population.C_LIGHT
+   ler.lens_galaxy_population.CS_UNIT_SLOPE
+   ler.lens_galaxy_population.CS_UNIT_INTERCEPT
    ler.lens_galaxy_population.C_LIGHT
 
 
@@ -318,11 +312,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for source redshift, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the redshift distribution
-      - `pdf`: returns the probability density function of the redshift distribution
-      - `function`: returns the redshift distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the redshift distribution
+
+      - `pdf`: returns the probability density function of the redshift distribution
+
+      - `function`: returns the redshift distribution function.
 
 
       :Returns:
@@ -349,9 +346,10 @@ Attributes
 
       
       Class object (of FunctionConditioning) for source frame masses, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the density profile slope distribution
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the density profile slope distribution
 
 
       :Returns:
@@ -386,11 +384,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for geocentric time, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the geocentric time distribution
-      - `pdf`: returns the probability density function of the geocentric time distribution
-      - `function`: returns the geocentric time distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the geocentric time distribution
+
+      - `pdf`: returns the probability density function of the geocentric time distribution
+
+      - `function`: returns the geocentric time distribution function.
 
 
       :Returns:
@@ -417,11 +418,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for right ascension, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the right ascension distribution
-      - `pdf`: returns the probability density function of the right ascension distribution
-      - `function`: returns the right ascension distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the right ascension distribution
+
+      - `pdf`: returns the probability density function of the right ascension distribution
+
+      - `function`: returns the right ascension distribution function.
 
 
       :Returns:
@@ -448,11 +452,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for declination, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the declination distribution
-      - `pdf`: returns the probability density function of the declination distribution
-      - `function`: returns the declination distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the declination distribution
+
+      - `pdf`: returns the probability density function of the declination distribution
+
+      - `function`: returns the declination distribution function.
 
 
       :Returns:
@@ -479,11 +486,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for coalescence phase, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the coalescence phase distribution
-      - `pdf`: returns the probability density function of the coalescence phase distribution
-      - `function`: returns the coalescence phase distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the coalescence phase distribution
+
+      - `pdf`: returns the probability density function of the coalescence phase distribution
+
+      - `function`: returns the coalescence phase distribution function.
 
 
       :Returns:
@@ -510,11 +520,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for polarization angle, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the polarization angle distribution
-      - `pdf`: returns the probability density function of the polarization angle distribution
-      - `function`: returns the polarization angle distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the polarization angle distribution
+
+      - `pdf`: returns the probability density function of the polarization angle distribution
+
+      - `function`: returns the polarization angle distribution function.
 
 
       :Returns:
@@ -541,11 +554,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for inclination angle, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the inclination angle distribution
-      - `pdf`: returns the probability density function of the inclination angle distribution
-      - `function`: returns the inclination angle distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the inclination angle distribution
+
+      - `pdf`: returns the probability density function of the inclination angle distribution
+
+      - `function`: returns the inclination angle distribution function.
 
 
       :Returns:
@@ -572,11 +588,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for spin1 magnitude, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the spin1 magnitude distribution
-      - `pdf`: returns the probability density function of the spin1 magnitude distribution
-      - `function`: returns the spin1 magnitude distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the spin1 magnitude distribution
+
+      - `pdf`: returns the probability density function of the spin1 magnitude distribution
+
+      - `function`: returns the spin1 magnitude distribution function.
 
 
       :Returns:
@@ -603,11 +622,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for spin2 magnitude, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the spin2 magnitude distribution
-      - `pdf`: returns the probability density function of the spin2 magnitude distribution
-      - `function`: returns the spin2 magnitude distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the spin2 magnitude distribution
+
+      - `pdf`: returns the probability density function of the spin2 magnitude distribution
+
+      - `function`: returns the spin2 magnitude distribution function.
 
 
       :Returns:
@@ -634,11 +656,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for tilt1 angle, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the tilt1 angle distribution
-      - `pdf`: returns the probability density function of the tilt1 angle distribution
-      - `function`: returns the tilt1 angle distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the tilt1 angle distribution
+
+      - `pdf`: returns the probability density function of the tilt1 angle distribution
+
+      - `function`: returns the tilt1 angle distribution function.
 
 
       :Returns:
@@ -665,11 +690,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for tilt2 angle, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the tilt2 angle distribution
-      - `pdf`: returns the probability density function of the tilt2 angle distribution
-      - `function`: returns the tilt2 angle distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the tilt2 angle distribution
+
+      - `pdf`: returns the probability density function of the tilt2 angle distribution
+
+      - `function`: returns the tilt2 angle distribution function.
 
 
       :Returns:
@@ -696,11 +724,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for phi_12 angle, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the phi_12 angle distribution
-      - `pdf`: returns the probability density function of the phi_12 angle distribution
-      - `function`: returns the phi_12 angle distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the phi_12 angle distribution
+
+      - `pdf`: returns the probability density function of the phi_12 angle distribution
+
+      - `function`: returns the phi_12 angle distribution function.
 
 
       :Returns:
@@ -727,11 +758,14 @@ Attributes
 
       
       Class object (of FunctionConditioning) for phi_jl angle, with rvs/sampler as callback. Can also be a user defined callable sampler.
-      The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the phi_jl angle distribution
-      - `pdf`: returns the probability density function of the phi_jl angle distribution
-      - `function`: returns the phi_jl angle distribution function.
 
+      The class object contains the following attribute methods:
+
+      - `rvs`: returns random samples from the phi_jl angle distribution
+
+      - `pdf`: returns the probability density function of the phi_jl angle distribution
+
+      - `function`: returns the phi_jl angle distribution function.
 
 
       :Returns:
@@ -1601,480 +1635,375 @@ Attributes
 
 
    
-   Class to calculate the optical depth, velocity dispersion and axis-ratio of a lens galaxy population.
+   Class for computing optical depth and lens galaxy population parameters.
 
+   This class calculates strong lensing optical depth, velocity dispersion,
+   axis ratio, and other parameters for a lens galaxy population. It supports
+   SIS, SIE, and EPL + external shear lens models with customizable samplers
+   and interpolators for efficient computation.
+
+   Key Features:
+
+   - Multiple lens model support (SIS, SIE, EPL + shear)
+
+   - Configurable velocity dispersion distributions
+
+   - Cached interpolators for fast optical depth computation
+
+   - Flexible parameter sampling with user-defined priors
 
    :Parameters:
 
-       **npool** : int, optional
-           Number of processors to use for multiprocessing (default is 4).
+       **npool** : ``int``
+           Number of processors for multiprocessing.
 
-       **z_min** : float, optional
-           Minimum redshift of the lens galaxy population (default is 0.0).
+           default: 4
 
-       **z_max** : float, optional
-           Maximum redshift of the lens galaxy population (default is 10.0).
+       **z_min** : ``float``
+           Minimum redshift of the lens galaxy population.
 
-       **cosmology** : astropy.cosmology, optional
-           Cosmology object to use (default is FlatLambdaCDM with H0=70, Om0=0.3, Ode0=0.7).
+           default: 0.0
 
-       **lens_type** : str, optional
-           Type of the lens galaxy. Must be one of ['sie_galaxy', 'epl_shear_galaxy', 'sis_galaxy'] (default is 'epl_shear_galaxy').
+       **z_max** : ``float``
+           Maximum redshift of the lens galaxy population.
 
-       **lens_functions** : dict, optional
+           default: 10.0
+
+       **cosmology** : ``astropy.cosmology`` or ``None``
+           Cosmology object for distance calculations.
+
+           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+
+       **lens_type** : ``str``
+           Type of lens galaxy model.
+
+           Options:
+
+           - 'epl_shear_galaxy': Elliptical power-law with external shear
+
+           - 'sie_galaxy': Singular isothermal ellipsoid
+
+           - 'sis_galaxy': Singular isothermal sphere
+
+           default: 'epl_shear_galaxy'
+
+       **lens_functions** : ``dict`` or ``None``
            Dictionary with lens-related functions.
 
-       **lens_functions_params** : dict, optional
-           Dictionary with parameters for the lens-related functions.
+           default: None (uses defaults for lens_type)
 
-       **lens_param_samplers** : dict, optional
-           Dictionary of sampler functions for velocity dispersion and axis-ratio.
+       **lens_functions_params** : ``dict`` or ``None``
+           Dictionary with parameters for lens-related functions.
 
-       **lens_param_samplers_params** : dict, optional
-           Dictionary with parameters for the priors of the samplers.
+           default: None
 
-       **directory** : str, optional
-           Directory where the interpolators are saved (default is './interpolator_json').
-           If True, creates a new interpolator (default is False).
+       **lens_param_samplers** : ``dict`` or ``None``
+           Dictionary of sampler functions for lens parameters.
 
-       **verbose** : bool, optional
-           If True, prints additional information during initialization (default is False).
+           default: None (uses defaults for lens_type)
+
+       **lens_param_samplers_params** : ``dict`` or ``None``
+           Dictionary with parameters for the samplers.
+
+           default: None
+
+       **directory** : ``str``
+           Directory where interpolators are saved.
+
+           default: './interpolator_json'
+
+       **create_new_interpolator** : ``bool`` or ``dict``
+           Whether to create new interpolators.
+
+           default: False
+
+       **verbose** : ``bool``
+           If True, prints additional information.
+
+           default: False
 
 
 
 
 
-   :Raises:
-
-       ValueError
-           If `lens_type` is not in ['sie_galaxy', 'epl_shear_galaxy', 'sis_galaxy'].
 
 
 
 
 
 
+   .. rubric:: Examples
+
+   Basic usage:
+
+   >>> from ler.lens_galaxy_population import OpticalDepth
+   >>> od = OpticalDepth()
+   >>> tau = od.optical_depth(zs=np.array([1.0, 2.0]))
+
+   Instance Methods
+   ----------
+   OpticalDepth has the following instance methods:
+
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | Method                                              | Description                                              |
+   +=====================================================+==========================================================+
+   | :meth:`~axis_ratio_rayleigh`                        | Sample axis ratio from Rayleigh distribution             |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~axis_ratio_padilla_strauss`                 | Sample axis ratio from Padilla & Strauss 2008            |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~axis_ratio_uniform`                         | Sample axis ratio from uniform distribution              |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~axis_rotation_angle_uniform`                | Sample axis rotation angle from uniform distribution     |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~lens_redshift_strongly_lensed_numerical`    | Sample lens redshift for strong lensing                  |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~lens_redshift_sis_haris`                    | Sample SIS lens redshift (Haris et al. 2018)             |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~velocity_dispersion_gengamma`               | Sample velocity dispersion from gengamma distribution    |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~velocity_dispersion_bernardi`               | Sample velocity dispersion (Bernardi et al. 2010)        |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~velocity_dispersion_ewoud`                  | Sample redshift-dependent velocity dispersion            |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~external_shear_normal`                      | Sample external shear from normal distribution           |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~density_profile_slope_normal`               | Sample density profile slope from normal distribution    |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~optical_depth_sis_analytic`                    | Compute SIS optical depth (Haris et al. 2018)            |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~cross_section_sis`                          | Compute SIS cross-section                                |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~cross_section_sie_feixu`                    | Compute SIE cross-section (Fei Xu et al. 2021)           |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~cross_section_epl_shear_numerical`          | Compute EPL+shear cross-section numerically              |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~cross_section_epl_shear_interpolation`      | Compute EPL+shear cross-section via interpolation        |
+   +-----------------------------------------------------+----------------------------------------------------------+
+
+   Instance Attributes
+   ----------
+   OpticalDepth has the following instance attributes:
+
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | Attribute                                      | Type                         | Unit  | Description                                              |
+   +================================================+==============================+=======+==========================================================+
+   | :attr:`~npool`                                 | ``int``                      |       | Number of processors for multiprocessing                 |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~z_min`                                 | ``float``                    |       | Minimum redshift                                         |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~z_max`                                 | ``float``                    |       | Maximum redshift                                         |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~cosmo`                                 | ``astropy.cosmology``        |       | Cosmology object                                         |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~lens_type`                             | ``str``                      |       | Type of lens galaxy model                                |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~directory`                             | ``str``                      |       | Directory for interpolator storage                       |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~optical_depth`                         | ``FunctionConditioning``     |       | Optical depth calculator                                 |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~velocity_dispersion`                   | ``FunctionConditioning``     | km/s  | Velocity dispersion sampler                              |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~axis_ratio`                            | ``FunctionConditioning``     |       | Axis ratio sampler                                       |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~axis_rotation_angle`                   | ``FunctionConditioning``     | rad   | Axis rotation angle sampler                              |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~lens_redshift`                         | ``FunctionConditioning``     |       | Lens redshift sampler                                    |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~external_shear`                        | ``FunctionConditioning``     |       | External shear sampler                                   |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~density_profile_slope`                 | ``FunctionConditioning``     |       | Density profile slope sampler                            |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~cross_section`                         | ``callable``                 | rad²  | Cross-section calculator                                 |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~available_lens_samplers`               | ``dict``                     |       | Available lens parameter samplers                        |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~available_lens_functions`              | ``dict``                     |       | Available lens functions                                 |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
 
 
 
    ..
        !! processed by numpydoc !!
+   .. py:property:: lens_type
+
+      
+      Type of lens galaxy model.
+
+
+
+      :Returns:
+
+          **lens_type** : ``str``
+              Lens type ('epl_shear_galaxy', 'sie_galaxy', or 'sis_galaxy').
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: npool
+
+      
+      Number of processors for multiprocessing.
+
+
+
+      :Returns:
+
+          **npool** : ``int``
+              Number of parallel processors.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: z_min
+
+      
+      Minimum redshift of the lens galaxy population.
+
+
+
+      :Returns:
+
+          **z_min** : ``float``
+              Minimum redshift.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: z_max
+
+      
+      Maximum redshift of the lens galaxy population.
+
+
+
+      :Returns:
+
+          **z_max** : ``float``
+              Maximum redshift.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: cosmo
+
+      
+      Cosmology object for distance calculations.
+
+
+
+      :Returns:
+
+          **cosmo** : ``astropy.cosmology``
+              Cosmology object.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: directory
+
+      
+      Directory for interpolator storage.
+
+
+
+      :Returns:
+
+          **directory** : ``str``
+              Path to interpolator JSON files.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
    .. py:property:: velocity_dispersion
 
       
-      Class object (of FunctionConditioning) for velocity dispersion of lens galaxy, with rvs/sampler as callback. Lens redshift `zl` is required only if velocity dispersion is redshift dependent. The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the velocity dispersion distribution
-      - `pdf`: returns the probability density function of the velocity dispersion distribution
-      - `function`: returns the velocity dispersion distribution function which represents the number density of lens galaxies as a function of velocity dispersion
+      Velocity dispersion sampler object.
 
+      Returns a ``FunctionConditioning`` object with methods:
 
-      :Parameters:
+      - ``rvs(size, zl)``: Sample velocity dispersion values
 
-          **size** : `int`
-              number of lens parameters to sample
+      - ``pdf(sigma, zl)``: Get probability density
 
-          **zl** : `float`
-              redshift of the lens galaxy. Should be of shape (size,)
+      - ``function(sigma, zl)``: Get number density function
+
 
       :Returns:
 
-          **sigma** : `numpy.ndarray`
-              velocity dispersion of the lens galaxy
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> import numpy as np
-      >>> ler = OpticalDepth()
-      >>> size = 10
-      >>> zl = np.ones(size)*1.5
-      >>> print(ler.velocity_dispersion(size, zl))
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: axis_ratio
-
-      
-      Class object (of FunctionConditioning) for axis ratio of lens galaxy, with rvs/sampler as callback. Velocity dispersion `sigma` is required only if axis ratio is velocity dispersion dependent. The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the axis ratio distribution
-      - `pdf`: returns the probability density function of the axis ratio distribution
-      - `function`: returns the un-normalized axis ratio distribution function.
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-          **sigma** : `numpy.ndarray`
-              velocity dispersion of the lens galaxy. Should be of shape (size,)
-
-      :Returns:
-
-          **q** : `numpy.ndarray`
-              axis ratio of the lens galaxy.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> import numpy as np
-      >>> ler = OpticalDepth()
-      >>> size = 10
-      >>> sigma = np.ones(size)*150.0
-      >>> print(ler.axis_ratio(size, sigma))
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: axis_rotation_angle
-
-      
-      Class object (of FunctionConditioning) for axis rotation angle of lens galaxy, with rvs/sampler as callback. The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the axis rotation angle distribution
-      - `pdf`: returns the probability density function of the axis rotation angle distribution
-      - `function`: returns the axis rotation angle distribution function.
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-      :Returns:
-
-          **theta** : `numpy.ndarray`
-              axis rotation angle of the lens galaxy.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> import numpy as np
-      >>> ler = OpticalDepth()
-      >>> size = 10
-      >>> print(ler.axis_rotation_angle(size))
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: density_profile_slope
-
-      
-      Class object (of FunctionConditioning) for density profile slope of lens galaxy, with rvs/sampler as callback. The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the density profile slope distribution
-      - `pdf`: returns the probability density function of the density profile slope distribution
-      - `function`: returns the density profile slope distribution function.
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-      :Returns:
-
-          **gamma** : `numpy.ndarray`
-              density profile slope of the lens galaxy.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> import numpy as np
-      >>> ler = OpticalDepth()
-      >>> size = 10
-      >>> print(ler.density_profile_slope(size))
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: external_shear
-
-      
-      Class object (of FunctionConditioning) for external shear of lens galaxy, with rvs/sampler as callback. The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the external shear distribution
-      - `pdf`: returns the probability density function of the external shear distribution
-      - `function`: returns the external shear distribution function.
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-      :Returns:
-
-          **gamma1** : `numpy.ndarray`
-              external shear of the lens galaxy.
-
-          **gamma2** : `numpy.ndarray`
-              external shear of the lens galaxy.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> import numpy as np
-      >>> ler = OpticalDepth()
-      >>> size = 10
-      >>> print(ler.external_shear(size))
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: cross_section
-
-      
-      Lensing cross section for individual lensing events. It can be of the following lens type and corresponding input parameters:
-      - `epl_shear_galaxy`: `zs`, `zl`, `sigma`, `q`, `phi`, `gamma`, `gamma1`, `gamma2`
-      - `sie_galaxy`: `zs`, `zl`, `sigma`, `q`
-      - `sis_galaxy`: `zs`, `zl`, `sigma`
-
-
-      :Parameters:
-
-          **zs** : `numpy.ndarray`
-              Redshift of the source
-
-          **zl** : `numpy.ndarray`
-              Redshift of the lens
-
-          **sigma** : `numpy.ndarray`
-              Angular size of the lens
-
-          **q** : `numpy.ndarray`
-              Axis ratio of the lens
-
-          **phi** : `numpy.ndarray`
-              Position angle of the lens
-
-          **gamma** : `numpy.ndarray`
-              density profile slope of the lens
-
-          **gamma1** : `numpy.ndarray`
-              Shear of the lens (x-direction)
-
-          **gamma2** : `numpy.ndarray`
-              Shear of the lens (y-direction)
-
-      :Returns:
-
-          **cross_section** : `numpy.ndarray`
-              Lensing cross section for individual lensing events
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: lens_redshift
-
-      
-      Class object (of FunctionConditioning) for lens redshift, with rvs/sampler as callback. The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the lens redshift distribution
-      - `pdf`: returns the probability density function of the lens redshift distribution
-      - `function`: returns the lens redshift distribution function which represents effective lensing cross-section for lenses at redshift zl,
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-          **zs** : `numpy.ndarray`
-              redshift of the lens galaxy. Should be of shape (size,)
-
-      :Returns:
-
-          **zl** : `numpy.ndarray`
-              redshift of the lens galaxy.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> import numpy as np
-      >>> ler = OpticalDepth()
-      >>> size = 10
-      >>> zs = np.ones(size)*1.5
-      >>> print(ler.lens_redshift(size, zs))
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: density_profile_slope_sl
-
-      
-      Class object (of FunctionConditioning) for density profile slope of lens galaxy (strong lensing condition applied), with rvs/sampler as callback. The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the density profile slope distribution
-      - `pdf`: returns the probability density function of the density profile slope distribution
-      - `function`: returns the density profile slope distribution function.
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-      :Returns:
-
-          **gamma** : `numpy.ndarray`
-              density profile slope of the lens galaxy.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> import numpy as np
-      >>> ler = OpticalDepth()
-      >>> size = 10
-      >>> print(ler.density_profile_slope_sl(size))
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: external_shear_sl
-
-      
-      Class object (of FunctionConditioning) for external shear of lens galaxy (strong lensing condition applied), with rvs/sampler as callback. The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the external shear distribution
-      - `pdf`: returns the probability density function of the external shear distribution
-      - `function`: returns the external shear distribution function.
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-      :Returns:
-
-          **gamma1** : `numpy.ndarray`
-              external shear of the lens galaxy.
-
-          **gamma2** : `numpy.ndarray`
-              external shear of the lens galaxy.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> import numpy as np
-      >>> ler = OpticalDepth()
-      >>> size = 10
-      >>> print(ler.external_shear_sl(size))
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: optical_depth
-
-      
-      Function to compute the strong lensing optical depth.
-
-
-      :Parameters:
-
-          **zs** : `numpy.ndarray` (1D array of floats)
-              source redshifts
-
-      :Returns:
-
-          **tau** : `numpy.ndarray` (1D array of floats)
-              strong lensing optical depth
+          **velocity_dispersion** : ``FunctionConditioning``
+              Sampler object for velocity dispersion (km/s).
 
 
 
@@ -2089,7 +2018,344 @@ Attributes
 
       >>> from ler.lens_galaxy_population import OpticalDepth
       >>> od = OpticalDepth()
-      >>> print(self.optical_depth(np.array([0.1,0.2,0.3])))
+      >>> sigma = od.velocity_dispersion(size=100, zl=np.ones(100)*0.5)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: axis_ratio
+
+      
+      Axis ratio sampler object.
+
+      Returns a ``FunctionConditioning`` object with methods:
+
+      - ``rvs(size, sigma)``: Sample axis ratio values
+
+      - ``pdf(q, sigma)``: Get probability density
+
+      - ``function(q, sigma)``: Get distribution function
+
+
+      :Returns:
+
+          **axis_ratio** : ``FunctionConditioning``
+              Sampler object for axis ratio.
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> q = od.axis_ratio(size=100, sigma=np.ones(100)*200.)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: axis_rotation_angle
+
+      
+      Axis rotation angle sampler object.
+
+      Returns a ``FunctionConditioning`` object with methods:
+
+      - ``rvs(size)``: Sample axis rotation angles
+
+      - ``pdf(phi)``: Get probability density
+
+
+      :Returns:
+
+          **axis_rotation_angle** : ``FunctionConditioning``
+              Sampler object for axis rotation angle (rad).
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> phi = od.axis_rotation_angle(size=100)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: density_profile_slope
+
+      
+      Density profile slope sampler object.
+
+      Returns a ``FunctionConditioning`` object with methods:
+
+      - ``rvs(size)``: Sample density profile slope values
+
+      - ``pdf(gamma)``: Get probability density
+
+
+      :Returns:
+
+          **density_profile_slope** : ``FunctionConditioning``
+              Sampler object for density profile slope.
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> gamma = od.density_profile_slope(size=100)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: external_shear
+
+      
+      External shear sampler object.
+
+      Returns a ``FunctionConditioning`` object with methods:
+
+      - ``rvs(size)``: Sample shear components (gamma1, gamma2)
+
+      - ``pdf(gamma1, gamma2)``: Get probability density
+
+
+      :Returns:
+
+          **external_shear** : ``FunctionConditioning``
+              Sampler object for external shear.
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> gamma1, gamma2 = od.external_shear(size=100)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: cross_section
+
+      
+      Lensing cross-section calculator.
+
+      Returns a callable that computes lensing cross-section for individual
+
+      lensing events. Input parameters depend on lens type:
+
+      - EPL+shear: zs, zl, sigma, q, phi, gamma, gamma1, gamma2
+
+      - SIE: zs, zl, sigma, q
+
+      - SIS: zs, zl, sigma
+
+
+      :Returns:
+
+          **cross_section** : ``callable``
+              Cross-section function (rad² units).
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> cs = od.cross_section(zs=zs, zl=zl, sigma=sigma, ...)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: lens_redshift
+
+      
+      Lens redshift sampler object.
+
+      Returns a ``FunctionConditioning`` object with methods:
+
+      - ``rvs(size, zs)``: Sample lens redshifts given source redshifts
+
+      - ``pdf(zl, zs)``: Get probability density
+
+      - ``function(zl, zs)``: Get effective lensing cross-section
+
+
+      :Returns:
+
+          **lens_redshift** : ``FunctionConditioning``
+              Sampler object for lens redshift.
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> zl = od.lens_redshift(size=100, zs=np.ones(100)*2.0)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: density_profile_slope_sl
+
+      
+      Density profile slope sampler object (strong lensing conditioned).
+
+      Returns a ``FunctionConditioning`` object with methods:
+
+      - ``rvs(size)``: Sample density profile slope values
+
+      - ``pdf(gamma)``: Get probability density
+
+
+      :Returns:
+
+          **density_profile_slope_sl** : ``FunctionConditioning``
+              Sampler object for density profile slope (strong lensing).
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> gamma = od.density_profile_slope_sl(size=100)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: external_shear_sl
+
+      
+      External shear sampler object (strong lensing conditioned).
+
+      Returns a ``FunctionConditioning`` object with methods:
+
+      - ``rvs(size)``: Sample shear components (gamma1, gamma2)
+
+      - ``pdf(gamma1, gamma2)``: Get probability density
+
+
+      :Returns:
+
+          **external_shear_sl** : ``FunctionConditioning``
+              Sampler object for external shear (strong lensing).
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> gamma1, gamma2 = od.external_shear_sl(size=100)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: optical_depth
+
+      
+      Strong lensing optical depth calculator.
+
+
+
+      :Returns:
+
+          **optical_depth** : ``FunctionConditioning``
+              Function object with `.function(zs)` method that returns \n
+              optical depth for given source redshifts.
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> tau = od.optical_depth.function(np.array([1.0, 2.0]))
 
 
 
@@ -2099,10 +2365,14 @@ Attributes
    .. py:property:: available_lens_samplers
 
       
-      Dictionary with list all the available priors and it's corresponding parameters. This is an immutable instance attribute.
+      Dictionary of available lens parameter samplers and their default parameters.
 
 
 
+      :Returns:
+
+          **available_lens_samplers** : ``dict``
+              Dictionary with sampler names and default parameters.
 
 
 
@@ -2122,10 +2392,14 @@ Attributes
    .. py:property:: available_lens_functions
 
       
-      Dictionary with list all the available lens functions. This is an immutable instance attribute.
+      Dictionary of available lens functions and their default parameters.
 
 
 
+      :Returns:
+
+          **available_lens_functions** : ``dict``
+              Dictionary with function names and default parameters.
 
 
 
@@ -2141,35 +2415,6 @@ Attributes
 
       ..
           !! processed by numpydoc !!
-
-   .. py:attribute:: lens_type
-      :value: "'epl_shear_galaxy'"
-
-      
-
-   .. py:attribute:: npool
-      :value: '4'
-
-      
-
-   .. py:attribute:: z_min
-      :value: '0.0'
-
-      
-
-   .. py:attribute:: z_max
-      :value: '10.0'
-
-      
-
-   .. py:attribute:: cosmo
-
-      
-
-   .. py:attribute:: directory
-      :value: "'./interpolator_json'"
-
-      
 
    .. py:attribute:: comoving_distance
 
@@ -2191,131 +2436,32 @@ Attributes
 
       
 
-   .. py:method:: default_lens_samplers_and_functions(lens_type)
-
-      
-      Function to categorize the lens priors/samplers
-
-
-      :Parameters:
-
-          **lens_type** : `str`
-              lens type
-              e.g. 'epl_shear_galaxy' for elliptical power-law galaxy
-
-      :Returns:
-
-          **lens_param_samplers_** : `dict`
-              dictionary of priors
-
-          **lens_param_samplers_params_** : `dict`
-              dictionary of priors parameters
-
-          **lens_sampler_names_** : `dict`
-              dictionary of sampler names
-
-          **lens_functions_** : `dict`
-              dictionary of lens functions
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: initialize_decision_dictionary(create_new_interpolator, lens_type)
-
-      
-      Function to initialize decision dictionary for creating interpolator
-
-
-      :Parameters:
-
-          **create_new_interpolator** : `dict` or `bool`
-              dictionary to create new interpolator for velocity dispersion and optical depth.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: lens_functions_and_sampler_categorization(lens_param_samplers, lens_param_samplers_params, lens_functions, lens_functions_params)
-
-      
-      Function to initialize velocity dispersion sampler with it's settings. The reason I am seperating this from lens_param_samplers_categorization is only a specific parameters needs special attention.
-
-
-      :Parameters:
-
-          **lens_param_samplers** : `str` or `function`
-              sampler name or function
-
-          **lens_param_samplers_params** : `dict`
-              sampler parameters
-
-          **lens_functions** : `str` or `function`
-              lens function name or function
-
-          **lens_functions_params** : `dict`
-              lens function parameters
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
    .. py:method:: axis_ratio_rayleigh(size, sigma, get_attribute=False, **kwargs)
 
       
-      Function to sample axis ratio from rayleigh distribution with given velocity dispersion.
+      Sample axis ratio from Rayleigh distribution conditioned on velocity dispersion.
 
 
       :Parameters:
 
-          **sigma** : `float: array`
-              velocity dispersion of the lens galaxy
+          **size** : ``int``
+              Number of samples to generate.
 
-          **q_min, q_max** : `float`
-              minimum and maximum axis ratio
+          **sigma** : ``numpy.ndarray``
+              Velocity dispersion of the lens galaxy (km/s).
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be used to sample axis ratio
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters (q_min, q_max).
 
       :Returns:
 
-          **q** : `float: array`
-              axis ratio of the lens galaxy
+          **q** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Axis ratio samples or sampler object.
 
 
 
@@ -2330,7 +2476,7 @@ Attributes
 
       >>> from ler.lens_galaxy_population import OpticalDepth
       >>> od = OpticalDepth(lens_param_samplers=dict(axis_ratio="axis_ratio_rayleigh"))
-      >>> print(self.axis_ratio(sigma=200.))
+      >>> q = od.axis_ratio(size=100, sigma=np.ones(100)*200.)
 
 
 
@@ -2340,24 +2486,28 @@ Attributes
    .. py:method:: axis_ratio_padilla_strauss(size=1000, get_attribute=False, **kwargs)
 
       
-      Function to sample axis ratio using Padilla and Strauss 2008 distribution for axis ratio
+      Sample axis ratio from Padilla & Strauss (2008) distribution.
 
 
       :Parameters:
 
-          **size** : `int`
-              sample size
+          **size** : ``int``
+              Number of samples to generate.
 
-          **q_min, q_max** : `float`
-              minimum and maximum axis ratio
+              default: 1000
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be used to sample axis ratio
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters (q_min, q_max).
 
       :Returns:
 
-          **q** : `float: array`
-              axis ratio of the lens galaxy
+          **q** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Axis ratio samples or sampler object.
 
 
 
@@ -2372,7 +2522,7 @@ Attributes
 
       >>> from ler.lens_galaxy_population import OpticalDepth
       >>> od = OpticalDepth(lens_param_samplers=dict(axis_ratio="axis_ratio_padilla_strauss"))
-      >>> print(self.axis_ratio(size=10))
+      >>> q = od.axis_ratio(size=100)
 
 
 
@@ -2382,24 +2532,31 @@ Attributes
    .. py:method:: lens_redshift_strongly_lensed_numerical(size=1000, zs=None, get_attribute=False, **kwargs)
 
       
-      Function to sample lens redshifts, conditioned on the lens being strongly lensed
+      Sample lens redshifts conditioned on strong lensing (numerical method).
 
+      This method computes the lens redshift distribution by numerically
+      integrating over the velocity dispersion distribution (galaxy density distribution wrt), cross-section and differential comoving volume.
 
       :Parameters:
 
-          **size** : `int`
-              sample size
+          **size** : ``int``
+              Number of samples to generate. \n
+              default: 1000
 
-          **zs** : `float`
-              source redshifts
+          **zs** : ``numpy.ndarray``
+              Source redshifts.
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be used to sample lens redshifts
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples. \n
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters.
 
       :Returns:
 
-          **zs** : `float: array`
-              lens redshifts
+          **zl** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Lens redshift samples or sampler object.
 
 
 
@@ -2413,8 +2570,8 @@ Attributes
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(lens_redshift="lens_redshift_strongly_lensed_numerical"))
-      >>> print(self.lens_redshift(size=10, zs=1.0))
+      >>> od = OpticalDepth()
+      >>> zl = od.lens_redshift(size=100, zs=np.ones(100)*2.0)
 
 
 
@@ -2424,21 +2581,26 @@ Attributes
    .. py:method:: axis_rotation_angle_uniform(size, get_attribute=False, **kwargs)
 
       
-      Function to sample the axis rotation angle of the elliptical lens galaxy from a uniform distribution.
+      Sample axis rotation angle from uniform distribution.
 
 
       :Parameters:
 
-          **size** : `int`
-              number of lens parameters to sample
+          **size** : ``int``
+              Number of samples to generate.
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be called with size as input
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters (phi_min, phi_max).
 
       :Returns:
 
-          **phi** : `numpy.ndarray`
-              axis rotation angle of the elliptical lens galaxy
+          **phi** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Axis rotation angle samples (rad) or sampler object.
 
 
 
@@ -2452,8 +2614,8 @@ Attributes
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(axis_rotation_angle="axis_rotation_angle_uniform"))
-      >>> print(self.axis_rotation_angle_uniform(size=10))
+      >>> od = OpticalDepth()
+      >>> phi = od.axis_rotation_angle(size=100)
 
 
 
@@ -2463,21 +2625,26 @@ Attributes
    .. py:method:: axis_ratio_uniform(size, get_attribute=False, **kwargs)
 
       
-      Function to sample the axis ratio of the elliptical lens galaxy from a uniform distribution.
+      Sample axis ratio from uniform distribution.
 
 
       :Parameters:
 
-          **size** : `int`
-              number of lens parameters to sample
+          **size** : ``int``
+              Number of samples to generate.
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be called with size as input
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters (q_min, q_max).
 
       :Returns:
 
-          **q** : `numpy.ndarray`
-              axis ratio of the elliptical lens galaxy
+          **q** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Axis ratio samples or sampler object.
 
 
 
@@ -2492,7 +2659,7 @@ Attributes
 
       >>> from ler.lens_galaxy_population import OpticalDepth
       >>> od = OpticalDepth(lens_param_samplers=dict(axis_ratio="axis_ratio_uniform"))
-      >>> print(self.axis_ratio_uniform(size=10))
+      >>> q = od.axis_ratio(size=100)
 
 
 
@@ -2502,24 +2669,26 @@ Attributes
    .. py:method:: external_shear_normal(size, get_attribute=False, **kwargs)
 
       
-      Function to sample the external shear parameters from a normal distribution.
+      Sample external shear parameters from 2D normal distribution.
 
 
       :Parameters:
 
-          **size** : `int`
-              number of lens parameters to sample
+          **size** : ``int``
+              Number of samples to generate.
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be called with size as input
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters (mean, std).
 
       :Returns:
 
-          **gamma_1** : `numpy.ndarray`
-              shear component in the x-direction
-
-          **gamma_2** : `numpy.ndarray`
-              shear component in the y-direction
+          **shear** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Array of shape (2, size) with gamma1, gamma2 or sampler object.
 
 
 
@@ -2533,8 +2702,8 @@ Attributes
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(external_shear="external_shear_normal"))
-      >>> print(self.external_shear_normal(size=10))
+      >>> od = OpticalDepth()
+      >>> gamma1, gamma2 = od.external_shear(size=100)
 
 
 
@@ -2544,25 +2713,26 @@ Attributes
    .. py:method:: density_profile_slope_normal(size, get_attribute=False, **kwargs)
 
       
-      Function to sample the lens galaxy density profile slope with normal distribution.
+      Sample density profile slope from normal distribution.
 
 
       :Parameters:
 
-          **size** : `int`
-              number of lens parameters to sample
+          **size** : ``int``
+              Number of samples to generate.
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be used to sample velocity dispersion
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
 
-          **\*\*kwargs** : `dict`
-              additional parameters to be passed to the function,
-              e.g. `mean` and `std` for the normal distribution
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters (mean, std).
 
       :Returns:
 
-          **slope** : `float`
-              density profile slope of the lens galaxy
+          **gamma** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Density profile slope samples or sampler object.
 
 
 
@@ -2576,8 +2746,8 @@ Attributes
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(density_profile_slope="density_profile_slope_normal"))
-      >>> print(self.density_profile_slope_normal(size=10))
+      >>> od = OpticalDepth()
+      >>> gamma = od.density_profile_slope(size=100)
 
 
 
@@ -2587,21 +2757,29 @@ Attributes
    .. py:method:: lens_redshift_sis_haris(size, zs, get_attribute=False, **kwargs)
 
       
-      Function to sample lens redshifts, conditioned on the lens being strongly lensed
+      Sample SIS lens redshifts using Haris et al. (2018) distribution.
 
 
       :Parameters:
 
-          **zs** : `float`
-              source redshifts
+          **size** : ``int``
+              Number of samples to generate.
 
-          **get_attribute** : `bool`
-              If True, returns a function that can be called with zs as input
+          **zs** : ``numpy.ndarray``
+              Source redshifts.
+
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters.
 
       :Returns:
 
-          **zl** : `float`
-              lens redshifts
+          **zl** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Lens redshift samples or sampler object.
 
 
 
@@ -2614,9 +2792,9 @@ Attributes
 
       .. rubric:: Examples
 
-      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.lens_redshift_sis_haris(zs=1.0)
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth(lens_type='sis_galaxy')
+      >>> zl = od.lens_redshift(size=100, zs=np.ones(100)*2.0)
 
 
 
@@ -2626,29 +2804,28 @@ Attributes
    .. py:method:: velocity_dispersion_gengamma(size, get_attribute=False, **kwargs)
 
       
-      Function to sample velocity dispersion from gengamma distribution
+      Sample velocity dispersion from generalized gamma distribution.
 
 
       :Parameters:
 
-          **size** : `int`
-              number of lens parameters to sample
+          **size** : ``int``
+              Number of samples to generate.
 
-          **a,c** : `float`
-              parameters of gengamma distribution
-              refer to https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.gengamma.html
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be used to sample velocity dispersion
+              default: False
 
-          **param** : `dict`
-              Allows to pass in above parameters as dict.
-              e.g. param = dict(a=2.32 / 2.67, c=2.67)
+          **\*\*kwargs** : ``dict``
+              Additional parameters (a, c for gengamma distribution).
+
+              See scipy.stats.gengamma for details.
 
       :Returns:
 
-          **sigma** : `numpy.ndarray` (1D array of floats)
-              velocity dispersion of the lens galaxy
+          **sigma** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Velocity dispersion samples (km/s) or sampler object.
 
 
 
@@ -2662,8 +2839,9 @@ Attributes
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(velocity_dispersion="velocity_dispersion_gengamma"), lens_param_samplers_params=dict(velocity_dispersion=dict(a=2.32 / 2.67, c=2.67)))
-      >>> print(self.velocity_dispersion(size=10))
+      >>> od = OpticalDepth(lens_param_samplers=dict(
+      ...     velocity_dispersion="velocity_dispersion_gengamma"))
+      >>> sigma = od.velocity_dispersion(size=100)
 
 
 
@@ -2673,21 +2851,27 @@ Attributes
    .. py:method:: velocity_dispersion_bernardi(size, get_attribute=False, **kwargs)
 
       
-      Function to sample velocity dispersion from Bernardi et al. (2010). This uses inverse transform sampling.
+      Sample velocity dispersion from Bernardi et al. (2010) distribution.
 
+      Uses inverse transform sampling on the velocity dispersion function.
 
       :Parameters:
 
-          **size** : `int`
-              number of lens parameters to sample
+          **size** : ``int``
+              Number of samples to generate.
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be used to sample velocity dispersion
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters.
 
       :Returns:
 
-          **sigma** : `numpy.ndarray` (1D array of floats)
-              velocity dispersion of the lens galaxy
+          **sigma** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Velocity dispersion samples (km/s) or sampler object.
 
 
 
@@ -2701,8 +2885,9 @@ Attributes
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(velocity_dispersion="velocity_dispersion_bernardi"))
-      >>> print(self.velocity_dispersion(size=10))
+      >>> od = OpticalDepth(lens_param_samplers=dict(
+      ...     velocity_dispersion="velocity_dispersion_bernardi"))
+      >>> sigma = od.velocity_dispersion(size=100)
 
 
 
@@ -2712,24 +2897,31 @@ Attributes
    .. py:method:: velocity_dispersion_ewoud(size, zl, get_attribute=False, **kwargs)
 
       
-      Function to sample velocity dispersion (redshift dependent) from Wempe et al. (2022). This uses inverse transform sampling.
+      Sample redshift-dependent velocity dispersion from Wempe et al. (2022).
 
+      Uses inverse transform sampling with redshift-dependent velocity
+      dispersion function.
 
       :Parameters:
 
-          **size** : `int`
-              number of lens parameters to sample
+          **size** : ``int``
+              Number of samples to generate.
 
-          **zl** : `float`
-              redshift of the lens galaxy
+          **zl** : ``numpy.ndarray``
+              Lens redshifts.
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be used to sample velocity dispersion
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters.
 
       :Returns:
 
-          **sigma** : `numpy.ndarray` (1D array of floats)
-              velocity dispersion of the lens galaxy
+          **sigma** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Velocity dispersion samples (km/s) or sampler object.
 
 
 
@@ -2743,8 +2935,8 @@ Attributes
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(velocity_dispersion="velocity_dispersion_ewoud"))
-      >>> print(self.velocity_dispersion(size=10, zl=0.5))
+      >>> od = OpticalDepth()
+      >>> sigma = od.velocity_dispersion(size=100, zl=np.ones(100)*0.5)
 
 
 
@@ -2753,6 +2945,41 @@ Attributes
 
    .. py:method:: optical_depth_numerical(zs, get_attribute=False, **kwargs)
 
+      
+      Helper to compute optical depth numerically by integrating lens redshift.
+
+
+      :Parameters:
+
+          **zs** : ``numpy.ndarray``
+              Source redshifts.
+
+          **get_attribute** : ``bool``
+              If True, returns the function object instead of values. \n
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters.
+
+      :Returns:
+
+          **tau** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Optical depth values or function object.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
 
    .. py:method:: compute_einstein_radii(sigma, zl, zs)
 
@@ -2799,22 +3026,29 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: optical_depth_sis_haris(zs, get_attribute=False, **kwargs)
+   .. py:method:: optical_depth_sis_analytic(zs, get_attribute=False, **kwargs)
 
       
       Function to compute the strong lensing optical depth (SIS).
-
       LambdaCDM(H0=70, Om0=0.3, Ode0=0.7) was used to derive the following equation. This is the analytic version of optical depth from z=0 to z=zs.
+
 
       :Parameters:
 
-          **zs** : `float`
-              source redshifts
+          **zs** : ``numpy.ndarray``
+              Source redshifts.
+
+          **get_attribute** : ``bool``
+              If True, returns the function object instead of values. \n
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters.
 
       :Returns:
 
-          **tau** : `float`
-              strong lensing optical depth
+          **tau** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Optical depth values or function object.
 
 
 
@@ -2825,11 +3059,6 @@ Attributes
 
 
 
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth()
-      >>> print(self.optical_depth_sis_haris(zs=1.0))
 
 
 
@@ -3002,66 +3231,71 @@ Attributes
           !! processed by numpydoc !!
 
 
-.. py:class:: ImageProperties(npool=4, z_min=0.0, z_max=10, n_min_images=2, n_max_images=4, time_window=365 * 24 * 3600 * 20, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, spin_zero=True, spin_precession=False, directory='./interpolator_json', create_new_interpolator=False)
+.. py:class:: ImageProperties(npool=4, n_min_images=2, n_max_images=4, time_window=365 * 24 * 3600 * 20, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, spin_zero=True, spin_precession=False)
 
 
    
-   Class to find the image properties of a lensed event. Image properties include image positions, magnifications, time delays, etc.
+   Class to compute image properties of strongly lensed gravitational wave events.
 
+   This class solves the lens equation to find image positions, magnifications,
+   time delays, and image types (morse phase) for strongly lensed sources. It uses
+   multiprocessing for efficient computation of large samples.
+
+   Key Features:
+
+   - Solves lens equations using multiprocessing for efficiency
+
+   - Computes image positions, magnifications, and time delays
+
+   - Classifies image types using morse phase
+
+   - Calculates detection probabilities for lensed images
 
    :Parameters:
 
-       **npool** : `int`
-           number of processes to use
+       **npool** : ``int``
+           Number of processes for multiprocessing.
+
            default: 4
 
-       **z_min** : `float`
-           minimum redshift to consider
-           default: 0.0
+       **n_min_images** : ``int``
+           Minimum number of images required for a valid lensing event.
 
-       **z_max** : `float`
-           maximum redshift to consider
-           default: 10.0
-
-       **n_min_images** : `int`
-           minimum number of images to consider
            default: 2
 
-       **n_max_images** : `int`
-           maximum number of images to consider
+       **n_max_images** : ``int``
+           Maximum number of images to consider per event.
+
            default: 4
 
-       **geocent_time_min** : `float`
-           minimum geocent time to consider
-           default: 1126259462.4 , which is the GPS time of the first GW detection
+       **time_window** : ``float``
+           Time window for lensed events (units: seconds).
 
-       **geocent_time_max** : `float`
-           maximum geocent time to consider
-           default: 1126259462.4+365*24*3600*100 , which is the GPS time of the first GW detection + 100 years. Some time delays can be very large.
+           default: 365*24*3600*20 (20 years)
 
-       **lens_model_list** : `list`
-           list of lens models
+       **lens_model_list** : ``list``
+           List of lens models to use.
+
            default: ['EPL_NUMBA', 'SHEAR']
 
-       **cosmology** : `astropy.cosmology`
-           cosmology
-           default: None/astropy.cosmology.LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+       **cosmology** : ``astropy.cosmology`` or ``None``
+           Cosmology for distance calculations.
 
-       **spin_zero** : `bool`
-           whether to assume spin zero or not
-           default: True
+           If None, uses default LambdaCDM.
 
-       **spin_precession** : `bool`
-           whether to assume spin precession or not
+           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+
+       **spin_zero** : ``bool``
+           If True, spin parameters are set to zero (no spin sampling).
+
            default: False
 
-       **directory** : `str`
-           directory to save the interpolator pickle files
-           default: "./interpolator_json"
+       **spin_precession** : ``bool``
+           If True (and spin_zero=False), sample precessing spin parameters.
 
-       **create_new_interpolator** : `dict`
-           dictionary to create new interpolator pickle files
-           default: dict(luminosity_distance=dict(create_new=False, resolution=1000))
+           If False (and spin_zero=False), sample aligned/anti-aligned spins.
+
+           default: False
 
 
 
@@ -3075,112 +3309,352 @@ Attributes
 
    .. rubric:: Examples
 
+   Basic usage:
+
    >>> from ler.image_properties import ImageProperties
-   >>> image_properties = ImageProperties()
-   >>> lens_parameters = dict(zs=2.0, zl=0.5, gamma1=0.0, gamma2=0.0, e1=0.0, e2=0.0, gamma=2.0, theta_E=1.0)
-   >>> lens_parameters = image_properties.image_properties(lens_parameters)
-   >>> print(lens_parameters.keys())
+   >>> ip = ImageProperties()
+   >>> lens_parameters = dict(
+   ...     zs=np.array([2.0]),
+   ...     zl=np.array([0.5]),
+   ...     gamma1=np.array([0.0]),
+   ...     gamma2=np.array([0.0]),
+   ...     phi=np.array([0.0]),
+   ...     q=np.array([0.8]),
+   ...     gamma=np.array([2.0]),
+   ...     theta_E=np.array([1.0])
+   ... )
+   >>> result = ip.image_properties(lens_parameters)
+   >>> print(result.keys())
+
+   Instance Methods
+   ----------
+   ImageProperties has the following methods:
+
+   +-----------------------------------------------------+------------------------------------------------+
+   | Method                                              | Description                                    |
+   +=====================================================+================================================+
+   | :meth:`~image_properties`                           | Compute image properties for lensed events     |
+   +-----------------------------------------------------+------------------------------------------------+
+   | :meth:`~get_lensed_snrs`                            | Compute detection probability for lensed images|
+   +-----------------------------------------------------+------------------------------------------------+
 
    Instance Attributes
    ----------
-   ImageProperties has the following instance attributes:
+   ImageProperties has the following attributes:
 
-   +-------------------------+----------------------+
-   | Atrributes                          | Type                             |
-   +=====================================+==================================+
-   |:attr:`npool`                        | `int`                            |
-   +-------------------------+----------------------+
-   |:attr:`z_min`                        | `float`                          |
-   +-------------------------+----------------------+
-   |:attr:`z_max`                        | `float`                          |
-   +-------------------------+----------------------+
-   |:attr:`n_min_images`                 | `int`                            |
-   +-------------------------+----------------------+
-   |:attr:`n_max_images`                 | `int`                            |
-   +-------------------------+----------------------+
-   |:attr:`geocent_time_min`             | `float`                          |
-   +-------------------------+----------------------+
-   |:attr:`geocent_time_max`             | `float`                          |
-   +-------------------------+----------------------+
-   |:attr:`lens_model_list`              | `list`                           |
-   +-------------------------+----------------------+
-   |:attr:`cosmo`                        | `astropy.cosmology`              |
-   +-------------------------+----------------------+
-   |:attr:`spin_zero`                    | `bool`                           |
-   +-------------------------+----------------------+
-   |:attr:`spin_precession`              | `bool`                           |
-   +-------------------------+----------------------+
-   |:attr:`directory`                    | `str`                            |
-   +-------------------------+----------------------+
-   |:attr:`create_new_interpolator`      | `dict`                           |
-   +-------------------------+----------------------+
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   | Attribute                                           | Type                      | Unit     | Description                                    |
+   +=====================================================+===========================+==========+================================================+
+   | :attr:`~npool`                                      | ``int``                   |          | Number of multiprocessing workers              |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   | :attr:`~n_min_images`                               | ``int``                   |          | Minimum number of images required              |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   | :attr:`~n_max_images`                               | ``int``                   |          | Maximum number of images per event             |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   | :attr:`~time_window`                                | ``float``                 | s        | Time window for lensed events                  |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   | :attr:`~lens_model_list`                            | ``list``                  |          | List of lens models                            |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   | :attr:`~cosmo`                                      | ``astropy.cosmology``     |          | Cosmology for calculations                     |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   | :attr:`~spin_zero`                                  | ``bool``                  |          | Flag for zero spin assumption                  |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   | :attr:`~spin_precession`                            | ``bool``                  |          | Flag for spin precession                       |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
 
 
 
    ..
        !! processed by numpydoc !!
-   .. py:attribute:: npool
-      :value: '4'
+   .. py:property:: npool
 
       
+      Number of multiprocessing workers.
 
-   .. py:attribute:: n_min_images
-      :value: '2'
 
-      
 
-   .. py:attribute:: n_max_images
-      :value: '4'
+      :Returns:
 
-      
+          **npool** : ``int``
+              Number of processes for multiprocessing.
 
-   .. py:attribute:: lens_model_list
-      :value: "['EPL_NUMBA', 'SHEAR']"
+              default: 4
 
-      
 
-   .. py:attribute:: spin_zero
-      :value: 'True'
 
-      
 
-   .. py:attribute:: spin_precession
-      :value: 'False'
 
-      
 
-   .. py:attribute:: time_window
-      :value: '630720000'
 
-      
 
-   .. py:attribute:: cosmo
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: n_min_images
 
       
+      Minimum number of images required for a valid lensing event.
+
+
+
+      :Returns:
+
+          **n_min_images** : ``int``
+              Minimum number of images required.
+
+              default: 2
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: n_max_images
+
+      
+      Maximum number of images per event.
+
+
+
+      :Returns:
+
+          **n_max_images** : ``int``
+              Maximum number of images to consider per event.
+
+              default: 4
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: lens_model_list
+
+      
+      List of lens models to use.
+
+
+
+      :Returns:
+
+          **lens_model_list** : ``list``
+              List of lens model names.
+
+              default: ['EPL_NUMBA', 'SHEAR']
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: spin_zero
+
+      
+      Flag for zero spin assumption.
+
+
+
+      :Returns:
+
+          **spin_zero** : ``bool``
+              Whether to assume zero spin for compact objects.
+
+              If True, spin parameters are set to zero (no spin sampling).
+
+              If False, spin parameters are sampled.
+
+              default: False
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: spin_precession
+
+      
+      Flag for spin precession.
+
+
+
+      :Returns:
+
+          **spin_precession** : ``bool``
+              Whether to include spin precession effects.
+
+              If True (and spin_zero=False), sample precessing spin parameters.
+
+              If False (and spin_zero=False), sample aligned/anti-aligned spins.
+
+              default: False
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: time_window
+
+      
+      Time window for lensed events.
+
+
+
+      :Returns:
+
+          **time_window** : ``float``
+              Time window for lensed events (units: s).
+
+              default: 365*24*3600*20 (20 years)
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: cosmo
+
+      
+      Astropy cosmology object for calculations.
+
+
+
+      :Returns:
+
+          **cosmo** : ``astropy.cosmology``
+              Cosmology used for distance calculations.
+
+              default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
 
    .. py:method:: image_properties(lens_parameters)
 
       
-      Function to get the image properties e.g. image positions, magnifications, time delays, etc.
+      Compute image properties for strongly lensed events.
 
+      Solves the lens equation using multiprocessing to find image positions,
+      magnifications, time delays, and image types for each lensing event.
 
       :Parameters:
 
-          **lens_parameters** : `dict`
-              dictionary of lens parameters
-              e.g. lens_parameters.keys() = ['zs', 'zl', 'gamma1', 'gamma2', 'e1', 'e2', 'gamma', 'theta_E']
+          **lens_parameters** : ``dict``
+              Dictionary containing lens and source parameters with keys:
+
+              - 'zs': source redshift (array)
+
+              - 'zl': lens redshift (array)
+
+              - 'gamma1': external shear component 1 (array)
+
+              - 'gamma2': external shear component 2 (array)
+
+              - 'phi': position angle of lens ellipticity (array)
+
+              - 'q': axis ratio of lens (array)
+
+              - 'gamma': power-law slope of mass density (array)
+
+              - 'theta_E': Einstein radius in radians (array)
 
       :Returns:
 
-          **lens_parameters** : `dict`
-              dictionary of lens parameters and image properties
-              e.g. lens_parameters contains the following keys:
+          **lens_parameters** : ``dict``
+              Updated dictionary with additional image properties:
 
-              lens related=>['zs': source redshift, 'zl': lens redshift, 'gamma1': shear component in the x-direction, 'gamma2': shear component in the y-direction, 'e1': ellipticity component in the x-direction, 'e2': ellipticity component in the y-direction, 'gamma': spectral index of the mass density distribution, 'theta_E': einstein radius in radian]
+              - 'x0_image_positions': x-coordinates of images (shape: size x n_max_images)
 
-              source related=>['mass_1': mass in detector frame (mass1>mass2), 'mass_2': mass in detector frame, 'mass_1_source':mass in source frame, 'mass_2_source':mass source frame, 'luminosity_distance': luminosity distance, 'theta_jn': inclination angle, 'psi': polarization angle, 'phase': coalesence phase, 'geocent_time': coalensence GPS time at geocenter, 'ra': right ascension, 'dec': declination, 'a_1': spin magnitude of the more massive black hole, 'a2': spin magnitude of the less massive black hole, 'tilt_1': tilt angle of the more massive black hole, 'tilt_2': tilt angle of the less massive black hole, 'phi_12': azimuthal angle between the two spins, 'phi_jl': azimuthal angle between the total angular momentum and the orbital angular momentum]
+              - 'x1_image_positions': y-coordinates of images (shape: size x n_max_images)
 
-              image related=>['x_source': source position in the x-direction, 'y_source': source position in the y-direction, 'x0_image_position': image position in the x-direction, 'x1_image_position': image position in the y-direction, 'magnifications': magnifications, 'time_delays': time delays: number of images formed, 'determinant': determinants, 'trace': traces, 'iteration': to keep track of the iteration number
+              - 'magnifications': magnification factors (shape: size x n_max_images)
+
+              - 'time_delays': time delays relative to first image (shape: size x n_max_images, units: s)
+
+              - 'image_type': morse phase classification (1=minimum, 2=saddle, 3=maximum)
+
+              - 'n_images': number of images per event (array)
+
+              - 'x_source': source x-position (array)
+
+              - 'y_source': source y-position (array)
 
 
 
@@ -3200,24 +3674,58 @@ Attributes
    .. py:method:: get_lensed_snrs(lensed_param, pdet_calculator, list_of_detectors=None)
 
       
-      Function to calculate the signal to noise ratio for each image in each event.
+      Compute detection probability for each lensed image.
 
+      Calculates the effective luminosity distance, geocent time, and phase
+      for each image accounting for magnification and morse phase, then
+      computes detection probabilities using the provided calculator.
 
       :Parameters:
 
-          **list_of_detectors** : `list`
-              list of detectors
-              e.g. ['H1', 'L1', 'V1']
+          **lensed_param** : ``dict``
+              Dictionary containing lensed source and image parameters with keys:
 
-          **lensed_param** : `dict`
-              dictionary containing the both already lensed source paramters and image parameters.
-              e.g. lensed_param.keys() = ['mass_1', 'mass_2', 'zs', 'luminosity_distance', 'theta_jn', 'psi', 'phi', 'ra', 'dec', 'geocent_time', 'phase', 'a_1', 'a2', 'tilt_1', 'tilt_2', 'phi_12', 'phi_jl', 'magnifications', 'time_delays']
+              - 'mass_1', 'mass_2': detector-frame masses (array)
+
+              - 'luminosity_distance' or 'effective_luminosity_distance': distance (array)
+
+              - 'geocent_time' or 'effective_geocent_time': GPS time (array)
+
+              - 'phase' or 'effective_phase': coalescence phase (array)
+
+              - 'theta_jn', 'psi', 'ra', 'dec': orientation and position (arrays)
+
+              - 'magnifications': image magnifications (shape: size x n_max_images)
+
+              - 'time_delays': image time delays (shape: size x n_max_images)
+
+              - 'image_type': morse phase type (shape: size x n_max_images)
+
+          **pdet_calculator** : ``callable``
+              Function that computes detection probability given GW parameters.
+
+          **list_of_detectors** : ``list`` or ``None``
+              List of detector names (e.g., ['H1', 'L1', 'V1']) for per-detector results.
+
+              default: None
 
       :Returns:
 
-          **snrs** : `dict`
-              signal to noise ratio for each image in each event.
-              (dictionary containing 'H1', 'L1', ..., and 'snr_net', which is the network snr, for each image as an array with dimensions (number_of_lensed_events,n_max_images) )
+          **result_dict** : ``dict``
+              Dictionary containing:
+
+              - 'pdet_net': network detection probability (shape: size x n_max_images)
+
+              - Individual detector probabilities if list_of_detectors provided
+
+          **lensed_param** : ``dict``
+              Updated dictionary with effective parameters:
+
+              - 'effective_luminosity_distance': magnification-corrected distance
+
+              - 'effective_geocent_time': time-delay-corrected GPS time
+
+              - 'effective_phase': morse-phase-corrected coalescence phase
 
 
 
@@ -3244,64 +3752,106 @@ Attributes
    Bases: :py:obj:`ler.gw_source_population.CBCSourceParameterDistribution`, :py:obj:`ler.image_properties.ImageProperties`, :py:obj:`ler.lens_galaxy_population.optical_depth.OpticalDepth`
 
    
-   Class to sample lens galaxy parameters and source parameters conditioned on the source being strongly lensed.
+   Sample lens galaxy parameters conditioned on strong lensing.
 
-   This class deals with the distribution of lens galaxy parameters, such as velocity dispersion,
-   axis ratio, axis rotation angle, shear, and density profile slope. It also handles the
-   sampling of source parameters conditioned on the source being strongly lensed.
+   This class handles the distribution of lens galaxy parameters such as velocity
+   dispersion, axis ratio, axis rotation angle, shear, and density profile slope.
+   It samples source parameters conditioned on the source being strongly lensed
+   using cross-section based rejection or importance sampling.
+
+   Key Features:
+
+   - Samples lens parameters using EPL+shear galaxy model
+
+   - Supports rejection and importance sampling based on cross-section
+
+   - Computes optical depth weighted source redshift distributions
+
+   - Integrates with GW source population and image property calculations
 
    :Parameters:
 
-       **npool** : int, optional
-           Number of processors to use.
-           Default is 4.
+       **npool** : ``int``
+           Number of processors to use for parallel sampling.
 
-       **z_min** : float, optional
-           Minimum redshift.
-           Default is 0.0.
+           default: 4
 
-       **z_max** : float, optional
-           Maximum redshift.
-           Default is 10.0.
+       **z_min** : ``float``
+           Minimum redshift for source and lens populations.
 
-       **cosmology** : astropy.cosmology, optional
-           Cosmology to use.
-           Default is None, which falls back to ``astropy.cosmology.FlatLambdaCDM(H0=70, Om0=0.3)``.
+           default: 0.0
 
-       **event_type** : str, optional
-           Type of event to generate. e.g. 'BBH', 'BNS', 'NSBH'.
-           Default is 'BBH'.
+       **z_max** : ``float``
+           Maximum redshift for source and lens populations.
 
-       **lens_type** : str, optional
-           Type of lens galaxy to generate.
-           Default is 'epl_shear_galaxy'.
+           default: 10.0
 
-       **lens_functions** : dict, optional
-           Dictionary of lens functions.
+       **cosmology** : ``astropy.cosmology`` or ``None``
+           Cosmology object for distance calculations.
 
-       **lens_functions_params** : dict, optional
-           Dictionary of parameters for lens functions.
+           default: None (uses FlatLambdaCDM with H0=70, Om0=0.3)
 
-       **lens_param_samplers** : dict, optional
-           Dictionary of lens parameter samplers.
+       **event_type** : ``str``
+           Type of compact binary coalescence event.
 
-       **lens_param_samplers_params** : dict, optional
-           Dictionary of parameters for lens parameter samplers.
+           Options:
 
-       **directory** : str, optional
-           Directory to store the interpolators.
-           Default is './interpolator_json'.
+           - 'BBH': Binary black hole
 
-       **create_new_interpolator** : bool, optional
-           If True, creates a new interpolator.
-           Default is False.
+           - 'BNS': Binary neutron star
 
-       **buffer_size** : int, optional
-           Buffer size for sampling lens parameters.
-           Default is 1000.
+           - 'NSBH': Neutron star-black hole
 
-       **\*\*kwargs**
-           Keyword arguments to pass to the parent classes.
+           default: 'BBH'
+
+       **lens_type** : ``str``
+           Type of lens galaxy model to use.
+
+           default: 'epl_shear_galaxy'
+
+       **lens_functions** : ``dict`` or ``None``
+           Dictionary specifying lens-related functions.
+
+           default: None (uses defaults from OpticalDepth)
+
+       **lens_functions_params** : ``dict`` or ``None``
+           Parameters for lens functions.
+
+           default: None
+
+       **lens_param_samplers** : ``dict`` or ``None``
+           Dictionary specifying lens parameter sampling functions.
+
+           default: None (uses defaults from OpticalDepth)
+
+       **lens_param_samplers_params** : ``dict`` or ``None``
+           Parameters for lens parameter samplers.
+
+           default: None
+
+       **directory** : ``str``
+           Directory for storing interpolator files.
+
+           default: './interpolator_json'
+
+       **create_new_interpolator** : ``bool``
+           If True, recreates interpolators even if files exist.
+
+           default: False
+
+       **buffer_size** : ``int``
+           Buffer size for batch sampling of lens parameters.
+
+           default: 1000
+
+       **\*\*kwargs** : ``dict``
+           Additional keyword arguments passed to parent classes:
+
+           :class:`~ler.gw_source_population.CBCSourceParameterDistribution`,
+
+           :class:`~ler.image_properties.ImageProperties`,
+
+           :class:`~ler.lens_galaxy_population.OpticalDepth`.
 
 
 
@@ -3315,57 +3865,79 @@ Attributes
 
    .. rubric:: Examples
 
+   Basic usage:
+
    >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
    >>> lens = LensGalaxyParameterDistribution()
    >>> lensed_params = lens.sample_lens_parameters(size=1000)
    >>> print(lensed_params.keys())
 
-   :Attributes:
+   Instance Methods
+   ----------
+   LensGalaxyParameterDistribution has the following methods:
 
-       **npool** : int
-           Number of processors to use.
+   +-----------------------------------------------------+------------------------------------------------+
+   | Method                                              | Description                                    |
+   +=====================================================+================================================+
+   | :meth:`~sample_lens_parameters`                     | Sample lens and source parameters              |
+   +-----------------------------------------------------+------------------------------------------------+
+   | :meth:`~sample_all_routine_epl_shear_intrinsic`    | Sample EPL+shear lens parameters from intrinsic |
+   |                                                     | distributions                                  |
+   +-----------------------------------------------------+------------------------------------------------+
+   | :meth:`~sample_all_routine_epl_shear_sl`            | Sample EPL+shear lens parameters with strong   |
+   |                                                     | lensing condition                              |
+   +-----------------------------------------------------+------------------------------------------------+
+   | :meth:`~strongly_lensed_source_redshifts`           | Sample source redshifts with lensing condition |
+   +-----------------------------------------------------+------------------------------------------------+
 
-       **z_min** : float
-           Minimum redshift.
+   Instance Attributes
+   ----------
+   LensGalaxyParameterDistribution has the following attributes:
 
-       **z_max** : float
-           Maximum redshift.
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | Attribute                                      | Type                 | Unit  | Description                                    |
+   +================================================+======================+=======+================================================+
+   | :attr:`~npool`                                 | ``int``              |       | Number of processors for parallel computation  |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | :attr:`~z_min`                                 | ``float``            |       | Minimum redshift                               |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | :attr:`~z_max`                                 | ``float``            |       | Maximum redshift                               |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | :attr:`~cosmo`                                 | ``astropy.cosmology``|       | Cosmology object for calculations              |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | :attr:`~event_type`                            | ``str``              |       | Type of CBC event (BBH, BNS, NSBH)             |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | :attr:`~directory`                             | ``str``              |       | Path to interpolator storage directory         |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | :attr:`~lens_param_samplers`                   | ``dict``             |       | Dictionary of lens parameter sampler names     |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | :attr:`~lens_param_samplers_params`            | ``dict``             |       | Parameters for lens parameter samplers         |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | :attr:`~lens_functions`                        | ``dict``             |       | Dictionary of lens function names              |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
+   | :attr:`~normalization_pdf_z_lensed`            | ``float``            |       | Normalization constant for lensed source z pdf |
+   +------------------------------------------------+----------------------+-------+------------------------------------------------+
 
-       **cosmo** : astropy.cosmology
-           Cosmology object.
-
-       **event_type** : str
-           Type of event to generate.
-
-       **directory** : str
-           Directory to store the interpolators.
-
-       **create_new_interpolator** : dict
-           Dictionary to check if new interpolator is created.
-
-       **lens_param_samplers** : dict
-           Dictionary of lens parameter samplers.
-
-       **lens_param_samplers_params** : dict
-           Dictionary of lens parameter sampler parameters.
-
-       **lens_functions** : dict
-           Dictionary of lens functions.
-
-       **normalization_pdf_z_lensed** : float
-           Normalization constant of the pdf p(z) for lensed events.
 
 
    ..
        !! processed by numpydoc !!
-   .. py:attribute:: cbc_pop
-      :value: 'None'
+   .. py:property:: normalization_pdf_z_lensed
 
       
-      Inherited class for sampling source parameters.
+      Normalization constant for the lensed source redshift pdf.
+
+      This constant is used to normalize the probability distribution
+
+      of source redshifts conditioned on strong lensing. It is computed
+
+      by integrating the merger rate density times optical depth.
 
 
+      :Returns:
 
+          **normalization_pdf_z_lensed** : ``float``
+              Normalization constant for lensed redshift distribution.
 
 
 
@@ -3382,16 +3954,23 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-      :type: :class:`~ler.gw_source_population.CBCSourceParameterDistribution`
-
-   .. py:attribute:: z_min
-      :value: 'None'
+   .. py:property:: lens_param_samplers
 
       
-      Minimum redshift.
+      Dictionary of lens parameter sampler function names.
 
 
 
+      :Returns:
+
+          **lens_param_samplers** : ``dict``
+              Dictionary mapping parameter names to sampler function names.
+
+              Keys include: 'source_redshift_sl', 'lens_redshift',
+
+              'velocity_dispersion', 'axis_ratio', 'axis_rotation_angle',
+
+              'external_shear', 'density_profile_slope'.
 
 
 
@@ -3408,16 +3987,19 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-      :type: float
-
-   .. py:attribute:: z_max
-      :value: 'None'
+   .. py:property:: lens_param_samplers_params
 
       
-      Maximum redshift.
+      Dictionary of parameters for lens parameter samplers.
 
 
 
+      :Returns:
+
+          **lens_param_samplers_params** : ``dict``
+              Dictionary with sampler parameters.
+
+              Each key corresponds to a sampler in lens_param_samplers.
 
 
 
@@ -3434,16 +4016,21 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-      :type: float
-
-   .. py:attribute:: m_min
-      :value: 'None'
+   .. py:property:: lens_functions
 
       
-      Minimum mass in detector frame.
+      Dictionary of lens-related function names.
 
 
 
+      :Returns:
+
+          **lens_functions** : ``dict``
+              Dictionary mapping function types to function names.
+
+              Keys include: 'param_sampler_type', 'cross_section_based_sampler',
+
+              'optical_depth', 'cross_section'.
 
 
 
@@ -3459,60 +4046,6 @@ Attributes
 
       ..
           !! processed by numpydoc !!
-
-      :type: float
-
-   .. py:attribute:: m_max
-      :value: 'None'
-
-      
-      Maximum mass in detector frame.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-      :type: float
-
-   .. py:attribute:: normalization_pdf_z
-      :value: 'None'
-
-      
-      Normalization constant of the pdf p(z).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-      :type: float
 
    .. py:attribute:: event_type
       :value: "'BBH'"
@@ -3553,110 +4086,78 @@ Attributes
 
       
 
-   .. py:attribute:: normalization_pdf_z_lensed
-
-      
-      Normalization constant of the pdf p(z) for lensed events.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-      :type: float
-
-   .. py:method:: class_initialization_lens(npool, z_min, z_max, cosmology, lens_type, lens_functions, lens_functions_params, lens_param_samplers, lens_param_samplers_params, directory, create_new_interpolator, params)
-
-      
-      Initialize the LensGalaxyParameterDistribution class.
-
-
-      :Parameters:
-
-          **npool** : int
-              Number of processors to use for sampling.
-
-          **z_min** : float
-              Minimum redshift of the lens galaxy.
-
-          **z_max** : float
-              Maximum redshift of the lens galaxy.
-
-          **cosmology** : astropy.cosmology
-              Cosmology object.
-
-          **lens_type** : str
-              Type of the lens galaxy.
-
-          **lens_functions** : dict
-              Dictionary with the lens related functions.
-
-          **lens_functions_params** : dict
-              Dictionary with the parameters for the lens related functions.
-
-          **lens_param_samplers** : dict
-              Dictionary with the priors for the sampler.
-
-          **lens_param_samplers_params** : dict
-              Dictionary with the parameters for the priors of the sampler.
-
-          **directory** : str
-              Directory where the interpolators are saved.
-
-          **create_new_interpolator** : bool
-              If True, creates a new interpolator.
-
-          **params** : dict
-              Additional parameters for the ``CBCSourceParameterDistribution`` and ``ImageProperties`` classes.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
    .. py:method:: sample_lens_parameters(size=1000)
 
       
-      Sample lens galaxy parameters along with the source parameters, conditioned on the source being strongly lensed.
+      Sample lens galaxy and source parameters conditioned on strong lensing.
 
+      This method samples both lens galaxy parameters (velocity dispersion, axis
+      ratio, shear, etc.) and gravitational wave source parameters, with the
+      source redshift distribution weighted by strong lensing optical depth.
 
       :Parameters:
 
-          **size** : int, optional
-              Number of lens parameters to sample.
-              Default is 1000.
+          **size** : ``int``
+              Number of lens-source parameter sets to sample.
+
+              default: 1000
 
       :Returns:
 
-          **lens_parameters** : dict
-              Dictionary of sampled lens parameters and source parameters.
-              Keys include ``zl``, ``zs``, ``sigma``, ``q``, ``theta_E``, ``phi``, ``e1``, ``e2``,
-              ``gamma1``, ``gamma2``, ``gamma``, ``geocent_time``, ``phase``, ``psi``, ``theta_jn``,
-              ``luminosity_distance``, ``mass_1_source``, ``mass_2_source``, ``ra``, ``dec``.
+          **lens_parameters** : ``dict``
+              Dictionary containing sampled lens and source parameters.
+
+              The included parameters and their units are as follows (for default settings):
+
+              +------------------------------+-----------+-------------------------------------------------------+
+              | Parameter                    | Units     | Description                                           |
+              +==============================+===========+=======================================================+
+              | zl                           |           | redshift of the lens                                  |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | zs                           |           | redshift of the source                                |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | sigma                        | km s^-1   | velocity dispersion                                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | q                            |           | axis ratio                                            |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | theta_E                      | arcsec    | Einstein radius                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
+              |                              |           | positive x-axis (RA-like axis) to the major axis of   |
+              |                              |           | the projected mass distribution.                      |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma                        |           | density profile slope of EPL galaxy                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma1                       |           | external shear component in the x-direction           |
+              |                              |           | (RA-like axis)                                        |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma2                       |           | external shear component in the y-direction           |
+              |                              |           | (Dec-like axis)                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | geocent_time                 | s         | geocent time                                          |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | ra                           | rad       | right ascension                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | dec                          | rad       | declination                                           |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | phase                        | rad       | phase of GW at reference freq                         |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | psi                          | rad       | polarization angle                                    |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | theta_jn                     | rad       | inclination angle                                     |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | a_1                          |           | spin of the primary compact binary                    |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | a_2                          |           | spin of the secondary compact binary                  |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | mass_1_source                | Msun      | mass of the primary compact binary (source frame)     |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | mass_2_source                | Msun      | mass of the secondary compact binary (source frame)   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | mass_1                       | Msun      | mass of the primary compact binary (detector frame)   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | mass_2                       | Msun      | mass of the secondary compact binary (detector frame) |
+              +------------------------------+-----------+-------------------------------------------------------+
 
 
 
@@ -3670,8 +4171,9 @@ Attributes
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> od = LensGalaxyParameterDistribution(lens_param_samplers=dict(velocity_dispersion="velocity_dispersion_ewoud"))
-      >>> print(od.sample_lens_parameters(size=10))
+      >>> lens = LensGalaxyParameterDistribution()
+      >>> params = lens.sample_lens_parameters(size=1000)
+      >>> print(params.keys())
 
 
 
@@ -3681,21 +4183,48 @@ Attributes
    .. py:method:: sample_all_routine_epl_shear_sl(size=1000)
 
       
-      Sample galaxy lens parameters. EPL shear cross section is used for rejection sampling.
+      Sample EPL+shear galaxy lens parameters with strong lensing condition.
 
 
       :Parameters:
 
-          **size** : int, optional
+          **size** : ``int``
               Number of lens parameters to sample.
-              Default is 1000.
+
+              default: 1000
 
       :Returns:
 
-          **lens_parameters** : dict
-              Dictionary of lens parameters and source parameters (lens conditions applied).
-              Keys include ``zl``, ``zs``, ``sigma``, ``q``, ``theta_E``, ``phi``, ``e1``, ``e2``,
-              ``gamma1``, ``gamma2``, ``gamma``.
+          **lens_parameters** : ``dict``
+              Dictionary of sampled lens parameters.
+
+              The included parameters and their units are as follows (for default settings):
+
+              +------------------------------+-----------+-------------------------------------------------------+
+              | Parameter                    | Units     | Description                                           |
+              +==============================+===========+=======================================================+
+              | zl                           |           | redshift of the lens                                  |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | zs                           |           | redshift of the source                                |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | sigma                        | km s^-1   | velocity dispersion                                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | q                            |           | axis ratio                                            |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | theta_E                      | arcsec    | Einstein radius                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
+              |                              |           | positive x-axis (RA-like axis) to the major axis of   |
+              |                              |           | the projected mass distribution.                      |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma                        |           | density profile slope of EPL galaxy                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma1                       |           | external shear component in the x-direction           |
+              |                              |           | (RA-like axis)                                        |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma2                       |           | external shear component in the y-direction           |
+              |                              |           | (Dec-like axis)                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
 
 
 
@@ -3706,11 +4235,6 @@ Attributes
 
 
 
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.sample_all_routine_epl_shear_sl(size=1000)
 
 
 
@@ -3720,19 +4244,22 @@ Attributes
    .. py:method:: strongly_lensed_source_redshifts(size=1000)
 
       
-      Sample source redshifts, conditioned on the source being strongly lensed.
+      Sample source redshifts conditioned on strong lensing.
 
+      Uses rejection sampling to generate source redshifts from the CBC source
+      population weighted by the optical depth, which increases with redshift.
 
       :Parameters:
 
-          **size** : int, optional
-              Number of lens parameters to sample.
-              Default is 1000.
+          **size** : ``int``
+              Number of redshifts to sample.
+
+              default: 1000
 
       :Returns:
 
-          **redshifts** : numpy.ndarray
-              Source redshifts conditioned on the source being strongly lensed.
+          **redshifts** : ``numpy.ndarray``
+              Array of source redshifts conditioned on strong lensing.
 
 
 
@@ -3747,7 +4274,8 @@ Attributes
 
       >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
       >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.strongly_lensed_source_redshifts(size=1000)
+      >>> zs = lens.strongly_lensed_source_redshifts(size=1000)
+      >>> print(f"Mean source redshift: {zs.mean():.2f}")
 
 
 
@@ -3757,21 +4285,50 @@ Attributes
    .. py:method:: sample_all_routine_epl_shear_intrinsic(size=1000)
 
       
-      Sample galaxy lens parameters. EPL shear cross section is used for rejection sampling.
+      Sample EPL+shear galaxy lens parameters from intrinsic distributions.
 
+      Samples lens parameters from their intrinsic distributions without
+      applying strong lensing cross-section weighting.
 
       :Parameters:
 
-          **size** : int, optional
+          **size** : ``int``
               Number of lens parameters to sample.
-              Default is 1000.
+
+              default: 1000
 
       :Returns:
 
-          **lens_parameters** : dict
-              Dictionary of lens parameters and source parameters (lens conditions applied).
-              Keys include ``zl``, ``zs``, ``sigma``, ``q``, ``theta_E``, ``phi``, ``e1``, ``e2``,
-              ``gamma1``, ``gamma2``, ``gamma``.
+          **lens_parameters** : ``dict``
+              Dictionary of sampled lens parameters.
+
+              The included parameters and their units are as follows (for default settings):
+
+              +------------------------------+-----------+-------------------------------------------------------+
+              | Parameter                    | Units     | Description                                           |
+              +==============================+===========+=======================================================+
+              | zl                           |           | redshift of the lens                                  |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | zs                           |           | redshift of the source                                |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | sigma                        | km s^-1   | velocity dispersion                                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | q                            |           | axis ratio                                            |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | theta_E                      | arcsec    | Einstein radius                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
+              |                              |           | positive x-axis (RA-like axis) to the major axis of   |
+              |                              |           | the projected mass distribution.                      |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma                        |           | density profile slope of EPL galaxy                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma1                       |           | external shear component in the x-direction           |
+              |                              |           | (RA-like axis)                                        |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma2                       |           | external shear component in the y-direction           |
+              |                              |           | (Dec-like axis)                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
 
 
 
@@ -3782,11 +4339,6 @@ Attributes
 
 
 
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.sample_all_routine_epl_shear_intrinsic(size=1000)
 
 
 
@@ -4387,487 +4939,379 @@ Attributes
 .. py:function:: axis_ratio_rayleigh_pdf(q, sigma, q_min=0.2, q_max=1.0)
 
 
-.. py:function:: cross_section_mp(params)
-
-
 .. py:class:: OpticalDepth(npool=4, z_min=0.0, z_max=10.0, cosmology=None, lens_type='epl_shear_galaxy', lens_functions=None, lens_functions_params=None, lens_param_samplers=None, lens_param_samplers_params=None, directory='./interpolator_json', create_new_interpolator=False, verbose=False)
 
 
    
-   Class to calculate the optical depth, velocity dispersion and axis-ratio of a lens galaxy population.
+   Class for computing optical depth and lens galaxy population parameters.
 
+   This class calculates strong lensing optical depth, velocity dispersion,
+   axis ratio, and other parameters for a lens galaxy population. It supports
+   SIS, SIE, and EPL + external shear lens models with customizable samplers
+   and interpolators for efficient computation.
+
+   Key Features:
+
+   - Multiple lens model support (SIS, SIE, EPL + shear)
+
+   - Configurable velocity dispersion distributions
+
+   - Cached interpolators for fast optical depth computation
+
+   - Flexible parameter sampling with user-defined priors
 
    :Parameters:
 
-       **npool** : int, optional
-           Number of processors to use for multiprocessing (default is 4).
+       **npool** : ``int``
+           Number of processors for multiprocessing.
 
-       **z_min** : float, optional
-           Minimum redshift of the lens galaxy population (default is 0.0).
+           default: 4
 
-       **z_max** : float, optional
-           Maximum redshift of the lens galaxy population (default is 10.0).
+       **z_min** : ``float``
+           Minimum redshift of the lens galaxy population.
 
-       **cosmology** : astropy.cosmology, optional
-           Cosmology object to use (default is FlatLambdaCDM with H0=70, Om0=0.3, Ode0=0.7).
+           default: 0.0
 
-       **lens_type** : str, optional
-           Type of the lens galaxy. Must be one of ['sie_galaxy', 'epl_shear_galaxy', 'sis_galaxy'] (default is 'epl_shear_galaxy').
+       **z_max** : ``float``
+           Maximum redshift of the lens galaxy population.
 
-       **lens_functions** : dict, optional
+           default: 10.0
+
+       **cosmology** : ``astropy.cosmology`` or ``None``
+           Cosmology object for distance calculations.
+
+           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+
+       **lens_type** : ``str``
+           Type of lens galaxy model.
+
+           Options:
+
+           - 'epl_shear_galaxy': Elliptical power-law with external shear
+
+           - 'sie_galaxy': Singular isothermal ellipsoid
+
+           - 'sis_galaxy': Singular isothermal sphere
+
+           default: 'epl_shear_galaxy'
+
+       **lens_functions** : ``dict`` or ``None``
            Dictionary with lens-related functions.
 
-       **lens_functions_params** : dict, optional
-           Dictionary with parameters for the lens-related functions.
+           default: None (uses defaults for lens_type)
 
-       **lens_param_samplers** : dict, optional
-           Dictionary of sampler functions for velocity dispersion and axis-ratio.
+       **lens_functions_params** : ``dict`` or ``None``
+           Dictionary with parameters for lens-related functions.
 
-       **lens_param_samplers_params** : dict, optional
-           Dictionary with parameters for the priors of the samplers.
+           default: None
 
-       **directory** : str, optional
-           Directory where the interpolators are saved (default is './interpolator_json').
-           If True, creates a new interpolator (default is False).
+       **lens_param_samplers** : ``dict`` or ``None``
+           Dictionary of sampler functions for lens parameters.
 
-       **verbose** : bool, optional
-           If True, prints additional information during initialization (default is False).
+           default: None (uses defaults for lens_type)
+
+       **lens_param_samplers_params** : ``dict`` or ``None``
+           Dictionary with parameters for the samplers.
+
+           default: None
+
+       **directory** : ``str``
+           Directory where interpolators are saved.
+
+           default: './interpolator_json'
+
+       **create_new_interpolator** : ``bool`` or ``dict``
+           Whether to create new interpolators.
+
+           default: False
+
+       **verbose** : ``bool``
+           If True, prints additional information.
+
+           default: False
 
 
 
 
 
-   :Raises:
-
-       ValueError
-           If `lens_type` is not in ['sie_galaxy', 'epl_shear_galaxy', 'sis_galaxy'].
 
 
 
 
 
 
+   .. rubric:: Examples
+
+   Basic usage:
+
+   >>> from ler.lens_galaxy_population import OpticalDepth
+   >>> od = OpticalDepth()
+   >>> tau = od.optical_depth(zs=np.array([1.0, 2.0]))
+
+   Instance Methods
+   ----------
+   OpticalDepth has the following instance methods:
+
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | Method                                              | Description                                              |
+   +=====================================================+==========================================================+
+   | :meth:`~axis_ratio_rayleigh`                        | Sample axis ratio from Rayleigh distribution             |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~axis_ratio_padilla_strauss`                 | Sample axis ratio from Padilla & Strauss 2008            |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~axis_ratio_uniform`                         | Sample axis ratio from uniform distribution              |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~axis_rotation_angle_uniform`                | Sample axis rotation angle from uniform distribution     |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~lens_redshift_strongly_lensed_numerical`    | Sample lens redshift for strong lensing                  |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~lens_redshift_sis_haris`                    | Sample SIS lens redshift (Haris et al. 2018)             |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~velocity_dispersion_gengamma`               | Sample velocity dispersion from gengamma distribution    |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~velocity_dispersion_bernardi`               | Sample velocity dispersion (Bernardi et al. 2010)        |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~velocity_dispersion_ewoud`                  | Sample redshift-dependent velocity dispersion            |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~external_shear_normal`                      | Sample external shear from normal distribution           |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~density_profile_slope_normal`               | Sample density profile slope from normal distribution    |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~optical_depth_sis_analytic`                    | Compute SIS optical depth (Haris et al. 2018)            |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~cross_section_sis`                          | Compute SIS cross-section                                |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~cross_section_sie_feixu`                    | Compute SIE cross-section (Fei Xu et al. 2021)           |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~cross_section_epl_shear_numerical`          | Compute EPL+shear cross-section numerically              |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~cross_section_epl_shear_interpolation`      | Compute EPL+shear cross-section via interpolation        |
+   +-----------------------------------------------------+----------------------------------------------------------+
+
+   Instance Attributes
+   ----------
+   OpticalDepth has the following instance attributes:
+
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | Attribute                                      | Type                         | Unit  | Description                                              |
+   +================================================+==============================+=======+==========================================================+
+   | :attr:`~npool`                                 | ``int``                      |       | Number of processors for multiprocessing                 |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~z_min`                                 | ``float``                    |       | Minimum redshift                                         |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~z_max`                                 | ``float``                    |       | Maximum redshift                                         |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~cosmo`                                 | ``astropy.cosmology``        |       | Cosmology object                                         |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~lens_type`                             | ``str``                      |       | Type of lens galaxy model                                |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~directory`                             | ``str``                      |       | Directory for interpolator storage                       |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~optical_depth`                         | ``FunctionConditioning``     |       | Optical depth calculator                                 |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~velocity_dispersion`                   | ``FunctionConditioning``     | km/s  | Velocity dispersion sampler                              |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~axis_ratio`                            | ``FunctionConditioning``     |       | Axis ratio sampler                                       |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~axis_rotation_angle`                   | ``FunctionConditioning``     | rad   | Axis rotation angle sampler                              |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~lens_redshift`                         | ``FunctionConditioning``     |       | Lens redshift sampler                                    |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~external_shear`                        | ``FunctionConditioning``     |       | External shear sampler                                   |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~density_profile_slope`                 | ``FunctionConditioning``     |       | Density profile slope sampler                            |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~cross_section`                         | ``callable``                 | rad²  | Cross-section calculator                                 |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~available_lens_samplers`               | ``dict``                     |       | Available lens parameter samplers                        |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
+   | :attr:`~available_lens_functions`              | ``dict``                     |       | Available lens functions                                 |
+   +------------------------------------------------+------------------------------+-------+----------------------------------------------------------+
 
 
 
    ..
        !! processed by numpydoc !!
+   .. py:property:: lens_type
+
+      
+      Type of lens galaxy model.
+
+
+
+      :Returns:
+
+          **lens_type** : ``str``
+              Lens type ('epl_shear_galaxy', 'sie_galaxy', or 'sis_galaxy').
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: npool
+
+      
+      Number of processors for multiprocessing.
+
+
+
+      :Returns:
+
+          **npool** : ``int``
+              Number of parallel processors.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: z_min
+
+      
+      Minimum redshift of the lens galaxy population.
+
+
+
+      :Returns:
+
+          **z_min** : ``float``
+              Minimum redshift.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: z_max
+
+      
+      Maximum redshift of the lens galaxy population.
+
+
+
+      :Returns:
+
+          **z_max** : ``float``
+              Maximum redshift.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: cosmo
+
+      
+      Cosmology object for distance calculations.
+
+
+
+      :Returns:
+
+          **cosmo** : ``astropy.cosmology``
+              Cosmology object.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: directory
+
+      
+      Directory for interpolator storage.
+
+
+
+      :Returns:
+
+          **directory** : ``str``
+              Path to interpolator JSON files.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
    .. py:property:: velocity_dispersion
 
       
-      Class object (of FunctionConditioning) for velocity dispersion of lens galaxy, with rvs/sampler as callback. Lens redshift `zl` is required only if velocity dispersion is redshift dependent. The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the velocity dispersion distribution
-      - `pdf`: returns the probability density function of the velocity dispersion distribution
-      - `function`: returns the velocity dispersion distribution function which represents the number density of lens galaxies as a function of velocity dispersion
+      Velocity dispersion sampler object.
 
+      Returns a ``FunctionConditioning`` object with methods:
 
-      :Parameters:
+      - ``rvs(size, zl)``: Sample velocity dispersion values
 
-          **size** : `int`
-              number of lens parameters to sample
+      - ``pdf(sigma, zl)``: Get probability density
 
-          **zl** : `float`
-              redshift of the lens galaxy. Should be of shape (size,)
+      - ``function(sigma, zl)``: Get number density function
+
 
       :Returns:
 
-          **sigma** : `numpy.ndarray`
-              velocity dispersion of the lens galaxy
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> import numpy as np
-      >>> ler = OpticalDepth()
-      >>> size = 10
-      >>> zl = np.ones(size)*1.5
-      >>> print(ler.velocity_dispersion(size, zl))
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: axis_ratio
-
-      
-      Class object (of FunctionConditioning) for axis ratio of lens galaxy, with rvs/sampler as callback. Velocity dispersion `sigma` is required only if axis ratio is velocity dispersion dependent. The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the axis ratio distribution
-      - `pdf`: returns the probability density function of the axis ratio distribution
-      - `function`: returns the un-normalized axis ratio distribution function.
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-          **sigma** : `numpy.ndarray`
-              velocity dispersion of the lens galaxy. Should be of shape (size,)
-
-      :Returns:
-
-          **q** : `numpy.ndarray`
-              axis ratio of the lens galaxy.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> import numpy as np
-      >>> ler = OpticalDepth()
-      >>> size = 10
-      >>> sigma = np.ones(size)*150.0
-      >>> print(ler.axis_ratio(size, sigma))
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: axis_rotation_angle
-
-      
-      Class object (of FunctionConditioning) for axis rotation angle of lens galaxy, with rvs/sampler as callback. The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the axis rotation angle distribution
-      - `pdf`: returns the probability density function of the axis rotation angle distribution
-      - `function`: returns the axis rotation angle distribution function.
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-      :Returns:
-
-          **theta** : `numpy.ndarray`
-              axis rotation angle of the lens galaxy.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> import numpy as np
-      >>> ler = OpticalDepth()
-      >>> size = 10
-      >>> print(ler.axis_rotation_angle(size))
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: density_profile_slope
-
-      
-      Class object (of FunctionConditioning) for density profile slope of lens galaxy, with rvs/sampler as callback. The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the density profile slope distribution
-      - `pdf`: returns the probability density function of the density profile slope distribution
-      - `function`: returns the density profile slope distribution function.
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-      :Returns:
-
-          **gamma** : `numpy.ndarray`
-              density profile slope of the lens galaxy.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> import numpy as np
-      >>> ler = OpticalDepth()
-      >>> size = 10
-      >>> print(ler.density_profile_slope(size))
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: external_shear
-
-      
-      Class object (of FunctionConditioning) for external shear of lens galaxy, with rvs/sampler as callback. The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the external shear distribution
-      - `pdf`: returns the probability density function of the external shear distribution
-      - `function`: returns the external shear distribution function.
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-      :Returns:
-
-          **gamma1** : `numpy.ndarray`
-              external shear of the lens galaxy.
-
-          **gamma2** : `numpy.ndarray`
-              external shear of the lens galaxy.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> import numpy as np
-      >>> ler = OpticalDepth()
-      >>> size = 10
-      >>> print(ler.external_shear(size))
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: cross_section
-
-      
-      Lensing cross section for individual lensing events. It can be of the following lens type and corresponding input parameters:
-      - `epl_shear_galaxy`: `zs`, `zl`, `sigma`, `q`, `phi`, `gamma`, `gamma1`, `gamma2`
-      - `sie_galaxy`: `zs`, `zl`, `sigma`, `q`
-      - `sis_galaxy`: `zs`, `zl`, `sigma`
-
-
-      :Parameters:
-
-          **zs** : `numpy.ndarray`
-              Redshift of the source
-
-          **zl** : `numpy.ndarray`
-              Redshift of the lens
-
-          **sigma** : `numpy.ndarray`
-              Angular size of the lens
-
-          **q** : `numpy.ndarray`
-              Axis ratio of the lens
-
-          **phi** : `numpy.ndarray`
-              Position angle of the lens
-
-          **gamma** : `numpy.ndarray`
-              density profile slope of the lens
-
-          **gamma1** : `numpy.ndarray`
-              Shear of the lens (x-direction)
-
-          **gamma2** : `numpy.ndarray`
-              Shear of the lens (y-direction)
-
-      :Returns:
-
-          **cross_section** : `numpy.ndarray`
-              Lensing cross section for individual lensing events
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: lens_redshift
-
-      
-      Class object (of FunctionConditioning) for lens redshift, with rvs/sampler as callback. The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the lens redshift distribution
-      - `pdf`: returns the probability density function of the lens redshift distribution
-      - `function`: returns the lens redshift distribution function which represents effective lensing cross-section for lenses at redshift zl,
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-          **zs** : `numpy.ndarray`
-              redshift of the lens galaxy. Should be of shape (size,)
-
-      :Returns:
-
-          **zl** : `numpy.ndarray`
-              redshift of the lens galaxy.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> import numpy as np
-      >>> ler = OpticalDepth()
-      >>> size = 10
-      >>> zs = np.ones(size)*1.5
-      >>> print(ler.lens_redshift(size, zs))
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: density_profile_slope_sl
-
-      
-      Class object (of FunctionConditioning) for density profile slope of lens galaxy (strong lensing condition applied), with rvs/sampler as callback. The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the density profile slope distribution
-      - `pdf`: returns the probability density function of the density profile slope distribution
-      - `function`: returns the density profile slope distribution function.
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-      :Returns:
-
-          **gamma** : `numpy.ndarray`
-              density profile slope of the lens galaxy.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> import numpy as np
-      >>> ler = OpticalDepth()
-      >>> size = 10
-      >>> print(ler.density_profile_slope_sl(size))
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: external_shear_sl
-
-      
-      Class object (of FunctionConditioning) for external shear of lens galaxy (strong lensing condition applied), with rvs/sampler as callback. The class object contains the following attribute methods:
-      - `rvs`: returns random samples from the external shear distribution
-      - `pdf`: returns the probability density function of the external shear distribution
-      - `function`: returns the external shear distribution function.
-
-
-      :Parameters:
-
-          **size** : `int`
-              number of lens parameters to sample
-
-      :Returns:
-
-          **gamma1** : `numpy.ndarray`
-              external shear of the lens galaxy.
-
-          **gamma2** : `numpy.ndarray`
-              external shear of the lens galaxy.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> import numpy as np
-      >>> ler = OpticalDepth()
-      >>> size = 10
-      >>> print(ler.external_shear_sl(size))
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: optical_depth
-
-      
-      Function to compute the strong lensing optical depth.
-
-
-      :Parameters:
-
-          **zs** : `numpy.ndarray` (1D array of floats)
-              source redshifts
-
-      :Returns:
-
-          **tau** : `numpy.ndarray` (1D array of floats)
-              strong lensing optical depth
+          **velocity_dispersion** : ``FunctionConditioning``
+              Sampler object for velocity dispersion (km/s).
 
 
 
@@ -4882,7 +5326,344 @@ Attributes
 
       >>> from ler.lens_galaxy_population import OpticalDepth
       >>> od = OpticalDepth()
-      >>> print(self.optical_depth(np.array([0.1,0.2,0.3])))
+      >>> sigma = od.velocity_dispersion(size=100, zl=np.ones(100)*0.5)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: axis_ratio
+
+      
+      Axis ratio sampler object.
+
+      Returns a ``FunctionConditioning`` object with methods:
+
+      - ``rvs(size, sigma)``: Sample axis ratio values
+
+      - ``pdf(q, sigma)``: Get probability density
+
+      - ``function(q, sigma)``: Get distribution function
+
+
+      :Returns:
+
+          **axis_ratio** : ``FunctionConditioning``
+              Sampler object for axis ratio.
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> q = od.axis_ratio(size=100, sigma=np.ones(100)*200.)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: axis_rotation_angle
+
+      
+      Axis rotation angle sampler object.
+
+      Returns a ``FunctionConditioning`` object with methods:
+
+      - ``rvs(size)``: Sample axis rotation angles
+
+      - ``pdf(phi)``: Get probability density
+
+
+      :Returns:
+
+          **axis_rotation_angle** : ``FunctionConditioning``
+              Sampler object for axis rotation angle (rad).
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> phi = od.axis_rotation_angle(size=100)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: density_profile_slope
+
+      
+      Density profile slope sampler object.
+
+      Returns a ``FunctionConditioning`` object with methods:
+
+      - ``rvs(size)``: Sample density profile slope values
+
+      - ``pdf(gamma)``: Get probability density
+
+
+      :Returns:
+
+          **density_profile_slope** : ``FunctionConditioning``
+              Sampler object for density profile slope.
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> gamma = od.density_profile_slope(size=100)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: external_shear
+
+      
+      External shear sampler object.
+
+      Returns a ``FunctionConditioning`` object with methods:
+
+      - ``rvs(size)``: Sample shear components (gamma1, gamma2)
+
+      - ``pdf(gamma1, gamma2)``: Get probability density
+
+
+      :Returns:
+
+          **external_shear** : ``FunctionConditioning``
+              Sampler object for external shear.
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> gamma1, gamma2 = od.external_shear(size=100)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: cross_section
+
+      
+      Lensing cross-section calculator.
+
+      Returns a callable that computes lensing cross-section for individual
+
+      lensing events. Input parameters depend on lens type:
+
+      - EPL+shear: zs, zl, sigma, q, phi, gamma, gamma1, gamma2
+
+      - SIE: zs, zl, sigma, q
+
+      - SIS: zs, zl, sigma
+
+
+      :Returns:
+
+          **cross_section** : ``callable``
+              Cross-section function (rad² units).
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> cs = od.cross_section(zs=zs, zl=zl, sigma=sigma, ...)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: lens_redshift
+
+      
+      Lens redshift sampler object.
+
+      Returns a ``FunctionConditioning`` object with methods:
+
+      - ``rvs(size, zs)``: Sample lens redshifts given source redshifts
+
+      - ``pdf(zl, zs)``: Get probability density
+
+      - ``function(zl, zs)``: Get effective lensing cross-section
+
+
+      :Returns:
+
+          **lens_redshift** : ``FunctionConditioning``
+              Sampler object for lens redshift.
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> zl = od.lens_redshift(size=100, zs=np.ones(100)*2.0)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: density_profile_slope_sl
+
+      
+      Density profile slope sampler object (strong lensing conditioned).
+
+      Returns a ``FunctionConditioning`` object with methods:
+
+      - ``rvs(size)``: Sample density profile slope values
+
+      - ``pdf(gamma)``: Get probability density
+
+
+      :Returns:
+
+          **density_profile_slope_sl** : ``FunctionConditioning``
+              Sampler object for density profile slope (strong lensing).
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> gamma = od.density_profile_slope_sl(size=100)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: external_shear_sl
+
+      
+      External shear sampler object (strong lensing conditioned).
+
+      Returns a ``FunctionConditioning`` object with methods:
+
+      - ``rvs(size)``: Sample shear components (gamma1, gamma2)
+
+      - ``pdf(gamma1, gamma2)``: Get probability density
+
+
+      :Returns:
+
+          **external_shear_sl** : ``FunctionConditioning``
+              Sampler object for external shear (strong lensing).
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> gamma1, gamma2 = od.external_shear_sl(size=100)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: optical_depth
+
+      
+      Strong lensing optical depth calculator.
+
+
+
+      :Returns:
+
+          **optical_depth** : ``FunctionConditioning``
+              Function object with `.function(zs)` method that returns \n
+              optical depth for given source redshifts.
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> tau = od.optical_depth.function(np.array([1.0, 2.0]))
 
 
 
@@ -4892,10 +5673,14 @@ Attributes
    .. py:property:: available_lens_samplers
 
       
-      Dictionary with list all the available priors and it's corresponding parameters. This is an immutable instance attribute.
+      Dictionary of available lens parameter samplers and their default parameters.
 
 
 
+      :Returns:
+
+          **available_lens_samplers** : ``dict``
+              Dictionary with sampler names and default parameters.
 
 
 
@@ -4915,10 +5700,14 @@ Attributes
    .. py:property:: available_lens_functions
 
       
-      Dictionary with list all the available lens functions. This is an immutable instance attribute.
+      Dictionary of available lens functions and their default parameters.
 
 
 
+      :Returns:
+
+          **available_lens_functions** : ``dict``
+              Dictionary with function names and default parameters.
 
 
 
@@ -4934,35 +5723,6 @@ Attributes
 
       ..
           !! processed by numpydoc !!
-
-   .. py:attribute:: lens_type
-      :value: "'epl_shear_galaxy'"
-
-      
-
-   .. py:attribute:: npool
-      :value: '4'
-
-      
-
-   .. py:attribute:: z_min
-      :value: '0.0'
-
-      
-
-   .. py:attribute:: z_max
-      :value: '10.0'
-
-      
-
-   .. py:attribute:: cosmo
-
-      
-
-   .. py:attribute:: directory
-      :value: "'./interpolator_json'"
-
-      
 
    .. py:attribute:: comoving_distance
 
@@ -4984,131 +5744,32 @@ Attributes
 
       
 
-   .. py:method:: default_lens_samplers_and_functions(lens_type)
-
-      
-      Function to categorize the lens priors/samplers
-
-
-      :Parameters:
-
-          **lens_type** : `str`
-              lens type
-              e.g. 'epl_shear_galaxy' for elliptical power-law galaxy
-
-      :Returns:
-
-          **lens_param_samplers_** : `dict`
-              dictionary of priors
-
-          **lens_param_samplers_params_** : `dict`
-              dictionary of priors parameters
-
-          **lens_sampler_names_** : `dict`
-              dictionary of sampler names
-
-          **lens_functions_** : `dict`
-              dictionary of lens functions
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: initialize_decision_dictionary(create_new_interpolator, lens_type)
-
-      
-      Function to initialize decision dictionary for creating interpolator
-
-
-      :Parameters:
-
-          **create_new_interpolator** : `dict` or `bool`
-              dictionary to create new interpolator for velocity dispersion and optical depth.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: lens_functions_and_sampler_categorization(lens_param_samplers, lens_param_samplers_params, lens_functions, lens_functions_params)
-
-      
-      Function to initialize velocity dispersion sampler with it's settings. The reason I am seperating this from lens_param_samplers_categorization is only a specific parameters needs special attention.
-
-
-      :Parameters:
-
-          **lens_param_samplers** : `str` or `function`
-              sampler name or function
-
-          **lens_param_samplers_params** : `dict`
-              sampler parameters
-
-          **lens_functions** : `str` or `function`
-              lens function name or function
-
-          **lens_functions_params** : `dict`
-              lens function parameters
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
    .. py:method:: axis_ratio_rayleigh(size, sigma, get_attribute=False, **kwargs)
 
       
-      Function to sample axis ratio from rayleigh distribution with given velocity dispersion.
+      Sample axis ratio from Rayleigh distribution conditioned on velocity dispersion.
 
 
       :Parameters:
 
-          **sigma** : `float: array`
-              velocity dispersion of the lens galaxy
+          **size** : ``int``
+              Number of samples to generate.
 
-          **q_min, q_max** : `float`
-              minimum and maximum axis ratio
+          **sigma** : ``numpy.ndarray``
+              Velocity dispersion of the lens galaxy (km/s).
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be used to sample axis ratio
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters (q_min, q_max).
 
       :Returns:
 
-          **q** : `float: array`
-              axis ratio of the lens galaxy
+          **q** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Axis ratio samples or sampler object.
 
 
 
@@ -5123,7 +5784,7 @@ Attributes
 
       >>> from ler.lens_galaxy_population import OpticalDepth
       >>> od = OpticalDepth(lens_param_samplers=dict(axis_ratio="axis_ratio_rayleigh"))
-      >>> print(self.axis_ratio(sigma=200.))
+      >>> q = od.axis_ratio(size=100, sigma=np.ones(100)*200.)
 
 
 
@@ -5133,24 +5794,28 @@ Attributes
    .. py:method:: axis_ratio_padilla_strauss(size=1000, get_attribute=False, **kwargs)
 
       
-      Function to sample axis ratio using Padilla and Strauss 2008 distribution for axis ratio
+      Sample axis ratio from Padilla & Strauss (2008) distribution.
 
 
       :Parameters:
 
-          **size** : `int`
-              sample size
+          **size** : ``int``
+              Number of samples to generate.
 
-          **q_min, q_max** : `float`
-              minimum and maximum axis ratio
+              default: 1000
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be used to sample axis ratio
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters (q_min, q_max).
 
       :Returns:
 
-          **q** : `float: array`
-              axis ratio of the lens galaxy
+          **q** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Axis ratio samples or sampler object.
 
 
 
@@ -5165,7 +5830,7 @@ Attributes
 
       >>> from ler.lens_galaxy_population import OpticalDepth
       >>> od = OpticalDepth(lens_param_samplers=dict(axis_ratio="axis_ratio_padilla_strauss"))
-      >>> print(self.axis_ratio(size=10))
+      >>> q = od.axis_ratio(size=100)
 
 
 
@@ -5175,24 +5840,31 @@ Attributes
    .. py:method:: lens_redshift_strongly_lensed_numerical(size=1000, zs=None, get_attribute=False, **kwargs)
 
       
-      Function to sample lens redshifts, conditioned on the lens being strongly lensed
+      Sample lens redshifts conditioned on strong lensing (numerical method).
 
+      This method computes the lens redshift distribution by numerically
+      integrating over the velocity dispersion distribution (galaxy density distribution wrt), cross-section and differential comoving volume.
 
       :Parameters:
 
-          **size** : `int`
-              sample size
+          **size** : ``int``
+              Number of samples to generate. \n
+              default: 1000
 
-          **zs** : `float`
-              source redshifts
+          **zs** : ``numpy.ndarray``
+              Source redshifts.
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be used to sample lens redshifts
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples. \n
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters.
 
       :Returns:
 
-          **zs** : `float: array`
-              lens redshifts
+          **zl** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Lens redshift samples or sampler object.
 
 
 
@@ -5206,8 +5878,8 @@ Attributes
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(lens_redshift="lens_redshift_strongly_lensed_numerical"))
-      >>> print(self.lens_redshift(size=10, zs=1.0))
+      >>> od = OpticalDepth()
+      >>> zl = od.lens_redshift(size=100, zs=np.ones(100)*2.0)
 
 
 
@@ -5217,21 +5889,26 @@ Attributes
    .. py:method:: axis_rotation_angle_uniform(size, get_attribute=False, **kwargs)
 
       
-      Function to sample the axis rotation angle of the elliptical lens galaxy from a uniform distribution.
+      Sample axis rotation angle from uniform distribution.
 
 
       :Parameters:
 
-          **size** : `int`
-              number of lens parameters to sample
+          **size** : ``int``
+              Number of samples to generate.
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be called with size as input
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters (phi_min, phi_max).
 
       :Returns:
 
-          **phi** : `numpy.ndarray`
-              axis rotation angle of the elliptical lens galaxy
+          **phi** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Axis rotation angle samples (rad) or sampler object.
 
 
 
@@ -5245,8 +5922,8 @@ Attributes
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(axis_rotation_angle="axis_rotation_angle_uniform"))
-      >>> print(self.axis_rotation_angle_uniform(size=10))
+      >>> od = OpticalDepth()
+      >>> phi = od.axis_rotation_angle(size=100)
 
 
 
@@ -5256,21 +5933,26 @@ Attributes
    .. py:method:: axis_ratio_uniform(size, get_attribute=False, **kwargs)
 
       
-      Function to sample the axis ratio of the elliptical lens galaxy from a uniform distribution.
+      Sample axis ratio from uniform distribution.
 
 
       :Parameters:
 
-          **size** : `int`
-              number of lens parameters to sample
+          **size** : ``int``
+              Number of samples to generate.
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be called with size as input
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters (q_min, q_max).
 
       :Returns:
 
-          **q** : `numpy.ndarray`
-              axis ratio of the elliptical lens galaxy
+          **q** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Axis ratio samples or sampler object.
 
 
 
@@ -5285,7 +5967,7 @@ Attributes
 
       >>> from ler.lens_galaxy_population import OpticalDepth
       >>> od = OpticalDepth(lens_param_samplers=dict(axis_ratio="axis_ratio_uniform"))
-      >>> print(self.axis_ratio_uniform(size=10))
+      >>> q = od.axis_ratio(size=100)
 
 
 
@@ -5295,24 +5977,26 @@ Attributes
    .. py:method:: external_shear_normal(size, get_attribute=False, **kwargs)
 
       
-      Function to sample the external shear parameters from a normal distribution.
+      Sample external shear parameters from 2D normal distribution.
 
 
       :Parameters:
 
-          **size** : `int`
-              number of lens parameters to sample
+          **size** : ``int``
+              Number of samples to generate.
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be called with size as input
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters (mean, std).
 
       :Returns:
 
-          **gamma_1** : `numpy.ndarray`
-              shear component in the x-direction
-
-          **gamma_2** : `numpy.ndarray`
-              shear component in the y-direction
+          **shear** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Array of shape (2, size) with gamma1, gamma2 or sampler object.
 
 
 
@@ -5326,8 +6010,8 @@ Attributes
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(external_shear="external_shear_normal"))
-      >>> print(self.external_shear_normal(size=10))
+      >>> od = OpticalDepth()
+      >>> gamma1, gamma2 = od.external_shear(size=100)
 
 
 
@@ -5337,25 +6021,26 @@ Attributes
    .. py:method:: density_profile_slope_normal(size, get_attribute=False, **kwargs)
 
       
-      Function to sample the lens galaxy density profile slope with normal distribution.
+      Sample density profile slope from normal distribution.
 
 
       :Parameters:
 
-          **size** : `int`
-              number of lens parameters to sample
+          **size** : ``int``
+              Number of samples to generate.
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be used to sample velocity dispersion
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
 
-          **\*\*kwargs** : `dict`
-              additional parameters to be passed to the function,
-              e.g. `mean` and `std` for the normal distribution
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters (mean, std).
 
       :Returns:
 
-          **slope** : `float`
-              density profile slope of the lens galaxy
+          **gamma** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Density profile slope samples or sampler object.
 
 
 
@@ -5369,8 +6054,8 @@ Attributes
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(density_profile_slope="density_profile_slope_normal"))
-      >>> print(self.density_profile_slope_normal(size=10))
+      >>> od = OpticalDepth()
+      >>> gamma = od.density_profile_slope(size=100)
 
 
 
@@ -5380,21 +6065,29 @@ Attributes
    .. py:method:: lens_redshift_sis_haris(size, zs, get_attribute=False, **kwargs)
 
       
-      Function to sample lens redshifts, conditioned on the lens being strongly lensed
+      Sample SIS lens redshifts using Haris et al. (2018) distribution.
 
 
       :Parameters:
 
-          **zs** : `float`
-              source redshifts
+          **size** : ``int``
+              Number of samples to generate.
 
-          **get_attribute** : `bool`
-              If True, returns a function that can be called with zs as input
+          **zs** : ``numpy.ndarray``
+              Source redshifts.
+
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters.
 
       :Returns:
 
-          **zl** : `float`
-              lens redshifts
+          **zl** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Lens redshift samples or sampler object.
 
 
 
@@ -5407,9 +6100,9 @@ Attributes
 
       .. rubric:: Examples
 
-      >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-      >>> lens = LensGalaxyParameterDistribution()
-      >>> lens.lens_redshift_sis_haris(zs=1.0)
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth(lens_type='sis_galaxy')
+      >>> zl = od.lens_redshift(size=100, zs=np.ones(100)*2.0)
 
 
 
@@ -5419,29 +6112,28 @@ Attributes
    .. py:method:: velocity_dispersion_gengamma(size, get_attribute=False, **kwargs)
 
       
-      Function to sample velocity dispersion from gengamma distribution
+      Sample velocity dispersion from generalized gamma distribution.
 
 
       :Parameters:
 
-          **size** : `int`
-              number of lens parameters to sample
+          **size** : ``int``
+              Number of samples to generate.
 
-          **a,c** : `float`
-              parameters of gengamma distribution
-              refer to https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.gengamma.html
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be used to sample velocity dispersion
+              default: False
 
-          **param** : `dict`
-              Allows to pass in above parameters as dict.
-              e.g. param = dict(a=2.32 / 2.67, c=2.67)
+          **\*\*kwargs** : ``dict``
+              Additional parameters (a, c for gengamma distribution).
+
+              See scipy.stats.gengamma for details.
 
       :Returns:
 
-          **sigma** : `numpy.ndarray` (1D array of floats)
-              velocity dispersion of the lens galaxy
+          **sigma** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Velocity dispersion samples (km/s) or sampler object.
 
 
 
@@ -5455,8 +6147,9 @@ Attributes
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(velocity_dispersion="velocity_dispersion_gengamma"), lens_param_samplers_params=dict(velocity_dispersion=dict(a=2.32 / 2.67, c=2.67)))
-      >>> print(self.velocity_dispersion(size=10))
+      >>> od = OpticalDepth(lens_param_samplers=dict(
+      ...     velocity_dispersion="velocity_dispersion_gengamma"))
+      >>> sigma = od.velocity_dispersion(size=100)
 
 
 
@@ -5466,21 +6159,27 @@ Attributes
    .. py:method:: velocity_dispersion_bernardi(size, get_attribute=False, **kwargs)
 
       
-      Function to sample velocity dispersion from Bernardi et al. (2010). This uses inverse transform sampling.
+      Sample velocity dispersion from Bernardi et al. (2010) distribution.
 
+      Uses inverse transform sampling on the velocity dispersion function.
 
       :Parameters:
 
-          **size** : `int`
-              number of lens parameters to sample
+          **size** : ``int``
+              Number of samples to generate.
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be used to sample velocity dispersion
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters.
 
       :Returns:
 
-          **sigma** : `numpy.ndarray` (1D array of floats)
-              velocity dispersion of the lens galaxy
+          **sigma** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Velocity dispersion samples (km/s) or sampler object.
 
 
 
@@ -5494,8 +6193,9 @@ Attributes
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(velocity_dispersion="velocity_dispersion_bernardi"))
-      >>> print(self.velocity_dispersion(size=10))
+      >>> od = OpticalDepth(lens_param_samplers=dict(
+      ...     velocity_dispersion="velocity_dispersion_bernardi"))
+      >>> sigma = od.velocity_dispersion(size=100)
 
 
 
@@ -5505,24 +6205,31 @@ Attributes
    .. py:method:: velocity_dispersion_ewoud(size, zl, get_attribute=False, **kwargs)
 
       
-      Function to sample velocity dispersion (redshift dependent) from Wempe et al. (2022). This uses inverse transform sampling.
+      Sample redshift-dependent velocity dispersion from Wempe et al. (2022).
 
+      Uses inverse transform sampling with redshift-dependent velocity
+      dispersion function.
 
       :Parameters:
 
-          **size** : `int`
-              number of lens parameters to sample
+          **size** : ``int``
+              Number of samples to generate.
 
-          **zl** : `float`
-              redshift of the lens galaxy
+          **zl** : ``numpy.ndarray``
+              Lens redshifts.
 
-          **get_attribute** : `bool`
-              if True, returns a function that can be used to sample velocity dispersion
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters.
 
       :Returns:
 
-          **sigma** : `numpy.ndarray` (1D array of floats)
-              velocity dispersion of the lens galaxy
+          **sigma** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Velocity dispersion samples (km/s) or sampler object.
 
 
 
@@ -5536,8 +6243,8 @@ Attributes
       .. rubric:: Examples
 
       >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(velocity_dispersion="velocity_dispersion_ewoud"))
-      >>> print(self.velocity_dispersion(size=10, zl=0.5))
+      >>> od = OpticalDepth()
+      >>> sigma = od.velocity_dispersion(size=100, zl=np.ones(100)*0.5)
 
 
 
@@ -5546,6 +6253,41 @@ Attributes
 
    .. py:method:: optical_depth_numerical(zs, get_attribute=False, **kwargs)
 
+      
+      Helper to compute optical depth numerically by integrating lens redshift.
+
+
+      :Parameters:
+
+          **zs** : ``numpy.ndarray``
+              Source redshifts.
+
+          **get_attribute** : ``bool``
+              If True, returns the function object instead of values. \n
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters.
+
+      :Returns:
+
+          **tau** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Optical depth values or function object.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
 
    .. py:method:: compute_einstein_radii(sigma, zl, zs)
 
@@ -5592,22 +6334,29 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: optical_depth_sis_haris(zs, get_attribute=False, **kwargs)
+   .. py:method:: optical_depth_sis_analytic(zs, get_attribute=False, **kwargs)
 
       
       Function to compute the strong lensing optical depth (SIS).
-
       LambdaCDM(H0=70, Om0=0.3, Ode0=0.7) was used to derive the following equation. This is the analytic version of optical depth from z=0 to z=zs.
+
 
       :Parameters:
 
-          **zs** : `float`
-              source redshifts
+          **zs** : ``numpy.ndarray``
+              Source redshifts.
+
+          **get_attribute** : ``bool``
+              If True, returns the function object instead of values. \n
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters.
 
       :Returns:
 
-          **tau** : `float`
-              strong lensing optical depth
+          **tau** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Optical depth values or function object.
 
 
 
@@ -5618,11 +6367,6 @@ Attributes
 
 
 
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth()
-      >>> print(self.optical_depth_sis_haris(zs=1.0))
 
 
 
@@ -6054,12 +6798,145 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: make_cross_section_reinit(e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid, cs_spline_coeff_grid, Da_instance, csunit_to_cs_slope=0.31830988618379075, csunit_to_cs_intercept=-3.2311742677852644e-27)
+.. py:function:: make_cross_section_reinit(e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid, cs_grid, Da_instance, csunit_to_cs_slope=0.31830988618379075, csunit_to_cs_intercept=-3.2311742677852644e-27)
+
+   
+   Factory function to create a JIT-compiled cross section calculator.
+
+   This function precomputes B-spline coefficients and creates a closure
+   that captures the grid parameters, returning a fast Numba-compiled
+   function for computing cross sections.
+
+   :Parameters:
+
+       **e1_grid** : ``numpy.ndarray``
+           Grid values for ellipticity component e1, shape (n_e1,).
+
+       **e2_grid** : ``numpy.ndarray``
+           Grid values for ellipticity component e2, shape (n_e2,).
+
+       **gamma_grid** : ``numpy.ndarray``
+           Grid values for density slope gamma, shape (n_g,).
+
+       **gamma1_grid** : ``numpy.ndarray``
+           Grid values for shear component gamma1, shape (n_g1,).
+
+       **gamma2_grid** : ``numpy.ndarray``
+           Grid values for shear component gamma2, shape (n_g2,).
+
+       **cs_grid** : ``numpy.ndarray``
+           Raw cross section grid data (before spline filtering),
+
+           shape (n_e1, n_e2, n_g, n_g1, n_g2).
+
+       **Da_instance** : ``callable``
+           Angular diameter distance function.
+
+           Signature: ``Da_instance(z) -> distance``
+
+       **csunit_to_cs_slope** : ``float``
+           Slope for affine calibration from unit cross section.
+
+           default: 0.31830988618379075
+
+       **csunit_to_cs_intercept** : ``float``
+           Intercept for affine calibration from unit cross section.
+
+           default: -3.2311742677852644e-27
+
+   :Returns:
+
+       **cross_section_reinit** : ``callable``
+           JIT-compiled function with signature:
+
+           ``cross_section_reinit(zs, zl, sigma, q, phi, gamma, gamma1, gamma2)``
+
+           Returns cross sections as ``numpy.ndarray`` of shape (N,).
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   >>> from ler.lens_galaxy_population.cross_section_interpolator import make_cross_section_reinit
+   >>> cs_func = make_cross_section_reinit(
+   ...     e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid,
+   ...     cs_grid, Da_instance
+   ... )
+   >>> cross_sections = cs_func(zs, zl, sigma, q, phi, gamma, gamma1, gamma2)
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:data:: CS_UNIT_SLOPE
+   :value: '0.31830988618379075'
 
    
 
+.. py:data:: CS_UNIT_INTERCEPT
+   :value: '-3.2311742677852644e-27'
 
+   
 
+.. py:function:: lens_redshift_strongly_lensed_njit(zs_array, zl_scaled, sigma_min, sigma_max, q_rvs, phi_rvs, gamma_rvs, shear_rvs, number_density, cross_section, dVcdz_function, integration_size)
+
+   
+   JIT-compiled parallel computation of lens redshift optical depth.
+
+   Computes the differential optical depth for strong lensing as a function
+   of source and lens redshifts using Monte Carlo integration with parallel
+   execution over source redshifts.
+
+   :Parameters:
+
+       **zs_array** : ``numpy.ndarray``
+           1D array of source redshifts.
+
+       **zl_scaled** : ``numpy.ndarray``
+           2D array of scaled lens redshifts (zl/zs).
+
+       **sigma_min** : ``float``
+           Minimum velocity dispersion (km/s).
+
+       **sigma_max** : ``float``
+           Maximum velocity dispersion (km/s).
+
+       **q_rvs** : ``callable``
+           Function to sample axis ratios given size and sigma.
+
+       **phi_rvs** : ``callable``
+           Function to sample axis rotation angles.
+
+       **gamma_rvs** : ``callable``
+           Function to sample density profile slopes.
+
+       **shear_rvs** : ``callable``
+           Function to sample external shear components (gamma1, gamma2).
+
+       **number_density** : ``callable``
+           Function to compute velocity dispersion number density.
+
+       **cross_section** : ``callable``
+           Function to compute lensing cross-section.
+
+       **dVcdz_function** : ``callable``
+           Function to compute differential comoving volume.
+
+       **integration_size** : ``int``
+           Number of Monte Carlo samples per (zs, zl) pair.
+
+   :Returns:
+
+       **result_array** : ``numpy.ndarray``
+           2D array of optical depth values with shape (len(zs_array), len(zl_scaled[0])).
 
 
 
@@ -6076,20 +6953,188 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: lens_redshift_strongly_lensed_njit(zs_array, zl_scaled, sigma_min, sigma_max, q_rvs, phi_rvs, gamma_rvs, shear_rvs, number_density, cross_section, dVcdz_function, integration_size)
-
-
 .. py:function:: lens_redshift_strongly_lensed_mp(params)
 
+   
+   Multiprocessing worker for lens redshift optical depth calculation.
+
+   Computes the differential optical depth for a single source redshift
+   across multiple lens redshifts. Designed to be called via multiprocessing
+   Pool.map() for parallel computation.
+
+   :Parameters:
+
+       **params** : ``tuple``
+           Packed parameters tuple containing:
+
+           - params[0]: Source redshift (float)
+
+           - params[1]: Scaled lens redshift array (1D array)
+
+           - params[2]: Sigma args (min, max, spline_z, spline_z2d, spline_coeff)
+
+           - params[3]: Axis ratio args (type, min/spline, max/coeff, coeff_2d)
+
+           - params[4]: Angular diameter distance args (x_values, coeffs)
+
+           - params[5]: dVcdz args (x_values, coeffs)
+
+           - params[6]: Worker index (int)
+
+           - params[7]: Cross-section args (type, json_path)
+
+           - params[8]: Axis rotation args (type, min, max or spline)
+
+           - params[9]: Shear args (type, loc, scale)
+
+           - params[10]: Slope args (type, loc/spline, scale/coeff)
+
+           - params[11]: Integration size (int)
+
+   :Returns:
+
+       **idx** : ``int``
+           Worker index for result ordering.
+
+       **result_array** : ``numpy.ndarray``
+           1D array of optical depth values for each lens redshift.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:function:: cross_section_unit_mp(params)
 
+   
+   Multiprocessing worker for unit Einstein radius cross-section.
+
+   Computes the lensing cross-section for a lens with unit Einstein radius
+   (theta_E = 1). Used for building cross-section interpolation grids.
+
+   :Parameters:
+
+       **params** : ``tuple``
+           Packed parameters (e1, e2, gamma, gamma1, gamma2, idx).
+
+   :Returns:
+
+       **idx** : ``int``
+           Worker index for result ordering.
+
+       **area** : ``float``
+           Cross-section area in square arcseconds.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:function:: cross_section_mp(params)
 
+   
+   Multiprocessing worker for cross-section calculation.
+
+   Computes the lensing cross-section for given lens parameters.
+   Designed to be called via multiprocessing Pool.map().
+
+   :Parameters:
+
+       **params** : ``tuple``
+           Packed parameters (theta_E, e1, e2, gamma, gamma1, gamma2, idx).
+
+   :Returns:
+
+       **idx** : ``int``
+           Worker index for result ordering.
+
+       **area** : ``float``
+           Cross-section area in square arcseconds.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:function:: cross_section(theta_E, e1, e2, gamma, gamma1, gamma2)
 
+   
+   Compute the strong lensing cross-section for an EPL+Shear lens.
+
+   Uses lenstronomy to compute the caustic structure and returns the
+   area enclosed by the double-image (outer) caustic.
+
+   :Parameters:
+
+       **theta_E** : ``float``
+           Einstein radius in arcseconds.
+
+       **e1** : ``float``
+           First ellipticity component.
+
+       **e2** : ``float``
+           Second ellipticity component.
+
+       **gamma** : ``float``
+           Power-law density profile slope.
+
+       **gamma1** : ``float``
+           First external shear component.
+
+       **gamma2** : ``float``
+           Second external shear component.
+
+   :Returns:
+
+       **area** : ``float``
+           Cross-section area in square arcseconds.
+
+           Returns 0.0 if caustic computation fails.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:function:: inverse_transform_sampler(size, cdf, x)
 
@@ -6502,16 +7547,129 @@ Attributes
 
    
 
-.. py:function:: cross_section(zs, zl, sigma, q, phi, gamma, gamma1, gamma2, e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid, cs_spline_coeff_grid, Da_instance, csunit_to_cs_slope, csunit_to_cs_intercept)
+.. py:function:: make_cross_section_reinit(e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid, cs_grid, Da_instance, csunit_to_cs_slope=0.31830988618379075, csunit_to_cs_intercept=-3.2311742677852644e-27)
 
    
-   theta_E, gamma, gamma1, gamma2, q, phi: 1D arrays (same length)
-   grids: 1D
-   cs_spline_coeff: spline-filtered coefficients (same shape as cs_spline_coeff)
-   returns: 1D array
+   Factory function to create a JIT-compiled cross section calculator.
+
+   This function precomputes B-spline coefficients and creates a closure
+   that captures the grid parameters, returning a fast Numba-compiled
+   function for computing cross sections.
+
+   :Parameters:
+
+       **e1_grid** : ``numpy.ndarray``
+           Grid values for ellipticity component e1, shape (n_e1,).
+
+       **e2_grid** : ``numpy.ndarray``
+           Grid values for ellipticity component e2, shape (n_e2,).
+
+       **gamma_grid** : ``numpy.ndarray``
+           Grid values for density slope gamma, shape (n_g,).
+
+       **gamma1_grid** : ``numpy.ndarray``
+           Grid values for shear component gamma1, shape (n_g1,).
+
+       **gamma2_grid** : ``numpy.ndarray``
+           Grid values for shear component gamma2, shape (n_g2,).
+
+       **cs_grid** : ``numpy.ndarray``
+           Raw cross section grid data (before spline filtering),
+
+           shape (n_e1, n_e2, n_g, n_g1, n_g2).
+
+       **Da_instance** : ``callable``
+           Angular diameter distance function.
+
+           Signature: ``Da_instance(z) -> distance``
+
+       **csunit_to_cs_slope** : ``float``
+           Slope for affine calibration from unit cross section.
+
+           default: 0.31830988618379075
+
+       **csunit_to_cs_intercept** : ``float``
+           Intercept for affine calibration from unit cross section.
+
+           default: -3.2311742677852644e-27
+
+   :Returns:
+
+       **cross_section_reinit** : ``callable``
+           JIT-compiled function with signature:
+
+           ``cross_section_reinit(zs, zl, sigma, q, phi, gamma, gamma1, gamma2)``
+
+           Returns cross sections as ``numpy.ndarray`` of shape (N,).
 
 
 
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   >>> from ler.lens_galaxy_population.cross_section_interpolator import make_cross_section_reinit
+   >>> cs_func = make_cross_section_reinit(
+   ...     e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid,
+   ...     cs_grid, Da_instance
+   ... )
+   >>> cross_sections = cs_func(zs, zl, sigma, q, phi, gamma, gamma1, gamma2)
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: create_rejection_sampler(sigma_max, sigma_rvs, q_rvs, phi_rvs, gamma_rvs, shear_rvs, cross_section, safety_factor=1.2, use_njit_sampler=True)
+
+   
+   Create a rejection sampler for lens parameters weighted by cross section.
+
+   Returns a callable that samples lens parameters using rejection sampling,
+   optionally JIT-compiled for improved performance.
+
+   :Parameters:
+
+       **sigma_max** : ``float``
+           Maximum velocity dispersion (km/s) for computing upper bound.
+
+       **sigma_rvs** : ``callable``
+           Function to sample velocity dispersion: sigma_rvs(n, zl) -> array.
+
+       **q_rvs** : ``callable``
+           Function to sample axis ratio: q_rvs(n, sigma) -> array.
+
+       **phi_rvs** : ``callable``
+           Function to sample orientation angle: phi_rvs(n) -> array.
+
+       **gamma_rvs** : ``callable``
+           Function to sample power-law index: gamma_rvs(n) -> array.
+
+       **shear_rvs** : ``callable``
+           Function to sample external shear: shear_rvs(n) -> (gamma1, gamma2).
+
+       **cross_section** : ``callable``
+           Function to compute cross section.
+
+       **safety_factor** : ``float``
+           Multiplicative safety factor for the upper bound.
+
+           default: 1.2
+
+       **use_njit_sampler** : ``bool``
+           If True, uses Numba JIT compilation for faster execution.
+
+           default: True
+
+   :Returns:
+
+       **rejection_sampler_wrapper** : ``callable``
+           Function with signature (zs, zl) -> (sigma, q, phi, gamma, gamma1, gamma2).
 
 
 
@@ -6527,70 +7685,66 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-
-.. py:function:: make_cross_section_reinit(e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid, cs_spline_coeff_grid, Da_instance, csunit_to_cs_slope=0.31830988618379075, csunit_to_cs_intercept=-3.2311742677852644e-27)
-
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:data:: C_LIGHT
-   :value: '299792.458'
-
-   
-
-.. py:function:: rejection_sampler(zs, zl, sigma_max, sigma_rvs, q_rvs, phi_rvs, gamma_rvs, shear_rvs, cross_section, saftey_factor=1.2)
-
-
-.. py:function:: create_rejection_sampler(sigma_max, sigma_rvs, q_rvs, phi_rvs, gamma_rvs, shear_rvs, cross_section, saftey_factor=1.2, use_njit_sampler=True)
-
-
-.. py:function:: sigma_proposal_uniform(n, sigma_min, sigma_max)
-
-
-.. py:function:: weighted_choice_1d(weights)
-
-   
-   Draw an index with probability proportional to 'weights' (assumed >=0).
-   Numba-safe replacement for np.random.choice(n, p=weights).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: importance_sampler(zs, zl, sigma_min, sigma_max, q_rvs, phi_rvs, gamma_rvs, shear_rvs, sigma_pdf, cross_section, n_prop)
-
 
 .. py:function:: create_importance_sampler(sigma_min, sigma_max, q_rvs, phi_rvs, gamma_rvs, shear_rvs, sigma_pdf, cross_section, n_prop, use_njit_sampler=True)
 
+   
+   Create an importance sampler for lens parameters weighted by cross section.
+
+   Returns a callable that samples lens parameters using importance sampling
+   with uniform proposal, optionally JIT-compiled for improved performance.
+
+   :Parameters:
+
+       **sigma_min** : ``float``
+           Minimum velocity dispersion (km/s) for uniform proposal.
+
+       **sigma_max** : ``float``
+           Maximum velocity dispersion (km/s) for uniform proposal.
+
+       **q_rvs** : ``callable``
+           Function to sample axis ratio: q_rvs(n, sigma) -> array.
+
+       **phi_rvs** : ``callable``
+           Function to sample orientation angle: phi_rvs(n) -> array.
+
+       **gamma_rvs** : ``callable``
+           Function to sample power-law index: gamma_rvs(n) -> array.
+
+       **shear_rvs** : ``callable``
+           Function to sample external shear: shear_rvs(n) -> (gamma1, gamma2).
+
+       **sigma_pdf** : ``callable``
+           PDF of velocity dispersion: sigma_pdf(sigma, zl) -> array.
+
+       **cross_section** : ``callable``
+           Function to compute cross section.
+
+       **n_prop** : ``int``
+           Number of proposal samples per lens.
+
+       **use_njit_sampler** : ``bool``
+           If True, uses Numba JIT compilation for faster execution.
+
+           default: True
+
+   :Returns:
+
+       **importance_sampler_wrapper** : ``callable``
+           Function with signature (zs, zl) -> (sigma, q, phi, gamma, gamma1, gamma2).
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 

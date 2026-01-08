@@ -112,6 +112,19 @@
              
   <section id="module-ler.gw_source_population.sfr_with_time_delay">
 <span id="ler-gw-source-population-sfr-with-time-delay"></span><h1><a class="reference internal" href="#module-ler.gw_source_population.sfr_with_time_delay" title="ler.gw_source_population.sfr_with_time_delay"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.sfr_with_time_delay</span></code></a><a class="headerlink" href="#module-ler.gw_source_population.sfr_with_time_delay" title="Link to this heading"></a></h1>
+<p>Module for computing star formation rates with time delays.</p>
+<p>This module provides functions for computing the star formation rate at a given
+redshift, accounting for time delays between formation and observation. The time
+delay distribution follows a 1/t power-law form, and the formation redshift is
+computed using the cosmological age-redshift relation.</p>
+<p>Key Features:</p>
+<ul class="simple">
+<li><p>Time-delayed star formation rate computation</p></li>
+<li><p>Integration with Madau &amp; Fragos (2017) SFR model</p></li>
+<li><p>Monte Carlo integration for time delay averaging</p></li>
+<li><p>Cosmological calculations using Astropy</p></li>
+</ul>
+<p>Copyright (C) 2026 Hemanta Ph. Distributed under MIT License.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <section id="functions">
@@ -119,72 +132,52 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.sfr_with_time_delay.sfr_with_time_delay" title="ler.gw_source_population.sfr_with_time_delay.sfr_with_time_delay"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sfr_with_time_delay</span></code></a>(input_args)</p></td>
-<td><p>Compute the star formation rate at redshift z, given parameters a, b, c, and d,</p></td>
+<td><p>Compute star formation rate at observed redshift with time delay.</p></td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h3>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.sfr_with_time_delay.cosmo" title="ler.gw_source_population.sfr_with_time_delay.cosmo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cosmo</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py data">
-<dt class="sig sig-object py" id="ler.gw_source_population.sfr_with_time_delay.cosmo">
-<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.sfr_with_time_delay.</span></span><span class="sig-name descname"><span class="pre">cosmo</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/sfr_with_time_delay.html#cosmo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.sfr_with_time_delay.cosmo" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.gw_source_population.sfr_with_time_delay.sfr_with_time_delay">
 <span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.sfr_with_time_delay.</span></span><span class="sig-name descname"><span class="pre">sfr_with_time_delay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/sfr_with_time_delay.html#sfr_with_time_delay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.sfr_with_time_delay.sfr_with_time_delay" title="Link to this definition"></a></dt>
-<dd><p>Compute the star formation rate at redshift z, given parameters a, b, c, and d,
-and cosmological parameters H0, Omega_M, and Omega_Lambda.
-The star formation rate is time-delayed relative to the observed redshift,
-with a time delay uniformly distributed between td_min and td_max.
-The time delay is computed using the cosmology provided by astropy.</p>
-<dl class="field-list simple">
+<dd><p>Compute star formation rate at observed redshift with time delay.</p>
+<p>The star formation rate is time-delayed relative to the observed redshift,
+with a time delay uniformly distributed between td_min and td_max. The
+formation redshift is computed using the cosmological age-redshift relation.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>input_args</strong><span class="classifier">list</span></dt><dd><dl class="simple">
-<dt>z<span class="classifier">float</span></dt><dd><p>observed redshift</p>
-</dd>
-<dt>idx<span class="classifier">int</span></dt><dd><p>index of the galaxy</p>
-</dd>
-<dt>td_min<span class="classifier">float</span></dt><dd><p>minimum time delay in Gyr</p>
-</dd>
-<dt>td_max<span class="classifier">float</span></dt><dd><p>maximum time delay in Gyr</p>
-</dd>
-<dt>H0<span class="classifier">float</span></dt><dd><p>Hubble constant in km/s/Mpc</p>
-</dd>
-<dt>Omega_M<span class="classifier">float</span></dt><dd><p>matter density parameter</p>
-</dd>
-<dt>Omega_Lambda<span class="classifier">float</span></dt><dd><p>dark energy density parameter</p>
-</dd>
-<dt>a<span class="classifier">float</span></dt><dd><p>parameter of the Madau-Fragos star formation rate</p>
-</dd>
-<dt>b<span class="classifier">float</span></dt><dd><p>parameter of the Madau-Fragos star formation rate</p>
-</dd>
-<dt>c<span class="classifier">float</span></dt><dd><p>parameter of the Madau-Fragos star formation rate</p>
-</dd>
-<dt>d<span class="classifier">float</span></dt><dd><p>parameter of the Madau-Fragos star formation rate</p>
-</dd>
-</dl>
+<dd class="field-odd"><dl>
+<dt><strong>input_args</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">list</span></code></span></dt><dd><p>List containing the following elements in order:</p>
+<ul class="simple">
+<li><p>z (<code class="docutils literal notranslate"><span class="pre">float</span></code>): Observed redshift</p></li>
+<li><p>idx (<code class="docutils literal notranslate"><span class="pre">int</span></code>): Index identifier for the computation</p></li>
+<li><p>td_min (<code class="docutils literal notranslate"><span class="pre">float</span></code>): Minimum time delay (Gyr)</p></li>
+<li><p>td_max (<code class="docutils literal notranslate"><span class="pre">float</span></code>): Maximum time delay (Gyr)</p></li>
+<li><p>H0 (<code class="docutils literal notranslate"><span class="pre">float</span></code>): Hubble constant (km/s/Mpc)</p></li>
+<li><p>Omega_M (<code class="docutils literal notranslate"><span class="pre">float</span></code>): Matter density parameter</p></li>
+<li><p>Omega_Lambda (<code class="docutils literal notranslate"><span class="pre">float</span></code>): Dark energy density parameter</p></li>
+<li><p>a (<code class="docutils literal notranslate"><span class="pre">float</span></code>): Madau-Fragos SFR normalization parameter</p></li>
+<li><p>b (<code class="docutils literal notranslate"><span class="pre">float</span></code>): Madau-Fragos low-z power-law slope</p></li>
+<li><p>c (<code class="docutils literal notranslate"><span class="pre">float</span></code>): Madau-Fragos turnover parameter</p></li>
+<li><p>d (<code class="docutils literal notranslate"><span class="pre">float</span></code>): Madau-Fragos high-z power-law slope</p></li>
+</ul>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>idx</strong><span class="classifier">int</span></dt><dd><p>index of the galaxy</p>
+<dd class="field-even"><dl>
+<dt><strong>idx</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Index identifier (same as input).</p>
 </dd>
-<dt><strong>result</strong><span class="classifier">float</span></dt><dd><p>star formation rate at observed redshift z</p>
-</dd>
-</dl>
+<dt><strong>result</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Time-averaged star formation rate at observed redshift z.</p>
 </dd>
 </dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population.sfr_with_time_delay</span> <span class="kn">import</span> <span class="n">sfr_with_time_delay</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">13.0</span><span class="p">,</span> <span class="mf">70.0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">2.6</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">,</span> <span class="mf">6.2</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">idx</span><span class="p">,</span> <span class="n">sfr</span> <span class="o">=</span> <span class="n">sfr_with_time_delay</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>

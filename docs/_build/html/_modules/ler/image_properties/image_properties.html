@@ -96,8 +96,22 @@
   <h1>Source code for ler.image_properties.image_properties</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This module contains the LensGalaxyPopulation class, which is used to sample lens galaxy parameters, source parameters conditioned on the source being strongly lensed, image properties, and lensed SNRs. \n</span>
-<span class="sd">The class inherits from the CBCSourceParameterDistribution class, which is used to sample source parameters. \n</span>
+<span class="sd">Module for computing image properties of strongly lensed gravitational wave events.</span>
+
+<span class="sd">This module contains the ImageProperties class, which computes image positions,</span>
+<span class="sd">magnifications, time delays, and other lensing-related quantities for gravitational</span>
+<span class="sd">wave sources that are strongly lensed by intervening galaxies. The class uses</span>
+<span class="sd">multiprocessing to efficiently solve lens equations for large samples.</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">    Basic workflow example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from ler.image_properties import ImageProperties</span>
+<span class="sd">    &gt;&gt;&gt; ip = ImageProperties()</span>
+<span class="sd">    &gt;&gt;&gt; lens_parameters = dict(zs=np.array([2.0]), zl=np.array([0.5]), ...)</span>
+<span class="sd">    &gt;&gt;&gt; result = ip.image_properties(lens_parameters)</span>
+
+<span class="sd">Copyright (C) 2026 Phurailatpam Hemanta Kumar. Distributed under MIT License.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -121,103 +135,109 @@
 <span class="kn">from</span> <span class="nn">.multiprocessing_routine</span> <span class="kn">import</span> <span class="n">solve_lens_equation</span>
 <span class="kn">from</span> <span class="nn">..lens_galaxy_population.jit_functions</span> <span class="kn">import</span> <span class="n">phi_q2_ellipticity_hemanta</span>
 
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span>  <span class="n">FunctionConditioning</span><span class="p">,</span> <span class="n">luminosity_distance</span>
 
 <div class="viewcode-block" id="ImageProperties">
 <a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/index.html#ler.image_properties.image_properties.ImageProperties">[docs]</a>
 <span class="k">class</span> <span class="nc">ImageProperties</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class to find the image properties of a lensed event. Image properties include image positions, magnifications, time delays, etc.</span>
+<span class="sd">    Class to compute image properties of strongly lensed gravitational wave events.</span>
+
+<span class="sd">    This class solves the lens equation to find image positions, magnifications,</span>
+<span class="sd">    time delays, and image types (morse phase) for strongly lensed sources. It uses</span>
+<span class="sd">    multiprocessing for efficient computation of large samples.</span>
+
+<span class="sd">    Key Features: \n</span>
+<span class="sd">    - Solves lens equations using multiprocessing for efficiency \n</span>
+<span class="sd">    - Computes image positions, magnifications, and time delays \n</span>
+<span class="sd">    - Classifies image types using morse phase \n</span>
+<span class="sd">    - Calculates detection probabilities for lensed images \n</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    npool : `int`</span>
-<span class="sd">        number of processes to use</span>
+<span class="sd">    npool : ``int``</span>
+<span class="sd">        Number of processes for multiprocessing. \n</span>
 <span class="sd">        default: 4</span>
-<span class="sd">    z_min : `float`</span>
-<span class="sd">        minimum redshift to consider</span>
-<span class="sd">        default: 0.0</span>
-<span class="sd">    z_max : `float`</span>
-<span class="sd">        maximum redshift to consider</span>
-<span class="sd">        default: 10.0</span>
-<span class="sd">    n_min_images : `int`</span>
-<span class="sd">        minimum number of images to consider</span>
+<span class="sd">    n_min_images : ``int``</span>
+<span class="sd">        Minimum number of images required for a valid lensing event. \n</span>
 <span class="sd">        default: 2</span>
-<span class="sd">    n_max_images : `int`</span>
-<span class="sd">        maximum number of images to consider</span>
+<span class="sd">    n_max_images : ``int``</span>
+<span class="sd">        Maximum number of images to consider per event. \n</span>
 <span class="sd">        default: 4</span>
-<span class="sd">    geocent_time_min : `float`</span>
-<span class="sd">        minimum geocent time to consider</span>
-<span class="sd">        default: 1126259462.4 , which is the GPS time of the first GW detection</span>
-<span class="sd">    geocent_time_max : `float`</span>
-<span class="sd">        maximum geocent time to consider</span>
-<span class="sd">        default: 1126259462.4+365*24*3600*100 , which is the GPS time of the first GW detection + 100 years. Some time delays can be very large.</span>
-<span class="sd">    lens_model_list : `list`</span>
-<span class="sd">        list of lens models</span>
+<span class="sd">    time_window : ``float``</span>
+<span class="sd">        Time window for lensed events (units: seconds). \n</span>
+<span class="sd">        default: 365*24*3600*20 (20 years)</span>
+<span class="sd">    lens_model_list : ``list``</span>
+<span class="sd">        List of lens models to use. \n</span>
 <span class="sd">        default: [&#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;]</span>
-<span class="sd">    cosmology : `astropy.cosmology`</span>
-<span class="sd">        cosmology</span>
-<span class="sd">        default: None/astropy.cosmology.LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</span>
-<span class="sd">    spin_zero : `bool`</span>
-<span class="sd">        whether to assume spin zero or not</span>
-<span class="sd">        default: True</span>
-<span class="sd">    spin_precession : `bool`</span>
-<span class="sd">        whether to assume spin precession or not</span>
+<span class="sd">    cosmology : ``astropy.cosmology`` or ``None``</span>
+<span class="sd">        Cosmology for distance calculations. \n</span>
+<span class="sd">        If None, uses default LambdaCDM. \n</span>
+<span class="sd">        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</span>
+<span class="sd">    spin_zero : ``bool``</span>
+<span class="sd">        If True, spin parameters are set to zero (no spin sampling). \n</span>
 <span class="sd">        default: False</span>
-<span class="sd">    directory : `str`</span>
-<span class="sd">        directory to save the interpolator pickle files</span>
-<span class="sd">        default: &quot;./interpolator_json&quot;</span>
-<span class="sd">    create_new_interpolator : `dict`</span>
-<span class="sd">        dictionary to create new interpolator pickle files</span>
-<span class="sd">        default: dict(luminosity_distance=dict(create_new=False, resolution=1000))</span>
+<span class="sd">    spin_precession : ``bool``</span>
+<span class="sd">        If True (and spin_zero=False), sample precessing spin parameters. \n</span>
+<span class="sd">        If False (and spin_zero=False), sample aligned/anti-aligned spins. \n</span>
+<span class="sd">        default: False</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
+<span class="sd">    Basic usage:</span>
+
 <span class="sd">    &gt;&gt;&gt; from ler.image_properties import ImageProperties</span>
-<span class="sd">    &gt;&gt;&gt; image_properties = ImageProperties()</span>
-<span class="sd">    &gt;&gt;&gt; lens_parameters = dict(zs=2.0, zl=0.5, gamma1=0.0, gamma2=0.0, e1=0.0, e2=0.0, gamma=2.0, theta_E=1.0)</span>
-<span class="sd">    &gt;&gt;&gt; lens_parameters = image_properties.image_properties(lens_parameters)</span>
-<span class="sd">    &gt;&gt;&gt; print(lens_parameters.keys())</span>
+<span class="sd">    &gt;&gt;&gt; ip = ImageProperties()</span>
+<span class="sd">    &gt;&gt;&gt; lens_parameters = dict(</span>
+<span class="sd">    ...     zs=np.array([2.0]),</span>
+<span class="sd">    ...     zl=np.array([0.5]),</span>
+<span class="sd">    ...     gamma1=np.array([0.0]),</span>
+<span class="sd">    ...     gamma2=np.array([0.0]),</span>
+<span class="sd">    ...     phi=np.array([0.0]),</span>
+<span class="sd">    ...     q=np.array([0.8]),</span>
+<span class="sd">    ...     gamma=np.array([2.0]),</span>
+<span class="sd">    ...     theta_E=np.array([1.0])</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; result = ip.image_properties(lens_parameters)</span>
+<span class="sd">    &gt;&gt;&gt; print(result.keys())</span>
+<span class="sd">    </span>
+
+<span class="sd">    Instance Methods</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ImageProperties has the following methods: \n</span>
+<span class="sd">    +-----------------------------------------------------+------------------------------------------------+</span>
+<span class="sd">    | Method                                              | Description                                    |</span>
+<span class="sd">    +=====================================================+================================================+</span>
+<span class="sd">    | :meth:`~image_properties`                           | Compute image properties for lensed events     |</span>
+<span class="sd">    +-----------------------------------------------------+------------------------------------------------+</span>
+<span class="sd">    | :meth:`~get_lensed_snrs`                            | Compute detection probability for lensed images|</span>
+<span class="sd">    +-----------------------------------------------------+------------------------------------------------+</span>
 
 <span class="sd">    Instance Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    ImageProperties has the following instance attributes:\n</span>
-<span class="sd">    +-------------------------+----------------------+</span>
-<span class="sd">    | Atrributes                          | Type                             |</span>
-<span class="sd">    +=====================================+==================================+</span>
-<span class="sd">    |:attr:`npool`                        | `int`                            |</span>
-<span class="sd">    +-------------------------+----------------------+</span>
-<span class="sd">    |:attr:`z_min`                        | `float`                          |</span>
-<span class="sd">    +-------------------------+----------------------+</span>
-<span class="sd">    |:attr:`z_max`                        | `float`                          |</span>
-<span class="sd">    +-------------------------+----------------------+</span>
-<span class="sd">    |:attr:`n_min_images`                 | `int`                            |</span>
-<span class="sd">    +-------------------------+----------------------+</span>
-<span class="sd">    |:attr:`n_max_images`                 | `int`                            |</span>
-<span class="sd">    +-------------------------+----------------------+</span>
-<span class="sd">    |:attr:`geocent_time_min`             | `float`                          |</span>
-<span class="sd">    +-------------------------+----------------------+</span>
-<span class="sd">    |:attr:`geocent_time_max`             | `float`                          |</span>
-<span class="sd">    +-------------------------+----------------------+</span>
-<span class="sd">    |:attr:`lens_model_list`              | `list`                           |</span>
-<span class="sd">    +-------------------------+----------------------+</span>
-<span class="sd">    |:attr:`cosmo`                        | `astropy.cosmology`              |</span>
-<span class="sd">    +-------------------------+----------------------+</span>
-<span class="sd">    |:attr:`spin_zero`                    | `bool`                           |</span>
-<span class="sd">    +-------------------------+----------------------+</span>
-<span class="sd">    |:attr:`spin_precession`              | `bool`                           |</span>
-<span class="sd">    +-------------------------+----------------------+</span>
-<span class="sd">    |:attr:`directory`                    | `str`                            |</span>
-<span class="sd">    +-------------------------+----------------------+</span>
-<span class="sd">    |:attr:`create_new_interpolator`      | `dict`                           |</span>
-<span class="sd">    +-------------------------+----------------------+</span>
-
+<span class="sd">    ImageProperties has the following attributes: \n</span>
+<span class="sd">    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+</span>
+<span class="sd">    | Attribute                                           | Type                      | Unit     | Description                                    |</span>
+<span class="sd">    +=====================================================+===========================+==========+================================================+</span>
+<span class="sd">    | :attr:`~npool`                                      | ``int``                   |          | Number of multiprocessing workers              |</span>
+<span class="sd">    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+</span>
+<span class="sd">    | :attr:`~n_min_images`                               | ``int``                   |          | Minimum number of images required              |</span>
+<span class="sd">    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+</span>
+<span class="sd">    | :attr:`~n_max_images`                               | ``int``                   |          | Maximum number of images per event             |</span>
+<span class="sd">    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+</span>
+<span class="sd">    | :attr:`~time_window`                                | ``float``                 | s        | Time window for lensed events                  |</span>
+<span class="sd">    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+</span>
+<span class="sd">    | :attr:`~lens_model_list`                            | ``list``                  |          | List of lens models                            |</span>
+<span class="sd">    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+</span>
+<span class="sd">    | :attr:`~cosmo`                                      | ``astropy.cosmology``     |          | Cosmology for calculations                     |</span>
+<span class="sd">    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+</span>
+<span class="sd">    | :attr:`~spin_zero`                                  | ``bool``                  |          | Flag for zero spin assumption                  |</span>
+<span class="sd">    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+</span>
+<span class="sd">    | :attr:`~spin_precession`                            | ``bool``                  |          | Flag for spin precession                       |</span>
+<span class="sd">    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
                  <span class="n">npool</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-                 <span class="n">z_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                 <span class="n">z_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
                  <span class="n">n_min_images</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
                  <span class="n">n_max_images</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
                  <span class="n">time_window</span><span class="o">=</span><span class="mi">365</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">3600</span><span class="o">*</span><span class="mi">20</span><span class="p">,</span>
@@ -225,73 +245,53 @@
                  <span class="n">cosmology</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">spin_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">spin_precession</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;./interpolator_json&quot;</span><span class="p">,</span>
-                 <span class="n">create_new_interpolator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">):</span>
 
-<div class="viewcode-block" id="ImageProperties.npool">
-<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.npool">[docs]</a>
-        <span class="bp">self</span><span class="o">.</span><span class="n">npool</span> <span class="o">=</span> <span class="n">npool</span></div>
-
-<div class="viewcode-block" id="ImageProperties.n_min_images">
-<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.n_min_images">[docs]</a>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_min_images</span> <span class="o">=</span> <span class="n">n_min_images</span></div>
-
-<div class="viewcode-block" id="ImageProperties.n_max_images">
-<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.n_max_images">[docs]</a>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span> <span class="o">=</span> <span class="n">n_max_images</span></div>
-
-<div class="viewcode-block" id="ImageProperties.lens_model_list">
-<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.lens_model_list">[docs]</a>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lens_model_list</span> <span class="o">=</span> <span class="n">lens_model_list</span>  <span class="c1"># list of lens models</span></div>
-
-<div class="viewcode-block" id="ImageProperties.spin_zero">
-<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.spin_zero">[docs]</a>
-        <span class="bp">self</span><span class="o">.</span><span class="n">spin_zero</span> <span class="o">=</span> <span class="n">spin_zero</span></div>
-
-<div class="viewcode-block" id="ImageProperties.spin_precession">
-<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.spin_precession">[docs]</a>
-        <span class="bp">self</span><span class="o">.</span><span class="n">spin_precession</span> <span class="o">=</span> <span class="n">spin_precession</span></div>
-
-<div class="viewcode-block" id="ImageProperties.time_window">
-<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.time_window">[docs]</a>
-        <span class="bp">self</span><span class="o">.</span><span class="n">time_window</span> <span class="o">=</span> <span class="n">time_window</span></div>
-
-<div class="viewcode-block" id="ImageProperties.cosmo">
-<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.cosmo">[docs]</a>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span> <span class="o">=</span> <span class="n">cosmology</span> <span class="k">if</span> <span class="n">cosmology</span> <span class="k">else</span> <span class="n">cosmo</span></div>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">npool</span> <span class="o">=</span> <span class="n">npool</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_min_images</span> <span class="o">=</span> <span class="n">n_min_images</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span> <span class="o">=</span> <span class="n">n_max_images</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lens_model_list</span> <span class="o">=</span> <span class="n">lens_model_list</span>  <span class="c1"># list of lens models</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spin_zero</span> <span class="o">=</span> <span class="n">spin_zero</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spin_precession</span> <span class="o">=</span> <span class="n">spin_precession</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_window</span> <span class="o">=</span> <span class="n">time_window</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span> <span class="o">=</span> <span class="n">cosmology</span> <span class="k">if</span> <span class="n">cosmology</span> <span class="k">else</span> <span class="n">cosmo</span>
 
 <div class="viewcode-block" id="ImageProperties.image_properties">
 <a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/index.html#ler.image_properties.image_properties.ImageProperties.image_properties">[docs]</a>
-    <span class="k">def</span> <span class="nf">image_properties</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">lens_parameters</span>
-    <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">image_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lens_parameters</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to get the image properties e.g. image positions, magnifications, time delays, etc.</span>
+<span class="sd">        Compute image properties for strongly lensed events.</span>
+
+<span class="sd">        Solves the lens equation using multiprocessing to find image positions,</span>
+<span class="sd">        magnifications, time delays, and image types for each lensing event.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">            lens_parameters : `dict`</span>
-<span class="sd">                dictionary of lens parameters</span>
-<span class="sd">                e.g. lens_parameters.keys() = [&#39;zs&#39;, &#39;zl&#39;, &#39;gamma1&#39;, &#39;gamma2&#39;, &#39;e1&#39;, &#39;e2&#39;, &#39;gamma&#39;, &#39;theta_E&#39;]</span>
+<span class="sd">        lens_parameters : ``dict``</span>
+<span class="sd">            Dictionary containing lens and source parameters with keys: \n</span>
+<span class="sd">            - &#39;zs&#39;: source redshift (array) \n</span>
+<span class="sd">            - &#39;zl&#39;: lens redshift (array) \n</span>
+<span class="sd">            - &#39;gamma1&#39;: external shear component 1 (array) \n</span>
+<span class="sd">            - &#39;gamma2&#39;: external shear component 2 (array) \n</span>
+<span class="sd">            - &#39;phi&#39;: position angle of lens ellipticity (array) \n</span>
+<span class="sd">            - &#39;q&#39;: axis ratio of lens (array) \n</span>
+<span class="sd">            - &#39;gamma&#39;: power-law slope of mass density (array) \n</span>
+<span class="sd">            - &#39;theta_E&#39;: Einstein radius in radians (array) \n</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">            lens_parameters : `dict`</span>
-<span class="sd">                dictionary of lens parameters and image properties</span>
-<span class="sd">                e.g. lens_parameters contains the following keys:\n</span>
-<span class="sd">                lens related=&gt;[&#39;zs&#39;: source redshift, &#39;zl&#39;: lens redshift, &#39;gamma1&#39;: shear component in the x-direction, &#39;gamma2&#39;: shear component in the y-direction, &#39;e1&#39;: ellipticity component in the x-direction, &#39;e2&#39;: ellipticity component in the y-direction, &#39;gamma&#39;: spectral index of the mass density distribution, &#39;theta_E&#39;: einstein radius in radian]\n</span>
-<span class="sd">                source related=&gt;[&#39;mass_1&#39;: mass in detector frame (mass1&gt;mass2), &#39;mass_2&#39;: mass in detector frame, &#39;mass_1_source&#39;:mass in source frame, &#39;mass_2_source&#39;:mass source frame, &#39;luminosity_distance&#39;: luminosity distance, &#39;theta_jn&#39;: inclination angle, &#39;psi&#39;: polarization angle, &#39;phase&#39;: coalesence phase, &#39;geocent_time&#39;: coalensence GPS time at geocenter, &#39;ra&#39;: right ascension, &#39;dec&#39;: declination, &#39;a_1&#39;: spin magnitude of the more massive black hole, &#39;a2&#39;: spin magnitude of the less massive black hole, &#39;tilt_1&#39;: tilt angle of the more massive black hole, &#39;tilt_2&#39;: tilt angle of the less massive black hole, &#39;phi_12&#39;: azimuthal angle between the two spins, &#39;phi_jl&#39;: azimuthal angle between the total angular momentum and the orbital angular momentum]\n</span>
-<span class="sd">                image related=&gt;[&#39;x_source&#39;: source position in the x-direction, &#39;y_source&#39;: source position in the y-direction, &#39;x0_image_position&#39;: image position in the x-direction, &#39;x1_image_position&#39;: image position in the y-direction, &#39;magnifications&#39;: magnifications, &#39;time_delays&#39;: time delays: number of images formed, &#39;determinant&#39;: determinants, &#39;trace&#39;: traces, &#39;iteration&#39;: to keep track of the iteration number</span>
+<span class="sd">        lens_parameters : ``dict``</span>
+<span class="sd">            Updated dictionary with additional image properties: \n</span>
+<span class="sd">            - &#39;x0_image_positions&#39;: x-coordinates of images (shape: size x n_max_images) \n</span>
+<span class="sd">            - &#39;x1_image_positions&#39;: y-coordinates of images (shape: size x n_max_images) \n</span>
+<span class="sd">            - &#39;magnifications&#39;: magnification factors (shape: size x n_max_images) \n</span>
+<span class="sd">            - &#39;time_delays&#39;: time delays relative to first image (shape: size x n_max_images, units: s) \n</span>
+<span class="sd">            - &#39;image_type&#39;: morse phase classification (1=minimum, 2=saddle, 3=maximum) \n</span>
+<span class="sd">            - &#39;n_images&#39;: number of images per event (array) \n</span>
+<span class="sd">            - &#39;x_source&#39;: source x-position (array) \n</span>
+<span class="sd">            - &#39;y_source&#39;: source y-position (array) \n</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">npool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">npool</span>
-        <span class="n">n_min_images</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_min_images</span>
-        <span class="n">n_max_images</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span>
-        <span class="n">lensModelList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_model_list</span>
-        
         <span class="n">zs</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">]</span>
         <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span>
         <span class="n">zl</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;zl&quot;</span><span class="p">]</span>
@@ -305,10 +305,10 @@
         <span class="n">gamma</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;gamma&quot;</span><span class="p">]</span>
         <span class="n">einstein_radius</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;theta_E&quot;</span><span class="p">]</span>
         <span class="c1"># Create the lens model list (note: can be a different lens model for different samples)</span>
-        <span class="n">lensModelList</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lensModelList</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lensModelList</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span>
+        <span class="n">lensModelList</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_model_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_model_list</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span>
         <span class="p">)</span>
-        <span class="n">min_img_arr</span> <span class="o">=</span> <span class="n">n_min_images</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">min_img_arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_min_images</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
 
         <span class="c1"># get image properties (with Multiprocessing)</span>
         <span class="n">iterations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
@@ -329,25 +329,25 @@
         <span class="p">)</span><span class="o">.</span><span class="n">T</span>
         <span class="n">input_arguments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">input_arguments</span><span class="p">,</span> <span class="n">lensModelList</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="c1"># Initialize the image positions and lens argument list here.</span>
-        <span class="n">x0_image_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-        <span class="n">x1_image_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-        <span class="n">magnifications</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-        <span class="n">time_delays</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-        <span class="n">determinants</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-        <span class="n">traces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">x0_image_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">x1_image_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">magnifications</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">time_delays</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">determinants</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">traces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         <span class="n">n_images</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
         <span class="n">x_source</span><span class="p">,</span> <span class="n">y_source</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
         <span class="c1"># Solve the lens equation</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;solving lens equations...&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">n_min_images</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_min_images</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">solve_lens_equation_</span> <span class="o">=</span> <span class="n">solve_lens_equation</span>
-        <span class="k">elif</span> <span class="n">n_min_images</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_min_images</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;n_min_images &gt; 2 is not supported yet&quot;</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;n_min_images should be greater than 1&quot;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="n">npool</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">npool</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
             <span class="c1"># call the same function with different data in parallel</span>
             <span class="c1"># imap-&gt;retain order in the list, while map-&gt;doesn&#39;t</span>
             <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span>
@@ -356,7 +356,6 @@
                 <span class="n">ncols</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
                 <span class="n">disable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">):</span>
-                <span class="c1"># print(result)</span>
                 <span class="p">(</span>
                     <span class="n">x_source_i</span><span class="p">,</span>
                     <span class="n">y_source_i</span><span class="p">,</span>
@@ -370,10 +369,10 @@
                     <span class="n">iter_i</span><span class="p">,</span>
                 <span class="p">)</span> <span class="o">=</span> <span class="n">result</span>
 
-                <span class="n">n_image_i</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">n_image_i</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">)</span>
+                <span class="n">n_image_i</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">n_image_i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">)</span>
                 <span class="n">n_images</span><span class="p">[</span><span class="n">iter_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_image_i</span>
-                <span class="n">x0_image_position</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_max_images</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                <span class="n">x1_image_position</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_max_images</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="n">x0_image_position</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="n">x1_image_position</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
                 <span class="n">x0_image_position</span><span class="p">[:</span><span class="n">n_image_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x0_image_position_i</span><span class="p">[:</span><span class="n">n_image_i</span><span class="p">]</span>
                 <span class="n">x1_image_position</span><span class="p">[:</span><span class="n">n_image_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x1_image_position_i</span><span class="p">[:</span><span class="n">n_image_i</span><span class="p">]</span>
                 <span class="n">x0_image_positions</span><span class="p">[</span>
@@ -382,10 +381,10 @@
                 <span class="n">x1_image_positions</span><span class="p">[</span>
                     <span class="n">iter_i</span>
                 <span class="p">]</span> <span class="o">=</span> <span class="n">x1_image_position</span>  <span class="c1"># shape = (size, n_max_images)</span>
-                <span class="n">magnification</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_max_images</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                <span class="n">time_delay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_max_images</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                <span class="n">determinant</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_max_images</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                <span class="n">trace</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_max_images</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="n">magnification</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="n">time_delay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="n">determinant</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="n">trace</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
                 <span class="n">magnification</span><span class="p">[:</span><span class="n">n_image_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">magnifications_i</span><span class="p">[:</span><span class="n">n_image_i</span><span class="p">]</span>
                 <span class="n">time_delay</span><span class="p">[:</span><span class="n">n_image_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_delays_i</span><span class="p">[:</span><span class="n">n_image_i</span><span class="p">]</span>
                 <span class="n">determinant</span><span class="p">[:</span><span class="n">n_image_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">determinant_i</span><span class="p">[:</span><span class="n">n_image_i</span><span class="p">]</span>
@@ -402,17 +401,10 @@
         <span class="c1"># time-delays will be relative to the first arrived signal of an lensed event</span>
         <span class="n">time_delays</span> <span class="o">=</span> <span class="n">time_delays</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">time_delays</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">]])</span><span class="o">.</span><span class="n">T</span> <span class="c1"># this is alright if time delays are already sorted</span>
         
-        <span class="c1"># select only strongly lensed events are selected</span>
-        <span class="c1"># assert np.all(n_images &gt;= 2), &quot;There are events with no images!&quot;</span>
-
         <span class="c1"># image type classification (morse phase)</span>
-        <span class="n">number_of_lensed_events</span> <span class="o">=</span> <span class="n">size</span>
-        <span class="n">image_type</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">number_of_lensed_events</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span>
-        <span class="c1"># image_type[traces &lt; 0] = 3</span>
-        <span class="c1"># image_type[traces &gt; 0] = 1</span>
-        <span class="c1"># image_type[determinants &lt; 0] = 2</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_of_lensed_events</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_max_images</span><span class="p">):</span>
+        <span class="n">image_type</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">determinants</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">image_type</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
                 <span class="k">elif</span> <span class="n">traces</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -431,14 +423,12 @@
             <span class="s2">&quot;image_type&quot;</span><span class="p">:</span> <span class="n">image_type</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="c1">############ Important ############</span>
         <span class="c1"># sorting wrt time delays</span>
         <span class="n">idx_sort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">time_delays</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># sort each row</span>
-        <span class="c1"># idx_sort has the shape (number_of_lensed_events, n_max_images)</span>
+        <span class="c1"># idx_sort has the shape (size, n_max_images)</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">image_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="c1"># sort each row</span>
-            <span class="n">image_parameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">idx_sort</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_of_lensed_events</span><span class="p">)])</span>
-        <span class="c1">####################################</span>
+            <span class="n">image_parameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">idx_sort</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">)])</span>
         <span class="n">lens_parameters</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">image_parameters</span><span class="p">)</span>
         <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;n_images&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_images</span>
         <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;x_source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_source</span>
@@ -451,39 +441,54 @@
 <a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/index.html#ler.image_properties.image_properties.ImageProperties.get_lensed_snrs">[docs]</a>
     <span class="k">def</span> <span class="nf">get_lensed_snrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">pdet_calculator</span><span class="p">,</span> <span class="n">list_of_detectors</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to calculate the signal to noise ratio for each image in each event.</span>
+<span class="sd">        Compute detection probability for each lensed image.</span>
+
+<span class="sd">        Calculates the effective luminosity distance, geocent time, and phase</span>
+<span class="sd">        for each image accounting for magnification and morse phase, then</span>
+<span class="sd">        computes detection probabilities using the provided calculator.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">            list_of_detectors : `list`</span>
-<span class="sd">                list of detectors</span>
-<span class="sd">                e.g. [&#39;H1&#39;, &#39;L1&#39;, &#39;V1&#39;]</span>
-<span class="sd">            lensed_param : `dict`</span>
-<span class="sd">                dictionary containing the both already lensed source paramters and image parameters.</span>
-<span class="sd">                e.g. lensed_param.keys() = [&#39;mass_1&#39;, &#39;mass_2&#39;, &#39;zs&#39;, &#39;luminosity_distance&#39;, &#39;theta_jn&#39;, &#39;psi&#39;, &#39;phi&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;geocent_time&#39;, &#39;phase&#39;, &#39;a_1&#39;, &#39;a2&#39;, &#39;tilt_1&#39;, &#39;tilt_2&#39;, &#39;phi_12&#39;, &#39;phi_jl&#39;, &#39;magnifications&#39;, &#39;time_delays&#39;]</span>
+<span class="sd">        lensed_param : ``dict``</span>
+<span class="sd">            Dictionary containing lensed source and image parameters with keys: \n</span>
+<span class="sd">            - &#39;mass_1&#39;, &#39;mass_2&#39;: detector-frame masses (array) \n</span>
+<span class="sd">            - &#39;luminosity_distance&#39; or &#39;effective_luminosity_distance&#39;: distance (array) \n</span>
+<span class="sd">            - &#39;geocent_time&#39; or &#39;effective_geocent_time&#39;: GPS time (array) \n</span>
+<span class="sd">            - &#39;phase&#39; or &#39;effective_phase&#39;: coalescence phase (array) \n</span>
+<span class="sd">            - &#39;theta_jn&#39;, &#39;psi&#39;, &#39;ra&#39;, &#39;dec&#39;: orientation and position (arrays) \n</span>
+<span class="sd">            - &#39;magnifications&#39;: image magnifications (shape: size x n_max_images) \n</span>
+<span class="sd">            - &#39;time_delays&#39;: image time delays (shape: size x n_max_images) \n</span>
+<span class="sd">            - &#39;image_type&#39;: morse phase type (shape: size x n_max_images) \n</span>
+<span class="sd">        pdet_calculator : ``callable``</span>
+<span class="sd">            Function that computes detection probability given GW parameters.</span>
+<span class="sd">        list_of_detectors : ``list`` or ``None``</span>
+<span class="sd">            List of detector names (e.g., [&#39;H1&#39;, &#39;L1&#39;, &#39;V1&#39;]) for per-detector results. \n</span>
+<span class="sd">            default: None</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">            snrs : `dict`</span>
-<span class="sd">                signal to noise ratio for each image in each event.</span>
-<span class="sd">                (dictionary containing &#39;H1&#39;, &#39;L1&#39;, ..., and &#39;snr_net&#39;, which is the network snr, for each image as an array with dimensions (number_of_lensed_events,n_max_images) )</span>
-
+<span class="sd">        result_dict : ``dict``</span>
+<span class="sd">            Dictionary containing: \n</span>
+<span class="sd">            - &#39;pdet_net&#39;: network detection probability (shape: size x n_max_images) \n</span>
+<span class="sd">            - Individual detector probabilities if list_of_detectors provided \n</span>
+<span class="sd">        lensed_param : ``dict``</span>
+<span class="sd">            Updated dictionary with effective parameters: \n</span>
+<span class="sd">            - &#39;effective_luminosity_distance&#39;: magnification-corrected distance \n</span>
+<span class="sd">            - &#39;effective_geocent_time&#39;: time-delay-corrected GPS time \n</span>
+<span class="sd">            - &#39;effective_phase&#39;: morse-phase-corrected coalescence phase \n</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># needed to calculate effective luminosity distance and effective time delay</span>
-        <span class="n">n_max_images</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span>
         <span class="n">magnifications</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;magnifications&quot;</span><span class="p">]</span>
         <span class="n">time_delays</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;time_delays&quot;</span><span class="p">]</span>
-        <span class="n">imgage_type</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;image_type&quot;</span><span class="p">]</span>
+        <span class="n">image_type</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;image_type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># copy to avoid modifying original</span>
         <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">magnifications</span><span class="p">)</span>
 
         <span class="c1"># image type to morse phase</span>
-        <span class="n">imgage_type</span><span class="p">[</span><span class="n">imgage_type</span><span class="o">==</span><span class="mf">1.</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
-        <span class="n">imgage_type</span><span class="p">[</span><span class="n">imgage_type</span><span class="o">==</span><span class="mf">2.</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span>
-        <span class="n">imgage_type</span><span class="p">[</span><span class="n">imgage_type</span><span class="o">==</span><span class="mf">3.</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
-
+        <span class="n">image_type</span><span class="p">[</span><span class="n">image_type</span><span class="o">==</span><span class="mf">1.</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="n">image_type</span><span class="p">[</span><span class="n">image_type</span><span class="o">==</span><span class="mf">2.</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">image_type</span><span class="p">[</span><span class="n">image_type</span><span class="o">==</span><span class="mf">3.</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
         <span class="c1"># Get the binary parameters</span>
-        <span class="n">number_of_lensed_events</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">magnifications</span><span class="p">)</span>
-        <span class="n">mass_1</span><span class="p">,</span> <span class="n">mass_2</span><span class="p">,</span> <span class="n">theta_jn</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">a_1</span><span class="p">,</span> <span class="n">a_2</span><span class="p">,</span> <span class="n">tilt_1</span><span class="p">,</span> <span class="n">tilt_2</span><span class="p">,</span> <span class="n">phi_12</span><span class="p">,</span> <span class="n">phi_jl</span>  <span class="o">=</span> <span class="p">(</span>
+        <span class="n">mass_1</span><span class="p">,</span> <span class="n">mass_2</span><span class="p">,</span> <span class="n">theta_jn</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">a_1</span><span class="p">,</span> <span class="n">a_2</span><span class="p">,</span> <span class="n">tilt_1</span><span class="p">,</span> <span class="n">tilt_2</span><span class="p">,</span> <span class="n">phi_12</span><span class="p">,</span> <span class="n">phi_jl</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;mass_1&quot;</span><span class="p">],</span>
             <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;mass_2&quot;</span><span class="p">],</span>
             <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;theta_jn&quot;</span><span class="p">],</span>
@@ -511,20 +516,20 @@
         <span class="c1"># setting up pdet dictionary</span>
         <span class="n">result_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">number_of_lensed_events</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         <span class="p">)</span>
         
         <span class="c1"># if detector list are provided for pdet calculation</span>
         <span class="k">if</span> <span class="n">list_of_detectors</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">list_of_detectors</span><span class="p">:</span>
                 <span class="n">result_dict</span><span class="p">[</span><span class="n">detector</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">number_of_lensed_events</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
                 <span class="p">)</span>
         
         <span class="c1"># for updating the lensed_param</span>
         <span class="k">if</span> <span class="s2">&quot;luminosity_distance&quot;</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="p">:</span>
-            <span class="n">luminosity_distance</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;luminosity_distance&quot;</span><span class="p">]</span>
-            <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_luminosity_distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">number_of_lensed_events</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">luminosity_distance_</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;luminosity_distance&quot;</span><span class="p">]</span>
+            <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_luminosity_distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="n">dl_eff_present</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">elif</span> <span class="s2">&quot;effective_luminosity_distance&quot;</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="p">:</span>
             <span class="n">dl_eff</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_luminosity_distance&quot;</span><span class="p">]</span>
@@ -534,7 +539,7 @@
         
         <span class="k">if</span> <span class="s2">&quot;geocent_time&quot;</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="p">:</span>
             <span class="n">geocent_time</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;geocent_time&quot;</span><span class="p">]</span>
-            <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_geocent_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">number_of_lensed_events</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_geocent_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="n">time_eff_present</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">elif</span> <span class="s2">&quot;effective_geocent_time&quot;</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="p">:</span>
             <span class="n">time_eff</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_geocent_time&quot;</span><span class="p">]</span>
@@ -543,8 +548,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;geocent_time or effective_geocent_time not given&quot;</span><span class="p">)</span>
         
         <span class="k">if</span> <span class="s2">&quot;phase&quot;</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="p">:</span>
-            <span class="n">phase</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;phase&quot;</span><span class="p">]</span>
-            <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_phase&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">number_of_lensed_events</span><span class="p">,</span> <span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_phase&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="n">phase_eff_present</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">elif</span> <span class="s2">&quot;effective_phase&quot;</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="p">:</span>
             <span class="n">phase_eff</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_phase&quot;</span><span class="p">]</span>
@@ -558,7 +562,7 @@
         <span class="n">geocent_time_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">geocent_time</span><span class="p">)</span>
         <span class="n">geocent_time_max</span> <span class="o">=</span> <span class="n">geocent_time_min</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_window</span>
 
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_max_images</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">):</span>
             
             <span class="c1"># get the effective time for each image type</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">time_eff_present</span><span class="p">:</span>
@@ -571,14 +575,14 @@
 
             <span class="c1"># get the effective luminosity distance for each image type</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">dl_eff_present</span><span class="p">:</span>
-                <span class="n">effective_luminosity_distance</span> <span class="o">=</span> <span class="n">luminosity_distance</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+                <span class="n">effective_luminosity_distance</span> <span class="o">=</span> <span class="n">luminosity_distance_</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
                     <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">magnifications</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">effective_luminosity_distance</span> <span class="o">=</span> <span class="n">dl_eff</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
             <span class="c1"># get the effective phase for each image type</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">phase_eff_present</span><span class="p">:</span>
-                <span class="n">effective_phase</span> <span class="o">=</span> <span class="n">phase</span> <span class="o">-</span> <span class="n">imgage_type</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>  <span class="c1"># morse phase correction</span>
+                <span class="n">effective_phase</span> <span class="o">=</span> <span class="n">phase</span> <span class="o">-</span> <span class="n">image_type</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>  <span class="c1"># morse phase correction</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">effective_phase</span> <span class="o">=</span> <span class="n">phase_eff</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
             
@@ -613,21 +617,185 @@
                     <span class="k">for</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">list_of_detectors</span><span class="p">:</span>
                         <span class="k">if</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">pdet</span><span class="p">:</span>
                             <span class="n">result_dict</span><span class="p">[</span><span class="n">detector</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdet</span><span class="p">[</span><span class="n">detector</span><span class="p">]</span>
-                
 
+            <span class="c1"># Update lensed_param with effective values only if they weren&#39;t already present</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">dl_eff_present</span><span class="p">:</span>
                 <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_luminosity_distance&quot;</span><span class="p">][:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">effective_luminosity_distance</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">time_eff_present</span><span class="p">:</span>
                 <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_geocent_time&quot;</span><span class="p">][:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">effective_geocent_time</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">phase_eff_present</span><span class="p">:</span>
                 <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_phase&quot;</span><span class="p">][:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">effective_phase</span>
 
-        <span class="k">if</span> <span class="n">dl_eff_present</span><span class="p">:</span>
-            <span class="k">del</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_luminosity_distance&quot;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">time_eff_present</span><span class="p">:</span>
-            <span class="k">del</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_geocent_time&quot;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">phase_eff_present</span><span class="p">:</span>
-            <span class="k">del</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_phase&quot;</span><span class="p">]</span>
-
         <span class="k">return</span> <span class="n">result_dict</span><span class="p">,</span> <span class="n">lensed_param</span></div>
-</div>
+
+
+    <span class="c1"># -------------</span>
+    <span class="c1"># Properties</span>
+    <span class="c1"># -------------</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ImageProperties.npool">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.npool">[docs]</a>
+    <span class="k">def</span> <span class="nf">npool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Number of multiprocessing workers.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        npool : ``int``</span>
+<span class="sd">            Number of processes for multiprocessing. \n</span>
+<span class="sd">            default: 4</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_npool</span></div>
+
+
+    <span class="nd">@npool</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">npool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_npool</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ImageProperties.n_min_images">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.n_min_images">[docs]</a>
+    <span class="k">def</span> <span class="nf">n_min_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Minimum number of images required for a valid lensing event.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        n_min_images : ``int``</span>
+<span class="sd">            Minimum number of images required. \n</span>
+<span class="sd">            default: 2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_min_images</span></div>
+
+
+    <span class="nd">@n_min_images</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">n_min_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_min_images</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ImageProperties.n_max_images">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.n_max_images">[docs]</a>
+    <span class="k">def</span> <span class="nf">n_max_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maximum number of images per event.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        n_max_images : ``int``</span>
+<span class="sd">            Maximum number of images to consider per event. \n</span>
+<span class="sd">            default: 4</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_max_images</span></div>
+
+
+    <span class="nd">@n_max_images</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">n_max_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_max_images</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ImageProperties.time_window">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.time_window">[docs]</a>
+    <span class="k">def</span> <span class="nf">time_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Time window for lensed events.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        time_window : ``float``</span>
+<span class="sd">            Time window for lensed events (units: s). \n</span>
+<span class="sd">            default: 365*24*3600*20 (20 years)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_window</span></div>
+
+
+    <span class="nd">@time_window</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">time_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_time_window</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ImageProperties.lens_model_list">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.lens_model_list">[docs]</a>
+    <span class="k">def</span> <span class="nf">lens_model_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        List of lens models to use.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        lens_model_list : ``list``</span>
+<span class="sd">            List of lens model names. \n</span>
+<span class="sd">            default: [&#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lens_model_list</span></div>
+
+
+    <span class="nd">@lens_model_list</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">lens_model_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lens_model_list</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ImageProperties.cosmo">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.cosmo">[docs]</a>
+    <span class="k">def</span> <span class="nf">cosmo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Astropy cosmology object for calculations.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        cosmo : ``astropy.cosmology``</span>
+<span class="sd">            Cosmology used for distance calculations. \n</span>
+<span class="sd">            default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cosmo</span></div>
+
+
+    <span class="nd">@cosmo</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">cosmo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cosmo</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ImageProperties.spin_zero">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.spin_zero">[docs]</a>
+    <span class="k">def</span> <span class="nf">spin_zero</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Flag for zero spin assumption.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        spin_zero : ``bool``</span>
+<span class="sd">            Whether to assume zero spin for compact objects. \n</span>
+<span class="sd">            If True, spin parameters are set to zero (no spin sampling). \n</span>
+<span class="sd">            If False, spin parameters are sampled. \n</span>
+<span class="sd">            default: False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spin_zero</span></div>
+
+
+    <span class="nd">@spin_zero</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">spin_zero</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_spin_zero</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ImageProperties.spin_precession">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.spin_precession">[docs]</a>
+    <span class="k">def</span> <span class="nf">spin_precession</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Flag for spin precession.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        spin_precession : ``bool``</span>
+<span class="sd">            Whether to include spin precession effects. \n</span>
+<span class="sd">            If True (and spin_zero=False), sample precessing spin parameters. \n</span>
+<span class="sd">            If False (and spin_zero=False), sample aligned/anti-aligned spins. \n</span>
+<span class="sd">            default: False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spin_precession</span></div>
+
+
+    <span class="nd">@spin_precession</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">spin_precession</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_spin_precession</span> <span class="o">=</span> <span class="n">value</span></div>
 
 </pre></div>
 
