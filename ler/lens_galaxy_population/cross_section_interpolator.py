@@ -1,78 +1,67 @@
+# -*- coding: utf-8 -*-
 """
-Cross Section Interpolator Module
-==================================
+Module for gravitational lensing cross section interpolation.
 
 This module provides highly optimized Numba-compiled functions for interpolating
-gravitational lensing cross sections in a 5-dimensional parameter space.
+gravitational lensing cross sections in a 5-dimensional parameter space using 
+cubic B-spline interpolation on prefiltered coefficient grids.
 
-The module uses cubic B-spline interpolation on prefiltered coefficient grids to
-achieve efficient and accurate interpolation of cross section values based on:
-  - Ellipticity components (e1, e2) derived from axis ratio q and position angle phi
-  - Density profile slope (gamma)
-  - External shear components (gamma1, gamma2)
+The interpolation is performed based on: \n
+- Ellipticity components (e1, e2) derived from axis ratio q and position angle phi \n
+- Density profile slope (gamma) \n
+- External shear components (gamma1, gamma2) \n
 
-Key Features:
--------------
-- JIT-compiled with Numba for high performance
-- Parallel processing support for batch evaluations
-- Cubic B-spline interpolation matching scipy's map_coordinates behavior
-- Automatic scaling by Einstein radius and affine calibration
+Key Features: \n
+- JIT-compiled with Numba for high performance \n
+- Parallel processing support for batch evaluations \n
+- Cubic B-spline interpolation matching scipy's map_coordinates behavior \n
+- Automatic scaling by Einstein radius and affine calibration \n
 
-Author: Hemanta Kumar Phurailatpam
+Usage:
+    Basic workflow example:
+
+    >>> from ler.lens_galaxy_population.cross_section_interpolator import make_cross_section_reinit
+    >>> cs_func = make_cross_section_reinit(e1_grid, e2_grid, gamma_grid, ...)
+    >>> cross_sections = cs_func(zs, zl, sigma, q, phi, gamma, gamma1, gamma2)
+
+Copyright (C) 2024 Hemanta Kumar Phurailatpam. Distributed under MIT License.
 """
 
 import numpy as np
 from numba import njit, prange
 from scipy import ndimage
 
-# Import Numba-compatible ellipticity conversion function
-from ler.lens_galaxy_population.jit_functions import phi_q2_ellipticity_hemanta
-C_LIGHT = 299792.458
+from .lens_functions import phi_q2_ellipticity
+
+C_LIGHT = 299792.458  # km/s
 
 
-# ---------------------
-# Cubic B-spline basis (order=3)
-# ---------------------
 @njit(inline="always")
 def _bspline3(t):
     """
     Evaluate the centered cubic B-spline basis function B3(t).
 
-    This is the standard cubic B-spline with compact support on [-2, 2].
-    It provides C2 continuity (twice continuously differentiable) which is
-    essential for smooth interpolation.
-
     Parameters
     ----------
-    t : float
-        Distance from the spline center. The function has compact support,
-        meaning it returns 0 for |t| >= 2.
+    t : ``float``
+        Distance from the spline center. \n
+        The function has compact support on [-2, 2].
 
     Returns
     -------
-    float
-        The B-spline basis value at position t.
-        - Maximum value of 2/3 occurs at t=0
-        - Smoothly decays to 0 at |t|=2
-        - Returns 0 for |t| >= 2
-
-    Notes
-    -----
-    The cubic B-spline is defined piecewise:
-    - For |t| < 1: (4 - 6t² + 3t³) / 6
-    - For 1 <= |t| < 2: (2-|t|)³ / 6
-    - For |t| >= 2: 0
+    value : ``float``
+        The B-spline basis value at position t. \n
+        - Maximum value of 2/3 at t=0 \n
+        - Smoothly decays to 0 at |t|=2 \n
+        - Returns 0 for |t| >= 2 \n
     """
-    at = abs(t)  # Use absolute value for symmetric spline
+    at = abs(t)
     if at < 1.0:
-        # Central region: polynomial approximation
         return (4.0 - 6.0 * at * at + 3.0 * at * at * at) / 6.0
     elif at < 2.0:
-        # Outer region: cubic decay
         u = 2.0 - at
         return (u * u * u) / 6.0
     else:
-        # Beyond support: zero
         return 0.0
 
 
@@ -81,30 +70,26 @@ def _clamp_int(i, n):
     """
     Clamp an index to valid array bounds using 'nearest' boundary mode.
 
-    This implements the 'nearest' boundary condition used in scipy's
-    map_coordinates. Out-of-bounds indices are clamped to the nearest
-    valid index rather than wrapping or raising an error.
-
     Parameters
     ----------
-    i : int
+    i : ``int``
         The index to clamp. Can be negative or exceed array bounds.
-    n : int
+    n : ``int``
         The size of the array dimension (valid indices are 0 to n-1).
 
     Returns
     -------
-    int
-        The clamped index in the range [0, n-1]:
-        - If i < 0, returns 0
-        - If i > n-1, returns n-1
-        - Otherwise returns i unchanged
+    clamped_index : ``int``
+        The clamped index in the range [0, n-1]. \n
+        - If i < 0, returns 0 \n
+        - If i > n-1, returns n-1 \n
+        - Otherwise returns i unchanged \n
     """
     if i < 0:
-        return 0  # Clamp to lower bound
+        return 0
     if i > n - 1:
-        return n - 1  # Clamp to upper bound
-    return i  # Within bounds, return as-is
+        return n - 1
+    return i
 
 
 @njit(inline="always")
@@ -112,96 +97,60 @@ def _physical_to_index(x, x0, x1, n):
     """
     Convert a physical coordinate to a fractional grid index.
 
-    Maps a value from the physical coordinate space [x0, x1] to the
-    corresponding fractional index in the discrete grid space [0, n-1].
-    This is essential for interpolation as it determines which grid points
-    contribute to the interpolated value.
-
     Parameters
     ----------
-    x : float
+    x : ``float``
         The physical coordinate value to convert.
-    x0 : float
+    x0 : ``float``
         The minimum physical coordinate (maps to index 0).
-    x1 : float
+    x1 : ``float``
         The maximum physical coordinate (maps to index n-1).
-    n : int
+    n : ``int``
         The number of grid points in this dimension.
 
     Returns
     -------
-    float
-        The fractional index in [0, n-1]. Non-integer values indicate
-        positions between grid points that require interpolation.
-
-    Examples
-    --------
-    >>> _physical_to_index(0.5, 0.0, 1.0, 11)
-    5.0  # Exactly at grid point 5
-    >>> _physical_to_index(0.55, 0.0, 1.0, 11)
-    5.5  # Halfway between grid points 5 and 6
+    fractional_index : ``float``
+        The fractional index in [0, n-1]. \n
+        Non-integer values indicate positions between grid points.
     """
     return (x - x0) * (n - 1) / (x1 - x0)
 
 
-# ---------------------
-# 5D cubic B-spline interpolation on prefiltered coefficients
-# This matches scipy.ndimage.map_coordinates with:
-#   order=3 (cubic), mode='nearest', prefilter=False
-# ---------------------
 @njit(parallel=True)
 def _map_coordinates_5d_cubic_nearest(coeff, ie1, ie2, ig, ig1, ig2):
     """
     Perform 5D cubic B-spline interpolation on prefiltered coefficients.
 
     This function evaluates a cubic (order-3) B-spline interpolation in 5 dimensions.
-    It matches the behavior of scipy.ndimage.map_coordinates with order=3,
-    mode='nearest', and prefilter=False. The function is parallelized across
-    the input points for optimal performance.
+    It matches the behavior of ``scipy.ndimage.map_coordinates`` with order=3,
+    mode='nearest', and prefilter=False.
 
     Parameters
     ----------
-    coeff : ndarray, shape (n1, n2, n3, n4, n5)
-        Prefiltered B-spline coefficients. This should be the output of
-        scipy.ndimage.spline_filter(data, order=3) applied to the original
-        grid data.
-    ie1, ie2, ig, ig1, ig2 : ndarray, shape (N,)
-        Fractional indices for each of the 5 dimensions. These are the
-        positions at which to interpolate, expressed in grid index coordinates.
-        Values can be non-integer (for positions between grid points) and
-        can be outside [0, n-1] (will use 'nearest' boundary mode).
+    coeff : ``numpy.ndarray``
+        Prefiltered B-spline coefficients with shape (n1, n2, n3, n4, n5). \n
+        Should be the output of ``scipy.ndimage.spline_filter(data, order=3)``.
+    ie1 : ``numpy.ndarray``
+        Fractional indices for the first dimension (e1), shape (N,).
+    ie2 : ``numpy.ndarray``
+        Fractional indices for the second dimension (e2), shape (N,).
+    ig : ``numpy.ndarray``
+        Fractional indices for the third dimension (gamma), shape (N,).
+    ig1 : ``numpy.ndarray``
+        Fractional indices for the fourth dimension (gamma1), shape (N,).
+    ig2 : ``numpy.ndarray``
+        Fractional indices for the fifth dimension (gamma2), shape (N,).
 
     Returns
     -------
-    out : ndarray, shape (N,)
-        Interpolated values at the specified fractional indices.
-
-    Algorithm
-    ---------
-    For each output point:
-    1. Determine the 4x4x4x4x4 neighborhood of grid points that contribute
-       to the interpolation (cubic B-spline has compact support of width 4)
-    2. Compute the B-spline basis weight for each dimension
-    3. Accumulate the weighted sum of coefficient values
-    4. Skip zero-weight contributions for efficiency
-
-    Notes
-    -----
-    - The function uses parallel loops (prange) for processing multiple points
-    - Zero-weight contributions are skipped to improve performance
-    - Boundary handling uses 'nearest' mode (clamping to valid indices)
-    - This is significantly faster than scipy for large batches due to JIT compilation
-
-    See Also
-    --------
-    scipy.ndimage.map_coordinates : The scipy function this mimics
-    scipy.ndimage.spline_filter : For computing the prefiltered coefficients
+    out : ``numpy.ndarray``
+        Interpolated values at the specified fractional indices, shape (N,).
     """
     n1, n2, n3, n4, n5 = coeff.shape
     N = ie1.size
     out = np.empty(N, dtype=np.float64)
 
-    # Parallel loop over all interpolation points
     for k in prange(N):
         x1 = ie1[k]
         x2 = ie2[k]
@@ -253,12 +202,9 @@ def _map_coordinates_5d_cubic_nearest(coeff, ie1, ie2, ig, ig1, ig2):
 
     return out
 
-# ---------------------
-# User-facing jitted function with the signature you requested
-# IMPORTANT: Always returns a 1D array (consistent type).
-# ---------------------
+
 @njit
-def cross_section(
+def _cross_section(
     zs,
     zl,
     sigma,
@@ -278,25 +224,67 @@ def cross_section(
     csunit_to_cs_intercept,
 ):
     """
-    theta_E, gamma, gamma1, gamma2, q, phi: 1D arrays (same length)
-    grids: 1D
-    cs_spline_coeff: spline-filtered coefficients (same shape as cs_spline_coeff)
-    returns: 1D array
-    """
+    Compute lensing cross sections via 5D B-spline interpolation.
 
-    # angular diameter distance
+    Parameters
+    ----------
+    zs : ``numpy.ndarray``
+        Source redshifts, shape (N,).
+    zl : ``numpy.ndarray``
+        Lens redshifts, shape (N,).
+    sigma : ``numpy.ndarray``
+        Velocity dispersions (units: km/s), shape (N,).
+    q : ``numpy.ndarray``
+        Axis ratios, shape (N,).
+    phi : ``numpy.ndarray``
+        Position angles (units: radians), shape (N,).
+    gamma : ``numpy.ndarray``
+        Density profile slopes, shape (N,).
+    gamma1 : ``numpy.ndarray``
+        External shear component 1, shape (N,).
+    gamma2 : ``numpy.ndarray``
+        External shear component 2, shape (N,).
+    e1_grid : ``numpy.ndarray``
+        Grid values for ellipticity component e1, shape (n_e1,).
+    e2_grid : ``numpy.ndarray``
+        Grid values for ellipticity component e2, shape (n_e2,).
+    gamma_grid : ``numpy.ndarray``
+        Grid values for density slope gamma, shape (n_g,).
+    gamma1_grid : ``numpy.ndarray``
+        Grid values for shear component gamma1, shape (n_g1,).
+    gamma2_grid : ``numpy.ndarray``
+        Grid values for shear component gamma2, shape (n_g2,).
+    cs_spline_coeff_grid : ``numpy.ndarray``
+        Prefiltered B-spline coefficients for cross section, \n
+        shape (n_e1, n_e2, n_g, n_g1, n_g2).
+    Da_instance : ``callable``
+        Angular diameter distance function. \n
+        Signature: ``Da_instance(z) -> distance``
+    csunit_to_cs_slope : ``float``
+        Slope for affine calibration from unit cross section.
+    csunit_to_cs_intercept : ``float``
+        Intercept for affine calibration from unit cross section.
+
+    Returns
+    -------
+    cs : ``numpy.ndarray``
+        Computed cross sections (units: radians^2), shape (N,). \n
+        Negative values are clipped to zero.
+    """
+    # Angular diameter distances
     Ds = Da_instance(zs)
     Dl = Da_instance(zl)
-    Dls = (Ds*(1+zs) - Dl*(1+zl))/(1+zs)
-    # find theta_E
+    Dls = (Ds * (1 + zs) - Dl * (1 + zl)) / (1 + zs)
+
+    # Einstein radius
     theta_E = 4.0 * np.pi * (sigma / C_LIGHT) ** 2 * (Dls / Ds)
 
     # Convert (q, phi) -> (e1, e2)
-    e1, e2 = phi_q2_ellipticity_hemanta(phi, q)
+    e1, e2 = phi_q2_ellipticity(phi, q)
 
     N = zs.size
 
-    # fractional indices
+    # Compute fractional indices
     ie1 = np.empty(N, dtype=np.float64)
     ie2 = np.empty(N, dtype=np.float64)
     ig = np.empty(N, dtype=np.float64)
@@ -322,28 +310,17 @@ def cross_section(
         ig1[i] = _physical_to_index(gamma1[i], g1_min, g1_max, n_g1)
         ig2[i] = _physical_to_index(gamma2[i], g2_min, g2_max, n_g2)
 
-    # unit cross-section via cubic spline on coefficients
+    # Unit cross-section via cubic spline interpolation
     cs_unit = _map_coordinates_5d_cubic_nearest(cs_spline_coeff_grid, ie1, ie2, ig, ig1, ig2)
 
-    # scaling by area_sis and affine calibration
-    # out = np.empty(N, dtype=np.float64)
-    # for i in range(N):
-    #     area_sis = np.pi * theta_E[i] * theta_E[i]
-    #     cs = cs_unit[i] * (csunit_to_cs_intercept + csunit_to_cs_slope * area_sis)
-    #     if cs < 0.0:
-    #         cs = 0.0
-    #     out[i] = cs
+    # Scale by SIS area and apply affine calibration
     area_sis = np.pi * theta_E**2
     cs = cs_unit * (csunit_to_cs_intercept + csunit_to_cs_slope * area_sis)
-    idx = np.where(cs < 0.0)
-    cs[idx] = 0.0
+    cs = np.maximum(cs, 0.0)
 
     return cs
 
 
-# ---------------------
-# Factory: computes coeffs once and returns a reinitialized njit closure
-# ---------------------
 def make_cross_section_reinit(
     e1_grid,
     e2_grid,
@@ -356,7 +333,52 @@ def make_cross_section_reinit(
     csunit_to_cs_intercept=-3.2311742677852644e-27,
 ):
     """
-    
+    Factory function to create a JIT-compiled cross section calculator.
+
+    This function precomputes B-spline coefficients and creates a closure 
+    that captures the grid parameters, returning a fast Numba-compiled 
+    function for computing cross sections.
+
+    Parameters
+    ----------
+    e1_grid : ``numpy.ndarray``
+        Grid values for ellipticity component e1, shape (n_e1,).
+    e2_grid : ``numpy.ndarray``
+        Grid values for ellipticity component e2, shape (n_e2,).
+    gamma_grid : ``numpy.ndarray``
+        Grid values for density slope gamma, shape (n_g,).
+    gamma1_grid : ``numpy.ndarray``
+        Grid values for shear component gamma1, shape (n_g1,).
+    gamma2_grid : ``numpy.ndarray``
+        Grid values for shear component gamma2, shape (n_g2,).
+    cs_spline_coeff_grid : ``numpy.ndarray``
+        Raw cross section grid data (before spline filtering), \n
+        shape (n_e1, n_e2, n_g, n_g1, n_g2).
+    Da_instance : ``callable``
+        Angular diameter distance function. \n
+        Signature: ``Da_instance(z) -> distance``
+    csunit_to_cs_slope : ``float``
+        Slope for affine calibration from unit cross section. \n
+        default: 0.31830988618379075
+    csunit_to_cs_intercept : ``float``
+        Intercept for affine calibration from unit cross section. \n
+        default: -3.2311742677852644e-27
+
+    Returns
+    -------
+    cross_section_reinit : ``callable``
+        JIT-compiled function with signature: \n
+        ``cross_section_reinit(zs, zl, sigma, q, phi, gamma, gamma1, gamma2)`` \n
+        Returns cross sections as ``numpy.ndarray`` of shape (N,).
+
+    Examples
+    --------
+    >>> from ler.lens_galaxy_population.cross_section_interpolator import make_cross_section_reinit
+    >>> cs_func = make_cross_section_reinit(
+    ...     e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid,
+    ...     cs_spline_coeff_grid, Da_instance
+    ... )
+    >>> cross_sections = cs_func(zs, zl, sigma, q, phi, gamma, gamma1, gamma2)
     """
     e1g = np.asarray(e1_grid, dtype=np.float64)
     e2g = np.asarray(e2_grid, dtype=np.float64)
@@ -365,20 +387,17 @@ def make_cross_section_reinit(
     g2g = np.asarray(gamma2_grid, dtype=np.float64)
     cs = np.asarray(cs_spline_coeff_grid, dtype=np.float64)
 
-    # Same preprocessing as your class:
+    # Precompute spline coefficients
     cs_coeff = ndimage.spline_filter(cs, order=3)
 
     slope_given = float(csunit_to_cs_slope)
     intercept_given = float(csunit_to_cs_intercept)
 
-    _Da_instance = Da_instance
-    
-    Da_function = njit(lambda z: _Da_instance(z))
+    Da_function = njit(lambda z: Da_instance(z))
 
-    # Close over "given" parameters
     @njit
     def cross_section_reinit(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):
-        return cross_section(
+        return _cross_section(
             zs=zs,
             zl=zl,
             sigma=sigma,

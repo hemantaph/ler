@@ -133,7 +133,7 @@
 
 <span class="c1"># the following .py file will be called if they are not given in the class initialization</span>
 <span class="kn">from</span> <span class="nn">.multiprocessing_routine</span> <span class="kn">import</span> <span class="n">solve_lens_equation</span>
-<span class="kn">from</span> <span class="nn">..lens_galaxy_population.jit_functions</span> <span class="kn">import</span> <span class="n">phi_q2_ellipticity_hemanta</span>
+<span class="kn">from</span> <span class="nn">..lens_galaxy_population.jit_functions</span> <span class="kn">import</span> <span class="n">phi_q2_ellipticity</span>
 
 
 <div class="viewcode-block" id="ImageProperties">
@@ -300,7 +300,7 @@
         <span class="c1"># ellipticity of the galaxy lens</span>
         <span class="n">phi</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;phi&quot;</span><span class="p">]</span>
         <span class="n">q</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;q&quot;</span><span class="p">]</span>
-        <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span> <span class="o">=</span> <span class="n">phi_q2_ellipticity_hemanta</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+        <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span> <span class="o">=</span> <span class="n">phi_q2_ellipticity</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
 
         <span class="n">gamma</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;gamma&quot;</span><span class="p">]</span>
         <span class="n">einstein_radius</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="s2">&quot;theta_E&quot;</span><span class="p">]</span>

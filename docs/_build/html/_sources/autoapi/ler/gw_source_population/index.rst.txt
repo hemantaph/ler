@@ -40,19 +40,19 @@ Functions
    ler.gw_source_population.interpolator_json_path
    ler.gw_source_population.luminosity_distance
    ler.gw_source_population.differential_comoving_volume
-   ler.gw_source_population.merger_rate_density_bbh_popI_II_oguri2018
+   ler.gw_source_population.merger_rate_density_bbh_oguri2018
    ler.gw_source_population.sfr_madau_dickinson2014
    ler.gw_source_population.merger_rate_density_bbh_popIII_ken2022
    ler.gw_source_population.merger_rate_density_bbh_primordial_ken2022
    ler.gw_source_population.sfr_with_time_delay
-   ler.gw_source_population.lognormal_distribution_2D
+   ler.gw_source_population.binary_masses_BBH_popIII_lognormal
    ler.gw_source_population.bns_bimodal_pdf
    ler.gw_source_population.inverse_transform_sampler_m1m2
    ler.gw_source_population.sample_powerlaw_gaussian_source_bbh_masses
-   ler.gw_source_population.sample_broken_powerlaw_nsbh_masses
+   ler.gw_source_population.binary_masses_NSBH_broken_powerlaw
    ler.gw_source_population.inverse_transform_sampler
    ler.gw_source_population.sample_from_powerlaw_distribution
-   ler.gw_source_population.merger_rate_density_bbh_popI_II_oguri2018
+   ler.gw_source_population.merger_rate_density_bbh_oguri2018
    ler.gw_source_population.merger_rate_density_bbh_popIII_ken2022
    ler.gw_source_population.sfr_madau_fragos2017_with_bbh_td
    ler.gw_source_population.sfr_madau_dickinson2014_with_bbh_td
@@ -61,11 +61,11 @@ Functions
    ler.gw_source_population.sfr_madau_fragos2017
    ler.gw_source_population.sfr_madau_dickinson2014
    ler.gw_source_population.merger_rate_density_bbh_primordial_ken2022
-   ler.gw_source_population.lognormal_distribution_2D
+   ler.gw_source_population.binary_masses_BBH_popIII_lognormal
    ler.gw_source_population.inverse_transform_sampler_m1m2
    ler.gw_source_population.bns_bimodal_pdf
    ler.gw_source_population.sample_broken_powerlaw
-   ler.gw_source_population.sample_broken_powerlaw_nsbh_masses
+   ler.gw_source_population.binary_masses_NSBH_broken_powerlaw
    ler.gw_source_population.broken_powerlaw_pdf
    ler.gw_source_population.powerlaw_gaussian_pdf
    ler.gw_source_population.sample_powerlaw_gaussian
@@ -203,7 +203,7 @@ Attributes
 .. py:function:: differential_comoving_volume(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
 
 
-.. py:function:: merger_rate_density_bbh_popI_II_oguri2018(zs, R0=23.9 * 1e-09, b2=1.6, b3=2.1, b4=30)
+.. py:function:: merger_rate_density_bbh_oguri2018(zs, R0=23.9 * 1e-09, b2=1.6, b3=2.1, b4=30)
 
    
    Compute the merger rate density for PopI/II BBH.
@@ -252,8 +252,8 @@ Attributes
 
    .. rubric:: Examples
 
-   >>> from ler.gw_source_population import merger_rate_density_bbh_popI_II_oguri2018
-   >>> rate_density = merger_rate_density_bbh_popI_II_oguri2018(zs=0.1)
+   >>> from ler.gw_source_population import merger_rate_density_bbh_oguri2018
+   >>> rate_density = merger_rate_density_bbh_oguri2018(zs=0.1)
 
 
 
@@ -547,11 +547,11 @@ Attributes
 
            Options:
 
-           - 'merger_rate_density_bbh_popI_II_oguri2018': PopI/II BBH (Oguri 2018)
+           - 'merger_rate_density_bbh_oguri2018': PopI/II BBH (Oguri 2018)
 
            - 'sfr_madau_dickinson2014': Star formation rate (Madau & Dickinson 2014)
 
-           - 'sfr_with_td': SFR with time delay
+           - 'sfr_with_time_delay': SFR with time delay
 
            - 'merger_rate_density_bbh_popIII_ken2022': PopIII BBH (Ng 2022)
 
@@ -559,7 +559,7 @@ Attributes
 
            - callable: User-defined function f(z) -> rate density
 
-           default: None (uses 'merger_rate_density_bbh_popI_II_oguri2018')
+           default: None (uses 'merger_rate_density_bbh_oguri2018')
 
        **merger_rate_density_param** : ``dict`` or ``None``
            Parameters for the merger rate density function.
@@ -613,11 +613,11 @@ Attributes
    +=====================================================+====================================================+
    | :meth:`~merger_rate_density_detector_frame`         | Compute merger rate density in detector frame      |
    +-----------------------------------------------------+----------------------------------------------------+
-   | :meth:`~merger_rate_density_bbh_popI_II_oguri2018`  | PopI/II merger rate density (Oguri 2018)           |
+   | :meth:`~merger_rate_density_bbh_oguri2018`  | PopI/II merger rate density (Oguri 2018)           |
    +-----------------------------------------------------+----------------------------------------------------+
    | :meth:`~sfr_madau_dickinson2014`                    | Star formation rate (Madau & Dickinson 2014)       |
    +-----------------------------------------------------+----------------------------------------------------+
-   | :meth:`~sfr_with_td`                                | SFR with time delay convolution                    |
+   | :meth:`~sfr_with_time_delay`                                | SFR with time delay convolution                    |
    +-----------------------------------------------------+----------------------------------------------------+
    | :meth:`~merger_rate_density_bbh_popIII_ken2022`     | PopIII merger rate density (Ng 2022)               |
    +-----------------------------------------------------+----------------------------------------------------+
@@ -1062,11 +1062,11 @@ Attributes
 
               Available models:
 
-              - 'merger_rate_density_bbh_popI_II_oguri2018'
+              - 'merger_rate_density_bbh_oguri2018'
 
               - 'sfr_madau_dickinson2014'
 
-              - 'sfr_with_td'
+              - 'sfr_with_time_delay'
 
               - 'merger_rate_density_bbh_popIII_ken2022'
 
@@ -1091,7 +1091,7 @@ Attributes
 
       
 
-   .. py:method:: merger_rate_density_bbh_popI_II_oguri2018(zs, get_attribute=False, **kwargs)
+   .. py:method:: merger_rate_density_bbh_oguri2018(zs, get_attribute=False, **kwargs)
 
       
       Compute PopI/II BBH merger rate density (Oguri et al. 2018).
@@ -1129,7 +1129,7 @@ Attributes
       .. rubric:: Examples
 
       >>> from ler.gw_source_population import CBCSourceRedshiftDistribution
-      >>> cbc = CBCSourceRedshiftDistribution(merger_rate_density="merger_rate_density_bbh_popI_II_oguri2018")
+      >>> cbc = CBCSourceRedshiftDistribution(merger_rate_density="merger_rate_density_bbh_oguri2018")
       >>> rate = cbc.merger_rate_density(zs=0.5)
 
 
@@ -1137,7 +1137,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: sfr_with_td(zs, get_attribute=False, **kwargs)
+   .. py:method:: sfr_with_time_delay(zs, get_attribute=False, **kwargs)
 
       
       Compute merger rate density with time delay convolution.
@@ -1417,11 +1417,11 @@ Attributes
 
            Options:
 
-           - 'merger_rate_density_bbh_popI_II_oguri2018': PopI/II BBH (Oguri 2018)
+           - 'merger_rate_density_bbh_oguri2018': PopI/II BBH (Oguri 2018)
 
            - 'sfr_madau_dickinson2014': Star formation rate (Madau & Dickinson 2014)
 
-           - 'sfr_with_td': SFR with time delay
+           - 'sfr_with_time_delay': SFR with time delay
 
            - 'merger_rate_density_bbh_popIII_ken2022': PopIII BBH (Ng 2022)
 
@@ -1429,7 +1429,7 @@ Attributes
 
            - callable: User-defined function f(z) -> rate density
 
-           default: None (uses 'merger_rate_density_bbh_popI_II_oguri2018')
+           default: None (uses 'merger_rate_density_bbh_oguri2018')
 
        **merger_rate_density_param** : ``dict`` or ``None``
            Parameters for the merger rate density function.
@@ -1483,11 +1483,11 @@ Attributes
    +=====================================================+====================================================+
    | :meth:`~merger_rate_density_detector_frame`         | Compute merger rate density in detector frame      |
    +-----------------------------------------------------+----------------------------------------------------+
-   | :meth:`~merger_rate_density_bbh_popI_II_oguri2018`  | PopI/II merger rate density (Oguri 2018)           |
+   | :meth:`~merger_rate_density_bbh_oguri2018`  | PopI/II merger rate density (Oguri 2018)           |
    +-----------------------------------------------------+----------------------------------------------------+
    | :meth:`~sfr_madau_dickinson2014`                    | Star formation rate (Madau & Dickinson 2014)       |
    +-----------------------------------------------------+----------------------------------------------------+
-   | :meth:`~sfr_with_td`                                | SFR with time delay convolution                    |
+   | :meth:`~sfr_with_time_delay`                                | SFR with time delay convolution                    |
    +-----------------------------------------------------+----------------------------------------------------+
    | :meth:`~merger_rate_density_bbh_popIII_ken2022`     | PopIII merger rate density (Ng 2022)               |
    +-----------------------------------------------------+----------------------------------------------------+
@@ -1932,11 +1932,11 @@ Attributes
 
               Available models:
 
-              - 'merger_rate_density_bbh_popI_II_oguri2018'
+              - 'merger_rate_density_bbh_oguri2018'
 
               - 'sfr_madau_dickinson2014'
 
-              - 'sfr_with_td'
+              - 'sfr_with_time_delay'
 
               - 'merger_rate_density_bbh_popIII_ken2022'
 
@@ -1961,7 +1961,7 @@ Attributes
 
       
 
-   .. py:method:: merger_rate_density_bbh_popI_II_oguri2018(zs, get_attribute=False, **kwargs)
+   .. py:method:: merger_rate_density_bbh_oguri2018(zs, get_attribute=False, **kwargs)
 
       
       Compute PopI/II BBH merger rate density (Oguri et al. 2018).
@@ -1999,7 +1999,7 @@ Attributes
       .. rubric:: Examples
 
       >>> from ler.gw_source_population import CBCSourceRedshiftDistribution
-      >>> cbc = CBCSourceRedshiftDistribution(merger_rate_density="merger_rate_density_bbh_popI_II_oguri2018")
+      >>> cbc = CBCSourceRedshiftDistribution(merger_rate_density="merger_rate_density_bbh_oguri2018")
       >>> rate = cbc.merger_rate_density(zs=0.5)
 
 
@@ -2007,7 +2007,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: sfr_with_td(zs, get_attribute=False, **kwargs)
+   .. py:method:: sfr_with_time_delay(zs, get_attribute=False, **kwargs)
 
       
       Compute merger rate density with time delay convolution.
@@ -2192,7 +2192,7 @@ Attributes
           !! processed by numpydoc !!
 
 
-.. py:function:: lognormal_distribution_2D(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000)
+.. py:function:: binary_masses_BBH_popIII_lognormal(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000)
 
    
    Sample from a lognormal distribution in 2D mass space.
@@ -2249,8 +2249,8 @@ Attributes
 
    .. rubric:: Examples
 
-   >>> from ler.gw_source_population import lognormal_distribution_2D
-   >>> m1, m2 = lognormal_distribution_2D(size=1000)
+   >>> from ler.gw_source_population import binary_masses_BBH_popIII_lognormal
+   >>> m1, m2 = binary_masses_BBH_popIII_lognormal(size=1000)
 
 
 
@@ -2431,7 +2431,7 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: sample_broken_powerlaw_nsbh_masses(size=1000, mminbh=26.0, mmaxbh=125.0, alpha_1=6.75, alpha_2=0.0, b=0.5, delta_m=5.0, mminns=1.0, mmaxns=3.0, alphans=0.0, normalization_size=1000)
+.. py:function:: binary_masses_NSBH_broken_powerlaw(size=1000, mminbh=26.0, mmaxbh=125.0, alpha_1=6.75, alpha_2=0.0, b=0.5, delta_m=5.0, mminns=1.0, mmaxns=3.0, alphans=0.0, normalization_size=1000)
 
    
    Generate NSBH mass samples from broken power-law (BH) and power-law (NS).
@@ -2643,7 +2643,7 @@ Attributes
    +=====================================================+================================================+
    | :meth:`~sample_gw_parameters`                       | Sample all GW parameters for compact binaries  |
    +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~binary_masses_BBH_popI_II_powerlaw_gaussian`| Sample BBH masses with PowerLaw+PEAK model     |
+   | :meth:`~binary_masses_BBH_powerlaw_gaussian`| Sample BBH masses with PowerLaw+PEAK model     |
    +-----------------------------------------------------+------------------------------------------------+
    | :meth:`~binary_masses_BBH_popIII_lognormal`         | Sample pop III BBH masses from lognormal       |
    +-----------------------------------------------------+------------------------------------------------+
@@ -3529,7 +3529,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BBH_popI_II_powerlaw_gaussian(size, get_attribute=False, **kwargs)
+   .. py:method:: binary_masses_BBH_powerlaw_gaussian(size, get_attribute=False, **kwargs)
 
       
       Sample source masses with PowerLaw+PEAK model for Population I/II BBH.
@@ -3587,7 +3587,7 @@ Attributes
 
       >>> from ler.gw_source_population import CBCSourceParameterDistribution
       >>> cbc = CBCSourceParameterDistribution()
-      >>> m1_src, m2_src = cbc.binary_masses_BBH_popI_II_powerlaw_gaussian(size=1000)
+      >>> m1_src, m2_src = cbc.binary_masses_BBH_powerlaw_gaussian(size=1000)
 
 
 
@@ -4126,7 +4126,7 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: merger_rate_density_bbh_popI_II_oguri2018(zs, R0=23.9 * 1e-09, b2=1.6, b3=2.1, b4=30)
+.. py:function:: merger_rate_density_bbh_oguri2018(zs, R0=23.9 * 1e-09, b2=1.6, b3=2.1, b4=30)
 
    
    Compute the merger rate density for PopI/II BBH.
@@ -4175,8 +4175,8 @@ Attributes
 
    .. rubric:: Examples
 
-   >>> from ler.gw_source_population import merger_rate_density_bbh_popI_II_oguri2018
-   >>> rate_density = merger_rate_density_bbh_popI_II_oguri2018(zs=0.1)
+   >>> from ler.gw_source_population import merger_rate_density_bbh_oguri2018
+   >>> rate_density = merger_rate_density_bbh_oguri2018(zs=0.1)
 
 
 
@@ -4544,7 +4544,7 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: lognormal_distribution_2D(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000)
+.. py:function:: binary_masses_BBH_popIII_lognormal(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000)
 
    
    Sample from a lognormal distribution in 2D mass space.
@@ -4601,8 +4601,8 @@ Attributes
 
    .. rubric:: Examples
 
-   >>> from ler.gw_source_population import lognormal_distribution_2D
-   >>> m1, m2 = lognormal_distribution_2D(size=1000)
+   >>> from ler.gw_source_population import binary_masses_BBH_popIII_lognormal
+   >>> m1, m2 = binary_masses_BBH_popIII_lognormal(size=1000)
 
 
 
@@ -4788,7 +4788,7 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: sample_broken_powerlaw_nsbh_masses(size=1000, mminbh=26.0, mmaxbh=125.0, alpha_1=6.75, alpha_2=0.0, b=0.5, delta_m=5.0, mminns=1.0, mmaxns=3.0, alphans=0.0, normalization_size=1000)
+.. py:function:: binary_masses_NSBH_broken_powerlaw(size=1000, mminbh=26.0, mmaxbh=125.0, alpha_1=6.75, alpha_2=0.0, b=0.5, delta_m=5.0, mminns=1.0, mmaxns=3.0, alphans=0.0, normalization_size=1000)
 
    
    Generate NSBH mass samples from broken power-law (BH) and power-law (NS).

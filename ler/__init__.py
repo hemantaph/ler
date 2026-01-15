@@ -5,7 +5,8 @@ ler: LVK (LIGO-Virgo-KAGRA collaboration) Event (compact-binary mergers) Rate ca
 import os
 import multiprocessing as mp
 import warnings
-
+# disable OpenMP warnings
+os.environ['KMP_WARNINGS'] = 'off'
 
 def set_multiprocessing_start_method():
     """
@@ -64,6 +65,7 @@ import warnings
 import logging
 from . import rates
 from .rates import LeR
+from .rates import GWRATES
 from ._version import __version__
 
 # Package metadata

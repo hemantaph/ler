@@ -25,7 +25,7 @@ Functions
    ler.lens_galaxy_population.jit_functions.axis_ratio_rayleigh_pdf
    ler.lens_galaxy_population.jit_functions.velocity_dispersion_z_dependent
    ler.lens_galaxy_population.jit_functions.bounded_normal_sample
-   ler.lens_galaxy_population.jit_functions.phi_q2_ellipticity_hemanta
+   ler.lens_galaxy_population.jit_functions.phi_q2_ellipticity
    ler.lens_galaxy_population.jit_functions.sample_sigma_zl
 
 
@@ -285,7 +285,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: phi_q2_ellipticity_hemanta(phi, q)
+.. py:function:: phi_q2_ellipticity(phi, q)
 
    
    Function to convert phi and q to ellipticity e1 and e2.

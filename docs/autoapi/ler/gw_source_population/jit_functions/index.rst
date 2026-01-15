@@ -36,7 +36,7 @@ Functions
 
 .. autoapisummary::
 
-   ler.gw_source_population.jit_functions.merger_rate_density_bbh_popI_II_oguri2018
+   ler.gw_source_population.jit_functions.merger_rate_density_bbh_oguri2018
    ler.gw_source_population.jit_functions.merger_rate_density_bbh_popIII_ken2022
    ler.gw_source_population.jit_functions.sfr_madau_fragos2017_with_bbh_td
    ler.gw_source_population.jit_functions.sfr_madau_dickinson2014_with_bbh_td
@@ -45,11 +45,11 @@ Functions
    ler.gw_source_population.jit_functions.sfr_madau_fragos2017
    ler.gw_source_population.jit_functions.sfr_madau_dickinson2014
    ler.gw_source_population.jit_functions.merger_rate_density_bbh_primordial_ken2022
-   ler.gw_source_population.jit_functions.lognormal_distribution_2D
+   ler.gw_source_population.jit_functions.binary_masses_BBH_popIII_lognormal
    ler.gw_source_population.jit_functions.inverse_transform_sampler_m1m2
    ler.gw_source_population.jit_functions.bns_bimodal_pdf
    ler.gw_source_population.jit_functions.sample_broken_powerlaw
-   ler.gw_source_population.jit_functions.sample_broken_powerlaw_nsbh_masses
+   ler.gw_source_population.jit_functions.binary_masses_NSBH_broken_powerlaw
    ler.gw_source_population.jit_functions.broken_powerlaw_pdf
    ler.gw_source_population.jit_functions.powerlaw_gaussian_pdf
    ler.gw_source_population.jit_functions.sample_powerlaw_gaussian
@@ -57,7 +57,7 @@ Functions
 
 
 
-.. py:function:: merger_rate_density_bbh_popI_II_oguri2018(zs, R0=23.9 * 1e-09, b2=1.6, b3=2.1, b4=30)
+.. py:function:: merger_rate_density_bbh_oguri2018(zs, R0=23.9 * 1e-09, b2=1.6, b3=2.1, b4=30)
 
    
    Compute the merger rate density for PopI/II BBH.
@@ -106,8 +106,8 @@ Functions
 
    .. rubric:: Examples
 
-   >>> from ler.gw_source_population import merger_rate_density_bbh_popI_II_oguri2018
-   >>> rate_density = merger_rate_density_bbh_popI_II_oguri2018(zs=0.1)
+   >>> from ler.gw_source_population import merger_rate_density_bbh_oguri2018
+   >>> rate_density = merger_rate_density_bbh_oguri2018(zs=0.1)
 
 
 
@@ -475,7 +475,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: lognormal_distribution_2D(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000)
+.. py:function:: binary_masses_BBH_popIII_lognormal(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000)
 
    
    Sample from a lognormal distribution in 2D mass space.
@@ -532,8 +532,8 @@ Functions
 
    .. rubric:: Examples
 
-   >>> from ler.gw_source_population import lognormal_distribution_2D
-   >>> m1, m2 = lognormal_distribution_2D(size=1000)
+   >>> from ler.gw_source_population import binary_masses_BBH_popIII_lognormal
+   >>> m1, m2 = binary_masses_BBH_popIII_lognormal(size=1000)
 
 
 
@@ -719,7 +719,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: sample_broken_powerlaw_nsbh_masses(size=1000, mminbh=26.0, mmaxbh=125.0, alpha_1=6.75, alpha_2=0.0, b=0.5, delta_m=5.0, mminns=1.0, mmaxns=3.0, alphans=0.0, normalization_size=1000)
+.. py:function:: binary_masses_NSBH_broken_powerlaw(size=1000, mminbh=26.0, mmaxbh=125.0, alpha_1=6.75, alpha_2=0.0, b=0.5, delta_m=5.0, mminns=1.0, mmaxns=3.0, alphans=0.0, normalization_size=1000)
 
    
    Generate NSBH mass samples from broken power-law (BH) and power-law (NS).

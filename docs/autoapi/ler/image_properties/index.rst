@@ -32,7 +32,7 @@ Functions
 .. autoapisummary::
 
    ler.image_properties.solve_lens_equation
-   ler.image_properties.phi_q2_ellipticity_hemanta
+   ler.image_properties.phi_q2_ellipticity
    ler.image_properties.solve_lens_equation
 
 
@@ -146,7 +146,7 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: phi_q2_ellipticity_hemanta(phi, q)
+.. py:function:: phi_q2_ellipticity(phi, q)
 
    
    Function to convert phi and q to ellipticity e1 and e2.

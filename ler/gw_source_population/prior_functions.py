@@ -3,8 +3,7 @@
 Module for JIT-compiled functions used in GW source population simulations.
 
 This module provides Numba JIT-compiled functions for efficient sampling and
-computation of merger rate densities, star formation rates, and mass distributions
-for various gravitational wave source populations including BBH, BNS, and NSBH.
+computation of merger rate densities, star formation rates, and mass distributions for various gravitational wave source populations including BBH, BNS, and NSBH.
 
 Key Features: \n
 - Merger rate density functions for PopI/II, PopIII, and Primordial BBH \n
@@ -22,65 +21,11 @@ from astropy.cosmology import LambdaCDM
 
 from ..utils import inverse_transform_sampler, sample_from_powerlaw_distribution
 
+# ------------------------------
+# Merger rate density functions
+# ------------------------------
 @njit
-def _cumulative_trapezoid(y, x=None, dx=1.0, initial=0.0):
-    """
-    Compute the cumulative integral using the trapezoidal rule.
-
-    Parameters
-    ----------
-    y : ``numpy.ndarray``
-        Function values to integrate.
-    x : ``numpy.ndarray`` or ``None``
-        x-coordinates. If None, uses evenly spaced points with spacing dx. \n
-        default: None
-    dx : ``float``
-        Spacing between x-coordinates if x is None. \n
-        default: 1.0
-    initial : ``float``
-        Initial value for the cumulative sum. \n
-        default: 0.0
-
-    Returns
-    -------
-    cumsum : ``numpy.ndarray``
-        Cumulative integral values.
-    """
-    if x is None:
-        x = np.arange(len(y)) * dx
-
-    cumsum = np.zeros_like(y)
-    cumsum[0] = initial
-    for i in range(1, len(y)):
-        cumsum[i] = cumsum[i - 1] + (y[i - 1] + y[i]) * (x[i] - x[i - 1]) / 2.0
-
-    return cumsum
-
-@njit
-def _sample_source_redshift(size, zs_inv_cdf=None):
-    """
-    Sample source redshifts using inverse CDF method.
-
-    Parameters
-    ----------
-    size : ``int``
-        Number of samples to draw.
-    zs_inv_cdf : ``numpy.ndarray``
-        2D array containing [cdf_values, redshift_values]. \n
-        default: None
-
-    Returns
-    -------
-    zs : ``numpy.ndarray``
-        Sampled redshift values.
-    """
-    u = np.random.uniform(0, 1, size=size)
-    x = zs_inv_cdf[0]  # cdf values
-    y = zs_inv_cdf[1]  # redshift values
-    return np.interp(u, x, y)
-
-@njit
-def merger_rate_density_bbh_popI_II_oguri2018(zs, R0=23.9 * 1e-9, b2=1.6, b3=2.1, b4=30):
+def merger_rate_density_bbh_oguri2018_function(zs, R0=19 * 1e-9, b2=1.6, b3=2.1, b4=30):
     """
     Compute the merger rate density for PopI/II BBH.
 
@@ -93,7 +38,7 @@ def merger_rate_density_bbh_popI_II_oguri2018(zs, R0=23.9 * 1e-9, b2=1.6, b3=2.1
         Source redshifts.
     R0 : ``float``
         Local merger rate density at low redshift (Mpc^-3 yr^-1). \n
-        default: 23.9e-9
+        default: 19e-9 (GWTC-4)
     b2 : ``float``
         Fitting parameter. \n
         default: 1.6
@@ -111,13 +56,13 @@ def merger_rate_density_bbh_popI_II_oguri2018(zs, R0=23.9 * 1e-9, b2=1.6, b3=2.1
 
     Examples
     --------
-    >>> from ler.gw_source_population import merger_rate_density_bbh_popI_II_oguri2018
-    >>> rate_density = merger_rate_density_bbh_popI_II_oguri2018(zs=0.1)
+    >>> from ler.gw_source_population import merger_rate_density_bbh_oguri2018
+    >>> rate_density = merger_rate_density_bbh_oguri2018(zs=np.array([0.1]))
     """
     return R0 * (b4 + 1) * np.exp(b2 * zs) / (b4 + np.exp(b3 * zs))
 
 @njit
-def merger_rate_density_bbh_popIII_ken2022(zs, n0=19.2 * 1e-9, aIII=0.66, bIII=0.3, zIII=11.6):
+def merger_rate_density_bbh_popIII_ken2022_function(zs, n0=19.2 * 1e-9, aIII=0.66, bIII=0.3, zIII=11.6):
     """
     Compute the unnormalized merger rate density for PopIII BBH.
 
@@ -149,7 +94,7 @@ def merger_rate_density_bbh_popIII_ken2022(zs, n0=19.2 * 1e-9, aIII=0.66, bIII=0
     Examples
     --------
     >>> from ler.gw_source_population import merger_rate_density_bbh_popIII_ken2022
-    >>> rate_density = merger_rate_density_bbh_popIII_ken2022(zs=0.1)
+    >>> rate_density = merger_rate_density_bbh_popIII_ken2022(zs=np.array([0.1]))
     """
     return (
         n0
@@ -157,9 +102,12 @@ def merger_rate_density_bbh_popIII_ken2022(zs, n0=19.2 * 1e-9, aIII=0.66, bIII=0
         / (bIII + aIII * np.exp((aIII + bIII) * (zs - zIII)))
     )
 
-def sfr_madau_fragos2017_with_bbh_td(zs, R0=23.9 * 1e-9):
+@njit
+def merger_rate_density_madau_dickinson2014_function(zs, R0=19 * 1e-9, a=0.015, b=2.7, c=2.9, d=5.6):
     """
-    Compute star formation rate with BBH time delay using Madau & Fragos (2017).
+    Compute the merger rate density for BBH using Madau & Dickinson (2014) model.
+
+    Reference: Eqn. 15 of https://arxiv.org/pdf/1403.0007
 
     Parameters
     ----------
@@ -167,7 +115,142 @@ def sfr_madau_fragos2017_with_bbh_td(zs, R0=23.9 * 1e-9):
         Source redshifts.
     R0 : ``float``
         Local merger rate density (Mpc^-3 yr^-1). \n
-        default: 23.9e-9
+        default: 19e-9
+    a : ``float``
+        Normalization parameter. \n
+        default: 0.015
+    b : ``float``
+        Low-redshift power-law slope. \n
+        default: 2.7
+    c : ``float``
+        Turnover redshift parameter. \n
+        default: 2.9
+    d : ``float``
+        High-redshift power-law slope. \n
+        default: 5.6
+
+    Returns
+    -------
+    rate_density : ``float`` or ``numpy.ndarray``
+        Merger rate density (Mpc^-3 yr^-1).
+
+    Examples
+    --------
+    >>> from ler.gw_source_population import merger_rate_density_madau_dickinson2014
+    >>> rate_density = merger_rate_density_madau_dickinson2014(zs=np.array([0.1]))
+    """
+
+    density_helper = lambda zs: sfr_madau_dickinson2014(  
+        zs=zs, 
+        a=a, 
+        b=b, 
+        c=c,
+        d=d,
+    )
+
+    density_zs = R0 * density_helper(zs)/ density_helper(np.array([0.]))[0]
+
+    return density_zs
+
+@njit
+def merger_rate_density_madau_dickinson_belczynski_ng_function(zs, R0=19 * 1e-9, alpha_F=2.57, beta_F=5.83, c_F=3.36):
+    """
+    Compute BBH merger rate density following Ng et al. (2021).
+
+    This model uses a Madau-Dickinson-like functional form to fit the 
+    merger rate density of field BHs, accounting for time delays and 
+    metallicity effects.
+
+    density(zs) ∝ (1 + zs) ** alpha_F / (1 + ((1 + zs) / c_F) ** beta_F)
+
+    Parameters
+    ----------
+    zs : ``float`` or ``numpy.ndarray``
+        Source redshifts.
+    R0 : ``float``
+        Local merger rate density (Mpc^-3 yr^-1). \n
+        default: 19e-9
+    alpha_F : ``float``
+        Low-redshift power-law slope. \n
+        default: 2.57
+    beta_F : ``float``
+        High-redshift power-law slope. \n
+        default: 5.83
+    c_F : ``float``
+        Turnover redshift parameter. \n
+        default: 3.36
+
+    Returns
+    -------
+    rate_density : ``float`` or ``numpy.ndarray``
+        Merger rate density (Mpc^-3 yr^-1).
+
+    Examples
+    --------
+    >>> from ler.gw_source_population import merger_rate_density_madau_dickinson_belczynski_ng
+    >>> rate_density = merger_rate_density_madau_dickinson_belczynski_ng(zs=np.array([0.1]))
+    """
+
+    density_helper = lambda zs: sfr_madau_dickinson2014(  
+        zs=zs, 
+        a=1.0, 
+        b=alpha_F, 
+        c=c_F,
+        d=beta_F,
+    )
+    density_zs = R0 * density_helper(zs)/ density_helper(np.array([0.]))[0]
+
+    return density_zs
+
+def merger_rate_density_bbh_primordial_ken2022_function(zs, cosmology=None, n0=0.044 * 1e-9, t0=13.786885302009708):
+    """
+    Compute the merger rate density for Primordial BBH.
+
+    Reference: Ng et al. (2022). The output is in detector frame and is
+    unnormalized.
+
+    Parameters
+    ----------
+    zs : ``float`` or ``numpy.ndarray``
+        Source redshifts.
+    cosmology : ``astropy.cosmology`` or ``None``
+        Cosmology object for age calculations. \n
+        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+    n0 : ``float``
+        Normalization constant. \n
+        default: 0.044e-9
+    t0 : ``float``
+        Present age of the Universe (Gyr). \n
+        default: 13.786885302009708
+
+    Returns
+    -------
+    rate_density : ``float`` or ``numpy.ndarray``
+        Merger rate density.
+
+    Examples
+    --------
+    >>> from ler.gw_source_population import merger_rate_density_bbh_primordial_ken2022
+    >>> rate_density = merger_rate_density_bbh_primordial_ken2022(zs=np.array([0.1]))
+    """
+    if cosmology is None:
+        cosmology = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+
+    rate_density = n0 * (cosmology.age(z=zs).value / t0) ** (-34 / 37)
+    return rate_density
+
+
+def sfr_madau_fragos2017_with_bbh_td(zs, R0=19 * 1e-9):
+    """
+    Compute the merger rate density for BBH. This is computed from star formation rate, Madau & Fragos (2017), with an additional time delay. This function is relies on pre-generated data points. 
+
+    Parameters
+    ----------
+    zs : ``float`` or ``numpy.ndarray``
+        Source redshifts.
+    R0 : ``float``
+        Local merger rate density (Mpc^-3 yr^-1). \n
+        default: 19e-9
 
     Returns
     -------
@@ -181,9 +264,9 @@ def sfr_madau_fragos2017_with_bbh_td(zs, R0=23.9 * 1e-9):
     SFR = spline(zs)*R0
     return SFR
 
-def sfr_madau_dickinson2014_with_bbh_td(zs, R0=23.9 * 1e-9):
+def sfr_madau_dickinson2014_with_bbh_td(zs, R0=19 * 1e-9):
     """
-    Compute star formation rate with BBH time delay using Madau & Dickinson (2014).
+    Compute the merger rate density for BBH. This is computed from star formation rate, Madau & Dickinson (2014), with an additional time delay. This function is relies on pre-generated data points. 
 
     Parameters
     ----------
@@ -191,7 +274,7 @@ def sfr_madau_dickinson2014_with_bbh_td(zs, R0=23.9 * 1e-9):
         Source redshifts.
     R0 : ``float``
         Local merger rate density (Mpc^-3 yr^-1). \n
-        default: 23.9e-9
+        default: 19e-9
 
     Returns
     -------
@@ -205,9 +288,9 @@ def sfr_madau_dickinson2014_with_bbh_td(zs, R0=23.9 * 1e-9):
     SFR = spline(zs)*R0
     return SFR
 
-def sfr_madau_fragos2017_with_bns_td(zs, R0=105.5 * 1e-9):
+def sfr_madau_fragos2017_with_bns_td(zs, R0=89 * 1e-9):
     """
-    Compute star formation rate with BNS time delay using Madau & Fragos (2017).
+    Compute the merger rate density for BNS. This is computed from star formation rate, Madau & Fragos (2017), with an additional time delay. This function is relies on pre-generated data points. 
 
     Parameters
     ----------
@@ -215,7 +298,7 @@ def sfr_madau_fragos2017_with_bns_td(zs, R0=105.5 * 1e-9):
         Source redshifts.
     R0 : ``float``
         Local merger rate density (Mpc^-3 yr^-1). \n
-        default: 105.5e-9
+        default: 89e-9
 
     Returns
     -------
@@ -229,9 +312,9 @@ def sfr_madau_fragos2017_with_bns_td(zs, R0=105.5 * 1e-9):
     SFR = spline(zs)*R0
     return SFR
 
-def sfr_madau_dickinson2014_with_bns_td(zs, R0=105.5 * 1e-9):
+def sfr_madau_dickinson2014_with_bns_td(zs, R0=89 * 1e-9):
     """
-    Compute star formation rate with BNS time delay using Madau & Dickinson (2014).
+    Compute the merger rate density for BNS. This is computed from star formation rate, Madau & Dickinson (2014), with an additional time delay. This function is relies on pre-generated data points. 
 
     Parameters
     ----------
@@ -239,7 +322,7 @@ def sfr_madau_dickinson2014_with_bns_td(zs, R0=105.5 * 1e-9):
         Source redshifts.
     R0 : ``float``
         Local merger rate density (Mpc^-3 yr^-1). \n
-        default: 105.5e-9
+        default: 89e-9
 
     Returns
     -------
@@ -253,6 +336,9 @@ def sfr_madau_dickinson2014_with_bns_td(zs, R0=105.5 * 1e-9):
     SFR = spline(zs)*R0
     return SFR
 
+# ------------------------------
+# Star formation rate functions
+# ------------------------------
 @njit
 def sfr_madau_fragos2017(zs, a=0.01, b=2.6, c=3.2, d=6.2):
     """
@@ -316,49 +402,15 @@ def sfr_madau_dickinson2014(zs, a=0.015, b=2.7, c=2.9, d=5.6):
     Examples
     --------
     >>> from ler.gw_source_population import sfr_madau_dickinson2014
-    >>> sfr = sfr_madau_dickinson2014(zs=0.1)
+    >>> sfr = sfr_madau_dickinson2014(zs=np.array([0.1]))
     """
     return a * (1 + zs) ** b / (1 + ((1 + zs) / c) ** d)
 
-def merger_rate_density_bbh_primordial_ken2022(zs, cosmology=None, n0=0.044 * 1e-9, t0=13.786885302009708):
-    """
-    Compute the merger rate density for Primordial BBH.
-
-    Reference: Ng et al. (2022). The output is in detector frame and is
-    unnormalized.
-
-    Parameters
-    ----------
-    zs : ``float`` or ``numpy.ndarray``
-        Source redshifts.
-    cosmology : ``astropy.cosmology`` or ``None``
-        Cosmology object for age calculations. \n
-        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
-    n0 : ``float``
-        Normalization constant. \n
-        default: 0.044e-9
-    t0 : ``float``
-        Present age of the Universe (Gyr). \n
-        default: 13.786885302009708
-
-    Returns
-    -------
-    rate_density : ``float`` or ``numpy.ndarray``
-        Merger rate density.
-
-    Examples
-    --------
-    >>> from ler.gw_source_population import merger_rate_density_bbh_primordial_ken2022
-    >>> rate_density = merger_rate_density_bbh_primordial_ken2022(zs=0.1)
-    """
-    if cosmology is None:
-        cosmology = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
-
-    rate_density = n0 * (cosmology.age(z=zs).value / t0) ** (-34 / 37)
-    return rate_density
-
+# ------------------------------
+# Binary mass functions
+# ------------------------------
 @njit
-def lognormal_distribution_2D(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000):
+def binary_masses_BBH_popIII_lognormal_rvs(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000):
     """
     Sample from a lognormal distribution in 2D mass space.
 
@@ -394,8 +446,8 @@ def lognormal_distribution_2D(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, 
 
     Examples
     --------
-    >>> from ler.gw_source_population import lognormal_distribution_2D
-    >>> m1, m2 = lognormal_distribution_2D(size=1000)
+    >>> from ler.gw_source_population import binary_masses_BBH_popIII_lognormal
+    >>> m1, m2 = binary_masses_BBH_popIII_lognormal(size=1000)
     """
     # mass function (Eqn. 1 of Ng et al. 2022)
     psi = lambda m: np.exp(-np.log(m / Mc) ** 2 / (2 * sigma**2)) / (
@@ -442,40 +494,87 @@ def lognormal_distribution_2D(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, 
     return m1_sample, m2_sample
 
 @njit
-def inverse_transform_sampler_m1m2(size, inv_cdf, x):
+def binary_masses_BBH_primordial_lognormal_rvs(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000):
     """
-    Sample m1 and m2 using inverse transform sampling for BNS.
+    Sample from a lognormal distribution in 2D mass space.
 
-    This is a helper function for the BNS Alsing mass distribution function.
+    Based on Eqn. 1 and 4 of Ng et al. 2022 for primordial black holes.
 
     Parameters
     ----------
     size : ``int``
         Number of samples to draw.
-    inv_cdf : ``numpy.ndarray``
-        Cumulative distribution function values.
-    x : ``numpy.ndarray``
-        Mass values corresponding to the CDF.
+    m_min : ``float``
+        Minimum mass (Msun). \n
+        default: 1.0
+    m_max : ``float``
+        Maximum mass (Msun). \n
+        default: 100.0
+    Mc : ``float``
+        Characteristic mass scale (Msun). \n
+        default: 20.0
+    sigma : ``float``
+        Width of the distribution. \n
+        default: 0.3
+    chunk_size : ``int``
+        Number of samples per rejection sampling chunk. \n
+        default: 10000
 
     Returns
     -------
-    m1 : ``numpy.ndarray``
+    m1_sample : ``numpy.ndarray``
         Primary mass samples (Msun).
-    m2 : ``numpy.ndarray``
+    m2_sample : ``numpy.ndarray``
         Secondary mass samples (Msun).
 
     Examples
     --------
-    >>> from ler.gw_source_population import inverse_transform_sampler_m1m2
-    >>> m1, m2 = inverse_transform_sampler_m1m2(size=1000, inv_cdf=cdf, x=mass_arr)
+    >>> from ler.gw_source_population import binary_masses_BBH_primordial_lognormal
+    >>> m1, m2 = binary_masses_BBH_primordial_lognormal(size=1000)
     """
-    m1 = inverse_transform_sampler(size, inv_cdf, x)
-    m2 = inverse_transform_sampler(size, inv_cdf, x)
-    # swap m1 and m2 if m1 < m2
-    idx = m1 < m2
-    m1[idx], m2[idx] = m2[idx], m1[idx]
+    # mass function (Eqn. 1 of Ng et al. 2022)
+    psi = lambda m: np.exp(-np.log(m / Mc) ** 2 / (2 * sigma**2)) / (  
+        np.sqrt(2 * np.pi) * sigma * m
+    )
+    # probability density function (Eqn. 4 of Ng et al. 2022)
+    pdf = (  
+        lambda m1, m2: (m1 + m2) ** (36 / 37)
+        * (m1 * m2) ** (32 / 37)
+        * psi(m1)
+        * psi(m2)
+    )
 
-    return m1, m2
+    # rejection sampling initialization
+    m1 = np.random.uniform(m_min, m_max, chunk_size)
+    m2 = np.random.uniform(m_min, m_max, chunk_size)
+    z = pdf(m1, m2)
+    zmax = np.max(z)
+
+    # rejection sampling in chunks
+    m1_sample = np.zeros(size)
+    m2_sample = np.zeros(size)
+    old_num = 0
+    while True:
+        m1_try = np.random.uniform(m_min, m_max, size=chunk_size)
+        m2_try = np.random.uniform(m_min, m_max, size=chunk_size)
+
+        z_try = np.random.uniform(0, zmax, size=chunk_size)
+        zmax = max(zmax, np.max(z_try))
+        idx = z_try < pdf(m1_try, m2_try)
+        new_num = old_num + np.sum(idx)
+        if new_num >= size:
+            m1_sample[old_num:size] = m1_try[idx][: size - old_num]
+            m2_sample[old_num:size] = m2_try[idx][: size - old_num]
+            break
+        else:
+            m1_sample[old_num:new_num] = m1_try[idx]
+            m2_sample[old_num:new_num] = m2_try[idx]
+            old_num = new_num
+
+    # swap masses to ensure m1 >= m2
+    idx = m1_sample < m2_sample
+    m1_sample[idx], m2_sample[idx] = m2_sample[idx], m1_sample[idx]
+    return m1_sample, m2_sample
 
 @njit
 def _erf(x):
@@ -535,7 +634,7 @@ def _compute_normalization_factor(mu, sigma, mmin, mmax):
     return N
 
 @njit
-def bns_bimodal_pdf(m, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3):
+def _bns_bimodal_pdf(m, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3):
     """
     Compute the bimodal Gaussian PDF for BNS mass distribution.
 
@@ -580,6 +679,93 @@ def bns_bimodal_pdf(m, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mm
     pdf = w * pdf_unnormL / normL + (1 - w) * pdf_unnormR / normR
 
     return pdf
+
+@njit
+def binary_masses_BNS_bimodal_rvs(size, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3, resolution=500):
+    """
+    Sample BNS masses from bimodal Gaussian distribution.
+
+    Based on Will M. Farr et al. 2020 Eqn. 6 for neutron star mass
+    distribution combining two Gaussian peaks.
+
+    Parameters
+    ----------
+    size : ``int``
+        Number of samples to draw.
+    w : ``float``
+        Weight of the left (low-mass) peak. \n
+        default: 0.643
+    muL : ``float``
+        Mean of the left peak (Msun). \n
+        default: 1.352
+    sigmaL : ``float``
+        Standard deviation of the left peak (Msun). \n
+        default: 0.08
+    muR : ``float``
+        Mean of the right peak (Msun). \n
+        default: 1.88
+    sigmaR : ``float``
+        Standard deviation of the right peak (Msun). \n
+        default: 0.3
+    mmin : ``float``
+        Minimum mass (Msun). \n
+        default: 1.0
+    mmax : ``float``
+        Maximum mass (Msun). \n
+        default: 2.3
+    resolution : ``int``
+        Number of points to use for the CDF. \n
+        default: 500
+    
+    Returns
+    -------
+    m1 : ``numpy.ndarray``
+        Primary mass samples (Msun).
+    m2 : ``numpy.ndarray``
+        Secondary mass samples (Msun).
+    
+    """
+    mass = np.linspace(mmin, mmax, resolution)
+    pdf = _bns_bimodal_pdf(mass, w, muL, sigmaL, muR, sigmaR, mmin, mmax)
+    cdf = np.cumsum(pdf) / np.sum(pdf)
+    
+    return _inverse_transform_sampler_m1m2(size, cdf, mass)
+
+@njit
+def _inverse_transform_sampler_m1m2(size, cdf_values, x):
+    """
+    Sample m1 and m2 using inverse transform sampling for BNS.
+
+    This is a helper function for the BNS Alsing mass distribution function.
+
+    Parameters
+    ----------
+    size : ``int``
+        Number of samples to draw.
+    cdf_values : ``numpy.ndarray``
+        Cumulative distribution function values.
+    x : ``numpy.ndarray``
+        Mass values corresponding to the CDF.
+
+    Returns
+    -------
+    m1 : ``numpy.ndarray``
+        Primary mass samples (Msun).
+    m2 : ``numpy.ndarray``
+        Secondary mass samples (Msun).
+
+    Examples
+    --------
+    >>> from ler.gw_source_population import _inverse_transform_sampler_m1m2
+    >>> m1, m2 = _inverse_transform_sampler_m1m2(size=1000, cdf_values=cdf_values, x=mass_arr)
+    """
+    m1 = inverse_transform_sampler(size, cdf_values, x)
+    m2 = inverse_transform_sampler(size, cdf_values, x)
+    # swap m1 and m2 if m1 < m2
+    idx = m1 < m2
+    m1[idx], m2[idx] = m2[idx], m1[idx]
+
+    return m1, m2
 
 @njit
 def _smoothing_S(m, mmin, delta_m, threshold=709.0):
@@ -690,7 +876,7 @@ def _broken_powerlaw_cdf(size=1000, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha
     return cdf_values
 
 @njit
-def sample_broken_powerlaw(size=1000, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha_2=0., b=0.5, delta_m=5., normalization_size=1000):
+def _sample_broken_powerlaw(size=1000, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha_2=0., b=0.5, delta_m=5., normalization_size=1000):
     """
     Generate samples from the broken power-law mass distribution.
 
@@ -738,7 +924,7 @@ def sample_broken_powerlaw(size=1000, mminbh=26., mmaxbh=125., alpha_1=6.75, alp
     return samples
 
 @njit
-def sample_broken_powerlaw_nsbh_masses(size=1000, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha_2=0., b=0.5, delta_m=5., mminns=1.0, mmaxns=3.0, alphans=0.0, normalization_size=1000):
+def binary_masses_NSBH_broken_powerlaw_rvs(size=1000, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha_2=0., b=0.5, delta_m=5., mminns=1.0, mmaxns=3.0, alphans=0.0, normalization_size=1000):
     """
     Generate NSBH mass samples from broken power-law (BH) and power-law (NS).
 
@@ -785,13 +971,13 @@ def sample_broken_powerlaw_nsbh_masses(size=1000, mminbh=26., mmaxbh=125., alpha
     m2_samples : ``numpy.ndarray``
         NS mass samples (Msun).
     """
-    m1_samples = sample_broken_powerlaw(size=size, mminbh=mminbh, mmaxbh=mmaxbh, alpha_1=alpha_1, alpha_2=alpha_2, b=b, delta_m=delta_m, normalization_size=normalization_size)
+    m1_samples = _sample_broken_powerlaw(size=size, mminbh=mminbh, mmaxbh=mmaxbh, alpha_1=alpha_1, alpha_2=alpha_2, b=b, delta_m=delta_m, normalization_size=normalization_size)
     m2_samples = sample_from_powerlaw_distribution(size, alphans, mminns, mmaxns)
 
     return m1_samples, m2_samples
 
 @njit
-def broken_powerlaw_pdf(m, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha_2=0., b=0.5, delta_m=5., normalization_size=1000):
+def _broken_powerlaw_pdf(m, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha_2=0., b=0.5, delta_m=5., normalization_size=1000):
     """
     Compute the normalized PDF for broken power-law mass distribution.
 
@@ -925,7 +1111,7 @@ def _gaussian_G(m, mu_g, sigma_g):
     return pdf
 
 @njit
-def powerlaw_gaussian_pdf(m, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, normalization_size=1000):
+def _powerlaw_gaussian_pdf(m, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, normalization_size=1000):
     """
     Compute the normalized PDF for power-law + Gaussian mass model.
 
@@ -1009,7 +1195,7 @@ def _powerlaw_gaussian_cdf(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_pe
     return cdf_values
 
 @njit
-def sample_powerlaw_gaussian(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, normalization_size=1000):
+def _sample_powerlaw_gaussian(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, normalization_size=1000):
     """
     Generate samples from the power-law + Gaussian mass model.
 
@@ -1051,7 +1237,7 @@ def sample_powerlaw_gaussian(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_
     return samples
 
 @njit
-def sample_powerlaw_gaussian_source_bbh_masses(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, beta, normalization_size=1000):
+def binary_masses_BBH_powerlaw_gaussian_rvs(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, beta, normalization_size=1000):
     """
     Generate BBH mass samples from power-law + Gaussian model with mass ratio.
 
@@ -1086,7 +1272,7 @@ def sample_powerlaw_gaussian_source_bbh_masses(size, mminbh, mmaxbh, alpha, mu_g
     m2 : ``numpy.ndarray``
         Secondary mass samples (Msun).
     """
-    m1 = sample_powerlaw_gaussian(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, normalization_size)
+    m1 = _sample_powerlaw_gaussian(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, normalization_size)
 
     q = np.zeros(size)
     for i in range(size):
@@ -1163,3 +1349,68 @@ def _powerlaw_gaussian_unnormalized(m, mminbh, mmaxbh, alpha, mu_g, sigma_g, lam
     pdf_unnormalized = ((1-lambda_peak)*_powerlaw_B(m, alpha, mminbh, mmaxbh) + (lambda_peak * _gaussian_G(m, mu_g, sigma_g)))* _smoothing_S(m, mminbh, delta_m)
 
     return pdf_unnormalized
+
+def available_prior_list():
+    """
+    Returns a list of available priors.
+    """
+    return [
+        'merger_rate_density_bbh_oguri2018_function',
+        'merger_rate_density_bbh_popIII_ken2022_function',
+        'merger_rate_density_madau_dickinson2014_function',
+        'merger_rate_density_madau_dickinson_belczynski_ng_function',
+        'merger_rate_density_bbh_primordial_ken2022_function',
+        'sfr_madau_fragos2017_with_bbh_td',
+        'sfr_madau_dickinson2014_with_bbh_td',
+        'sfr_madau_fragos2017_with_bns_td',
+        'sfr_madau_dickinson2014_with_bns_td',
+        'sfr_madau_fragos2017',
+        'sfr_madau_dickinson2014',
+        'binary_masses_BBH_popIII_lognormal_rvs',
+        'binary_masses_BBH_primordial_lognormal_rvs',
+        'binary_masses_BNS_bimodal_rvs',
+        'binary_masses_NSBH_broken_powerlaw_rvs',
+        'binary_masses_BBH_powerlaw_gaussian_rvs',
+    ]
+
+# ------------------------
+# Other utility functions
+# ------------------------
+@njit
+def _cumulative_trapezoid(y, x=None, dx=1.0, initial=0.0):
+    """
+    Compute the cumulative integral using the trapezoidal rule.
+
+    Parameters
+    ----------
+    y : ``numpy.ndarray``
+        Function values to integrate.
+    x : ``numpy.ndarray`` or ``None``
+        x-coordinates. If None, uses evenly spaced points with spacing dx. \n
+        default: None
+    dx : ``float``
+        Spacing between x-coordinates if x is None. \n
+        default: 1.0
+    initial : ``float``
+        Initial value for the cumulative sum. \n
+        default: 0.0
+
+    Returns
+    -------
+    cumsum : ``numpy.ndarray``
+        Cumulative integral values.
+    """
+    if x is None:
+        x = np.arange(len(y)) * dx
+
+    cumsum = np.zeros_like(y)
+    cumsum[0] = initial
+    for i in range(1, len(y)):
+        cumsum[i] = cumsum[i - 1] + (y[i - 1] + y[i]) * (x[i] - x[i - 1]) / 2.0
+
+    return cumsum
+
+
+
+        
+

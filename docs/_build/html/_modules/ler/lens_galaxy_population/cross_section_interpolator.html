@@ -127,7 +127,7 @@
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
 
-<span class="kn">from</span> <span class="nn">ler.lens_galaxy_population.jit_functions</span> <span class="kn">import</span> <span class="n">phi_q2_ellipticity_hemanta</span>
+<span class="kn">from</span> <span class="nn">ler.lens_galaxy_population.jit_functions</span> <span class="kn">import</span> <span class="n">phi_q2_ellipticity</span>
 
 <div class="viewcode-block" id="C_LIGHT">
 <a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/index.html#ler.lens_galaxy_population.cross_section_interpolator.C_LIGHT">[docs]</a>
@@ -379,7 +379,7 @@
     <span class="n">theta_E</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">/</span> <span class="n">C_LIGHT</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">Dls</span> <span class="o">/</span> <span class="n">Ds</span><span class="p">)</span>
 
     <span class="c1"># Convert (q, phi) -&gt; (e1, e2)</span>
-    <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span> <span class="o">=</span> <span class="n">phi_q2_ellipticity_hemanta</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+    <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span> <span class="o">=</span> <span class="n">phi_q2_ellipticity</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
 
     <span class="n">N</span> <span class="o">=</span> <span class="n">zs</span><span class="o">.</span><span class="n">size</span>
 

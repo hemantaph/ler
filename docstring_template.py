@@ -2,8 +2,8 @@
 """
 Docstring Template based on LeR style conventions.
 
-This template follows NumPy/SciPy docstring conventions with reStructuredText 
-(RST) formatting for Sphinx documentation. It demonstrates the standard format 
+This template follows NumPy/SciPy docstring conventions with reStructuredText
+(RST) formatting for Sphinx documentation. It demonstrates the standard format
 used throughout the ``ler`` package.
 
 Style Guidelines:
@@ -16,9 +16,13 @@ Style Guidelines:
 
 Copyright (C) 2026 Author Name. Distributed under MIT License.
 
-AI prompt to use this template: 
-1. Check for any inconsistencies and redundancies in the code (don't touch the docstrings). Please point them out without making any changes.
+AI prompt to use this template:
+1. Check for any inconsistencies and redundancies in the code (don't touch the docstrings).
 2. Rewrite docstrings (including inline docstrings) of *.py using docstring_template.py. Convert some of the Instance Methods to private methods with underscore prefix and remove them from the class docstring. Use '\n' for newline and don't use '\\n'. Dont add unnecessary docstrings like the following:
+    # =============================================================================
+    # MODULE DOCSTRING TEMPLATE
+    # =============================================================================
+2i. Rewrite docstrings (including inline docstrings) of *.py using docstring_template.py. If required, convert some of the functions to private function with underscore prefix. Add exmples to the docstrings (exclude private functions). Use '\n' for newline and don't use '\\n'. Dont add unnecessary docstrings like the following:
     # =============================================================================
     # MODULE DOCSTRING TEMPLATE
     # =============================================================================
@@ -145,10 +149,9 @@ class TemplateClass:
         self.param3 = param3
         self.param4 = param4 or {}
 
-
-# =============================================================================
-# METHOD DOCSTRING TEMPLATES
-# =============================================================================
+    # =============================================================================
+    # METHOD DOCSTRING TEMPLATES
+    # =============================================================================
 
     def public_method(self, arg1, arg2=None, arg3=0.5):
         """
@@ -190,12 +193,12 @@ class TemplateClass:
     def _private_helper_method(self, param):
         """
         Helper function to [brief description].
-        
+
         Parameters
         ----------
         param : ``dict`` or ``str``
             Description of the parameter.
-        
+
         Returns
         -------
         result : ``dict``
@@ -203,10 +206,9 @@ class TemplateClass:
         """
         pass
 
-
-# =============================================================================
-# PROPERTY DOCSTRING TEMPLATES
-# =============================================================================
+    # =============================================================================
+    # PROPERTY DOCSTRING TEMPLATES
+    # =============================================================================
 
     @property
     def simple_property(self):

@@ -60,10 +60,10 @@ Functions
    ler.lens_galaxy_population.phi_cut_SIE
    ler.lens_galaxy_population.phi
    ler.lens_galaxy_population.phi_loc_bernardi
-   ler.lens_galaxy_population.phi_q2_ellipticity_hemanta
+   ler.lens_galaxy_population.phi_q2_ellipticity
    ler.lens_galaxy_population.axis_ratio_rayleigh_pdf
    ler.lens_galaxy_population.phi_cut_SIE
-   ler.lens_galaxy_population.phi_q2_ellipticity_hemanta
+   ler.lens_galaxy_population.phi_q2_ellipticity
    ler.lens_galaxy_population.inverse_transform_sampler
    ler.lens_galaxy_population.cubic_spline_interpolator
    ler.lens_galaxy_population.cubic_spline_interpolator2d_array
@@ -89,9 +89,9 @@ Functions
    ler.lens_galaxy_population.axis_ratio_rayleigh_pdf
    ler.lens_galaxy_population.velocity_dispersion_z_dependent
    ler.lens_galaxy_population.bounded_normal_sample
-   ler.lens_galaxy_population.phi_q2_ellipticity_hemanta
+   ler.lens_galaxy_population.phi_q2_ellipticity
    ler.lens_galaxy_population.sample_sigma_zl
-   ler.lens_galaxy_population.phi_q2_ellipticity_hemanta
+   ler.lens_galaxy_population.phi_q2_ellipticity
    ler.lens_galaxy_population.make_cross_section_reinit
    ler.lens_galaxy_population.create_rejection_sampler
    ler.lens_galaxy_population.create_importance_sampler
@@ -229,7 +229,7 @@ Attributes
    +=====================================================+================================================+
    | :meth:`~sample_gw_parameters`                       | Sample all GW parameters for compact binaries  |
    +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~binary_masses_BBH_popI_II_powerlaw_gaussian`| Sample BBH masses with PowerLaw+PEAK model     |
+   | :meth:`~binary_masses_BBH_powerlaw_gaussian`| Sample BBH masses with PowerLaw+PEAK model     |
    +-----------------------------------------------------+------------------------------------------------+
    | :meth:`~binary_masses_BBH_popIII_lognormal`         | Sample pop III BBH masses from lognormal       |
    +-----------------------------------------------------+------------------------------------------------+
@@ -1115,7 +1115,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BBH_popI_II_powerlaw_gaussian(size, get_attribute=False, **kwargs)
+   .. py:method:: binary_masses_BBH_powerlaw_gaussian(size, get_attribute=False, **kwargs)
 
       
       Sample source masses with PowerLaw+PEAK model for Population I/II BBH.
@@ -1173,7 +1173,7 @@ Attributes
 
       >>> from ler.gw_source_population import CBCSourceParameterDistribution
       >>> cbc = CBCSourceParameterDistribution()
-      >>> m1_src, m2_src = cbc.binary_masses_BBH_popI_II_powerlaw_gaussian(size=1000)
+      >>> m1_src, m2_src = cbc.binary_masses_BBH_powerlaw_gaussian(size=1000)
 
 
 
@@ -1757,7 +1757,7 @@ Attributes
    +-----------------------------------------------------+----------------------------------------------------------+
    | :meth:`~lens_redshift_strongly_lensed_numerical`    | Sample lens redshift for strong lensing                  |
    +-----------------------------------------------------+----------------------------------------------------------+
-   | :meth:`~lens_redshift_sis_haris`                    | Sample SIS lens redshift (Haris et al. 2018)             |
+   | :meth:`~lens_redshift_strongly_lensed_sis_haris`                    | Sample SIS lens redshift (Haris et al. 2018)             |
    +-----------------------------------------------------+----------------------------------------------------------+
    | :meth:`~velocity_dispersion_gengamma`               | Sample velocity dispersion from gengamma distribution    |
    +-----------------------------------------------------+----------------------------------------------------------+
@@ -2754,7 +2754,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lens_redshift_sis_haris(size, zs, get_attribute=False, **kwargs)
+   .. py:method:: lens_redshift_strongly_lensed_sis_haris(size, zs, get_attribute=False, **kwargs)
 
       
       Sample SIS lens redshifts using Haris et al. (2018) distribution.
@@ -4899,7 +4899,7 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: phi_q2_ellipticity_hemanta(phi, q)
+.. py:function:: phi_q2_ellipticity(phi, q)
 
    
    Function to convert phi and q to ellipticity e1 and e2.
@@ -5065,7 +5065,7 @@ Attributes
    +-----------------------------------------------------+----------------------------------------------------------+
    | :meth:`~lens_redshift_strongly_lensed_numerical`    | Sample lens redshift for strong lensing                  |
    +-----------------------------------------------------+----------------------------------------------------------+
-   | :meth:`~lens_redshift_sis_haris`                    | Sample SIS lens redshift (Haris et al. 2018)             |
+   | :meth:`~lens_redshift_strongly_lensed_sis_haris`                    | Sample SIS lens redshift (Haris et al. 2018)             |
    +-----------------------------------------------------+----------------------------------------------------------+
    | :meth:`~velocity_dispersion_gengamma`               | Sample velocity dispersion from gengamma distribution    |
    +-----------------------------------------------------+----------------------------------------------------------+
@@ -6062,7 +6062,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lens_redshift_sis_haris(size, zs, get_attribute=False, **kwargs)
+   .. py:method:: lens_redshift_strongly_lensed_sis_haris(size, zs, get_attribute=False, **kwargs)
 
       
       Sample SIS lens redshifts using Haris et al. (2018) distribution.
@@ -6570,7 +6570,7 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: phi_q2_ellipticity_hemanta(phi, q)
+.. py:function:: phi_q2_ellipticity(phi, q)
 
    
    Function to convert phi and q to ellipticity e1 and e2.
@@ -7465,7 +7465,7 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: phi_q2_ellipticity_hemanta(phi, q)
+.. py:function:: phi_q2_ellipticity(phi, q)
 
    
    Function to convert phi and q to ellipticity e1 and e2.
@@ -7505,7 +7505,7 @@ Attributes
 .. py:function:: sample_sigma_zl(pdf, sigma_min, sigma_max, zl_min, zl_max, zs, chunk_size=10000)
 
 
-.. py:function:: phi_q2_ellipticity_hemanta(phi, q)
+.. py:function:: phi_q2_ellipticity(phi, q)
 
    
    Function to convert phi and q to ellipticity e1 and e2.
