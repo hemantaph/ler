@@ -14,7 +14,7 @@ The inheritance hierarchy is as follows:
   - :class:`~ler.image_properties.ImageProperties` \n
   - :class:`~ler.gw_source_population.CBCSourceParameterDistribution` \n
   - :class:`~ler.gw_source_population.CBCSourceRedshiftDistribution` \n
-- Uses the ``gwsnr`` package for SNR calculation.
+- Uses the ``gwsnr`` package for pdet calculation.
 
 Usage:
     Basic workflow for rate calculation:
@@ -35,7 +35,7 @@ import os
 import warnings
 import pathlib
 import zipfile
-from importlib_resources import path
+from importlib_resources import files as resources_files
 warnings.filterwarnings("ignore")
 import logging
 logging.getLogger('numexpr.utils').setLevel(logging.ERROR)
@@ -231,24 +231,24 @@ class LeR(LensGalaxyParameterDistribution):
         **kwargs,
     ):
 
-        # getting interpolator data from the package
-        # first check if the interpolator directory './interpolator_json' exists
-        if not pathlib.Path(interpolator_directory).exists():
-            # Get the path to the zip resource
-            with path('ler.rates.ler_data', 'interpolator_json.zip') as zip_path:
-                print(f"Extracting interpolator data from {zip_path} to the current working directory.")
-                zip_path = pathlib.Path(zip_path)  # Ensure it's a Path object
+        # # getting interpolator data from the package
+        # # first check if the interpolator directory './interpolator_json' exists
+        # if not pathlib.Path(interpolator_directory).exists():
+        #     # Get the path to the zip resource using importlib_resources
+        #     zip_resource = resources_files('ler.rates').joinpath('ler_data', 'interpolator_json.zip')
+        #     with zip_resource.open('rb') as zip_file:
+        #         print("Extracting interpolator data from package to the current working directory.")
+                
+        #         # Define destination path (current working directory)
+        #         dest_path = pathlib.Path.cwd()
 
-                # Define destination path (current working directory)
-                dest_path = pathlib.Path.cwd()
-
-                # Extract the zip file, skipping __MACOSX metadata
-                with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-                    for member in zip_ref.namelist():
-                        # Skip __MACOSX directory and its contents
-                        if member.startswith('__MACOSX'):
-                            continue
-                        zip_ref.extract(member, dest_path)
+        #         # Extract the zip file, skipping __MACOSX metadata
+        #         with zipfile.ZipFile(zip_file, 'r') as zip_ref:
+        #             for member in zip_ref.namelist():
+        #                 # Skip __MACOSX directory and its contents
+        #                 if member.startswith('__MACOSX'):
+        #                     continue
+        #                 zip_ref.extract(member, dest_path)
         
         print("\nInitializing LeR class...\n")
         # init ler attributes
@@ -300,6 +300,7 @@ class LeR(LensGalaxyParameterDistribution):
                 self.pdet_finder = self._gwsnr_initialization(params=params)
             else:
                 self.pdet_finder = pdet_finder
+                self.list_of_detectors = None
             
             # store all the ler input parameters
             self._store_ler_params(output_jsonfile=self.json_file_names["ler_params"])
@@ -355,8 +356,7 @@ class LeR(LensGalaxyParameterDistribution):
             for key, value in params.items():
                 if key in input_params:
                     input_params[key] = value
-        # save input_params to self.ler_args
-        self.ler_args = input_params
+    
         # initialization of parent class
         LensGalaxyParameterDistribution.__init__(
             self,
@@ -386,15 +386,17 @@ class LeR(LensGalaxyParameterDistribution):
             spin_precession=input_params["spin_precession"],
         )
 
-        # save input_params to self.ler_args
         # some of the None values will have default values after initialization
-        self.ler_args["source_priors"]=self.gw_param_samplers.copy()
-        self.ler_args["source_priors_params"]=self.gw_param_samplers_params.copy()
-        self.ler_args["lens_param_samplers"]=self.lens_param_samplers.copy()
-        self.ler_args["lens_param_samplers_params"]=self.lens_param_samplers_params.copy()
-        self.ler_args["lens_functions"]=self.lens_functions.copy()
-        self.ler_args["lens_functions_params"]=self.lens_functions_params.copy()
-        self.ler_args["create_new_interpolator"]=self.create_new_interpolator
+        input_params["source_priors"]=self.gw_param_samplers.copy()
+        input_params["source_priors_params"]=self.gw_param_samplers_params.copy()
+        input_params["lens_param_samplers"]=self.lens_param_samplers.copy()
+        input_params["lens_param_samplers_params"]=self.lens_param_samplers_params.copy()
+        input_params["lens_functions"]=self.lens_functions.copy()
+        input_params["lens_functions_params"]=self.lens_functions_params.copy()
+        input_params["create_new_interpolator"]=self.create_new_interpolator
+
+        # save input_params to self.ler_args
+        self.ler_args = input_params
 
     def _gwsnr_initialization(self, params=None):
         """
@@ -529,7 +531,7 @@ class LeR(LensGalaxyParameterDistribution):
 
         return gwsnr.pdet
 
-    def _print_all_init_args(self, verbose=False):
+    def _print_all_init_args(self):
         """
         Function to print all the parameters.
         """
@@ -603,63 +605,6 @@ class LeR(LensGalaxyParameterDistribution):
                     print("    ),")
                 else:
                     print(f"    {key} = '{value}',") if isinstance(value, str) else print(f"    {key} = {value},")
-
-        if verbose:
-
-            print("\n For reference, the chosen source parameters are listed below:")
-            print(f"merger_rate_density = '{self.gw_param_samplers['merger_rate_density']}'")
-            print("merger_rate_density_params = ", self.gw_param_samplers_params["merger_rate_density"])
-            print(f"source_frame_masses = '{self.gw_param_samplers['source_frame_masses']}'")
-            print("source_frame_masses_params = ", self.gw_param_samplers_params["source_frame_masses"])
-            print(f"geocent_time = '{self.gw_param_samplers['geocent_time']}'")
-            print("geocent_time_params = ", self.gw_param_samplers_params["geocent_time"])
-            print(f"ra = '{self.gw_param_samplers['ra']}'")
-            print("ra_params = ", self.gw_param_samplers_params["ra"])
-            print(f"dec = '{self.gw_param_samplers['dec']}'")
-            print("dec_params = ", self.gw_param_samplers_params["dec"])
-            print(f"phase = '{self.gw_param_samplers['phase']}'")
-            print("phase_params = ", self.gw_param_samplers_params["phase"])
-            print(f"psi = '{self.gw_param_samplers['psi']}'")
-            print("psi_params = ", self.gw_param_samplers_params["psi"])
-            print(f"theta_jn = '{self.gw_param_samplers['theta_jn']}'")
-            print("theta_jn_params = ", self.gw_param_samplers_params["theta_jn"])
-            if self.spin_zero is False:
-                print(f"a_1 = '{self.gw_param_samplers['a_1']}'")
-                print("a_1_params = ", self.gw_param_samplers_params["a_1"])
-                print(f"a_2 = '{self.gw_param_samplers['a_2']}'")
-                print("a_2_params = ", self.gw_param_samplers_params["a_2"])
-                if self.spin_precession is True:
-                    print(f"tilt_1 = '{self.gw_param_samplers['tilt_1']}'")
-                    print("tilt_1_params = ", self.gw_param_samplers_params["tilt_1"])
-                    print(f"tilt_2 = '{self.gw_param_samplers['tilt_2']}'")
-                    print("tilt_2_params = ", self.gw_param_samplers_params["tilt_2"])
-                    print(f"phi_12 = '{self.gw_param_samplers['phi_12']}'")
-                    print("phi_12_params = ", self.gw_param_samplers_params["phi_12"])
-                    print(f"phi_jl = '{self.gw_param_samplers['phi_jl']}'")
-                    print("phi_jl_params = ", self.gw_param_samplers_params["phi_jl"])
-
-            print("\n For reference, the chosen lens related parameters and functions are listed below:")
-            print(f"lens_redshift = '{self.lens_param_samplers['lens_redshift']}'")
-            print("lens_redshift_params = ", self.lens_param_samplers_params["lens_redshift"])
-            print(f"velocity_dispersion = '{self.lens_param_samplers['velocity_dispersion']}'")
-            print("velocity_dispersion_params = ", self.lens_param_samplers_params["velocity_dispersion"])
-            print(f"axis_ratio = '{self.lens_param_samplers['axis_ratio']}'")
-            print("axis_ratio_params = ", self.lens_param_samplers_params["axis_ratio"])
-            print(f"axis_rotation_angle = '{self.lens_param_samplers['axis_rotation_angle']}'")
-            print("axis_rotation_angle_params = ", self.lens_param_samplers_params["axis_rotation_angle"])
-            print(f"external_shear = '{self.lens_param_samplers['external_shear']}'")
-            print("external_shear_params = ", self.lens_param_samplers_params['external_shear'])
-            print(f"density_profile_slope = '{self.lens_param_samplers['density_profile_slope']}'")
-            print("density_profile_slope_params = ", self.lens_param_samplers_params["density_profile_slope"])
-            # lens functions
-            print("Lens functions:")
-            print(f"cross_section_based_sampler = '{self.lens_functions['cross_section_based_sampler']}'")
-            print(f"cross_section_based_sampler_params = '{self.lens_functions_params['cross_section_based_sampler']}'")    
-            print(f"optical_depth = '{self.lens_functions['optical_depth']}'")
-            print(f"optical_depth_params = '{self.lens_functions_params['optical_depth']}'")
-            print(f"param_sampler_type = '{self.lens_functions['param_sampler_type']}'")
-            print(f"cross_section = '{self.lens_functions['cross_section']}'")
-            print(f"cross_section_params = '{self.lens_functions_params['cross_section']}'")
 
     def _store_ler_params(self, output_jsonfile):
         """
@@ -756,6 +701,7 @@ class LeR(LensGalaxyParameterDistribution):
             +--------------------+--------------+--------------------------------------+
             | pdet_net           |              | pdet of the network                  |
             +--------------------+--------------+--------------------------------------+
+
 
         Examples
         --------
@@ -958,7 +904,7 @@ class LeR(LensGalaxyParameterDistribution):
             normalization = self.normalization_pdf_z
         elif param_type == "lensed":
             normalization = self.normalization_pdf_z_lensed
-        rate = normalization * detectable_size / total_size
+        rate = float(normalization * detectable_size / total_size)
 
         if verbose:
             print(f"total {param_type} rate (yr^-1): {rate}")
@@ -1147,6 +1093,7 @@ class LeR(LensGalaxyParameterDistribution):
             +------------------------------+-----------+-------------------------------------------------------+
             | pdet_net                     |           | detection probability of the network                  |
             +------------------------------+-----------+-------------------------------------------------------+
+
 
         Examples
         --------
@@ -1364,6 +1311,7 @@ class LeR(LensGalaxyParameterDistribution):
             +------------------------------+-----------+-------------------------------------------------------+
             | pdet_net                     |           | detection probability of the network                  |
             +------------------------------+-----------+-------------------------------------------------------+
+            
 
         Examples
         --------
@@ -1546,9 +1494,9 @@ class LeR(LensGalaxyParameterDistribution):
         -------
         rate_ratio : ``float``
             Ratio of unlensed rate to lensed rate.
-        unlensed_param : ``dict``
+        unlensed_param_detectable : ``dict``
             Dictionary of detectable unlensed GW source parameters.
-        lensed_param : ``dict``
+        lensed_param_detectable : ``dict``
             Dictionary of detectable lensed GW source parameters.
 
         Examples
@@ -1561,14 +1509,14 @@ class LeR(LensGalaxyParameterDistribution):
         """
 
         # get unlensed rate
-        unlensed_rate, unlensed_param = self.unlensed_rate(
+        unlensed_rate, unlensed_param_detectable = self.unlensed_rate(
             unlensed_param=unlensed_param,
             pdet_threshold=pdet_threshold_unlensed,
             pdet_type=pdet_type,
             output_jsonfile=output_jsonfile_unlensed,
         )
         # get lensed rate
-        lensed_rate, lensed_param = self.lensed_rate(
+        lensed_rate, lensed_param_detectable = self.lensed_rate(
             lensed_param=lensed_param,
             pdet_threshold=pdet_threshold_lensed,
             num_img=num_img_lensed,
@@ -1579,7 +1527,7 @@ class LeR(LensGalaxyParameterDistribution):
         # calculate rate ratio
         rate_ratio = self.rate_ratio()
 
-        return rate_ratio, unlensed_param, lensed_param
+        return unlensed_rate, lensed_rate, rate_ratio, unlensed_param_detectable, lensed_param_detectable
      
     def rate_ratio(self):
         """
@@ -1922,15 +1870,15 @@ class LeR(LensGalaxyParameterDistribution):
         resume : ``bool``
             resume = False (default) or True.
             if True, the function will resume from the last batch.
-        batch_size : `int`
+        batch_size : ``int``
             batch size for sampling.
             default batch_size = 50000.
 
         Returns
         ----------
-        n : `int`
+        n : ``int``
             iterator.
-        events_total : `int`
+        events_total : ``int``
             total number of events.
         output_path : ``str``
             path to the output json file.
@@ -2035,7 +1983,7 @@ class LeR(LensGalaxyParameterDistribution):
         param_final : ``dict``
             dictionary of GW source parameters of the detectable events. Refer to :meth:`~unlensed_param` or :meth:`~lensed_param` for details.
         new_total_rate : ``float``
-            total rate (Mpc^-3 yr^-1).
+            total rate (yr^-1).
         """
 
         print(f"\n trmming final result to size={size}")
@@ -2084,10 +2032,8 @@ class LeR(LensGalaxyParameterDistribution):
         events_total : `int`
             total number of events.
         total_rate : ``float``
-            total rate (Mpc^-3 yr^-1).
+            total rate (yr^-1).
         """
-
-        # print("event total = ", events_total)
 
         # save meta data
         meta_data = dict(events_total=[events_total], detectable_events=[float(n)], total_rate=[total_rate])

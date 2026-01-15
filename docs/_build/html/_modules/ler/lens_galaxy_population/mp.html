@@ -116,7 +116,7 @@
 <span class="kn">from</span> <span class="nn">lenstronomy.LensModel.Solver.epl_shear_solver</span> <span class="kn">import</span> <span class="n">caustics_epl_shear</span>
 <span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Polygon</span>
 
-<span class="kn">from</span> <span class="nn">.jit_functions</span> <span class="kn">import</span> <span class="n">phi_cut_SIE</span><span class="p">,</span> <span class="n">phi_q2_ellipticity_hemanta</span>
+<span class="kn">from</span> <span class="nn">.jit_functions</span> <span class="kn">import</span> <span class="n">phi_cut_SIE</span><span class="p">,</span> <span class="n">phi_q2_ellipticity</span>
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">inverse_transform_sampler</span><span class="p">,</span> <span class="n">cubic_spline_interpolator</span><span class="p">,</span> <span class="n">cubic_spline_interpolator2d_array</span><span class="p">,</span> <span class="n">inverse_transform_sampler2d</span><span class="p">,</span> <span class="n">load_json</span>
 
 <span class="kn">from</span> <span class="nn">.cross_section_interpolator</span> <span class="kn">import</span> <span class="n">make_cross_section_reinit</span>
@@ -330,7 +330,7 @@
                     <span class="n">phi</span> <span class="o">=</span> <span class="n">inverse_transform_sampler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="mi">8</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">8</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
 
                 <span class="c1"># Convert to ellipticities</span>
-                <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span> <span class="o">=</span> <span class="n">phi_q2_ellipticity_hemanta</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+                <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span> <span class="o">=</span> <span class="n">phi_q2_ellipticity</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
 
                 <span class="c1"># Sample external shear</span>
                 <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="mi">9</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;external_shear_normal&#39;</span><span class="p">:</span>

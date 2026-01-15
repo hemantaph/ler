@@ -168,7 +168,7 @@ Classes
    +-----------------------------------------------------+----------------------------------------------------------+
    | :meth:`~lens_redshift_strongly_lensed_numerical`    | Sample lens redshift for strong lensing                  |
    +-----------------------------------------------------+----------------------------------------------------------+
-   | :meth:`~lens_redshift_sis_haris`                    | Sample SIS lens redshift (Haris et al. 2018)             |
+   | :meth:`~lens_redshift_strongly_lensed_sis_haris`                    | Sample SIS lens redshift (Haris et al. 2018)             |
    +-----------------------------------------------------+----------------------------------------------------------+
    | :meth:`~velocity_dispersion_gengamma`               | Sample velocity dispersion from gengamma distribution    |
    +-----------------------------------------------------+----------------------------------------------------------+
@@ -1165,7 +1165,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lens_redshift_sis_haris(size, zs, get_attribute=False, **kwargs)
+   .. py:method:: lens_redshift_strongly_lensed_sis_haris(size, zs, get_attribute=False, **kwargs)
 
       
       Sample SIS lens redshifts using Haris et al. (2018) distribution.

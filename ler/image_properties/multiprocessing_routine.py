@@ -1,81 +1,126 @@
 # -*- coding: utf-8 -*-
 """
-This sub-module contains the functions to solve the lens equation for a given set of lens parameters. The lens equation is solved using the analytical solver in lenstronomy. The functions in this sub-module are used in the multiprocessing routine to solve the lens equation for a given set of lens parameters.
+Module for solving lens equations using multiprocessing.
+
+This sub-module contains functions to solve the lens equation for a given set
+of lens parameters. The lens equation is solved using the analytical solver in
+lenstronomy. These functions are used in the multiprocessing routine within
+the ImageProperties class.
+
+Usage:
+    Basic workflow example:
+
+    >>> from ler.image_properties.multiprocessing_routine import solve_lens_equation
+    >>> import numpy as np
+    >>> from multiprocessing import Pool
+    >>> lens_params = np.array([2, 0.02, -0.01, 1.9, 0.1, 0.09, 0.25, 0.94, 1e-6, 0, 'EPL_NUMBA', 'SHEAR'], dtype=object)
+    >>> result = solve_lens_equation(lens_params)
+
+Copyright (C) 2026 Phurailatpam Hemanta Kumar. Distributed under MIT License.
 """
 
 import numpy as np
 from lenstronomy.LensModel.lens_model import LensModel
 from lenstronomy.LensModel.Solver.lens_equation_solver import LensEquationSolver
 from lenstronomy.LensModel.Solver.epl_shear_solver import caustics_epl_shear
-# from lenstronomy.Util.param_util import phi_q2_ellipticity
-# from ..lens_galaxy_population.jit_functions import axis_ratio_rayleigh
 
 # For sampling from caustic
 from shapely.geometry import Polygon
 import pointpats
 
+# Constants
+MAX_RETRIES = 100
+MIN_MAGNIFICATION = 0.01
 
-def solve_lens_equation(lens_parameters):
+
+def _create_nan_result(iteration):
     """
-    Function to solve the lens equation (min_image = 2)
+    Create a NaN-filled result tuple for invalid lens configurations.
 
     Parameters
     ----------
-    lens_parameters : `list`
-        a list of parameters
-        lens_parameters[0] = min_images : minimum number of images
-        lens_parameters[1] = e1 : ellipticity
-        lens_parameters[2] = e2 : ellipticity
-        lens_parameters[3] = gamma : power-law index
-        lens_parameters[4] = gamma1 : shear
-        lens_parameters[5] = gamma2 : shear
-        lens_parameters[6] = zl : redshift of the lens
-        lens_parameters[7] = zs : redshift of the source
-        lens_parameters[8] = einstein_radius : Einstein radius
-        lens_parameters[9] = iteration : iteration number
-        lens_parameters[10:] = lens_model_list : numpy array of lens models
+    iteration : ``int``
+        The iteration number to include in the result.
 
     Returns
     -------
-    x_source : `float`
-        x position of the source in the source plane, unit: arcsec
-    y_source : `float`
-        y position of the source in the source plane
-    x0_image_position : `float`
-        x position of the images in the source plane
-    x1_image_position : `float`
-        y position of the images in the source plane
-    magnifications : `float`
-        magnification of the images
-    time_delays : `float`
-        time-delay of the images
-    nImages : `int`
-        number of images
-    determinant : `float`
-        determinant of the hessian matrix
-    trace : `float`
-        trace of the hessian matrix
-    iteration : `int`
-        iteration number
+    result : ``tuple``
+        A tuple with NaN values for all output parameters.
+    """
+    nan_array = np.array([np.nan, np.nan])
+    return (
+        np.nan,
+        np.nan,
+        nan_array,
+        nan_array,
+        nan_array,
+        nan_array,
+        0,
+        nan_array,
+        nan_array,
+        iteration,
+    )
+
+
+def solve_lens_equation(lens_parameters):
+    """
+    Solve the lens equation to find image properties.
+
+    Uses the analytical solver from lenstronomy to find image positions,
+    magnifications, time delays, and hessian properties for strongly
+    lensed sources. Source positions are sampled from within the caustic
+    region to ensure multiple imaging.
+
+    Parameters
+    ----------
+    lens_parameters : ``numpy.ndarray``
+        Array of lens configuration parameters with the following structure: \n
+        - [0]: n_min_images - minimum number of images required \n
+        - [1]: e1 - ellipticity component 1 \n
+        - [2]: e2 - ellipticity component 2 \n
+        - [3]: gamma - power-law slope of mass density \n
+        - [4]: gamma1 - external shear component 1 \n
+        - [5]: gamma2 - external shear component 2 \n
+        - [6]: zl - lens redshift \n
+        - [7]: zs - source redshift \n
+        - [8]: einstein_radius - Einstein radius (units: arcsec) \n
+        - [9]: iteration - iteration index for tracking \n
+        - [10:]: lens_model_list - lens model names (e.g., 'EPL_NUMBA', 'SHEAR') \n
+
+    Returns
+    -------
+    x_source : ``float``
+        Source x-position (units: arcsec).
+    y_source : ``float``
+        Source y-position (units: arcsec).
+    x0_image_position : ``numpy.ndarray``
+        Image x-positions (units: arcsec).
+    x1_image_position : ``numpy.ndarray``
+        Image y-positions (units: arcsec).
+    magnifications : ``numpy.ndarray``
+        Magnification factors for each image.
+    time_delays : ``numpy.ndarray``
+        Time delays for each image (units: seconds).
+    nImages : ``int``
+        Number of images formed.
+    determinant : ``numpy.ndarray``
+        Determinant of the lensing Jacobian for each image.
+    trace : ``numpy.ndarray``
+        Trace of the lensing Jacobian for each image.
+    iteration : ``int``
+        Iteration index passed through for tracking.
 
     Examples
     --------
     >>> from ler.image_properties.multiprocessing_routine import solve_lens_equation
     >>> import numpy as np
     >>> from multiprocessing import Pool
-    >>> # lens parameters input contains 12 parameters [e1, e2, gamma, gamma1, gamma2, zl, zs, einstein_radius, iteration, lens_model_list]
-    >>> lens_parameters1 = np.array([2, 0.024069457093642648, -0.016002190961948142, 1.8945414936459974, 0.10117465203892329, 0.09600089396968613, 0.2503743800068136, 0.9418211055453296, 2.5055790287104725e-06, 0, 'EPL_NUMBA', 'SHEAR'], dtype=object)
-    >>> lens_parameters2 = np.array([2, -0.04030088581646998, -0.01419438113690042, 2.0068239327017, 0.08482718989370612, -0.015393332086560785, 1.0952303138971118, 2.5534097159384417, 1.0125570159563301e-06, 1, 'EPL_NUMBA', 'SHEAR'], dtype=object)
+    >>> lens_parameters1 = np.array([2, 0.024, -0.016, 1.89, 0.10, 0.09, 0.25, 0.94, 2.5e-06, 0, 'EPL_NUMBA', 'SHEAR'], dtype=object)
+    >>> lens_parameters2 = np.array([2, -0.040, -0.014, 2.00, 0.08, -0.01, 1.09, 2.55, 1.0e-06, 1, 'EPL_NUMBA', 'SHEAR'], dtype=object)
     >>> input_arguments = np.vstack((lens_parameters1, lens_parameters2))
-    >>> # solve the lens equation for each set of lens parameters
     >>> with Pool(2) as p:
-    ...     result = p.map(solve_lens_equation1, input_arguments)
-    >>> # result is a list of tuples
-    >>> # each tuple contains the output parameters of the function
-    >>> # each output parameter contains x_source, y_source, x0_image_position, x1_image_position, magnifications, time_delays, nImages, determinant, trace, iteration
-    >>> print(f"magnification of images with lens parameters 'lens_parameters1' is {result[0][6]}")
-    magnification of images with lens parameters 'lens_parameters1' is [ 2.18973765 -1.27542831]
-
+    ...     result = p.map(solve_lens_equation, input_arguments)
+    >>> print(f"Number of images: {result[0][6]}")
     """
     n_min_images = int(lens_parameters[0])
     zl = lens_parameters[6]
@@ -83,76 +128,49 @@ def solve_lens_equation(lens_parameters):
     einstein_radius = lens_parameters[8]
     iteration = lens_parameters[9]
 
-    # define return value if strong lensing condition not satisfied
-
-    # lensModel parameters are the same for the three functions used for image param calculation
-    # 1. x-y position of images in the source plane, 2. magnifications, 3. time-delays (relative)
+    # Initialize lens model for image position, magnification, and time-delay calculations
     lensModel = LensModel(
         lens_model_list=lens_parameters[10:].tolist(), z_lens=zl, z_source=zs
     )
-
     lens_eq_solver = LensEquationSolver(lensModel)
 
+    # Build lens model parameters
     factor = 1.0
-    # ---------------------------------#
-    #     x-y position of images in the source plane
-    # ---------------------------------#
-    # Get the caustic curve cut by the lens
-    # First check if there is any nan in the caustic points
-    while True:
-        kwargs_lens = [
-            {
-                "theta_E": factor,
-                "e1": lens_parameters[1],
-                "e2": lens_parameters[2],
-                "gamma": lens_parameters[3],
-                "center_x": 0.0,
-                "center_y": 0.0,
-            },
-            {
-                "gamma1": lens_parameters[4],
-                "gamma2": lens_parameters[5],
-                "ra_0": 0,
-                "dec_0": 0,
-            },
-        ]
-        caustic_double_points = caustics_epl_shear(
-            kwargs_lens, return_which="double", maginf=-100
-        )
-        caustic = np.logical_not(np.isnan(caustic_double_points).any())
+    kwargs_lens = [
+        {
+            "theta_E": factor,
+            "e1": lens_parameters[1],
+            "e2": lens_parameters[2],
+            "gamma": lens_parameters[3],
+            "center_x": 0.0,
+            "center_y": 0.0,
+        },
+        {
+            "gamma1": lens_parameters[4],
+            "gamma2": lens_parameters[5],
+            "ra_0": 0,
+            "dec_0": 0,
+        },
+    ]
 
-        # If there is a nan, caustic=False, this batch will be ignored and resampled outside in lens_parameters sampling
-        if caustic:
-            break
-        else:
-            # print("Found invalid caustic. Will resample parameters.")
-            return (
-                np.nan,
-                np.nan,
-                np.array([np.nan,np.nan]),
-                np.array([np.nan,np.nan]),
-                np.array([np.nan,np.nan]),
-                np.array([np.nan,np.nan]),
-                0,
-                np.array([np.nan,np.nan]),
-                np.array([np.nan,np.nan]),
-                iteration,
-            )
+    # Get the caustic curve for double-imaging region
+    caustic_double_points = caustics_epl_shear(
+        kwargs_lens, return_which="double", maginf=-100
+    )
+    caustic_is_valid = not np.isnan(caustic_double_points).any()
 
-    # define region in the source plane where 2 or more images are formed
+    if not caustic_is_valid:
+        return _create_nan_result(iteration)
+
+    # Define region where 2+ images form
     caustic_double = Polygon(caustic_double_points.T)
 
-    # check for strong lensed condition
+    # Sample source positions until strong lensing condition is satisfied
     strongly_lensed = False
-    i = 0
-    while strongly_lensed == False:
-        # Draw random points within the caustic
-        # sometimes x_source, y_source positions are at same location and the solver fails
-        # so we use a try-except block to catch the error and draw a new point
-        # try:
+    retry_count = 0
+    while not strongly_lensed:
         x_source, y_source = pointpats.random.poisson(caustic_double, size=1)
-        # Solve the lens equation
-        try:  # this to catch this error: "ValueError: Signs are not different"
+        try:
             (
                 x0_image_position,
                 x1_image_position,
@@ -161,53 +179,25 @@ def solve_lens_equation(lens_parameters):
                 sourcePos_y=y_source,
                 kwargs_lens=kwargs_lens,
                 solver="analytical",
-                magnification_limit=1.0 / 100.0,
+                magnification_limit=MIN_MAGNIFICATION,
                 arrival_time_sort=True,
             )
-        except:
-            return (
-                np.nan,
-                np.nan,
-                np.array([np.nan,np.nan]),
-                np.array([np.nan,np.nan]),
-                np.array([np.nan,np.nan]),
-                np.array([np.nan,np.nan]),
-                0,
-                np.array([np.nan,np.nan]),
-                np.array([np.nan,np.nan]),
-                iteration,
-            )
+        except ValueError:
+            return _create_nan_result(iteration)
 
-        nImages = len(x0_image_position)  # shows how many images
+        nImages = len(x0_image_position)
         if nImages >= n_min_images:
             strongly_lensed = True
 
-        # check 100 times if strongly lensed condition is not satisfied
-        if i > 100:
-            # print("Cannot satisfy strong lensing condition. Will resample parameters.")
-            return (
-                np.nan,
-                np.nan,
-                np.array([np.nan,np.nan]),
-                np.array([np.nan,np.nan]),
-                np.array([np.nan,np.nan]),
-                np.array([np.nan,np.nan]),
-                0,
-                np.array([np.nan,np.nan]),
-                np.array([np.nan,np.nan]),
-                iteration,
-            )
-        i += 1
-        ##########
+        if retry_count > MAX_RETRIES:
+            return _create_nan_result(iteration)
+        retry_count += 1
 
-    # ---------------------------------#
-    #          magnification and time-delay
-    # ---------------------------------#
-    # theta_E is in arcsec
+    # Compute magnifications and time delays
     theta_E_nImages = einstein_radius * np.ones(nImages)
     radian_to_arcseconds = 180.0 / np.pi * 3600.0
     days_to_seconds = 24.0 * 3600.0
-    # can have multiple magnification
+
     magnifications = lensModel.magnification(
         x0_image_position, x1_image_position, kwargs_lens
     )
@@ -217,24 +207,19 @@ def solve_lens_equation(lens_parameters):
         * days_to_seconds
     )
 
-    # ---------------------------------#
-    #     Params needed for image-type classification
-    # ---------------------------------#
-    # it is faster to use numpy array operation to do image classification
-    # return: f_xx, f_xy, f_yx, f_yy components
+    # Compute hessian properties for image type classification
     hessian = lensModel.hessian(x0_image_position, x1_image_position, kwargs_lens)
     determinant = np.array(
         (1 - hessian[0]) * (1 - hessian[3]) - hessian[1] * hessian[2]
     )
     trace = np.array(2 - hessian[0] - hessian[3])
 
-    # scale source and image positions to arcsec
+    # Scale positions to physical units
     x_source = x_source * einstein_radius
     y_source = y_source * einstein_radius
     x0_image_position = x0_image_position * einstein_radius
     x1_image_position = x1_image_position * einstein_radius
 
-    #  return also gamma1, gamma2
     return (
         x_source,
         y_source,
@@ -247,5 +232,3 @@ def solve_lens_equation(lens_parameters):
         trace,
         iteration,
     )
-
-

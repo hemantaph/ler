@@ -1,99 +1,128 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.gw_source_population.cbc_source_redshift_distribution &mdash; ler 0.4.3 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
-  
-      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=5bfaad31"></script>
-      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="../../../_static/copybutton.js?v=f281be69"></script>
-      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-      <script src="../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
-      <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ler.gw_source_population.cbc_source_redshift_distribution &mdash; ler 0.4.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+
+    <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../../../_static/documentation_options.js?v=5bfaad31"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA="
+        src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+    <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+    <link rel="search" title="Search" href="../../../search.html" />
 </head>
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #2980b9" >
+<body class="wy-body-for-nav">
+    <div class="wy-grid-for-nav">
+        <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+            <div class="wy-side-scroll">
+                <div class="wy-side-nav-search" style="background: #2980b9">
 
-          
-          
-          <a href="../../../index.html" class="icon icon-home">
-            ler
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">API:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
-</ul>
 
-        </div>
-      </div>
-    </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">ler</a>
-      </nav>
+                    <a href="../../../index.html" class="icon icon-home">
+                        ler
+                    </a>
+                    <div role="search">
+                        <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+                            <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+                        </form>
+                    </div>
+                </div>
+                <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+                    <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+                    <ul>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../Installation.html">Installation</a></li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a>
+                        </li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code
+                                overview</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../GW_events.html">Gravitational wave event rates</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../GW_equations.html">Gravitational wave events sampling (Analytical
+                                formulation)</a></li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed
+                                event rates</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a>
+                        </li>
+                    </ul>
+                    <p class="caption" role="heading"><span class="caption-text">API:</span></p>
+                    <ul>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../autoapi/ler/rates/index.html"><code
+                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a>
+                        </li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../autoapi/ler/gw_source_population/index.html"><code
+                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a>
+                        </li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../autoapi/ler/lens_galaxy_population/index.html"><code
+                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a>
+                        </li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../autoapi/ler/image_properties/index.html"><code
+                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a>
+                        </li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../autoapi/ler/utils/index.html"><code
+                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a>
+                        </li>
+                    </ul>
 
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">ler.gw_source_population.cbc_source_redshift_distribution</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <h1>Source code for ler.gw_source_population.cbc_source_redshift_distribution</h1><div class="highlight"><pre>
+                </div>
+            </div>
+        </nav>
+
+        <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+            <nav class="wy-nav-top" aria-label="Mobile navigation menu" style="background: #2980b9">
+                <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+                <a href="../../../index.html">ler</a>
+            </nav>
+
+            <div class="wy-nav-content">
+                <div class="rst-content">
+                    <div role="navigation" aria-label="Page navigation">
+                        <ul class="wy-breadcrumbs">
+                            <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+                            <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+                            <li class="breadcrumb-item active">ler.gw_source_population.cbc_source_redshift_distribution
+                            </li>
+                            <li class="wy-breadcrumbs-aside">
+                            </li>
+                        </ul>
+                        <hr />
+                    </div>
+                    <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+                        <div itemprop="articleBody">
+
+                            <h1>Source code for ler.gw_source_population.cbc_source_redshift_distribution</h1>
+                            <div class="highlight">
+                                <pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Module for compact binary coalescence (CBC) source redshift distribution.</span>
@@ -131,7 +160,7 @@
 <span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
 
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span>  <span class="n">FunctionConditioning</span><span class="p">,</span> <span class="n">interpolator_json_path</span><span class="p">,</span> <span class="n">luminosity_distance</span><span class="p">,</span> <span class="n">differential_comoving_volume</span>
-<span class="kn">from</span> <span class="nn">.jit_functions</span> <span class="kn">import</span> <span class="n">merger_rate_density_bbh_popI_II_oguri2018</span><span class="p">,</span> <span class="n">sfr_madau_dickinson2014</span><span class="p">,</span> <span class="n">merger_rate_density_bbh_popIII_ken2022</span><span class="p">,</span> <span class="n">merger_rate_density_bbh_primordial_ken2022</span>
+<span class="kn">from</span> <span class="nn">.jit_functions</span> <span class="kn">import</span> <span class="n">merger_rate_density_bbh_oguri2018</span><span class="p">,</span> <span class="n">sfr_madau_dickinson2014</span><span class="p">,</span> <span class="n">merger_rate_density_bbh_popIII_ken2022</span><span class="p">,</span> <span class="n">merger_rate_density_bbh_primordial_ken2022</span>
 <span class="kn">from</span> <span class="nn">.sfr_with_time_delay</span> <span class="kn">import</span> <span class="n">sfr_with_time_delay</span>
 
 
@@ -173,13 +202,13 @@
 <span class="sd">    merger_rate_density : ``str`` or ``callable`` or ``None``</span>
 <span class="sd">        Merger rate density model to use. \n</span>
 <span class="sd">        Options: \n</span>
-<span class="sd">        - &#39;merger_rate_density_bbh_popI_II_oguri2018&#39;: PopI/II BBH (Oguri 2018) \n</span>
+<span class="sd">        - &#39;merger_rate_density_bbh_oguri2018&#39;: PopI/II BBH (Oguri 2018) \n</span>
 <span class="sd">        - &#39;sfr_madau_dickinson2014&#39;: Star formation rate (Madau &amp; Dickinson 2014) \n</span>
-<span class="sd">        - &#39;sfr_with_td&#39;: SFR with time delay \n</span>
+<span class="sd">        - &#39;sfr_with_time_delay&#39;: SFR with time delay \n</span>
 <span class="sd">        - &#39;merger_rate_density_bbh_popIII_ken2022&#39;: PopIII BBH (Ng 2022) \n</span>
 <span class="sd">        - &#39;merger_rate_density_bbh_primordial_ken2022&#39;: Primordial BBH (Ng 2022) \n</span>
 <span class="sd">        - callable: User-defined function f(z) -&gt; rate density \n</span>
-<span class="sd">        default: None (uses &#39;merger_rate_density_bbh_popI_II_oguri2018&#39;)</span>
+<span class="sd">        default: None (uses &#39;merger_rate_density_bbh_oguri2018&#39;)</span>
 <span class="sd">    merger_rate_density_param : ``dict`` or ``None``</span>
 <span class="sd">        Parameters for the merger rate density function. \n</span>
 <span class="sd">        default: None (uses dict(R0=23.9 * 1e-9, b2=1.6, b3=2.1, b4=30))</span>
@@ -212,11 +241,11 @@
 <span class="sd">    +=====================================================+====================================================+</span>
 <span class="sd">    | :meth:`~merger_rate_density_detector_frame`         | Compute merger rate density in detector frame      |</span>
 <span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
-<span class="sd">    | :meth:`~merger_rate_density_bbh_popI_II_oguri2018`  | PopI/II merger rate density (Oguri 2018)           |</span>
+<span class="sd">    | :meth:`~merger_rate_density_bbh_oguri2018`  | PopI/II merger rate density (Oguri 2018)           |</span>
 <span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
 <span class="sd">    | :meth:`~sfr_madau_dickinson2014`                    | Star formation rate (Madau &amp; Dickinson 2014)       |</span>
 <span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
-<span class="sd">    | :meth:`~sfr_with_td`                                | SFR with time delay convolution                    |</span>
+<span class="sd">    | :meth:`~sfr_with_time_delay`                                | SFR with time delay convolution                    |</span>
 <span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
 <span class="sd">    | :meth:`~merger_rate_density_bbh_popIII_ken2022`     | PopIII merger rate density (Ng 2022)               |</span>
 <span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
@@ -342,7 +371,7 @@
                 <span class="n">create_new_interpolator_</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">merger_rate_density</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">merger_rate_density</span><span class="o">==</span><span class="s2">&quot;sfr_with_td&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">merger_rate_density</span><span class="o">==</span><span class="s2">&quot;sfr_with_time_delay&quot;</span><span class="p">:</span>
                 <span class="n">create_new_interpolator_</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">48</span>
 
         <span class="k">return</span> <span class="n">create_new_interpolator_</span>
@@ -381,10 +410,10 @@
             <span class="n">merger_rate_density_</span> <span class="o">=</span> <span class="n">merger_rate_density</span>
             <span class="n">merger_rate_density_param_</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">merger_rate_density_</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_bbh_popI_II_oguri2018&quot;</span>
+            <span class="n">merger_rate_density_</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_bbh_oguri2018&quot;</span>
 
         <span class="c1"># Oguri et al. (2018) merger rate density</span>
-        <span class="k">if</span> <span class="n">merger_rate_density_</span> <span class="o">==</span> <span class="s2">&quot;merger_rate_density_bbh_popI_II_oguri2018&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">merger_rate_density_</span> <span class="o">==</span> <span class="s2">&quot;merger_rate_density_bbh_oguri2018&quot;</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">event_type</span> <span class="o">==</span> <span class="s2">&quot;BBH&quot;</span><span class="p">:</span>
                 <span class="n">merger_rate_density_param_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">R0</span><span class="o">=</span><span class="mf">23.9</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">b3</span><span class="o">=</span><span class="mf">2.1</span><span class="p">,</span> <span class="n">b4</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">event_type</span> <span class="o">==</span> <span class="s2">&quot;BNS&quot;</span><span class="p">:</span>
@@ -395,7 +424,7 @@
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;event_type must be &#39;BBH&#39;, &#39;BNS&#39; or &#39;NSBH&#39;&quot;</span><span class="p">)</span>
         
         <span class="c1"># merger rate with time delay; Borhanian &amp; Sathyaprakash (2024)</span>
-        <span class="n">list_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sfr_with_td&#39;</span><span class="p">]</span>
+        <span class="n">list_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sfr_with_time_delay&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">merger_rate_density_</span> <span class="ow">in</span> <span class="n">list_</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">event_type</span> <span class="o">==</span> <span class="s2">&quot;BBH&quot;</span><span class="p">:</span>
                 <span class="n">merger_rate_density_param_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">R0</span><span class="o">=</span><span class="mf">23.9</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">2.6</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">3.2</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">6.2</span><span class="p">,</span> <span class="n">td_min</span><span class="o">=</span><span class="mf">10e-3</span><span class="p">,</span> <span class="n">td_max</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
@@ -468,9 +497,9 @@
 
         <span class="k">return</span> <span class="n">Pzs_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">Pzs_object</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_bbh_popI_II_oguri2018">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_popI_II_oguri2018">[docs]</a>
-    <span class="k">def</span> <span class="nf">merger_rate_density_bbh_popI_II_oguri2018</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_bbh_oguri2018">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_oguri2018">[docs]</a>
+    <span class="k">def</span> <span class="nf">merger_rate_density_bbh_oguri2018</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute PopI/II BBH merger rate density (Oguri et al. 2018).</span>
 
@@ -496,7 +525,7 @@
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; from ler.gw_source_population import CBCSourceRedshiftDistribution</span>
-<span class="sd">        &gt;&gt;&gt; cbc = CBCSourceRedshiftDistribution(merger_rate_density=&quot;merger_rate_density_bbh_popI_II_oguri2018&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; cbc = CBCSourceRedshiftDistribution(merger_rate_density=&quot;merger_rate_density_bbh_oguri2018&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; rate = cbc.merger_rate_density(zs=0.5)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -505,14 +534,14 @@
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;z_max&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;cosmology&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;event_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span>
-        <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_bbh_popI_II_oguri2018&quot;</span>
+        <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_bbh_oguri2018&quot;</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
-        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_model_list</span><span class="p">[</span><span class="s2">&quot;merger_rate_density_bbh_popI_II_oguri2018&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_model_list</span><span class="p">[</span><span class="s2">&quot;merger_rate_density_bbh_oguri2018&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
         
         <span class="n">zs_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;z_min&#39;</span><span class="p">],</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;z_max&#39;</span><span class="p">],</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">])</span>
-        <span class="n">Rzs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">zs</span><span class="p">:</span> <span class="n">merger_rate_density_bbh_popI_II_oguri2018</span><span class="p">(</span>
+        <span class="n">Rzs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">zs</span><span class="p">:</span> <span class="n">merger_rate_density_bbh_oguri2018</span><span class="p">(</span>
             <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span> 
             <span class="n">R0</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;R0&#39;</span><span class="p">],</span> 
             <span class="n">b2</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;b2&#39;</span><span class="p">],</span> 
@@ -538,9 +567,9 @@
         <span class="k">return</span> <span class="n">Rzs_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">Rzs_object</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span></div>
 
     
-<div class="viewcode-block" id="CBCSourceRedshiftDistribution.sfr_with_td">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.sfr_with_td">[docs]</a>
-    <span class="k">def</span> <span class="nf">sfr_with_td</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="CBCSourceRedshiftDistribution.sfr_with_time_delay">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.sfr_with_time_delay">[docs]</a>
+    <span class="k">def</span> <span class="nf">sfr_with_time_delay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute merger rate density with time delay convolution.</span>
 
@@ -569,9 +598,9 @@
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;z_max&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;cosmology&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;event_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span>
-        <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;sfr_with_td&quot;</span>
+        <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;sfr_with_time_delay&quot;</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
-        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_model_list</span><span class="p">[</span><span class="s2">&quot;sfr_with_td&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_model_list</span><span class="p">[</span><span class="s2">&quot;sfr_with_time_delay&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
     
@@ -711,7 +740,7 @@
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
         
         <span class="n">zs_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;z_min&#39;</span><span class="p">],</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;z_max&#39;</span><span class="p">],</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">])</span>
-        <span class="n">Rzs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">zs</span><span class="p">:</span> <span class="n">sfr_madau_dickinson2014</span><span class="p">(</span>  <span class="c1"># noqa: E731</span>
+        <span class="n">Rzs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">zs</span><span class="p">:</span> <span class="n">sfr_madau_dickinson2014</span><span class="p">(</span>  <span class="c1"></span>
             <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span> 
             <span class="n">a</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">],</span> 
             <span class="n">b</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">],</span> 
@@ -1178,9 +1207,9 @@
 <span class="sd">        merger_rate_density_model_list : ``dict``</span>
 <span class="sd">            Dictionary with model names as keys and parameter dicts as values. \n</span>
 <span class="sd">            Available models: \n</span>
-<span class="sd">            - &#39;merger_rate_density_bbh_popI_II_oguri2018&#39; \n</span>
+<span class="sd">            - &#39;merger_rate_density_bbh_oguri2018&#39; \n</span>
 <span class="sd">            - &#39;sfr_madau_dickinson2014&#39; \n</span>
-<span class="sd">            - &#39;sfr_with_td&#39; \n</span>
+<span class="sd">            - &#39;sfr_with_time_delay&#39; \n</span>
 <span class="sd">            - &#39;merger_rate_density_bbh_popIII_ken2022&#39; \n</span>
 <span class="sd">            - &#39;merger_rate_density_bbh_primordial_ken2022&#39;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1189,7 +1218,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merger_rate_density_model_list</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_merger_rate_density_model_list</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">merger_rate_density_bbh_popI_II_oguri2018</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">merger_rate_density_bbh_oguri2018</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
                 <span class="n">R0</span><span class="o">=</span><span class="mf">23.9</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">b3</span><span class="o">=</span><span class="mf">2.1</span><span class="p">,</span> <span class="n">b4</span><span class="o">=</span><span class="mi">30</span>
             <span class="p">),</span>
             <span class="n">sfr_madau_fragos2017</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
@@ -1198,7 +1227,7 @@
             <span class="n">sfr_madau_dickinson2014</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
                 <span class="n">a</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">2.7</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">2.9</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">5.6</span>
             <span class="p">),</span>
-            <span class="n">sfr_with_td</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">sfr_with_time_delay</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
                 <span class="n">R0</span><span class="o">=</span><span class="mf">23.9</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">2.6</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">3.2</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">6.2</span><span class="p">,</span> <span class="n">td_min</span><span class="o">=</span><span class="mf">10e-3</span><span class="p">,</span> <span class="n">td_max</span><span class="o">=</span><span class="mf">10.0</span>
             <span class="p">),</span>
             <span class="n">merger_rate_density_bbh_popIII_ken2022</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
@@ -1224,33 +1253,35 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merger_rate_density_model_list</span></div>
 </div>
 
-</pre></div>
+</pre>
+                            </div>
 
-           </div>
-          </div>
-          <footer>
+                        </div>
+                    </div>
+                    <footer>
 
-  <hr/>
+                        <hr />
 
-  <div role="contentinfo">
-    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
-  </div>
+                        <div role="contentinfo">
+                            <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+                        </div>
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+                        Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+                        <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+                        provided by <a href="https://readthedocs.org">Read the Docs</a>.
 
-</footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+
+                    </footer>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
 
 </body>
+
 </html>

@@ -4,7 +4,6 @@ This module contains helper routines for other modules in the ler package.
 """
 
 import os
-import pickle
 import h5py
 import numpy as np
 import json
@@ -69,9 +68,15 @@ def load_pickle(file_name):
     Returns
     ----------
     param : `dict`
+    
+    Note
+    ----
+    Uses dill instead of pickle to support serialization of local functions,
+    lambdas, and closures.
     """
+    import dill
     with open(file_name, "rb") as handle:
-        param = pickle.load(handle)
+        param = dill.load(handle)
 
     return param
 
@@ -84,9 +89,15 @@ def save_pickle(file_name, param):
         pickle file name for storing the parameters.
     param : `dict`
         dictionary to be saved as a pickle file.
+        
+    Note
+    ----
+    Uses dill instead of pickle to support serialization of local functions,
+    lambdas, and closures.
     """
+    import dill
     with open(file_name, "wb") as handle:
-        pickle.dump(param, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        dill.dump(param, handle, protocol=dill.HIGHEST_PROTOCOL)
 
 # hdf5
 def load_hdf5(file_name):

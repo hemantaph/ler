@@ -21,10 +21,10 @@ from scipy.integrate import quad
 from scipy.optimize import fsolve
 from astropy.cosmology import LambdaCDM
 
-from .jit_functions import sfr_madau_fragos2017
+from .prior_functions  import sfr_madau_fragos2017
 
 
-def sfr_with_time_delay(input_args):
+def sfr_with_time_delay_function(input_args):
     """
     Compute star formation rate at observed redshift with time delay.
 

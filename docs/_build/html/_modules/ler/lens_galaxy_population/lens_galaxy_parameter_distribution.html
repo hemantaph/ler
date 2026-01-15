@@ -357,8 +357,8 @@
                 <span class="n">sigma_rvs</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">size</span><span class="p">,</span> <span class="n">zl</span><span class="p">:</span> <span class="n">sigma_rvs_</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
                 <span class="n">sigma_pdf</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">zl</span><span class="p">:</span> <span class="n">sigma_pdf_</span><span class="p">(</span><span class="n">sigma</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">sigma_rvs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">,</span> <span class="n">zl</span><span class="p">:</span> <span class="n">sigma_rvs_</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>  <span class="c1"># noqa: E731</span>
-                <span class="n">sigma_pdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">zl</span><span class="p">:</span> <span class="n">sigma_pdf_</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>  <span class="c1"># noqa: E731</span>
+                <span class="n">sigma_rvs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">,</span> <span class="n">zl</span><span class="p">:</span> <span class="n">sigma_rvs_</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>  <span class="c1"></span>
+                <span class="n">sigma_pdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">zl</span><span class="p">:</span> <span class="n">sigma_pdf_</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>  <span class="c1"></span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">sigma_rvs</span> <span class="o">=</span> <span class="n">sigma_rvs_</span>
             <span class="n">sigma_pdf</span> <span class="o">=</span> <span class="n">sigma_pdf_</span>
@@ -367,7 +367,7 @@
             <span class="k">if</span> <span class="n">is_njitted</span><span class="p">(</span><span class="n">q_rvs_</span><span class="p">):</span>
                 <span class="n">q_rvs</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">size</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="n">q_rvs_</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">q_rvs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="n">q_rvs_</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>  <span class="c1"># noqa: E731</span>
+                <span class="n">q_rvs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="n">q_rvs_</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>  <span class="c1"></span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">q_rvs</span> <span class="o">=</span> <span class="n">q_rvs_</span>
 

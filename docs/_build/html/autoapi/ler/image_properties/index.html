@@ -80,7 +80,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#attributes">Attributes</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#ler.image_properties.cosmo"><code class="docutils literal notranslate"><span class="pre">cosmo</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.image_properties.solve_lens_equation"><code class="docutils literal notranslate"><span class="pre">solve_lens_equation()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ler.image_properties.phi_q2_ellipticity_hemanta"><code class="docutils literal notranslate"><span class="pre">phi_q2_ellipticity_hemanta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ler.image_properties.phi_q2_ellipticity"><code class="docutils literal notranslate"><span class="pre">phi_q2_ellipticity()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.image_properties.ImageProperties"><code class="docutils literal notranslate"><span class="pre">ImageProperties</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.image_properties.MAX_RETRIES"><code class="docutils literal notranslate"><span class="pre">MAX_RETRIES</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ler.image_properties.MIN_MAGNIFICATION"><code class="docutils literal notranslate"><span class="pre">MIN_MAGNIFICATION</span></code></a></li>
@@ -148,7 +148,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#id0" title="ler.image_properties.solve_lens_equation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_lens_equation</span></code></a>(lens_parameters)</p></td>
 <td><p>Solve the lens equation to find image properties.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.phi_q2_ellipticity_hemanta" title="ler.image_properties.phi_q2_ellipticity_hemanta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_q2_ellipticity_hemanta</span></code></a>(phi, q)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.phi_q2_ellipticity" title="ler.image_properties.phi_q2_ellipticity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_q2_ellipticity</span></code></a>(phi, q)</p></td>
 <td><p>Function to convert phi and q to ellipticity e1 and e2.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#id0" title="ler.image_properties.solve_lens_equation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_lens_equation</span></code></a>(lens_parameters)</p></td>
@@ -245,8 +245,8 @@ region to ensure multiple imaging.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ler.image_properties.phi_q2_ellipticity_hemanta">
-<span class="sig-prename descclassname"><span class="pre">ler.image_properties.</span></span><span class="sig-name descname"><span class="pre">phi_q2_ellipticity_hemanta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#phi_q2_ellipticity_hemanta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.phi_q2_ellipticity_hemanta" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="ler.image_properties.phi_q2_ellipticity">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.</span></span><span class="sig-name descname"><span class="pre">phi_q2_ellipticity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#phi_q2_ellipticity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.phi_q2_ellipticity" title="Link to this definition"></a></dt>
 <dd><p>Function to convert phi and q to ellipticity e1 and e2.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

@@ -1,99 +1,127 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.gw_source_population.jit_functions &mdash; ler 0.4.3 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
-  
-      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=5bfaad31"></script>
-      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="../../../_static/copybutton.js?v=f281be69"></script>
-      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-      <script src="../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
-      <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ler.gw_source_population.jit_functions &mdash; ler 0.4.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=776609e1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+
+    <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../../../_static/documentation_options.js?v=5bfaad31"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA="
+        src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+    <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+    <link rel="search" title="Search" href="../../../search.html" />
 </head>
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #2980b9" >
+<body class="wy-body-for-nav">
+    <div class="wy-grid-for-nav">
+        <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+            <div class="wy-side-scroll">
+                <div class="wy-side-nav-search" style="background: #2980b9">
 
-          
-          
-          <a href="../../../index.html" class="icon icon-home">
-            ler
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">API:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
-</ul>
 
-        </div>
-      </div>
-    </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">ler</a>
-      </nav>
+                    <a href="../../../index.html" class="icon icon-home">
+                        ler
+                    </a>
+                    <div role="search">
+                        <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+                            <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+                        </form>
+                    </div>
+                </div>
+                <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+                    <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+                    <ul>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../Installation.html">Installation</a></li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a>
+                        </li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code
+                                overview</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../GW_events.html">Gravitational wave event rates</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../GW_equations.html">Gravitational wave events sampling (Analytical
+                                formulation)</a></li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed
+                                event rates</a></li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a>
+                        </li>
+                    </ul>
+                    <p class="caption" role="heading"><span class="caption-text">API:</span></p>
+                    <ul>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../autoapi/ler/rates/index.html"><code
+                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a>
+                        </li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../autoapi/ler/gw_source_population/index.html"><code
+                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a>
+                        </li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../autoapi/ler/lens_galaxy_population/index.html"><code
+                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a>
+                        </li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../autoapi/ler/image_properties/index.html"><code
+                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a>
+                        </li>
+                        <li class="toctree-l1"><a class="reference internal"
+                                href="../../../autoapi/ler/utils/index.html"><code
+                                    class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a>
+                        </li>
+                    </ul>
 
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">ler.gw_source_population.jit_functions</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <h1>Source code for ler.gw_source_population.jit_functions</h1><div class="highlight"><pre>
+                </div>
+            </div>
+        </nav>
+
+        <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+            <nav class="wy-nav-top" aria-label="Mobile navigation menu" style="background: #2980b9">
+                <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+                <a href="../../../index.html">ler</a>
+            </nav>
+
+            <div class="wy-nav-content">
+                <div class="rst-content">
+                    <div role="navigation" aria-label="Page navigation">
+                        <ul class="wy-breadcrumbs">
+                            <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+                            <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+                            <li class="breadcrumb-item active">ler.gw_source_population.jit_functions</li>
+                            <li class="wy-breadcrumbs-aside">
+                            </li>
+                        </ul>
+                        <hr />
+                    </div>
+                    <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+                        <div itemprop="articleBody">
+
+                            <h1>Source code for ler.gw_source_population.jit_functions</h1>
+                            <div class="highlight">
+                                <pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Module for JIT-compiled functions used in GW source population simulations.</span>
@@ -175,9 +203,9 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
 <span class="nd">@njit</span>
-<div class="viewcode-block" id="merger_rate_density_bbh_popI_II_oguri2018">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.merger_rate_density_bbh_popI_II_oguri2018">[docs]</a>
-<span class="k">def</span> <span class="nf">merger_rate_density_bbh_popI_II_oguri2018</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">R0</span><span class="o">=</span><span class="mf">23.9</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">b3</span><span class="o">=</span><span class="mf">2.1</span><span class="p">,</span> <span class="n">b4</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
+<div class="viewcode-block" id="merger_rate_density_bbh_oguri2018">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.merger_rate_density_bbh_oguri2018">[docs]</a>
+<span class="k">def</span> <span class="nf">merger_rate_density_bbh_oguri2018</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">R0</span><span class="o">=</span><span class="mf">23.9</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">b3</span><span class="o">=</span><span class="mf">2.1</span><span class="p">,</span> <span class="n">b4</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the merger rate density for PopI/II BBH.</span>
 
@@ -208,8 +236,8 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population import merger_rate_density_bbh_popI_II_oguri2018</span>
-<span class="sd">    &gt;&gt;&gt; rate_density = merger_rate_density_bbh_popI_II_oguri2018(zs=0.1)</span>
+<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population import merger_rate_density_bbh_oguri2018</span>
+<span class="sd">    &gt;&gt;&gt; rate_density = merger_rate_density_bbh_oguri2018(zs=0.1)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">R0</span> <span class="o">*</span> <span class="p">(</span><span class="n">b4</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">b2</span> <span class="o">*</span> <span class="n">zs</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b4</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">b3</span> <span class="o">*</span> <span class="n">zs</span><span class="p">))</span></div>
 
@@ -480,9 +508,9 @@
 
 
 <span class="nd">@njit</span>
-<div class="viewcode-block" id="lognormal_distribution_2D">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.lognormal_distribution_2D">[docs]</a>
-<span class="k">def</span> <span class="nf">lognormal_distribution_2D</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">m_min</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">m_max</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">Mc</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+<div class="viewcode-block" id="binary_masses_BBH_popIII_lognormal">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.binary_masses_BBH_popIII_lognormal">[docs]</a>
+<span class="k">def</span> <span class="nf">binary_masses_BBH_popIII_lognormal</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">m_min</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">m_max</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">Mc</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sample from a lognormal distribution in 2D mass space.</span>
 
@@ -518,8 +546,8 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population import lognormal_distribution_2D</span>
-<span class="sd">    &gt;&gt;&gt; m1, m2 = lognormal_distribution_2D(size=1000)</span>
+<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population import binary_masses_BBH_popIII_lognormal</span>
+<span class="sd">    &gt;&gt;&gt; m1, m2 = binary_masses_BBH_popIII_lognormal(size=1000)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># mass function (Eqn. 1 of Ng et al. 2022)</span>
     <span class="n">psi</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">m</span> <span class="o">/</span> <span class="n">Mc</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span>
@@ -872,9 +900,9 @@
 
 
 <span class="nd">@njit</span>
-<div class="viewcode-block" id="sample_broken_powerlaw_nsbh_masses">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.sample_broken_powerlaw_nsbh_masses">[docs]</a>
-<span class="k">def</span> <span class="nf">sample_broken_powerlaw_nsbh_masses</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">mminbh</span><span class="o">=</span><span class="mf">26.</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="o">=</span><span class="mf">125.</span><span class="p">,</span> <span class="n">alpha_1</span><span class="o">=</span><span class="mf">6.75</span><span class="p">,</span> <span class="n">alpha_2</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">delta_m</span><span class="o">=</span><span class="mf">5.</span><span class="p">,</span> <span class="n">mminns</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">mmaxns</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">alphans</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">normalization_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<div class="viewcode-block" id="binary_masses_NSBH_broken_powerlaw">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/jit_functions/index.html#ler.gw_source_population.binary_masses_NSBH_broken_powerlaw">[docs]</a>
+<span class="k">def</span> <span class="nf">binary_masses_NSBH_broken_powerlaw</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">mminbh</span><span class="o">=</span><span class="mf">26.</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="o">=</span><span class="mf">125.</span><span class="p">,</span> <span class="n">alpha_1</span><span class="o">=</span><span class="mf">6.75</span><span class="p">,</span> <span class="n">alpha_2</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">delta_m</span><span class="o">=</span><span class="mf">5.</span><span class="p">,</span> <span class="n">mminns</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">mmaxns</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">alphans</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">normalization_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate NSBH mass samples from broken power-law (BH) and power-law (NS).</span>
 
@@ -1312,33 +1340,35 @@
     <span class="n">pdf_unnormalized</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">lambda_peak</span><span class="p">)</span><span class="o">*</span><span class="n">_powerlaw_B</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">mmaxbh</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">lambda_peak</span> <span class="o">*</span> <span class="n">_gaussian_G</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">mu_g</span><span class="p">,</span> <span class="n">sigma_g</span><span class="p">)))</span><span class="o">*</span> <span class="n">_smoothing_S</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">mminbh</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">pdf_unnormalized</span>
-</pre></div>
+</pre>
+                            </div>
 
-           </div>
-          </div>
-          <footer>
+                        </div>
+                    </div>
+                    <footer>
 
-  <hr/>
+                        <hr />
 
-  <div role="contentinfo">
-    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
-  </div>
+                        <div role="contentinfo">
+                            <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+                        </div>
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+                        Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+                        <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+                        provided by <a href="https://readthedocs.org">Read the Docs</a>.
 
-</footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+
+                    </footer>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
 
 </body>
+
 </html>

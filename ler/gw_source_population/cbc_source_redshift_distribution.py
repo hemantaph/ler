@@ -35,8 +35,6 @@ from scipy.interpolate import CubicSpline
 from astropy.cosmology import LambdaCDM
 
 from ..utils import  FunctionConditioning, interpolator_json_path, luminosity_distance, differential_comoving_volume
-from .jit_functions import merger_rate_density_bbh_popI_II_oguri2018, sfr_madau_dickinson2014, merger_rate_density_bbh_popIII_ken2022, merger_rate_density_bbh_primordial_ken2022
-from .sfr_with_time_delay import sfr_with_time_delay
 
 
 class CBCSourceRedshiftDistribution(object):
@@ -75,16 +73,14 @@ class CBCSourceRedshiftDistribution(object):
     merger_rate_density : ``str`` or ``callable`` or ``None``
         Merger rate density model to use. \n
         Options: \n
-        - 'merger_rate_density_bbh_popI_II_oguri2018': PopI/II BBH (Oguri 2018) \n
-        - 'sfr_madau_dickinson2014': Star formation rate (Madau & Dickinson 2014) \n
-        - 'sfr_with_td': SFR with time delay \n
+        - 'merger_rate_density_bbh_oguri2018': PopI/II BBH (Oguri 2018) \n
         - 'merger_rate_density_bbh_popIII_ken2022': PopIII BBH (Ng 2022) \n
         - 'merger_rate_density_bbh_primordial_ken2022': Primordial BBH (Ng 2022) \n
         - callable: User-defined function f(z) -> rate density \n
-        default: None (uses 'merger_rate_density_bbh_popI_II_oguri2018')
+        default: None (uses 'merger_rate_density_bbh_oguri2018')
     merger_rate_density_param : ``dict`` or ``None``
         Parameters for the merger rate density function. \n
-        default: None (uses dict(R0=23.9 * 1e-9, b2=1.6, b3=2.1, b4=30))
+        default: None (uses dict(R0=19 * 1e-9, b2=1.6, b3=2.1, b4=30))
     cosmology : ``astropy.cosmology`` or ``None``
         Cosmology for distance calculations. \n
         default: None (uses LambdaCDM(H0=70, Om0=0.3, Ode0=0.7))
@@ -114,11 +110,11 @@ class CBCSourceRedshiftDistribution(object):
     +=====================================================+====================================================+
     | :meth:`~merger_rate_density_detector_frame`         | Compute merger rate density in detector frame      |
     +-----------------------------------------------------+----------------------------------------------------+
-    | :meth:`~merger_rate_density_bbh_popI_II_oguri2018`  | PopI/II merger rate density (Oguri 2018)           |
+    | :meth:`~merger_rate_density_bbh_oguri2018`  | PopI/II merger rate density (Oguri 2018)           |
     +-----------------------------------------------------+----------------------------------------------------+
     | :meth:`~sfr_madau_dickinson2014`                    | Star formation rate (Madau & Dickinson 2014)       |
     +-----------------------------------------------------+----------------------------------------------------+
-    | :meth:`~sfr_with_td`                                | SFR with time delay convolution                    |
+    | :meth:`~sfr_with_time_delay`                                | SFR with time delay convolution                    |
     +-----------------------------------------------------+----------------------------------------------------+
     | :meth:`~merger_rate_density_bbh_popIII_ken2022`     | PopIII merger rate density (Ng 2022)               |
     +-----------------------------------------------------+----------------------------------------------------+
@@ -169,7 +165,7 @@ class CBCSourceRedshiftDistribution(object):
         directory="./interpolator_json",
         create_new_interpolator=False,
     ):
-        print("\nInitializing CBCSourceRedshiftDistribution...\n")
+        print("\nInitializing CBCSourceRedshiftDistribution class...\n")
         # set attributes
         self.npool = npool
         self.z_min = z_min
@@ -208,7 +204,7 @@ class CBCSourceRedshiftDistribution(object):
         )
 
         # Normalization of the pdf p(z)
-        self.normalization_pdf_z = self.source_redshift.pdf_norm_const
+        self.normalization_pdf_z = float(self.source_redshift.pdf_norm_const)
 
     def _setup_decision_dictionary(self, create_new_interpolator, merger_rate_density):
         """
@@ -241,7 +237,7 @@ class CBCSourceRedshiftDistribution(object):
                 create_new_interpolator_[key]["create_new"] = True
 
         if isinstance(merger_rate_density, str):
-            if merger_rate_density=="sfr_with_td":
+            if merger_rate_density=="sfr_with_time_delay":
                 create_new_interpolator_["merger_rate_density"]["resolution"] = 48
 
         return create_new_interpolator_
@@ -267,44 +263,37 @@ class CBCSourceRedshiftDistribution(object):
             Parameters for the merger rate density function.
         """
 
-        # update the merger rate density and its parameters with user provided values
-        if isinstance(merger_rate_density, str):
-            if merger_rate_density in self.merger_rate_density_model_list:
-                merger_rate_density_ = merger_rate_density
-                # you can't provide merger_rate_density_param and not merger_rate_density
-                merger_rate_density_param_ = self.merger_rate_density_model_list[merger_rate_density]
-            else:
-                raise ValueError(f"'merger rate density' sampler '{merger_rate_density}' not available.\n Available 'merger rate density' samplers and its parameters are: {self.merger_rate_density_model_list}")
-        elif callable(merger_rate_density):
-            print("using user provided custom merger rate density function")
-            merger_rate_density_ = merger_rate_density
-            merger_rate_density_param_ = {}
-        else:
-            merger_rate_density_ = "merger_rate_density_bbh_popI_II_oguri2018"
+        if event_type == "BBH":
+            merger_rate_density_ = "merger_rate_density_madau_dickinson_belczynski_ng"
+            merger_rate_density_param_ = dict(
+                R0=19 * 1e-9, alpha_F=2.57, beta_F=5.83, c_F=3.36  
+            )
+        elif event_type == "BNS":
+            merger_rate_density_ = "merger_rate_density_madau_dickinson2014"
+            merger_rate_density_param_ = dict(
+                R0=89 * 1e-9, a=0.015, b=2.7, c=2.9, d=5.6  
+            )
+        elif event_type == "NSBH":
+            merger_rate_density_ = "merger_rate_density_madau_dickinson2014"
+            merger_rate_density_param_ = dict(
+                R0=23 * 1e-9, a=0.015, b=2.7, c=2.9, d=5.6  
+            )
 
-        # Oguri et al. (2018) merger rate density
-        if merger_rate_density_ == "merger_rate_density_bbh_popI_II_oguri2018":
-            if event_type == "BBH":
-                merger_rate_density_param_ = dict(R0=23.9 * 1e-9, b2=1.6, b3=2.1, b4=30)
-            elif event_type == "BNS":
-                merger_rate_density_param_ = dict(R0=105.5 * 1e-9, b2=1.6, b3=2.1, b4=30)
-            elif event_type == "NSBH":
-                merger_rate_density_param_ = dict(R0=45.0 * 1e-9, b2=1.6, b3=2.1, b4=30)
+        if merger_rate_density:
+            merger_rate_density_ = merger_rate_density
+
+            if isinstance(merger_rate_density, str):
+                if merger_rate_density in self.merger_rate_density_model_list:
+                    merger_rate_density_param_ = self.merger_rate_density_model_list[merger_rate_density]
+                else:
+                    raise ValueError(f"'merger rate density' sampler '{merger_rate_density}' not available.\n Available 'merger rate density' samplers and its parameters are: {self.merger_rate_density_model_list}")
+            elif callable(merger_rate_density):
+                print("using user provided custom merger rate density function")
+                merger_rate_density_param_ = {}
             else:
-                raise ValueError("event_type must be 'BBH', 'BNS' or 'NSBH'")
-        
-        # merger rate with time delay; Borhanian & Sathyaprakash (2024)
-        list_ = ['sfr_with_td']
-        if merger_rate_density_ in list_:
-            if event_type == "BBH":
-                merger_rate_density_param_ = dict(R0=23.9 * 1e-9, a=0.01, b=2.6, c=3.2, d=6.2, td_min=10e-3, td_max=10.0)
-            elif event_type == "BNS":
-                merger_rate_density_param_ = dict(R0=105.5 * 1e-9, a=0.01, b=2.6, c=3.2, d=6.2, td_min=20e-3, td_max=10.0)
-            else:
-                raise ValueError("event_type must be 'BBH', 'BNS'")
-            
-        # if callable(merger_rate_density), below code will not matter
-        if isinstance(merger_rate_density_param, dict):  # merger_rate_density_param is user provided
+                raise ValueError("merger_rate_density must be a string or callable")
+
+        if merger_rate_density_param:
             merger_rate_density_param_.update(merger_rate_density_param)
 
         return merger_rate_density_, merger_rate_density_param_
@@ -367,7 +356,7 @@ class CBCSourceRedshiftDistribution(object):
 
         return Pzs_object if get_attribute else Pzs_object(zs)
 
-    def merger_rate_density_bbh_popI_II_oguri2018(self, zs, get_attribute=False, **kwargs):
+    def merger_rate_density_bbh_oguri2018(self, zs, get_attribute=False, **kwargs):
         """
         Compute PopI/II BBH merger rate density (Oguri et al. 2018).
 
@@ -383,7 +372,7 @@ class CBCSourceRedshiftDistribution(object):
             default: False
         **kwargs : ``dict``
             Override default fitting parameters: 
-            R0=23.9e-9, b2=1.6, b3=2.1, b4=30.
+            R0=19e-9, b2=1.6, b3=2.1, b4=30.
 
         Returns
         -------
@@ -393,23 +382,25 @@ class CBCSourceRedshiftDistribution(object):
         Examples
         --------
         >>> from ler.gw_source_population import CBCSourceRedshiftDistribution
-        >>> cbc = CBCSourceRedshiftDistribution(merger_rate_density="merger_rate_density_bbh_popI_II_oguri2018")
+        >>> cbc = CBCSourceRedshiftDistribution(merger_rate_density="merger_rate_density_bbh_oguri2018")
         >>> rate = cbc.merger_rate_density(zs=0.5)
         """
+
+        from .prior_functions  import merger_rate_density_bbh_oguri2018_function
 
         identifier_dict = {}
         identifier_dict['z_min'] = self.z_min
         identifier_dict['z_max'] = self.z_max
         identifier_dict['cosmology'] = self.cosmo
         identifier_dict['event_type'] = self.event_type
-        identifier_dict['name'] = "merger_rate_density_bbh_popI_II_oguri2018"
+        identifier_dict['name'] = "merger_rate_density_bbh_oguri2018"
         identifier_dict['resolution'] = self.create_new_interpolator["merger_rate_density"]["resolution"]
-        param_dict = self.merger_rate_density_model_list["merger_rate_density_bbh_popI_II_oguri2018"].copy()
+        param_dict = self.merger_rate_density_model_list["merger_rate_density_bbh_oguri2018"].copy()
         param_dict.update(kwargs)
         identifier_dict.update(param_dict)
         
         zs_array = np.linspace(identifier_dict['z_min'], identifier_dict['z_max'], identifier_dict['resolution'])
-        Rzs = lambda zs: merger_rate_density_bbh_popI_II_oguri2018(
+        Rzs = lambda zs: merger_rate_density_bbh_oguri2018_function(  
             zs=zs, 
             R0=identifier_dict['R0'], 
             b2=identifier_dict['b2'], 
@@ -434,7 +425,7 @@ class CBCSourceRedshiftDistribution(object):
 
         return Rzs_object if get_attribute else Rzs_object(zs)
     
-    def sfr_with_td(self, zs, get_attribute=False, **kwargs):
+    def sfr_with_time_delay(self, zs, get_attribute=False, **kwargs):
         """
         Compute merger rate density with time delay convolution.
 
@@ -463,9 +454,9 @@ class CBCSourceRedshiftDistribution(object):
         identifier_dict['z_max'] = self.z_max
         identifier_dict['cosmology'] = self.cosmo
         identifier_dict['event_type'] = self.event_type
-        identifier_dict['name'] = "sfr_with_td"
+        identifier_dict['name'] = "sfr_with_time_delay"
         identifier_dict['resolution'] = self.create_new_interpolator["merger_rate_density"]["resolution"]
-        param_dict = self.merger_rate_density_model_list["sfr_with_td"].copy()
+        param_dict = self.merger_rate_density_model_list["sfr_with_time_delay"].copy()
         param_dict.update(kwargs)
         identifier_dict.update(param_dict)
     
@@ -521,6 +512,8 @@ class CBCSourceRedshiftDistribution(object):
             Computed merger rate density normalized to R0.
         """
 
+        from .sfr_with_time_delay import sfr_with_time_delay_function
+
         size = len(zs_array)
         input_args = np.array([
             zs_array, # source redshifts
@@ -542,7 +535,7 @@ class CBCSourceRedshiftDistribution(object):
         rate_density_array = np.zeros(size)
         with Pool(processes=self.npool) as pool:            
             for result in tqdm(
-                pool.imap_unordered(sfr_with_time_delay, input_args),
+                pool.imap_unordered(sfr_with_time_delay_function, input_args),
                 total=size,
                 ncols=100,
                 disable=False,
@@ -561,7 +554,7 @@ class CBCSourceRedshiftDistribution(object):
     
         return rate_density_array
 
-    def sfr_madau_dickinson2014(self, zs, get_attribute=False, **kwargs):
+    def merger_rate_density_madau_dickinson2014(self, zs, get_attribute=False, **kwargs):
         """
         Compute star formation rate following Madau & Dickinson (2014).
 
@@ -576,7 +569,7 @@ class CBCSourceRedshiftDistribution(object):
             If True, return the FunctionConditioning object. 
             default: False
         **kwargs : ``dict``
-            Override default fitting parameters: a=0.015, b=2.7, c=2.9, d=5.6.
+            Override default fitting parameters: R0=19 * 1e-9, a=0.015, b=2.7, c=2.9, d=5.6.
 
         Returns
         -------
@@ -586,29 +579,106 @@ class CBCSourceRedshiftDistribution(object):
         Examples
         --------
         >>> from ler.gw_source_population import CBCSourceRedshiftDistribution
-        >>> cbc = CBCSourceRedshiftDistribution(merger_rate_density="sfr_madau_dickinson2014")
+        >>> cbc = CBCSourceRedshiftDistribution(merger_rate_density="merger_rate_density_madau_dickinson2014")
         >>> sfr = cbc.merger_rate_density(zs=2.0)
         """
+
+        from .prior_functions  import merger_rate_density_madau_dickinson2014_function
 
         identifier_dict = {}
         identifier_dict['z_min'] = self.z_min
         identifier_dict['z_max'] = self.z_max
         identifier_dict['cosmology'] = self.cosmo
         identifier_dict['event_type'] = self.event_type
-        identifier_dict['name'] = "sfr_madau_dickinson2014"
+        identifier_dict['name'] = "merger_rate_density_madau_dickinson2014"
         identifier_dict['resolution'] = self.create_new_interpolator["merger_rate_density"]["resolution"]
-        param_dict = self.merger_rate_density_model_list["sfr_madau_dickinson2014"].copy()
+        param_dict = self.merger_rate_density_model_list["merger_rate_density_madau_dickinson2014"].copy()
         param_dict.update(kwargs)
         identifier_dict.update(param_dict)
         
         zs_array = np.linspace(identifier_dict['z_min'], identifier_dict['z_max'], identifier_dict['resolution'])
-        Rzs = lambda zs: sfr_madau_dickinson2014(  # noqa: E731
-            zs=zs, 
-            a=identifier_dict['a'], 
-            b=identifier_dict['b'], 
+
+        Rzs = lambda zs: merger_rate_density_madau_dickinson2014_function(  
+            zs=zs,
+            R0=identifier_dict['R0'],
+            a=identifier_dict['a'],
+            b=identifier_dict['b'],
             c=identifier_dict['c'],
+            d=identifier_dict['d']
         )
 
+        Rzs_object = FunctionConditioning(
+            function=Rzs,
+            x_array=zs_array,
+            identifier_dict=identifier_dict,
+            directory=self.directory,
+            sub_directory="merger_rate_density",
+            name=identifier_dict['name'],
+            create_new=self.create_new_interpolator["merger_rate_density"]["create_new"],
+            create_function_inverse=False,
+            create_function=True,
+            create_pdf=True,
+            create_rvs=True,
+            callback='function',
+        )
+
+        return Rzs_object if get_attribute else Rzs_object(zs)
+
+    def merger_rate_density_madau_dickinson_belczynski_ng(self, zs, get_attribute=False, **kwargs):
+        """
+        Compute BBH merger rate density following Ng et al. (2021).
+
+        This model uses a Madau-Dickinson-like functional form to fit the 
+        merger rate density of field BHs, accounting for time delays and 
+        metallicity effects.
+
+        density(zs) ∝ (1 + zs) ** alpha_F / (1 + ((1 + zs) / c_F) ** beta_F)
+
+        Parameters
+        ----------
+        zs : ```numpy.ndarray``
+            Source redshift(s) at which to evaluate.
+        get_attribute : ``bool``
+            If True, return the FunctionConditioning object. 
+            default: False
+        **kwargs : ``dict``
+            Override default fitting parameters: R0, alpha_F, beta_F, c_F.
+
+        Returns
+        -------
+        rate_density : ```numpy.ndarray`` or ``FunctionConditioning``
+            Star formation rate density (units: M_sun yr^-1 Mpc^-3).
+
+        Examples
+        --------
+        >>> from ler.gw_source_population import CBCSourceRedshiftDistribution
+        >>> cbc = CBCSourceRedshiftDistribution(merger_rate_density="merger_rate_density_madau_dickinson_belczynski_ng")
+        >>> sfr = cbc.merger_rate_density(zs=2.0)
+        """
+
+        from .prior_functions  import merger_rate_density_madau_dickinson_belczynski_ng_function
+
+        identifier_dict = {}
+        identifier_dict['z_min'] = self.z_min
+        identifier_dict['z_max'] = self.z_max
+        identifier_dict['cosmology'] = self.cosmo
+        identifier_dict['event_type'] = self.event_type
+        identifier_dict['name'] = "merger_rate_density_madau_dickinson_belczynski_ng"
+        identifier_dict['resolution'] = self.create_new_interpolator["merger_rate_density"]["resolution"]
+        param_dict = self.merger_rate_density_model_list["merger_rate_density_madau_dickinson_belczynski_ng"].copy()
+        param_dict.update(kwargs)
+        identifier_dict.update(param_dict)
+        
+        zs_array = np.linspace(identifier_dict['z_min'], identifier_dict['z_max'], identifier_dict['resolution'])
+        
+        Rzs = merger_rate_density_madau_dickinson_belczynski_ng_function(
+            zs=zs_array,
+            R0=identifier_dict['R0'],
+            alpha_F=identifier_dict['alpha_F'],
+            beta_F=identifier_dict['beta_F'],
+            c_F=identifier_dict['c_F'],
+        )
+            
         Rzs_object = FunctionConditioning(
             function=Rzs,
             x_array=zs_array,
@@ -642,7 +712,7 @@ class CBCSourceRedshiftDistribution(object):
             default: False
         **kwargs : ``dict``
             Override default fitting parameters: 
-            n0=19.2e-9, aIII=0.66, bIII=0.3, zIII=11.6.
+            R0=19.2e-9, aIII=0.66, bIII=0.3, zIII=11.6.
 
         Returns
         -------
@@ -658,6 +728,8 @@ class CBCSourceRedshiftDistribution(object):
         ... )
         >>> rate = cbc.merger_rate_density(zs=10)
         """
+
+        from .prior_functions  import merger_rate_density_bbh_popIII_ken2022_function
         
         identifier_dict = {}
         identifier_dict['z_min'] = self.z_min
@@ -671,9 +743,9 @@ class CBCSourceRedshiftDistribution(object):
         identifier_dict.update(param_dict)
 
         zs_array = np.linspace(identifier_dict['z_min'], identifier_dict['z_max'], identifier_dict['resolution'])
-        Rzs = lambda zs: merger_rate_density_bbh_popIII_ken2022(
+        Rzs = lambda zs: merger_rate_density_bbh_popIII_ken2022_function(
             zs=zs,
-            n0=identifier_dict['n0'],
+            R0=identifier_dict['R0'],
             aIII=identifier_dict['aIII'],
             bIII=identifier_dict['bIII'],
             zIII=identifier_dict['zIII']
@@ -712,7 +784,7 @@ class CBCSourceRedshiftDistribution(object):
             default: False
         **kwargs : ``dict``
             Override default fitting parameters: 
-            n0=0.044e-9, t0=13.786885302009708.
+            R0=0.044e-9, t0=13.786885302009708.
 
         Returns
         -------
@@ -729,6 +801,8 @@ class CBCSourceRedshiftDistribution(object):
         >>> rate = cbc.merger_rate_density(zs=10)
         """
 
+        from .prior_functions  import merger_rate_density_bbh_primordial_ken2022_function
+
         identifier_dict = {}
         identifier_dict['z_min'] = self.z_min
         identifier_dict['z_max'] = self.z_max
@@ -741,9 +815,9 @@ class CBCSourceRedshiftDistribution(object):
         identifier_dict.update(param_dict)
 
         zs_array = np.linspace(identifier_dict['z_min'], identifier_dict['z_max'], identifier_dict['resolution'])
-        Rzs = lambda zs: merger_rate_density_bbh_primordial_ken2022(
+        Rzs = lambda zs: merger_rate_density_bbh_primordial_ken2022_function(
             zs=zs,
-            n0=identifier_dict['n0'],
+            R0=identifier_dict['R0'],
             t0=identifier_dict['t0']
         )
 
@@ -767,11 +841,16 @@ class CBCSourceRedshiftDistribution(object):
     @property
     def merger_rate_density(self):
         """
-        Source-frame merger rate density function R(z). \n
+        Source-frame merger rate density object. \n
+
+        Returns a ``FunctionConditioning`` object with methods: \n
+        - ``function(zs)``: Get merger rate density in source frame \n
+        - ``rvs(size)``: Sample source redshifts in source frame \n
+        - ``pdf(zs)``: Get probability density \n
 
         Returns
         -------
-        merger_rate_density : ``callable`` or ``FunctionConditioning``
+        merger_rate_density : ``FunctionConditioning``
             Callable that accepts redshift(s) and returns merger rate density 
             in source frame (units: Mpc^-3 yr^-1).
         """
@@ -794,7 +873,27 @@ class CBCSourceRedshiftDistribution(object):
 
         elif callable(function):
             print("using user provided custom merger rate density function")
-            self._merger_rate_density = function
+            identifier_dict = {}
+            identifier_dict['z_min'] = self.z_min
+            identifier_dict['z_max'] = self.z_max
+            identifier_dict['name'] = "merger_rate_density_custom"
+            identifier_dict['resolution'] = self.create_new_interpolator["merger_rate_density"]["resolution"]
+            zs_array = np.linspace(identifier_dict['z_min'], identifier_dict['z_max'], identifier_dict['resolution'])
+
+            self._merger_rate_density = FunctionConditioning(
+            function=function,
+            x_array=zs_array,
+            identifier_dict=identifier_dict,
+            directory=self.directory,
+            sub_directory="merger_rate_density",
+            name=identifier_dict['name'],
+            create_new=self.create_new_interpolator["merger_rate_density"]["create_new"],
+            create_function_inverse=False,
+            create_function=True,
+            create_pdf=True,
+            create_rvs=True,
+            callback='function',
+        )
 
         else:
             raise ValueError("merger_rate_density must be a function, FunctionConditioning object, or a string from the available 'merger_rate_density_model_list'")
@@ -1021,9 +1120,8 @@ class CBCSourceRedshiftDistribution(object):
         merger_rate_density_model_list : ``dict``
             Dictionary with model names as keys and parameter dicts as values. \n
             Available models: \n
-            - 'merger_rate_density_bbh_popI_II_oguri2018' \n
-            - 'sfr_madau_dickinson2014' \n
-            - 'sfr_with_td' \n
+            - 'merger_rate_density_bbh_oguri2018' \n
+            - 'sfr_with_time_delay' \n
             - 'merger_rate_density_bbh_popIII_ken2022' \n
             - 'merger_rate_density_bbh_primordial_ken2022'
         """
@@ -1032,35 +1130,23 @@ class CBCSourceRedshiftDistribution(object):
             return self._merger_rate_density_model_list
 
         self._merger_rate_density_model_list = dict(
-            merger_rate_density_bbh_popI_II_oguri2018=dict(
-                R0=23.9 * 1e-9, b2=1.6, b3=2.1, b4=30
+            merger_rate_density_bbh_oguri2018=dict(
+                R0=19 * 1e-9, b2=1.6, b3=2.1, b4=30
             ),
-            sfr_madau_fragos2017=dict(
-                a=0.01, b=2.6, c=3.2, d=6.2
+            merger_rate_density_madau_dickinson2014=dict(
+                R0=19 * 1e-9, a=0.015, b=2.7, c=2.9, d=5.6
             ),
-            sfr_madau_dickinson2014=dict(
-                a=0.015, b=2.7, c=2.9, d=5.6
+            merger_rate_density_madau_dickinson_belczynski_ng=dict(
+                R0=19 * 1e-9, alpha_F=2.57, beta_F=5.83, c_F=3.36
             ),
-            sfr_with_td=dict(
-                R0=23.9 * 1e-9, a=0.01, b=2.6, c=3.2, d=6.2, td_min=10e-3, td_max=10.0
+            sfr_with_time_delay=dict(
+                R0=19 * 1e-9, a=0.01, b=2.6, c=3.2, d=6.2, td_min=10e-3, td_max=10.0
             ),
             merger_rate_density_bbh_popIII_ken2022=dict(
-                n0=19.2 * 1e-9, aIII=0.66, bIII=0.3, zIII=11.6
+                R0=19.2 * 1e-9, aIII=0.66, bIII=0.3, zIII=11.6
             ),
             merger_rate_density_bbh_primordial_ken2022=dict(
-                n0=0.044 * 1e-9, t0=13.786885302009708
-            ),
-            sfr_madau_fragos2017_with_bbh_dt=dict(
-                R0=23.9 * 1e-9,
-            ),
-            sfr_madau_dickinson2014_with_bbh_dt=dict(
-                R0=23.9 * 1e-9,
-            ),
-            sfr_madau_fragos2017_with_bns_dt=dict(
-                R0=105.5 * 1e-9,
-            ),
-            sfr_madau_dickinson2014_with_bns_dt=dict(
-                R0=105.5 * 1e-9,
+                R0=0.044 * 1e-9, t0=13.786885302009708
             ),
         )
 

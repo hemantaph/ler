@@ -38,9 +38,7 @@ from ..utils import FunctionConditioning
 # import redshift distribution sampler
 from .cbc_source_redshift_distribution import CBCSourceRedshiftDistribution
 
-from .jit_functions import lognormal_distribution_2D, bns_bimodal_pdf, inverse_transform_sampler_m1m2, sample_powerlaw_gaussian_source_bbh_masses, sample_broken_powerlaw_nsbh_masses
-
-chunk_size = 10000
+chunk_size = 10000 # chunk size for rejection sampling
 
 
 class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
@@ -116,7 +114,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
     +=====================================================+================================================+
     | :meth:`~sample_gw_parameters`                       | Sample all GW parameters for compact binaries  |
     +-----------------------------------------------------+------------------------------------------------+
-    | :meth:`~binary_masses_BBH_popI_II_powerlaw_gaussian`| Sample BBH masses with PowerLaw+PEAK model     |
+    | :meth:`~binary_masses_BBH_powerlaw_gaussian`| Sample BBH masses with PowerLaw+PEAK model     |
     +-----------------------------------------------------+------------------------------------------------+
     | :meth:`~binary_masses_BBH_popIII_lognormal`         | Sample pop III BBH masses from lognormal       |
     +-----------------------------------------------------+------------------------------------------------+
@@ -277,7 +275,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             create_new_interpolator=create_new_interpolator,
         )
 
-        print("\nInitializing CBCSourceParameterDistribution...\n")
+        print("\nInitializing CBCSourceParameterDistribution class...\n")
         # initializing samplers
         # it goes through the setter functions and assign the sampler functions
         # self.source_redshift is already initialized in the super class
@@ -373,11 +371,11 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         # for BBH
         if event_type == "BBH":
-            merger_rate_density_prior = "merger_rate_density_bbh_popI_II_oguri2018"
+            merger_rate_density_prior = "merger_rate_density_madau_dickinson_belczynski_ng"
             merger_rate_density_prior_params = dict(
-                R0=23.9 * 1e-9, b2=1.6, b3=2.1, b4=30  # 
+                R0=19 * 1e-9, alpha_F=2.57, beta_F=5.83, c_F=3.36  
             )
-            source_frame_masses_prior = "binary_masses_BBH_popI_II_powerlaw_gaussian"
+            source_frame_masses_prior = "binary_masses_BBH_powerlaw_gaussian"
             source_frame_masses_prior_params = dict(
                 mminbh=4.98,
                 mmaxbh=112.5,
@@ -391,9 +389,9 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             a_max = 0.8
 
         elif event_type == "BNS":
-            merger_rate_density_prior = "merger_rate_density_bbh_popI_II_oguri2018"
+            merger_rate_density_prior = "merger_rate_density_madau_dickinson2014"
             merger_rate_density_prior_params = dict(
-                R0=105.5 * 1e-9, b2=1.6, b3=2.1, b4=30
+                R0=89 * 1e-9, a=0.015, b=2.7, c=2.9, d=5.6
             )
             source_frame_masses_prior = "binary_masses_BNS_bimodal"
             source_frame_masses_prior_params = dict(
@@ -408,9 +406,9 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             a_max = 0.05
 
         elif event_type == "NSBH":
-            merger_rate_density_prior = "merger_rate_density_bbh_popI_II_oguri2018"
+            merger_rate_density_prior = "merger_rate_density_madau_dickinson2014"
             merger_rate_density_prior_params = dict(
-                R0=27.0 * 1e-9, b2=1.6, b3=2.1, b4=30
+                R0=23 * 1e-9, a=0.015, b=2.7, c=2.9, d=5.6
             )
             source_frame_masses_prior = "binary_masses_NSBH_broken_powerlaw"
             source_frame_masses_prior_params = dict(
@@ -633,7 +631,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         return gw_parameters
 
-    def binary_masses_BBH_popI_II_powerlaw_gaussian(
+    def binary_masses_BBH_powerlaw_gaussian(
         self,
         size,
         get_attribute=False,
@@ -674,11 +672,13 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         --------
         >>> from ler.gw_source_population import CBCSourceParameterDistribution
         >>> cbc = CBCSourceParameterDistribution()
-        >>> m1_src, m2_src = cbc.binary_masses_BBH_popI_II_powerlaw_gaussian(size=1000)
+        >>> m1_src, m2_src = cbc.binary_masses_BBH_powerlaw_gaussian(size=1000)
         """
 
-        identifier_dict = {'name': "binary_masses_BBH_popI_II_powerlaw_gaussian"}
-        param_dict = self.available_gw_prior["source_frame_masses"]["binary_masses_BBH_popI_II_powerlaw_gaussian"].copy()
+        from .prior_functions import binary_masses_BBH_powerlaw_gaussian_rvs
+
+        identifier_dict = {'name': "binary_masses_BBH_powerlaw_gaussian"}
+        param_dict = self.available_gw_prior["source_frame_masses"]["binary_masses_BBH_powerlaw_gaussian"].copy()
         if param_dict:
             param_dict.update(kwargs)
         else:
@@ -687,7 +687,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
 
         # mass function
-        rvs_ = lambda size: sample_powerlaw_gaussian_source_bbh_masses(  # noqa: E731
+        rvs_ = lambda size: binary_masses_BBH_powerlaw_gaussian_rvs(  
             size=size,
             mminbh=identifier_dict["mminbh"],
             mmaxbh=identifier_dict["mmaxbh"],
@@ -755,6 +755,8 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         >>> m1_src, m2_src = cbc.binary_masses_BBH_popIII_lognormal(size=1000)
         """
 
+        from .prior_functions import binary_masses_BBH_popIII_lognormal_rvs
+
         identifier_dict = {'name': "binary_masses_BBH_popIII_lognormal"}
         param_dict = self.available_gw_prior["source_frame_masses"]["binary_masses_BBH_popIII_lognormal"].copy()
         if param_dict:
@@ -763,7 +765,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             param_dict = kwargs
         identifier_dict.update(param_dict)
 
-        rvs_ = lambda size: lognormal_distribution_2D(  # noqa: E731
+        rvs_ = lambda size: binary_masses_BBH_popIII_lognormal_rvs(  
             size,
             m_min=identifier_dict["m_min"],
             m_max=identifier_dict["m_max"],
@@ -822,6 +824,8 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             Array of secondary masses in source frame (Msun).
         """
 
+        from .prior_functions import binary_masses_BBH_primordial_lognormal_rvs
+
         identifier_dict = {'name': "binary_masses_BBH_primordial_lognormal"}    
         param_dict = self.available_gw_prior["source_frame_masses"]["binary_masses_BBH_primordial_lognormal"].copy()
         if param_dict:
@@ -830,7 +834,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             param_dict = kwargs
         identifier_dict.update(param_dict)
 
-        rvs_ = lambda size: lognormal_distribution_2D(  # noqa: E731
+        rvs_ = lambda size: binary_masses_BBH_primordial_lognormal_rvs(  
             size,
             m_min=identifier_dict["m_min"],
             m_max=identifier_dict["m_max"],
@@ -896,6 +900,8 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         >>> m1_src, m2_src = cbc.binary_masses_NSBH_broken_powerlaw(size=1000)
         """
 
+        from .prior_functions import binary_masses_NSBH_broken_powerlaw_rvs
+
         identifier_dict = {'name': "binary_masses_NSBH_broken_powerlaw"}
         param_dict = self.available_gw_prior["source_frame_masses"]["binary_masses_NSBH_broken_powerlaw"].copy()
         if param_dict:
@@ -905,8 +911,8 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         identifier_dict.update(param_dict)
 
         # mass function for NSBH
-        rvs_ = lambda size: sample_broken_powerlaw_nsbh_masses(
-            Nsample=size,
+        rvs_ = lambda size: binary_masses_NSBH_broken_powerlaw_rvs(
+            size,
             mminbh=identifier_dict["mminbh"],
             mmaxbh=identifier_dict["mmaxbh"],
             alpha_1=identifier_dict["alpha_1"],
@@ -980,7 +986,16 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         m_min = identifier_dict["m_min"]
         m_max = identifier_dict["m_max"]
-        rvs_ = njit(lambda size: (np.random.uniform(m_min, m_max, size), np.random.uniform(m_min, m_max, size)))
+
+        @njit
+        def rvs_(size):
+            # generate random masses
+            mass_1_source = np.random.uniform(m_min, m_max, size)
+            mass_2_source = np.random.uniform(m_min, m_max, size)
+            # swap if mass_2_source > mass_1_source
+            idx = np.where(mass_2_source > mass_1_source)
+            mass_1_source[idx], mass_2_source[idx] = mass_2_source[idx], mass_1_source[idx] 
+            return mass_1_source, mass_2_source
 
         mass_object = FunctionConditioning(
             function=None,
@@ -1042,6 +1057,8 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         >>> m1_src, m2_src = cbc.binary_masses_BNS_bimodal(size=1000)
         """
 
+        from .prior_functions import binary_masses_BNS_bimodal_rvs
+
         identifier_dict = {'name': "binary_masses_BNS_bimodal"}
         identifier_dict['resolution'] = self.create_new_interpolator["source_frame_masses"]["resolution"]
         param_dict = self.available_gw_prior["source_frame_masses"]["binary_masses_BNS_bimodal"].copy()
@@ -1051,10 +1068,9 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             param_dict = kwargs
         identifier_dict.update(param_dict)
 
-        # mass function for BNS
-        mass = np.linspace(identifier_dict["mmin"], identifier_dict["mmax"], identifier_dict["resolution"]) 
-        model = lambda mass: bns_bimodal_pdf(  # noqa: E731
-            mass,
+        # mass function for BNS 
+        rvs_ = lambda size: binary_masses_BNS_bimodal_rvs(  
+            size,
             w=identifier_dict["w"],
             muL=identifier_dict["muL"],
             sigmaL=identifier_dict["sigmaL"],
@@ -1062,36 +1078,25 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             sigmaR=identifier_dict["sigmaR"],
             mmin=identifier_dict["mmin"],
             mmax=identifier_dict["mmax"],
+            resolution=identifier_dict["resolution"],
         )
-
+        
         mass_object = FunctionConditioning(
-            function=model,
-            x_array=mass,
+            function=None,
+            x_array=None,
             identifier_dict=identifier_dict,
             directory=self.directory,
             sub_directory="source_frame_masses",
             name=identifier_dict['name'],
             create_new=self.create_new_interpolator["source_frame_masses"]["create_new"],
             create_function_inverse=False,
-            create_function=True,
-            create_pdf=True,
-            create_rvs=True,
+            create_function=False,
+            create_pdf=False,
+            create_rvs=rvs_,
             callback='rvs',
         )
 
-        cdf_values = mass_object.cdf_values
-        x_array = mass_object.x_array
-
-        mass_object.rvs = njit(lambda size: inverse_transform_sampler_m1m2(
-            size, 
-            cdf_values, 
-            x_array,)
-        )
-
-        if get_attribute:
-            return mass_object
-        else:
-            return mass_object(size)
+        return mass_object if get_attribute else mass_object.rvs(size)
 
     def constant_values_n_size(
         self, size=100, get_attribute=False, **kwargs
@@ -1131,6 +1136,12 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         rvs_ = njit(lambda size: np.ones(size) * value)
 
         object_ = FunctionConditioning(
+            identifier_dict=identifier_dict,
+            directory=self.directory,
+            sub_directory="custom_functions",
+            name=identifier_dict['name'],
+            create_function_inverse=False,
+            create_function=False,
             create_pdf=pdf_,
             create_rvs=rvs_,
             callback='rvs',
@@ -1178,6 +1189,11 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         object_ = FunctionConditioning(
             identifier_dict=identifier_dict,
+            directory=self.directory,
+            sub_directory="custom_functions",
+            name=identifier_dict['name'],
+            create_function_inverse=False,
+            create_function=False,
             create_pdf=pdf_,
             create_rvs=rvs_,
             callback='rvs',
@@ -1219,6 +1235,12 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         rvs_ = njit(lambda size: np.arcsin((np.random.uniform(0, 1, size=size) * 2 - 1)))
 
         object_ = FunctionConditioning(
+            identifier_dict=identifier_dict,
+            directory=self.directory,
+            sub_directory="custom_functions",
+            name=identifier_dict['name'],
+            create_function_inverse=False,
+            create_function=False,
             create_pdf=pdf_,
             create_rvs=rvs_,
             callback='rvs',
@@ -1260,6 +1282,12 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         rvs_ = njit(lambda size: np.arccos((np.random.uniform(0, 1, size=size) - 0.5) * 2))
 
         object_ = FunctionConditioning(
+            identifier_dict=identifier_dict,
+            directory=self.directory,
+            sub_directory="custom_functions",
+            name=identifier_dict['name'],
+            create_function_inverse=False,
+            create_function=False,
             create_pdf=pdf_,
             create_rvs=rvs_,
             callback='rvs',
@@ -1840,7 +1868,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 source_redshift=None,
             ),
             source_frame_masses=dict(
-                binary_masses_BBH_popI_II_powerlaw_gaussian=dict(
+                binary_masses_BBH_powerlaw_gaussian=dict(
                     mminbh=4.98,
                     mmaxbh=112.5,
                     alpha=3.78,
