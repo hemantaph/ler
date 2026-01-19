@@ -52,7 +52,7 @@ def available_sampler_list():
         "lens_redshift_strongly_lensed_sis_haris_rvs",
         "velocity_dispersion_ewoud_denisty_function",
         "velocity_dispersion_bernardi_denisty_function",
-        "velocity_dispersion_gengamma_function",
+        "velocity_dispersion_gengamma_density_function",
         "velocity_dispersion_gengamma_pdf",
         "velocity_dispersion_gengamma_rvs",
         "axis_ratio_rayleigh_rvs",
@@ -161,7 +161,7 @@ def lens_redshift_strongly_lensed_sis_haris_rvs(
     # Create CDF values using analytical form: CDF = 6x^5 - 15x^4 + 10x^3
     x_array = np.linspace(0.0, 1.0, 500)
     cdf_values = 6 * x_array**5 - 15 * x_array**4 + 10 * x_array**3
-    
+
     # Inverse transform sampling
     r = inverse_transform_sampler(size, cdf_values, x_array)
 
@@ -189,9 +189,19 @@ def _gamma(x):
         Gamma function value at x.
     """
     g = 7
-    p = np.array([0.99999999999980993, 676.5203681218851, -1259.1392167224028,
-                  771.32342877765313, -176.61502916214059, 12.507343278686905,
-                  -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7])
+    p = np.array(
+        [
+            0.99999999999980993,
+            676.5203681218851,
+            -1259.1392167224028,
+            771.32342877765313,
+            -176.61502916214059,
+            12.507343278686905,
+            -0.13857109526572012,
+            9.9843695780195716e-6,
+            1.5056327351493116e-7,
+        ]
+    )
 
     if x < 0.5:
         return np.pi / (np.sin(np.pi * x) * _gamma(1 - x))
@@ -201,8 +211,8 @@ def _gamma(x):
         for i in range(1, g + 2):
             y += p[i] / (x + i)
         t = x + g + 0.5
-        return np.sqrt(2 * np.pi) * t**(x + 0.5) * np.exp(-t) * y
-    
+        return np.sqrt(2 * np.pi) * t ** (x + 0.5) * np.exp(-t) * y
+
 
 @njit
 def _cvdf_fit(log_vd, redshift):
@@ -224,14 +234,20 @@ def _cvdf_fit(log_vd, redshift):
     result : ``float``
         Cumulative velocity dispersion function value.
     """
-    this_vars = np.array([
-        [7.39149763, 5.72940031, -1.12055245],
-        [-6.86339338, -5.27327109, 1.10411386],
-        [2.85208259, 1.25569600, -0.28663846],
-        [0.06703215, -0.04868317, 0.00764841]])
-    coeffs = [this_vars[i][0] + this_vars[i][1] * redshift + this_vars[i][2] * redshift ** 2 for i in range(4)]
+    this_vars = np.array(
+        [
+            [7.39149763, 5.72940031, -1.12055245],
+            [-6.86339338, -5.27327109, 1.10411386],
+            [2.85208259, 1.25569600, -0.28663846],
+            [0.06703215, -0.04868317, 0.00764841],
+        ]
+    )
+    coeffs = [
+        this_vars[i][0] + this_vars[i][1] * redshift + this_vars[i][2] * redshift**2
+        for i in range(4)
+    ]
     mstar = log_vd - coeffs[3]
-    return coeffs[0] + coeffs[1] * mstar + coeffs[2] * mstar ** 2 - np.exp(mstar)
+    return coeffs[0] + coeffs[1] * mstar + coeffs[2] * mstar**2 - np.exp(mstar)
 
 
 @njit
@@ -253,7 +269,9 @@ def _cvdf_derivative(log_vd, redshift, dx):
     derivative : ``float``
         Numerical derivative value.
     """
-    return 0.5 * (_cvdf_fit(log_vd + dx, redshift) - _cvdf_fit(log_vd - dx, redshift)) / dx
+    return (
+        0.5 * (_cvdf_fit(log_vd + dx, redshift) - _cvdf_fit(log_vd - dx, redshift)) / dx
+    )
 
 
 @njit
@@ -284,7 +302,9 @@ def _pdf_phi_z_ratio(sigma, z):
 
 
 @njit
-def velocity_dispersion_ewoud_denisty_function(sigma, z, alpha=0.94, beta=1.85, phistar=2.099e-2, sigmastar=113.78):
+def velocity_dispersion_ewoud_denisty_function(
+    sigma, z, alpha=0.94, beta=1.85, phistar=2.099e-2, sigmastar=113.78
+):
     """
     Calculate the lens galaxy velocity dispersion function at redshift z (Oguri et al. (2018b) + Wempe et al. (2022)).
 
@@ -313,13 +333,17 @@ def velocity_dispersion_ewoud_denisty_function(sigma, z, alpha=0.94, beta=1.85, 
         Velocity dispersion function values. \n
         Negative values are clipped to 0.
     """
-    result = _pdf_phi_z_ratio(sigma, z) * velocity_dispersion_bernardi_denisty_function(sigma=sigma, alpha=alpha, beta=beta, phistar=phistar, sigmastar=sigmastar)
-    result[result < 0.] = 0.
+    result = _pdf_phi_z_ratio(sigma, z) * velocity_dispersion_bernardi_denisty_function(
+        sigma=sigma, alpha=alpha, beta=beta, phistar=phistar, sigmastar=sigmastar
+    )
+    result[result < 0.0] = 0.0
     return result
 
 
 @njit
-def velocity_dispersion_bernardi_denisty_function(sigma, alpha, beta, phistar, sigmastar):
+def velocity_dispersion_bernardi_denisty_function(
+    sigma, alpha, beta, phistar, sigmastar
+):
     """
     Calculate the local universe velocity dispersion function.
 
@@ -351,15 +375,24 @@ def velocity_dispersion_bernardi_denisty_function(sigma, alpha, beta, phistar, s
     philoc : ``numpy.ndarray``
         Local velocity dispersion function values.
     """
-    philoc = phistar*(sigma/sigmastar)**alpha * np.exp(-(sigma/sigmastar)**beta) * beta/_gamma(alpha/beta)/sigma
+    philoc = (
+        phistar
+        * (sigma / sigmastar) ** alpha
+        * np.exp(-((sigma / sigmastar) ** beta))
+        * beta
+        / _gamma(alpha / beta)
+        / sigma
+    )
     return philoc
-    
-def velocity_dispersion_gengamma_function(
+
+
+def velocity_dispersion_gengamma_density_function(
     sigma,
     alpha=0.94,
     beta=1.85,
     phistar=2.099e-2,
     sigmastar=113.78,
+    **kwargs,
 ):
     """
     Compute unnormalized velocity dispersion function using generalized gamma.
@@ -393,7 +426,7 @@ def velocity_dispersion_gengamma_function(
     --------
     >>> import numpy as np
     >>> sigma = np.array([150.0, 200.0, 250.0])
-    >>> density = velocity_dispersion_gengamma_function(sigma)
+    >>> density = velocity_dispersion_gengamma_density_function(sigma)
     >>> print(f"Density at sigma=200 km/s: {density[1]:.6f}")
     """
     from scipy.stats import gengamma
@@ -457,7 +490,7 @@ def velocity_dispersion_gengamma_pdf(
     """
     # Compute normalization constant
     sigma_array = np.linspace(sigma_min, sigma_max, 500)
-    density = velocity_dispersion_gengamma_function(
+    density = velocity_dispersion_gengamma_density_function(
         sigma=sigma_array,
         alpha=alpha,
         beta=beta,
@@ -465,12 +498,15 @@ def velocity_dispersion_gengamma_pdf(
     )
     norm_const = np.trapz(density, sigma_array)
 
-    pdf = velocity_dispersion_gengamma_function(
-        sigma=sigma,
-        alpha=alpha,
-        beta=beta,
-        sigmastar=sigmastar,
-    ) / norm_const
+    pdf = (
+        velocity_dispersion_gengamma_density_function(
+            sigma=sigma,
+            alpha=alpha,
+            beta=beta,
+            sigmastar=sigmastar,
+        )
+        / norm_const
+    )
 
     return pdf
 
@@ -510,6 +546,7 @@ def _truncated_gengamma_rvs(size, a, c, loc, scale, lower_bound, upper_bound):
         total_samples.extend(valid)
 
     return np.array(total_samples[:size])
+
 
 def velocity_dispersion_gengamma_rvs(
     size,
@@ -688,7 +725,9 @@ def axis_ratio_rayleigh_pdf(q, sigma, q_min=0.2, q_max=1.0):
         base = (b / (s * s)) * np.exp(-0.5 * (b * b) / (s * s))
 
         # Truncation normalization
-        Z = np.exp(-0.5 * (b_lo * b_lo) / (s * s)) - np.exp(-0.5 * (b_hi * b_hi) / (s * s))
+        Z = np.exp(-0.5 * (b_lo * b_lo) / (s * s)) - np.exp(
+            -0.5 * (b_hi * b_hi) / (s * s)
+        )
         if Z <= 0.0:
             out[i] = 0.0
         else:
@@ -709,26 +748,60 @@ def _axis_ratio_padilla_strauss_data():
     pdf_array : ``numpy.ndarray``
         PDF values at each axis ratio.
     """
-    q_array = np.array([
-        0.04903276402927845, 0.09210526315789469, 0.13596491228070173,
-        0.20789473684210524, 0.2899703729522482, 0.3230132450331126,
-        0.35350877192982455, 0.37946148483792264, 0.4219298245614036,
-        0.4689525967235971, 0.5075026141512723, 0.5226472638550018,
-        0.5640350877192983, 0.6096491228070177, 0.6500000000000001,
-        0.6864848379226213, 0.7377192982456142, 0.7787295224817011,
-        0.8007581038689441, 0.822786685256187, 0.8668438480306729,
-        0.8973684210526317, 0.9254385964912283,
-    ])
-    pdf = np.array([
-        0.04185262687135349, 0.06114520695141845, 0.096997499638376,
-        0.1932510900336828, 0.39547914337673706, 0.49569751276216234,
-        0.6154609137685201, 0.7182049959882812, 0.920153741243567,
-        1.1573982157399754, 1.3353263628106684, 1.413149656448315,
-        1.5790713532948977, 1.7280185150744938, 1.8132994441344819,
-        1.8365803753840484, 1.8178662203211204, 1.748929843583365,
-        1.688182592496342, 1.6274353414093188, 1.4948487090314488,
-        1.402785526832393, 1.321844068356993,
-    ])
+    q_array = np.array(
+        [
+            0.04903276402927845,
+            0.09210526315789469,
+            0.13596491228070173,
+            0.20789473684210524,
+            0.2899703729522482,
+            0.3230132450331126,
+            0.35350877192982455,
+            0.37946148483792264,
+            0.4219298245614036,
+            0.4689525967235971,
+            0.5075026141512723,
+            0.5226472638550018,
+            0.5640350877192983,
+            0.6096491228070177,
+            0.6500000000000001,
+            0.6864848379226213,
+            0.7377192982456142,
+            0.7787295224817011,
+            0.8007581038689441,
+            0.822786685256187,
+            0.8668438480306729,
+            0.8973684210526317,
+            0.9254385964912283,
+        ]
+    )
+    pdf = np.array(
+        [
+            0.04185262687135349,
+            0.06114520695141845,
+            0.096997499638376,
+            0.1932510900336828,
+            0.39547914337673706,
+            0.49569751276216234,
+            0.6154609137685201,
+            0.7182049959882812,
+            0.920153741243567,
+            1.1573982157399754,
+            1.3353263628106684,
+            1.413149656448315,
+            1.5790713532948977,
+            1.7280185150744938,
+            1.8132994441344819,
+            1.8365803753840484,
+            1.8178662203211204,
+            1.748929843583365,
+            1.688182592496342,
+            1.6274353414093188,
+            1.4948487090314488,
+            1.402785526832393,
+            1.321844068356993,
+        ]
+    )
     return q_array, pdf
 
 
@@ -1148,7 +1221,6 @@ def importance_sampler(
     sigma_pdf,
     cross_section,
     n_prop,
-    **kwargs,
 ):
     """
     Core importance sampling algorithm for lens parameters.

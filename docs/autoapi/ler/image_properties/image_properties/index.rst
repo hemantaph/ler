@@ -51,7 +51,7 @@ Attributes
 
    
 
-.. py:class:: ImageProperties(npool=4, n_min_images=2, n_max_images=4, time_window=365 * 24 * 3600 * 20, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, spin_zero=True, spin_precession=False)
+.. py:class:: ImageProperties(npool=4, n_min_images=2, n_max_images=4, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, time_window=365 * 24 * 3600 * 20, spin_zero=True, spin_precession=False)
 
 
    

@@ -162,7 +162,7 @@ def relative_mu_dt_unlensed(param, size=100, randomize=True):
 
 def relative_mu_dt_lensed(
     lensed_param, 
-    snr_threshold=[8.0, 8.0], 
+    pdet_threshold=[0.5, 0.5], 
     classification_type='morse_phase'
     ):
     """
@@ -174,7 +174,7 @@ def relative_mu_dt_lensed(
     # get magnifications, time_delays and snr
     mu = lensed_param["magnifications"]
     dt = lensed_param["time_delays"]
-    snr = lensed_param["snr_net"]
+    pdet = lensed_param["pdet_net"]
     image_type = lensed_param["image_type"]
 
     # pair images wrt to image_type
@@ -185,63 +185,63 @@ def relative_mu_dt_lensed(
         mu_rel90 = []
         for i in range(len(image_type)):
             if image_type[i,0]==image_type[i,1]:
-                # snr check
+                # pdet check
                 # below will also take care of the nan values
-                if snr[i,0]>snr_threshold[0] and snr[i,1]>snr_threshold[1]:
+                if pdet[i,0]>pdet_threshold[0] and pdet[i,1]>pdet_threshold[1]:
                     dt_rel0.append(abs(dt[i,1]-dt[i,0])/ (60 * 60 * 24))
                     mu_rel0.append(abs(mu[i,1]/mu[i,0]))
             else:
-                if snr[i,0]>snr_threshold[0] and snr[i,1]>snr_threshold[1]:
+                if pdet[i,0]>pdet_threshold[0] and pdet[i,1]>pdet_threshold[1]:
                     dt_rel90.append(abs(dt[i,1]-dt[i,0])/ (60 * 60 * 24))
                     mu_rel90.append(abs(mu[i,1]/mu[i,0]))
             if image_type[i,0]==image_type[i,2]:
                 # snr check
                 # below will also take care of the nan values
-                if snr[i,0]>snr_threshold[0] and snr[i,2]>snr_threshold[1]:
+                if pdet[i,0]>pdet_threshold[0] and pdet[i,2]>pdet_threshold[1]:
                     dt_rel0.append(abs(dt[i,2]-dt[i,0])/ (60 * 60 * 24))
                     mu_rel0.append(abs(mu[i,2]/mu[i,0]))
             else:
-                if snr[i,0]>snr_threshold[0] and snr[i,2]>snr_threshold[1]:
+                if pdet[i,0]>pdet_threshold[0] and pdet[i,2]>pdet_threshold[1]:
                     dt_rel90.append(abs(dt[i,2]-dt[i,0])/ (60 * 60 * 24))
                     mu_rel90.append(abs(mu[i,2]/mu[i,0]))
             if image_type[i,0]==image_type[i,3]:
-                # snr check
+                # pdet check
                 # below will also take care of the nan values
-                if snr[i,0]>snr_threshold[0] and snr[i,3]>snr_threshold[1]:
+                if pdet[i,0]>pdet_threshold[0] and pdet[i,3]>pdet_threshold[1]:
                     dt_rel0.append(abs(dt[i,3]-dt[i,0])/ (60 * 60 * 24))
                     mu_rel0.append(abs(mu[i,3]/mu[i,0]))
             else:
-                if snr[i,0]>snr_threshold[0] and snr[i,3]>snr_threshold[1]:
+                if pdet[i,0]>pdet_threshold[0] and pdet[i,3]>pdet_threshold[1]:
                     dt_rel90.append(abs(dt[i,3]-dt[i,0])/ (60 * 60 * 24))
                     mu_rel90.append(abs(mu[i,3]/mu[i,0]))
             if image_type[i,1]==image_type[i,2]:
-                # snr check
+                # pdet check
                 # below will also take care of the nan values
-                if snr[i,1]>snr_threshold[0] and snr[i,2]>snr_threshold[1]:
+                if pdet[i,1]>pdet_threshold[0] and pdet[i,2]>pdet_threshold[1]:
                     dt_rel0.append(abs(dt[i,2]-dt[i,1])/ (60 * 60 * 24))
                     mu_rel0.append(abs(mu[i,2]/mu[i,1]))
             else:
-                if snr[i,1]>snr_threshold[0] and snr[i,2]>snr_threshold[1]:
+                if pdet[i,1]>pdet_threshold[0] and pdet[i,2]>pdet_threshold[1]:
                     dt_rel90.append(abs(dt[i,2]-dt[i,1])/ (60 * 60 * 24))
                     mu_rel90.append(abs(mu[i,2]/mu[i,1]))
             if image_type[i,1]==image_type[i,3]:
-                # snr check
+                # pdet check
                 # below will also take care of the nan values
-                if snr[i,1]>snr_threshold[0] and snr[i,3]>snr_threshold[1]:
+                if pdet[i,1]>pdet_threshold[0] and pdet[i,3]>pdet_threshold[1]:
                     dt_rel0.append(abs(dt[i,3]-dt[i,1])/ (60 * 60 * 24))
                     mu_rel0.append(abs(mu[i,3]/mu[i,1]))
             else:
-                if snr[i,1]>snr_threshold[0] and snr[i,3]>snr_threshold[1]:
+                if pdet[i,1]>pdet_threshold[0] and pdet[i,3]>pdet_threshold[1]:
                     dt_rel90.append(abs(dt[i,3]-dt[i,1])/ (60 * 60 * 24))
                     mu_rel90.append(abs(mu[i,3]/mu[i,1]))
             if image_type[i,2]==image_type[i,3]:
-                # snr check
+                # pdet check
                 # below will also take care of the nan values
-                if snr[i,2]>snr_threshold[0] and snr[i,3]>snr_threshold[1]:
+                if pdet[i,2]>pdet_threshold[0] and pdet[i,3]>pdet_threshold[1]:
                     dt_rel0.append(abs(dt[i,3]-dt[i,2])/ (60 * 60 * 24))
                     mu_rel0.append(abs(mu[i,3]/mu[i,2]))
             else:
-                if snr[i,2]>snr_threshold[0] and snr[i,3]>snr_threshold[1]:
+                if pdet[i,2]>pdet_threshold[0] and pdet[i,3]>pdet_threshold[1]:
                     dt_rel90.append(abs(dt[i,3]-dt[i,2])/ (60 * 60 * 24))
                     mu_rel90.append(abs(mu[i,3]/mu[i,2]))
 
@@ -258,22 +258,22 @@ def relative_mu_dt_lensed(
         mu_12, mu_13, mu_14, mu_23, mu_24, mu_34 = [], [], [], [], [], []
 
         for i in range(len(image_type)):
-            if snr[i,0]>snr_threshold[0] and snr[i,1]>snr_threshold[1]:
+            if pdet[i,0]>pdet_threshold[0] and pdet[i,1]>pdet_threshold[1]:
                 dt_12.append(abs(dt[i,1]-dt[i,0])/ (60 * 60 * 24))
                 mu_12.append(abs(mu[i,1]/mu[i,0]))
-            if snr[i,0]>snr_threshold[0] and snr[i,2]>snr_threshold[1]:
+            if pdet[i,0]>pdet_threshold[0] and pdet[i,2]>pdet_threshold[1]:
                 dt_13.append(abs(dt[i,2]-dt[i,0])/ (60 * 60 * 24))
                 mu_13.append(abs(mu[i,2]/mu[i,0]))
-            if snr[i,0]>snr_threshold[0] and snr[i,3]>snr_threshold[1]:
+            if pdet[i,0]>pdet_threshold[0] and pdet[i,3]>pdet_threshold[1]:
                 dt_14.append(abs(dt[i,3]-dt[i,0])/ (60 * 60 * 24))
                 mu_14.append(abs(mu[i,3]/mu[i,0]))
-            if snr[i,1]>snr_threshold[0] and snr[i,2]>snr_threshold[1]:
+            if pdet[i,1]>pdet_threshold[0] and pdet[i,2]>pdet_threshold[1]:
                 dt_23.append(abs(dt[i,2]-dt[i,1])/ (60 * 60 * 24))
                 mu_23.append(abs(mu[i,2]/mu[i,1]))
-            if snr[i,1]>snr_threshold[0] and snr[i,3]>snr_threshold[1]:
+            if pdet[i,1]>pdet_threshold[0] and pdet[i,3]>pdet_threshold[1]:
                 dt_24.append(abs(dt[i,3]-dt[i,1])/ (60 * 60 * 24))
                 mu_24.append(abs(mu[i,3]/mu[i,1]))
-            if snr[i,2]>snr_threshold[0] and snr[i,3]>snr_threshold[1]:
+            if pdet[i,2]>pdet_threshold[0] and pdet[i,3]>pdet_threshold[1]:
                 dt_34.append(abs(dt[i,3]-dt[i,2])/ (60 * 60 * 24))
                 mu_34.append(abs(mu[i,3]/mu[i,2]))
 

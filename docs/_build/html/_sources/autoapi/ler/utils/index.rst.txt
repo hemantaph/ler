@@ -38,6 +38,7 @@ Functions
 .. autoapisummary::
 
    ler.utils.is_njitted
+   ler.utils.remove_file
    ler.utils.load_pickle
    ler.utils.save_pickle
    ler.utils.load_hdf5
@@ -160,6 +161,29 @@ Functions
       ..
           !! processed by numpydoc !!
 
+
+.. py:function:: remove_file(file_name)
+
+   
+   Remove a file.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:function:: load_pickle(file_name)
 
@@ -452,25 +476,6 @@ Functions
 
 .. py:function:: load_txt_from_module(package, directory, filename)
 
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
 
 .. py:function:: rejection_sample(pdf, xmin, xmax, size=100, chunk_size=10000)
 
@@ -1739,7 +1744,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: relative_mu_dt_lensed(lensed_param, snr_threshold=[8.0, 8.0], classification_type='morse_phase')
+.. py:function:: relative_mu_dt_lensed(lensed_param, pdet_threshold=[0.5, 0.5], classification_type='morse_phase')
 
    
    Function to classify the lensed images wrt to the morse phase difference.

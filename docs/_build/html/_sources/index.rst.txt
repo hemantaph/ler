@@ -158,7 +158,10 @@ Glossary
    :maxdepth: 2
    :caption: Examples:
    
-   ../examples/rates/LeR complete examples
+   examples/LeR_short_examples
+   examples/GWRATES_complete_examples
+   examples/LeR_custom_functions
+   examples/LeR_advanced_sampling
 
 
 Indices and tables

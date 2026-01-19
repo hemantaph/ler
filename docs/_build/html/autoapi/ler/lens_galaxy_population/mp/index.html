@@ -31,7 +31,7 @@
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="next" title="ler.lens_galaxy_population.optical_depth" href="../optical_depth/index.html" />
-    <link rel="prev" title="ler.lens_galaxy_population.lens_parameter_sampler" href="../lens_parameter_sampler/index.html" /> 
+    <link rel="prev" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution" href="../lens_galaxy_parameter_distribution/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -70,14 +70,14 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../cross_section_interpolator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../jit_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.jit_functions</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lens_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_functions</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../lens_galaxy_parameter_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_galaxy_parameter_distribution</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../lens_parameter_sampler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_parameter_sampler</span></code></a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.mp</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../optical_depth/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.optical_depth</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampler_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.sampler_functions</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
@@ -85,6 +85,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
 </ul>
 
         </div>
@@ -143,9 +150,6 @@ Monte Carlo integration over lens parameters.</p>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.mp.cross_section_mp" title="ler.lens_galaxy_population.mp.cross_section_mp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_section_mp</span></code></a>(params)</p></td>
 <td><p>Multiprocessing worker for cross-section calculation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.mp.cross_section" title="ler.lens_galaxy_population.mp.cross_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_section</span></code></a>(theta_E, e1, e2, gamma, gamma1, gamma2)</p></td>
-<td><p>Compute the strong lensing cross-section for an EPL+Shear lens.</p></td>
 </tr>
 </tbody>
 </table>
@@ -231,16 +235,7 @@ Pool.map() for parallel computation.</p>
 <ul class="simple">
 <li><p>params[0]: Source redshift (float)</p></li>
 <li><p>params[1]: Scaled lens redshift array (1D array)</p></li>
-<li><p>params[2]: Sigma args (min, max, spline_z, spline_z2d, spline_coeff)</p></li>
-<li><p>params[3]: Axis ratio args (type, min/spline, max/coeff, coeff_2d)</p></li>
-<li><p>params[4]: Angular diameter distance args (x_values, coeffs)</p></li>
-<li><p>params[5]: dVcdz args (x_values, coeffs)</p></li>
-<li><p>params[6]: Worker index (int)</p></li>
-<li><p>params[7]: Cross-section args (type, json_path)</p></li>
-<li><p>params[8]: Axis rotation args (type, min, max or spline)</p></li>
-<li><p>params[9]: Shear args (type, loc, scale)</p></li>
-<li><p>params[10]: Slope args (type, loc/spline, scale/coeff)</p></li>
-<li><p>params[11]: Integration size (int)</p></li>
+<li><p>params[2]: Worker index (int)</p></li>
 </ul>
 </dd>
 </dl>
@@ -304,39 +299,6 @@ Designed to be called via multiprocessing Pool.map().</p>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.mp.cross_section">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.mp.</span></span><span class="sig-name descname"><span class="pre">cross_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta_E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/mp.html#cross_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.mp.cross_section" title="Link to this definition"></a></dt>
-<dd><p>Compute the strong lensing cross-section for an EPL+Shear lens.</p>
-<p>Uses lenstronomy to compute the caustic structure and returns the
-area enclosed by the double-image (outer) caustic.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>theta_E</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Einstein radius in arcseconds.</p>
-</dd>
-<dt><strong>e1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>First ellipticity component.</p>
-</dd>
-<dt><strong>e2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Second ellipticity component.</p>
-</dd>
-<dt><strong>gamma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Power-law density profile slope.</p>
-</dd>
-<dt><strong>gamma1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>First external shear component.</p>
-</dd>
-<dt><strong>gamma2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Second external shear component.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl>
-<dt><strong>area</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Cross-section area in square arcseconds.</p>
-<p>Returns 0.0 if caustic computation fails.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 </section>
 </section>
@@ -345,7 +307,7 @@ area enclosed by the double-image (outer) caustic.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../lens_parameter_sampler/index.html" class="btn btn-neutral float-left" title="ler.lens_galaxy_population.lens_parameter_sampler" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../lens_galaxy_parameter_distribution/index.html" class="btn btn-neutral float-left" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../optical_depth/index.html" class="btn btn-neutral float-right" title="ler.lens_galaxy_population.optical_depth" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

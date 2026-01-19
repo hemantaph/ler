@@ -1,0 +1,1877 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GWRATES complete example &mdash; ler 0.4.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/scalefix.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=776609e1" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "processEnvironments": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore", "processHtmlClass": "tex2jax_process"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="LeR with Custom Functions and Parameters" href="LeR_custom_functions.html" />
+    <link rel="prev" title="LeR Short Example" href="LeR_short_examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">GWRATES complete example</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Table-of-Contents">Table of Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Part-1:-Basic-GW-Event-Simulation-and-Rate-Calculation-(BBH-Example)">Part 1: Basic GW Event Simulation and Rate Calculation (BBH Example)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#1.1-Initialize-GWRATES">1.1 Initialize <code class="docutils literal notranslate"><span class="pre">GWRATES</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#1.2-Simulate-GW-Population">1.2 Simulate GW Population</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#1.3-Calculate-Detection-Rates">1.3 Calculate Detection Rates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#1.4-Inspect-Generated-Parameters">1.4 Inspect Generated Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#1.5-Access-Saved-Data-Files">1.5 Access Saved Data Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#1.6-Load-and-Examine-Saved-Parameters">1.6 Load and Examine Saved Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#1.7-Examine-Available-Prior-Functions">1.7 Examine Available Prior Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#1.7.1-As-Class-Attributes">1.7.1 As Class Attributes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#1.7.2-As-Functions-from-the-ler.gw_source_population-module">1.7.2 As Functions from the ler.gw_source_population module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#1.8-Visualize-Parameter-Distributions">1.8 Visualize Parameter Distributions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Part-2:-Custom-Functions-and-Parameters">Part 2: Custom Functions and Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#2.1-Define-Event-Type-with-Non-Spinning-Configuration">2.1 Define Event Type with Non-Spinning Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.2-Define-Custom-Merger-Rate-Density">2.2 Define Custom Merger Rate Density</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.3-Define-Custom-Source-Frame-Masses">2.3 Define Custom Source Frame Masses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.4-Define-Custom-Detection-Criteria">2.4 Define Custom Detection Criteria</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.5-Initialize-GWRATES-with-Custom-Settings">2.5 Initialize GWRATES with Custom Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.6-Sample-GW-Parameters-with-Custom-Settings">2.6 Sample GW Parameters with Custom Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.7-Calculate-Rates-with-Custom-Settings">2.7 Calculate Rates with Custom Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.8-Compare-Default-and-Custom-Mass-Distributions">2.8 Compare Default and Custom Mass Distributions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Part-3:-Advanced-Sampling---Generating-Detectable-Events">Part 3: Advanced Sampling - Generating Detectable Events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#3.1-Initialize-GWRATES-for-N-Event-Sampling">3.1 Initialize GWRATES for N-Event Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3.2-Sample-Until-N-Detectable-Events-Are-Found">3.2 Sample Until N Detectable Events Are Found</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3.3-Analyze-Rate-Convergence">3.3 Analyze Rate Convergence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3.4-Assess-Rate-Stability">3.4 Assess Rate Stability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3.5-Compare-All-Sampled-and-Detectable-Event-Parameters">3.5 Compare All Sampled and Detectable Event Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">GWRATES complete example</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/examples/GWRATES_complete_examples.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="GWRATES-complete-example">
+<h1>GWRATES complete example<a class="headerlink" href="#GWRATES-complete-example" title="Link to this heading"></a></h1>
+<p>This notebook is created by <a class="reference external" href="https://hemantaph.com">Phurailatpam Hemantakumar</a>.</p>
+<p><a class="reference external" href="https://ler.hemantaph.com"><img alt="Documentation" src="https://img.shields.io/badge/ler-documentation-blue" /></a></p>
+<p>GWRATES is a comprehensive framework for simulating gravitational wave (GW) events and calculating their detection rates. This notebook provides a complete example of Compact Binary Coalescence (CBC) event simulation and rate calculation.</p>
+<hr class="docutils" />
+<section id="Table-of-Contents">
+<h2>Table of Contents<a class="headerlink" href="#Table-of-Contents" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Part 1: Basic GW Event Simulation and Rate Calculation (BBH Example)</p>
+<ul class="simple">
+<li><p>1.1 Initialize GWRATES</p></li>
+<li><p>1.2 Simulate GW Population</p></li>
+<li><p>1.3 Calculate Detection Rates</p></li>
+<li><p>1.4 Inspect Generated Parameters</p></li>
+<li><p>1.5 Access Saved Data Files</p></li>
+<li><p>1.6 Load and Examine Saved Parameters</p></li>
+<li><p>1.7 Examine Available Prior Functions</p></li>
+<li><p>1.8 Visualize Parameter Distributions</p></li>
+</ul>
+</li>
+<li><p>Part 2: Custom Functions and Parameters</p>
+<ul class="simple">
+<li><p>2.1 Define Event Type with Non-Spinning Configuration</p></li>
+<li><p>2.2 Define Custom Merger Rate Density</p></li>
+<li><p>2.3 Define Custom Source Frame Masses</p></li>
+<li><p>2.4 Define Custom Detection Criteria</p></li>
+<li><p>2.5 Initialize GWRATES with Custom Settings</p></li>
+<li><p>2.6 Sample GW Parameters with Custom Settings</p></li>
+<li><p>2.7 Calculate Rates with Custom Settings</p></li>
+<li><p>2.8 Compare Default and Custom Mass Distributions</p></li>
+</ul>
+</li>
+<li><p>Part 3: Advanced Sampling - Generating Detectable Events</p>
+<ul class="simple">
+<li><p>3.1 Initialize GWRATES for N-Event Sampling</p></li>
+<li><p>3.2 Sample Until N Detectable Events Are Found</p></li>
+<li><p>3.3 Analyze Rate Convergence</p></li>
+<li><p>3.4 Assess Rate Stability</p></li>
+<li><p>3.5 Compare All Sampled and Detectable Event Parameters</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="Part-1:-Basic-GW-Event-Simulation-and-Rate-Calculation-(BBH-Example)">
+<h2>Part 1: Basic GW Event Simulation and Rate Calculation (BBH Example)<a class="headerlink" href="#Part-1:-Basic-GW-Event-Simulation-and-Rate-Calculation-(BBH-Example)" title="Link to this heading"></a></h2>
+<p>This section demonstrates a quick example to simulate binary black hole mergers and calculate their detection rates.</p>
+<section id="1.1-Initialize-GWRATES">
+<h3>1.1 Initialize <code class="docutils literal notranslate"><span class="pre">GWRATES</span></code><a class="headerlink" href="#1.1-Initialize-GWRATES" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">GWRATES</span></code> class is the main interface for simulating GW events and calculating rates. By default, it uses: - <strong>Event type:</strong> BBH (Binary Black Hole) - <strong>Detectors:</strong> H1, L1, V1 (LIGO Hanford, LIGO Livingston, Virgo) with O4 design sensitivity</p>
+<p>All outputs will be saved in the <code class="docutils literal notranslate"><span class="pre">./ler_data</span></code> directory.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the GWRATES class from the ler package</span>
+<span class="kn">from</span> <span class="nn">ler.rates</span> <span class="kn">import</span> <span class="n">GWRATES</span>
+
+<span class="c1"># Initialize GWRATES with default settings</span>
+<span class="n">ler</span> <span class="o">=</span> <span class="n">GWRATES</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+Initializing GWRATES class...
+
+
+Initializing CBCSourceRedshiftDistribution class...
+
+luminosity_distance interpolator will be loaded from ./interpolator_json/luminosity_distance/luminosity_distance_0.json
+differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_0.json
+using ler available merger rate density model: merger_rate_density_madau_dickinson_belczynski_ng
+merger_rate_density_madau_dickinson_belczynski_ng interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_madau_dickinson_belczynski_ng_0.json
+merger_rate_density_detector_frame interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_detector_frame_1.json
+source_redshift interpolator will be loaded from ./interpolator_json/source_redshift/source_redshift_0.json
+
+Initializing CBCSourceParameterDistribution class...
+
+using ler available zs function : source_redshift
+using ler available source_frame_masses function : binary_masses_BBH_powerlaw_gaussian
+using ler available geocent_time function : sampler_uniform
+using ler available ra function : sampler_uniform
+using ler available dec function : sampler_cosine
+using ler available phase function : sampler_uniform
+using ler available psi function : sampler_uniform
+using ler available theta_jn function : sampler_sine
+using ler available a_1 function : sampler_uniform
+using ler available a_2 function : sampler_uniform
+
+Initializing GWSNR class...
+
+psds not given. Choosing bilby&#39;s default psds
+Interpolator will be loaded for L1 detector from ./interpolator_json/L1/partialSNR_dict_0.json
+Interpolator will be loaded for H1 detector from ./interpolator_json/H1/partialSNR_dict_0.json
+Interpolator will be loaded for V1 detector from ./interpolator_json/V1/partialSNR_dict_0.json
+
+Chosen GWSNR initialization parameters:
+
+npool:  4
+snr type:  interpolation_aligned_spins
+waveform approximant:  IMRPhenomD
+sampling frequency:  2048.0
+minimum frequency (fmin):  20.0
+reference frequency (f_ref):  20.0
+mtot=mass1+mass2
+min(mtot):  9.96
+max(mtot) (with the given fmin=20.0): 500.0
+detectors:  [&#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;]
+psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
+       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
+       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x16aed2c50&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
+       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
+       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x16aed2c00&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
+        9954.0389  ,  9976.993   , 10000.      ], shape=(3000,)), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,
+       1.51304203e-43, 1.52010157e-43, 1.52719372e-43],
+      shape=(3000,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x16ae91e90&gt;]]
+
+
+#----------------------------------------
+# GWRATES initialization input arguments:
+#----------------------------------------
+
+    # GWRATES set up input arguments:
+    npool = 4,
+    z_min = 0.0,
+    z_max = 10.0,
+    event_type = &#39;BBH&#39;,
+    cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=None),
+    pdet_finder = &lt;bound method GWSNR.pdet of &lt;gwsnr.core.gwsnr.GWSNR object at 0x16a019fc0&gt;&gt;,
+    json_file_names = dict(
+        gwrates_params = &#39;gwrates_params.json&#39;,
+        gw_param = &#39;gw_param.json&#39;,
+        gw_param_detectable = &#39;gw_param_detectable.json&#39;,
+    ),
+    interpolator_directory = &#39;./interpolator_json&#39;,
+    ler_directory = &#39;./ler_data&#39;,
+
+    # GWRATES also takes other CBCSourceParameterDistribution class input arguments as kwargs, as follows:
+    source_priors = dict(
+        merger_rate_density = &#39;merger_rate_density_madau_dickinson_belczynski_ng&#39;,
+        zs = &#39;source_redshift&#39;,
+        source_frame_masses = &#39;binary_masses_BBH_powerlaw_gaussian&#39;,
+        geocent_time = &#39;sampler_uniform&#39;,
+        ra = &#39;sampler_uniform&#39;,
+        dec = &#39;sampler_cosine&#39;,
+        phase = &#39;sampler_uniform&#39;,
+        psi = &#39;sampler_uniform&#39;,
+        theta_jn = &#39;sampler_sine&#39;,
+        a_1 = &#39;sampler_uniform&#39;,
+        a_2 = &#39;sampler_uniform&#39;,
+    ),
+    source_priors_params = dict(
+        merger_rate_density = {&#39;R0&#39;: 1.9e-08, &#39;alpha_F&#39;: 2.57, &#39;beta_F&#39;: 5.83, &#39;c_F&#39;: 3.36},
+        zs = None,
+        source_frame_masses = {&#39;mminbh&#39;: 4.98, &#39;mmaxbh&#39;: 112.5, &#39;alpha&#39;: 3.78, &#39;mu_g&#39;: 32.27, &#39;sigma_g&#39;: 3.88, &#39;lambda_peak&#39;: 0.03, &#39;delta_m&#39;: 4.8, &#39;beta&#39;: 0.81},
+        geocent_time = {&#39;xmin&#39;: 1238166018, &#39;xmax&#39;: 1269702018},
+        ra = {&#39;xmin&#39;: 0.0, &#39;xmax&#39;: 6.283185307179586},
+        dec = None,
+        phase = {&#39;xmin&#39;: 0.0, &#39;xmax&#39;: 6.283185307179586},
+        psi = {&#39;xmin&#39;: 0.0, &#39;xmax&#39;: 3.141592653589793},
+        theta_jn = None,
+        a_1 = {&#39;xmin&#39;: -0.8, &#39;xmax&#39;: 0.8},
+        a_2 = {&#39;xmin&#39;: -0.8, &#39;xmax&#39;: 0.8},
+    ),
+    spin_zero = False,
+    spin_precession = False,
+
+    # GWRATES also takes other gwsnr.GWSNR input arguments as kwargs, as follows:
+    npool = 4,
+    snr_method = &#39;interpolation_aligned_spins&#39;,
+    snr_type = &#39;optimal_snr&#39;,
+    gwsnr_verbose = True,
+    multiprocessing_verbose = True,
+    pdet_kwargs = dict(
+        snr_th = 10.0,
+        snr_th_net = 10.0,
+        pdet_type = &#39;boolean&#39;,
+        distribution_type = &#39;noncentral_chi2&#39;,
+        include_optimal_snr = False,
+        include_observed_snr = False,
+    ),
+    mtot_min = 9.96,
+    mtot_max = 500.0,
+    ratio_min = 0.1,
+    ratio_max = 1.0,
+    spin_max = 0.99,
+    mtot_resolution = 200,
+    ratio_resolution = 20,
+    spin_resolution = 10,
+    batch_size_interpolation = 1000000,
+    interpolator_dir = &#39;./interpolator_json&#39;,
+    create_new_interpolator = False,
+    sampling_frequency = 2048.0,
+    waveform_approximant = &#39;IMRPhenomD&#39;,
+    frequency_domain_source_model = &#39;lal_binary_black_hole&#39;,
+    minimum_frequency = 20.0,
+    reference_frequency = None,
+    duration_max = None,
+    duration_min = None,
+    fixed_duration = None,
+    mtot_cut = False,
+    psds = None,
+    ifos = None,
+    noise_realization = None,
+    ann_path_dict = None,
+    snr_recalculation = False,
+    snr_recalculation_range = [6, 14],
+    snr_recalculation_waveform_approximant = &#39;IMRPhenomXPHM&#39;,
+    psds_list = [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
+       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
+       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x16aed2c50&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
+       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
+       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x16aed2c00&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
+        9954.0389  ,  9976.993   , 10000.      ], shape=(3000,)), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,
+       1.51304203e-43, 1.52010157e-43, 1.52719372e-43],
+      shape=(3000,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x16ae91e90&gt;]],
+</pre></div></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># To print all initialization input arguments, use:</span>
+<span class="n">ler</span><span class="o">.</span><span class="n">_print_all_init_args</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="1.2-Simulate-GW-Population">
+<h3>1.2 Simulate GW Population<a class="headerlink" href="#1.2-Simulate-GW-Population" title="Link to this heading"></a></h3>
+<p>Generate a population of Compact Binary Coalescence (CBC) events. This step: - Samples intrinsic (masses and spins) and extrinsic (redshift, sky location, inclination angle, etc.) GW parameters from initialized priors - Calculates the probability of detection (Pdet) for each event based on detector network sensitivity - Stores the output in <code class="docutils literal notranslate"><span class="pre">./ler_data/gw_param.json</span></code></p>
+<p><strong>Note:</strong> For realistic results, use <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">&gt;=</span> <span class="pre">1,000,000</span></code> with <code class="docutils literal notranslate"><span class="pre">batch_size</span> <span class="pre">=</span> <span class="pre">100,000</span></code></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate 100,000 GW events in batches of 50,000</span>
+<span class="c1"># use &#39;print(ler.gw_cbc_statistics.__doc__)&#39; to see all the input args</span>
+<span class="n">gw_param_all</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">gw_cbc_statistics</span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Total events simulated: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">gw_param_all</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sampled redshift values: </span><span class="si">{</span><span class="n">gw_param_all</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Simulated GW params will be stored in ./ler_data/gw_param.json
+Batch no. 1
+sampling gw source params...
+calculating pdet...
+Batch no. 2
+sampling gw source params...
+calculating pdet...
+saving all gw parameters in ./ler_data/gw_param.json
+
+Total events simulated: 100000
+Sampled redshift values: [2.54060756 2.44480227 0.76563885 4.2521422  3.14307703]
+</pre></div></div>
+</div>
+</section>
+<section id="1.3-Calculate-Detection-Rates">
+<h3>1.3 Calculate Detection Rates<a class="headerlink" href="#1.3-Calculate-Detection-Rates" title="Link to this heading"></a></h3>
+<p>Select detectable events and calculate the detection rate. This function: - Filters events using a Pdet threshold. By default, Pdet is based on observed detector network SNR &gt; 10 (<code class="docutils literal notranslate"><span class="pre">gwsnr</span></code>’s default), where the SNR follows a non-central chi-squared distribution centered at the optimal SNR (Essick et al. 2023). - Returns the rate in detectable events per year. - Saves detectable events to <code class="docutils literal notranslate"><span class="pre">./ler_data/gw_param_detectable.json</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the detection rate and extract detectable events</span>
+<span class="c1"># use &#39;print(ler.gw_rate.__doc__)&#39; to see all the input args</span>
+<span class="n">detectable_rate</span><span class="p">,</span> <span class="n">gw_param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">gw_rate</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Detection Rate Summary ===&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Detectable event rate: </span><span class="si">{</span><span class="n">detectable_rate</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2"> events per year&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total event rate: </span><span class="si">{</span><span class="n">ler</span><span class="o">.</span><span class="n">normalization_pdf_z</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2"> events per year&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Percentage fraction of the detectable events: </span><span class="si">{</span><span class="n">detectable_rate</span><span class="o">/</span><span class="n">ler</span><span class="o">.</span><span class="n">normalization_pdf_z</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Getting gw parameters from json file ./ler_data/gw_param.json...
+total GW event rate (yr^-1): 273.8355737281817
+number of simulated GW detectable events: 299
+number of simulated all GW events: 100000
+storing detectable params in ./ler_data/gw_param_detectable.json
+
+=== Detection Rate Summary ===
+Detectable event rate: 2.74e+02 events per year
+Total event rate: 9.16e+04 events per year
+Percentage fraction of the detectable events: 2.99e-01%
+</pre></div></div>
+</div>
+</section>
+<section id="1.4-Inspect-Generated-Parameters">
+<h3>1.4 Inspect Generated Parameters<a class="headerlink" href="#1.4-Inspect-Generated-Parameters" title="Link to this heading"></a></h3>
+<p>View the available parameters in the generated event population.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># List all parameters saved for detectable events</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Detectable event parameters:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">gw_param_detectable</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Example values for mass_1_source (detector frame):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gw_param_detectable</span><span class="p">[</span><span class="s1">&#39;mass_1_source&#39;</span><span class="p">][:</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Detectable event parameters:
+[&#39;zs&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;luminosity_distance&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;pdet_L1&#39;, &#39;pdet_H1&#39;, &#39;pdet_V1&#39;, &#39;pdet_net&#39;]
+
+Example values for mass_1_source (detector frame):
+[ 8.93127048  8.42758975 31.0145706  32.61718886 28.57544612]
+</pre></div></div>
+</div>
+</section>
+<section id="1.5-Access-Saved-Data-Files">
+<h3>1.5 Access Saved Data Files<a class="headerlink" href="#1.5-Access-Saved-Data-Files" title="Link to this heading"></a></h3>
+<p>All simulation results are saved in JSON files for future reference and analysis.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View the directory structure and file names</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output directory: </span><span class="si">{</span><span class="n">ler</span><span class="o">.</span><span class="n">ler_directory</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Saved JSON files in </span><span class="si">{</span><span class="n">ler</span><span class="o">.</span><span class="n">ler_directory</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">ler</span><span class="o">.</span><span class="n">json_file_names</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Output directory: ./ler_data
+
+Saved JSON files in ./ler_data:
+  gwrates_params: gwrates_params.json
+  gw_param: gw_param.json
+  gw_param_detectable: gw_param_detectable.json
+</pre></div></div>
+</div>
+</section>
+<section id="1.6-Load-and-Examine-Saved-Parameters">
+<h3>1.6 Load and Examine Saved Parameters<a class="headerlink" href="#1.6-Load-and-Examine-Saved-Parameters" title="Link to this heading"></a></h3>
+<p>Reload parameters from JSON files for further analysis. This example also hightlights some of the useful functions from <code class="docutils literal notranslate"><span class="pre">ler.utils</span></code> module.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">get_param_from_json</span><span class="p">,</span> <span class="n">load_json</span>
+
+<span class="c1"># Load detectable parameters from file</span>
+<span class="n">gw_param_from_file</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span>
+    <span class="n">ler</span><span class="o">.</span><span class="n">ler_directory</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">ler</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s1">&#39;gw_param_detectable&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameters loaded from file: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">gw_param_from_file</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Load the initialization parameters and rates</span>
+<span class="n">gwrates_params</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="n">ler</span><span class="o">.</span><span class="n">ler_directory</span> <span class="o">+</span> <span class="s1">&#39;/gwrates_params.json&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Detectable event rate (from saved file): </span><span class="si">{</span><span class="n">gwrates_params</span><span class="p">[</span><span class="s1">&#39;detectable_gw_rate_per_year&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2"> per year&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Parameters loaded from file: [&#39;zs&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;luminosity_distance&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;pdet_L1&#39;, &#39;pdet_H1&#39;, &#39;pdet_V1&#39;, &#39;pdet_net&#39;]
+
+Detectable event rate (from saved file): 3.0039e+02 per year
+</pre></div></div>
+</div>
+</section>
+<section id="1.7-Examine-Available-Prior-Functions">
+<h3>1.7 Examine Available Prior Functions<a class="headerlink" href="#1.7-Examine-Available-Prior-Functions" title="Link to this heading"></a></h3>
+<p>There are two ways of accessing the built-in GW parameter prior functions and their default parameters.</p>
+<section id="1.7.1-As-Class-Attributes">
+<h4>1.7.1 As Class Attributes<a class="headerlink" href="#1.7.1-As-Class-Attributes" title="Link to this heading"></a></h4>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display all available GW prior sampler functions and their parameters</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Built-in GW parameter sampler functions and parameters:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">func_name</span><span class="p">,</span> <span class="n">func_params</span> <span class="ow">in</span> <span class="n">ler</span><span class="o">.</span><span class="n">available_gw_prior</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">func_name</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">func_params</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">param_value</span> <span class="ow">in</span> <span class="n">func_params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">param_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">param_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">func_params</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Built-in GW parameter sampler functions and parameters:
+
+merger_rate_density:
+  merger_rate_density_bbh_oguri2018: {&#39;R0&#39;: 1.9e-08, &#39;b2&#39;: 1.6, &#39;b3&#39;: 2.1, &#39;b4&#39;: 30}
+  merger_rate_density_madau_dickinson2014: {&#39;R0&#39;: 1.9e-08, &#39;a&#39;: 0.015, &#39;b&#39;: 2.7, &#39;c&#39;: 2.9, &#39;d&#39;: 5.6}
+  merger_rate_density_madau_dickinson_belczynski_ng: {&#39;R0&#39;: 1.9e-08, &#39;alpha_F&#39;: 2.57, &#39;beta_F&#39;: 5.83, &#39;c_F&#39;: 3.36}
+  sfr_with_time_delay: {&#39;R0&#39;: 1.9e-08, &#39;a&#39;: 0.01, &#39;b&#39;: 2.6, &#39;c&#39;: 3.2, &#39;d&#39;: 6.2, &#39;td_min&#39;: 0.01, &#39;td_max&#39;: 10.0}
+  merger_rate_density_bbh_popIII_ken2022: {&#39;R0&#39;: 1.92e-08, &#39;aIII&#39;: 0.66, &#39;bIII&#39;: 0.3, &#39;zIII&#39;: 11.6}
+  merger_rate_density_bbh_primordial_ken2022: {&#39;R0&#39;: 4.4e-11, &#39;t0&#39;: 13.786885302009708}
+
+zs:
+  source_redshift: None
+
+source_frame_masses:
+  binary_masses_BBH_powerlaw_gaussian: {&#39;mminbh&#39;: 4.98, &#39;mmaxbh&#39;: 112.5, &#39;alpha&#39;: 3.78, &#39;mu_g&#39;: 32.27, &#39;sigma_g&#39;: 3.88, &#39;lambda_peak&#39;: 0.03, &#39;delta_m&#39;: 4.8, &#39;beta&#39;: 0.81}
+  binary_masses_BBH_popIII_lognormal: {&#39;m_min&#39;: 5.0, &#39;m_max&#39;: 150.0, &#39;Mc&#39;: 30.0, &#39;sigma&#39;: 0.3}
+  binary_masses_BBH_primordial_lognormal: {&#39;m_min&#39;: 1.0, &#39;m_max&#39;: 100.0, &#39;Mc&#39;: 20.0, &#39;sigma&#39;: 0.3}
+  binary_masses_NSBH_broken_powerlaw: {&#39;mminbh&#39;: 26, &#39;mmaxbh&#39;: 125, &#39;alpha_1&#39;: 6.75, &#39;alpha_2&#39;: 6.75, &#39;b&#39;: 0.5, &#39;delta_m&#39;: 5, &#39;mminns&#39;: 1.0, &#39;mmaxns&#39;: 3.0, &#39;alphans&#39;: 0.0}
+  binary_masses_uniform: {&#39;m_min&#39;: 1.0, &#39;m_max&#39;: 3.0}
+  binary_masses_BNS_bimodal: {&#39;w&#39;: 0.643, &#39;muL&#39;: 1.352, &#39;sigmaL&#39;: 0.08, &#39;muR&#39;: 1.88, &#39;sigmaR&#39;: 0.3, &#39;mmin&#39;: 1.0, &#39;mmax&#39;: 2.3}
+
+a_1:
+  constant_values_n_size: {&#39;value&#39;: 0.0}
+  sampler_uniform: {&#39;xmin&#39;: -0.8, &#39;xmax&#39;: 0.8}
+
+a_2:
+  constant_values_n_size: {&#39;value&#39;: 0.0}
+  sampler_uniform: {&#39;xmin&#39;: -0.8, &#39;xmax&#39;: 0.8}
+
+tilt_1:
+  constant_values_n_size: {&#39;value&#39;: 0.0}
+  sampler_sine: None
+
+tilt_2:
+  constant_values_n_size: {&#39;value&#39;: 0.0}
+  sampler_sine: None
+
+phi_12:
+  constant_values_n_size: {&#39;value&#39;: 0.0}
+  sampler_uniform: {&#39;xmin&#39;: 0.0, &#39;xmax&#39;: 6.283185307179586}
+
+phi_jl:
+  constant_values_n_size: {&#39;value&#39;: 0.0}
+  sampler_uniform: {&#39;xmin&#39;: 0.0, &#39;xmax&#39;: 6.283185307179586}
+
+geocent_time:
+  sampler_uniform: {&#39;xmin&#39;: 1238166018, &#39;xmax&#39;: 1269723618.0}
+  constant_values_n_size: {&#39;value&#39;: 1238166018}
+
+ra:
+  sampler_uniform: {&#39;xmin&#39;: 0.0, &#39;xmax&#39;: 6.283185307179586}
+  constant_values_n_size: {&#39;value&#39;: 0.0}
+
+dec:
+  sampler_cosine: None
+  constant_values_n_size: {&#39;value&#39;: 0.0}
+  sampler_uniform: {&#39;xmin&#39;: -1.5707963267948966, &#39;xmax&#39;: 1.5707963267948966}
+
+phase:
+  sampler_uniform: {&#39;xmin&#39;: 0.0, &#39;xmax&#39;: 6.283185307179586}
+  constant_values_n_size: {&#39;value&#39;: 0.0}
+
+psi:
+  sampler_uniform: {&#39;xmin&#39;: 0.0, &#39;xmax&#39;: 3.141592653589793}
+  constant_values_n_size: {&#39;value&#39;: 0.0}
+
+theta_jn:
+  sampler_sine: None
+  constant_values_n_size: {&#39;value&#39;: 0.0}
+  sampler_uniform: {&#39;xmin&#39;: 0.0, &#39;xmax&#39;: 3.141592653589793}
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">ler</span><span class="o">.</span><span class="n">merger_rate_density_bbh_oguri2018</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
+
+<span class="c1"># Test the function</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Testing merger_rate_density_bbh_oguri2018 function&quot;</span><span class="p">)</span>
+<span class="n">zs</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Redshifts: </span><span class="si">{</span><span class="n">zs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Merger Rate Denisty: </span><span class="si">{</span><span class="n">ler</span><span class="o">.</span><span class="n">merger_rate_density_bbh_oguri2018</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="si">}</span><span class="s2"> Mpc^-3 yr^-1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+        Compute PopI/II BBH merger rate density (Oguri et al. 2018).
+
+        Returns the source-frame merger rate density following the
+        Oguri et al. (2018) prescription for PopI/II stellar populations.
+
+        Parameters
+        ----------
+        zs : ```numpy.ndarray``
+            Source redshift(s) at which to evaluate.
+        get_attribute : ``bool``
+            If True, return the FunctionConditioning object.
+            default: False
+        **kwargs : ``dict``
+            Override default fitting parameters:
+            R0=19e-9, b2=1.6, b3=2.1, b4=30.
+
+        Returns
+        -------
+        rate_density : ```numpy.ndarray`` or ``FunctionConditioning``
+            Merger rate density in source frame (units: Mpc^-3 yr^-1).
+
+        Examples
+        --------
+        &gt;&gt;&gt; from ler.gw_source_population import CBCSourceRedshiftDistribution
+        &gt;&gt;&gt; cbc = CBCSourceRedshiftDistribution(merger_rate_density=&#34;merger_rate_density_bbh_oguri2018&#34;)
+        &gt;&gt;&gt; rate = cbc.merger_rate_density(zs=0.5)
+
+
+Testing merger_rate_density_bbh_oguri2018 function
+Redshifts: [0.1 0.2 0.3]
+merger_rate_density_bbh_oguri2018 interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_bbh_oguri2018_4.json
+Merger Rate Denisty: [2.21298914e-08 2.57321630e-08 2.98600744e-08] Mpc^-3 yr^-1
+</pre></div></div>
+</div>
+<p><strong>Notes:</strong> - <strong>Above example:</strong> Uses interpolation from pre-generated points. - <strong>Next section:</strong> Computes results directly from the underlying mathematics, bypassing interpolation.</p>
+</section>
+<section id="1.7.2-As-Functions-from-the-ler.gw_source_population-module">
+<h4>1.7.2 As Functions from the ler.gw_source_population module<a class="headerlink" href="#1.7.2-As-Functions-from-the-ler.gw_source_population-module" title="Link to this heading"></a></h4>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ler.gw_source_population</span> <span class="k">as</span> <span class="nn">gsp</span>
+
+<span class="k">for</span> <span class="n">prior</span> <span class="ow">in</span> <span class="n">gsp</span><span class="o">.</span><span class="n">available_prior_list</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">prior</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+merger_rate_density_bbh_oguri2018_function
+merger_rate_density_bbh_popIII_ken2022_function
+merger_rate_density_madau_dickinson2014_function
+merger_rate_density_madau_dickinson_belczynski_ng_function
+merger_rate_density_bbh_primordial_ken2022_function
+sfr_madau_fragos2017_with_bbh_td
+sfr_madau_dickinson2014_with_bbh_td
+sfr_madau_fragos2017_with_bns_td
+sfr_madau_dickinson2014_with_bns_td
+sfr_madau_fragos2017
+sfr_madau_dickinson2014
+binary_masses_BBH_popIII_lognormal_rvs
+binary_masses_BBH_primordial_lognormal_rvs
+binary_masses_BNS_bimodal_rvs
+binary_masses_NSBH_broken_powerlaw_rvs
+binary_masses_BBH_powerlaw_gaussian_rvs
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">gsp</span><span class="o">.</span><span class="n">merger_rate_density_bbh_oguri2018_function</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
+
+<span class="c1"># Test the function</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Testing merger_rate_density_bbh_oguri2018 function&quot;</span><span class="p">)</span>
+<span class="n">zs</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Redshifts: </span><span class="si">{</span><span class="n">zs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Merger Rate Denisty: </span><span class="si">{</span><span class="n">gsp</span><span class="o">.</span><span class="n">merger_rate_density_bbh_oguri2018_function</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="si">}</span><span class="s2"> Mpc^-3 yr^-1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+    Compute the merger rate density for PopI/II BBH.
+
+    Reference: Oguri et al. (2018). The output is in detector frame and is
+    unnormalized.
+
+    Parameters
+    ----------
+    zs : ``float`` or ``numpy.ndarray``
+        Source redshifts.
+    R0 : ``float``
+        Local merger rate density at low redshift (Mpc^-3 yr^-1).
+
+        default: 19e-9 (GWTC-4)
+    b2 : ``float``
+        Fitting parameter.
+
+        default: 1.6
+    b3 : ``float``
+        Fitting parameter.
+
+        default: 2.1
+    b4 : ``float``
+        Fitting parameter.
+
+        default: 30
+
+    Returns
+    -------
+    rate_density : ``float`` or ``numpy.ndarray``
+        Merger rate density.
+
+    Examples
+    --------
+    &gt;&gt;&gt; from ler.gw_source_population import merger_rate_density_bbh_oguri2018
+    &gt;&gt;&gt; rate_density = merger_rate_density_bbh_oguri2018(zs=np.array([0.1]))
+
+
+Testing merger_rate_density_bbh_oguri2018 function
+
+Redshifts: [0.1 0.2 0.3]
+Merger Rate Denisty: [2.21298914e-08 2.57321630e-08 2.98600744e-08] Mpc^-3 yr^-1
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="1.8-Visualize-Parameter-Distributions">
+<h3>1.8 Visualize Parameter Distributions<a class="headerlink" href="#1.8-Visualize-Parameter-Distributions" title="Link to this heading"></a></h3>
+<p>Create KDE (Kernel Density Estimation) plots to compare the distributions of parameters between all simulated events and detectable events.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">plots</span> <span class="k">as</span> <span class="n">lerplt</span>
+
+
+<span class="c1"># input param_dict can be either a dictionary or a json file name that contains the parameters</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">lerplt</span><span class="o">.</span><span class="n">param_plot</span><span class="p">(</span>
+    <span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;zs&#39;</span><span class="p">,</span>
+    <span class="n">param_dict</span><span class="o">=</span><span class="s1">&#39;ler_data/gw_param_detectable.json&#39;</span><span class="p">,</span>
+    <span class="n">plot_label</span><span class="o">=</span><span class="s1">&#39;zs (detectable)&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">lerplt</span><span class="o">.</span><span class="n">param_plot</span><span class="p">(</span>
+    <span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;zs&#39;</span><span class="p">,</span>
+    <span class="n">param_dict</span><span class="o">=</span><span class="s1">&#39;ler_data/gw_param.json&#39;</span><span class="p">,</span>
+    <span class="n">plot_label</span><span class="o">=</span><span class="s1">&#39;zs (all)&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;zs&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;pdf&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+getting gw_params from json file ler_data/gw_param_detectable.json...
+getting gw_params from json file ler_data/gw_param.json...
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_GWRATES_complete_examples_23_1.png" src="../_images/examples_GWRATES_complete_examples_23_1.png" />
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="Part-2:-Custom-Functions-and-Parameters">
+<h2>Part 2: Custom Functions and Parameters<a class="headerlink" href="#Part-2:-Custom-Functions-and-Parameters" title="Link to this heading"></a></h2>
+<p>This section demonstrates how to customize GWRATES with your own sampling functions and detection criteria. We’ll create a BNS (Binary Neutron Star) example with custom settings:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Custom Configuration</p></th>
+<th class="head"><p>Default (BBH)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Event Type</strong></p></td>
+<td><p>BNS (non-spinning)</p></td>
+<td><p>BBH (spinning, aligned)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Merger Rate</strong></p></td>
+<td><p>GWTC-3 based</p></td>
+<td><p>GWTC-4 based</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Source Masses</strong></p></td>
+<td><p>Uniform 1.0-2.3 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
+<td><p>Bimodal Gaussian</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Detectors</strong></p></td>
+<td><p>3G (ET, CE), SNR &gt; 12</p></td>
+<td><p>O4 (H1, L1, V1), SNR &gt; 10</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong> - <strong>GW parameter sampling priors</strong>: Should be a function with <code class="docutils literal notranslate"><span class="pre">size</span></code> as the only input argument. Can also be a class object of <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code>. - <strong>Merger rate density</strong>: Should be a function of redshift <span class="math notranslate nohighlight">\(z\)</span>.</p>
+<section id="2.1-Define-Event-Type-with-Non-Spinning-Configuration">
+<h3>2.1 Define Event Type with Non-Spinning Configuration<a class="headerlink" href="#2.1-Define-Event-Type-with-Non-Spinning-Configuration" title="Link to this heading"></a></h3>
+<p>Using <code class="docutils literal notranslate"><span class="pre">event_type='BNS'</span></code> in the LeR class initialization will default to the following GW parameter priors corresponding to BNS. Other allowed event types are ‘BBH’ and ‘NSBH’.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">source_priors</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">merger_rate_density</span> <span class="o">=</span> <span class="s1">&#39;merger_rate_density_madau_dickinson2014&#39;</span><span class="p">,</span>
+    <span class="n">source_frame_masses</span> <span class="o">=</span> <span class="s1">&#39;binary_masses_BNS_bimodal&#39;</span><span class="p">,</span>
+    <span class="n">a_1</span> <span class="o">=</span> <span class="s1">&#39;sampler_uniform&#39;</span><span class="p">,</span>
+    <span class="n">a_2</span> <span class="o">=</span> <span class="s1">&#39;sampler_uniform&#39;</span><span class="p">,</span>
+<span class="p">),</span>
+<span class="n">source_priors_params</span><span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">merger_rate_density</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">R0</span><span class="o">=</span><span class="mi">89</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span>
+        <span class="n">a</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span>
+        <span class="n">b</span><span class="o">=</span><span class="mf">2.7</span><span class="p">,</span>
+        <span class="n">c</span><span class="o">=</span><span class="mf">2.9</span><span class="p">,</span>
+        <span class="n">d</span><span class="o">=</span><span class="mf">5.6</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">source_frame_masses</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">w</span><span class="o">=</span><span class="mf">0.643</span><span class="p">,</span>
+        <span class="n">muL</span><span class="o">=</span><span class="mf">1.352</span><span class="p">,</span>
+        <span class="n">sigmaL</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span>
+        <span class="n">muR</span><span class="o">=</span><span class="mf">1.88</span><span class="p">,</span>
+        <span class="n">sigmaR</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+        <span class="n">mmin</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">mmax</span><span class="o">=</span><span class="mf">2.3</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">a_1</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=-</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">0.05</span><span class="p">),</span>
+    <span class="n">a_2</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=-</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">0.05</span><span class="p">),</span>
+<span class="p">),</span>
+</pre></div>
+</div>
+<p>We will change some of these priors with our custom ones in the following sections.</p>
+<p>For non-spinning configuration (faster calculation in our example), we can set:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">spin_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="n">spin_precession</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</pre></div>
+</div>
+</section>
+<section id="2.2-Define-Custom-Merger-Rate-Density">
+<h3>2.2 Define Custom Merger Rate Density<a class="headerlink" href="#2.2-Define-Custom-Merger-Rate-Density" title="Link to this heading"></a></h3>
+<p>Use the built-in Madau-Dickinson (2014) star formation rate based merger rate density model with custom parameters.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use built-in Madau-Dickinson (2014) SFR based merger rate density for BNS</span>
+<span class="n">merger_rate_density_function</span> <span class="o">=</span> <span class="s1">&#39;merger_rate_density_madau_dickinson2014&#39;</span>
+
+<span class="c1"># Custom parameters for merger rate density (Madau-Dickinson model)</span>
+<span class="n">merger_rate_density_input_args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">R0</span><span class="o">=</span><span class="mf">89e-9</span><span class="p">,</span>      <span class="c1"># Local merger rate density (Mpc^-3 yr^-1)</span>
+    <span class="n">a</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span>       <span class="c1"># Normalization parameter</span>
+    <span class="n">b</span><span class="o">=</span><span class="mf">2.7</span><span class="p">,</span>         <span class="c1"># Low-redshift power-law slope</span>
+    <span class="n">c</span><span class="o">=</span><span class="mf">2.9</span><span class="p">,</span>         <span class="c1"># Turnover redshift parameter</span>
+    <span class="n">d</span><span class="o">=</span><span class="mf">5.6</span><span class="p">,</span>         <span class="c1"># High-redshift power-law slope</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Merger rate density function:&quot;</span><span class="p">,</span> <span class="n">merger_rate_density_function</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parameters:&quot;</span><span class="p">,</span> <span class="n">merger_rate_density_input_args</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Merger rate density function: merger_rate_density_madau_dickinson2014
+Parameters: {&#39;R0&#39;: 8.9e-08, &#39;a&#39;: 0.015, &#39;b&#39;: 2.7, &#39;c&#39;: 2.9, &#39;d&#39;: 5.6}
+</pre></div></div>
+</div>
+</section>
+<section id="2.3-Define-Custom-Source-Frame-Masses">
+<h3>2.3 Define Custom Source Frame Masses<a class="headerlink" href="#2.3-Define-Custom-Source-Frame-Masses" title="Link to this heading"></a></h3>
+<p>Use a uniform distribution to sample binary masses (mass_1 and mass_2). Ensure mass_1 &gt;= mass_2 by swapping if necessary.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Define mass range for BNS</span>
+<span class="n">source_frame_masses_args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">mmin</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>   <span class="c1"># Minimum mass in solar masses</span>
+    <span class="n">mmax</span><span class="o">=</span><span class="mf">2.3</span><span class="p">,</span>   <span class="c1"># Maximum mass in solar masses</span>
+<span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">source_frame_masses_uniform</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">mmin</span><span class="o">=</span><span class="n">source_frame_masses_args</span><span class="p">[</span><span class="s1">&#39;mmin&#39;</span><span class="p">],</span> <span class="n">mmax</span><span class="o">=</span><span class="n">source_frame_masses_args</span><span class="p">[</span><span class="s1">&#39;mmax&#39;</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sample mass_1 and mass_2 uniformly from a specified range, ensuring mass_1 &gt;= mass_2 by swapping if necessary.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    size : int</span>
+<span class="sd">        Number of samples to draw</span>
+<span class="sd">    mmin : float, optional</span>
+<span class="sd">        Minimum mass in solar masses (default: 1.0)</span>
+<span class="sd">    mmax : float, optional</span>
+<span class="sd">        Maximum mass in solar masses (default: 2.3)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mass_1_source : ndarray</span>
+<span class="sd">        Array of primary mass samples (larger mass)</span>
+<span class="sd">    mass_2_source : ndarray</span>
+<span class="sd">        Array of secondary mass samples (smaller mass)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Sample masses uniformly</span>
+    <span class="n">mass_1_source</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">mmin</span><span class="p">,</span> <span class="n">mmax</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">mmin</span><span class="p">,</span> <span class="n">mmax</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+    <span class="c1"># Ensure mass_1 &gt;= mass_2 by swapping if necessary</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">mass_2_source</span> <span class="o">&gt;</span> <span class="n">mass_1_source</span>
+    <span class="n">mass_1_source</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">mass_2_source</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">mass_2_source</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">mass_1_source</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span><span class="p">)</span>
+
+<span class="c1"># Test the function</span>
+<span class="n">m1_test</span><span class="p">,</span> <span class="n">m2_test</span> <span class="o">=</span> <span class="n">source_frame_masses_uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test mass samples:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  mass_1: </span><span class="si">{</span><span class="n">m1_test</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  mass_2: </span><span class="si">{</span><span class="n">m2_test</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Test mass samples:
+  mass_1: [1.60158744 1.93524681 1.89892506 2.20317838 1.99252456]
+  mass_2: [1.5980401  1.36008097 1.34899862 1.75961137 1.92068867]
+</pre></div></div>
+</div>
+</section>
+<section id="2.4-Define-Custom-Detection-Criteria">
+<h3>2.4 Define Custom Detection Criteria<a class="headerlink" href="#2.4-Define-Custom-Detection-Criteria" title="Link to this heading"></a></h3>
+<p>Create a custom detection function using 3G detectors (Einstein Telescope and Cosmic Explorer) with a higher SNR threshold. We use <code class="docutils literal notranslate"><span class="pre">pdet</span> <span class="pre">=</span> <span class="pre">optimal_SNR_net</span> <span class="pre">&gt;</span> <span class="pre">12</span></code> instead of the default <code class="docutils literal notranslate"><span class="pre">pdet</span></code> based on <code class="docutils literal notranslate"><span class="pre">observed_SNR_net</span> <span class="pre">&gt;</span> <span class="pre">10</span></code>.</p>
+<p>This function takes GW parameters as input and returns Pdet as a boolean array indicating detectability.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gwsnr</span> <span class="kn">import</span> <span class="n">GWSNR</span>
+
+<span class="c1"># Define mass and redshift ranges for BNS</span>
+<span class="n">mmin</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">mmax</span> <span class="o">=</span> <span class="mf">2.3</span>
+<span class="n">zmin</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">zmax</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">snr_threshold_network</span> <span class="o">=</span> <span class="mi">12</span>  <span class="c1"># SNR threshold for detection (default: 10)</span>
+
+<span class="c1"># Initialize GWSNR for 3G detectors (no spins for BNS)</span>
+<span class="n">gwsnr_3g</span> <span class="o">=</span> <span class="n">GWSNR</span><span class="p">(</span>
+    <span class="n">npool</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">ifos</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ET&#39;</span><span class="p">,</span> <span class="s1">&#39;CE&#39;</span><span class="p">],</span>  <span class="c1"># Einstein Telescope and Cosmic Explorer</span>
+    <span class="n">snr_method</span><span class="o">=</span><span class="s1">&#39;interpolation_no_spins&#39;</span><span class="p">,</span>  <span class="c1"># No spin precession for BNS</span>
+    <span class="n">mtot_min</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">mmin</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">zmin</span><span class="p">),</span>
+    <span class="n">mtot_max</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">mmax</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">zmax</span><span class="p">),</span>
+    <span class="n">sampling_frequency</span><span class="o">=</span><span class="mf">2048.0</span><span class="p">,</span>
+    <span class="n">waveform_approximant</span><span class="o">=</span><span class="s1">&#39;IMRPhenomD&#39;</span><span class="p">,</span>
+    <span class="n">minimum_frequency</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
+    <span class="n">gwsnr_verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">detection_criteria</span><span class="p">(</span><span class="n">gw_param_dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determine if a gravitational wave event is detectable based on SNR threshold.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    gw_param_dict : dict</span>
+<span class="sd">        Dictionary containing GW parameters including mass_1, mass_2, luminosity_distance, etc.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        Dictionary with &#39;pdet_net&#39; (boolean detection array) and &#39;optimal_snr_net&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># Calculate optimal SNR for all detectors</span>
+    <span class="n">snr_dict</span> <span class="o">=</span> <span class="n">gwsnr_3g</span><span class="o">.</span><span class="n">optimal_snr</span><span class="p">(</span><span class="n">gw_param_dict</span><span class="o">=</span><span class="n">gw_param_dict</span><span class="p">)</span>
+
+    <span class="c1"># Apply detection threshold</span>
+    <span class="n">result_dict</span><span class="p">[</span><span class="s1">&#39;pdet_net&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">snr_dict</span><span class="p">[</span><span class="s1">&#39;optimal_snr_net&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">snr_threshold_network</span>
+
+    <span class="k">return</span> <span class="n">result_dict</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Custom detection criteria defined for 3G detectors (ET + CE)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Detection network SNR threshold: </span><span class="si">{</span><span class="n">snr_threshold_network</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Test the detection criteria function</span>
+<span class="n">gw_param_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">mass_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]),</span>
+    <span class="n">mass_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]),</span>
+    <span class="n">luminosity_distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1000.0</span><span class="p">,</span> <span class="mf">10000.0</span><span class="p">]),</span>
+<span class="p">)</span>
+<span class="n">pdet</span> <span class="o">=</span> <span class="n">detection_criteria</span><span class="p">(</span><span class="n">gw_param_dict</span><span class="o">=</span><span class="n">gw_param_dict</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Test detection calculation:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  mass_1 array: </span><span class="si">{</span><span class="n">gw_param_dict</span><span class="p">[</span><span class="s1">&#39;mass_1&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  mass_2 array: </span><span class="si">{</span><span class="n">gw_param_dict</span><span class="p">[</span><span class="s1">&#39;mass_2&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  luminosity_distance array: </span><span class="si">{</span><span class="n">gw_param_dict</span><span class="p">[</span><span class="s1">&#39;luminosity_distance&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Pdet result: </span><span class="si">{</span><span class="n">pdet</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+Initializing GWSNR class...
+
+Interpolator will be loaded for ET1 detector from ./interpolator_json/ET1/partialSNR_dict_0.json
+Interpolator will be loaded for ET2 detector from ./interpolator_json/ET2/partialSNR_dict_0.json
+Interpolator will be loaded for ET3 detector from ./interpolator_json/ET3/partialSNR_dict_0.json
+Interpolator will be loaded for CE detector from ./interpolator_json/CE/partialSNR_dict_0.json
+
+
+Custom detection criteria defined for 3G detectors (ET + CE)
+Detection network SNR threshold: 12
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+OMP: Info #276: omp_set_nested routine deprecated, please use omp_set_max_active_levels instead.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+Test detection calculation:
+  mass_1 array: [2. 2.]
+  mass_2 array: [1. 1.]
+  luminosity_distance array: [ 1000. 10000.]
+  Pdet result: {&#39;pdet_net&#39;: array([ True, False])}
+</pre></div></div>
+</div>
+</section>
+<section id="2.5-Initialize-GWRATES-with-Custom-Settings">
+<h3>2.5 Initialize GWRATES with Custom Settings<a class="headerlink" href="#2.5-Initialize-GWRATES-with-Custom-Settings" title="Link to this heading"></a></h3>
+<p>Create a GWRATES instance with the custom functions and parameters defined in the previous sections.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">GWRATES</span>
+
+<span class="c1"># Initialize GWRATES with custom functions</span>
+<span class="n">ler_custom</span> <span class="o">=</span> <span class="n">GWRATES</span><span class="p">(</span>
+    <span class="c1"># LeR setup parameters</span>
+    <span class="n">npool</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">z_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">event_type</span><span class="o">=</span><span class="s2">&quot;BNS&quot;</span><span class="p">,</span>  <span class="c1"># Binary Neutron Star</span>
+    <span class="n">spin_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">spin_precession</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+
+    <span class="c1"># Custom source parameter priors</span>
+    <span class="n">source_priors</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">merger_rate_density</span><span class="o">=</span><span class="n">merger_rate_density_function</span><span class="p">,</span>
+        <span class="n">source_frame_masses</span><span class="o">=</span><span class="n">source_frame_masses_uniform</span><span class="p">,</span>  <span class="c1"># Custom function</span>
+    <span class="p">),</span>
+    <span class="n">source_priors_params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">merger_rate_density</span><span class="o">=</span><span class="n">merger_rate_density_input_args</span><span class="p">,</span>
+        <span class="n">source_frame_masses</span><span class="o">=</span><span class="n">source_frame_masses_args</span><span class="p">,</span>
+    <span class="p">),</span>
+
+    <span class="c1"># Custom detection criteria</span>
+    <span class="n">pdet_finder</span><span class="o">=</span><span class="n">detection_criteria</span><span class="p">,</span>
+    <span class="n">ler_directory</span><span class="o">=</span><span class="s1">&#39;./ler_data_custom&#39;</span><span class="p">,</span>  <span class="c1"># Save in a separate directory</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+Initializing GWRATES class...
+
+
+Initializing CBCSourceRedshiftDistribution class...
+
+luminosity_distance interpolator will be loaded from ./interpolator_json/luminosity_distance/luminosity_distance_1.json
+differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_1.json
+using ler available merger rate density model: merger_rate_density_madau_dickinson2014
+merger_rate_density_madau_dickinson2014 interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_madau_dickinson2014_5.json
+merger_rate_density_detector_frame interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_detector_frame_6.json
+source_redshift interpolator will be loaded from ./interpolator_json/source_redshift/source_redshift_2.json
+
+Initializing CBCSourceParameterDistribution class...
+
+using ler available zs function : source_redshift
+using user defined custom source_frame_masses function
+using ler available geocent_time function : sampler_uniform
+using ler available ra function : sampler_uniform
+using ler available dec function : sampler_cosine
+using ler available phase function : sampler_uniform
+using ler available psi function : sampler_uniform
+using ler available theta_jn function : sampler_sine
+#----------------------------------------
+# GWRATES initialization input arguments:
+#----------------------------------------
+
+    # GWRATES set up input arguments:
+    npool = 4,
+    z_min = 0.001,
+    z_max = 10,
+    event_type = &#39;BNS&#39;,
+    cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=None),
+    pdet_finder = &lt;function detection_criteria at 0x16685c430&gt;,
+    json_file_names = dict(
+        gwrates_params = &#39;gwrates_params.json&#39;,
+        gw_param = &#39;gw_param.json&#39;,
+        gw_param_detectable = &#39;gw_param_detectable.json&#39;,
+    ),
+    interpolator_directory = &#39;./interpolator_json&#39;,
+    ler_directory = &#39;./ler_data_custom&#39;,
+
+    # GWRATES also takes other CBCSourceParameterDistribution class input arguments as kwargs, as follows:
+    source_priors = dict(
+        merger_rate_density = &#39;merger_rate_density_madau_dickinson2014&#39;,
+        zs = &#39;source_redshift&#39;,
+        source_frame_masses = &lt;function source_frame_masses_uniform at 0x107201090&gt;,
+        geocent_time = &#39;sampler_uniform&#39;,
+        ra = &#39;sampler_uniform&#39;,
+        dec = &#39;sampler_cosine&#39;,
+        phase = &#39;sampler_uniform&#39;,
+        psi = &#39;sampler_uniform&#39;,
+        theta_jn = &#39;sampler_sine&#39;,
+    ),
+    source_priors_params = dict(
+        merger_rate_density = {&#39;R0&#39;: 8.9e-08, &#39;a&#39;: 0.015, &#39;b&#39;: 2.7, &#39;c&#39;: 2.9, &#39;d&#39;: 5.6},
+        zs = None,
+        source_frame_masses = {&#39;mmin&#39;: 1.0, &#39;mmax&#39;: 2.3},
+        geocent_time = {&#39;xmin&#39;: 1238166018, &#39;xmax&#39;: 1269702018},
+        ra = {&#39;xmin&#39;: 0.0, &#39;xmax&#39;: 6.283185307179586},
+        dec = None,
+        phase = {&#39;xmin&#39;: 0.0, &#39;xmax&#39;: 6.283185307179586},
+        psi = {&#39;xmin&#39;: 0.0, &#39;xmax&#39;: 3.141592653589793},
+        theta_jn = None,
+    ),
+    spin_zero = True,
+    spin_precession = False,
+</pre></div></div>
+</div>
+</section>
+<section id="2.6-Sample-GW-Parameters-with-Custom-Settings">
+<h3>2.6 Sample GW Parameters with Custom Settings<a class="headerlink" href="#2.6-Sample-GW-Parameters-with-Custom-Settings" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample GW population with custom settings</span>
+<span class="n">gw_params_custom</span> <span class="o">=</span> <span class="n">ler_custom</span><span class="o">.</span><span class="n">gw_cbc_statistics</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span>
+    <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Start fresh</span>
+    <span class="n">output_jsonfile</span><span class="o">=</span><span class="s1">&#39;custom_gw_params.json&#39;</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Sampled </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">gw_params_custom</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> custom BNS events&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Simulated GW params will be stored in ./ler_data_custom/custom_gw_params.json
+removing ./ler_data_custom/custom_gw_params.json if it exists
+Batch no. 1
+sampling gw source params...
+calculating pdet...
+Batch no. 2
+sampling gw source params...
+calculating pdet...
+saving all gw parameters in ./ler_data_custom/custom_gw_params.json
+
+Sampled 100000 custom BNS events
+</pre></div></div>
+</div>
+</section>
+<section id="2.7-Calculate-Rates-with-Custom-Settings">
+<h3>2.7 Calculate Rates with Custom Settings<a class="headerlink" href="#2.7-Calculate-Rates-with-Custom-Settings" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate detection rates with custom settings</span>
+<span class="n">detectable_rate_custom</span><span class="p">,</span> <span class="n">gw_param_detectable_custom</span> <span class="o">=</span> <span class="n">ler_custom</span><span class="o">.</span><span class="n">gw_rate</span><span class="p">()</span>
+
+<span class="c1"># Calculate fraction of detectable events</span>
+<span class="n">total_rate_custom</span> <span class="o">=</span> <span class="n">ler_custom</span><span class="o">.</span><span class="n">normalization_pdf_z</span>
+<span class="n">fraction_detectable</span> <span class="o">=</span> <span class="n">detectable_rate_custom</span> <span class="o">/</span> <span class="n">total_rate_custom</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Custom BNS Detection Results (3G Detectors Sensitivity) ===&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Detectable BNS event rate: </span><span class="si">{</span><span class="n">detectable_rate_custom</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2"> events per year&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total BNS event rate: </span><span class="si">{</span><span class="n">total_rate_custom</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2"> events per year&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Detectable fraction: </span><span class="si">{</span><span class="n">fraction_detectable</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Getting gw parameters from json file ./ler_data_custom/custom_gw_params.json...
+total GW event rate (yr^-1): 78639.1916644344
+number of simulated GW detectable events: 23715
+number of simulated all GW events: 100000
+storing detectable params in ./ler_data_custom/gw_param_detectable.json
+
+=== Custom BNS Detection Results (3G Detectors Sensitivity) ===
+Detectable BNS event rate: 7.8639e+04 events per year
+Total BNS event rate: 3.3160e+05 events per year
+Detectable fraction: 23.72%
+</pre></div></div>
+</div>
+</section>
+<section id="2.8-Compare-Default-and-Custom-Mass-Distributions">
+<h3>2.8 Compare Default and Custom Mass Distributions<a class="headerlink" href="#2.8-Compare-Default-and-Custom-Mass-Distributions" title="Link to this heading"></a></h3>
+<p>GWRATES uses <code class="docutils literal notranslate"><span class="pre">binary_masses_BNS_bimodal</span></code> as the default mass distribution for BNS events. Here we compare the default distribution with our custom uniform mass distribution defined earlier.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">plots</span> <span class="k">as</span> <span class="n">lerplt</span>
+
+<span class="c1"># Sample from default BNS mass distribution</span>
+<span class="n">mass_1_default</span><span class="p">,</span> <span class="n">mass_2_default</span> <span class="o">=</span> <span class="n">ler_custom</span><span class="o">.</span><span class="n">binary_masses_BNS_bimodal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<span class="n">default_mass_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">mass_1_source</span><span class="o">=</span><span class="n">mass_1_default</span><span class="p">)</span>
+
+<span class="c1"># Sample from custom mass distribution</span>
+<span class="n">mass_1_custom</span><span class="p">,</span> <span class="n">mass_2_custom</span> <span class="o">=</span> <span class="n">source_frame_masses_uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<span class="n">custom_mass_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">mass_1_source</span><span class="o">=</span><span class="n">mass_1_custom</span><span class="p">)</span>
+
+<span class="c1"># Create comparison plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># Plot default model</span>
+<span class="n">lerplt</span><span class="o">.</span><span class="n">param_plot</span><span class="p">(</span>
+    <span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;mass_1_source&#39;</span><span class="p">,</span>
+    <span class="n">param_dict</span><span class="o">=</span><span class="n">default_mass_dict</span><span class="p">,</span>
+    <span class="n">plot_label</span><span class="o">=</span><span class="s1">&#39;Default BNS bimodal model&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Plot custom model</span>
+<span class="n">lerplt</span><span class="o">.</span><span class="n">param_plot</span><span class="p">(</span>
+    <span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;mass_1_source&#39;</span><span class="p">,</span>
+    <span class="n">param_dict</span><span class="o">=</span><span class="n">custom_mass_dict</span><span class="p">,</span>
+    <span class="n">plot_label</span><span class="o">=</span><span class="s1">&#39;Custom uniform model&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Primary mass, $m_1$ (M$_\odot$)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Probability density&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Comparison of Mass Distribution Models&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+binary_masses_BNS_bimodal interpolator will be loaded from ./interpolator_json/source_frame_masses/binary_masses_BNS_bimodal_0.json
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_GWRATES_complete_examples_39_1.png" src="../_images/examples_GWRATES_complete_examples_39_1.png" />
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="Part-3:-Advanced-Sampling---Generating-Detectable-Events">
+<h2>Part 3: Advanced Sampling - Generating Detectable Events<a class="headerlink" href="#Part-3:-Advanced-Sampling---Generating-Detectable-Events" title="Link to this heading"></a></h2>
+<p>This section demonstrates how to generate a specific number of detectable events and monitor detection rate convergence as a function of sample size.</p>
+<section id="3.1-Initialize-GWRATES-for-N-Event-Sampling">
+<h3>3.1 Initialize GWRATES for N-Event Sampling<a class="headerlink" href="#3.1-Initialize-GWRATES-for-N-Event-Sampling" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">GWRATES</span>
+
+<span class="c1"># Create a new GWRATES instance for N-event sampling</span>
+<span class="n">ler_n_events</span> <span class="o">=</span> <span class="n">GWRATES</span><span class="p">(</span>
+    <span class="n">npool</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+Initializing GWRATES class...
+
+</pre></div></div>
+</div>
+</section>
+<section id="3.2-Sample-Until-N-Detectable-Events-Are-Found">
+<h3>3.2 Sample Until N Detectable Events Are Found<a class="headerlink" href="#3.2-Sample-Until-N-Detectable-Events-Are-Found" title="Link to this heading"></a></h3>
+<p>This function will: - Continue sampling in batches until at least N detectable events are found - Monitor rate convergence using a stopping criteria (e.g., relative rate difference &lt; 0.5%) - Calculate rates dynamically at each batch - Allow resuming from the last batch if interrupted</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample until we have at least 10,000 detectable events with converged rates</span>
+<span class="n">detectable_rate_n</span><span class="p">,</span> <span class="n">gw_param_detectable_n</span> <span class="o">=</span> <span class="n">ler_n_events</span><span class="o">.</span><span class="n">selecting_n_gw_detectable_events</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>  <span class="c1"># Target number of detectable events</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span>  <span class="c1"># Events per batch</span>
+    <span class="n">stopping_criteria</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">relative_diff_percentage</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># Stop when rate change &lt; 0.5% (use 0.1% for better convergence)</span>
+        <span class="n">number_of_last_batches_to_check</span><span class="o">=</span><span class="mi">4</span>  <span class="c1"># Check last 4 batches</span>
+    <span class="p">),</span>
+    <span class="n">pdet_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># Probability threshold for detection</span>
+    <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Start fresh</span>
+    <span class="n">output_jsonfile</span><span class="o">=</span><span class="s1">&#39;gw_params_n_detectable.json&#39;</span><span class="p">,</span>
+    <span class="n">meta_data_file</span><span class="o">=</span><span class="s1">&#39;meta_gw.json&#39;</span><span class="p">,</span>  <span class="c1"># Store metadata (rates per batch)</span>
+    <span class="n">pdet_type</span><span class="o">=</span><span class="s1">&#39;boolean&#39;</span><span class="p">,</span>
+    <span class="n">trim_to_size</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Keep all events found until convergence</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== N-Event Sampling Results ===&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Detectable event rate: </span><span class="si">{</span><span class="n">detectable_rate_n</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2"> events per year&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Collected number of detectable events: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">gw_param_detectable_n</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+stopping criteria set to when relative difference of total rate for the last 4 cumulative batches is less than 0.1%.
+sample collection will stop when the stopping criteria is met and number of detectable events exceeds the specified size.
+removing ./ler_data/gw_params_n_detectable.json if it exists
+removing ./ler_data/meta_gw.json if it exists
+collected number of detectable events =  0
+collected number of detectable events =  345
+total number of events =  100000
+total rate (yr^-1): 315.9641235325173
+collected number of detectable events =  667
+total number of events =  200000
+total rate (yr^-1): 305.4319860814334
+collected number of detectable events =  993
+total number of events =  300000
+total rate (yr^-1): 303.14239098337174
+collected number of detectable events =  1314
+total number of events =  400000
+total rate (yr^-1): 300.85279588531
+collected number of detectable events =  1639
+total number of events =  500000
+total rate (yr^-1): 300.21170925785276
+percentage difference of total rate for the last 4 cumulative batches = [1.73886516 0.976205   0.21354484 0.        ]
+collected number of detectable events =  1947
+total number of events =  600000
+total rate (yr^-1): 297.1894437284112
+percentage difference of total rate for the last 4 cumulative batches = [2.00308166 1.23266564 1.01694915 0.        ]
+collected number of detectable events =  2280
+total number of events =  700000
+total rate (yr^-1): 298.3015327760412
+percentage difference of total rate for the last 4 cumulative batches = [0.85526316 0.64035088 0.37280702 0.        ]
+collected number of detectable events =  2605
+total number of events =  800000
+total rate (yr^-1): 298.21976152253905
+percentage difference of total rate for the last 4 cumulative batches = [0.66794626 0.34548944 0.0274198  0.        ]
+collected number of detectable events =  2926
+total number of events =  900000
+total rate (yr^-1): 297.74912253015964
+percentage difference of total rate for the last 4 cumulative batches = [0.18796992 0.18552876 0.15806562 0.        ]
+collected number of detectable events =  3262
+total number of events =  1000000
+total rate (yr^-1): 298.7463683950932
+percentage difference of total rate for the last 4 cumulative batches = [0.14890076 0.17627223 0.33381021 0.        ]
+collected number of detectable events =  3573
+total number of events =  1100000
+total rate (yr^-1): 297.4808467408918
+percentage difference of total rate for the last 4 cumulative batches = [0.24839071 0.09018254 0.42541282 0.        ]
+collected number of detectable events =  3924
+total number of events =  1200000
+total rate (yr^-1): 299.47903882647296
+percentage difference of total rate for the last 4 cumulative batches = [0.57764186 0.24464832 0.66722269 0.        ]
+collected number of detectable events =  4251
+total number of events =  1300000
+total rate (yr^-1): 299.47903882647296
+percentage difference of total rate for the last 4 cumulative batches = [0.24464832 0.66722269 0.         0.        ]
+collected number of detectable events =  4559
+total number of events =  1400000
+total rate (yr^-1): 298.2361157732395
+percentage difference of total rate for the last 4 cumulative batches = [0.25324533 0.41675806 0.41675806 0.        ]
+collected number of detectable events =  4876
+total number of events =  1500000
+total rate (yr^-1): 297.70841861730526
+percentage difference of total rate for the last 4 cumulative batches = [0.59474979 0.59474979 0.17725302 0.        ]
+collected number of detectable events =  5188
+total number of events =  1600000
+total rate (yr^-1): 296.9604842186051
+percentage difference of total rate for the last 4 cumulative batches = [0.84811103 0.42956273 0.25186327 0.        ]
+collected number of detectable events =  5488
+total number of events =  1700000
+total rate (yr^-1): 295.654068192064
+percentage difference of total rate for the last 4 cumulative batches = [0.87333403 0.69484937 0.44187318 0.        ]
+collected number of detectable events =  5774
+total number of events =  1800000
+total rate (yr^-1): 293.7804910268527
+percentage difference of total rate for the last 4 cumulative batches = [1.33702806 1.08243852 0.63774731 0.        ]
+collected number of detectable events =  6055
+total number of events =  1900000
+total rate (yr^-1): 291.86312250028874
+percentage difference of total rate for the last 4 cumulative batches = [1.7464905  1.29887793 0.656941   0.        ]
+collected number of detectable events =  6364
+total number of events =  2000000
+total rate (yr^-1): 291.4196640812957
+percentage difference of total rate for the last 4 cumulative batches = [1.45302621 0.81011244 0.15217176 0.        ]
+collected number of detectable events =  6663
+total number of events =  2100000
+total rate (yr^-1): 290.5823264454331
+percentage difference of total rate for the last 4 cumulative batches = [1.10060533 0.44076874 0.28815849 0.        ]
+collected number of detectable events =  6964
+total number of events =  2200000
+total rate (yr^-1): 289.9043684163967
+percentage difference of total rate for the last 4 cumulative batches = [0.67565525 0.52268811 0.23385575 0.        ]
+collected number of detectable events =  7243
+total number of events =  2300000
+total rate (yr^-1): 288.40934426540935
+percentage difference of total rate for the last 4 cumulative batches = [1.0437664  0.75343682 0.51836883 0.        ]
+collected number of detectable events =  7576
+total number of events =  2400000
+total rate (yr^-1): 289.09954104859315
+percentage difference of total rate for the last 4 cumulative batches = [0.51289787 0.27839109 0.23874019 0.        ]
+collected number of detectable events =  7912
+total number of events =  2500000
+total rate (yr^-1): 289.8444226538292
+percentage difference of total rate for the last 4 cumulative batches = [0.02068205 0.49512024 0.2569936  0.        ]
+collected number of detectable events =  8237
+total number of events =  2600000
+total rate (yr^-1): 290.14453573437515
+percentage difference of total rate for the last 4 cumulative batches = [0.59804382 0.36016349 0.10343572 0.        ]
+collected number of detectable events =  8579
+total number of events =  2700000
+total rate (yr^-1): 290.9990569817999
+percentage difference of total rate for the last 4 cumulative batches = [0.65275673 0.39678284 0.29365086 0.        ]
+collected number of detectable events =  8882
+total number of events =  2800000
+total rate (yr^-1): 290.5169094426314
+percentage difference of total rate for the last 4 cumulative batches = [0.2314794  0.12817626 0.16596195 0.        ]
+collected number of detectable events =  9166
+total number of events =  2900000
+total rate (yr^-1): 289.46798163908585
+percentage difference of total rate for the last 4 cumulative batches = [0.23372329 0.52892736 0.36236402 0.        ]
+collected number of detectable events =  9513
+total number of events =  3000000
+total rate (yr^-1): 290.41224223814856
+percentage difference of total rate for the last 4 cumulative batches = [0.20206267 0.03604091 0.3251449  0.        ]
+collected number of detectable events =  9804
+total number of events =  3100000
+total rate (yr^-1): 289.6411656954465
+percentage difference of total rate for the last 4 cumulative batches = [0.30235472 0.05979263 0.26621787 0.        ]
+collected number of detectable events =  10153
+total number of events =  3200000
+total rate (yr^-1): 290.57823788275806
+percentage difference of total rate for the last 4 cumulative batches = [0.38208513 0.05712597 0.32248533 0.        ]
+Given size=10000 reached
+
+collected number of detectable events =  10490
+total number of events =  3300000
+total rate (yr^-1): 291.1254858020296
+percentage difference of total rate for the last 4 cumulative batches = [0.24499523 0.50985578 0.18797664 0.        ]
+Given size=10000 reached
+
+collected number of detectable events =  10799
+total number of events =  3400000
+total rate (yr^-1): 290.8863231055119
+percentage difference of total rate for the last 4 cumulative batches = [0.42805636 0.10591258 0.08221861 0.        ]
+Given size=10000 reached
+
+collected number of detectable events =  11091
+total number of events =  3500000
+total rate (yr^-1): 290.2159912297433
+percentage difference of total rate for the last 4 cumulative batches = [0.12481967 0.31338541 0.23097689 0.        ]
+Given size=10000 reached
+
+collected number of detectable events =  11421
+total number of events =  3600000
+total rate (yr^-1): 290.54961794403226
+percentage difference of total rate for the last 4 cumulative batches = [0.19819949 0.1158856  0.11482607 0.        ]
+Given size=10000 reached
+
+collected number of detectable events =  11752
+total number of events =  3700000
+total rate (yr^-1): 290.88996316131175
+percentage difference of total rate for the last 4 cumulative batches = [0.00125135 0.23169309 0.11700136 0.        ]
+Given size=10000 reached
+
+collected number of detectable events =  12099
+total number of events =  3800000
+total rate (yr^-1): 291.5980114889342
+percentage difference of total rate for the last 4 cumulative batches = [0.47394708 0.35953385 0.24281658 0.        ]
+Given size=10000 reached
+
+collected number of detectable events =  12438
+total number of events =  3900000
+total rate (yr^-1): 292.0818854327351
+percentage difference of total rate for the last 4 cumulative batches = [0.52460203 0.40807812 0.1656638  0.        ]
+Given size=10000 reached
+
+collected number of detectable events =  12736
+total number of events =  4000000
+total rate (yr^-1): 291.60283168914066
+percentage difference of total rate for the last 4 cumulative batches = [0.24446557 0.001653   0.16428295 0.        ]
+Given size=10000 reached
+
+collected number of detectable events =  13053
+total number of events =  4100000
+total rate (yr^-1): 291.57155917072805
+percentage difference of total rate for the last 4 cumulative batches = [0.00907232 0.17502608 0.0107255  0.        ]
+Given size=10000 reached
+
+collected number of detectable events =  13358
+total number of events =  4200000
+total rate (yr^-1): 291.2801078086519
+percentage difference of total rate for the last 4 cumulative batches = [0.27526    0.11079503 0.10005879 0.        ]
+Given size=10000 reached
+
+collected number of detectable events =  13684
+total number of events =  4300000
+total rate (yr^-1): 291.4494820639681
+percentage difference of total rate for the last 4 cumulative batches = [0.05261619 0.0418862  0.05811445 0.        ]
+stopping criteria of rate relative difference of 0.1% for the last 4 cumulative batches reached.
+Given size=10000 reached
+
+stored detectable GW params in ./ler_data/gw_params_n_detectable.json
+stored meta data in ./ler_data/meta_gw.json
+
+=== N-Event Sampling Results ===
+Detectable event rate: 2.9145e+02 events per year
+Collected number of detectable events: 13684
+</pre></div></div>
+</div>
+</section>
+<section id="3.3-Analyze-Rate-Convergence">
+<h3>3.3 Analyze Rate Convergence<a class="headerlink" href="#3.3-Analyze-Rate-Convergence" title="Link to this heading"></a></h3>
+<p>Plot the evolution of the detection rate across batches to verify convergence.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">get_param_from_json</span>
+
+<span class="c1"># Load metadata containing rates for each batch</span>
+<span class="n">meta_data</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">ler_n_events</span><span class="o">.</span><span class="n">ler_directory</span> <span class="o">+</span> <span class="s1">&#39;/meta_gw.json&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot rate vs sampling size</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">meta_data</span><span class="p">[</span><span class="s1">&#39;events_total&#39;</span><span class="p">],</span>
+    <span class="n">meta_data</span><span class="p">[</span><span class="s1">&#39;total_rate&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;o-&#39;</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Detectable rate&#39;</span>
+<span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Total number of events sampled&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Detectable event rate (per year)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Rate Convergence Across Batches&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_GWRATES_complete_examples_46_0.png" src="../_images/examples_GWRATES_complete_examples_46_0.png" />
+</div>
+</div>
+</section>
+<section id="3.4-Assess-Rate-Stability">
+<h3>3.4 Assess Rate Stability<a class="headerlink" href="#3.4-Assess-Rate-Stability" title="Link to this heading"></a></h3>
+<p>Calculate the average rate from the last batches to verify convergence.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Select rates from the last batches</span>
+<span class="n">idx_converged</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">rates_converged</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">meta_data</span><span class="p">[</span><span class="s1">&#39;total_rate&#39;</span><span class="p">])[</span><span class="n">idx_converged</span><span class="p">]</span>
+
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rates_converged</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">mean_rate</span> <span class="o">=</span> <span class="n">rates_converged</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">std_rate</span> <span class="o">=</span> <span class="n">rates_converged</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Rate Stability Analysis ===&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of converged batches: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">rates_converged</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean rate (converged): </span><span class="si">{</span><span class="n">mean_rate</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2"> events per year&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard deviation: </span><span class="si">{</span><span class="n">std_rate</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2"> events per year&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Relative uncertainty: </span><span class="si">{</span><span class="p">(</span><span class="n">std_rate</span><span class="o">/</span><span class="n">mean_rate</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Not enough batches to assess convergence.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+=== Rate Stability Analysis ===
+Number of converged batches: 4
+Mean rate (converged): 2.9148e+02 events per year
+Standard deviation: 1.2678e-01 events per year
+Relative uncertainty: 0.04%
+</pre></div></div>
+</div>
+</section>
+<section id="3.5-Compare-All-Sampled-and-Detectable-Event-Parameters">
+<h3>3.5 Compare All Sampled and Detectable Event Parameters<a class="headerlink" href="#3.5-Compare-All-Sampled-and-Detectable-Event-Parameters" title="Link to this heading"></a></h3>
+<p>Create an overlapping visualization comparing the parameter distributions of all sampled events with detectable events only.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># generate CBC (all) parameters</span>
+<span class="n">gw_param</span> <span class="o">=</span> <span class="n">ler_n_events</span><span class="o">.</span><span class="n">gw_cbc_statistics</span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Simulated GW params will be stored in ./ler_data/gw_param.json
+removing ./ler_data/gw_param.json if it exists
+Batch no. 1
+sampling gw source params...
+calculating pdet...
+Batch no. 2
+sampling gw source params...
+calculating pdet...
+saving all gw parameters in ./ler_data/gw_param.json
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">corner</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.lines</span> <span class="k">as</span> <span class="nn">mlines</span>
+<span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">get_param_from_json</span>
+
+<span class="n">param</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="s1">&#39;ler_data/gw_param.json&#39;</span><span class="p">)</span>
+<span class="n">param_detectable</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="s1">&#39;./ler_data/gw_params_n_detectable.json&#39;</span><span class="p">)</span>
+
+<span class="n">param_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">,</span> <span class="s1">&#39;ra&#39;</span><span class="p">,</span> <span class="s1">&#39;dec&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_jn&#39;</span><span class="p">,</span> <span class="s1">&#39;mass_1_source&#39;</span><span class="p">,</span> <span class="s1">&#39;mass_2_source&#39;</span><span class="p">]</span>
+
+<span class="c1"># Prepare data for corner plot</span>
+<span class="n">samples_unlensed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">param</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">param_names</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">samples_detectable</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">param_detectable</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">param_names</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Generate corner plot</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span>
+    <span class="n">samples_unlensed</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="n">param_names</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">plot_density</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot_datapoints</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">hist_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;density&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">blue_line</span> <span class="o">=</span> <span class="n">mlines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;all events&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot detectable events</span>
+<span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span>
+    <span class="n">samples_detectable</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="n">param_names</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C1&#39;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">fig</span><span class="o">=</span><span class="n">fig</span><span class="p">,</span>
+    <span class="n">plot_density</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot_datapoints</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">hist_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;density&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">orange_line</span> <span class="o">=</span> <span class="n">mlines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C1&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;detectable only&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add legend</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="p">[</span><span class="n">blue_line</span><span class="p">,</span> <span class="n">orange_line</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+WARNING:root:Too few points to create valid contours
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_GWRATES_complete_examples_51_1.png" src="../_images/examples_GWRATES_complete_examples_51_1.png" />
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="Summary">
+<h2>Summary<a class="headerlink" href="#Summary" title="Link to this heading"></a></h2>
+<p>This notebook demonstrated the key features of the <code class="docutils literal notranslate"><span class="pre">GWRATES</span></code> class:</p>
+<ol class="arabic simple">
+<li><p><strong>Basic Simulation:</strong> Simulating GW populations and calculating detection rates</p></li>
+<li><p><strong>Customization:</strong> Using custom mass distributions, merger rate densities, and detection criteria</p></li>
+<li><p><strong>Advanced Sampling:</strong> Generating a specific number of detectable events and monitoring rate convergence</p></li>
+<li><p><strong>Visualization:</strong> Comparing distributions and analyzing results</p></li>
+</ol>
+<p>For more examples and detailed documentation, visit the <a class="reference external" href="https://ler.hemantaph.com">ler documentation</a>.</p>
+<p><strong>Key Takeaways:</strong> - GWRATES is flexible and supports custom prior functions - Batching allows resumable simulations and memory-efficient sampling - Rate convergence can be monitored and validated - Results are automatically saved for reproducibility and further analysis</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="LeR_short_examples.html" class="btn btn-neutral float-left" title="LeR Short Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="LeR_custom_functions.html" class="btn btn-neutral float-right" title="LeR with Custom Functions and Parameters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -68,6 +68,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
 
         </div>
       </div>
@@ -127,7 +134,7 @@
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
 
-<span class="kn">from</span> <span class="nn">ler.lens_galaxy_population.jit_functions</span> <span class="kn">import</span> <span class="n">phi_q2_ellipticity</span>
+<span class="kn">from</span> <span class="nn">.lens_functions</span> <span class="kn">import</span> <span class="n">phi_q2_ellipticity</span>
 
 <div class="viewcode-block" id="C_LIGHT">
 <a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/index.html#ler.lens_galaxy_population.cross_section_interpolator.C_LIGHT">[docs]</a>
@@ -317,7 +324,7 @@
     <span class="n">gamma_grid</span><span class="p">,</span>
     <span class="n">gamma1_grid</span><span class="p">,</span>
     <span class="n">gamma2_grid</span><span class="p">,</span>
-    <span class="n">cs_grid</span><span class="p">,</span>
+    <span class="n">cs_spline_coeff_grid</span><span class="p">,</span>
     <span class="n">Da_instance</span><span class="p">,</span>
     <span class="n">csunit_to_cs_slope</span><span class="p">,</span>
     <span class="n">csunit_to_cs_intercept</span><span class="p">,</span>
@@ -353,7 +360,7 @@
 <span class="sd">        Grid values for shear component gamma1, shape (n_g1,).</span>
 <span class="sd">    gamma2_grid : ``numpy.ndarray``</span>
 <span class="sd">        Grid values for shear component gamma2, shape (n_g2,).</span>
-<span class="sd">    cs_grid : ``numpy.ndarray``</span>
+<span class="sd">    cs_spline_coeff_grid : ``numpy.ndarray``</span>
 <span class="sd">        Prefiltered B-spline coefficients for cross section, \n</span>
 <span class="sd">        shape (n_e1, n_e2, n_g, n_g1, n_g2).</span>
 <span class="sd">    Da_instance : ``callable``</span>
@@ -410,7 +417,7 @@
         <span class="n">ig2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">_physical_to_index</span><span class="p">(</span><span class="n">gamma2</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">g2_min</span><span class="p">,</span> <span class="n">g2_max</span><span class="p">,</span> <span class="n">n_g2</span><span class="p">)</span>
 
     <span class="c1"># Unit cross-section via cubic spline interpolation</span>
-    <span class="n">cs_unit</span> <span class="o">=</span> <span class="n">_map_coordinates_5d_cubic_nearest</span><span class="p">(</span><span class="n">cs_grid</span><span class="p">,</span> <span class="n">ie1</span><span class="p">,</span> <span class="n">ie2</span><span class="p">,</span> <span class="n">ig</span><span class="p">,</span> <span class="n">ig1</span><span class="p">,</span> <span class="n">ig2</span><span class="p">)</span>
+    <span class="n">cs_unit</span> <span class="o">=</span> <span class="n">_map_coordinates_5d_cubic_nearest</span><span class="p">(</span><span class="n">cs_spline_coeff_grid</span><span class="p">,</span> <span class="n">ie1</span><span class="p">,</span> <span class="n">ie2</span><span class="p">,</span> <span class="n">ig</span><span class="p">,</span> <span class="n">ig1</span><span class="p">,</span> <span class="n">ig2</span><span class="p">)</span>
 
     <span class="c1"># Scale by SIS area and apply affine calibration</span>
     <span class="n">area_sis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">theta_E</span><span class="o">**</span><span class="mi">2</span>
@@ -428,7 +435,7 @@
     <span class="n">gamma_grid</span><span class="p">,</span>
     <span class="n">gamma1_grid</span><span class="p">,</span>
     <span class="n">gamma2_grid</span><span class="p">,</span>
-    <span class="n">cs_grid</span><span class="p">,</span>
+    <span class="n">cs_spline_coeff_grid</span><span class="p">,</span>
     <span class="n">Da_instance</span><span class="p">,</span>
     <span class="n">csunit_to_cs_slope</span><span class="o">=</span><span class="mf">0.31830988618379075</span><span class="p">,</span>
     <span class="n">csunit_to_cs_intercept</span><span class="o">=-</span><span class="mf">3.2311742677852644e-27</span><span class="p">,</span>
@@ -452,7 +459,7 @@
 <span class="sd">        Grid values for shear component gamma1, shape (n_g1,).</span>
 <span class="sd">    gamma2_grid : ``numpy.ndarray``</span>
 <span class="sd">        Grid values for shear component gamma2, shape (n_g2,).</span>
-<span class="sd">    cs_grid : ``numpy.ndarray``</span>
+<span class="sd">    cs_spline_coeff_grid : ``numpy.ndarray``</span>
 <span class="sd">        Raw cross section grid data (before spline filtering), \n</span>
 <span class="sd">        shape (n_e1, n_e2, n_g, n_g1, n_g2).</span>
 <span class="sd">    Da_instance : ``callable``</span>
@@ -477,7 +484,7 @@
 <span class="sd">    &gt;&gt;&gt; from ler.lens_galaxy_population.cross_section_interpolator import make_cross_section_reinit</span>
 <span class="sd">    &gt;&gt;&gt; cs_func = make_cross_section_reinit(</span>
 <span class="sd">    ...     e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid,</span>
-<span class="sd">    ...     cs_grid, Da_instance</span>
+<span class="sd">    ...     cs_spline_coeff_grid, Da_instance</span>
 <span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; cross_sections = cs_func(zs, zl, sigma, q, phi, gamma, gamma1, gamma2)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -486,7 +493,7 @@
     <span class="n">gg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">gamma_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
     <span class="n">g1g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">gamma1_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
     <span class="n">g2g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">gamma2_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-    <span class="n">cs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cs_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">cs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cs_spline_coeff_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
     <span class="c1"># Precompute spline coefficients</span>
     <span class="n">cs_coeff</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">spline_filter</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
@@ -512,7 +519,7 @@
             <span class="n">gamma_grid</span><span class="o">=</span><span class="n">gg</span><span class="p">,</span>
             <span class="n">gamma1_grid</span><span class="o">=</span><span class="n">g1g</span><span class="p">,</span>
             <span class="n">gamma2_grid</span><span class="o">=</span><span class="n">g2g</span><span class="p">,</span>
-            <span class="n">cs_grid</span><span class="o">=</span><span class="n">cs_coeff</span><span class="p">,</span>
+            <span class="n">cs_spline_coeff_grid</span><span class="o">=</span><span class="n">cs_coeff</span><span class="p">,</span>
             <span class="n">Da_instance</span><span class="o">=</span><span class="n">Da_function</span><span class="p">,</span>
             <span class="n">csunit_to_cs_slope</span><span class="o">=</span><span class="n">slope_given</span><span class="p">,</span>
             <span class="n">csunit_to_cs_intercept</span><span class="o">=</span><span class="n">intercept_given</span><span class="p">,</span>

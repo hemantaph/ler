@@ -847,6 +847,302 @@ Classes
 
       
 
+   .. py:method:: lens_redshift_strongly_lensed_numerical(size=1000, zs=None, get_attribute=False, **kwargs)
+
+      
+      Sample lens redshifts conditioned on strong lensing (numerical method).
+
+      This method computes the lens redshift distribution by numerically
+      integrating over the velocity dispersion distribution (galaxy density distribution wrt), cross-section and differential comoving volume.
+
+      :Parameters:
+
+          **size** : ``int``
+              Number of samples to generate. \n
+              default: 1000
+
+          **zs** : ``numpy.ndarray``
+              Source redshifts.
+
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples. \n
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters.
+
+      :Returns:
+
+          **zl** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Lens redshift samples or sampler object.
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> zl = od.lens_redshift(size=100, zs=np.ones(100)*2.0)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: lens_redshift_strongly_lensed_sis_haris(size, zs, get_attribute=False, **kwargs)
+
+      
+      Sample SIS lens redshifts using Haris et al. (2018) distribution.
+
+
+      :Parameters:
+
+          **size** : ``int``
+              Number of samples to generate.
+
+          **zs** : ``numpy.ndarray``
+              Source redshifts.
+
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters.
+
+      :Returns:
+
+          **zl** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Lens redshift samples or sampler object.
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth(lens_type='sis_galaxy')
+      >>> zl = od.lens_redshift(size=100, zs=np.ones(100)*2.0)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: velocity_dispersion_gengamma(size, get_attribute=False, **kwargs)
+
+      
+      Sample velocity dispersion from generalized gamma distribution.
+
+
+      :Parameters:
+
+          **size** : ``int``
+              Number of samples to generate.
+
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters.
+
+              +-------------------+-------------------+---------------------------------------+
+              | Parameter         | Unit              | Description                           |
+              +===================+===================+=======================================+
+              | sigma_min         | km/s              | minimum velocity dispersion           |
+              +-------------------+-------------------+---------------------------------------+
+              | sigma_max         | km/s              | maximum velocity dispersion           |
+              +-------------------+-------------------+---------------------------------------+
+              | alpha             | dimensionless     | Power-law index governing the slope   |
+              |                   |                   | of the distribution at low velocities |
+              +-------------------+-------------------+---------------------------------------+
+              | beta              | dimensionless     | Exponential parameter determining the |
+              |                   |                   | sharpness of the high-velocity cutoff |
+              +-------------------+-------------------+---------------------------------------+
+              | phistar           | h^3 Mpc^-3        | Normalization constant representing   |
+              |                   |                   | the comoving number density of galaxy |
+              +-------------------+-------------------+---------------------------------------+
+              | sigmastar         | km/s              | Characteristic velocity scale marking |
+              |                   |                   | the "knee" transition in the VDF      |
+              +-------------------+-------------------+---------------------------------------+
+
+      :Returns:
+
+          **sigma** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Velocity dispersion samples (km/s) or sampler object.
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth(lens_param_samplers=dict(
+      ...     velocity_dispersion="velocity_dispersion_gengamma"))
+      >>> sigma = od.velocity_dispersion(size=100)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: velocity_dispersion_bernardi(size, get_attribute=False, **kwargs)
+
+      
+      Sample velocity dispersion from Bernardi et al. (2010) distribution.
+
+      Uses inverse transform sampling on the velocity dispersion function.
+
+      :Parameters:
+
+          **size** : ``int``
+              Number of samples to generate.
+
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters.
+
+              +-------------------+-------------------+---------------------------------------+
+              | Parameter         | Unit              | Description                           |
+              +===================+===================+=======================================+
+              | sigma_min         | km/s              | minimum velocity dispersion           |
+              +-------------------+-------------------+---------------------------------------+
+              | sigma_max         | km/s              | maximum velocity dispersion           |
+              +-------------------+-------------------+---------------------------------------+
+              | alpha             | dimensionless     | Power-law index governing the slope   |
+              |                   |                   | of the distribution at low velocities |
+              +-------------------+-------------------+---------------------------------------+
+              | beta              | dimensionless     | Exponential parameter determining the |
+              |                   |                   | sharpness of the high-velocity cutoff |
+              +-------------------+-------------------+---------------------------------------+
+              | phistar           | h^3 Mpc^-3        | Normalization constant representing   |
+              |                   |                   | the comoving number density of galaxy |
+              +-------------------+-------------------+---------------------------------------+
+              | sigmastar         | km/s              | Characteristic velocity scale marking |
+              |                   |                   | the "knee" transition in the VDF      |
+              +-------------------+-------------------+---------------------------------------+
+
+      :Returns:
+
+          **sigma** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Velocity dispersion samples (km/s) or sampler object.
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth(lens_param_samplers=dict(
+      ...     velocity_dispersion="velocity_dispersion_bernardi"))
+      >>> sigma = od.velocity_dispersion(size=100)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: velocity_dispersion_ewoud(size, zl, get_attribute=False, **kwargs)
+
+      
+      Sample redshift-dependent velocity dispersion from Wempe et al. (2022).
+
+      Uses inverse transform sampling with redshift-dependent velocity
+      dispersion function.
+
+      :Parameters:
+
+          **size** : ``int``
+              Number of samples to generate.
+
+          **zl** : ``numpy.ndarray``
+              Lens redshifts.
+
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters.
+
+              +-------------------+-------------------+---------------------------------------+
+              | Parameter         | Unit              | Description                           |
+              +===================+===================+=======================================+
+              | sigma_min         | km/s              | minimum velocity dispersion           |
+              +-------------------+-------------------+---------------------------------------+
+              | sigma_max         | km/s              | maximum velocity dispersion           |
+              +-------------------+-------------------+---------------------------------------+
+              | alpha             | dimensionless     | Power-law index governing the slope   |
+              |                   |                   | of the distribution at low velocities |
+              +-------------------+-------------------+---------------------------------------+
+              | beta              | dimensionless     | Exponential parameter determining the |
+              |                   |                   | sharpness of the high-velocity cutoff |
+              +-------------------+-------------------+---------------------------------------+
+              | phistar           | h^3 Mpc^-3        | Normalization constant representing   |
+              |                   |                   | the comoving number density of galaxy |
+              +-------------------+-------------------+---------------------------------------+
+              | sigmastar         | km/s              | Characteristic velocity scale marking |
+              |                   |                   | the "knee" transition in the VDF      |
+              +-------------------+-------------------+---------------------------------------+
+
+      :Returns:
+
+          **sigma** : ``numpy.ndarray`` or ``FunctionConditioning``
+              Velocity dispersion samples (km/s) or sampler object.
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.lens_galaxy_population import OpticalDepth
+      >>> od = OpticalDepth()
+      >>> sigma = od.velocity_dispersion(size=100, zl=np.ones(100)*0.5)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
    .. py:method:: axis_ratio_rayleigh(size, sigma, get_attribute=False, **kwargs)
 
       
@@ -934,55 +1230,6 @@ Classes
       >>> from ler.lens_galaxy_population import OpticalDepth
       >>> od = OpticalDepth(lens_param_samplers=dict(axis_ratio="axis_ratio_padilla_strauss"))
       >>> q = od.axis_ratio(size=100)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: lens_redshift_strongly_lensed_numerical(size=1000, zs=None, get_attribute=False, **kwargs)
-
-      
-      Sample lens redshifts conditioned on strong lensing (numerical method).
-
-      This method computes the lens redshift distribution by numerically
-      integrating over the velocity dispersion distribution (galaxy density distribution wrt), cross-section and differential comoving volume.
-
-      :Parameters:
-
-          **size** : ``int``
-              Number of samples to generate. \n
-              default: 1000
-
-          **zs** : ``numpy.ndarray``
-              Source redshifts.
-
-          **get_attribute** : ``bool``
-              If True, returns the sampler object instead of samples. \n
-              default: False
-
-          **\*\*kwargs** : ``dict``
-              Additional parameters.
-
-      :Returns:
-
-          **zl** : ``numpy.ndarray`` or ``FunctionConditioning``
-              Lens redshift samples or sampler object.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth()
-      >>> zl = od.lens_redshift(size=100, zs=np.ones(100)*2.0)
 
 
 
@@ -1159,195 +1406,6 @@ Classes
       >>> from ler.lens_galaxy_population import OpticalDepth
       >>> od = OpticalDepth()
       >>> gamma = od.density_profile_slope(size=100)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: lens_redshift_strongly_lensed_sis_haris(size, zs, get_attribute=False, **kwargs)
-
-      
-      Sample SIS lens redshifts using Haris et al. (2018) distribution.
-
-
-      :Parameters:
-
-          **size** : ``int``
-              Number of samples to generate.
-
-          **zs** : ``numpy.ndarray``
-              Source redshifts.
-
-          **get_attribute** : ``bool``
-              If True, returns the sampler object instead of samples.
-
-              default: False
-
-          **\*\*kwargs** : ``dict``
-              Additional parameters.
-
-      :Returns:
-
-          **zl** : ``numpy.ndarray`` or ``FunctionConditioning``
-              Lens redshift samples or sampler object.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_type='sis_galaxy')
-      >>> zl = od.lens_redshift(size=100, zs=np.ones(100)*2.0)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: velocity_dispersion_gengamma(size, get_attribute=False, **kwargs)
-
-      
-      Sample velocity dispersion from generalized gamma distribution.
-
-
-      :Parameters:
-
-          **size** : ``int``
-              Number of samples to generate.
-
-          **get_attribute** : ``bool``
-              If True, returns the sampler object instead of samples.
-
-              default: False
-
-          **\*\*kwargs** : ``dict``
-              Additional parameters (a, c for gengamma distribution).
-
-              See scipy.stats.gengamma for details.
-
-      :Returns:
-
-          **sigma** : ``numpy.ndarray`` or ``FunctionConditioning``
-              Velocity dispersion samples (km/s) or sampler object.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(
-      ...     velocity_dispersion="velocity_dispersion_gengamma"))
-      >>> sigma = od.velocity_dispersion(size=100)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: velocity_dispersion_bernardi(size, get_attribute=False, **kwargs)
-
-      
-      Sample velocity dispersion from Bernardi et al. (2010) distribution.
-
-      Uses inverse transform sampling on the velocity dispersion function.
-
-      :Parameters:
-
-          **size** : ``int``
-              Number of samples to generate.
-
-          **get_attribute** : ``bool``
-              If True, returns the sampler object instead of samples.
-
-              default: False
-
-          **\*\*kwargs** : ``dict``
-              Additional parameters.
-
-      :Returns:
-
-          **sigma** : ``numpy.ndarray`` or ``FunctionConditioning``
-              Velocity dispersion samples (km/s) or sampler object.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth(lens_param_samplers=dict(
-      ...     velocity_dispersion="velocity_dispersion_bernardi"))
-      >>> sigma = od.velocity_dispersion(size=100)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: velocity_dispersion_ewoud(size, zl, get_attribute=False, **kwargs)
-
-      
-      Sample redshift-dependent velocity dispersion from Wempe et al. (2022).
-
-      Uses inverse transform sampling with redshift-dependent velocity
-      dispersion function.
-
-      :Parameters:
-
-          **size** : ``int``
-              Number of samples to generate.
-
-          **zl** : ``numpy.ndarray``
-              Lens redshifts.
-
-          **get_attribute** : ``bool``
-              If True, returns the sampler object instead of samples.
-
-              default: False
-
-          **\*\*kwargs** : ``dict``
-              Additional parameters.
-
-      :Returns:
-
-          **sigma** : ``numpy.ndarray`` or ``FunctionConditioning``
-              Velocity dispersion samples (km/s) or sampler object.
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.lens_galaxy_population import OpticalDepth
-      >>> od = OpticalDepth()
-      >>> sigma = od.velocity_dispersion(size=100, zl=np.ones(100)*0.5)
 
 
 
@@ -1560,7 +1618,59 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: cross_section_epl_shear_numerical(theta_E, gamma, gamma1, gamma2, q=None, phi=None, e1=None, e2=None, verbose=False, **kwargs)
+   .. py:method:: cross_section_epl_shear_numerical(zs, zl, sigma, q, phi, gamma, gamma1, gamma2)
+
+      
+      Function to compute the strong lensing cross-section numerically for EPL + external shear lenses.
+
+
+      :Parameters:
+
+          **zs** : `numpy.ndarray`
+              redshift of the source galaxies
+
+          **zl** : `numpy.ndarray`
+              redshift of the lens galaxies
+
+          **sigma** : `numpy.ndarray`
+              velocity dispersion of the lens galaxies
+
+          **q** : `numpy.ndarray`
+              axis ratios of the lens galaxies
+
+          **phi** : `numpy.ndarray`
+              axis rotation angles of the lens galaxies in radians
+
+          **gamma** : `numpy.ndarray`
+              external shear magnitudes of the lens galaxies
+
+          **gamma1** : `numpy.ndarray`
+              external shear component 1 of the lens galaxies
+
+          **gamma2** : `numpy.ndarray`
+              external shear component 2 of the lens galaxies
+
+      :Returns:
+
+          **cross_section** : `numpy.ndarray`
+              strong lensing cross-section of the lens galaxies in square radians
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: cross_section_epl_shear_numerical_mp(theta_E, gamma, gamma1, gamma2, q=None, phi=None, e1=None, e2=None, verbose=False, **kwargs)
 
       
       Function to compute the strong lensing cross-section numerically for EPL + external shear lenses.
@@ -1614,6 +1724,40 @@ Classes
 
    .. py:method:: create_parameter_grid(size_list=[25, 25, 45, 15, 15])
 
+      
+      Create a parameter grid for lens galaxies.
+
+
+      :Parameters:
+
+          **size_list** : list
+              List of sizes for each parameter grid.
+
+      :Returns:
+
+          **zl** : numpy.ndarray
+              Lens redshifts.
+
+          **sigma** : numpy.ndarray
+              Velocity dispersions.
+
+          **q** : numpy.ndarray
+              Axis ratios.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
 
    .. py:method:: cross_section_epl_shear_interpolation_init(file_path, size_list)
 

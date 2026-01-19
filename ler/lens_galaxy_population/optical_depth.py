@@ -1109,14 +1109,14 @@ class OpticalDepth:
 
             # create number density
             if self.velocity_dispersion.conditioned_y_array is None:
-                integrand = (  
+                integrand = (
                     lambda sigma, z: self.velocity_dispersion.function(
                         np.array([sigma])
                     )[0]
                     * self.differential_comoving_volume.function(np.array([z]))[0]
                 )
             else:
-                integrand = (  
+                integrand = (
                     lambda sigma, z: self.velocity_dispersion.function(
                         np.array([sigma]), np.array([z])
                     )[0]
@@ -1389,9 +1389,9 @@ class OpticalDepth:
             identifier_dict["resolution"],
         )
 
-        from .sampler_functions import velocity_dispersion_gengamma_function
+        from .sampler_functions import velocity_dispersion_gengamma_density_function
 
-        density_func_ = lambda sigma_: velocity_dispersion_gengamma_function(  
+        density_func_ = lambda sigma_: velocity_dispersion_gengamma_density_function(
             sigma=sigma_,
             sigma_min=identifier_dict["sigma_min"],
             sigma_max=identifier_dict["sigma_max"],
@@ -1491,10 +1491,10 @@ class OpticalDepth:
             identifier_dict["resolution"],
         )
 
-        from .lens_functions import velocity_dispersion_bernardi_denisty_function
+        from .sampler_functions import velocity_dispersion_bernardi_denisty_function
 
-        number_density_function = (  
-            lambda sigma: velocity_dispersion_bernardi_denisty_function(  
+        number_density_function = (
+            lambda sigma: velocity_dispersion_bernardi_denisty_function(
                 sigma,
                 alpha=self.lens_param_samplers_params["velocity_dispersion"]["alpha"],
                 beta=self.lens_param_samplers_params["velocity_dispersion"]["beta"],
@@ -1602,9 +1602,10 @@ class OpticalDepth:
             identifier_dict["sigma_max"],
             identifier_dict["resolution"],
         )
-        from .lens_functions import velocity_dispersion_ewoud_denisty_function
-        number_density_function = (  
-            lambda sigma, zl: velocity_dispersion_ewoud_denisty_function(  
+        from .sampler_functions import velocity_dispersion_ewoud_denisty_function
+
+        number_density_function = (
+            lambda sigma, zl: velocity_dispersion_ewoud_denisty_function(
                 sigma,
                 zl,
                 alpha=self.lens_param_samplers_params["velocity_dispersion"]["alpha"],
@@ -1709,7 +1710,7 @@ class OpticalDepth:
 
         from .sampler_functions import axis_ratio_rayleigh_pdf
 
-        q_pdf = lambda q, sigma: axis_ratio_rayleigh_pdf(  
+        q_pdf = lambda q, sigma: axis_ratio_rayleigh_pdf(
             q=q,
             sigma=sigma,
             q_min=identifier_dict["q_min"],
@@ -2141,9 +2142,7 @@ class OpticalDepth:
             # self.lens_redshift.function gives cross-section
             integrand = lambda zl_, zs_: self.lens_redshift.function(
                 np.array([zl_]), np.array([zs_])
-            )[
-                0
-            ]  
+            )[0]
             integral = [quad(integrand, 0.0, z, args=(z))[0] for z in zs]
             return integral
 
@@ -2885,18 +2884,14 @@ class OpticalDepth:
                 z_max = self.z_max
                 z_resolution = identifier_dict["zl_resolution"]
                 zl_array = redshift_optimal_spacing(z_min, z_max, z_resolution)
-            
-                number_density_function = (  
-                    lambda sigma, zl: prior(  
-                        sigma,
-                        zl,
-                    )
+
+                number_density_function = lambda sigma, zl: prior(
+                    sigma,
+                    zl,
                 )
             else:
-                number_density_function = (  
-                    lambda sigma, zl: prior(  
-                        sigma,
-                    )
+                number_density_function = lambda sigma, zl: prior(
+                    sigma,
                 )
                 zl_array = None
 

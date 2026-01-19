@@ -29,6 +29,7 @@ Functions
 .. autoapisummary::
 
    ler.utils.utils.is_njitted
+   ler.utils.utils.remove_file
    ler.utils.utils.load_pickle
    ler.utils.utils.save_pickle
    ler.utils.utils.load_hdf5
@@ -130,6 +131,29 @@ Functions
       ..
           !! processed by numpydoc !!
 
+
+.. py:function:: remove_file(file_name)
+
+   
+   Remove a file.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:function:: load_pickle(file_name)
 
@@ -1501,25 +1525,6 @@ Functions
 
 .. py:function:: load_txt_from_module(package, directory, filename)
 
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
 
 .. py:function:: cumulative_trapezoid(y, x=None, dx=1.0, initial=0.0)
 

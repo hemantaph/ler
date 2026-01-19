@@ -85,6 +85,13 @@
 </ul>
 </li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
 
         </div>
       </div>
@@ -126,7 +133,7 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.plots.relative_mu_dt_unlensed" title="ler.utils.plots.relative_mu_dt_unlensed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_mu_dt_unlensed</span></code></a>(param[, size, randomize])</p></td>
 <td><p>Function to generate relative magnification vs time delay difference for unlensed samples.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.plots.relative_mu_dt_lensed" title="ler.utils.plots.relative_mu_dt_lensed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_mu_dt_lensed</span></code></a>(lensed_param[, snr_threshold, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.plots.relative_mu_dt_lensed" title="ler.utils.plots.relative_mu_dt_lensed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_mu_dt_lensed</span></code></a>(lensed_param[, pdet_threshold, ...])</p></td>
 <td><p>Function to classify the lensed images wrt to the morse phase difference.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.utils.plots.mu_vs_dt_plot" title="ler.utils.plots.mu_vs_dt_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mu_vs_dt_plot</span></code></a>(x_array, y_array[, xscale, yscale, ...])</p></td>
@@ -227,7 +234,7 @@ default randomize = True.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.utils.plots.relative_mu_dt_lensed">
-<span class="sig-prename descclassname"><span class="pre">ler.utils.plots.</span></span><span class="sig-name descname"><span class="pre">relative_mu_dt_lensed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[8.0,</span> <span class="pre">8.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classification_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'morse_phase'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/plots.html#relative_mu_dt_lensed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.plots.relative_mu_dt_lensed" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.utils.plots.</span></span><span class="sig-name descname"><span class="pre">relative_mu_dt_lensed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.5,</span> <span class="pre">0.5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classification_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'morse_phase'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/plots.html#relative_mu_dt_lensed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.plots.relative_mu_dt_lensed" title="Link to this definition"></a></dt>
 <dd><p>Function to classify the lensed images wrt to the morse phase difference.</p>
 </dd></dl>
 

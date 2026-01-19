@@ -105,10 +105,6 @@ Classes
 
            - 'merger_rate_density_bbh_oguri2018': PopI/II BBH (Oguri 2018)
 
-           - 'sfr_madau_dickinson2014': Star formation rate (Madau & Dickinson 2014)
-
-           - 'sfr_with_time_delay': SFR with time delay
-
            - 'merger_rate_density_bbh_popIII_ken2022': PopIII BBH (Ng 2022)
 
            - 'merger_rate_density_bbh_primordial_ken2022': Primordial BBH (Ng 2022)
@@ -120,7 +116,7 @@ Classes
        **merger_rate_density_param** : ``dict`` or ``None``
            Parameters for the merger rate density function.
 
-           default: None (uses dict(R0=23.9 * 1e-9, b2=1.6, b3=2.1, b4=30))
+           default: None (uses dict(R0=19 * 1e-9, b2=1.6, b3=2.1, b4=30))
 
        **cosmology** : ``astropy.cosmology`` or ``None``
            Cosmology for distance calculations.
@@ -491,13 +487,20 @@ Classes
    .. py:property:: merger_rate_density
 
       
-      Source-frame merger rate density function R(z).
+      Source-frame merger rate density object.
 
+      Returns a ``FunctionConditioning`` object with methods:
+
+      - ``function(zs)``: Get merger rate density in source frame
+
+      - ``rvs(size)``: Sample source redshifts in source frame
+
+      - ``pdf(zs)``: Get probability density
 
 
       :Returns:
 
-          **merger_rate_density** : ``callable`` or ``FunctionConditioning``
+          **merger_rate_density** : ``FunctionConditioning``
               Callable that accepts redshift(s) and returns merger rate density
               in source frame (units: Mpc^-3 yr^-1).
 
@@ -620,8 +623,6 @@ Classes
 
               - 'merger_rate_density_bbh_oguri2018'
 
-              - 'sfr_madau_dickinson2014'
-
               - 'sfr_with_time_delay'
 
               - 'merger_rate_density_bbh_popIII_ken2022'
@@ -666,7 +667,7 @@ Classes
 
           **\*\*kwargs** : ``dict``
               Override default fitting parameters:
-              R0=23.9e-9, b2=1.6, b3=2.1, b4=30.
+              R0=19e-9, b2=1.6, b3=2.1, b4=30.
 
       :Returns:
 
@@ -734,7 +735,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: sfr_madau_dickinson2014(zs, get_attribute=False, **kwargs)
+   .. py:method:: merger_rate_density_madau_dickinson2014(zs, get_attribute=False, **kwargs)
 
       
       Compute star formation rate following Madau & Dickinson (2014).
@@ -752,7 +753,7 @@ Classes
               default: False
 
           **\*\*kwargs** : ``dict``
-              Override default fitting parameters: a=0.015, b=2.7, c=2.9, d=5.6.
+              Override default fitting parameters: R0=19 * 1e-9, a=0.015, b=2.7, c=2.9, d=5.6.
 
       :Returns:
 
@@ -771,7 +772,55 @@ Classes
       .. rubric:: Examples
 
       >>> from ler.gw_source_population import CBCSourceRedshiftDistribution
-      >>> cbc = CBCSourceRedshiftDistribution(merger_rate_density="sfr_madau_dickinson2014")
+      >>> cbc = CBCSourceRedshiftDistribution(merger_rate_density="merger_rate_density_madau_dickinson2014")
+      >>> sfr = cbc.merger_rate_density(zs=2.0)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: merger_rate_density_madau_dickinson_belczynski_ng(zs, get_attribute=False, **kwargs)
+
+      
+      Compute BBH merger rate density following Ng et al. (2021).
+
+      This model uses a Madau-Dickinson-like functional form to fit the
+      merger rate density of field BHs, accounting for time delays and
+      metallicity effects.
+
+      density(zs) ∝ (1 + zs) ** alpha_F / (1 + ((1 + zs) / c_F) ** beta_F)
+
+      :Parameters:
+
+          **zs** : ```numpy.ndarray``
+              Source redshift(s) at which to evaluate.
+
+          **get_attribute** : ``bool``
+              If True, return the FunctionConditioning object.
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Override default fitting parameters: R0, alpha_F, beta_F, c_F.
+
+      :Returns:
+
+          **rate_density** : ```numpy.ndarray`` or ``FunctionConditioning``
+              Star formation rate density (units: M_sun yr^-1 Mpc^-3).
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.gw_source_population import CBCSourceRedshiftDistribution
+      >>> cbc = CBCSourceRedshiftDistribution(merger_rate_density="merger_rate_density_madau_dickinson_belczynski_ng")
       >>> sfr = cbc.merger_rate_density(zs=2.0)
 
 
@@ -798,7 +847,7 @@ Classes
 
           **\*\*kwargs** : ``dict``
               Override default fitting parameters:
-              n0=19.2e-9, aIII=0.66, bIII=0.3, zIII=11.6.
+              R0=19.2e-9, aIII=0.66, bIII=0.3, zIII=11.6.
 
       :Returns:
 
@@ -847,7 +896,7 @@ Classes
 
           **\*\*kwargs** : ``dict``
               Override default fitting parameters:
-              n0=0.044e-9, t0=13.786885302009708.
+              R0=0.044e-9, t0=13.786885302009708.
 
       :Returns:
 

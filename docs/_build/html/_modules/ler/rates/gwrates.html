@@ -68,6 +68,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
 
         </div>
       </div>
@@ -126,14 +133,22 @@
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">zipfile</span>
 <span class="kn">from</span> <span class="nn">importlib_resources</span> <span class="kn">import</span> <span class="n">files</span> <span class="k">as</span> <span class="n">resources_files</span>
+
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;numexpr.utils&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;numexpr.utils&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
 <span class="kn">from</span> <span class="nn">..gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceParameterDistribution</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">load_json</span><span class="p">,</span> <span class="n">append_json</span><span class="p">,</span> <span class="n">get_param_from_json</span><span class="p">,</span> <span class="n">batch_handler</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">load_json</span><span class="p">,</span>
+    <span class="n">append_json</span><span class="p">,</span>
+    <span class="n">get_param_from_json</span><span class="p">,</span>
+    <span class="n">batch_handler</span><span class="p">,</span>
+    <span class="n">remove_file</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="GWRATES">
@@ -281,21 +296,25 @@
         <span class="c1"># first check if the interpolator directory &#39;./interpolator_json&#39; exists</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">interpolator_directory</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="c1"># Get the path to the zip resource using importlib_resources</span>
-            <span class="n">zip_resource</span> <span class="o">=</span> <span class="n">resources_files</span><span class="p">(</span><span class="s1">&#39;ler.rates&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;ler_data&#39;</span><span class="p">,</span> <span class="s1">&#39;interpolator_json.zip&#39;</span><span class="p">)</span>
-            <span class="k">with</span> <span class="n">zip_resource</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_file</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Extracting interpolator data from package to the current working directory.&quot;</span><span class="p">)</span>
-                
+            <span class="n">zip_resource</span> <span class="o">=</span> <span class="n">resources_files</span><span class="p">(</span><span class="s2">&quot;ler.rates&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span>
+                <span class="s2">&quot;ler_data&quot;</span><span class="p">,</span> <span class="s2">&quot;interpolator_json.zip&quot;</span>
+            <span class="p">)</span>
+            <span class="k">with</span> <span class="n">zip_resource</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_file</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">&quot;Extracting interpolator data from package to the current working directory.&quot;</span>
+                <span class="p">)</span>
+
                 <span class="c1"># Define destination path (current working directory)</span>
                 <span class="n">dest_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
 
                 <span class="c1"># Extract the zip file, skipping __MACOSX metadata</span>
-                <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">zip_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_ref</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">zip_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_ref</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">zip_ref</span><span class="o">.</span><span class="n">namelist</span><span class="p">():</span>
                         <span class="c1"># Skip __MACOSX directory and its contents</span>
-                        <span class="k">if</span> <span class="n">member</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__MACOSX&#39;</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">member</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__MACOSX&quot;</span><span class="p">):</span>
                             <span class="k">continue</span>
                         <span class="n">zip_ref</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">member</span><span class="p">,</span> <span class="n">dest_path</span><span class="p">)</span>
-        
+
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Initializing GWRATES class...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="c1"># init gwrates attributes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">npool</span> <span class="o">=</span> <span class="n">npool</span>
@@ -306,9 +325,9 @@
 
         <span class="c1"># init json file names where datas will be stored</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">gwrates_params</span><span class="o">=</span><span class="s2">&quot;gwrates_params.json&quot;</span><span class="p">,</span> 
-            <span class="n">gw_param</span><span class="o">=</span><span class="s2">&quot;gw_param.json&quot;</span><span class="p">,</span> 
-            <span class="n">gw_param_detectable</span><span class="o">=</span><span class="s2">&quot;gw_param_detectable.json&quot;</span>
+            <span class="n">gwrates_params</span><span class="o">=</span><span class="s2">&quot;gwrates_params.json&quot;</span><span class="p">,</span>
+            <span class="n">gw_param</span><span class="o">=</span><span class="s2">&quot;gw_param.json&quot;</span><span class="p">,</span>
+            <span class="n">gw_param_detectable</span><span class="o">=</span><span class="s2">&quot;gw_param_detectable.json&quot;</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">json_file_names</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">json_file_names</span><span class="p">)</span>
@@ -323,7 +342,9 @@
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">ler_directory</span><span class="p">)</span>
 
         <span class="c1"># parent class initialization</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_parent_class_initialization</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">pdet_finder</span><span class="o">=</span><span class="n">pdet_finder</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parent_class_initialization</span><span class="p">(</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">pdet_finder</span><span class="o">=</span><span class="n">pdet_finder</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_parent_class_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pdet_finder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -348,9 +369,11 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gwsnr_initialization</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder</span> <span class="o">=</span> <span class="n">pdet_finder</span>
-            
+
             <span class="c1"># store all the gwrates input parameters</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_store_gwrates_params</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;gwrates_params&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_store_gwrates_params</span><span class="p">(</span>
+                <span class="n">output_jsonfile</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;gwrates_params&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
 
         <span class="c1"># if not verbose, prevent anything from printing</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
@@ -419,7 +442,7 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        params : ``dict`` or ``None``</span>
-<span class="sd">            Dictionary of parameters to initialize the GWSNR class. </span>
+<span class="sd">            Dictionary of parameters to initialize the GWSNR class.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -429,13 +452,13 @@
         <span class="kn">from</span> <span class="nn">gwsnr</span> <span class="kn">import</span> <span class="n">GWSNR</span>
 
         <span class="c1"># initialization of GWSNR class</span>
-        <span class="k">if</span> <span class="s1">&#39;mminbh&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s1">&#39;source_frame_masses&#39;</span><span class="p">]:</span>
-            <span class="n">min_bh_mass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s1">&#39;source_frame_masses&#39;</span><span class="p">][</span><span class="s1">&#39;mminbh&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;mminbh&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">]:</span>
+            <span class="n">min_bh_mass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span><span class="s2">&quot;mminbh&quot;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">min_bh_mass</span> <span class="o">=</span> <span class="mf">2.0</span>
 
-        <span class="k">if</span> <span class="s1">&#39;mmaxbh&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s1">&#39;source_frame_masses&#39;</span><span class="p">]:</span>
-            <span class="n">max_bh_mass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s1">&#39;source_frame_masses&#39;</span><span class="p">][</span><span class="s1">&#39;mmaxbh&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;mmaxbh&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">]:</span>
+            <span class="n">max_bh_mass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span><span class="s2">&quot;mmaxbh&quot;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">max_bh_mass</span> <span class="o">=</span> <span class="mf">200.0</span>
         <span class="n">input_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -447,8 +470,12 @@
             <span class="n">multiprocessing_verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">pdet_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="c1"># Settings for interpolation grid</span>
-            <span class="n">mtot_min</span><span class="o">=</span><span class="n">min_bh_mass</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span>
-            <span class="n">mtot_max</span><span class="o">=</span><span class="n">max_bh_mass</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">)</span> <span class="k">if</span> <span class="n">max_bh_mass</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">)</span><span class="o">&lt;</span><span class="mf">500.0</span> <span class="k">else</span> <span class="mf">500.0</span><span class="p">,</span>
+            <span class="n">mtot_min</span><span class="o">=</span><span class="n">min_bh_mass</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">mtot_max</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">max_bh_mass</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">max_bh_mass</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">500.0</span>
+                <span class="k">else</span> <span class="mf">500.0</span>
+            <span class="p">),</span>
             <span class="n">ratio_min</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
             <span class="n">ratio_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
             <span class="n">spin_max</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span>
@@ -461,7 +488,7 @@
             <span class="c1"># GW signal settings</span>
             <span class="n">sampling_frequency</span><span class="o">=</span><span class="mf">2048.0</span><span class="p">,</span>
             <span class="n">waveform_approximant</span><span class="o">=</span><span class="s2">&quot;IMRPhenomD&quot;</span><span class="p">,</span>
-            <span class="n">frequency_domain_source_model</span><span class="o">=</span><span class="s1">&#39;lal_binary_black_hole&#39;</span><span class="p">,</span>
+            <span class="n">frequency_domain_source_model</span><span class="o">=</span><span class="s2">&quot;lal_binary_black_hole&quot;</span><span class="p">,</span>
             <span class="n">minimum_frequency</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
             <span class="n">reference_frequency</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">duration_max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -471,12 +498,12 @@
             <span class="c1"># Detector settings</span>
             <span class="n">psds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">ifos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">noise_realization</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># not implemented yet</span>
+            <span class="n">noise_realization</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># not implemented yet</span>
             <span class="c1"># ANN settings</span>
             <span class="n">ann_path_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="c1"># Hybrid SNR recalculation settings</span>
             <span class="n">snr_recalculation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">snr_recalculation_range</span><span class="o">=</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">14</span><span class="p">],</span>
+            <span class="n">snr_recalculation_range</span><span class="o">=</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span>
             <span class="n">snr_recalculation_waveform_approximant</span><span class="o">=</span><span class="s2">&quot;IMRPhenomXPHM&quot;</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="c1"># update input_params with params. This will include create_new_interpolator.</span>
@@ -484,16 +511,20 @@
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">input_params</span><span class="p">:</span>
                     <span class="n">input_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">[</span><span class="s1">&#39;pdet_args&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_params</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">[</span><span class="s2">&quot;pdet_args&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_params</span>
 
         <span class="c1"># dealing with create_new_interpolator param</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="c1"># check input_params[&quot;gwsnr&quot;] exists</span>
             <span class="k">if</span> <span class="s2">&quot;gwsnr&quot;</span> <span class="ow">in</span> <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">]:</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">][</span><span class="s2">&quot;gwsnr&quot;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
-                    <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">][</span><span class="s2">&quot;gwsnr&quot;</span><span class="p">]</span>
+                    <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_params</span><span class="p">[</span>
+                        <span class="s2">&quot;create_new_interpolator&quot;</span>
+                    <span class="p">][</span><span class="s2">&quot;gwsnr&quot;</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;create_new_interpolator[&#39;gwsnr&#39;] should be a boolean.&quot;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s2">&quot;create_new_interpolator[&#39;gwsnr&#39;] should be a boolean.&quot;</span>
+                    <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -537,14 +568,16 @@
             <span class="c1"># Hybrid SNR recalculation settings</span>
             <span class="n">snr_recalculation</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;snr_recalculation&quot;</span><span class="p">],</span>
             <span class="n">snr_recalculation_range</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;snr_recalculation_range&quot;</span><span class="p">],</span>
-            <span class="n">snr_recalculation_waveform_approximant</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;snr_recalculation_waveform_approximant&quot;</span><span class="p">],</span>
+            <span class="n">snr_recalculation_waveform_approximant</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span>
+                <span class="s2">&quot;snr_recalculation_waveform_approximant&quot;</span>
+            <span class="p">],</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">[</span><span class="s1">&#39;list_of_detectors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gwsnr</span><span class="o">.</span><span class="n">detector_list</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">list_of_detectors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">[</span><span class="s1">&#39;list_of_detectors&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">[</span><span class="s2">&quot;list_of_detectors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gwsnr</span><span class="o">.</span><span class="n">detector_list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_of_detectors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">[</span><span class="s2">&quot;list_of_detectors&quot;</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">[</span><span class="s1">&#39;pdet_args&#39;</span><span class="p">][</span><span class="s1">&#39;pdet_kwargs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gwsnr</span><span class="o">.</span><span class="n">pdet_kwargs</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">[</span><span class="s1">&#39;pdet_args&#39;</span><span class="p">][</span><span class="s1">&#39;psds_list&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gwsnr</span><span class="o">.</span><span class="n">psds_list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">[</span><span class="s2">&quot;pdet_args&quot;</span><span class="p">][</span><span class="s2">&quot;pdet_kwargs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gwsnr</span><span class="o">.</span><span class="n">pdet_kwargs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">[</span><span class="s2">&quot;pdet_args&quot;</span><span class="p">][</span><span class="s2">&quot;psds_list&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gwsnr</span><span class="o">.</span><span class="n">psds_list</span>
 
         <span class="k">return</span> <span class="n">gwsnr</span><span class="o">.</span><span class="n">pdet</span>
 
@@ -554,45 +587,69 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># print all relevant functions and sampler priors</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#-------------------------------------&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#----------------------------------------&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;# GWRATES initialization input arguments:&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#-------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#----------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    # GWRATES set up input arguments:&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    npool = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">npool</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    z_min = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    z_max = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    npool = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">npool</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    z_min = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">z_min</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    z_max = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    event_type = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">event_type</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    cosmology = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    pdet_finder = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder</span><span class="si">}</span><span class="s1">,&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    cosmology = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    pdet_finder = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    json_file_names = dict(&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+            <span class="p">(</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                <span class="k">else</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    ),&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    interpolator_directory = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolator_directory</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    ler_directory = &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    # GWRATES also takes other CBCSourceParameterDistribution class input arguments as kwargs, as follows:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    # GWRATES also takes other CBCSourceParameterDistribution class input arguments as kwargs, as follows:&quot;</span>
+        <span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    source_priors = dict(&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">[</span><span class="s1">&#39;source_priors&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">[</span><span class="s2">&quot;source_priors&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="p">(</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                <span class="k">else</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    ),&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    source_priors_params = dict(&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">[</span><span class="s1">&#39;source_priors_params&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">[</span><span class="s2">&quot;source_priors_params&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="p">(</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                <span class="k">else</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    ),&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    spin_zero = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">[</span><span class="s1">&#39;spin_zero&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    spin_precession = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">[</span><span class="s1">&#39;spin_precession&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
-        
-        <span class="k">if</span> <span class="s1">&#39;pdet_args&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    # GWRATES also takes other gwsnr.GWSNR input arguments as kwargs, as follows:&quot;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">[</span><span class="s1">&#39;pdet_args&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+        <span class="k">if</span> <span class="s2">&quot;pdet_args&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    # GWRATES also takes other gwsnr.GWSNR input arguments as kwargs, as follows:&quot;</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gwrates_args</span><span class="p">[</span><span class="s2">&quot;pdet_args&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = dict(&quot;</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> = &#39;</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+                        <span class="p">(</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> = &#39;</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                            <span class="k">else</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+                        <span class="p">)</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    ),&quot;</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+                    <span class="p">(</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                        <span class="k">else</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+                    <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_store_gwrates_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -614,13 +671,26 @@
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">param_sampler_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">param_sampler_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-        <span class="n">file_name</span> <span class="o">=</span> <span class="n">output_jsonfile</span> <span class="k">if</span> <span class="n">output_jsonfile</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;gwrates_params&quot;</span><span class="p">]</span>
-        <span class="n">append_json</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="p">,</span> <span class="n">file_name</span><span class="p">),</span> <span class="n">param_sampler_dict</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">output_jsonfile</span>
+            <span class="k">if</span> <span class="n">output_jsonfile</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;gwrates_params&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">append_json</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="p">,</span> <span class="n">file_name</span><span class="p">),</span>
+            <span class="n">param_sampler_dict</span><span class="p">,</span>
+            <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="GWRATES.gw_cbc_statistics">
 <a class="viewcode-back" href="../../../autoapi/ler/rates/index.html#ler.rates.gwrates.GWRATES.gw_cbc_statistics">[docs]</a>
     <span class="k">def</span> <span class="nf">gw_cbc_statistics</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_batch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span>
+        <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">save_batch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate GW source parameters with detection probabilities.</span>
@@ -720,8 +790,10 @@
 
         <span class="k">return</span> <span class="n">gw_param</span></div>
 
-    
-    <span class="k">def</span> <span class="nf">_gw_sampling_routine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">save_batch</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">_gw_sampling_routine</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">save_batch</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Private helper function to generate GW source parameters for a single batch.</span>
 
@@ -745,8 +817,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sampling gw source params...&quot;</span><span class="p">)</span>
         <span class="n">gw_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_gw_parameters</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;calculating pdet...&quot;</span><span class="p">)</span>
-        <span class="n">pdet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder</span><span class="p">(</span><span class="n">gw_param_dict</span><span class="o">=</span><span class="n">gw_param</span><span class="p">)</span>
+        <span class="n">pdet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder</span><span class="p">(</span><span class="n">gw_param_dict</span><span class="o">=</span><span class="n">gw_param</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
         <span class="n">gw_param</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pdet</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">gw_param</span>
@@ -841,7 +914,7 @@
 <span class="sd">        &gt;&gt;&gt; gwrates.gw_cbc_statistics()</span>
 <span class="sd">        &gt;&gt;&gt; total_rate, gw_param = gwrates.gw_rate()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        
+
         <span class="n">gw_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_param</span><span class="p">(</span><span class="n">gw_param</span><span class="p">,</span> <span class="n">param_type</span><span class="o">=</span><span class="s2">&quot;gw&quot;</span><span class="p">)</span>
         <span class="n">total_events</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gw_param</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">])</span>
 
@@ -859,11 +932,19 @@
         <span class="n">total_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_function</span><span class="p">(</span><span class="n">detectable_events</span><span class="p">,</span> <span class="n">total_events</span><span class="p">)</span>
 
         <span class="c1"># store all detectable params in json file</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_save_detectable_params</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">gw_param</span><span class="p">,</span> <span class="n">idx_detectable</span><span class="p">,</span> <span class="n">key_file_name</span><span class="o">=</span><span class="s2">&quot;gw_param_detectable&quot;</span><span class="p">,</span> <span class="n">nan_to_num</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">replace_jsonfile</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_detectable_params</span><span class="p">(</span>
+            <span class="n">output_jsonfile</span><span class="p">,</span>
+            <span class="n">gw_param</span><span class="p">,</span>
+            <span class="n">idx_detectable</span><span class="p">,</span>
+            <span class="n">key_file_name</span><span class="o">=</span><span class="s2">&quot;gw_param_detectable&quot;</span><span class="p">,</span>
+            <span class="n">nan_to_num</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">replace_jsonfile</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="c1"># append gwrates_param and save it</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_append_gwrates_param</span><span class="p">(</span><span class="n">total_rate</span><span class="p">)</span>
-        
+
         <span class="k">return</span> <span class="n">total_rate</span><span class="p">,</span> <span class="n">gw_param</span></div>
 
 
@@ -917,7 +998,7 @@
 <span class="sd">            Detection rate (yr^-1).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">normalization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalization_pdf_z</span>
-        <span class="n">rate</span> <span class="o">=</span> <span class="n">normalization</span> <span class="o">*</span> <span class="n">detectable_size</span> <span class="o">/</span> <span class="n">total_size</span>
+        <span class="n">rate</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">normalization</span> <span class="o">*</span> <span class="n">detectable_size</span> <span class="o">/</span> <span class="n">total_size</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;total GW event rate (yr^-1): </span><span class="si">{</span><span class="n">rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -991,10 +1072,12 @@
 <span class="sd">            Total detection rate (yr^-1).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">gwrates_params_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;gwrates_params&quot;</span><span class="p">])</span>
+        <span class="n">gwrates_params_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;gwrates_params&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="n">gwrates_params_path</span><span class="p">)</span>
         <span class="c1"># write the results</span>
-        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;gw_rate_per_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">total_rate</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;detectable_gw_rate_per_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">total_rate</span>
         <span class="n">append_json</span><span class="p">(</span><span class="n">gwrates_params_path</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GWRATES.selecting_n_gw_detectable_events">
@@ -1003,7 +1086,9 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span>
-        <span class="n">stopping_criteria</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">relative_diff_percentage</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">number_of_last_batches_to_check</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span>
+        <span class="n">stopping_criteria</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">relative_diff_percentage</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">number_of_last_batches_to_check</span><span class="o">=</span><span class="mi">4</span>
+        <span class="p">),</span>
         <span class="n">pdet_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
         <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">output_jsonfile</span><span class="o">=</span><span class="s2">&quot;gw_params_n_detectable.json&quot;</span><span class="p">,</span>
@@ -1112,13 +1197,28 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">stopping_criteria</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;stopping criteria set to when relative difference of total rate for the last </span><span class="si">{</span><span class="n">stopping_criteria</span><span class="p">[</span><span class="s1">&#39;number_of_last_batches_to_check&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> cumulative batches is less than </span><span class="si">{</span><span class="n">stopping_criteria</span><span class="p">[</span><span class="s1">&#39;relative_diff_percentage&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">%.&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sample collection will stop when the stopping criteria is met and number of detectable events exceeds the specified size.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;stopping criteria set to when relative difference of total rate for the last </span><span class="si">{</span><span class="n">stopping_criteria</span><span class="p">[</span><span class="s1">&#39;number_of_last_batches_to_check&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> cumulative batches is less than </span><span class="si">{</span><span class="n">stopping_criteria</span><span class="p">[</span><span class="s1">&#39;relative_diff_percentage&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">%.&quot;</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;sample collection will stop when the stopping criteria is met and number of detectable events exceeds the specified size.&quot;</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;stopping criteria not set. sample collection will stop when number of detectable events exceeds the specified size.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;stopping criteria not set. sample collection will stop when number of detectable events exceeds the specified size.&quot;</span>
+            <span class="p">)</span>
 
         <span class="c1"># initial setup</span>
-        <span class="n">n</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">meta_data_path</span><span class="p">,</span> <span class="n">buffer_file</span><span class="p">,</span> <span class="n">continue_condition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_setup_for_n_event_selection</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">meta_data_file</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">resume</span><span class="p">,</span> <span class="n">stopping_criteria</span><span class="p">)</span>
+        <span class="p">(</span>
+            <span class="n">n</span><span class="p">,</span>
+            <span class="n">events_total</span><span class="p">,</span>
+            <span class="n">output_path</span><span class="p">,</span>
+            <span class="n">meta_data_path</span><span class="p">,</span>
+            <span class="n">buffer_file</span><span class="p">,</span>
+            <span class="n">continue_condition</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_setup_for_n_event_selection</span><span class="p">(</span>
+            <span class="n">size</span><span class="p">,</span> <span class="n">meta_data_file</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">resume</span><span class="p">,</span> <span class="n">stopping_criteria</span>
+        <span class="p">)</span>
 
         <span class="c1"># loop until n==size samples are collected</span>
         <span class="k">while</span> <span class="n">continue_condition</span><span class="p">:</span>
@@ -1126,7 +1226,10 @@
             <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">redirect_stdout</span><span class="p">(</span><span class="kc">None</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">dict_buffer</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># this is used to store the sampled GW_param in batches when running the sampling_routine</span>
                 <span class="n">gw_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gw_sampling_routine</span><span class="p">(</span>
-                    <span class="n">size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">buffer_file</span><span class="p">,</span> <span class="n">save_batch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">resume</span><span class="o">=</span><span class="kc">False</span>
+                    <span class="n">size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+                    <span class="n">output_jsonfile</span><span class="o">=</span><span class="n">buffer_file</span><span class="p">,</span>
+                    <span class="n">save_batch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="p">)</span>
 
             <span class="n">total_events_in_this_iteration</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gw_param</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">])</span>
@@ -1137,34 +1240,51 @@
             <span class="n">idx_detectable</span> <span class="o">=</span> <span class="n">pdet</span> <span class="o">&gt;</span> <span class="n">pdet_threshold</span>
 
             <span class="c1"># store all params in json file</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_save_detectable_params</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">gw_param</span><span class="p">,</span> <span class="n">idx_detectable</span><span class="p">,</span> <span class="n">key_file_name</span><span class="o">=</span><span class="s2">&quot;n_gw_detectable_events&quot;</span><span class="p">,</span> <span class="n">nan_to_num</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">replace_jsonfile</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save_detectable_params</span><span class="p">(</span>
+                <span class="n">output_jsonfile</span><span class="p">,</span>
+                <span class="n">gw_param</span><span class="p">,</span>
+                <span class="n">idx_detectable</span><span class="p">,</span>
+                <span class="n">key_file_name</span><span class="o">=</span><span class="s2">&quot;n_gw_detectable_events&quot;</span><span class="p">,</span>
+                <span class="n">nan_to_num</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">replace_jsonfile</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">pdet_type</span> <span class="o">==</span> <span class="s2">&quot;boolean&quot;</span><span class="p">:</span>
                 <span class="n">n</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">idx_detectable</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">n</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pdet</span><span class="p">)</span>
-            <span class="n">events_total</span> <span class="o">+=</span> <span class="n">total_events_in_this_iteration</span>              
+            <span class="n">events_total</span> <span class="o">+=</span> <span class="n">total_events_in_this_iteration</span>
             <span class="n">total_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_function</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
             <span class="c1"># bookmark</span>
-            <span class="n">buffer_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append_meta_data</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">total_rate</span><span class="p">)</span>
+            <span class="n">buffer_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append_meta_data</span><span class="p">(</span>
+                <span class="n">meta_data_path</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">total_rate</span>
+            <span class="p">)</span>
 
             <span class="n">continue_condition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_continue_condition_check</span><span class="p">(</span>
-                <span class="n">size</span><span class="p">,</span> 
-                <span class="n">buffer_dict</span><span class="p">,</span> 
-                <span class="n">stopping_criteria</span><span class="p">,</span> 
-                <span class="n">initial_continue_condition</span><span class="o">=</span><span class="n">continue_condition</span><span class="p">)</span>
+                <span class="n">size</span><span class="p">,</span>
+                <span class="n">buffer_dict</span><span class="p">,</span>
+                <span class="n">stopping_criteria</span><span class="p">,</span>
+                <span class="n">initial_continue_condition</span><span class="o">=</span><span class="n">continue_condition</span><span class="p">,</span>
+            <span class="p">)</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;stored detectable GW params in </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;stored meta data in </span><span class="si">{</span><span class="n">meta_data_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">trim_to_size</span><span class="p">:</span>
-            <span class="n">param_final</span><span class="p">,</span> <span class="n">total_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trim_results_to_size</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">meta_data_path</span><span class="p">)</span>
+            <span class="n">param_final</span><span class="p">,</span> <span class="n">total_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trim_results_to_size</span><span class="p">(</span>
+                <span class="n">size</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">meta_data_path</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">param_final</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+            <span class="n">meta_data</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">)</span>
+            <span class="n">total_rate</span> <span class="o">=</span> <span class="n">meta_data</span><span class="p">[</span><span class="s2">&quot;total_rate&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="c1"># call self.json_file_names[&quot;ler_param&quot;] and for adding the final results</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;ler_params&quot;</span><span class="p">])</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;gwrates_params&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="c1"># write the results</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">data</span><span class="p">[</span><span class="s2">&quot;detectable_gw_rate_per_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">total_rate</span>
@@ -1174,12 +1294,18 @@
             <span class="n">data</span><span class="p">[</span><span class="s2">&quot;detectable_gw_rate_per_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;total_rate&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">data</span><span class="p">[</span><span class="s2">&quot;pdet_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdet_type</span>
 
-        <span class="n">append_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;ler_params&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">append_json</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;gwrates_params&quot;</span><span class="p">],</span>
+            <span class="n">data</span><span class="p">,</span>
+            <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">param_final</span></div>
+        <span class="k">return</span> <span class="n">total_rate</span><span class="p">,</span> <span class="n">param_final</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_initial_setup_for_n_event_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">meta_data_file</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">resume</span><span class="p">,</span> <span class="n">stopping_criteria</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_initial_setup_for_n_event_selection</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">meta_data_file</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">resume</span><span class="p">,</span> <span class="n">stopping_criteria</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper function for selecting_n_gw_detectable_events initialization.</span>
 
@@ -1215,18 +1341,14 @@
         <span class="n">continue_condition</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">meta_data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="p">,</span> <span class="n">meta_data_file</span><span class="p">)</span>
         <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">meta_data_path</span><span class="o">==</span><span class="n">output_path</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">meta_data_path</span> <span class="o">==</span> <span class="n">output_path</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;meta_data_file and output_jsonfile cannot be same.&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">resume</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># iterator</span>
             <span class="n">events_total</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="c1"># the following file will be removed if it exists</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;removing </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">meta_data_path</span><span class="si">}</span><span class="s2"> if they exist&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_path</span><span class="p">):</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">):</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">)</span>
+            <span class="n">remove_file</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+            <span class="n">remove_file</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># get sample size as size from json file</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">):</span>
@@ -1236,16 +1358,25 @@
                 <span class="n">n</span> <span class="o">=</span> <span class="n">meta_data</span><span class="p">[</span><span class="s2">&quot;detectable_events&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                 <span class="n">events_total</span> <span class="o">=</span> <span class="n">meta_data</span><span class="p">[</span><span class="s2">&quot;events_total&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">n_collected</span><span class="o">==</span><span class="n">n</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of collected events does not match with the number of events in the meta data file.&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">n_collected</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="s2">&quot;Number of collected events does not match with the number of events in the meta data file.&quot;</span>
+                    <span class="p">)</span>
 
                 <span class="k">else</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Resuming from </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> detectable events.&quot;</span><span class="p">)</span>
                     <span class="c1"># check if stopping criteria is met</span>
-                    <span class="n">continue_condition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_continue_condition_check</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">meta_data</span><span class="p">,</span> <span class="n">stopping_criteria</span><span class="p">,</span> <span class="n">initial_continue_condition</span><span class="o">=</span><span class="n">continue_condition</span><span class="p">)</span>
+                    <span class="n">continue_condition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_continue_condition_check</span><span class="p">(</span>
+                        <span class="n">size</span><span class="p">,</span>
+                        <span class="n">meta_data</span><span class="p">,</span>
+                        <span class="n">stopping_criteria</span><span class="p">,</span>
+                        <span class="n">initial_continue_condition</span><span class="o">=</span><span class="n">continue_condition</span><span class="p">,</span>
+                    <span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">continue_condition</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Stopping criteria met. There will be no more samples collected.&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="s2">&quot;Stopping criteria met. There will be no more samples collected.&quot;</span>
+                    <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
                 <span class="n">events_total</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1253,9 +1384,22 @@
         <span class="n">buffer_file</span> <span class="o">=</span> <span class="s2">&quot;params_buffer.json&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;collected number of detectable events = &quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">meta_data_path</span><span class="p">,</span> <span class="n">buffer_file</span><span class="p">,</span> <span class="n">continue_condition</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">n</span><span class="p">,</span>
+            <span class="n">events_total</span><span class="p">,</span>
+            <span class="n">output_path</span><span class="p">,</span>
+            <span class="n">meta_data_path</span><span class="p">,</span>
+            <span class="n">buffer_file</span><span class="p">,</span>
+            <span class="n">continue_condition</span><span class="p">,</span>
+        <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_continue_condition_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size_to_collect</span><span class="p">,</span> <span class="n">param_dict</span><span class="p">,</span> <span class="n">stopping_criteria</span><span class="p">,</span> <span class="n">initial_continue_condition</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_continue_condition_check</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">size_to_collect</span><span class="p">,</span>
+        <span class="n">param_dict</span><span class="p">,</span>
+        <span class="n">stopping_criteria</span><span class="p">,</span>
+        <span class="n">initial_continue_condition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper function to check if sampling should continue.</span>
 
@@ -1278,22 +1422,31 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">continue_condition</span> <span class="o">=</span> <span class="n">initial_continue_condition</span>
-        <span class="n">already_collected_size</span> <span class="o">=</span> <span class="n">param_dict</span><span class="p">[</span><span class="s1">&#39;detectable_events&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">already_collected_size</span> <span class="o">=</span> <span class="n">param_dict</span><span class="p">[</span><span class="s2">&quot;detectable_events&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">stopping_criteria_met</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">size_reached</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="c1"># check if stopping criteria is met</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stopping_criteria</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="n">total_rates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">param_dict</span><span class="p">[</span><span class="s1">&#39;total_rate&#39;</span><span class="p">])</span>
-            <span class="n">limit</span> <span class="o">=</span> <span class="n">stopping_criteria</span><span class="p">[</span><span class="s1">&#39;relative_diff_percentage&#39;</span><span class="p">]</span>
-            <span class="n">num_a</span> <span class="o">=</span> <span class="n">stopping_criteria</span><span class="p">[</span><span class="s1">&#39;number_of_last_batches_to_check&#39;</span><span class="p">]</span>
-            
+            <span class="n">total_rates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">param_dict</span><span class="p">[</span><span class="s2">&quot;total_rate&quot;</span><span class="p">])</span>
+            <span class="n">limit</span> <span class="o">=</span> <span class="n">stopping_criteria</span><span class="p">[</span><span class="s2">&quot;relative_diff_percentage&quot;</span><span class="p">]</span>
+            <span class="n">num_a</span> <span class="o">=</span> <span class="n">stopping_criteria</span><span class="p">[</span><span class="s2">&quot;number_of_last_batches_to_check&quot;</span><span class="p">]</span>
+
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">total_rates</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">num_a</span><span class="p">:</span>
                 <span class="n">num_a_neg</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">num_a</span><span class="p">)</span>
-                <span class="n">percentage_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">total_rates</span><span class="p">[</span><span class="n">num_a_neg</span><span class="p">:]</span> <span class="o">-</span> <span class="n">total_rates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">total_rates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;percentage difference of total rate for the last </span><span class="si">{</span><span class="n">num_a</span><span class="si">}</span><span class="s2"> cumulative batches = </span><span class="si">{</span><span class="n">percentage_diff</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">percentage_diff</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span>
+                        <span class="p">(</span><span class="n">total_rates</span><span class="p">[</span><span class="n">num_a_neg</span><span class="p">:]</span> <span class="o">-</span> <span class="n">total_rates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">total_rates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="p">)</span>
+                    <span class="o">*</span> <span class="mi">100</span>
+                <span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;percentage difference of total rate for the last </span><span class="si">{</span><span class="n">num_a</span><span class="si">}</span><span class="s2"> cumulative batches = </span><span class="si">{</span><span class="n">percentage_diff</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">percentage_diff</span> <span class="o">&gt;</span> <span class="n">limit</span><span class="p">):</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;stopping criteria of rate relative difference of </span><span class="si">{</span><span class="n">limit</span><span class="si">}</span><span class="s2">% for the last </span><span class="si">{</span><span class="n">num_a</span><span class="si">}</span><span class="s2"> cumulative batches reached.&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">rf</span><span class="s2">&quot;stopping criteria of rate relative difference of </span><span class="si">{</span><span class="n">limit</span><span class="si">}</span><span class="s2">% for the last </span><span class="si">{</span><span class="n">num_a</span><span class="si">}</span><span class="s2"> cumulative batches reached.&quot;</span>
+                    <span class="p">)</span>
                     <span class="n">stopping_criteria_met</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size_to_collect</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
@@ -1308,7 +1461,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Stop when both stopping criteria is met AND size is reached</span>
             <span class="n">continue_condition</span> <span class="o">=</span> <span class="ow">not</span> <span class="p">(</span><span class="n">stopping_criteria_met</span> <span class="ow">and</span> <span class="n">size_reached</span><span class="p">)</span>
-        
+
         <span class="k">return</span> <span class="n">continue_condition</span>
 
     <span class="k">def</span> <span class="nf">_trim_results_to_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">meta_data_path</span><span class="p">):</span>
@@ -1348,7 +1501,7 @@
 
         <span class="c1"># adjust the meta data</span>
         <span class="c1"># following is to keep rate the same</span>
-        <span class="n">new_events_total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">size</span><span class="o">*</span><span class="n">old_events_total</span><span class="o">/</span><span class="n">old_detectable_events</span><span class="p">)</span>
+        <span class="n">new_events_total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">size</span> <span class="o">*</span> <span class="n">old_events_total</span> <span class="o">/</span> <span class="n">old_detectable_events</span><span class="p">)</span>
         <span class="n">new_total_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_function</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">new_events_total</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">meta_data</span><span class="p">[</span><span class="s2">&quot;events_total&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_events_total</span>
         <span class="n">meta_data</span><span class="p">[</span><span class="s2">&quot;detectable_events&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">size</span>
@@ -1387,7 +1540,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># save meta data</span>
-        <span class="n">meta_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">events_total</span><span class="o">=</span><span class="p">[</span><span class="n">events_total</span><span class="p">],</span> <span class="n">detectable_events</span><span class="o">=</span><span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">n</span><span class="p">)],</span> <span class="n">total_rate</span><span class="o">=</span><span class="p">[</span><span class="n">total_rate</span><span class="p">])</span>
+        <span class="n">meta_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">events_total</span><span class="o">=</span><span class="p">[</span><span class="n">events_total</span><span class="p">],</span>
+            <span class="n">detectable_events</span><span class="o">=</span><span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">n</span><span class="p">)],</span>
+            <span class="n">total_rate</span><span class="o">=</span><span class="p">[</span><span class="n">total_rate</span><span class="p">],</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
@@ -1445,7 +1602,6 @@
     <span class="k">def</span> <span class="nf">create_new_interpolator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_create_new_interpolator</span> <span class="o">=</span> <span class="n">value</span>
 
-
     <span class="nd">@property</span>
 <div class="viewcode-block" id="GWRATES.npool">
 <a class="viewcode-back" href="../../../autoapi/ler/rates/gwrates/index.html#ler.rates.gwrates.GWRATES.npool">[docs]</a>
@@ -1465,7 +1621,6 @@
     <span class="nd">@npool</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">npool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_npool</span> <span class="o">=</span> <span class="n">value</span>
-
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="GWRATES.z_min">
@@ -1487,7 +1642,6 @@
     <span class="k">def</span> <span class="nf">z_min</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_z_min</span> <span class="o">=</span> <span class="n">value</span>
 
-
     <span class="nd">@property</span>
 <div class="viewcode-block" id="GWRATES.z_max">
 <a class="viewcode-back" href="../../../autoapi/ler/rates/gwrates/index.html#ler.rates.gwrates.GWRATES.z_max">[docs]</a>
@@ -1507,7 +1661,6 @@
     <span class="nd">@z_max</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">z_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_z_max</span> <span class="o">=</span> <span class="n">value</span>
-
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="GWRATES.event_type">
@@ -1575,7 +1728,6 @@
     <span class="k">def</span> <span class="nf">json_file_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_json_file_names</span> <span class="o">=</span> <span class="n">value</span>
 
-
     <span class="nd">@property</span>
 <div class="viewcode-block" id="GWRATES.interpolator_directory">
 <a class="viewcode-back" href="../../../autoapi/ler/rates/gwrates/index.html#ler.rates.gwrates.GWRATES.interpolator_directory">[docs]</a>
@@ -1595,7 +1747,6 @@
     <span class="nd">@interpolator_directory</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">interpolator_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_interpolator_directory</span> <span class="o">=</span> <span class="n">value</span>
-
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="GWRATES.ler_directory">
@@ -1617,7 +1768,6 @@
     <span class="k">def</span> <span class="nf">ler_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ler_directory</span> <span class="o">=</span> <span class="n">value</span>
 
-
     <span class="nd">@property</span>
 <div class="viewcode-block" id="GWRATES.list_of_detectors">
 <a class="viewcode-back" href="../../../autoapi/ler/rates/gwrates/index.html#ler.rates.gwrates.GWRATES.list_of_detectors">[docs]</a>
@@ -1637,7 +1787,6 @@
     <span class="nd">@list_of_detectors</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">list_of_detectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_list_of_detectors</span> <span class="o">=</span> <span class="n">value</span>
-
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="GWRATES.pdet_finder">
@@ -1659,7 +1808,6 @@
     <span class="nd">@pdet_finder</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">pdet_finder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pdet_finder</span> <span class="o">=</span> <span class="n">value</span>
-
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="GWRATES.gwrates_args">

@@ -38,11 +38,11 @@ Functions
 
 .. autoapisummary::
 
-   ler.gw_source_population.sfr_with_time_delay.sfr_with_time_delay
+   ler.gw_source_population.sfr_with_time_delay.sfr_with_time_delay_function
 
 
 
-.. py:function:: sfr_with_time_delay(input_args)
+.. py:function:: sfr_with_time_delay_function(input_args)
 
    
    Compute star formation rate at observed redshift with time delay.

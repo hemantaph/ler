@@ -1,0 +1,1024 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.lens_galaxy_population.sampler_functions &mdash; ler 0.4.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=776609e1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="ler.image_properties" href="../../image_properties/index.html" />
+    <link rel="prev" title="ler.lens_galaxy_population.optical_depth" href="../optical_depth/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../cross_section_interpolator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lens_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_functions</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lens_galaxy_parameter_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_galaxy_parameter_distribution</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mp/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.mp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../optical_depth/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.optical_depth</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.sampler_functions</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.sampler_functions</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/autoapi/ler/lens_galaxy_population/sampler_functions/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ler.lens_galaxy_population.sampler_functions">
+<span id="ler-lens-galaxy-population-sampler-functions"></span><h1><a class="reference internal" href="#module-ler.lens_galaxy_population.sampler_functions" title="ler.lens_galaxy_population.sampler_functions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.sampler_functions</span></code></a><a class="headerlink" href="#module-ler.lens_galaxy_population.sampler_functions" title="Link to this heading"></a></h1>
+<p>Module for lens galaxy parameter sampling functions.</p>
+<p>This module provides probability density functions (PDFs) and random variable
+samplers (RVS) for lens galaxy parameters including redshift, velocity dispersion,
+and axis ratio. It also includes rejection and importance sampling algorithms
+for sampling lens parameters weighted by gravitational lensing cross sections.</p>
+<p>Key Components:</p>
+<ul class="simple">
+<li><p>Lens redshift samplers (SIS model from Haris et al. 2018)</p></li>
+<li><p>Velocity dispersion samplers (generalized gamma distribution)</p></li>
+<li><p>Axis ratio samplers (Rayleigh and Padilla-Strauss distributions)</p></li>
+<li><p>Rejection and importance sampling for cross-section weighted parameters</p></li>
+</ul>
+<p>Copyright (C) 2026 Hemantakumar Phurailatpam. Distributed under MIT License.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.sampler_functions.available_sampler_list" title="ler.lens_galaxy_population.sampler_functions.available_sampler_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">available_sampler_list</span></code></a>()</p></td>
+<td><p>Return list of available lens parameter samplers.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.sampler_functions.lens_redshift_strongly_lensed_sis_haris_pdf" title="ler.lens_galaxy_population.sampler_functions.lens_redshift_strongly_lensed_sis_haris_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lens_redshift_strongly_lensed_sis_haris_pdf</span></code></a>(zl, zs[, ...])</p></td>
+<td><p>Compute lens redshift PDF for SIS model (Haris et al. 2018).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.sampler_functions.lens_redshift_strongly_lensed_sis_haris_rvs" title="ler.lens_galaxy_population.sampler_functions.lens_redshift_strongly_lensed_sis_haris_rvs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lens_redshift_strongly_lensed_sis_haris_rvs</span></code></a>(size, zs)</p></td>
+<td><p>Sample lens redshifts for SIS model (Haris et al. 2018).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.sampler_functions.velocity_dispersion_ewoud_denisty_function" title="ler.lens_galaxy_population.sampler_functions.velocity_dispersion_ewoud_denisty_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_dispersion_ewoud_denisty_function</span></code></a>(sigma, z[, ...])</p></td>
+<td><p>Calculate the lens galaxy velocity dispersion function at redshift z (Oguri et al. (2018b) + Wempe et al. (2022)).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.sampler_functions.velocity_dispersion_bernardi_denisty_function" title="ler.lens_galaxy_population.sampler_functions.velocity_dispersion_bernardi_denisty_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_dispersion_bernardi_denisty_function</span></code></a>(sigma, ...)</p></td>
+<td><p>Calculate the local universe velocity dispersion function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.sampler_functions.velocity_dispersion_gengamma_density_function" title="ler.lens_galaxy_population.sampler_functions.velocity_dispersion_gengamma_density_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_dispersion_gengamma_density_function</span></code></a>(sigma[, ...])</p></td>
+<td><p>Compute unnormalized velocity dispersion function using generalized gamma.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.sampler_functions.velocity_dispersion_gengamma_pdf" title="ler.lens_galaxy_population.sampler_functions.velocity_dispersion_gengamma_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_dispersion_gengamma_pdf</span></code></a>(sigma[, sigma_min, ...])</p></td>
+<td><p>Compute normalized velocity dispersion PDF using generalized gamma.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.sampler_functions.velocity_dispersion_gengamma_rvs" title="ler.lens_galaxy_population.sampler_functions.velocity_dispersion_gengamma_rvs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_dispersion_gengamma_rvs</span></code></a>(size[, sigma_min, ...])</p></td>
+<td><p>Sample velocity dispersions from generalized gamma distribution.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.sampler_functions.axis_ratio_rayleigh_rvs" title="ler.lens_galaxy_population.sampler_functions.axis_ratio_rayleigh_rvs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_rayleigh_rvs</span></code></a>(size, sigma[, q_min, q_max])</p></td>
+<td><p>Sample axis ratios from velocity-dependent Rayleigh distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.sampler_functions.axis_ratio_rayleigh_pdf" title="ler.lens_galaxy_population.sampler_functions.axis_ratio_rayleigh_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_rayleigh_pdf</span></code></a>(q, sigma[, q_min, q_max])</p></td>
+<td><p>Compute truncated Rayleigh PDF for axis ratio.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.sampler_functions.axis_ratio_padilla_strauss_rvs" title="ler.lens_galaxy_population.sampler_functions.axis_ratio_padilla_strauss_rvs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_padilla_strauss_rvs</span></code></a>(size)</p></td>
+<td><p>Sample axis ratios from Padilla &amp; Strauss (2008) distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.sampler_functions.axis_ratio_padilla_strauss_pdf" title="ler.lens_galaxy_population.sampler_functions.axis_ratio_padilla_strauss_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_ratio_padilla_strauss_pdf</span></code></a>(q)</p></td>
+<td><p>Compute axis ratio PDF from Padilla &amp; Strauss (2008).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.sampler_functions.bounded_normal_sample" title="ler.lens_galaxy_population.sampler_functions.bounded_normal_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounded_normal_sample</span></code></a>(size, mean, std, low, high)</p></td>
+<td><p>Sample from truncated normal distribution via rejection.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.sampler_functions.rejection_sampler" title="ler.lens_galaxy_population.sampler_functions.rejection_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rejection_sampler</span></code></a>(zs, zl, sigma_max, sigma_rvs, q_rvs, ...)</p></td>
+<td><p>Core rejection sampling algorithm for lens parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.sampler_functions.create_rejection_sampler" title="ler.lens_galaxy_population.sampler_functions.create_rejection_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_rejection_sampler</span></code></a>(sigma_max, sigma_rvs, q_rvs, ...)</p></td>
+<td><p>Create a rejection sampler for cross-section weighted lens parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.sampler_functions.importance_sampler" title="ler.lens_galaxy_population.sampler_functions.importance_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">importance_sampler</span></code></a>(zs, zl, sigma_min, sigma_max, ...)</p></td>
+<td><p>Core importance sampling algorithm for lens parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.sampler_functions.importance_sampler_mp" title="ler.lens_galaxy_population.sampler_functions.importance_sampler_mp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">importance_sampler_mp</span></code></a>(zs, zl, sigma_min, sigma_max, ...)</p></td>
+<td><p>Multiprocessing version of importance sampling for lens parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.sampler_functions.create_importance_sampler" title="ler.lens_galaxy_population.sampler_functions.create_importance_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_importance_sampler</span></code></a>(sigma_min, sigma_max, q_rvs, ...)</p></td>
+<td><p>Create an importance sampler for cross-section weighted lens parameters.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.available_sampler_list">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">available_sampler_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#available_sampler_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.available_sampler_list" title="Link to this definition"></a></dt>
+<dd><p>Return list of available lens parameter samplers.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>sampler_list</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">list</span></code></span></dt><dd><p>List of available sampler function names.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">samplers</span> <span class="o">=</span> <span class="n">available_sampler_list</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">samplers</span><span class="p">)</span>
+<span class="go">[&#39;lens_redshift_strongly_lensed_sis_haris&#39;, &#39;velocity_dispersion_gengamma&#39;, &#39;axis_ratio_rayleigh&#39;, &#39;axis_ratio_padilla_strauss&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.lens_redshift_strongly_lensed_sis_haris_pdf">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">lens_redshift_strongly_lensed_sis_haris_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">LambdaCDM(H0=70,</span> <span class="pre">Om0=0.3,</span> <span class="pre">Ode0=0.7)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#lens_redshift_strongly_lensed_sis_haris_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.lens_redshift_strongly_lensed_sis_haris_pdf" title="Link to this definition"></a></dt>
+<dd><p>Compute lens redshift PDF for SIS model (Haris et al. 2018).</p>
+<p>Computes the probability density function for lens redshift between
+zl=0 and zl=zs using the analytical form from Haris et al. (2018)
+equation A7, based on the SIS (Singular Isothermal Sphere) lens model.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>zl</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Redshift of the lens galaxy.</p>
+</dd>
+<dt><strong>zs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Redshift of the source.</p>
+</dd>
+<dt><strong>cosmo</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">astropy.cosmology</span></code></span></dt><dd><p>Cosmology object for distance calculations.</p>
+<p>default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>pdf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Probability density at the given lens redshift.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cosmo</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pdf</span> <span class="o">=</span> <span class="n">lens_redshift_strongly_lensed_sis_haris_pdf</span><span class="p">(</span><span class="n">zl</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">zs</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">cosmo</span><span class="o">=</span><span class="n">cosmo</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PDF at zl=0.5: </span><span class="si">{</span><span class="n">pdf</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">PDF at zl=0.5: 1.8750</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.lens_redshift_strongly_lensed_sis_haris_rvs">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">lens_redshift_strongly_lensed_sis_haris_rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">LambdaCDM(H0=70,</span> <span class="pre">Om0=0.3,</span> <span class="pre">Ode0=0.7)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#lens_redshift_strongly_lensed_sis_haris_rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.lens_redshift_strongly_lensed_sis_haris_rvs" title="Link to this definition"></a></dt>
+<dd><p>Sample lens redshifts for SIS model (Haris et al. 2018).</p>
+<p>Uses inverse transform sampling with the analytical CDF of the Haris et al.
+(2018) lens redshift distribution to efficiently generate samples.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
+</dd>
+<dt><strong>zs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Redshift of the source.</p>
+</dd>
+<dt><strong>z_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum redshift for interpolation grid.</p>
+<p>default: 0.001</p>
+</dd>
+<dt><strong>z_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum redshift for interpolation grid.</p>
+<p>default: 10.0</p>
+</dd>
+<dt><strong>cosmo</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">astropy.cosmology</span></code></span></dt><dd><p>Cosmology object for distance calculations.</p>
+<p>default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>zl</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of sampled lens redshifts with shape (size,).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cosmo</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zl_samples</span> <span class="o">=</span> <span class="n">lens_redshift_strongly_lensed_sis_haris_rvs</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">zs</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">z_max</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">cosmo</span><span class="o">=</span><span class="n">cosmo</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean lens redshift: </span><span class="si">{</span><span class="n">zl_samples</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Redshift range: [</span><span class="si">{</span><span class="n">zl_samples</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">zl_samples</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.velocity_dispersion_ewoud_denisty_function">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">velocity_dispersion_ewoud_denisty_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.94</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phistar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02099</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmastar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">113.78</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#velocity_dispersion_ewoud_denisty_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.velocity_dispersion_ewoud_denisty_function" title="Link to this definition"></a></dt>
+<dd><p>Calculate the lens galaxy velocity dispersion function at redshift z (Oguri et al. (2018b) + Wempe et al. (2022)).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>sigma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Velocity dispersion of the lens galaxy (km/s).</p>
+</dd>
+<dt><strong>z</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Redshift of the lens galaxy.</p>
+</dd>
+<dt><strong>alpha</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Shape parameter of the velocity dispersion function.</p>
+<p>default: 0.94</p>
+</dd>
+<dt><strong>beta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Slope parameter of the velocity dispersion function.</p>
+<p>default: 1.85</p>
+</dd>
+<dt><strong>phistar</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Normalization of the velocity dispersion function (Mpc^-3).</p>
+<p>default: 2.099e-2</p>
+</dd>
+<dt><strong>sigmastar</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Characteristic velocity dispersion (km/s).</p>
+<p>default: 113.78</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Velocity dispersion function values.</p>
+<p>Negative values are clipped to 0.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.velocity_dispersion_bernardi_denisty_function">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">velocity_dispersion_bernardi_denisty_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phistar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmastar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#velocity_dispersion_bernardi_denisty_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.velocity_dispersion_bernardi_denisty_function" title="Link to this definition"></a></dt>
+<dd><p>Calculate the local universe velocity dispersion function.</p>
+<p>This implements the velocity dispersion function from Bernardi et al. (2010).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>sigma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Velocity dispersion of the lens galaxy (km/s).</p>
+</dd>
+<dt><strong>alpha</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Shape parameter (alpha/beta is used in the gamma function).</p>
+<p>For Oguri et al. (2018b): alpha=0.94</p>
+<p>For Choi et al. (2008): alpha=2.32/2.67</p>
+</dd>
+<dt><strong>beta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Slope parameter of the velocity dispersion function.</p>
+<p>For Oguri et al. (2018b): beta=1.85</p>
+<p>For Choi et al. (2008): beta=2.67</p>
+</dd>
+<dt><strong>phistar</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Normalization of the velocity dispersion function (Mpc^-3).</p>
+<p>For Oguri et al. (2018b): phistar=2.099e-2*(h/0.7)^3</p>
+<p>For Choi et al. (2008): phistar=8.0e-3*h^3</p>
+</dd>
+<dt><strong>sigmastar</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Characteristic velocity dispersion (km/s).</p>
+<p>For Oguri et al. (2018b): sigmastar=113.78</p>
+<p>For Choi et al. (2008): sigmastar=161.0</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>philoc</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Local velocity dispersion function values.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.velocity_dispersion_gengamma_density_function">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">velocity_dispersion_gengamma_density_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.94</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phistar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02099</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmastar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">113.78</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#velocity_dispersion_gengamma_density_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.velocity_dispersion_gengamma_density_function" title="Link to this definition"></a></dt>
+<dd><p>Compute unnormalized velocity dispersion function using generalized gamma.</p>
+<p>Computes the galaxy velocity dispersion function (VDF) using the generalized
+gamma distribution formulation from Choi et al. (2007).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>sigma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Velocity dispersion in km/s.</p>
+</dd>
+<dt><strong>alpha</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Power-law index governing the low-velocity slope.</p>
+<p>default: 0.94</p>
+</dd>
+<dt><strong>beta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Exponential parameter for high-velocity cutoff sharpness.</p>
+<p>default: 1.85</p>
+</dd>
+<dt><strong>phistar</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Normalization constant (comoving number density, Mpc^-3).</p>
+<p>default: 8.0e-3</p>
+</dd>
+<dt><strong>sigmastar</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Characteristic velocity scale in km/s.</p>
+<p>default: 113.78</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>density</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Unnormalized velocity dispersion function value.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">150.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">,</span> <span class="mf">250.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">density</span> <span class="o">=</span> <span class="n">velocity_dispersion_gengamma_density_function</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Density at sigma=200 km/s: </span><span class="si">{</span><span class="n">density</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.velocity_dispersion_gengamma_pdf">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">velocity_dispersion_gengamma_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.94</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmastar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">113.78</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#velocity_dispersion_gengamma_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.velocity_dispersion_gengamma_pdf" title="Link to this definition"></a></dt>
+<dd><p>Compute normalized velocity dispersion PDF using generalized gamma.</p>
+<p>Computes the probability density function for velocity dispersion using
+the generalized gamma distribution, normalized over the specified range.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>sigma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Velocity dispersion in km/s.</p>
+</dd>
+<dt><strong>sigma_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum velocity dispersion for normalization (km/s).</p>
+<p>default: 100.0</p>
+</dd>
+<dt><strong>sigma_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum velocity dispersion for normalization (km/s).</p>
+<p>default: 400.0</p>
+</dd>
+<dt><strong>alpha</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Power-law index governing the low-velocity slope.</p>
+<p>default: 0.94</p>
+</dd>
+<dt><strong>beta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Exponential parameter for high-velocity cutoff sharpness.</p>
+<p>default: 1.85</p>
+</dd>
+<dt><strong>sigmastar</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Characteristic velocity scale in km/s.</p>
+<p>default: 113.78</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>pdf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Normalized probability density at the given velocity dispersion.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pdf</span> <span class="o">=</span> <span class="n">velocity_dispersion_gengamma_pdf</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">sigma</span><span class="o">=</span><span class="mf">200.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">sigma_min</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">sigma_max</span><span class="o">=</span><span class="mf">400.0</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PDF at sigma=200 km/s: </span><span class="si">{</span><span class="n">pdf</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.velocity_dispersion_gengamma_rvs">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">velocity_dispersion_gengamma_rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.94</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmastar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">113.78</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#velocity_dispersion_gengamma_rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.velocity_dispersion_gengamma_rvs" title="Link to this definition"></a></dt>
+<dd><p>Sample velocity dispersions from generalized gamma distribution.</p>
+<p>Uses truncated generalized gamma sampling via rejection to generate
+velocity dispersion samples within the specified bounds.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
+</dd>
+<dt><strong>sigma_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum velocity dispersion (km/s).</p>
+<p>default: 100.0</p>
+</dd>
+<dt><strong>sigma_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum velocity dispersion (km/s).</p>
+<p>default: 400.0</p>
+</dd>
+<dt><strong>alpha</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Power-law index governing the low-velocity slope.</p>
+<p>default: 0.94</p>
+</dd>
+<dt><strong>beta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Exponential parameter for high-velocity cutoff sharpness.</p>
+<p>default: 1.85</p>
+</dd>
+<dt><strong>sigmastar</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Characteristic velocity scale in km/s.</p>
+<p>default: 113.78</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>sigma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled velocity dispersions in km/s with shape (size,).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sigma_samples</span> <span class="o">=</span> <span class="n">velocity_dispersion_gengamma</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">sigma_min</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">sigma_max</span><span class="o">=</span><span class="mf">400.0</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean sigma: </span><span class="si">{</span><span class="n">sigma_samples</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> km/s&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Range: [</span><span class="si">{</span><span class="n">sigma_samples</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">sigma_samples</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">] km/s&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.axis_ratio_rayleigh_rvs">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">axis_ratio_rayleigh_rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#axis_ratio_rayleigh_rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.axis_ratio_rayleigh_rvs" title="Link to this definition"></a></dt>
+<dd><p>Sample axis ratios from velocity-dependent Rayleigh distribution.</p>
+<p>Generates axis ratio samples using the Rayleigh distribution with
+scale parameter dependent on velocity dispersion, as described in
+Wierda et al. (2021) Appendix C.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
+</dd>
+<dt><strong>sigma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Velocity dispersions in km/s with shape (size,).</p>
+</dd>
+<dt><strong>q_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum allowed axis ratio.</p>
+<p>default: 0.2</p>
+</dd>
+<dt><strong>q_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum allowed axis ratio.</p>
+<p>default: 1.0</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled axis ratios with shape (size,).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q_samples</span> <span class="o">=</span> <span class="n">axis_ratio_rayleigh_rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">q_min</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">q_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean axis ratio: </span><span class="si">{</span><span class="n">q_samples</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Range: [</span><span class="si">{</span><span class="n">q_samples</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">q_samples</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.axis_ratio_rayleigh_pdf">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">axis_ratio_rayleigh_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#axis_ratio_rayleigh_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.axis_ratio_rayleigh_pdf" title="Link to this definition"></a></dt>
+<dd><p>Compute truncated Rayleigh PDF for axis ratio.</p>
+<p>Computes the probability density function for axis ratio using the
+truncated Rayleigh distribution with velocity-dependent scale parameter
+(Wierda et al. 2021 equation C16).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Axis ratios at which to evaluate PDF.</p>
+</dd>
+<dt><strong>sigma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Velocity dispersions in km/s (same shape as q).</p>
+</dd>
+<dt><strong>q_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum axis ratio for truncation.</p>
+<p>default: 0.2</p>
+</dd>
+<dt><strong>q_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum axis ratio for truncation.</p>
+<p>default: 1.0</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>pdf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Probability density values with same shape as q.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">150.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">,</span> <span class="mf">250.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pdf</span> <span class="o">=</span> <span class="n">axis_ratio_rayleigh_pdf</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PDF values: </span><span class="si">{</span><span class="n">pdf</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.axis_ratio_padilla_strauss_rvs">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">axis_ratio_padilla_strauss_rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#axis_ratio_padilla_strauss_rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.axis_ratio_padilla_strauss_rvs" title="Link to this definition"></a></dt>
+<dd><p>Sample axis ratios from Padilla &amp; Strauss (2008) distribution.</p>
+<p>Uses inverse transform sampling with the empirical PDF from
+Padilla &amp; Strauss (2008) for early-type galaxy axis ratios.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled axis ratios with shape (size,).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q_samples</span> <span class="o">=</span> <span class="n">axis_ratio_padilla_strauss_rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean axis ratio: </span><span class="si">{</span><span class="n">q_samples</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Range: [</span><span class="si">{</span><span class="n">q_samples</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">q_samples</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.axis_ratio_padilla_strauss_pdf">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">axis_ratio_padilla_strauss_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#axis_ratio_padilla_strauss_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.axis_ratio_padilla_strauss_pdf" title="Link to this definition"></a></dt>
+<dd><p>Compute axis ratio PDF from Padilla &amp; Strauss (2008).</p>
+<p>Evaluates the probability density function for axis ratio using
+cubic spline interpolation of the Padilla &amp; Strauss (2008) data.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Axis ratios at which to evaluate PDF.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>pdf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Probability density values with same shape as q.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pdf</span> <span class="o">=</span> <span class="n">axis_ratio_padilla_strauss_pdf</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PDF at q=0.5: </span><span class="si">{</span><span class="n">pdf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.bounded_normal_sample">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">bounded_normal_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#bounded_normal_sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.bounded_normal_sample" title="Link to this definition"></a></dt>
+<dd><p>Sample from truncated normal distribution via rejection.</p>
+<p>Generates samples from a normal distribution with specified mean and
+standard deviation, rejecting samples outside the specified bounds.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
+</dd>
+<dt><strong>mean</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Mean of the normal distribution.</p>
+</dd>
+<dt><strong>std</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Standard deviation of the normal distribution.</p>
+</dd>
+<dt><strong>low</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Lower bound for samples.</p>
+</dd>
+<dt><strong>high</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Upper bound for samples.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>samples</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Bounded normal samples with shape (size,).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span> <span class="o">=</span> <span class="n">bounded_normal_sample</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean: </span><span class="si">{</span><span class="n">samples</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, Std: </span><span class="si">{</span><span class="n">samples</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Range: [</span><span class="si">{</span><span class="n">samples</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">samples</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.rejection_sampler">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">rejection_sampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safety_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#rejection_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.rejection_sampler" title="Link to this definition"></a></dt>
+<dd><p>Core rejection sampling algorithm for lens parameters.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>zs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Source redshifts.</p>
+</dd>
+<dt><strong>zl</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Lens redshifts.</p>
+</dd>
+<dt><strong>sigma_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum velocity dispersion (km/s) for computing upper bound.</p>
+</dd>
+<dt><strong>sigma_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample velocity dispersion: sigma_rvs(n, zl) -&gt; array.</p>
+</dd>
+<dt><strong>q_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample axis ratio: q_rvs(n, sigma) -&gt; array.</p>
+</dd>
+<dt><strong>phi_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample orientation angle: phi_rvs(n) -&gt; array.</p>
+</dd>
+<dt><strong>gamma_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample power-law index: gamma_rvs(n) -&gt; array.</p>
+</dd>
+<dt><strong>shear_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample external shear: shear_rvs(n) -&gt; (gamma1, gamma2).</p>
+</dd>
+<dt><strong>cross_section</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to compute lensing cross section.</p>
+</dd>
+<dt><strong>safety_factor</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Multiplicative safety factor for the upper bound.</p>
+<p>default: 1.2</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>sigma_array</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled velocity dispersions (km/s).</p>
+</dd>
+<dt><strong>q_array</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled axis ratios.</p>
+</dd>
+<dt><strong>phi_array</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled orientation angles (rad).</p>
+</dd>
+<dt><strong>gamma_array</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled power-law indices.</p>
+</dd>
+<dt><strong>gamma1_array</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled external shear component 1.</p>
+</dd>
+<dt><strong>gamma2_array</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled external shear component 2.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.create_rejection_sampler">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">create_rejection_sampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safety_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_njit_sampler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#create_rejection_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.create_rejection_sampler" title="Link to this definition"></a></dt>
+<dd><p>Create a rejection sampler for cross-section weighted lens parameters.</p>
+<p>Returns a callable that samples lens parameters using rejection sampling,
+weighting by the gravitational lensing cross section. Optionally uses
+Numba JIT compilation for improved performance.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>sigma_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum velocity dispersion (km/s) for computing upper bound.</p>
+</dd>
+<dt><strong>sigma_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample velocity dispersion: sigma_rvs(n, zl) -&gt; array.</p>
+</dd>
+<dt><strong>q_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample axis ratio: q_rvs(n, sigma) -&gt; array.</p>
+</dd>
+<dt><strong>phi_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample orientation angle: phi_rvs(n) -&gt; array.</p>
+</dd>
+<dt><strong>gamma_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample power-law index: gamma_rvs(n) -&gt; array.</p>
+</dd>
+<dt><strong>shear_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample external shear: shear_rvs(n) -&gt; (gamma1, gamma2).</p>
+</dd>
+<dt><strong>cross_section</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to compute lensing cross section.</p>
+</dd>
+<dt><strong>safety_factor</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Multiplicative safety factor for the upper bound.</p>
+<p>default: 1.2</p>
+</dd>
+<dt><strong>use_njit_sampler</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, uses Numba JIT compilation for faster execution.</p>
+<p>default: True</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>rejection_sampler_wrapper</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function with signature (zs, zl) -&gt; (sigma, q, phi, gamma, gamma1, gamma2).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@njit</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">sigma_rvs</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">zl</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="mi">100</span> <span class="o">+</span> <span class="mi">200</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@njit</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">q_rvs</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@njit</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">phi_rvs</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@njit</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">gamma_rvs</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@njit</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">shear_rvs</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@njit</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">cross_section</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sampler</span> <span class="o">=</span> <span class="n">create_rejection_sampler</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">sigma_max</span><span class="o">=</span><span class="mf">400.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">sigma_rvs</span><span class="o">=</span><span class="n">sigma_rvs</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">q_rvs</span><span class="o">=</span><span class="n">q_rvs</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">phi_rvs</span><span class="o">=</span><span class="n">phi_rvs</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">gamma_rvs</span><span class="o">=</span><span class="n">gamma_rvs</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">shear_rvs</span><span class="o">=</span><span class="n">shear_rvs</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">cross_section</span><span class="o">=</span><span class="n">cross_section</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sigma</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span> <span class="o">=</span> <span class="n">sampler</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">zl</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.importance_sampler">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">importance_sampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_pdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_prop</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#importance_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.importance_sampler" title="Link to this definition"></a></dt>
+<dd><p>Core importance sampling algorithm for lens parameters.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>zs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Source redshifts.</p>
+</dd>
+<dt><strong>zl</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Lens redshifts.</p>
+</dd>
+<dt><strong>sigma_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum velocity dispersion (km/s) for uniform proposal.</p>
+</dd>
+<dt><strong>sigma_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum velocity dispersion (km/s) for uniform proposal.</p>
+</dd>
+<dt><strong>q_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample axis ratio: q_rvs(n, sigma) -&gt; array.</p>
+</dd>
+<dt><strong>phi_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample orientation angle: phi_rvs(n) -&gt; array.</p>
+</dd>
+<dt><strong>gamma_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample power-law index: gamma_rvs(n) -&gt; array.</p>
+</dd>
+<dt><strong>shear_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample external shear: shear_rvs(n) -&gt; (gamma1, gamma2).</p>
+</dd>
+<dt><strong>sigma_pdf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>PDF of velocity dispersion: sigma_pdf(sigma, zl) -&gt; array.</p>
+</dd>
+<dt><strong>cross_section</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to compute lensing cross section.</p>
+</dd>
+<dt><strong>n_prop</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of proposal samples per lens.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>sigma_post</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled velocity dispersions (km/s).</p>
+</dd>
+<dt><strong>q_post</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled axis ratios.</p>
+</dd>
+<dt><strong>phi_post</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled orientation angles (rad).</p>
+</dd>
+<dt><strong>gamma_post</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled power-law indices.</p>
+</dd>
+<dt><strong>gamma1_post</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled external shear component 1.</p>
+</dd>
+<dt><strong>gamma2_post</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled external shear component 2.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.importance_sampler_mp">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">importance_sampler_mp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_pdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_prop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#importance_sampler_mp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.importance_sampler_mp" title="Link to this definition"></a></dt>
+<dd><p>Multiprocessing version of importance sampling for lens parameters.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>zs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Source redshifts.</p>
+</dd>
+<dt><strong>zl</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Lens redshifts.</p>
+</dd>
+<dt><strong>sigma_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum velocity dispersion (km/s) for uniform proposal.</p>
+</dd>
+<dt><strong>sigma_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum velocity dispersion (km/s) for uniform proposal.</p>
+</dd>
+<dt><strong>q_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample axis ratio: q_rvs(n, sigma) -&gt; array.</p>
+</dd>
+<dt><strong>phi_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample orientation angle: phi_rvs(n) -&gt; array.</p>
+</dd>
+<dt><strong>gamma_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample power-law index: gamma_rvs(n) -&gt; array.</p>
+</dd>
+<dt><strong>shear_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample external shear: shear_rvs(n) -&gt; (gamma1, gamma2).</p>
+</dd>
+<dt><strong>sigma_pdf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>PDF of velocity dispersion: sigma_pdf(sigma, zl) -&gt; array.</p>
+</dd>
+<dt><strong>cross_section</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to compute lensing cross section.</p>
+</dd>
+<dt><strong>n_prop</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of proposal samples per lens.</p>
+</dd>
+<dt><strong>npool</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of parallel processes to use.</p>
+<p>default: 4</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>sigma_post</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled velocity dispersions (km/s).</p>
+</dd>
+<dt><strong>q_post</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled axis ratios.</p>
+</dd>
+<dt><strong>phi_post</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled orientation angles (rad).</p>
+</dd>
+<dt><strong>gamma_post</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled power-law indices.</p>
+</dd>
+<dt><strong>gamma1_post</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled external shear component 1.</p>
+</dd>
+<dt><strong>gamma2_post</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Sampled external shear component 2.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.create_importance_sampler">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">create_importance_sampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_pdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_prop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_njit_sampler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#create_importance_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.create_importance_sampler" title="Link to this definition"></a></dt>
+<dd><p>Create an importance sampler for cross-section weighted lens parameters.</p>
+<p>Returns a callable that samples lens parameters using importance sampling
+with uniform proposal distribution, optionally JIT-compiled for improved
+performance.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>sigma_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum velocity dispersion (km/s) for uniform proposal.</p>
+</dd>
+<dt><strong>sigma_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum velocity dispersion (km/s) for uniform proposal.</p>
+</dd>
+<dt><strong>q_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample axis ratio: q_rvs(n, sigma) -&gt; array.</p>
+</dd>
+<dt><strong>phi_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample orientation angle: phi_rvs(n) -&gt; array.</p>
+</dd>
+<dt><strong>gamma_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample power-law index: gamma_rvs(n) -&gt; array.</p>
+</dd>
+<dt><strong>shear_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample external shear: shear_rvs(n) -&gt; (gamma1, gamma2).</p>
+</dd>
+<dt><strong>sigma_pdf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>PDF of velocity dispersion: sigma_pdf(sigma, zl) -&gt; array.</p>
+</dd>
+<dt><strong>cross_section</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to compute lensing cross section.</p>
+</dd>
+<dt><strong>n_prop</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of proposal samples per lens.</p>
+</dd>
+<dt><strong>use_njit_sampler</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, uses Numba JIT compilation for faster execution.</p>
+<p>default: True</p>
+</dd>
+<dt><strong>npool</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of parallel processes (only used when use_njit_sampler=False).</p>
+<p>default: 4</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>importance_sampler_wrapper</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function with signature (zs, zl) -&gt; (sigma, q, phi, gamma, gamma1, gamma2).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@njit</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">q_rvs</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@njit</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">phi_rvs</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@njit</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">gamma_rvs</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@njit</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">shear_rvs</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@njit</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">sigma_pdf</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="n">zl</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@njit</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">cross_section</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sampler</span> <span class="o">=</span> <span class="n">create_importance_sampler</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">sigma_min</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">sigma_max</span><span class="o">=</span><span class="mf">400.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">q_rvs</span><span class="o">=</span><span class="n">q_rvs</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">phi_rvs</span><span class="o">=</span><span class="n">phi_rvs</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">gamma_rvs</span><span class="o">=</span><span class="n">gamma_rvs</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">shear_rvs</span><span class="o">=</span><span class="n">shear_rvs</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">sigma_pdf</span><span class="o">=</span><span class="n">sigma_pdf</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">cross_section</span><span class="o">=</span><span class="n">cross_section</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">n_prop</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sigma</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span> <span class="o">=</span> <span class="n">sampler</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">zl</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../optical_depth/index.html" class="btn btn-neutral float-left" title="ler.lens_galaxy_population.optical_depth" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../image_properties/index.html" class="btn btn-neutral float-right" title="ler.image_properties" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

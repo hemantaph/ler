@@ -38,10 +38,12 @@ Functions
    ler.rates.append_json
    ler.rates.get_param_from_json
    ler.rates.batch_handler
+   ler.rates.remove_file
    ler.rates.load_json
    ler.rates.append_json
    ler.rates.get_param_from_json
    ler.rates.batch_handler
+   ler.rates.remove_file
 
 
 
@@ -781,6 +783,29 @@ Functions
 
        **dict_buffer** : `dict`
            dictionary of parameters.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: remove_file(file_name)
+
+   
+   Remove a file.
+
+
+
 
 
 
@@ -1748,7 +1773,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lensed_cbc_statistics(size=100000, batch_size=50000, save_batch=True, resume=True, output_jsonfile=None)
+   .. py:method:: lensed_cbc_statistics(size=100000, batch_size=50000, save_batch=False, resume=True, output_jsonfile=None)
 
       
       Generate lensed GW source parameters.
@@ -2161,10 +2186,10 @@ Functions
           **rate_ratio** : ``float``
               Ratio of unlensed rate to lensed rate.
 
-          **unlensed_param** : ``dict``
+          **unlensed_param_detectable** : ``dict``
               Dictionary of detectable unlensed GW source parameters.
 
-          **lensed_param** : ``dict``
+          **lensed_param_detectable** : ``dict``
               Dictionary of detectable lensed GW source parameters.
 
 
@@ -2323,7 +2348,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: selecting_n_lensed_detectable_events(size=100, stopping_criteria=dict(relative_diff_percentage=2, number_of_last_batches_to_check=4), batch_size=50000, pdet_threshold=[0.5, 0.5], num_img=[1, 1], resume=True, pdet_type='boolean', output_jsonfile='n_lensed_params_detectable.json', meta_data_file='meta_lensed.json', trim_to_size=False, nan_to_num=False)
+   .. py:method:: selecting_n_lensed_detectable_events(size=100, stopping_criteria=dict(relative_diff_percentage=2, number_of_last_batches_to_check=4), batch_size=50000, pdet_threshold=[0.5, 0.5], num_img=[1, 1], resume=True, pdet_type='boolean', output_jsonfile='n_lensed_params_detectable.json', meta_data_file='meta_lensed.json', trim_to_size=False, nan_to_num=True)
 
       
       Generate a target number of detectable lensed events by sampling in batches, with the option to stop once the cumulative rate has stabilized.
@@ -4088,6 +4113,29 @@ Functions
 
        **dict_buffer** : `dict`
            dictionary of parameters.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: remove_file(file_name)
+
+   
+   Remove a file.
+
+
+
 
 
 

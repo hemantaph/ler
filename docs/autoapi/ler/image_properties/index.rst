@@ -149,24 +149,24 @@ Attributes
 .. py:function:: phi_q2_ellipticity(phi, q)
 
    
-   Function to convert phi and q to ellipticity e1 and e2.
+   Convert position angle and axis ratio to ellipticity components.
 
 
    :Parameters:
 
-       **phi** : `float: array`
-           angle of the major axis in radians
+       **phi** : ``numpy.ndarray``
+           Position angle of the major axis (radians).
 
-       **q** : `float: array`
-           axis ratio
+       **q** : ``numpy.ndarray``
+           Axis ratio (0 < q <= 1).
 
    :Returns:
 
-       **e1** : `float: array`
-           ellipticity component 1
+       **e1** : ``numpy.ndarray``
+           First ellipticity component.
 
-       **e2** : `float: array`
-           ..
+       **e2** : ``numpy.ndarray``
+           Second ellipticity component.
 
 
 
@@ -183,7 +183,7 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:class:: ImageProperties(npool=4, n_min_images=2, n_max_images=4, time_window=365 * 24 * 3600 * 20, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, spin_zero=True, spin_precession=False)
+.. py:class:: ImageProperties(npool=4, n_min_images=2, n_max_images=4, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, time_window=365 * 24 * 3600 * 20, spin_zero=True, spin_precession=False)
 
 
    

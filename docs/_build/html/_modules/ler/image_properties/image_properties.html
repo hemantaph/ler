@@ -68,6 +68,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
 
         </div>
       </div>
@@ -133,7 +140,7 @@
 
 <span class="c1"># the following .py file will be called if they are not given in the class initialization</span>
 <span class="kn">from</span> <span class="nn">.multiprocessing_routine</span> <span class="kn">import</span> <span class="n">solve_lens_equation</span>
-<span class="kn">from</span> <span class="nn">..lens_galaxy_population.jit_functions</span> <span class="kn">import</span> <span class="n">phi_q2_ellipticity</span>
+<span class="kn">from</span> <span class="nn">..lens_galaxy_population.lens_functions</span> <span class="kn">import</span> <span class="n">phi_q2_ellipticity</span>
 
 
 <div class="viewcode-block" id="ImageProperties">
@@ -240,9 +247,9 @@
                  <span class="n">npool</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
                  <span class="n">n_min_images</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
                  <span class="n">n_max_images</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-                 <span class="n">time_window</span><span class="o">=</span><span class="mi">365</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">3600</span><span class="o">*</span><span class="mi">20</span><span class="p">,</span>
                  <span class="n">lens_model_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span>
                  <span class="n">cosmology</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">time_window</span><span class="o">=</span><span class="mi">365</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">3600</span><span class="o">*</span><span class="mi">20</span><span class="p">,</span>
                  <span class="n">spin_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">spin_precession</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">):</span>

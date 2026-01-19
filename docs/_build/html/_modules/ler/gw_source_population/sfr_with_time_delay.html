@@ -68,6 +68,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
 
         </div>
       </div>
@@ -117,12 +124,12 @@
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">fsolve</span>
 <span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
 
-<span class="kn">from</span> <span class="nn">.jit_functions</span> <span class="kn">import</span> <span class="n">sfr_madau_fragos2017</span>
+<span class="kn">from</span> <span class="nn">.prior_functions</span>  <span class="kn">import</span> <span class="n">sfr_madau_fragos2017</span>
 
 
-<div class="viewcode-block" id="sfr_with_time_delay">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/sfr_with_time_delay/index.html#ler.gw_source_population.sfr_with_time_delay">[docs]</a>
-<span class="k">def</span> <span class="nf">sfr_with_time_delay</span><span class="p">(</span><span class="n">input_args</span><span class="p">):</span>
+<div class="viewcode-block" id="sfr_with_time_delay_function">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/sfr_with_time_delay/index.html#ler.gw_source_population.sfr_with_time_delay_function">[docs]</a>
+<span class="k">def</span> <span class="nf">sfr_with_time_delay_function</span><span class="p">(</span><span class="n">input_args</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute star formation rate at observed redshift with time delay.</span>
 

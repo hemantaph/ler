@@ -30,7 +30,7 @@
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="ler.lens_galaxy_population.jit_functions" href="../jit_functions/index.html" />
+    <link rel="next" title="ler.lens_galaxy_population.lens_functions" href="../lens_functions/index.html" />
     <link rel="prev" title="ler.lens_galaxy_population" href="../index.html" /> 
 </head>
 
@@ -73,11 +73,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../jit_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.jit_functions</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lens_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_functions</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../lens_galaxy_parameter_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_galaxy_parameter_distribution</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../lens_parameter_sampler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_parameter_sampler</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../mp/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.mp</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../optical_depth/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.optical_depth</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampler_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.sampler_functions</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
@@ -85,6 +85,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
 </ul>
 
         </div>
@@ -169,7 +176,7 @@ cubic B-spline interpolation on prefiltered coefficient grids.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.cross_section_interpolator.make_cross_section_reinit">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator.</span></span><span class="sig-name descname"><span class="pre">make_cross_section_reinit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e1_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e2_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma1_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma2_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cs_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Da_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csunit_to_cs_slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.31830988618379075</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csunit_to_cs_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-3.2311742677852644e-27</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/cross_section_interpolator.html#make_cross_section_reinit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.cross_section_interpolator.make_cross_section_reinit" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator.</span></span><span class="sig-name descname"><span class="pre">make_cross_section_reinit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e1_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e2_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma1_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma2_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cs_spline_coeff_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Da_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csunit_to_cs_slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.31830988618379075</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csunit_to_cs_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-3.2311742677852644e-27</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/cross_section_interpolator.html#make_cross_section_reinit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.cross_section_interpolator.make_cross_section_reinit" title="Link to this definition"></a></dt>
 <dd><p>Factory function to create a JIT-compiled cross section calculator.</p>
 <p>This function precomputes B-spline coefficients and creates a closure
 that captures the grid parameters, returning a fast Numba-compiled
@@ -187,7 +194,7 @@ function for computing cross sections.</p>
 </dd>
 <dt><strong>gamma2_grid</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Grid values for shear component gamma2, shape (n_g2,).</p>
 </dd>
-<dt><strong>cs_grid</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Raw cross section grid data (before spline filtering),</p>
+<dt><strong>cs_spline_coeff_grid</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Raw cross section grid data (before spline filtering),</p>
 <p>shape (n_e1, n_e2, n_g, n_g1, n_g2).</p>
 </dd>
 <dt><strong>Da_instance</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Angular diameter distance function.</p>
@@ -214,7 +221,7 @@ function for computing cross sections.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.lens_galaxy_population.cross_section_interpolator</span> <span class="kn">import</span> <span class="n">make_cross_section_reinit</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cs_func</span> <span class="o">=</span> <span class="n">make_cross_section_reinit</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">e1_grid</span><span class="p">,</span> <span class="n">e2_grid</span><span class="p">,</span> <span class="n">gamma_grid</span><span class="p">,</span> <span class="n">gamma1_grid</span><span class="p">,</span> <span class="n">gamma2_grid</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">cs_grid</span><span class="p">,</span> <span class="n">Da_instance</span>
+<span class="gp">... </span>    <span class="n">cs_spline_coeff_grid</span><span class="p">,</span> <span class="n">Da_instance</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cross_sections</span> <span class="o">=</span> <span class="n">cs_func</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">)</span>
 </pre></div>
@@ -230,7 +237,7 @@ function for computing cross sections.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../index.html" class="btn btn-neutral float-left" title="ler.lens_galaxy_population" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../jit_functions/index.html" class="btn btn-neutral float-right" title="ler.lens_galaxy_population.jit_functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../lens_functions/index.html" class="btn btn-neutral float-right" title="ler.lens_galaxy_population.lens_functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

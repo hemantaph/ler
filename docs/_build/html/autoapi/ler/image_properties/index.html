@@ -31,7 +31,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="ler.image_properties.image_properties" href="image_properties/index.html" />
-    <link rel="prev" title="ler.lens_galaxy_population.optical_depth" href="../lens_galaxy_population/optical_depth/index.html" /> 
+    <link rel="prev" title="ler.lens_galaxy_population.sampler_functions" href="../lens_galaxy_population/sampler_functions/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -93,6 +93,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
 
         </div>
       </div>
@@ -149,7 +156,7 @@
 <td><p>Solve the lens equation to find image properties.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.phi_q2_ellipticity" title="ler.image_properties.phi_q2_ellipticity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_q2_ellipticity</span></code></a>(phi, q)</p></td>
-<td><p>Function to convert phi and q to ellipticity e1 and e2.</p></td>
+<td><p>Convert position angle and axis ratio to ellipticity components.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#id0" title="ler.image_properties.solve_lens_equation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_lens_equation</span></code></a>(lens_parameters)</p></td>
 <td><p>Solve the lens equation to find image properties.</p></td>
@@ -246,22 +253,23 @@ region to ensure multiple imaging.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.image_properties.phi_q2_ellipticity">
-<span class="sig-prename descclassname"><span class="pre">ler.image_properties.</span></span><span class="sig-name descname"><span class="pre">phi_q2_ellipticity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/jit_functions.html#phi_q2_ellipticity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.phi_q2_ellipticity" title="Link to this definition"></a></dt>
-<dd><p>Function to convert phi and q to ellipticity e1 and e2.</p>
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.</span></span><span class="sig-name descname"><span class="pre">phi_q2_ellipticity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/lens_galaxy_population/lens_functions.html#phi_q2_ellipticity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.phi_q2_ellipticity" title="Link to this definition"></a></dt>
+<dd><p>Convert position angle and axis ratio to ellipticity components.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>phi</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>angle of the major axis in radians</p>
+<dt><strong>phi</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Position angle of the major axis (radians).</p>
 </dd>
-<dt><strong>q</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>axis ratio</p>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Axis ratio (0 &lt; q &lt;= 1).</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>e1</strong><span class="classifier"><cite>float: array</cite></span></dt><dd><p>ellipticity component 1</p>
+<dt><strong>e1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>First ellipticity component.</p>
 </dd>
-<dt><strong>e2</strong><span class="classifier"><cite>float: array</cite></span></dt><dd></dd>
+<dt><strong>e2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Second ellipticity component.</p>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -269,7 +277,7 @@ region to ensure multiple imaging.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ler.image_properties.ImageProperties">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.image_properties.</span></span><span class="sig-name descname"><span class="pre">ImageProperties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_min_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">365</span> <span class="pre">*</span> <span class="pre">24</span> <span class="pre">*</span> <span class="pre">3600</span> <span class="pre">*</span> <span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens_model_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['EPL_NUMBA',</span> <span class="pre">'SHEAR']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_precession</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/image_properties/image_properties.html#ImageProperties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.ImageProperties" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.image_properties.</span></span><span class="sig-name descname"><span class="pre">ImageProperties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_min_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens_model_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['EPL_NUMBA',</span> <span class="pre">'SHEAR']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">365</span> <span class="pre">*</span> <span class="pre">24</span> <span class="pre">*</span> <span class="pre">3600</span> <span class="pre">*</span> <span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_precession</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/image_properties/image_properties.html#ImageProperties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.ImageProperties" title="Link to this definition"></a></dt>
 <dd><p>Class to compute image properties of strongly lensed gravitational wave events.</p>
 <p>This class solves the lens equation to find image positions, magnifications,
 time delays, and image types (morse phase) for strongly lensed sources. It uses
@@ -707,7 +715,7 @@ region to ensure multiple imaging.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../lens_galaxy_population/optical_depth/index.html" class="btn btn-neutral float-left" title="ler.lens_galaxy_population.optical_depth" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../lens_galaxy_population/sampler_functions/index.html" class="btn btn-neutral float-left" title="ler.lens_galaxy_population.sampler_functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="image_properties/index.html" class="btn btn-neutral float-right" title="ler.image_properties.image_properties" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

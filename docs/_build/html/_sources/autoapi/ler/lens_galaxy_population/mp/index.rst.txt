@@ -40,7 +40,6 @@ Functions
    ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_mp
    ler.lens_galaxy_population.mp.cross_section_unit_mp
    ler.lens_galaxy_population.mp.cross_section_mp
-   ler.lens_galaxy_population.mp.cross_section
 
 
 
@@ -148,25 +147,7 @@ Attributes
 
            - params[1]: Scaled lens redshift array (1D array)
 
-           - params[2]: Sigma args (min, max, spline_z, spline_z2d, spline_coeff)
-
-           - params[3]: Axis ratio args (type, min/spline, max/coeff, coeff_2d)
-
-           - params[4]: Angular diameter distance args (x_values, coeffs)
-
-           - params[5]: dVcdz args (x_values, coeffs)
-
-           - params[6]: Worker index (int)
-
-           - params[7]: Cross-section args (type, json_path)
-
-           - params[8]: Axis rotation args (type, min, max or spline)
-
-           - params[9]: Shear args (type, loc, scale)
-
-           - params[10]: Slope args (type, loc/spline, scale/coeff)
-
-           - params[11]: Integration size (int)
+           - params[2]: Worker index (int)
 
    :Returns:
 
@@ -247,56 +228,6 @@ Attributes
 
        **area** : ``float``
            Cross-section area in square arcseconds.
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: cross_section(theta_E, e1, e2, gamma, gamma1, gamma2)
-
-   
-   Compute the strong lensing cross-section for an EPL+Shear lens.
-
-   Uses lenstronomy to compute the caustic structure and returns the
-   area enclosed by the double-image (outer) caustic.
-
-   :Parameters:
-
-       **theta_E** : ``float``
-           Einstein radius in arcseconds.
-
-       **e1** : ``float``
-           First ellipticity component.
-
-       **e2** : ``float``
-           Second ellipticity component.
-
-       **gamma** : ``float``
-           Power-law density profile slope.
-
-       **gamma1** : ``float``
-           First external shear component.
-
-       **gamma2** : ``float``
-           Second external shear component.
-
-   :Returns:
-
-       **area** : ``float``
-           Cross-section area in square arcseconds.
-
-           Returns 0.0 if caustic computation fails.
 
 
 

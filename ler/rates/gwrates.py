@@ -30,14 +30,22 @@ import warnings
 import pathlib
 import zipfile
 from importlib_resources import files as resources_files
+
 warnings.filterwarnings("ignore")
 import logging
-logging.getLogger('numexpr.utils').setLevel(logging.ERROR)
+
+logging.getLogger("numexpr.utils").setLevel(logging.ERROR)
 import contextlib
 import numpy as np
 from astropy.cosmology import LambdaCDM
 from ..gw_source_population import CBCSourceParameterDistribution
-from ..utils import load_json, append_json, get_param_from_json, batch_handler
+from ..utils import (
+    load_json,
+    append_json,
+    get_param_from_json,
+    batch_handler,
+    remove_file,
+)
 
 
 class GWRATES(CBCSourceParameterDistribution):
@@ -183,21 +191,25 @@ class GWRATES(CBCSourceParameterDistribution):
         # first check if the interpolator directory './interpolator_json' exists
         if not pathlib.Path(interpolator_directory).exists():
             # Get the path to the zip resource using importlib_resources
-            zip_resource = resources_files('ler.rates').joinpath('ler_data', 'interpolator_json.zip')
-            with zip_resource.open('rb') as zip_file:
-                print("Extracting interpolator data from package to the current working directory.")
-                
+            zip_resource = resources_files("ler.rates").joinpath(
+                "ler_data", "interpolator_json.zip"
+            )
+            with zip_resource.open("rb") as zip_file:
+                print(
+                    "Extracting interpolator data from package to the current working directory."
+                )
+
                 # Define destination path (current working directory)
                 dest_path = pathlib.Path.cwd()
 
                 # Extract the zip file, skipping __MACOSX metadata
-                with zipfile.ZipFile(zip_file, 'r') as zip_ref:
+                with zipfile.ZipFile(zip_file, "r") as zip_ref:
                     for member in zip_ref.namelist():
                         # Skip __MACOSX directory and its contents
-                        if member.startswith('__MACOSX'):
+                        if member.startswith("__MACOSX"):
                             continue
                         zip_ref.extract(member, dest_path)
-        
+
         print("\nInitializing GWRATES class...\n")
         # init gwrates attributes
         self.npool = npool
@@ -208,9 +220,9 @@ class GWRATES(CBCSourceParameterDistribution):
 
         # init json file names where datas will be stored
         self.json_file_names = dict(
-            gwrates_params="gwrates_params.json", 
-            gw_param="gw_param.json", 
-            gw_param_detectable="gw_param_detectable.json"
+            gwrates_params="gwrates_params.json",
+            gw_param="gw_param.json",
+            gw_param_detectable="gw_param_detectable.json",
         )
         if json_file_names:
             self.json_file_names.update(json_file_names)
@@ -225,7 +237,9 @@ class GWRATES(CBCSourceParameterDistribution):
             os.makedirs(ler_directory)
 
         # parent class initialization
-        self._parent_class_initialization(params=kwargs, pdet_finder=pdet_finder, verbose=verbose)
+        self._parent_class_initialization(
+            params=kwargs, pdet_finder=pdet_finder, verbose=verbose
+        )
 
     def _parent_class_initialization(self, params=None, pdet_finder=None, verbose=True):
         """
@@ -250,9 +264,11 @@ class GWRATES(CBCSourceParameterDistribution):
                 self.pdet_finder = self._gwsnr_initialization(params=params)
             else:
                 self.pdet_finder = pdet_finder
-            
+
             # store all the gwrates input parameters
-            self._store_gwrates_params(output_jsonfile=self.json_file_names["gwrates_params"])
+            self._store_gwrates_params(
+                output_jsonfile=self.json_file_names["gwrates_params"]
+            )
 
         # if not verbose, prevent anything from printing
         if verbose:
@@ -321,7 +337,7 @@ class GWRATES(CBCSourceParameterDistribution):
         Parameters
         ----------
         params : ``dict`` or ``None``
-            Dictionary of parameters to initialize the GWSNR class. 
+            Dictionary of parameters to initialize the GWSNR class.
 
         Returns
         -------
@@ -331,13 +347,13 @@ class GWRATES(CBCSourceParameterDistribution):
         from gwsnr import GWSNR
 
         # initialization of GWSNR class
-        if 'mminbh' in self.gw_param_samplers_params['source_frame_masses']:
-            min_bh_mass = self.gw_param_samplers_params['source_frame_masses']['mminbh']
+        if "mminbh" in self.gw_param_samplers_params["source_frame_masses"]:
+            min_bh_mass = self.gw_param_samplers_params["source_frame_masses"]["mminbh"]
         else:
             min_bh_mass = 2.0
 
-        if 'mmaxbh' in self.gw_param_samplers_params['source_frame_masses']:
-            max_bh_mass = self.gw_param_samplers_params['source_frame_masses']['mmaxbh']
+        if "mmaxbh" in self.gw_param_samplers_params["source_frame_masses"]:
+            max_bh_mass = self.gw_param_samplers_params["source_frame_masses"]["mmaxbh"]
         else:
             max_bh_mass = 200.0
         input_params = dict(
@@ -349,8 +365,12 @@ class GWRATES(CBCSourceParameterDistribution):
             multiprocessing_verbose=True,
             pdet_kwargs=None,
             # Settings for interpolation grid
-            mtot_min=min_bh_mass*2,
-            mtot_max=max_bh_mass*2*(1+self.z_max) if max_bh_mass*2*(1+self.z_max)<500.0 else 500.0,
+            mtot_min=min_bh_mass * 2,
+            mtot_max=(
+                max_bh_mass * 2 * (1 + self.z_max)
+                if max_bh_mass * 2 * (1 + self.z_max) < 500.0
+                else 500.0
+            ),
             ratio_min=0.1,
             ratio_max=1.0,
             spin_max=0.99,
@@ -363,7 +383,7 @@ class GWRATES(CBCSourceParameterDistribution):
             # GW signal settings
             sampling_frequency=2048.0,
             waveform_approximant="IMRPhenomD",
-            frequency_domain_source_model='lal_binary_black_hole',
+            frequency_domain_source_model="lal_binary_black_hole",
             minimum_frequency=20.0,
             reference_frequency=None,
             duration_max=None,
@@ -373,12 +393,12 @@ class GWRATES(CBCSourceParameterDistribution):
             # Detector settings
             psds=None,
             ifos=None,
-            noise_realization=None, # not implemented yet
+            noise_realization=None,  # not implemented yet
             # ANN settings
             ann_path_dict=None,
             # Hybrid SNR recalculation settings
             snr_recalculation=False,
-            snr_recalculation_range=[6,14],
+            snr_recalculation_range=[6, 14],
             snr_recalculation_waveform_approximant="IMRPhenomXPHM",
         )
         # update input_params with params. This will include create_new_interpolator.
@@ -386,16 +406,20 @@ class GWRATES(CBCSourceParameterDistribution):
             for key, value in params.items():
                 if key in input_params:
                     input_params[key] = value
-        self.gwrates_args['pdet_args'] = input_params
+        self.gwrates_args["pdet_args"] = input_params
 
         # dealing with create_new_interpolator param
         if isinstance(input_params["create_new_interpolator"], dict):
             # check input_params["gwsnr"] exists
             if "gwsnr" in input_params["create_new_interpolator"]:
                 if isinstance(input_params["create_new_interpolator"]["gwsnr"], bool):
-                    input_params["create_new_interpolator"] = input_params["create_new_interpolator"]["gwsnr"]
+                    input_params["create_new_interpolator"] = input_params[
+                        "create_new_interpolator"
+                    ]["gwsnr"]
                 else:
-                    raise ValueError("create_new_interpolator['gwsnr'] should be a boolean.")
+                    raise ValueError(
+                        "create_new_interpolator['gwsnr'] should be a boolean."
+                    )
             else:
                 input_params["create_new_interpolator"] = False
 
@@ -439,14 +463,16 @@ class GWRATES(CBCSourceParameterDistribution):
             # Hybrid SNR recalculation settings
             snr_recalculation=input_params["snr_recalculation"],
             snr_recalculation_range=input_params["snr_recalculation_range"],
-            snr_recalculation_waveform_approximant=input_params["snr_recalculation_waveform_approximant"],
+            snr_recalculation_waveform_approximant=input_params[
+                "snr_recalculation_waveform_approximant"
+            ],
         )
 
-        self.gwrates_args['list_of_detectors'] = gwsnr.detector_list
-        self.list_of_detectors = self.gwrates_args['list_of_detectors']
+        self.gwrates_args["list_of_detectors"] = gwsnr.detector_list
+        self.list_of_detectors = self.gwrates_args["list_of_detectors"]
 
-        self.gwrates_args['pdet_args']['pdet_kwargs'] = gwsnr.pdet_kwargs
-        self.gwrates_args['pdet_args']['psds_list'] = gwsnr.psds_list
+        self.gwrates_args["pdet_args"]["pdet_kwargs"] = gwsnr.pdet_kwargs
+        self.gwrates_args["pdet_args"]["psds_list"] = gwsnr.psds_list
 
         return gwsnr.pdet
 
@@ -460,41 +486,65 @@ class GWRATES(CBCSourceParameterDistribution):
         print("# GWRATES initialization input arguments:")
         print("#----------------------------------------\n")
         print("    # GWRATES set up input arguments:")
-        print(f'    npool = {self.npool},')
-        print(f'    z_min = {self.z_min},')
-        print(f'    z_max = {self.z_max},')
+        print(f"    npool = {self.npool},")
+        print(f"    z_min = {self.z_min},")
+        print(f"    z_max = {self.z_max},")
         print(f"    event_type = '{self.event_type}',")
-        print(f'    cosmology = {self.cosmo},')
-        print(f'    pdet_finder = {self.pdet_finder},')
+        print(f"    cosmology = {self.cosmo},")
+        print(f"    pdet_finder = {self.pdet_finder},")
         print("    json_file_names = dict(")
         for key, value in self.json_file_names.items():
-            print(f"        {key} = '{value}',") if isinstance(value, str) else print(f"        {key} = {value},")
+            (
+                print(f"        {key} = '{value}',")
+                if isinstance(value, str)
+                else print(f"        {key} = {value},")
+            )
         print("    ),")
         print(f"    interpolator_directory = '{self.interpolator_directory}',")
         print(f"    ler_directory = '{self.ler_directory}',")
 
-        print("\n    # GWRATES also takes other CBCSourceParameterDistribution class input arguments as kwargs, as follows:")
+        print(
+            "\n    # GWRATES also takes other CBCSourceParameterDistribution class input arguments as kwargs, as follows:"
+        )
         print("    source_priors = dict(")
-        for key, value in self.gwrates_args['source_priors'].items():
-            print(f"        {key} = '{value}',") if isinstance(value, str) else print(f"        {key} = {value},")
+        for key, value in self.gwrates_args["source_priors"].items():
+            (
+                print(f"        {key} = '{value}',")
+                if isinstance(value, str)
+                else print(f"        {key} = {value},")
+            )
         print("    ),")
         print("    source_priors_params = dict(")
-        for key, value in self.gwrates_args['source_priors_params'].items():
-            print(f"        {key} = '{value}',") if isinstance(value, str) else print(f"        {key} = {value},")
+        for key, value in self.gwrates_args["source_priors_params"].items():
+            (
+                print(f"        {key} = '{value}',")
+                if isinstance(value, str)
+                else print(f"        {key} = {value},")
+            )
         print("    ),")
         print(f"    spin_zero = {self.gwrates_args['spin_zero']},")
         print(f"    spin_precession = {self.gwrates_args['spin_precession']},")
-        
-        if 'pdet_args' in self.gwrates_args:
-            print("\n    # GWRATES also takes other gwsnr.GWSNR input arguments as kwargs, as follows:")
-            for key, value in self.gwrates_args['pdet_args'].items():
+
+        if "pdet_args" in self.gwrates_args:
+            print(
+                "\n    # GWRATES also takes other gwsnr.GWSNR input arguments as kwargs, as follows:"
+            )
+            for key, value in self.gwrates_args["pdet_args"].items():
                 if isinstance(value, dict):
                     print(f"    {key} = dict(")
                     for k, v in value.items():
-                        print(f"        {k} = '{v}',") if isinstance(v, str) else print(f"        {k} = {v},")
+                        (
+                            print(f"        {k} = '{v}',")
+                            if isinstance(v, str)
+                            else print(f"        {k} = {v},")
+                        )
                     print("    ),")
                 else:
-                    print(f"    {key} = '{value}',") if isinstance(value, str) else print(f"    {key} = {value},")
+                    (
+                        print(f"    {key} = '{value}',")
+                        if isinstance(value, str)
+                        else print(f"    {key} = {value},")
+                    )
 
     def _store_gwrates_params(self, output_jsonfile=None):
         """
@@ -516,11 +566,24 @@ class GWRATES(CBCSourceParameterDistribution):
         for key, value in param_sampler_dict.items():
             param_sampler_dict[key] = str(value)
 
-        file_name = output_jsonfile if output_jsonfile else self.json_file_names["gwrates_params"]
-        append_json(os.path.join(self.ler_directory, file_name), param_sampler_dict, replace=True)
+        file_name = (
+            output_jsonfile
+            if output_jsonfile
+            else self.json_file_names["gwrates_params"]
+        )
+        append_json(
+            os.path.join(self.ler_directory, file_name),
+            param_sampler_dict,
+            replace=True,
+        )
 
     def gw_cbc_statistics(
-        self, size=100000, batch_size=50000, resume=True, save_batch=False, output_jsonfile=None,
+        self,
+        size=100000,
+        batch_size=50000,
+        resume=True,
+        save_batch=False,
+        output_jsonfile=None,
     ):
         """
         Generate GW source parameters with detection probabilities.
@@ -619,8 +682,10 @@ class GWRATES(CBCSourceParameterDistribution):
         )
 
         return gw_param
-    
-    def _gw_sampling_routine(self, size, output_jsonfile, resume=False, save_batch=True):
+
+    def _gw_sampling_routine(
+        self, size, output_jsonfile, resume=False, save_batch=True
+    ):
         """
         Private helper function to generate GW source parameters for a single batch.
 
@@ -644,8 +709,9 @@ class GWRATES(CBCSourceParameterDistribution):
         """
         print("sampling gw source params...")
         gw_param = self.sample_gw_parameters(size=size)
+
         print("calculating pdet...")
-        pdet = self.pdet_finder(gw_param_dict=gw_param)
+        pdet = self.pdet_finder(gw_param_dict=gw_param.copy())
         gw_param.update(pdet)
 
         return gw_param
@@ -738,7 +804,7 @@ class GWRATES(CBCSourceParameterDistribution):
         >>> gwrates.gw_cbc_statistics()
         >>> total_rate, gw_param = gwrates.gw_rate()
         """
-        
+
         gw_param = self._load_param(gw_param, param_type="gw")
         total_events = len(gw_param["zs"])
 
@@ -756,11 +822,19 @@ class GWRATES(CBCSourceParameterDistribution):
         total_rate = self.rate_function(detectable_events, total_events)
 
         # store all detectable params in json file
-        self._save_detectable_params(output_jsonfile, gw_param, idx_detectable, key_file_name="gw_param_detectable", nan_to_num=False, verbose=True, replace_jsonfile=True)
+        self._save_detectable_params(
+            output_jsonfile,
+            gw_param,
+            idx_detectable,
+            key_file_name="gw_param_detectable",
+            nan_to_num=False,
+            verbose=True,
+            replace_jsonfile=True,
+        )
 
         # append gwrates_param and save it
         self._append_gwrates_param(total_rate)
-        
+
         return total_rate, gw_param
 
     def _load_param(self, param, param_type="gw"):
@@ -884,7 +958,9 @@ class GWRATES(CBCSourceParameterDistribution):
             Total detection rate (yr^-1).
         """
 
-        gwrates_params_path = os.path.join(self.ler_directory, self.json_file_names["gwrates_params"])
+        gwrates_params_path = os.path.join(
+            self.ler_directory, self.json_file_names["gwrates_params"]
+        )
         data = load_json(gwrates_params_path)
         # write the results
         data["detectable_gw_rate_per_year"] = total_rate
@@ -894,7 +970,9 @@ class GWRATES(CBCSourceParameterDistribution):
         self,
         size=100,
         batch_size=50000,
-        stopping_criteria=dict(relative_diff_percentage=0.5, number_of_last_batches_to_check=4),
+        stopping_criteria=dict(
+            relative_diff_percentage=0.5, number_of_last_batches_to_check=4
+        ),
         pdet_threshold=0.5,
         resume=True,
         output_jsonfile="gw_params_n_detectable.json",
@@ -1003,13 +1081,28 @@ class GWRATES(CBCSourceParameterDistribution):
         """
 
         if stopping_criteria is not None:
-            print(f"stopping criteria set to when relative difference of total rate for the last {stopping_criteria['number_of_last_batches_to_check']} cumulative batches is less than {stopping_criteria['relative_diff_percentage']}%.")
-            print("sample collection will stop when the stopping criteria is met and number of detectable events exceeds the specified size.")
+            print(
+                f"stopping criteria set to when relative difference of total rate for the last {stopping_criteria['number_of_last_batches_to_check']} cumulative batches is less than {stopping_criteria['relative_diff_percentage']}%."
+            )
+            print(
+                "sample collection will stop when the stopping criteria is met and number of detectable events exceeds the specified size."
+            )
         else:
-            print("stopping criteria not set. sample collection will stop when number of detectable events exceeds the specified size.")
+            print(
+                "stopping criteria not set. sample collection will stop when number of detectable events exceeds the specified size."
+            )
 
         # initial setup
-        n, events_total, output_path, meta_data_path, buffer_file, continue_condition = self._initial_setup_for_n_event_selection(size, meta_data_file, output_jsonfile, resume, stopping_criteria)
+        (
+            n,
+            events_total,
+            output_path,
+            meta_data_path,
+            buffer_file,
+            continue_condition,
+        ) = self._initial_setup_for_n_event_selection(
+            size, meta_data_file, output_jsonfile, resume, stopping_criteria
+        )
 
         # loop until n==size samples are collected
         while continue_condition:
@@ -1017,7 +1110,10 @@ class GWRATES(CBCSourceParameterDistribution):
             with contextlib.redirect_stdout(None):
                 self.dict_buffer = None  # this is used to store the sampled GW_param in batches when running the sampling_routine
                 gw_param = self._gw_sampling_routine(
-                    size=batch_size, output_jsonfile=buffer_file, save_batch=False,resume=False
+                    size=batch_size,
+                    output_jsonfile=buffer_file,
+                    save_batch=False,
+                    resume=False,
                 )
 
             total_events_in_this_iteration = len(gw_param["zs"])
@@ -1028,36 +1124,51 @@ class GWRATES(CBCSourceParameterDistribution):
             idx_detectable = pdet > pdet_threshold
 
             # store all params in json file
-            self._save_detectable_params(output_jsonfile, gw_param, idx_detectable, key_file_name="n_gw_detectable_events", nan_to_num=False, verbose=False, replace_jsonfile=False)
+            self._save_detectable_params(
+                output_jsonfile,
+                gw_param,
+                idx_detectable,
+                key_file_name="n_gw_detectable_events",
+                nan_to_num=False,
+                verbose=False,
+                replace_jsonfile=False,
+            )
 
             if pdet_type == "boolean":
                 n += np.sum(idx_detectable)
             else:
                 n += np.sum(pdet)
-            events_total += total_events_in_this_iteration              
+            events_total += total_events_in_this_iteration
             total_rate = self.rate_function(n, events_total, verbose=False)
 
             # bookmark
-            buffer_dict = self._append_meta_data(meta_data_path, n, events_total, total_rate)
+            buffer_dict = self._append_meta_data(
+                meta_data_path, n, events_total, total_rate
+            )
 
             continue_condition = self._continue_condition_check(
-                size, 
-                buffer_dict, 
-                stopping_criteria, 
-                initial_continue_condition=continue_condition)
+                size,
+                buffer_dict,
+                stopping_criteria,
+                initial_continue_condition=continue_condition,
+            )
 
         print(f"stored detectable GW params in {output_path}")
         print(f"stored meta data in {meta_data_path}")
 
         if trim_to_size:
-            param_final, total_rate = self._trim_results_to_size(size, output_path, meta_data_path)
+            param_final, total_rate = self._trim_results_to_size(
+                size, output_path, meta_data_path
+            )
         else:
             param_final = get_param_from_json(output_path)
             meta_data = get_param_from_json(meta_data_path)
-            total_rate = meta_data['total_rate'][-1]
+            total_rate = meta_data["total_rate"][-1]
 
         # call self.json_file_names["ler_param"] and for adding the final results
-        data = load_json(self.ler_directory+"/"+self.json_file_names["gwrates_params"])
+        data = load_json(
+            self.ler_directory + "/" + self.json_file_names["gwrates_params"]
+        )
         # write the results
         try:
             data["detectable_gw_rate_per_year"] = total_rate
@@ -1067,11 +1178,17 @@ class GWRATES(CBCSourceParameterDistribution):
             data["detectable_gw_rate_per_year"] = meta["total_rate"][-1]
             data["pdet_type"] = pdet_type
 
-        append_json(self.ler_directory+"/"+self.json_file_names["gwrates_params"], data, replace=True)
+        append_json(
+            self.ler_directory + "/" + self.json_file_names["gwrates_params"],
+            data,
+            replace=True,
+        )
 
         return total_rate, param_final
 
-    def _initial_setup_for_n_event_selection(self, size, meta_data_file, output_jsonfile, resume, stopping_criteria):
+    def _initial_setup_for_n_event_selection(
+        self, size, meta_data_file, output_jsonfile, resume, stopping_criteria
+    ):
         """
         Helper function for selecting_n_gw_detectable_events initialization.
 
@@ -1107,18 +1224,14 @@ class GWRATES(CBCSourceParameterDistribution):
         continue_condition = True
         meta_data_path = os.path.join(self.ler_directory, meta_data_file)
         output_path = os.path.join(self.ler_directory, output_jsonfile)
-        if meta_data_path==output_path:
+        if meta_data_path == output_path:
             raise ValueError("meta_data_file and output_jsonfile cannot be same.")
 
         if not resume:
             n = 0  # iterator
             events_total = 0
-            # the following file will be removed if it exists
-            print(f"removing {output_path} and {meta_data_path} if they exist")
-            if os.path.exists(output_path):
-                os.remove(output_path)
-            if os.path.exists(meta_data_path):
-                os.remove(meta_data_path)
+            remove_file(output_path)
+            remove_file(meta_data_path)
         else:
             # get sample size as size from json file
             if os.path.exists(meta_data_path):
@@ -1128,16 +1241,25 @@ class GWRATES(CBCSourceParameterDistribution):
                 n = meta_data["detectable_events"][-1]
                 events_total = meta_data["events_total"][-1]
 
-                if not n_collected==n:
-                    print("Number of collected events does not match with the number of events in the meta data file.")
+                if not n_collected == n:
+                    print(
+                        "Number of collected events does not match with the number of events in the meta data file."
+                    )
 
                 else:
                     print(f"Resuming from {n} detectable events.")
                     # check if stopping criteria is met
-                    continue_condition = self._continue_condition_check(size, meta_data, stopping_criteria, initial_continue_condition=continue_condition)
+                    continue_condition = self._continue_condition_check(
+                        size,
+                        meta_data,
+                        stopping_criteria,
+                        initial_continue_condition=continue_condition,
+                    )
 
                 if continue_condition is False:
-                    print("Stopping criteria met. There will be no more samples collected.")
+                    print(
+                        "Stopping criteria met. There will be no more samples collected."
+                    )
             else:
                 n = 0
                 events_total = 0
@@ -1145,9 +1267,22 @@ class GWRATES(CBCSourceParameterDistribution):
         buffer_file = "params_buffer.json"
         print("collected number of detectable events = ", n)
 
-        return n, events_total, output_path, meta_data_path, buffer_file, continue_condition
+        return (
+            n,
+            events_total,
+            output_path,
+            meta_data_path,
+            buffer_file,
+            continue_condition,
+        )
 
-    def _continue_condition_check(self, size_to_collect, param_dict, stopping_criteria, initial_continue_condition=True):
+    def _continue_condition_check(
+        self,
+        size_to_collect,
+        param_dict,
+        stopping_criteria,
+        initial_continue_condition=True,
+    ):
         """
         Helper function to check if sampling should continue.
 
@@ -1170,22 +1305,31 @@ class GWRATES(CBCSourceParameterDistribution):
         """
 
         continue_condition = initial_continue_condition
-        already_collected_size = param_dict['detectable_events'][-1]
+        already_collected_size = param_dict["detectable_events"][-1]
         stopping_criteria_met = False
         size_reached = False
 
         # check if stopping criteria is met
         if isinstance(stopping_criteria, dict):
-            total_rates = np.array(param_dict['total_rate'])
-            limit = stopping_criteria['relative_diff_percentage']
-            num_a = stopping_criteria['number_of_last_batches_to_check']
-            
+            total_rates = np.array(param_dict["total_rate"])
+            limit = stopping_criteria["relative_diff_percentage"]
+            num_a = stopping_criteria["number_of_last_batches_to_check"]
+
             if len(total_rates) > num_a:
                 num_a_neg = int(-1 * num_a)
-                percentage_diff = np.abs((total_rates[num_a_neg:] - total_rates[-1]) / total_rates[-1]) * 100
-                print(f"percentage difference of total rate for the last {num_a} cumulative batches = {percentage_diff}")
+                percentage_diff = (
+                    np.abs(
+                        (total_rates[num_a_neg:] - total_rates[-1]) / total_rates[-1]
+                    )
+                    * 100
+                )
+                print(
+                    f"percentage difference of total rate for the last {num_a} cumulative batches = {percentage_diff}"
+                )
                 if not np.any(percentage_diff > limit):
-                    print(rf"stopping criteria of rate relative difference of {limit}% for the last {num_a} cumulative batches reached.")
+                    print(
+                        rf"stopping criteria of rate relative difference of {limit}% for the last {num_a} cumulative batches reached."
+                    )
                     stopping_criteria_met = True
 
         if isinstance(size_to_collect, int):
@@ -1200,7 +1344,7 @@ class GWRATES(CBCSourceParameterDistribution):
         else:
             # Stop when both stopping criteria is met AND size is reached
             continue_condition = not (stopping_criteria_met and size_reached)
-        
+
         return continue_condition
 
     def _trim_results_to_size(self, size, output_path, meta_data_path):
@@ -1240,7 +1384,7 @@ class GWRATES(CBCSourceParameterDistribution):
 
         # adjust the meta data
         # following is to keep rate the same
-        new_events_total = np.round(size*old_events_total/old_detectable_events)
+        new_events_total = np.round(size * old_events_total / old_detectable_events)
         new_total_rate = self.rate_function(size, new_events_total, verbose=False)
         meta_data["events_total"][-1] = new_events_total
         meta_data["detectable_events"][-1] = size
@@ -1279,7 +1423,11 @@ class GWRATES(CBCSourceParameterDistribution):
         """
 
         # save meta data
-        meta_data = dict(events_total=[events_total], detectable_events=[float(n)], total_rate=[total_rate])
+        meta_data = dict(
+            events_total=[events_total],
+            detectable_events=[float(n)],
+            total_rate=[total_rate],
+        )
 
         if os.path.exists(meta_data_path):
             try:
@@ -1334,7 +1482,6 @@ class GWRATES(CBCSourceParameterDistribution):
     def create_new_interpolator(self, value):
         self._create_new_interpolator = value
 
-
     @property
     def npool(self):
         """
@@ -1351,7 +1498,6 @@ class GWRATES(CBCSourceParameterDistribution):
     @npool.setter
     def npool(self, value):
         self._npool = value
-
 
     @property
     def z_min(self):
@@ -1370,7 +1516,6 @@ class GWRATES(CBCSourceParameterDistribution):
     def z_min(self, value):
         self._z_min = value
 
-
     @property
     def z_max(self):
         """
@@ -1387,7 +1532,6 @@ class GWRATES(CBCSourceParameterDistribution):
     @z_max.setter
     def z_max(self, value):
         self._z_max = value
-
 
     @property
     def event_type(self):
@@ -1446,7 +1590,6 @@ class GWRATES(CBCSourceParameterDistribution):
     def json_file_names(self, value):
         self._json_file_names = value
 
-
     @property
     def interpolator_directory(self):
         """
@@ -1463,7 +1606,6 @@ class GWRATES(CBCSourceParameterDistribution):
     @interpolator_directory.setter
     def interpolator_directory(self, value):
         self._interpolator_directory = value
-
 
     @property
     def ler_directory(self):
@@ -1482,7 +1624,6 @@ class GWRATES(CBCSourceParameterDistribution):
     def ler_directory(self, value):
         self._ler_directory = value
 
-
     @property
     def list_of_detectors(self):
         """
@@ -1499,7 +1640,6 @@ class GWRATES(CBCSourceParameterDistribution):
     @list_of_detectors.setter
     def list_of_detectors(self, value):
         self._list_of_detectors = value
-
 
     @property
     def pdet_finder(self):
@@ -1518,7 +1658,6 @@ class GWRATES(CBCSourceParameterDistribution):
     @pdet_finder.setter
     def pdet_finder(self, value):
         self._pdet_finder = value
-
 
     @property
     def gwrates_args(self):

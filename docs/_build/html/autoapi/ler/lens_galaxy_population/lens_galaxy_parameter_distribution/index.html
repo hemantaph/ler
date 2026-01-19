@@ -30,8 +30,8 @@
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="ler.lens_galaxy_population.lens_parameter_sampler" href="../lens_parameter_sampler/index.html" />
-    <link rel="prev" title="ler.lens_galaxy_population.jit_functions" href="../jit_functions/index.html" /> 
+    <link rel="next" title="ler.lens_galaxy_population.mp" href="../mp/index.html" />
+    <link rel="prev" title="ler.lens_galaxy_population.lens_functions" href="../lens_functions/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -70,14 +70,14 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../cross_section_interpolator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.cross_section_interpolator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../jit_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.jit_functions</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lens_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_functions</span></code></a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_galaxy_parameter_distribution</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../lens_parameter_sampler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.lens_parameter_sampler</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../mp/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.mp</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../optical_depth/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.optical_depth</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampler_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.sampler_functions</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
@@ -85,6 +85,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
 </ul>
 
         </div>
@@ -123,7 +130,7 @@ dispersion, axis ratio, rotation angle, shear, and density profile slope.</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../../gw_source_population/index.html#ler.gw_source_population.CBCSourceParameterDistribution" title="ler.gw_source_population.CBCSourceParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code></a></p></li>
 <li><p><a class="reference internal" href="../../image_properties/index.html#ler.image_properties.ImageProperties" title="ler.image_properties.ImageProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageProperties</span></code></a></p></li>
-<li><p><a class="reference internal" href="../index.html#id7" title="ler.lens_galaxy_population.OpticalDepth"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a></p></li>
+<li><p><a class="reference internal" href="../index.html#id0" title="ler.lens_galaxy_population.OpticalDepth"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a></p></li>
 </ul>
 <dl>
 <dt>Usage:</dt><dd><p>Basic workflow example:</p>
@@ -214,7 +221,7 @@ using cross-section based rejection or importance sampling.</p>
 <dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Additional keyword arguments passed to parent classes:</p>
 <p><a class="reference internal" href="../../gw_source_population/index.html#ler.gw_source_population.CBCSourceParameterDistribution" title="ler.gw_source_population.CBCSourceParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code></a>,</p>
 <p><a class="reference internal" href="../../image_properties/index.html#ler.image_properties.ImageProperties" title="ler.image_properties.ImageProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageProperties</span></code></a>,</p>
-<p><a class="reference internal" href="../index.html#id7" title="ler.lens_galaxy_population.OpticalDepth"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a>.</p>
+<p><a class="reference internal" href="../index.html#id0" title="ler.lens_galaxy_population.OpticalDepth"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a>.</p>
 </dd>
 </dl>
 </dd>
@@ -727,8 +734,8 @@ the projected mass distribution.</p></td>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../jit_functions/index.html" class="btn btn-neutral float-left" title="ler.lens_galaxy_population.jit_functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../lens_parameter_sampler/index.html" class="btn btn-neutral float-right" title="ler.lens_galaxy_population.lens_parameter_sampler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../lens_functions/index.html" class="btn btn-neutral float-left" title="ler.lens_galaxy_population.lens_functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../mp/index.html" class="btn btn-neutral float-right" title="ler.lens_galaxy_population.mp" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

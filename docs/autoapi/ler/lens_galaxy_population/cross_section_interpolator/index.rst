@@ -70,7 +70,7 @@ Attributes
 
    
 
-.. py:function:: make_cross_section_reinit(e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid, cs_grid, Da_instance, csunit_to_cs_slope=0.31830988618379075, csunit_to_cs_intercept=-3.2311742677852644e-27)
+.. py:function:: make_cross_section_reinit(e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid, cs_spline_coeff_grid, Da_instance, csunit_to_cs_slope=0.31830988618379075, csunit_to_cs_intercept=-3.2311742677852644e-27)
 
    
    Factory function to create a JIT-compiled cross section calculator.
@@ -96,7 +96,7 @@ Attributes
        **gamma2_grid** : ``numpy.ndarray``
            Grid values for shear component gamma2, shape (n_g2,).
 
-       **cs_grid** : ``numpy.ndarray``
+       **cs_spline_coeff_grid** : ``numpy.ndarray``
            Raw cross section grid data (before spline filtering),
 
            shape (n_e1, n_e2, n_g, n_g1, n_g2).
@@ -139,7 +139,7 @@ Attributes
    >>> from ler.lens_galaxy_population.cross_section_interpolator import make_cross_section_reinit
    >>> cs_func = make_cross_section_reinit(
    ...     e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid,
-   ...     cs_grid, Da_instance
+   ...     cs_spline_coeff_grid, Da_instance
    ... )
    >>> cross_sections = cs_func(zs, zl, sigma, q, phi, gamma, gamma1, gamma2)
 
