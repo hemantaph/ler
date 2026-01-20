@@ -71,7 +71,7 @@ def available_sampler_list():
 # ---------------------------------
 @njit
 def lens_redshift_strongly_lensed_sis_haris_pdf(
-    zl, zs, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+    zl, zs, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 ):
     """
     Compute lens redshift PDF for SIS model (Haris et al. 2018).
@@ -88,7 +88,7 @@ def lens_redshift_strongly_lensed_sis_haris_pdf(
         Redshift of the source.
     cosmo : ``astropy.cosmology``
         Cosmology object for distance calculations. \n
-        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
     Returns
     -------
@@ -98,7 +98,7 @@ def lens_redshift_strongly_lensed_sis_haris_pdf(
     Examples
     --------
     >>> from astropy.cosmology import LambdaCDM
-    >>> cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+    >>> cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
     >>> pdf = lens_redshift_strongly_lensed_sis_haris_pdf(zl=0.5, zs=1.0, cosmo=cosmo)
     >>> print(f"PDF at zl=0.5: {pdf:.4f}")
     PDF at zl=0.5: 1.8750
@@ -110,7 +110,7 @@ def lens_redshift_strongly_lensed_sis_haris_pdf(
 
 
 def lens_redshift_strongly_lensed_sis_haris_rvs(
-    size, zs, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+    size, zs, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 ):
     """
     Sample lens redshifts for SIS model (Haris et al. 2018).
@@ -132,7 +132,7 @@ def lens_redshift_strongly_lensed_sis_haris_rvs(
         default: 10.0
     cosmo : ``astropy.cosmology``
         Cosmology object for distance calculations. \n
-        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
     Returns
     -------
@@ -142,7 +142,7 @@ def lens_redshift_strongly_lensed_sis_haris_rvs(
     Examples
     --------
     >>> from astropy.cosmology import LambdaCDM
-    >>> cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+    >>> cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
     >>> zl_samples = lens_redshift_strongly_lensed_sis_haris_rvs(
     ...     size=1000,
     ...     zs=1.5,

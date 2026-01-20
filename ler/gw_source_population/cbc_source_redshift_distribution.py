@@ -89,7 +89,7 @@ class CBCSourceRedshiftDistribution(object):
         default: None (uses dict(R0=19 * 1e-9, b2=1.6, b3=2.1, b4=30))
     cosmology : ``astropy.cosmology`` or ``None``
         Cosmology for distance calculations. \n
-        default: None (uses LambdaCDM(H0=70, Om0=0.3, Ode0=0.7))
+        default: None (uses LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0))
     directory : ``str``
         Directory to store interpolator JSON files. \n
         default: './interpolator_json'
@@ -179,7 +179,7 @@ class CBCSourceRedshiftDistribution(object):
         self.directory = directory
         self.event_type = event_type
         # if None is passed, use the default cosmology
-        self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+        self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
         # setting up the interpolator creation parameters
         self.create_new_interpolator = self._setup_decision_dictionary(
@@ -1138,7 +1138,7 @@ class CBCSourceRedshiftDistribution(object):
         -------
         cosmo : ``astropy.cosmology``
             Cosmology used for redshift-distance conversions. \n
-            default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+            default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
         """
         return self._cosmo
 

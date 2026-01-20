@@ -18,11 +18,9 @@ Copyright (C) 2026 Phurailatpam Hemantakumar. Distributed under MIT License.
 import numpy as np
 from numba import njit, prange
 
-from .lens_functions import phi_cut_SIE, phi_q2_ellipticity, cross_section
+from .lens_functions import cross_section
 
-from ..utils import inverse_transform_sampler, load_pickle
-
-from .cross_section_interpolator import make_cross_section_reinit
+from ..utils import load_pickle
 
 # Constants for cross-section unit scaling (1/pi and numerical offset)
 CS_UNIT_SLOPE = 0.31830988618379075
@@ -172,7 +170,7 @@ def lens_redshift_strongly_lensed_mp(params):
     # Unscale lens redshifts
     zl_array = params[1] * zs
 
-    result_array = []
+    result_array = np.zeros(len(zl_array))
     for i, zl in enumerate(zl_array):
         # Sample velocity dispersion (uniform for importance sampling)
         sigma = np.random.uniform(sigma_min, sigma_max, integration_size)
@@ -198,7 +196,7 @@ def lens_redshift_strongly_lensed_mp(params):
         valid_idx = np.logical_not(np.isinf(area_array))
         valid_idx &= (area_array > 0)
         if valid_idx.sum() == 0:
-            result_array.append(0.)
+            result_array[i] = 0.
             continue
 
         # Compute number density weights (velocity dispersion distribution)
@@ -209,7 +207,7 @@ def lens_redshift_strongly_lensed_mp(params):
 
         # Compute optical depth contribution (importance sampling correction)
         result = (sigma_max - sigma_min) * np.average(area_array[valid_idx] * phi_sigma[valid_idx] * dVcdz) / (4 * np.pi)
-        result_array.append(result)
+        result_array[i] = result
     
     return worker_idx, np.array(result_array)
 

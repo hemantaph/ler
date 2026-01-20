@@ -1,14 +1,12 @@
-setuptools>=67.8.0
-numpy>=1.18
-numba>=0.57.1
-bilby>=1.0.2
-gwsnr>=0.3.0
-scipy>=1.9.0
+setuptools>=65.5.0
+matplotlib>=3.4.2
+numpy<=1.26.4
+numba>=0.60.0
+gwsnr>=0.3.8
+importlib_resources
 lenstronomy>=1.10.4
 astropy>=5.1
 tqdm>=4.64.1
 pointpats>=2.3
 shapely>=2.0.1
-dill>=0.3.6
-# gwcosmo
-#gwcosmo@git+https://git.ligo.org/lscsoft/gwcosmo.git@v1.0.0
+corner>=2.2.3

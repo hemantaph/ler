@@ -215,7 +215,7 @@ def merger_rate_density_bbh_primordial_ken2022_function(zs, cosmology=None, n0=0
         Source redshifts.
     cosmology : ``astropy.cosmology`` or ``None``
         Cosmology object for age calculations. \n
-        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
     n0 : ``float``
         Normalization constant. \n
         default: 0.044e-9
@@ -234,7 +234,7 @@ def merger_rate_density_bbh_primordial_ken2022_function(zs, cosmology=None, n0=0
     >>> rate_density = merger_rate_density_bbh_primordial_ken2022(zs=np.array([0.1]))
     """
     if cosmology is None:
-        cosmology = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+        cosmology = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
     rate_density = n0 * (cosmology.age(z=zs).value / t0) ** (-34 / 37)
     return rate_density

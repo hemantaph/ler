@@ -83,7 +83,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         default: None
     cosmology : ``astropy.cosmology`` or ``None``
         Cosmology to use for distance calculations. \n
-        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
     spin_zero : ``bool``
         If True, spin parameters are set to zero (no spin sampling). \n
         default: False
@@ -216,7 +216,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
     Dictionary of prior sampler functions' input parameters.
     """
 
-    cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+    cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
     """``astropy.cosmology`` \n
     Cosmology to use.
     """
@@ -242,7 +242,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         # set attributes
         self.z_min = z_min
         self.z_max = z_max
-        self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+        self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
         # note that self.cosmo is initialized in the super class
         self.spin_zero = spin_zero
         self.spin_precession = spin_precession

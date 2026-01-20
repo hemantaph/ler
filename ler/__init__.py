@@ -1,12 +1,15 @@
 """
 ler: LVK (LIGO-Virgo-KAGRA collaboration) Event (compact-binary mergers) Rate calculator and simulator
 """
+
 # In your package __init__.py
 import os
 import multiprocessing as mp
 import warnings
+
 # disable OpenMP warnings
-os.environ['KMP_WARNINGS'] = 'off'
+os.environ["KMP_WARNINGS"] = "off"
+
 
 def set_multiprocessing_start_method():
     """
@@ -17,12 +20,14 @@ def set_multiprocessing_start_method():
     method = None
 
     # POSIX = Linux, Mac
-    if os.name == 'posix':
+    if os.name == "posix":
         # User override: LER_USE_SPAWN=True
         use_spawn = os.environ.get("LER_USE_SPAWN", "False").lower() == "true"
         if use_spawn:
             method = "spawn"
-            print("ler: Setting multiprocessing start method to 'spawn' per environment variable.")
+            print(
+                "ler: Setting multiprocessing start method to 'spawn' per environment variable."
+            )
         else:
             method = "fork"
             # print(
@@ -58,6 +63,7 @@ def set_multiprocessing_start_method():
         # For Windows, default is already 'spawn', nothing to do.
         pass
 
+
 # Call the function on package import
 set_multiprocessing_start_method()
 
@@ -69,17 +75,15 @@ from .rates import GWRATES
 from ._version import __version__
 
 # Package metadata
-__all__ = ['LeR', 'rates']
-__author__ = 'Hemantakumar Phurailatpam <hemantaphurailatpam@gmail.com>'
+__all__ = ["LeR", "rates"]
+__author__ = "Hemantakumar Phurailatpam <hemantaphurailatpam@gmail.com>"
 __license__ = "MIT"
 __email__ = "hemantaphurailatpam@gmail.com"
 __maintainer__ = "Hemantakumar Phurailatpam"
 __status__ = "Development"
 __url__ = "https://github.com/hemantaph/ler"
 __description__ = "ler is a statistical based python package whose core function is to calculate detectable rates of gravitational waves events (both lensed and un-lensed events)."
-__version_info__ = tuple(map(int, __version__.split('.')))
+__version_info__ = tuple(map(int, __version__.split(".")))
 
 warnings.filterwarnings("ignore", "Wswiglal-redir-stdio")
 logging.getLogger(__name__).addHandler(logging.NullHandler())
-
-

@@ -99,7 +99,7 @@ class LeR(LensGalaxyParameterDistribution):
         default: 'epl_shear_galaxy'
     cosmology : ``astropy.cosmology``
         Cosmology to use for the calculation. \n
-        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
     pdet_finder : ``function`` or ``None``
         Custom detection probability finder function. \n
         If None, uses gwsnr's pdet calculator. \n
@@ -266,7 +266,7 @@ class LeR(LensGalaxyParameterDistribution):
         self.z_max = z_max
         self.event_type = event_type
         self.lens_type = lens_type
-        self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+        self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
         # init json file names where datas will be stored
         self.json_file_names = dict(
@@ -2475,7 +2475,7 @@ class LeR(LensGalaxyParameterDistribution):
         -------
         cosmo : ``astropy.cosmology``
             Cosmology used for luminosity distance and comoving volume calculations. \n
-            default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+            default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
         """
         return self._cosmo
 

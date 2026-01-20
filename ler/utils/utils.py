@@ -1283,10 +1283,14 @@ def pdf_cubic_spline_interpolator2d_array(
     result : `float`
         Interpolated value of snr_partialscaled.
     """
-    result_array = []
-    for i in range(len(xnew_array)):
+    n_samples = len(xnew_array)
+    result_array = np.empty(n_samples, dtype=np.float64)
+    xnew_single = np.empty(1, dtype=np.float64)
+    
+    for i in range(n_samples):
         xnew = xnew_array[i]
         ynew = ynew_array[i]
+        xnew_single[0] = xnew
 
         len_y = len(y)
         # find the index nearest to the ynew in y
@@ -1296,21 +1300,21 @@ def pdf_cubic_spline_interpolator2d_array(
             if ynew > y[y_idx] + (y[y_idx + 1] - y[y_idx]) / 2:
                 y_idx = y_idx + 1
             result = pdf_cubic_spline_interpolator(
-                np.array([xnew]), norm_array[y_idx], coefficients[y_idx], x[y_idx]
+                xnew_single, norm_array[y_idx], coefficients[y_idx], x[y_idx]
             )[0]
         elif y_idx == 0:  # lower end point
             result = pdf_cubic_spline_interpolator(
-                np.array([xnew]), norm_array[0], coefficients[0], x[0]
+                xnew_single, norm_array[0], coefficients[0], x[0]
             )[0]
             # print("a")
         elif y_idx + 1 == len_y:  # upper end point
             result = pdf_cubic_spline_interpolator(
-                np.array([xnew]), norm_array[-1], coefficients[-1], x[-1]
+                xnew_single, norm_array[-1], coefficients[-1], x[-1]
             )[0]
             # print("b")
         elif y_idx + 2 == len_y:  # upper end point
             result = pdf_cubic_spline_interpolator(
-                np.array([xnew]), norm_array[-1], coefficients[-1], x[-1]
+                xnew_single, norm_array[-1], coefficients[-1], x[-1]
             )[0]
             # print("b")
         else:
@@ -1322,28 +1326,29 @@ def pdf_cubic_spline_interpolator2d_array(
             # print("c")
             y1, y2, y3, y4 = y[y_idx1], y[y_idx2], y[y_idx3], y[y_idx4]
             z1 = pdf_cubic_spline_interpolator(
-                np.array([xnew]), norm_array[y_idx1], coefficients[y_idx1], x[y_idx1]
+                xnew_single, norm_array[y_idx1], coefficients[y_idx1], x[y_idx1]
             )[0]
             z2 = pdf_cubic_spline_interpolator(
-                np.array([xnew]), norm_array[y_idx2], coefficients[y_idx2], x[y_idx2]
+                xnew_single, norm_array[y_idx2], coefficients[y_idx2], x[y_idx2]
             )[0]
             z3 = pdf_cubic_spline_interpolator(
-                np.array([xnew]), norm_array[y_idx3], coefficients[y_idx3], x[y_idx3]
+                xnew_single, norm_array[y_idx3], coefficients[y_idx3], x[y_idx3]
             )[0]
             z4 = pdf_cubic_spline_interpolator(
-                np.array([xnew]), norm_array[y_idx4], coefficients[y_idx4], x[y_idx4]
+                xnew_single, norm_array[y_idx4], coefficients[y_idx4], x[y_idx4]
             )[0]
 
             coeff = coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4)
             matrixD = coeff[coeff_low:coeff_high]
-            matrixB = np.array([ynew**3, ynew**2, ynew, 1])
+            matrixB = np.array([ynew**3, ynew**2, ynew, 1.0])
             result = np.dot(matrixB, matrixD)
 
-        result_array.append(result)
+        result_array[i] = result
 
-    result_array = np.array(result_array)
-    idx = result_array < 0.0
-    result_array[idx] = 0.0
+    # Clip negative values to zero
+    for i in range(n_samples):
+        if result_array[i] < 0.0:
+            result_array[i] = 0.0
 
     return result_array
 
@@ -1371,10 +1376,14 @@ def cubic_spline_interpolator2d_array(xnew_array, ynew_array, coefficients, x, y
     result : `float`
         Interpolated value of snr_partialscaled.
     """
-    result_array = []
-    for i in range(len(xnew_array)):
+    n_samples = len(xnew_array)
+    result_array = np.empty(n_samples, dtype=np.float64)
+    xnew_single = np.empty(1, dtype=np.float64)
+    
+    for i in range(n_samples):
         xnew = xnew_array[i]
         ynew = ynew_array[i]
+        xnew_single[0] = xnew
 
         len_y = len(y)
         # find the index nearest to the ynew in y
@@ -1383,26 +1392,24 @@ def cubic_spline_interpolator2d_array(xnew_array, ynew_array, coefficients, x, y
         if (ynew > y[0]) and (ynew < y[1]):
             if ynew > y[y_idx] + (y[y_idx + 1] - y[y_idx]) / 2:
                 y_idx = y_idx + 1
-            result_array.append(
-                cubic_spline_interpolator(
-                    np.array([xnew]), coefficients[y_idx], x[y_idx]
-                )[0]
-            )
+            result_array[i] = cubic_spline_interpolator(
+                xnew_single, coefficients[y_idx], x[y_idx]
+            )[0]
             # print(f"a) idx = {y_idx}")
         elif y_idx == 0:  # lower end point
-            result_array.append(
-                cubic_spline_interpolator(np.array([xnew]), coefficients[0], x[0])[0]
-            )
+            result_array[i] = cubic_spline_interpolator(
+                xnew_single, coefficients[0], x[0]
+            )[0]
             # print(f"a) idx = {y_idx}")
         elif y_idx + 1 == len_y:  # upper end point
-            result_array.append(
-                cubic_spline_interpolator(np.array([xnew]), coefficients[-1], x[-1])[0]
-            )
+            result_array[i] = cubic_spline_interpolator(
+                xnew_single, coefficients[-1], x[-1]
+            )[0]
             # print(f"b) idx = {y_idx}")
         elif y_idx + 2 == len_y:  # upper end point
-            result_array.append(
-                cubic_spline_interpolator(np.array([xnew]), coefficients[-1], x[-1])[0]
-            )
+            result_array[i] = cubic_spline_interpolator(
+                xnew_single, coefficients[-1], x[-1]
+            )[0]
             # print(f"c) idx = {y_idx}")
         else:
             y_idx1 = y_idx - 1
@@ -1413,24 +1420,24 @@ def cubic_spline_interpolator2d_array(xnew_array, ynew_array, coefficients, x, y
             # print(f"d) idx1, idx2, idx3, idx4 = {y_idx1}, {y_idx2}, {y_idx3}, {y_idx4}")
             y1, y2, y3, y4 = y[y_idx1], y[y_idx2], y[y_idx3], y[y_idx4]
             z1 = cubic_spline_interpolator(
-                np.array([xnew]), coefficients[y_idx1], x[y_idx1]
+                xnew_single, coefficients[y_idx1], x[y_idx1]
             )[0]
             z2 = cubic_spline_interpolator(
-                np.array([xnew]), coefficients[y_idx2], x[y_idx2]
+                xnew_single, coefficients[y_idx2], x[y_idx2]
             )[0]
             z3 = cubic_spline_interpolator(
-                np.array([xnew]), coefficients[y_idx3], x[y_idx3]
+                xnew_single, coefficients[y_idx3], x[y_idx3]
             )[0]
             z4 = cubic_spline_interpolator(
-                np.array([xnew]), coefficients[y_idx4], x[y_idx4]
+                xnew_single, coefficients[y_idx4], x[y_idx4]
             )[0]
 
             coeff = coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4)
             matrixD = coeff[coeff_low:coeff_high]
-            matrixB = np.array([ynew**3, ynew**2, ynew, 1])
-            result_array.append(np.dot(matrixB, matrixD))
+            matrixB = np.array([ynew**3, ynew**2, ynew, 1.0])
+            result_array[i] = np.dot(matrixB, matrixD)
 
-    return np.array(result_array)
+    return result_array
 
 
 @njit

@@ -16,7 +16,7 @@ ler = GWRATES(
     event_type='BBH', # event type
     size=100000, # number of events to simulate
     batch_size=50000, # batch size
-    cosmology=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), # cosmology
+    cosmology=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), # cosmology
     snr_finder=None, # snr calculator from 'gwsnr' package will be used
     pdet_finder=None,  # will not be consider unless specified
     list_of_detectors=None, # list of detectors that will be considered when calculating snr or pdet for lensed events. if None, all the detectors from 'gwsnr' will be considered

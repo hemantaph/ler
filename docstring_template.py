@@ -327,7 +327,7 @@ class TemplateClass:
         -------
         cosmology_property : ``astropy.cosmology``
             Cosmology used for distance and volume calculations. \n
-            default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+            default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
         """
         return self._cosmology_property
 

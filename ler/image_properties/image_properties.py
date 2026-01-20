@@ -30,7 +30,7 @@ import numpy as np
 from numba import njit
 
 from astropy.cosmology import LambdaCDM
-cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
 # the following .py file will be called if they are not given in the class initialization
 from .multiprocessing_routine import solve_lens_equation
@@ -71,7 +71,7 @@ class ImageProperties():
     cosmology : ``astropy.cosmology`` or ``None``
         Cosmology for distance calculations. \n
         If None, uses default LambdaCDM. \n
-        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
     spin_zero : ``bool``
         If True, spin parameters are set to zero (no spin sampling). \n
         default: False
@@ -620,7 +620,7 @@ class ImageProperties():
         -------
         cosmo : ``astropy.cosmology``
             Cosmology used for distance calculations. \n
-            default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+            default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
         """
         return self._cosmo
 

@@ -19,7 +19,7 @@ def redshift_optimal_spacing(z_min, z_max, resolution):
     zs = np.concatenate([z_low, z_high])
     return zs
 
-def luminosity_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory="./interpolator_json", create_new=False, resolution=500, get_attribute=True):
+def luminosity_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory="./interpolator_json", create_new=False, resolution=500, get_attribute=True):
     """
     Function to create a lookup table for the luminosity distance wrt redshift.
 
@@ -74,7 +74,7 @@ def luminosity_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, O
     Examples
     ----------
     >>> from ler.gw_source_population import SourceGalaxyPopulationModel
-    >>> ler = SourceGalaxyPopulationModel()  # with default LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+    >>> ler = SourceGalaxyPopulationModel()  # with default LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
     >>> luminosity_distance = ler.luminosity_distance(1.)
     >>> luminosity_distance = ler.luminosity_distance.function(np.array([1., 2.]))
     >>> redshift = ler.luminosity_distance.function_inverse(np.array([100., 200.]))
@@ -83,7 +83,7 @@ def luminosity_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, O
     return luminosity_distance_object if get_attribute else luminosity_distance_object(z)
 
 
-def differential_comoving_volume(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory="./interpolator_json", create_new=False, resolution=500, get_attribute=True):
+def differential_comoving_volume(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory="./interpolator_json", create_new=False, resolution=500, get_attribute=True):
         
     z_min = 0.001 if z_min == 0. else z_min
 
@@ -122,14 +122,14 @@ def differential_comoving_volume(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM
     Examples
     ----------
     >>> from ler.len_galaxy_population import OpticalDepth
-    >>> ler = OpticalDepth()  # with default LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+    >>> ler = OpticalDepth()  # with default LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
     >>> differential_comoving_volume = ler.differential_comoving_volume(1.)
     >>> differential_comoving_volume = ler.differential_comoving_volume.function(np.array([1., 2.]))
     """
 
     return differential_comoving_volume_object if get_attribute else differential_comoving_volume_object(z)
 
-def comoving_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory="./interpolator_json", create_new=False, resolution=500, get_attribute=True):
+def comoving_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory="./interpolator_json", create_new=False, resolution=500, get_attribute=True):
 
     z_min = 0.001 if z_min == 0. else z_min
     zs = redshift_optimal_spacing(z_min, z_max, resolution)
@@ -172,7 +172,7 @@ def comoving_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, Om0
     Examples
     ----------
     >>> from ler.len_galaxy_population import OpticalDepth
-    >>> ler = OpticalDepth()  # with default LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+    >>> ler = OpticalDepth()  # with default LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
     >>> comoving_distance = ler.comoving_distance(1.)
     >>> comoving_distance = ler.comoving_distance.function(np.array([1., 2.]))
     >>> redshift = ler.comoving_distance.function_inverse(np.array([100., 200.]))
@@ -180,7 +180,7 @@ def comoving_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, Om0
 
     return comoving_distance_object if get_attribute else comoving_distance_object(z)
 
-def angular_diameter_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory="./interpolator_json", create_new=False, resolution=500, get_attribute=True):    
+def angular_diameter_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory="./interpolator_json", create_new=False, resolution=500, get_attribute=True):    
 
     z_min = 0.001 if z_min == 0. else z_min
     zs = redshift_optimal_spacing(z_min, z_max, resolution)
@@ -224,7 +224,7 @@ def angular_diameter_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0
     Examples
     ----------
     >>> from ler.len_galaxy_population import OpticalDepth
-    >>> ler = OpticalDepth()  # with default LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+    >>> ler = OpticalDepth()  # with default LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
     >>> angular_diameter_distance = ler.angular_diameter_distance(1.)
     >>> angular_diameter_distance = ler.angular_diameter_distance.function(np.array([1., 2.]))
     >>> redshift = ler.angular_diameter_distance.function_inverse(np.array([100., 200.]))
@@ -232,7 +232,7 @@ def angular_diameter_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0
 
     return angular_diameter_distance_object if get_attribute else angular_diameter_distance_object(z)
 
-def angular_diameter_distance_z1z2(z1=None, z2=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory="./interpolator_json", create_new=False, resolution=500, get_attribute=True):
+def angular_diameter_distance_z1z2(z1=None, z2=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory="./interpolator_json", create_new=False, resolution=500, get_attribute=True):
 
     z_min = 0.001 if z_min == 0. else z_min
 
@@ -276,7 +276,7 @@ def angular_diameter_distance_z1z2(z1=None, z2=None, z_min=0.001, z_max=10., cos
     Examples
     ----------
     >>> from ler.len_galaxy_population import OpticalDepth
-    >>> ler = OpticalDepth()  # with default LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+    >>> ler = OpticalDepth()  # with default LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
     >>> angular_diameter_distance_z1z2 = ler.angular_diameter_distance_z1z2(1., 2.)
     >>> angular_diameter_distance_z1z2 = ler.angular_diameter_distance_z1z2.function(np.array([1., 2.]), np.array([1., 2.]))
     """

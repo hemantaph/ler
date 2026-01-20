@@ -36,7 +36,7 @@ from .lens_functions import phi_q2_ellipticity
 C_LIGHT = 299792.458  # km/s
 
 
-@njit(inline="always")
+@njit
 def _bspline3(t):
     """
     Evaluate the centered cubic B-spline basis function B3(t).
@@ -65,7 +65,7 @@ def _bspline3(t):
         return 0.0
 
 
-@njit(inline="always")
+@njit
 def _clamp_int(i, n):
     """
     Clamp an index to valid array bounds using 'nearest' boundary mode.
@@ -92,7 +92,7 @@ def _clamp_int(i, n):
     return i
 
 
-@njit(inline="always")
+@njit
 def _physical_to_index(x, x0, x1, n):
     """
     Convert a physical coordinate to a fractional grid index.
@@ -117,7 +117,8 @@ def _physical_to_index(x, x0, x1, n):
     return (x - x0) * (n - 1) / (x1 - x0)
 
 
-@njit(parallel=True)
+# @njit(parallel=True)
+@njit
 def _map_coordinates_5d_cubic_nearest(coeff, ie1, ie2, ig, ig1, ig2):
     """
     Perform 5D cubic B-spline interpolation on prefiltered coefficients.
