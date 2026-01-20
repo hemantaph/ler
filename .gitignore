@@ -1,5 +1,11 @@
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
+# IPython/Jupyter
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# PyPI configuration
+.pypirc
 
 # ignore json
 *.json
