@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.lens_galaxy_population.sampler_functions &mdash; ler 0.4.3 documentation</title>
+  <title>ler.lens_galaxy_population.sampler_functions &mdash; ler 0.4.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
@@ -18,7 +18,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="../../../_static/documentation_options.js?v=03f3338f"></script>
       <script src="../../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -179,7 +179,7 @@
 <div class="viewcode-block" id="lens_redshift_strongly_lensed_sis_haris_pdf">
 <a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/sampler_functions/index.html#ler.lens_galaxy_population.lens_redshift_strongly_lensed_sis_haris_pdf">[docs]</a>
 <span class="k">def</span> <span class="nf">lens_redshift_strongly_lensed_sis_haris_pdf</span><span class="p">(</span>
-    <span class="n">zl</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">cosmo</span><span class="o">=</span><span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">zl</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">cosmo</span><span class="o">=</span><span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute lens redshift PDF for SIS model (Haris et al. 2018).</span>
@@ -196,7 +196,7 @@
 <span class="sd">        Redshift of the source.</span>
 <span class="sd">    cosmo : ``astropy.cosmology``</span>
 <span class="sd">        Cosmology object for distance calculations. \n</span>
-<span class="sd">        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</span>
+<span class="sd">        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -206,7 +206,7 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; from astropy.cosmology import LambdaCDM</span>
-<span class="sd">    &gt;&gt;&gt; cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</span>
+<span class="sd">    &gt;&gt;&gt; cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)</span>
 <span class="sd">    &gt;&gt;&gt; pdf = lens_redshift_strongly_lensed_sis_haris_pdf(zl=0.5, zs=1.0, cosmo=cosmo)</span>
 <span class="sd">    &gt;&gt;&gt; print(f&quot;PDF at zl=0.5: {pdf:.4f}&quot;)</span>
 <span class="sd">    PDF at zl=0.5: 1.8750</span>
@@ -221,7 +221,7 @@
 <div class="viewcode-block" id="lens_redshift_strongly_lensed_sis_haris_rvs">
 <a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/sampler_functions/index.html#ler.lens_galaxy_population.lens_redshift_strongly_lensed_sis_haris_rvs">[docs]</a>
 <span class="k">def</span> <span class="nf">lens_redshift_strongly_lensed_sis_haris_rvs</span><span class="p">(</span>
-    <span class="n">size</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">cosmo</span><span class="o">=</span><span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">size</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">cosmo</span><span class="o">=</span><span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sample lens redshifts for SIS model (Haris et al. 2018).</span>
@@ -243,7 +243,7 @@
 <span class="sd">        default: 10.0</span>
 <span class="sd">    cosmo : ``astropy.cosmology``</span>
 <span class="sd">        Cosmology object for distance calculations. \n</span>
-<span class="sd">        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</span>
+<span class="sd">        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -253,7 +253,7 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; from astropy.cosmology import LambdaCDM</span>
-<span class="sd">    &gt;&gt;&gt; cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</span>
+<span class="sd">    &gt;&gt;&gt; cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)</span>
 <span class="sd">    &gt;&gt;&gt; zl_samples = lens_redshift_strongly_lensed_sis_haris_rvs(</span>
 <span class="sd">    ...     size=1000,</span>
 <span class="sd">    ...     zs=1.5,</span>

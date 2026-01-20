@@ -59,12 +59,8 @@ Functions
    ler.lens_galaxy_population.phi_q2_ellipticity
    ler.lens_galaxy_population.cross_section
    ler.lens_galaxy_population.cross_section_mp
-   ler.lens_galaxy_population.phi_cut_SIE
-   ler.lens_galaxy_population.phi_q2_ellipticity
    ler.lens_galaxy_population.cross_section
-   ler.lens_galaxy_population.inverse_transform_sampler
    ler.lens_galaxy_population.load_pickle
-   ler.lens_galaxy_population.make_cross_section_reinit
    ler.lens_galaxy_population.lens_redshift_strongly_lensed_njit
    ler.lens_galaxy_population.lens_redshift_strongly_lensed_mp
    ler.lens_galaxy_population.cross_section_unit_mp
@@ -1923,7 +1919,7 @@ Attributes
        **cosmology** : ``astropy.cosmology`` or ``None``
            Cosmology to use for distance calculations.
 
-           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
        **spin_zero** : ``bool``
            If True, spin parameters are set to zero (no spin sampling).
@@ -3429,7 +3425,7 @@ Attributes
 
            If None, uses default LambdaCDM.
 
-           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
        **spin_zero** : ``bool``
            If True, spin parameters are set to zero (no spin sampling).
@@ -3735,7 +3731,7 @@ Attributes
           **cosmo** : ``astropy.cosmology``
               Cosmology used for distance calculations.
 
-              default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+              default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
 
 
@@ -4916,16 +4912,16 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: comoving_distance(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
+.. py:function:: comoving_distance(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
 
 
-.. py:function:: angular_diameter_distance(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
+.. py:function:: angular_diameter_distance(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
 
 
-.. py:function:: angular_diameter_distance_z1z2(z1=None, z2=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
+.. py:function:: angular_diameter_distance_z1z2(z1=None, z2=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
 
 
-.. py:function:: differential_comoving_volume(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
+.. py:function:: differential_comoving_volume(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
 
 
 .. py:function:: redshift_optimal_spacing(z_min, z_max, resolution)
@@ -6835,80 +6831,6 @@ Attributes
           !! processed by numpydoc !!
 
 
-.. py:function:: phi_cut_SIE(q)
-
-   
-   Calculate cross-section scaling factor for SIE lens galaxy from SIS.
-
-   Computes the ratio of the SIE (Singular Isothermal Ellipsoid) cross-section
-   to the SIS (Singular Isothermal Sphere) cross-section for a given axis ratio.
-
-   :Parameters:
-
-       **q** : ``numpy.ndarray``
-           Axis ratio of the lens galaxy (0 < q <= 1).
-
-   :Returns:
-
-       **result** : ``numpy.ndarray``
-           Scaling factor (normalized to pi).
-
-           For q -> 1 (spherical): returns 1.0
-
-           For q -> 0 (highly elliptical): returns ~0.
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: phi_q2_ellipticity(phi, q)
-
-   
-   Convert position angle and axis ratio to ellipticity components.
-
-
-   :Parameters:
-
-       **phi** : ``numpy.ndarray``
-           Position angle of the major axis (radians).
-
-       **q** : ``numpy.ndarray``
-           Axis ratio (0 < q <= 1).
-
-   :Returns:
-
-       **e1** : ``numpy.ndarray``
-           First ellipticity component.
-
-       **e2** : ``numpy.ndarray``
-           Second ellipticity component.
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
 .. py:function:: cross_section(theta_E, e1, e2, gamma, gamma1, gamma2)
 
    
@@ -6959,43 +6881,6 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: inverse_transform_sampler(size, cdf, x)
-
-   
-   Function to sample from the inverse transform method.
-
-
-   :Parameters:
-
-       **size** : `int`
-           number of samples.
-
-       **cdf** : `numpy.ndarray`
-           cdf values.
-
-       **x** : `numpy.ndarray`
-           x values.
-
-   :Returns:
-
-       **samples** : `numpy.ndarray`
-           samples from the cdf.
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
 .. py:function:: load_pickle(file_name)
 
    
@@ -7021,84 +6906,6 @@ Attributes
 
 
 
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: make_cross_section_reinit(e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid, cs_spline_coeff_grid, Da_instance, csunit_to_cs_slope=0.31830988618379075, csunit_to_cs_intercept=-3.2311742677852644e-27)
-
-   
-   Factory function to create a JIT-compiled cross section calculator.
-
-   This function precomputes B-spline coefficients and creates a closure
-   that captures the grid parameters, returning a fast Numba-compiled
-   function for computing cross sections.
-
-   :Parameters:
-
-       **e1_grid** : ``numpy.ndarray``
-           Grid values for ellipticity component e1, shape (n_e1,).
-
-       **e2_grid** : ``numpy.ndarray``
-           Grid values for ellipticity component e2, shape (n_e2,).
-
-       **gamma_grid** : ``numpy.ndarray``
-           Grid values for density slope gamma, shape (n_g,).
-
-       **gamma1_grid** : ``numpy.ndarray``
-           Grid values for shear component gamma1, shape (n_g1,).
-
-       **gamma2_grid** : ``numpy.ndarray``
-           Grid values for shear component gamma2, shape (n_g2,).
-
-       **cs_spline_coeff_grid** : ``numpy.ndarray``
-           Raw cross section grid data (before spline filtering),
-
-           shape (n_e1, n_e2, n_g, n_g1, n_g2).
-
-       **Da_instance** : ``callable``
-           Angular diameter distance function.
-
-           Signature: ``Da_instance(z) -> distance``
-
-       **csunit_to_cs_slope** : ``float``
-           Slope for affine calibration from unit cross section.
-
-           default: 0.31830988618379075
-
-       **csunit_to_cs_intercept** : ``float``
-           Intercept for affine calibration from unit cross section.
-
-           default: -3.2311742677852644e-27
-
-   :Returns:
-
-       **cross_section_reinit** : ``callable``
-           JIT-compiled function with signature:
-
-           ``cross_section_reinit(zs, zl, sigma, q, phi, gamma, gamma1, gamma2)``
-
-           Returns cross sections as ``numpy.ndarray`` of shape (N,).
-
-
-
-
-
-
-
-
-
-
-   .. rubric:: Examples
-
-   >>> from ler.lens_galaxy_population.cross_section_interpolator import make_cross_section_reinit
-   >>> cs_func = make_cross_section_reinit(
-   ...     e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid,
-   ...     cs_spline_coeff_grid, Da_instance
-   ... )
-   >>> cross_sections = cs_func(zs, zl, sigma, q, phi, gamma, gamma1, gamma2)
 
 
 
@@ -7433,7 +7240,7 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: lens_redshift_strongly_lensed_sis_haris_pdf(zl, zs, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7))
+.. py:function:: lens_redshift_strongly_lensed_sis_haris_pdf(zl, zs, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0))
 
    
    Compute lens redshift PDF for SIS model (Haris et al. 2018).
@@ -7453,7 +7260,7 @@ Attributes
        **cosmo** : ``astropy.cosmology``
            Cosmology object for distance calculations.
 
-           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
    :Returns:
 
@@ -7472,7 +7279,7 @@ Attributes
    .. rubric:: Examples
 
    >>> from astropy.cosmology import LambdaCDM
-   >>> cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+   >>> cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
    >>> pdf = lens_redshift_strongly_lensed_sis_haris_pdf(zl=0.5, zs=1.0, cosmo=cosmo)
    >>> print(f"PDF at zl=0.5: {pdf:.4f}")
    PDF at zl=0.5: 1.8750
@@ -7482,7 +7289,7 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: lens_redshift_strongly_lensed_sis_haris_rvs(size, zs, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7))
+.. py:function:: lens_redshift_strongly_lensed_sis_haris_rvs(size, zs, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0))
 
    
    Sample lens redshifts for SIS model (Haris et al. 2018).
@@ -7511,7 +7318,7 @@ Attributes
        **cosmo** : ``astropy.cosmology``
            Cosmology object for distance calculations.
 
-           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
    :Returns:
 
@@ -7530,7 +7337,7 @@ Attributes
    .. rubric:: Examples
 
    >>> from astropy.cosmology import LambdaCDM
-   >>> cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+   >>> cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
    >>> zl_samples = lens_redshift_strongly_lensed_sis_haris_rvs(
    ...     size=1000,
    ...     zs=1.5,

@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.utils.utils &mdash; ler 0.4.3 documentation</title>
+  <title>ler.utils.utils &mdash; ler 0.4.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
@@ -18,7 +18,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="../../../_static/documentation_options.js?v=03f3338f"></script>
       <script src="../../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -1484,10 +1484,14 @@
 <span class="sd">    result : `float`</span>
 <span class="sd">        Interpolated value of snr_partialscaled.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">result_array</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xnew_array</span><span class="p">)):</span>
+    <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">xnew_array</span><span class="p">)</span>
+    <span class="n">result_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">xnew_single</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">):</span>
         <span class="n">xnew</span> <span class="o">=</span> <span class="n">xnew_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="n">ynew</span> <span class="o">=</span> <span class="n">ynew_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">xnew_single</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">xnew</span>
 
         <span class="n">len_y</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
         <span class="c1"># find the index nearest to the ynew in y</span>
@@ -1497,21 +1501,21 @@
             <span class="k">if</span> <span class="n">ynew</span> <span class="o">&gt;</span> <span class="n">y</span><span class="p">[</span><span class="n">y_idx</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">y_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">y</span><span class="p">[</span><span class="n">y_idx</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="n">y_idx</span> <span class="o">=</span> <span class="n">y_idx</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">pdf_cubic_spline_interpolator</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xnew</span><span class="p">]),</span> <span class="n">norm_array</span><span class="p">[</span><span class="n">y_idx</span><span class="p">],</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx</span><span class="p">]</span>
+                <span class="n">xnew_single</span><span class="p">,</span> <span class="n">norm_array</span><span class="p">[</span><span class="n">y_idx</span><span class="p">],</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx</span><span class="p">]</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">elif</span> <span class="n">y_idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># lower end point</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">pdf_cubic_spline_interpolator</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xnew</span><span class="p">]),</span> <span class="n">norm_array</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coefficients</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">xnew_single</span><span class="p">,</span> <span class="n">norm_array</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coefficients</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="c1"># print(&quot;a&quot;)</span>
         <span class="k">elif</span> <span class="n">y_idx</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">len_y</span><span class="p">:</span>  <span class="c1"># upper end point</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">pdf_cubic_spline_interpolator</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xnew</span><span class="p">]),</span> <span class="n">norm_array</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">coefficients</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">xnew_single</span><span class="p">,</span> <span class="n">norm_array</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">coefficients</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="c1"># print(&quot;b&quot;)</span>
         <span class="k">elif</span> <span class="n">y_idx</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">==</span> <span class="n">len_y</span><span class="p">:</span>  <span class="c1"># upper end point</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">pdf_cubic_spline_interpolator</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xnew</span><span class="p">]),</span> <span class="n">norm_array</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">coefficients</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">xnew_single</span><span class="p">,</span> <span class="n">norm_array</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">coefficients</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="c1"># print(&quot;b&quot;)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1523,28 +1527,29 @@
             <span class="c1"># print(&quot;c&quot;)</span>
             <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span><span class="p">,</span> <span class="n">y4</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">y_idx1</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">y_idx2</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">y_idx3</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">y_idx4</span><span class="p">]</span>
             <span class="n">z1</span> <span class="o">=</span> <span class="n">pdf_cubic_spline_interpolator</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xnew</span><span class="p">]),</span> <span class="n">norm_array</span><span class="p">[</span><span class="n">y_idx1</span><span class="p">],</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx1</span><span class="p">]</span>
+                <span class="n">xnew_single</span><span class="p">,</span> <span class="n">norm_array</span><span class="p">[</span><span class="n">y_idx1</span><span class="p">],</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx1</span><span class="p">]</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">z2</span> <span class="o">=</span> <span class="n">pdf_cubic_spline_interpolator</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xnew</span><span class="p">]),</span> <span class="n">norm_array</span><span class="p">[</span><span class="n">y_idx2</span><span class="p">],</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx2</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx2</span><span class="p">]</span>
+                <span class="n">xnew_single</span><span class="p">,</span> <span class="n">norm_array</span><span class="p">[</span><span class="n">y_idx2</span><span class="p">],</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx2</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx2</span><span class="p">]</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">z3</span> <span class="o">=</span> <span class="n">pdf_cubic_spline_interpolator</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xnew</span><span class="p">]),</span> <span class="n">norm_array</span><span class="p">[</span><span class="n">y_idx3</span><span class="p">],</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx3</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx3</span><span class="p">]</span>
+                <span class="n">xnew_single</span><span class="p">,</span> <span class="n">norm_array</span><span class="p">[</span><span class="n">y_idx3</span><span class="p">],</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx3</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx3</span><span class="p">]</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">z4</span> <span class="o">=</span> <span class="n">pdf_cubic_spline_interpolator</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xnew</span><span class="p">]),</span> <span class="n">norm_array</span><span class="p">[</span><span class="n">y_idx4</span><span class="p">],</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx4</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx4</span><span class="p">]</span>
+                <span class="n">xnew_single</span><span class="p">,</span> <span class="n">norm_array</span><span class="p">[</span><span class="n">y_idx4</span><span class="p">],</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx4</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx4</span><span class="p">]</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
             <span class="n">coeff</span> <span class="o">=</span> <span class="n">coefficients_generator_ler</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span><span class="p">,</span> <span class="n">y4</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="n">z3</span><span class="p">,</span> <span class="n">z4</span><span class="p">)</span>
             <span class="n">matrixD</span> <span class="o">=</span> <span class="n">coeff</span><span class="p">[</span><span class="n">coeff_low</span><span class="p">:</span><span class="n">coeff_high</span><span class="p">]</span>
-            <span class="n">matrixB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ynew</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">ynew</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">ynew</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">matrixB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ynew</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">ynew</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">ynew</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrixB</span><span class="p">,</span> <span class="n">matrixD</span><span class="p">)</span>
 
-        <span class="n">result_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
 
-    <span class="n">result_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result_array</span><span class="p">)</span>
-    <span class="n">idx</span> <span class="o">=</span> <span class="n">result_array</span> <span class="o">&lt;</span> <span class="mf">0.0</span>
-    <span class="n">result_array</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="c1"># Clip negative values to zero</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">result_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">result_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
 
     <span class="k">return</span> <span class="n">result_array</span></div>
 
@@ -1575,10 +1580,14 @@
 <span class="sd">    result : `float`</span>
 <span class="sd">        Interpolated value of snr_partialscaled.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">result_array</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xnew_array</span><span class="p">)):</span>
+    <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">xnew_array</span><span class="p">)</span>
+    <span class="n">result_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">xnew_single</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">):</span>
         <span class="n">xnew</span> <span class="o">=</span> <span class="n">xnew_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="n">ynew</span> <span class="o">=</span> <span class="n">ynew_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">xnew_single</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">xnew</span>
 
         <span class="n">len_y</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
         <span class="c1"># find the index nearest to the ynew in y</span>
@@ -1587,26 +1596,24 @@
         <span class="k">if</span> <span class="p">(</span><span class="n">ynew</span> <span class="o">&gt;</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">and</span> <span class="p">(</span><span class="n">ynew</span> <span class="o">&lt;</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
             <span class="k">if</span> <span class="n">ynew</span> <span class="o">&gt;</span> <span class="n">y</span><span class="p">[</span><span class="n">y_idx</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">y_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">y</span><span class="p">[</span><span class="n">y_idx</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="n">y_idx</span> <span class="o">=</span> <span class="n">y_idx</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="n">result_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">cubic_spline_interpolator</span><span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xnew</span><span class="p">]),</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx</span><span class="p">]</span>
-                <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="p">)</span>
+            <span class="n">result_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span>
+                <span class="n">xnew_single</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx</span><span class="p">]</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="c1"># print(f&quot;a) idx = {y_idx}&quot;)</span>
         <span class="k">elif</span> <span class="n">y_idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># lower end point</span>
-            <span class="n">result_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">cubic_spline_interpolator</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xnew</span><span class="p">]),</span> <span class="n">coefficients</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="p">)</span>
+            <span class="n">result_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span>
+                <span class="n">xnew_single</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="c1"># print(f&quot;a) idx = {y_idx}&quot;)</span>
         <span class="k">elif</span> <span class="n">y_idx</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">len_y</span><span class="p">:</span>  <span class="c1"># upper end point</span>
-            <span class="n">result_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">cubic_spline_interpolator</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xnew</span><span class="p">]),</span> <span class="n">coefficients</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="p">)</span>
+            <span class="n">result_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span>
+                <span class="n">xnew_single</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="c1"># print(f&quot;b) idx = {y_idx}&quot;)</span>
         <span class="k">elif</span> <span class="n">y_idx</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">==</span> <span class="n">len_y</span><span class="p">:</span>  <span class="c1"># upper end point</span>
-            <span class="n">result_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">cubic_spline_interpolator</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xnew</span><span class="p">]),</span> <span class="n">coefficients</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="p">)</span>
+            <span class="n">result_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span>
+                <span class="n">xnew_single</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="c1"># print(f&quot;c) idx = {y_idx}&quot;)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">y_idx1</span> <span class="o">=</span> <span class="n">y_idx</span> <span class="o">-</span> <span class="mi">1</span>
@@ -1617,24 +1624,24 @@
             <span class="c1"># print(f&quot;d) idx1, idx2, idx3, idx4 = {y_idx1}, {y_idx2}, {y_idx3}, {y_idx4}&quot;)</span>
             <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span><span class="p">,</span> <span class="n">y4</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">y_idx1</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">y_idx2</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">y_idx3</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">y_idx4</span><span class="p">]</span>
             <span class="n">z1</span> <span class="o">=</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xnew</span><span class="p">]),</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx1</span><span class="p">]</span>
+                <span class="n">xnew_single</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx1</span><span class="p">]</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">z2</span> <span class="o">=</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xnew</span><span class="p">]),</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx2</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx2</span><span class="p">]</span>
+                <span class="n">xnew_single</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx2</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx2</span><span class="p">]</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">z3</span> <span class="o">=</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xnew</span><span class="p">]),</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx3</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx3</span><span class="p">]</span>
+                <span class="n">xnew_single</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx3</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx3</span><span class="p">]</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">z4</span> <span class="o">=</span> <span class="n">cubic_spline_interpolator</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xnew</span><span class="p">]),</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx4</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx4</span><span class="p">]</span>
+                <span class="n">xnew_single</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">y_idx4</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">y_idx4</span><span class="p">]</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
             <span class="n">coeff</span> <span class="o">=</span> <span class="n">coefficients_generator_ler</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span><span class="p">,</span> <span class="n">y4</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="n">z3</span><span class="p">,</span> <span class="n">z4</span><span class="p">)</span>
             <span class="n">matrixD</span> <span class="o">=</span> <span class="n">coeff</span><span class="p">[</span><span class="n">coeff_low</span><span class="p">:</span><span class="n">coeff_high</span><span class="p">]</span>
-            <span class="n">matrixB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ynew</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">ynew</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">ynew</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-            <span class="n">result_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrixB</span><span class="p">,</span> <span class="n">matrixD</span><span class="p">))</span>
+            <span class="n">matrixB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ynew</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">ynew</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">ynew</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+            <span class="n">result_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrixB</span><span class="p">,</span> <span class="n">matrixD</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result_array</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">result_array</span></div>
 
 
 

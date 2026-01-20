@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LeR Short Example &mdash; ler 0.4.3 documentation</title>
+  <title>LeR Short Example &mdash; ler 0.4.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
@@ -20,7 +20,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="../_static/documentation_options.js?v=03f3338f"></script>
       <script src="../_static/doctools.js?v=9a2dae69"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -147,7 +147,7 @@
 <h2>Table of Contents<a class="headerlink" href="#Table-of-Contents" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="#LeR-initialization-with-default-arguments"><span class="std std-ref">LeR initialization with default arguments</span></a></p></li>
-<li><p>Basic GW Population Simulation and Rate Calculation</p>
+<li><p><a class="reference internal" href="#Basic-GW-Event-Simulation-and-Rate-Calculation"><span class="std std-ref">Basic GW Event Simulation and Rate Calculation</span></a></p>
 <ul>
 <li><p><a class="reference internal" href="#Simulate-Unlensed-GW-Population"><span class="std std-ref">Simulate Unlensed GW Population</span></a></p></li>
 <li><p><a class="reference internal" href="#Calculate-Unlensed-Detection-Rates"><span class="std std-ref">Calculate Unlensed Detection Rates</span></a></p></li>
@@ -227,7 +227,7 @@ using ler available external_shear function : external_shear_normal
 Cross section interpolation data points loaded from ./interpolator_json/cross_section_function/cross_section_function_0.json
 using ler available lens_redshift function : lens_redshift_strongly_lensed_numerical
 Numerically solving the lens redshift distribution...
-lens_redshift_strongly_lensed_numerical_epl_shear_galaxy interpolator will be loaded from ./interpolator_json/lens_redshift/lens_redshift_strongly_lensed_numerical_epl_shear_galaxy_3.json
+lens_redshift_strongly_lensed_numerical_epl_shear_galaxy interpolator will be loaded from ./interpolator_json/lens_redshift/lens_redshift_strongly_lensed_numerical_epl_shear_galaxy_0.json
 lens_redshift_intrinsic interpolator will be loaded from ./interpolator_json/lens_redshift_intrinsic/lens_redshift_intrinsic_0.json
 using ler available density_profile_slope_sl function : density_profile_slope_normal
 using ler available external_shear_sl function : external_shear_normal
@@ -260,9 +260,9 @@ Faster, njitted and importance sampling based lens parameter sampler will be use
 Initializing GWSNR class...
 
 psds not given. Choosing bilby&#39;s default psds
-Interpolator will be loaded for L1 detector from ./interpolator_json/L1/partialSNR_dict_0.json
-Interpolator will be loaded for H1 detector from ./interpolator_json/H1/partialSNR_dict_0.json
-Interpolator will be loaded for V1 detector from ./interpolator_json/V1/partialSNR_dict_0.json
+Interpolator will be loaded for L1 detector from ./interpolator_json/L1/partialSNR_dict_0.pickle
+Interpolator will be loaded for H1 detector from ./interpolator_json/H1/partialSNR_dict_0.pickle
+Interpolator will be loaded for V1 detector from ./interpolator_json/V1/partialSNR_dict_0.pickle
 
 Chosen GWSNR initialization parameters:
 
@@ -277,15 +277,12 @@ min(mtot):  9.96
 max(mtot) (with the given fmin=20.0): 500.0
 detectors:  [&#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;]
 psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
-       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
-       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
-      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x17e60fd30&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
-       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
-       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
-      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x17e60eb10&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
-        9954.0389  ,  9976.993   , 10000.      ], shape=(3000,)), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,
-       1.51304203e-43, 1.52010157e-43, 1.52719372e-43],
-      shape=(3000,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x17e65fdd0&gt;]]
+       4984.081  , 4995.378  ]), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
+       6.51153524e-46, 6.43165104e-46, 6.55252996e-46]), &lt;scipy.interpolate._interpolate.interp1d object at 0x3093389a0&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
+       4984.081  , 4995.378  ]), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
+       6.51153524e-46, 6.43165104e-46, 6.55252996e-46]), &lt;scipy.interpolate._interpolate.interp1d object at 0x3093386d0&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
+        9954.0389  ,  9976.993   , 10000.      ]), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,
+       1.51304203e-43, 1.52010157e-43, 1.52719372e-43]), &lt;scipy.interpolate._interpolate.interp1d object at 0x16ebe9ee0&gt;]]
 
 
 #-------------------------------------
@@ -298,8 +295,8 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
     z_max = 10.0,
     event_type = &#39;BBH&#39;,
     lens_type = &#39;epl_shear_galaxy&#39;,
-    cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=None),
-    pdet_finder = &lt;bound method GWSNR.pdet of &lt;gwsnr.core.gwsnr.GWSNR object at 0x17d0cb250&gt;&gt;,
+    cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=0.0),
+    pdet_finder = &lt;bound method GWSNR.pdet of &lt;gwsnr.core.gwsnr.GWSNR object at 0x16dbe3a90&gt;&gt;,
     json_file_names = dict(
         ler_params = &#39;ler_params.json&#39;,
         unlensed_param = &#39;unlensed_param.json&#39;,
@@ -397,7 +394,7 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
     lens_param_samplers_params = dict(
         source_redshift_sl = None,
         lens_redshift = {&#39;integration_size&#39;: 25000, &#39;use_multiprocessing&#39;: False},
-        velocity_dispersion = {&#39;sigma_min&#39;: 100.0, &#39;sigma_max&#39;: 400.0, &#39;alpha&#39;: 0.94, &#39;beta&#39;: 1.85, &#39;phistar&#39;: np.float64(0.02099), &#39;sigmastar&#39;: 113.78, &#39;name&#39;: &#39;velocity_dispersion_ewoud&#39;},
+        velocity_dispersion = {&#39;sigma_min&#39;: 100.0, &#39;sigma_max&#39;: 400.0, &#39;alpha&#39;: 0.94, &#39;beta&#39;: 1.85, &#39;phistar&#39;: 0.02099, &#39;sigmastar&#39;: 113.78, &#39;name&#39;: &#39;velocity_dispersion_ewoud&#39;},
         axis_ratio = {&#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0, &#39;name&#39;: &#39;axis_ratio_rayleigh&#39;},
         axis_rotation_angle = {&#39;phi_min&#39;: 0.0, &#39;phi_max&#39;: 6.283185307179586, &#39;name&#39;: &#39;axis_rotation_angle_uniform&#39;},
         external_shear = {&#39;mean&#39;: 0.0, &#39;std&#39;: 0.05, &#39;name&#39;: &#39;external_shear_normal&#39;},
@@ -423,8 +420,6 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
         snr_th_net = 10.0,
         pdet_type = &#39;boolean&#39;,
         distribution_type = &#39;noncentral_chi2&#39;,
-        include_optimal_snr = False,
-        include_observed_snr = False,
     ),
     mtot_min = 9.96,
     mtot_max = 500.0,
@@ -454,15 +449,12 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
     snr_recalculation_range = [6, 14],
     snr_recalculation_waveform_approximant = &#39;IMRPhenomXPHM&#39;,
     psds_list = [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
-       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
-       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
-      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x17e60fd30&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
-       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
-       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
-      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x17e60eb10&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
-        9954.0389  ,  9976.993   , 10000.      ], shape=(3000,)), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,
-       1.51304203e-43, 1.52010157e-43, 1.52719372e-43],
-      shape=(3000,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x17e65fdd0&gt;]],
+       4984.081  , 4995.378  ]), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
+       6.51153524e-46, 6.43165104e-46, 6.55252996e-46]), &lt;scipy.interpolate._interpolate.interp1d object at 0x3093389a0&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
+       4984.081  , 4995.378  ]), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
+       6.51153524e-46, 6.43165104e-46, 6.55252996e-46]), &lt;scipy.interpolate._interpolate.interp1d object at 0x3093386d0&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
+        9954.0389  ,  9976.993   , 10000.      ]), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,
+       1.51304203e-43, 1.52010157e-43, 1.52719372e-43]), &lt;scipy.interpolate._interpolate.interp1d object at 0x16ebe9ee0&gt;]],
 </pre></div></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># To print all initialization input arguments, use:</span>
@@ -480,7 +472,7 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
 <p>Generate a population of unlensed Compact Binary Coalescence (CBC) events. This step: - Samples intrinsic (masses and spins) and extrinsic (redshift, sky location, inclination angle, etc.) GW parameters from initialized priors. - Calculates the probability of detection (Pdet) for each event based on the detector network sensitivity. - Stores the output in <code class="docutils literal notranslate"><span class="pre">./ler_data/unlensed_param.json</span></code>.</p>
 <p><strong>Note:</strong> For realistic results, use <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">&gt;=</span> <span class="pre">1,000,000</span></code> with <code class="docutils literal notranslate"><span class="pre">batch_size</span> <span class="pre">=</span> <span class="pre">100,000</span></code></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate 100,000 unlensed GW events in batches of 50,000</span>
@@ -508,7 +500,7 @@ calculating pdet...
 saving all unlensed parameters in ./ler_data/unlensed_param.json
 
 Total unlensed events simulated: 100000
-Sampled source redshift values (first 5): [1.38444352 3.59279112 1.79682268 1.17077582 2.75044903]
+Sampled source redshift values (first 5): [1.0647935  0.5437863  4.03831859 7.09419838 0.82008202]
 </pre></div></div>
 </div>
 </section>
@@ -516,7 +508,7 @@ Sampled source redshift values (first 5): [1.38444352 3.59279112 1.79682268 1.17
 <h3>Calculate Unlensed Detection Rates<a class="headerlink" href="#Calculate-Unlensed-Detection-Rates" title="Link to this heading"></a></h3>
 <p>Select detectable events and calculate the detection rate. This function: - Filters events using a Pdet threshold. By default, Pdet is based on observed detector network SNR &gt; 10 (<code class="docutils literal notranslate"><span class="pre">gwsnr</span></code>’s default), where the SNR follows a non-central chi-squared distribution centered at the optimal SNR (Essick et al. 2023). - Returns the rate in detectable events per year. - Saves detectable events to <code class="docutils literal notranslate"><span class="pre">./ler_data/unlensed_param_detectable.json</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the detection rate and extract detectable unlensed events</span>
@@ -536,15 +528,15 @@ Sampled source redshift values (first 5): [1.38444352 3.59279112 1.79682268 1.17
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Getting unlensed_param from json file ./ler_data/unlensed_param.json...
-total unlensed rate (yr^-1): 295.81568666957423
-number of simulated unlensed detectable events: 323
+total unlensed rate (yr^-1): 289.4048203950014
+number of simulated unlensed detectable events: 316
 number of simulated all unlensed events: 100000
 storing detectable params in ./ler_data/unlensed_param_detectable.json
 
 === Unlensed Detection Rate Summary ===
-Detectable event rate: 2.96e+02 events per year
+Detectable event rate: 2.89e+02 events per year
 Total event rate: 9.16e+04 events per year
-Percentage fraction of the detectable events: 3.23e-01%
+Percentage fraction of the detectable events: 3.16e-01%
 </pre></div></div>
 </div>
 </section>
@@ -588,7 +580,7 @@ Example values for mass_1_source (first 5 events):
 <p>This step stores output in <code class="docutils literal notranslate"><span class="pre">./ler_data/lensed_param.json</span></code></p>
 <p><strong>Note:</strong> The simulation includes: - Lens galaxy population sampling - Selection based on lensing cross-section - Lens equation solving for multiple image generation - Pdet calculation for each image</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate 100,000 unlensed GW events in batches of 50,000</span>
@@ -618,7 +610,25 @@ solving lens equations...
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|███████████████████████████████████████████████████████| 50000/50000 [00:11&lt;00:00, 4297.67it/s]
+100%|███████████████████████████████████████████████████████| 50000/50000 [00:22&lt;00:00, 2269.72it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Invalid sample found. Resampling 1 lensed events...
+sampling lens parameters with sample_all_routine_epl_shear_sl...
+solving lens equations...
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|█████████████████████████████████████████████████████████████████| 1/1 [00:00&lt;00:00, 10.75it/s]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -627,6 +637,21 @@ solving lens equations...
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 calculating pdet...
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Batch no. 2
 sampling lensed params...
 sampling lens parameters with sample_all_routine_epl_shear_sl...
@@ -638,7 +663,7 @@ solving lens equations...
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|███████████████████████████████████████████████████████| 50000/50000 [00:11&lt;00:00, 4192.12it/s]
+100%|███████████████████████████████████████████████████████| 50000/50000 [00:11&lt;00:00, 4270.40it/s]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -650,7 +675,7 @@ calculating pdet...
 saving all lensed parameters in ./ler_data/lensed_param.json
 
 Total lensed events simulated: 100000
-Sampled source redshift values (first 5): [6.52384781 3.49994581 2.13024517 3.05425169 2.18722478]
+Sampled source redshift values (first 5): [2.17878885 2.9993495  3.15648155 3.20451842 1.46809552]
 </pre></div></div>
 </div>
 </section>
@@ -661,7 +686,7 @@ Sampled source redshift values (first 5): [6.52384781 3.49994581 2.13024517 3.05
 <li><p>The detection rate is stored in <code class="docutils literal notranslate"><span class="pre">./ler_data/lensed_param_detectable.json</span></code>.</p></li>
 </ul>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the detection rate for lensed events</span>
@@ -681,15 +706,15 @@ Sampled source redshift values (first 5): [6.52384781 3.49994581 2.13024517 3.05
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Getting lensed_param from json file ./ler_data/lensed_param.json...
-total lensed rate (yr^-1): 0.07931919403816834
-number of simulated lensed detectable events: 70
+total lensed rate (yr^-1): 0.10987440042477357
+number of simulated lensed detectable events: 97
 number of simulated all lensed events: 100000
 storing detectable params in ./ler_data/lensed_param_detectable.json
 
 === Lensed Detection Rate Summary ===
-Detectable event rate: 7.93e-02 events per year
+Detectable event rate: 1.10e-01 events per year
 Total event rate: 1.13e+02 events per year
-Percentage fraction of the detectable events: 7.00e-02%
+Percentage fraction of the detectable events: 9.70e-02%
 </pre></div></div>
 </div>
 </section>
@@ -739,7 +764,7 @@ Lens-specific parameters include:
 <section id="Compare-Lensed-vs-Unlensed-Rates">
 <h3>Compare Lensed vs Unlensed Rates<a class="headerlink" href="#Compare-Lensed-vs-Unlensed-Rates" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare lensed and unlensed rates</span>
@@ -757,14 +782,14 @@ Lens-specific parameters include:
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-unlensed_rate: 295.81568666957423
-lensed_rate: 0.07931919403816834
-ratio: 3729.433843304408
+unlensed_rate: 289.4048203950014
+lensed_rate: 0.10987440042477357
+ratio: 2633.9604063927964
 
 === Rate Comparison ===
-Unlensed detection rate: 2.9582e+02 events/yr
-Lensed detection rate: 7.9319e-02 events/yr
-Rate ratio (lensed/unlensed): 3729.4338
+Unlensed detection rate: 2.8940e+02 events/yr
+Lensed detection rate: 1.0987e-01 events/yr
+Rate ratio (lensed/unlensed): 2633.9604
 </pre></div></div>
 </div>
 <p>Bonus: The following command simultaneously selects detectable events, calculates rates, and compares unlensed and lensed events.</p>

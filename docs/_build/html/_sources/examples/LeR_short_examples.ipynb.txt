@@ -18,7 +18,7 @@
                 "\n",
                 "## Table of Contents\n",
                 "- [LeR initialization with default arguments](#ler-initialization-with-default-arguments)\n",
-                "- [Basic GW Population Simulation and Rate Calculation](#basic-gw-population-simulation-and-rate-calculation)\n",
+                "- [Basic GW Event Simulation and Rate Calculation](#basic-gw-event-simulation-and-rate-calculation)\n",
                 "   - [Simulate Unlensed GW Population](#simulate-unlensed-gw-population)\n",
                 "   - [Calculate Unlensed Detection Rates](#calculate-unlensed-detection-rates)\n",
                 "   - [Inspect Generated Unlensed Parameters](#inspect-generated-unlensed-parameters)\n",
@@ -86,7 +86,7 @@
                         "Cross section interpolation data points loaded from ./interpolator_json/cross_section_function/cross_section_function_0.json\n",
                         "using ler available lens_redshift function : lens_redshift_strongly_lensed_numerical\n",
                         "Numerically solving the lens redshift distribution...\n",
-                        "lens_redshift_strongly_lensed_numerical_epl_shear_galaxy interpolator will be loaded from ./interpolator_json/lens_redshift/lens_redshift_strongly_lensed_numerical_epl_shear_galaxy_3.json\n",
+                        "lens_redshift_strongly_lensed_numerical_epl_shear_galaxy interpolator will be loaded from ./interpolator_json/lens_redshift/lens_redshift_strongly_lensed_numerical_epl_shear_galaxy_0.json\n",
                         "lens_redshift_intrinsic interpolator will be loaded from ./interpolator_json/lens_redshift_intrinsic/lens_redshift_intrinsic_0.json\n",
                         "using ler available density_profile_slope_sl function : density_profile_slope_normal\n",
                         "using ler available external_shear_sl function : external_shear_normal\n",
@@ -119,9 +119,9 @@
                         "Initializing GWSNR class...\n",
                         "\n",
                         "psds not given. Choosing bilby's default psds\n",
-                        "Interpolator will be loaded for L1 detector from ./interpolator_json/L1/partialSNR_dict_0.json\n",
-                        "Interpolator will be loaded for H1 detector from ./interpolator_json/H1/partialSNR_dict_0.json\n",
-                        "Interpolator will be loaded for V1 detector from ./interpolator_json/V1/partialSNR_dict_0.json\n",
+                        "Interpolator will be loaded for L1 detector from ./interpolator_json/L1/partialSNR_dict_0.pickle\n",
+                        "Interpolator will be loaded for H1 detector from ./interpolator_json/H1/partialSNR_dict_0.pickle\n",
+                        "Interpolator will be loaded for V1 detector from ./interpolator_json/V1/partialSNR_dict_0.pickle\n",
                         "\n",
                         "Chosen GWSNR initialization parameters:\n",
                         "\n",
@@ -136,15 +136,12 @@
                         "max(mtot) (with the given fmin=20.0): 500.0\n",
                         "detectors:  ['L1', 'H1', 'V1']\n",
                         "psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,\n",
-                        "       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,\n",
-                        "       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],\n",
-                        "      shape=(2736,)), <scipy.interpolate._interpolate.interp1d object at 0x17e60fd30>], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,\n",
-                        "       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,\n",
-                        "       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],\n",
-                        "      shape=(2736,)), <scipy.interpolate._interpolate.interp1d object at 0x17e60eb10>], [array([   10.      ,    10.02306 ,    10.046173, ...,\n",
-                        "        9954.0389  ,  9976.993   , 10000.      ], shape=(3000,)), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,\n",
-                        "       1.51304203e-43, 1.52010157e-43, 1.52719372e-43],\n",
-                        "      shape=(3000,)), <scipy.interpolate._interpolate.interp1d object at 0x17e65fdd0>]]\n",
+                        "       4984.081  , 4995.378  ]), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,\n",
+                        "       6.51153524e-46, 6.43165104e-46, 6.55252996e-46]), <scipy.interpolate._interpolate.interp1d object at 0x3093389a0>], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,\n",
+                        "       4984.081  , 4995.378  ]), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,\n",
+                        "       6.51153524e-46, 6.43165104e-46, 6.55252996e-46]), <scipy.interpolate._interpolate.interp1d object at 0x3093386d0>], [array([   10.      ,    10.02306 ,    10.046173, ...,\n",
+                        "        9954.0389  ,  9976.993   , 10000.      ]), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,\n",
+                        "       1.51304203e-43, 1.52010157e-43, 1.52719372e-43]), <scipy.interpolate._interpolate.interp1d object at 0x16ebe9ee0>]]\n",
                         "\n",
                         "\n",
                         "#-------------------------------------\n",
@@ -157,8 +154,8 @@
                         "    z_max = 10.0,\n",
                         "    event_type = 'BBH',\n",
                         "    lens_type = 'epl_shear_galaxy',\n",
-                        "    cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=None),\n",
-                        "    pdet_finder = <bound method GWSNR.pdet of <gwsnr.core.gwsnr.GWSNR object at 0x17d0cb250>>,\n",
+                        "    cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=0.0),\n",
+                        "    pdet_finder = <bound method GWSNR.pdet of <gwsnr.core.gwsnr.GWSNR object at 0x16dbe3a90>>,\n",
                         "    json_file_names = dict(\n",
                         "        ler_params = 'ler_params.json',\n",
                         "        unlensed_param = 'unlensed_param.json',\n",
@@ -256,7 +253,7 @@
                         "    lens_param_samplers_params = dict(\n",
                         "        source_redshift_sl = None,\n",
                         "        lens_redshift = {'integration_size': 25000, 'use_multiprocessing': False},\n",
-                        "        velocity_dispersion = {'sigma_min': 100.0, 'sigma_max': 400.0, 'alpha': 0.94, 'beta': 1.85, 'phistar': np.float64(0.02099), 'sigmastar': 113.78, 'name': 'velocity_dispersion_ewoud'},\n",
+                        "        velocity_dispersion = {'sigma_min': 100.0, 'sigma_max': 400.0, 'alpha': 0.94, 'beta': 1.85, 'phistar': 0.02099, 'sigmastar': 113.78, 'name': 'velocity_dispersion_ewoud'},\n",
                         "        axis_ratio = {'q_min': 0.2, 'q_max': 1.0, 'name': 'axis_ratio_rayleigh'},\n",
                         "        axis_rotation_angle = {'phi_min': 0.0, 'phi_max': 6.283185307179586, 'name': 'axis_rotation_angle_uniform'},\n",
                         "        external_shear = {'mean': 0.0, 'std': 0.05, 'name': 'external_shear_normal'},\n",
@@ -282,8 +279,6 @@
                         "        snr_th_net = 10.0,\n",
                         "        pdet_type = 'boolean',\n",
                         "        distribution_type = 'noncentral_chi2',\n",
-                        "        include_optimal_snr = False,\n",
-                        "        include_observed_snr = False,\n",
                         "    ),\n",
                         "    mtot_min = 9.96,\n",
                         "    mtot_max = 500.0,\n",
@@ -313,15 +308,12 @@
                         "    snr_recalculation_range = [6, 14],\n",
                         "    snr_recalculation_waveform_approximant = 'IMRPhenomXPHM',\n",
                         "    psds_list = [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,\n",
-                        "       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,\n",
-                        "       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],\n",
-                        "      shape=(2736,)), <scipy.interpolate._interpolate.interp1d object at 0x17e60fd30>], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,\n",
-                        "       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,\n",
-                        "       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],\n",
-                        "      shape=(2736,)), <scipy.interpolate._interpolate.interp1d object at 0x17e60eb10>], [array([   10.      ,    10.02306 ,    10.046173, ...,\n",
-                        "        9954.0389  ,  9976.993   , 10000.      ], shape=(3000,)), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,\n",
-                        "       1.51304203e-43, 1.52010157e-43, 1.52719372e-43],\n",
-                        "      shape=(3000,)), <scipy.interpolate._interpolate.interp1d object at 0x17e65fdd0>]],\n"
+                        "       4984.081  , 4995.378  ]), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,\n",
+                        "       6.51153524e-46, 6.43165104e-46, 6.55252996e-46]), <scipy.interpolate._interpolate.interp1d object at 0x3093389a0>], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,\n",
+                        "       4984.081  , 4995.378  ]), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,\n",
+                        "       6.51153524e-46, 6.43165104e-46, 6.55252996e-46]), <scipy.interpolate._interpolate.interp1d object at 0x3093386d0>], [array([   10.      ,    10.02306 ,    10.046173, ...,\n",
+                        "        9954.0389  ,  9976.993   , 10000.      ]), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,\n",
+                        "       1.51304203e-43, 1.52010157e-43, 1.52719372e-43]), <scipy.interpolate._interpolate.interp1d object at 0x16ebe9ee0>]],\n"
                     ]
                 }
             ],
@@ -365,7 +357,7 @@
         },
         {
             "cell_type": "code",
-            "execution_count": null,
+            "execution_count": 2,
             "metadata": {},
             "outputs": [
                 {
@@ -383,7 +375,7 @@
                         "saving all unlensed parameters in ./ler_data/unlensed_param.json \n",
                         "\n",
                         "Total unlensed events simulated: 100000\n",
-                        "Sampled source redshift values (first 5): [1.38444352 3.59279112 1.79682268 1.17077582 2.75044903]\n"
+                        "Sampled source redshift values (first 5): [1.0647935  0.5437863  4.03831859 7.09419838 0.82008202]\n"
                     ]
                 }
             ],
@@ -410,7 +402,7 @@
         },
         {
             "cell_type": "code",
-            "execution_count": 2,
+            "execution_count": 4,
             "metadata": {},
             "outputs": [
                 {
@@ -418,15 +410,15 @@
                     "output_type": "stream",
                     "text": [
                         "Getting unlensed_param from json file ./ler_data/unlensed_param.json...\n",
-                        "total unlensed rate (yr^-1): 295.81568666957423\n",
-                        "number of simulated unlensed detectable events: 323\n",
+                        "total unlensed rate (yr^-1): 289.4048203950014\n",
+                        "number of simulated unlensed detectable events: 316\n",
                         "number of simulated all unlensed events: 100000\n",
                         "storing detectable params in ./ler_data/unlensed_param_detectable.json\n",
                         "\n",
                         "=== Unlensed Detection Rate Summary ===\n",
-                        "Detectable event rate: 2.96e+02 events per year\n",
+                        "Detectable event rate: 2.89e+02 events per year\n",
                         "Total event rate: 9.16e+04 events per year\n",
-                        "Percentage fraction of the detectable events: 3.23e-01%\n"
+                        "Percentage fraction of the detectable events: 3.16e-01%\n"
                     ]
                 }
             ],
@@ -509,7 +501,7 @@
         },
         {
             "cell_type": "code",
-            "execution_count": 3,
+            "execution_count": 5,
             "metadata": {},
             "outputs": [
                 {
@@ -528,14 +520,43 @@
                     "name": "stderr",
                     "output_type": "stream",
                     "text": [
-                        "100%|███████████████████████████████████████████████████████| 50000/50000 [00:11<00:00, 4297.67it/s]\n"
+                        "100%|███████████████████████████████████████████████████████| 50000/50000 [00:22<00:00, 2269.72it/s]\n"
                     ]
                 },
                 {
                     "name": "stdout",
                     "output_type": "stream",
                     "text": [
-                        "calculating pdet...\n",
+                        "Invalid sample found. Resampling 1 lensed events...\n",
+                        "sampling lens parameters with sample_all_routine_epl_shear_sl...\n",
+                        "solving lens equations...\n"
+                    ]
+                },
+                {
+                    "name": "stderr",
+                    "output_type": "stream",
+                    "text": [
+                        "100%|█████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 10.75it/s]"
+                    ]
+                },
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "calculating pdet...\n"
+                    ]
+                },
+                {
+                    "name": "stderr",
+                    "output_type": "stream",
+                    "text": [
+                        "\n"
+                    ]
+                },
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
                         "Batch no. 2\n",
                         "sampling lensed params...\n",
                         "sampling lens parameters with sample_all_routine_epl_shear_sl...\n",
@@ -546,7 +567,7 @@
                     "name": "stderr",
                     "output_type": "stream",
                     "text": [
-                        "100%|███████████████████████████████████████████████████████| 50000/50000 [00:11<00:00, 4192.12it/s]\n"
+                        "100%|███████████████████████████████████████████████████████| 50000/50000 [00:11<00:00, 4270.40it/s]\n"
                     ]
                 },
                 {
@@ -557,7 +578,7 @@
                         "saving all lensed parameters in ./ler_data/lensed_param.json \n",
                         "\n",
                         "Total lensed events simulated: 100000\n",
-                        "Sampled source redshift values (first 5): [6.52384781 3.49994581 2.13024517 3.05425169 2.18722478]\n"
+                        "Sampled source redshift values (first 5): [2.17878885 2.9993495  3.15648155 3.20451842 1.46809552]\n"
                     ]
                 }
             ],
@@ -582,7 +603,7 @@
         },
         {
             "cell_type": "code",
-            "execution_count": 4,
+            "execution_count": 6,
             "metadata": {},
             "outputs": [
                 {
@@ -590,15 +611,15 @@
                     "output_type": "stream",
                     "text": [
                         "Getting lensed_param from json file ./ler_data/lensed_param.json...\n",
-                        "total lensed rate (yr^-1): 0.07931919403816834\n",
-                        "number of simulated lensed detectable events: 70\n",
+                        "total lensed rate (yr^-1): 0.10987440042477357\n",
+                        "number of simulated lensed detectable events: 97\n",
                         "number of simulated all lensed events: 100000\n",
                         "storing detectable params in ./ler_data/lensed_param_detectable.json\n",
                         "\n",
                         "=== Lensed Detection Rate Summary ===\n",
-                        "Detectable event rate: 7.93e-02 events per year\n",
+                        "Detectable event rate: 1.10e-01 events per year\n",
                         "Total event rate: 1.13e+02 events per year\n",
-                        "Percentage fraction of the detectable events: 7.00e-02%\n"
+                        "Percentage fraction of the detectable events: 9.70e-02%\n"
                     ]
                 }
             ],
@@ -676,21 +697,21 @@
         },
         {
             "cell_type": "code",
-            "execution_count": 6,
+            "execution_count": 7,
             "metadata": {},
             "outputs": [
                 {
                     "name": "stdout",
                     "output_type": "stream",
                     "text": [
-                        "unlensed_rate: 295.81568666957423\n",
-                        "lensed_rate: 0.07931919403816834\n",
-                        "ratio: 3729.433843304408\n",
+                        "unlensed_rate: 289.4048203950014\n",
+                        "lensed_rate: 0.10987440042477357\n",
+                        "ratio: 2633.9604063927964\n",
                         "\n",
                         "=== Rate Comparison ===\n",
-                        "Unlensed detection rate: 2.9582e+02 events/yr\n",
-                        "Lensed detection rate: 7.9319e-02 events/yr\n",
-                        "Rate ratio (lensed/unlensed): 3729.4338\n"
+                        "Unlensed detection rate: 2.8940e+02 events/yr\n",
+                        "Lensed detection rate: 1.0987e-01 events/yr\n",
+                        "Rate ratio (lensed/unlensed): 2633.9604\n"
                     ]
                 }
             ],
@@ -1145,9 +1166,9 @@
     ],
     "metadata": {
         "kernelspec": {
-            "display_name": "ler",
+            "display_name": "ler2",
             "language": "python",
-            "name": "ler"
+            "name": "python3"
         },
         "language_info": {
             "codemirror_mode": {
@@ -1159,7 +1180,7 @@
             "name": "python",
             "nbconvert_exporter": "python",
             "pygments_lexer": "ipython3",
-            "version": "3.10.18"
+            "version": "3.10.19"
         }
     },
     "nbformat": 4,

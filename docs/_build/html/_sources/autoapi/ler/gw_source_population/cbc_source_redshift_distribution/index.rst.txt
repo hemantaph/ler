@@ -121,7 +121,7 @@ Classes
        **cosmology** : ``astropy.cosmology`` or ``None``
            Cosmology for distance calculations.
 
-           default: None (uses LambdaCDM(H0=70, Om0=0.3, Ode0=0.7))
+           default: None (uses LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0))
 
        **directory** : ``str``
            Directory to store interpolator JSON files.
@@ -377,7 +377,7 @@ Classes
           **cosmo** : ``astropy.cosmology``
               Cosmology used for redshift-distance conversions.
 
-              default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+              default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
 
 

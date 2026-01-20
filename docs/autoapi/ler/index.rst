@@ -125,7 +125,7 @@ Classes
        **cosmology** : ``astropy.cosmology``
            Cosmology to use for the calculation.
 
-           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
        **pdet_finder** : ``function`` or ``None``
            Custom detection probability finder function.
@@ -462,7 +462,7 @@ Classes
           **cosmo** : ``astropy.cosmology``
               Cosmology used for luminosity distance and comoving volume calculations.
 
-              default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+              default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
 
 

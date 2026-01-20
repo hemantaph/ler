@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.lens_galaxy_population.sampler_functions &mdash; ler 0.4.3 documentation</title>
+  <title>ler.lens_galaxy_population.sampler_functions &mdash; ler 0.4.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
@@ -19,7 +19,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="../../../../_static/documentation_options.js?v=03f3338f"></script>
       <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -218,7 +218,7 @@ for sampling lens parameters weighted by gravitational lensing cross sections.</
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.lens_redshift_strongly_lensed_sis_haris_pdf">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">lens_redshift_strongly_lensed_sis_haris_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">LambdaCDM(H0=70,</span> <span class="pre">Om0=0.3,</span> <span class="pre">Ode0=0.7)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#lens_redshift_strongly_lensed_sis_haris_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.lens_redshift_strongly_lensed_sis_haris_pdf" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">lens_redshift_strongly_lensed_sis_haris_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">LambdaCDM(H0=70,</span> <span class="pre">Om0=0.3,</span> <span class="pre">Ode0=0.7,</span> <span class="pre">Tcmb0=0.0,</span> <span class="pre">Neff=3.04,</span> <span class="pre">m_nu=None,</span> <span class="pre">Ob0=0.0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#lens_redshift_strongly_lensed_sis_haris_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.lens_redshift_strongly_lensed_sis_haris_pdf" title="Link to this definition"></a></dt>
 <dd><p>Compute lens redshift PDF for SIS model (Haris et al. 2018).</p>
 <p>Computes the probability density function for lens redshift between
 zl=0 and zl=zs using the analytical form from Haris et al. (2018)
@@ -231,7 +231,7 @@ equation A7, based on the SIS (Singular Isothermal Sphere) lens model.</p>
 <dt><strong>zs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Redshift of the source.</p>
 </dd>
 <dt><strong>cosmo</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">astropy.cosmology</span></code></span></dt><dd><p>Cosmology object for distance calculations.</p>
-<p>default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</p>
+<p>default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)</p>
 </dd>
 </dl>
 </dd>
@@ -244,7 +244,7 @@ equation A7, based on the SIS (Singular Isothermal Sphere) lens model.</p>
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cosmo</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cosmo</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pdf</span> <span class="o">=</span> <span class="n">lens_redshift_strongly_lensed_sis_haris_pdf</span><span class="p">(</span><span class="n">zl</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">zs</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">cosmo</span><span class="o">=</span><span class="n">cosmo</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PDF at zl=0.5: </span><span class="si">{</span><span class="n">pdf</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="go">PDF at zl=0.5: 1.8750</span>
@@ -254,7 +254,7 @@ equation A7, based on the SIS (Singular Isothermal Sphere) lens model.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.sampler_functions.lens_redshift_strongly_lensed_sis_haris_rvs">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">lens_redshift_strongly_lensed_sis_haris_rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">LambdaCDM(H0=70,</span> <span class="pre">Om0=0.3,</span> <span class="pre">Ode0=0.7)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#lens_redshift_strongly_lensed_sis_haris_rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.lens_redshift_strongly_lensed_sis_haris_rvs" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.sampler_functions.</span></span><span class="sig-name descname"><span class="pre">lens_redshift_strongly_lensed_sis_haris_rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">LambdaCDM(H0=70,</span> <span class="pre">Om0=0.3,</span> <span class="pre">Ode0=0.7,</span> <span class="pre">Tcmb0=0.0,</span> <span class="pre">Neff=3.04,</span> <span class="pre">m_nu=None,</span> <span class="pre">Ob0=0.0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/sampler_functions.html#lens_redshift_strongly_lensed_sis_haris_rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.sampler_functions.lens_redshift_strongly_lensed_sis_haris_rvs" title="Link to this definition"></a></dt>
 <dd><p>Sample lens redshifts for SIS model (Haris et al. 2018).</p>
 <p>Uses inverse transform sampling with the analytical CDF of the Haris et al.
 (2018) lens redshift distribution to efficiently generate samples.</p>
@@ -272,7 +272,7 @@ equation A7, based on the SIS (Singular Isothermal Sphere) lens model.</p>
 <p>default: 10.0</p>
 </dd>
 <dt><strong>cosmo</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">astropy.cosmology</span></code></span></dt><dd><p>Cosmology object for distance calculations.</p>
-<p>default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</p>
+<p>default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)</p>
 </dd>
 </dl>
 </dd>
@@ -285,7 +285,7 @@ equation A7, based on the SIS (Singular Isothermal Sphere) lens model.</p>
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cosmo</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cosmo</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zl_samples</span> <span class="o">=</span> <span class="n">lens_redshift_strongly_lensed_sis_haris_rvs</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">zs</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>

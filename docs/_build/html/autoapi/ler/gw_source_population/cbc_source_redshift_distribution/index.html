@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.gw_source_population.cbc_source_redshift_distribution &mdash; ler 0.4.3 documentation</title>
+  <title>ler.gw_source_population.cbc_source_redshift_distribution &mdash; ler 0.4.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
@@ -19,7 +19,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="../../../../_static/documentation_options.js?v=03f3338f"></script>
       <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -203,7 +203,7 @@ source redshifts weighted by the merger rate density in the detector frame.</p>
 <p>default: None (uses dict(R0=19 * 1e-9, b2=1.6, b3=2.1, b4=30))</p>
 </dd>
 <dt><strong>cosmology</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">astropy.cosmology</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Cosmology for distance calculations.</p>
-<p>default: None (uses LambdaCDM(H0=70, Om0=0.3, Ode0=0.7))</p>
+<p>default: None (uses LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0))</p>
 </dd>
 <dt><strong>directory</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Directory to store interpolator JSON files.</p>
 <p>default: ‘./interpolator_json’</p>
@@ -391,7 +391,7 @@ source redshifts weighted by the merger rate density in the detector frame.</p>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>cosmo</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">astropy.cosmology</span></code></span></dt><dd><p>Cosmology used for redshift-distance conversions.</p>
-<p>default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</p>
+<p>default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)</p>
 </dd>
 </dl>
 </dd>

@@ -152,7 +152,7 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: luminosity_distance(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
+.. py:function:: luminosity_distance(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
 
    
    Function to create a lookup table for the luminosity distance wrt redshift.
@@ -189,7 +189,7 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: differential_comoving_volume(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
+.. py:function:: differential_comoving_volume(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
 
 
 .. py:class:: CBCSourceRedshiftDistribution(npool=4, z_min=0.001, z_max=10.0, event_type='BBH', merger_rate_density=None, merger_rate_density_param=None, cosmology=None, directory='./interpolator_json', create_new_interpolator=False)
@@ -268,7 +268,7 @@ Attributes
        **cosmology** : ``astropy.cosmology`` or ``None``
            Cosmology for distance calculations.
 
-           default: None (uses LambdaCDM(H0=70, Om0=0.3, Ode0=0.7))
+           default: None (uses LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0))
 
        **directory** : ``str``
            Directory to store interpolator JSON files.
@@ -524,7 +524,7 @@ Attributes
           **cosmo** : ``astropy.cosmology``
               Cosmology used for redshift-distance conversions.
 
-              default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+              default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
 
 
@@ -1187,7 +1187,7 @@ Attributes
        **cosmology** : ``astropy.cosmology`` or ``None``
            Cosmology for distance calculations.
 
-           default: None (uses LambdaCDM(H0=70, Om0=0.3, Ode0=0.7))
+           default: None (uses LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0))
 
        **directory** : ``str``
            Directory to store interpolator JSON files.
@@ -1443,7 +1443,7 @@ Attributes
           **cosmo** : ``astropy.cosmology``
               Cosmology used for redshift-distance conversions.
 
-              default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+              default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
 
 
@@ -2067,7 +2067,7 @@ Attributes
        **cosmology** : ``astropy.cosmology`` or ``None``
            Cosmology to use for distance calculations.
 
-           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
        **spin_zero** : ``bool``
            If True, spin parameters are set to zero (no spin sampling).
@@ -3853,7 +3853,7 @@ Attributes
        **cosmology** : ``astropy.cosmology`` or ``None``
            Cosmology object for age calculations.
 
-           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
        **n0** : ``float``
            Normalization constant.

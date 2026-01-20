@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.image_properties.image_properties &mdash; ler 0.4.3 documentation</title>
+  <title>ler.image_properties.image_properties &mdash; ler 0.4.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
@@ -18,7 +18,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="../../../_static/documentation_options.js?v=03f3338f"></script>
       <script src="../../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -135,7 +135,7 @@
 <span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
 <div class="viewcode-block" id="cosmo">
 <a class="viewcode-back" href="../../../autoapi/ler/image_properties/index.html#ler.image_properties.image_properties.cosmo">[docs]</a>
-<span class="n">cosmo</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span></div>
+<span class="n">cosmo</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span></div>
 
 
 <span class="c1"># the following .py file will be called if they are not given in the class initialization</span>
@@ -179,7 +179,7 @@
 <span class="sd">    cosmology : ``astropy.cosmology`` or ``None``</span>
 <span class="sd">        Cosmology for distance calculations. \n</span>
 <span class="sd">        If None, uses default LambdaCDM. \n</span>
-<span class="sd">        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</span>
+<span class="sd">        default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)</span>
 <span class="sd">    spin_zero : ``bool``</span>
 <span class="sd">        If True, spin parameters are set to zero (no spin sampling). \n</span>
 <span class="sd">        default: False</span>
@@ -751,7 +751,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        cosmo : ``astropy.cosmology``</span>
 <span class="sd">            Cosmology used for distance calculations. \n</span>
-<span class="sd">            default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</span>
+<span class="sd">            default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cosmo</span></div>
 

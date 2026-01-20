@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.lens_galaxy_population.mp &mdash; ler 0.4.3 documentation</title>
+  <title>ler.lens_galaxy_population.mp &mdash; ler 0.4.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
@@ -18,7 +18,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="../../../_static/documentation_options.js?v=03f3338f"></script>
       <script src="../../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -121,11 +121,9 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span>
 
-<span class="kn">from</span> <span class="nn">.lens_functions</span> <span class="kn">import</span> <span class="n">phi_cut_SIE</span><span class="p">,</span> <span class="n">phi_q2_ellipticity</span><span class="p">,</span> <span class="n">cross_section</span>
+<span class="kn">from</span> <span class="nn">.lens_functions</span> <span class="kn">import</span> <span class="n">cross_section</span>
 
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">inverse_transform_sampler</span><span class="p">,</span> <span class="n">load_pickle</span>
-
-<span class="kn">from</span> <span class="nn">.cross_section_interpolator</span> <span class="kn">import</span> <span class="n">make_cross_section_reinit</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">load_pickle</span>
 
 <span class="c1"># Constants for cross-section unit scaling (1/pi and numerical offset)</span>
 <div class="viewcode-block" id="CS_UNIT_SLOPE">
@@ -286,7 +284,7 @@
     <span class="c1"># Unscale lens redshifts</span>
     <span class="n">zl_array</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">zs</span>
 
-    <span class="n">result_array</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">result_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">zl_array</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">zl</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">zl_array</span><span class="p">):</span>
         <span class="c1"># Sample velocity dispersion (uniform for importance sampling)</span>
         <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">sigma_min</span><span class="p">,</span> <span class="n">sigma_max</span><span class="p">,</span> <span class="n">integration_size</span><span class="p">)</span>
@@ -312,7 +310,7 @@
         <span class="n">valid_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">area_array</span><span class="p">))</span>
         <span class="n">valid_idx</span> <span class="o">&amp;=</span> <span class="p">(</span><span class="n">area_array</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">valid_idx</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">result_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.</span><span class="p">)</span>
+            <span class="n">result_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
             <span class="k">continue</span>
 
         <span class="c1"># Compute number density weights (velocity dispersion distribution)</span>
@@ -323,7 +321,7 @@
 
         <span class="c1"># Compute optical depth contribution (importance sampling correction)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">sigma_max</span> <span class="o">-</span> <span class="n">sigma_min</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">area_array</span><span class="p">[</span><span class="n">valid_idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">phi_sigma</span><span class="p">[</span><span class="n">valid_idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">dVcdz</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
-        <span class="n">result_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
     
     <span class="k">return</span> <span class="n">worker_idx</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result_array</span><span class="p">)</span></div>
 

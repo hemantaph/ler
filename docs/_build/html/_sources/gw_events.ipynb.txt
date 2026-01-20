@@ -28,7 +28,7 @@
                 "* $P$: Prior distribution.\n",
                 "* $\\Theta$: Detectability condition.\n",
                 "\n",
-                "Default cosmology: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7). But, it can be changed by the user at ler initialization."
+                "Default cosmology: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0). But, it can be changed by the user at ler initialization."
             ]
         },
         {

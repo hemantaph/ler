@@ -103,7 +103,7 @@ Attributes
 
            If None, uses default LambdaCDM.
 
-           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+           default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
        **spin_zero** : ``bool``
            If True, spin parameters are set to zero (no spin sampling).
@@ -409,7 +409,7 @@ Attributes
           **cosmo** : ``astropy.cosmology``
               Cosmology used for distance calculations.
 
-              default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+              default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
 
 
