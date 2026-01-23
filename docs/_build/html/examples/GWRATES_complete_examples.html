@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GWRATES complete example &mdash; ler 0.4.6 documentation</title>
+  <title>GWRATES complete example &mdash; ler 0.5.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
@@ -20,7 +20,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=03f3338f"></script>
+      <script src="../_static/documentation_options.js?v=8e576371"></script>
       <script src="../_static/doctools.js?v=9a2dae69"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -62,7 +62,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -80,24 +80,21 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">GWRATES complete example</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Table-of-Contents">Table of Contents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Part-1:-Basic-GW-Event-Simulation-and-Rate-Calculation-(BBH-Example)">Part 1: Basic GW Event Simulation and Rate Calculation (BBH Example)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#1.1-Initialize-GWRATES">1.1 Initialize <code class="docutils literal notranslate"><span class="pre">GWRATES</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#1.1-Initialize-GWRATES">1.1 Initialize GWRATES</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#1.2-Simulate-GW-Population">1.2 Simulate GW Population</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#1.3-Calculate-Detection-Rates">1.3 Calculate Detection Rates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#1.4-Inspect-Generated-Parameters">1.4 Inspect Generated Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#1.5-Access-Saved-Data-Files">1.5 Access Saved Data Files</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#1.6-Load-and-Examine-Saved-Parameters">1.6 Load and Examine Saved Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#1.7-Examine-Available-Prior-Functions">1.7 Examine Available Prior Functions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#1.7.1-As-Class-Attributes">1.7.1 As Class Attributes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#1.7.2-As-Functions-from-the-ler.gw_source_population-module">1.7.2 As Functions from the ler.gw_source_population module</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#1.7-Examine-Available-Prior-Functions">1.7 Examine Available Prior Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#1.8-Visualize-Parameter-Distributions">1.8 Visualize Parameter Distributions</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#Part-2:-Custom-Functions-and-Parameters">Part 2: Custom Functions and Parameters</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#2.1-Define-Event-Type-with-Non-Spinning-Configuration">2.1 Define Event Type with Non-Spinning Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.2-Define-Event-Type-with-Non-Spinning-Configuration">2.2 Define Event Type with Non-Spinning Configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#2.2-Define-Custom-Merger-Rate-Density">2.2 Define Custom Merger Rate Density</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#2.3-Define-Custom-Source-Frame-Masses">2.3 Define Custom Source Frame Masses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.3-Define-Custom-Merger-Rate-Density">2.3 Define Custom Merger Rate Density</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.1-Define-Custom-Source-Frame-Masses">2.1 Define Custom Source Frame Masses</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#2.4-Define-Custom-Detection-Criteria">2.4 Define Custom Detection Criteria</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#2.5-Initialize-GWRATES-with-Custom-Settings">2.5 Initialize GWRATES with Custom Settings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#2.6-Sample-GW-Parameters-with-Custom-Settings">2.6 Sample GW Parameters with Custom Settings</a></li>
@@ -148,8 +145,7 @@
 <h1>GWRATES complete example<a class="headerlink" href="#GWRATES-complete-example" title="Link to this heading"></a></h1>
 <p>This notebook is created by <a class="reference external" href="https://hemantaph.com">Phurailatpam Hemantakumar</a>.</p>
 <p><a class="reference external" href="https://ler.hemantaph.com"><img alt="Documentation" src="https://img.shields.io/badge/ler-documentation-blue" /></a></p>
-<p>GWRATES is a comprehensive framework for simulating gravitational wave (GW) events and calculating their detection rates. This notebook provides a complete example of Compact Binary Coalescence (CBC) event simulation and rate calculation.</p>
-<hr class="docutils" />
+<p>GWRATES is a comprehensive framework for simulating gravitational wave (GW) events and calculating their detection rates. This notebook provides a complete example of CBC event simulation and rate calculation.</p>
 <section id="Table-of-Contents">
 <h2>Table of Contents<a class="headerlink" href="#Table-of-Contents" title="Link to this heading"></a></h2>
 <ol class="arabic simple">
@@ -167,9 +163,9 @@
 </li>
 <li><p>Part 2: Custom Functions and Parameters</p>
 <ul class="simple">
-<li><p>2.1 Define Event Type with Non-Spinning Configuration</p></li>
-<li><p>2.2 Define Custom Merger Rate Density</p></li>
-<li><p>2.3 Define Custom Source Frame Masses</p></li>
+<li><p>2.1 Define Custom Source Frame Masses</p></li>
+<li><p>2.2 Define Event Type with Non-Spinning Configuration</p></li>
+<li><p>2.3 Define Custom Merger Rate Density</p></li>
 <li><p>2.4 Define Custom Detection Criteria</p></li>
 <li><p>2.5 Initialize GWRATES with Custom Settings</p></li>
 <li><p>2.6 Sample GW Parameters with Custom Settings</p></li>
@@ -183,7 +179,7 @@
 <li><p>3.2 Sample Until N Detectable Events Are Found</p></li>
 <li><p>3.3 Analyze Rate Convergence</p></li>
 <li><p>3.4 Assess Rate Stability</p></li>
-<li><p>3.5 Compare All Sampled and Detectable Event Parameters</p></li>
+<li><p>3.5 Overlapping plot between the all sampled and detectable event parameters</p></li>
 </ul>
 </li>
 </ol>
@@ -193,18 +189,18 @@
 <h2>Part 1: Basic GW Event Simulation and Rate Calculation (BBH Example)<a class="headerlink" href="#Part-1:-Basic-GW-Event-Simulation-and-Rate-Calculation-(BBH-Example)" title="Link to this heading"></a></h2>
 <p>This section demonstrates a quick example to simulate binary black hole mergers and calculate their detection rates.</p>
 <section id="1.1-Initialize-GWRATES">
-<h3>1.1 Initialize <code class="docutils literal notranslate"><span class="pre">GWRATES</span></code><a class="headerlink" href="#1.1-Initialize-GWRATES" title="Link to this heading"></a></h3>
+<h3>1.1 Initialize GWRATES<a class="headerlink" href="#1.1-Initialize-GWRATES" title="Link to this heading"></a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">GWRATES</span></code> class is the main interface for simulating GW events and calculating rates. By default, it uses: - <strong>Event type:</strong> BBH (Binary Black Hole) - <strong>Detectors:</strong> H1, L1, V1 (LIGO Hanford, LIGO Livingston, Virgo) with O4 design sensitivity</p>
 <p>All outputs will be saved in the <code class="docutils literal notranslate"><span class="pre">./ler_data</span></code> directory.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the GWRATES class from the ler package</span>
 <span class="kn">from</span> <span class="nn">ler.rates</span> <span class="kn">import</span> <span class="n">GWRATES</span>
 
 <span class="c1"># Initialize GWRATES with default settings</span>
-<span class="n">ler</span> <span class="o">=</span> <span class="n">GWRATES</span><span class="p">()</span>
+<span class="n">ler</span> <span class="o">=</span> <span class="n">GWRATES</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -217,19 +213,19 @@
 Initializing GWRATES class...
 
 
-Initializing CBCSourceRedshiftDistribution class...
+Initializing CBCSourceRedshiftDistribution...
 
 luminosity_distance interpolator will be loaded from ./interpolator_json/luminosity_distance/luminosity_distance_0.json
 differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_0.json
-using ler available merger rate density model: merger_rate_density_madau_dickinson_belczynski_ng
-merger_rate_density_madau_dickinson_belczynski_ng interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_madau_dickinson_belczynski_ng_0.json
+using ler available merger rate density model: merger_rate_density_bbh_oguri2018
+merger_rate_density_bbh_oguri2018 interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_bbh_oguri2018_0.json
 merger_rate_density_detector_frame interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_detector_frame_1.json
 source_redshift interpolator will be loaded from ./interpolator_json/source_redshift/source_redshift_0.json
 
-Initializing CBCSourceParameterDistribution class...
+Initializing CBCSourceParameterDistribution...
 
 using ler available zs function : source_redshift
-using ler available source_frame_masses function : binary_masses_BBH_powerlaw_gaussian
+using ler available source_frame_masses function : binary_masses_BBH_popI_II_powerlaw_gaussian
 using ler available geocent_time function : sampler_uniform
 using ler available ra function : sampler_uniform
 using ler available dec function : sampler_cosine
@@ -261,13 +257,13 @@ detectors:  [&#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;]
 psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
        4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
        6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
-      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x16aed2c50&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x3296f6de0&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
        4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
        6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
-      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x16aed2c00&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x327cfaac0&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
         9954.0389  ,  9976.993   , 10000.      ], shape=(3000,)), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,
        1.51304203e-43, 1.52010157e-43, 1.52719372e-43],
-      shape=(3000,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x16ae91e90&gt;]]
+      shape=(3000,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x32a4863e0&gt;]]
 
 
 #----------------------------------------
@@ -279,8 +275,8 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
     z_min = 0.0,
     z_max = 10.0,
     event_type = &#39;BBH&#39;,
-    cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=None),
-    pdet_finder = &lt;bound method GWSNR.pdet of &lt;gwsnr.core.gwsnr.GWSNR object at 0x16a019fc0&gt;&gt;,
+    cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=None),
+    pdet_finder = &lt;bound method GWSNR.pdet of &lt;gwsnr.core.gwsnr.GWSNR object at 0x327c27e50&gt;&gt;,
     json_file_names = dict(
         gwrates_params = &#39;gwrates_params.json&#39;,
         gw_param = &#39;gw_param.json&#39;,
@@ -291,9 +287,9 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
 
     # GWRATES also takes other CBCSourceParameterDistribution class input arguments as kwargs, as follows:
     source_priors = dict(
-        merger_rate_density = &#39;merger_rate_density_madau_dickinson_belczynski_ng&#39;,
+        merger_rate_density = &#39;merger_rate_density_bbh_oguri2018&#39;,
         zs = &#39;source_redshift&#39;,
-        source_frame_masses = &#39;binary_masses_BBH_powerlaw_gaussian&#39;,
+        source_frame_masses = &#39;binary_masses_BBH_popI_II_powerlaw_gaussian&#39;,
         geocent_time = &#39;sampler_uniform&#39;,
         ra = &#39;sampler_uniform&#39;,
         dec = &#39;sampler_cosine&#39;,
@@ -304,7 +300,7 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
         a_2 = &#39;sampler_uniform&#39;,
     ),
     source_priors_params = dict(
-        merger_rate_density = {&#39;R0&#39;: 1.9e-08, &#39;alpha_F&#39;: 2.57, &#39;beta_F&#39;: 5.83, &#39;c_F&#39;: 3.36},
+        merger_rate_density = {&#39;R0&#39;: 2.39e-08, &#39;b2&#39;: 1.6, &#39;b3&#39;: 2.1, &#39;b4&#39;: 30},
         zs = None,
         source_frame_masses = {&#39;mminbh&#39;: 4.98, &#39;mmaxbh&#39;: 112.5, &#39;alpha&#39;: 3.78, &#39;mu_g&#39;: 32.27, &#39;sigma_g&#39;: 3.88, &#39;lambda_peak&#39;: 0.03, &#39;delta_m&#39;: 4.8, &#39;beta&#39;: 0.81},
         geocent_time = {&#39;xmin&#39;: 1238166018, &#39;xmax&#39;: 1269702018},
@@ -363,31 +359,34 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
     psds_list = [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
        4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
        6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
-      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x16aed2c50&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x3296f6de0&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
        4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
        6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
-      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x16aed2c00&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x327cfaac0&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
         9954.0389  ,  9976.993   , 10000.      ], shape=(3000,)), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,
        1.51304203e-43, 1.52010157e-43, 1.52719372e-43],
-      shape=(3000,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x16ae91e90&gt;]],
+      shape=(3000,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x32a4863e0&gt;]],
 </pre></div></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># To print all initialization input arguments, use:</span>
-<span class="n">ler</span><span class="o">.</span><span class="n">_print_all_init_args</span><span class="p">()</span>
+<p>To print all initialization input arguments, use:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span><span class="o">.</span><span class="n">_print_all_init_args</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
 <section id="1.2-Simulate-GW-Population">
 <h3>1.2 Simulate GW Population<a class="headerlink" href="#1.2-Simulate-GW-Population" title="Link to this heading"></a></h3>
 <p>Generate a population of Compact Binary Coalescence (CBC) events. This step: - Samples intrinsic (masses and spins) and extrinsic (redshift, sky location, inclination angle, etc.) GW parameters from initialized priors - Calculates the probability of detection (Pdet) for each event based on detector network sensitivity - Stores the output in <code class="docutils literal notranslate"><span class="pre">./ler_data/gw_param.json</span></code></p>
+<p><strong>Parameters:</strong> - <code class="docutils literal notranslate"><span class="pre">size</span></code>: Total number of events to sample - <code class="docutils literal notranslate"><span class="pre">batch_size</span></code>: Events per batch (useful for resuming interrupted simulations) - <code class="docutils literal notranslate"><span class="pre">resume</span></code>: If <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), resume from last saved batch; if <code class="docutils literal notranslate"><span class="pre">False</span></code>, start fresh - <code class="docutils literal notranslate"><span class="pre">save_batch</span></code>: If <code class="docutils literal notranslate"><span class="pre">True</span></code>, save after each batch; if <code class="docutils literal notranslate"><span class="pre">False</span></code> (default), save only at the end</p>
 <p><strong>Note:</strong> For realistic results, use <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">&gt;=</span> <span class="pre">1,000,000</span></code> with <code class="docutils literal notranslate"><span class="pre">batch_size</span> <span class="pre">=</span> <span class="pre">100,000</span></code></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate 100,000 GW events in batches of 50,000</span>
-<span class="c1"># use &#39;print(ler.gw_cbc_statistics.__doc__)&#39; to see all the input args</span>
 <span class="n">gw_param_all</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">gw_cbc_statistics</span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># # with all input args</span>
+<span class="c1"># gw_param_all = ler.gw_cbc_statistics(size=100000, batch_size=50000, resume=True, save_batch=False, output_jsonfile=&#39;gw_param.json&#39;)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Total events simulated: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">gw_param_all</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sampled redshift values: </span><span class="si">{</span><span class="n">gw_param_all</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -409,19 +408,18 @@ calculating pdet...
 saving all gw parameters in ./ler_data/gw_param.json
 
 Total events simulated: 100000
-Sampled redshift values: [2.54060756 2.44480227 0.76563885 4.2521422  3.14307703]
+Sampled redshift values: [1.79134769 3.81532071 6.88004063 0.94640131 0.64046894]
 </pre></div></div>
 </div>
 </section>
 <section id="1.3-Calculate-Detection-Rates">
 <h3>1.3 Calculate Detection Rates<a class="headerlink" href="#1.3-Calculate-Detection-Rates" title="Link to this heading"></a></h3>
-<p>Select detectable events and calculate the detection rate. This function: - Filters events using a Pdet threshold. By default, Pdet is based on observed detector network SNR &gt; 10 (<code class="docutils literal notranslate"><span class="pre">gwsnr</span></code>’s default), where the SNR follows a non-central chi-squared distribution centered at the optimal SNR (Essick et al. 2023). - Returns the rate in detectable events per year. - Saves detectable events to <code class="docutils literal notranslate"><span class="pre">./ler_data/gw_param_detectable.json</span></code>.</p>
+<p>Select detectable events and calculate the detection rate. This function: - Filters events using a Pdet threshold. By default, Pdet is based on observed SNR &gt; 10, where the observed SNR follows a non-central chi-squared distribution centered at the optimal SNR. - Returns the rate in detectable events per year. - Saves detectable events to <code class="docutils literal notranslate"><span class="pre">./ler_data/gw_param_detectable.json</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the detection rate and extract detectable events</span>
-<span class="c1"># use &#39;print(ler.gw_rate.__doc__)&#39; to see all the input args</span>
 <span class="n">detectable_rate</span><span class="p">,</span> <span class="n">gw_param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">gw_rate</span><span class="p">()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Detection Rate Summary ===&quot;</span><span class="p">)</span>
@@ -437,15 +435,15 @@ Sampled redshift values: [2.54060756 2.44480227 0.76563885 4.2521422  3.14307703
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Getting gw parameters from json file ./ler_data/gw_param.json...
-total GW event rate (yr^-1): 273.8355737281817
-number of simulated GW detectable events: 299
+total GW event rate (yr^-1): 270.52624492169423
+number of simulated GW detectable events: 329
 number of simulated all GW events: 100000
 storing detectable params in ./ler_data/gw_param_detectable.json
 
 === Detection Rate Summary ===
-Detectable event rate: 2.74e+02 events per year
-Total event rate: 9.16e+04 events per year
-Percentage fraction of the detectable events: 2.99e-01%
+Detectable event rate: 2.71e+02 events per year
+Total event rate: 8.22e+04 events per year
+Percentage fraction of the detectable events: 3.29e-01%
 </pre></div></div>
 </div>
 </section>
@@ -453,7 +451,7 @@ Percentage fraction of the detectable events: 2.99e-01%
 <h3>1.4 Inspect Generated Parameters<a class="headerlink" href="#1.4-Inspect-Generated-Parameters" title="Link to this heading"></a></h3>
 <p>View the available parameters in the generated event population.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># List all parameters saved for detectable events</span>
@@ -474,7 +472,7 @@ Detectable event parameters:
 [&#39;zs&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;luminosity_distance&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;pdet_L1&#39;, &#39;pdet_H1&#39;, &#39;pdet_V1&#39;, &#39;pdet_net&#39;]
 
 Example values for mass_1_source (detector frame):
-[ 8.93127048  8.42758975 31.0145706  32.61718886 28.57544612]
+[27.80174506 13.5874931  26.44581764 15.18232487 11.86442242]
 </pre></div></div>
 </div>
 </section>
@@ -482,12 +480,12 @@ Example values for mass_1_source (detector frame):
 <h3>1.5 Access Saved Data Files<a class="headerlink" href="#1.5-Access-Saved-Data-Files" title="Link to this heading"></a></h3>
 <p>All simulation results are saved in JSON files for future reference and analysis.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View the directory structure and file names</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output directory: </span><span class="si">{</span><span class="n">ler</span><span class="o">.</span><span class="n">ler_directory</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Saved JSON files in </span><span class="si">{</span><span class="n">ler</span><span class="o">.</span><span class="n">ler_directory</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Saved JSON files:&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">ler</span><span class="o">.</span><span class="n">json_file_names</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
@@ -500,7 +498,7 @@ Example values for mass_1_source (detector frame):
 <div class="highlight"><pre>
 Output directory: ./ler_data
 
-Saved JSON files in ./ler_data:
+Saved JSON files:
   gwrates_params: gwrates_params.json
   gw_param: gw_param.json
   gw_param_detectable: gw_param_detectable.json
@@ -509,9 +507,9 @@ Saved JSON files in ./ler_data:
 </section>
 <section id="1.6-Load-and-Examine-Saved-Parameters">
 <h3>1.6 Load and Examine Saved Parameters<a class="headerlink" href="#1.6-Load-and-Examine-Saved-Parameters" title="Link to this heading"></a></h3>
-<p>Reload parameters from JSON files for further analysis. This example also hightlights some of the useful functions from <code class="docutils literal notranslate"><span class="pre">ler.utils</span></code> module.</p>
+<p>Reload parameters from JSON files for further analysis.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">get_param_from_json</span><span class="p">,</span> <span class="n">load_json</span>
@@ -536,20 +534,18 @@ Saved JSON files in ./ler_data:
 <div class="highlight"><pre>
 Parameters loaded from file: [&#39;zs&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;luminosity_distance&#39;, &#39;mass_1_source&#39;, &#39;mass_2_source&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;pdet_L1&#39;, &#39;pdet_H1&#39;, &#39;pdet_V1&#39;, &#39;pdet_net&#39;]
 
-Detectable event rate (from saved file): 3.0039e+02 per year
+Detectable event rate (from saved file): 2.7053e+02 per year
 </pre></div></div>
 </div>
 </section>
 <section id="1.7-Examine-Available-Prior-Functions">
 <h3>1.7 Examine Available Prior Functions<a class="headerlink" href="#1.7-Examine-Available-Prior-Functions" title="Link to this heading"></a></h3>
-<p>There are two ways of accessing the built-in GW parameter prior functions and their default parameters.</p>
-<section id="1.7.1-As-Class-Attributes">
-<h4>1.7.1 As Class Attributes<a class="headerlink" href="#1.7.1-As-Class-Attributes" title="Link to this heading"></a></h4>
+<p>View the built-in GW parameter sampler functions and their default parameters.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display all available GW prior sampler functions and their parameters</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display all available GW prior sampler functions</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Built-in GW parameter sampler functions and parameters:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">func_name</span><span class="p">,</span> <span class="n">func_params</span> <span class="ow">in</span> <span class="n">ler</span><span class="o">.</span><span class="n">available_gw_prior</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">func_name</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
@@ -571,18 +567,22 @@ Detectable event rate (from saved file): 3.0039e+02 per year
 Built-in GW parameter sampler functions and parameters:
 
 merger_rate_density:
-  merger_rate_density_bbh_oguri2018: {&#39;R0&#39;: 1.9e-08, &#39;b2&#39;: 1.6, &#39;b3&#39;: 2.1, &#39;b4&#39;: 30}
-  merger_rate_density_madau_dickinson2014: {&#39;R0&#39;: 1.9e-08, &#39;a&#39;: 0.015, &#39;b&#39;: 2.7, &#39;c&#39;: 2.9, &#39;d&#39;: 5.6}
-  merger_rate_density_madau_dickinson_belczynski_ng: {&#39;R0&#39;: 1.9e-08, &#39;alpha_F&#39;: 2.57, &#39;beta_F&#39;: 5.83, &#39;c_F&#39;: 3.36}
-  sfr_with_time_delay: {&#39;R0&#39;: 1.9e-08, &#39;a&#39;: 0.01, &#39;b&#39;: 2.6, &#39;c&#39;: 3.2, &#39;d&#39;: 6.2, &#39;td_min&#39;: 0.01, &#39;td_max&#39;: 10.0}
-  merger_rate_density_bbh_popIII_ken2022: {&#39;R0&#39;: 1.92e-08, &#39;aIII&#39;: 0.66, &#39;bIII&#39;: 0.3, &#39;zIII&#39;: 11.6}
-  merger_rate_density_bbh_primordial_ken2022: {&#39;R0&#39;: 4.4e-11, &#39;t0&#39;: 13.786885302009708}
+  merger_rate_density_bbh_oguri2018: {&#39;R0&#39;: 2.39e-08, &#39;b2&#39;: 1.6, &#39;b3&#39;: 2.1, &#39;b4&#39;: 30}
+  sfr_madau_fragos2017: {&#39;a&#39;: 0.01, &#39;b&#39;: 2.6, &#39;c&#39;: 3.2, &#39;d&#39;: 6.2}
+  sfr_madau_dickinson2014: {&#39;a&#39;: 0.015, &#39;b&#39;: 2.7, &#39;c&#39;: 2.9, &#39;d&#39;: 5.6}
+  sfr_with_time_delay: {&#39;R0&#39;: 2.39e-08, &#39;a&#39;: 0.01, &#39;b&#39;: 2.6, &#39;c&#39;: 3.2, &#39;d&#39;: 6.2, &#39;td_min&#39;: 0.01, &#39;td_max&#39;: 10.0}
+  merger_rate_density_bbh_popIII_ken2022: {&#39;n0&#39;: 1.92e-08, &#39;aIII&#39;: 0.66, &#39;bIII&#39;: 0.3, &#39;zIII&#39;: 11.6}
+  merger_rate_density_bbh_primordial_ken2022: {&#39;n0&#39;: 4.4e-11, &#39;t0&#39;: 13.786885302009708}
+  sfr_madau_fragos2017_with_bbh_dt: {&#39;R0&#39;: 2.39e-08}
+  sfr_madau_dickinson2014_with_bbh_dt: {&#39;R0&#39;: 2.39e-08}
+  sfr_madau_fragos2017_with_bns_dt: {&#39;R0&#39;: 1.0550000000000001e-07}
+  sfr_madau_dickinson2014_with_bns_dt: {&#39;R0&#39;: 1.0550000000000001e-07}
 
 zs:
   source_redshift: None
 
 source_frame_masses:
-  binary_masses_BBH_powerlaw_gaussian: {&#39;mminbh&#39;: 4.98, &#39;mmaxbh&#39;: 112.5, &#39;alpha&#39;: 3.78, &#39;mu_g&#39;: 32.27, &#39;sigma_g&#39;: 3.88, &#39;lambda_peak&#39;: 0.03, &#39;delta_m&#39;: 4.8, &#39;beta&#39;: 0.81}
+  binary_masses_BBH_popI_II_powerlaw_gaussian: {&#39;mminbh&#39;: 4.98, &#39;mmaxbh&#39;: 112.5, &#39;alpha&#39;: 3.78, &#39;mu_g&#39;: 32.27, &#39;sigma_g&#39;: 3.88, &#39;lambda_peak&#39;: 0.03, &#39;delta_m&#39;: 4.8, &#39;beta&#39;: 0.81}
   binary_masses_BBH_popIII_lognormal: {&#39;m_min&#39;: 5.0, &#39;m_max&#39;: 150.0, &#39;Mc&#39;: 30.0, &#39;sigma&#39;: 0.3}
   binary_masses_BBH_primordial_lognormal: {&#39;m_min&#39;: 1.0, &#39;m_max&#39;: 100.0, &#39;Mc&#39;: 20.0, &#39;sigma&#39;: 0.3}
   binary_masses_NSBH_broken_powerlaw: {&#39;mminbh&#39;: 26, &#39;mmaxbh&#39;: 125, &#39;alpha_1&#39;: 6.75, &#39;alpha_2&#39;: 6.75, &#39;b&#39;: 0.5, &#39;delta_m&#39;: 5, &#39;mminns&#39;: 1.0, &#39;mmaxns&#39;: 3.0, &#39;alphans&#39;: 0.0}
@@ -641,170 +641,12 @@ theta_jn:
 
 </pre></div></div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">ler</span><span class="o">.</span><span class="n">merger_rate_density_bbh_oguri2018</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
-
-<span class="c1"># Test the function</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Testing merger_rate_density_bbh_oguri2018 function&quot;</span><span class="p">)</span>
-<span class="n">zs</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Redshifts: </span><span class="si">{</span><span class="n">zs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Merger Rate Denisty: </span><span class="si">{</span><span class="n">ler</span><span class="o">.</span><span class="n">merger_rate_density_bbh_oguri2018</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="si">}</span><span class="s2"> Mpc^-3 yr^-1&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-
-        Compute PopI/II BBH merger rate density (Oguri et al. 2018).
-
-        Returns the source-frame merger rate density following the
-        Oguri et al. (2018) prescription for PopI/II stellar populations.
-
-        Parameters
-        ----------
-        zs : ```numpy.ndarray``
-            Source redshift(s) at which to evaluate.
-        get_attribute : ``bool``
-            If True, return the FunctionConditioning object.
-            default: False
-        **kwargs : ``dict``
-            Override default fitting parameters:
-            R0=19e-9, b2=1.6, b3=2.1, b4=30.
-
-        Returns
-        -------
-        rate_density : ```numpy.ndarray`` or ``FunctionConditioning``
-            Merger rate density in source frame (units: Mpc^-3 yr^-1).
-
-        Examples
-        --------
-        &gt;&gt;&gt; from ler.gw_source_population import CBCSourceRedshiftDistribution
-        &gt;&gt;&gt; cbc = CBCSourceRedshiftDistribution(merger_rate_density=&#34;merger_rate_density_bbh_oguri2018&#34;)
-        &gt;&gt;&gt; rate = cbc.merger_rate_density(zs=0.5)
-
-
-Testing merger_rate_density_bbh_oguri2018 function
-Redshifts: [0.1 0.2 0.3]
-merger_rate_density_bbh_oguri2018 interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_bbh_oguri2018_4.json
-Merger Rate Denisty: [2.21298914e-08 2.57321630e-08 2.98600744e-08] Mpc^-3 yr^-1
-</pre></div></div>
-</div>
-<p><strong>Notes:</strong> - <strong>Above example:</strong> Uses interpolation from pre-generated points. - <strong>Next section:</strong> Computes results directly from the underlying mathematics, bypassing interpolation.</p>
-</section>
-<section id="1.7.2-As-Functions-from-the-ler.gw_source_population-module">
-<h4>1.7.2 As Functions from the ler.gw_source_population module<a class="headerlink" href="#1.7.2-As-Functions-from-the-ler.gw_source_population-module" title="Link to this heading"></a></h4>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ler.gw_source_population</span> <span class="k">as</span> <span class="nn">gsp</span>
-
-<span class="k">for</span> <span class="n">prior</span> <span class="ow">in</span> <span class="n">gsp</span><span class="o">.</span><span class="n">available_prior_list</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">prior</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-merger_rate_density_bbh_oguri2018_function
-merger_rate_density_bbh_popIII_ken2022_function
-merger_rate_density_madau_dickinson2014_function
-merger_rate_density_madau_dickinson_belczynski_ng_function
-merger_rate_density_bbh_primordial_ken2022_function
-sfr_madau_fragos2017_with_bbh_td
-sfr_madau_dickinson2014_with_bbh_td
-sfr_madau_fragos2017_with_bns_td
-sfr_madau_dickinson2014_with_bns_td
-sfr_madau_fragos2017
-sfr_madau_dickinson2014
-binary_masses_BBH_popIII_lognormal_rvs
-binary_masses_BBH_primordial_lognormal_rvs
-binary_masses_BNS_bimodal_rvs
-binary_masses_NSBH_broken_powerlaw_rvs
-binary_masses_BBH_powerlaw_gaussian_rvs
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">gsp</span><span class="o">.</span><span class="n">merger_rate_density_bbh_oguri2018_function</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
-
-<span class="c1"># Test the function</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Testing merger_rate_density_bbh_oguri2018 function&quot;</span><span class="p">)</span>
-<span class="n">zs</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Redshifts: </span><span class="si">{</span><span class="n">zs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Merger Rate Denisty: </span><span class="si">{</span><span class="n">gsp</span><span class="o">.</span><span class="n">merger_rate_density_bbh_oguri2018_function</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="si">}</span><span class="s2"> Mpc^-3 yr^-1&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-
-    Compute the merger rate density for PopI/II BBH.
-
-    Reference: Oguri et al. (2018). The output is in detector frame and is
-    unnormalized.
-
-    Parameters
-    ----------
-    zs : ``float`` or ``numpy.ndarray``
-        Source redshifts.
-    R0 : ``float``
-        Local merger rate density at low redshift (Mpc^-3 yr^-1).
-
-        default: 19e-9 (GWTC-4)
-    b2 : ``float``
-        Fitting parameter.
-
-        default: 1.6
-    b3 : ``float``
-        Fitting parameter.
-
-        default: 2.1
-    b4 : ``float``
-        Fitting parameter.
-
-        default: 30
-
-    Returns
-    -------
-    rate_density : ``float`` or ``numpy.ndarray``
-        Merger rate density.
-
-    Examples
-    --------
-    &gt;&gt;&gt; from ler.gw_source_population import merger_rate_density_bbh_oguri2018
-    &gt;&gt;&gt; rate_density = merger_rate_density_bbh_oguri2018(zs=np.array([0.1]))
-
-
-Testing merger_rate_density_bbh_oguri2018 function
-
-Redshifts: [0.1 0.2 0.3]
-Merger Rate Denisty: [2.21298914e-08 2.57321630e-08 2.98600744e-08] Mpc^-3 yr^-1
-</pre></div></div>
-</div>
-</section>
 </section>
 <section id="1.8-Visualize-Parameter-Distributions">
 <h3>1.8 Visualize Parameter Distributions<a class="headerlink" href="#1.8-Visualize-Parameter-Distributions" title="Link to this heading"></a></h3>
 <p>Create KDE (Kernel Density Estimation) plots to compare the distributions of parameters between all simulated events and detectable events.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -844,7 +686,7 @@ getting gw_params from json file ler_data/gw_param.json...
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_GWRATES_complete_examples_23_1.png" src="../_images/examples_GWRATES_complete_examples_23_1.png" />
+<img alt="../_images/examples_GWRATES_complete_examples_18_1.png" src="../_images/examples_GWRATES_complete_examples_18_1.png" />
 </div>
 </div>
 </section>
@@ -866,7 +708,7 @@ getting gw_params from json file ler_data/gw_param.json...
 <td><p>BBH (spinning, aligned)</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Merger Rate</strong></p></td>
-<td><p>GWTC-3 based</p></td>
+<td><p>Madau-Dickinson (2014)</p></td>
 <td><p>GWTC-4 based</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Source Masses</strong></p></td>
@@ -879,9 +721,9 @@ getting gw_params from json file ler_data/gw_param.json...
 </tr>
 </tbody>
 </table>
-<p><strong>Notes:</strong> - <strong>GW parameter sampling priors</strong>: Should be a function with <code class="docutils literal notranslate"><span class="pre">size</span></code> as the only input argument. Can also be a class object of <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code>. - <strong>Merger rate density</strong>: Should be a function of redshift <span class="math notranslate nohighlight">\(z\)</span>.</p>
-<section id="2.1-Define-Event-Type-with-Non-Spinning-Configuration">
-<h3>2.1 Define Event Type with Non-Spinning Configuration<a class="headerlink" href="#2.1-Define-Event-Type-with-Non-Spinning-Configuration" title="Link to this heading"></a></h3>
+<p><strong>Notes:</strong> - <strong>GW parameter sampling priors</strong>: Should be a function with <code class="docutils literal notranslate"><span class="pre">size</span></code> as the only input argument. Can also be a class object of <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code>. - <strong>Merger rate density</strong>: Should be a function of F(z).</p>
+<section id="2.2-Define-Event-Type-with-Non-Spinning-Configuration">
+<h3>2.2 Define Event Type with Non-Spinning Configuration<a class="headerlink" href="#2.2-Define-Event-Type-with-Non-Spinning-Configuration" title="Link to this heading"></a></h3>
 <p>Using <code class="docutils literal notranslate"><span class="pre">event_type='BNS'</span></code> in the LeR class initialization will default to the following GW parameter priors corresponding to BNS. Other allowed event types are ‘BBH’ and ‘NSBH’.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">source_priors</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="n">merger_rate_density</span> <span class="o">=</span> <span class="s1">&#39;merger_rate_density_madau_dickinson2014&#39;</span><span class="p">,</span>
@@ -911,7 +753,7 @@ getting gw_params from json file ler_data/gw_param.json...
 <span class="p">),</span>
 </pre></div>
 </div>
-<p>We will change some of these priors with our custom ones in the following sections.</p>
+<p>We will change some of these priors with our custom ones in the next sections.</p>
 <p>For non-spinning configuration (faster calculation in our example), we can set:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">spin_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="n">spin_precession</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -920,9 +762,13 @@ getting gw_params from json file ler_data/gw_param.json...
 </section>
 <section id="2.2-Define-Custom-Merger-Rate-Density">
 <h3>2.2 Define Custom Merger Rate Density<a class="headerlink" href="#2.2-Define-Custom-Merger-Rate-Density" title="Link to this heading"></a></h3>
-<p>Use the built-in Madau-Dickinson (2014) star formation rate based merger rate density model with custom parameters.</p>
+<p>Using the default BNS merger rate density prior model, we change the local merger rate density from the default value of <span class="math notranslate nohighlight">\(R_0 = 89 \times 10^{-9} \, \text{Mpc}^{-3}\text{yr}^{-1}\)</span> (GWTC-4) to <span class="math notranslate nohighlight">\(R_0 = 105.5 \times 10^{-9} \, \text{Mpc}^{-3}\text{yr}^{-1}\)</span> (GWTC-3).</p>
+</section>
+<section id="2.3-Define-Custom-Merger-Rate-Density">
+<h3>2.3 Define Custom Merger Rate Density<a class="headerlink" href="#2.3-Define-Custom-Merger-Rate-Density" title="Link to this heading"></a></h3>
+<p>Using the default BNS merger rate density prior model, we change the local merger rate density from the default value of <span class="math notranslate nohighlight">\(R_0 = 89 \times 10^{-9} \, \text{Mpc}^{-3}\text{yr}^{-1}\)</span> (GWTC-4) to <span class="math notranslate nohighlight">\(R_0 = 105.5 \times 10^{-9} \, \text{Mpc}^{-3}\text{yr}^{-1}\)</span> (GWTC-3).</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use built-in Madau-Dickinson (2014) SFR based merger rate density for BNS</span>
@@ -931,10 +777,10 @@ getting gw_params from json file ler_data/gw_param.json...
 <span class="c1"># Custom parameters for merger rate density (Madau-Dickinson model)</span>
 <span class="n">merger_rate_density_input_args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="n">R0</span><span class="o">=</span><span class="mf">89e-9</span><span class="p">,</span>      <span class="c1"># Local merger rate density (Mpc^-3 yr^-1)</span>
-    <span class="n">a</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span>       <span class="c1"># Normalization parameter</span>
-    <span class="n">b</span><span class="o">=</span><span class="mf">2.7</span><span class="p">,</span>         <span class="c1"># Low-redshift power-law slope</span>
-    <span class="n">c</span><span class="o">=</span><span class="mf">2.9</span><span class="p">,</span>         <span class="c1"># Turnover redshift parameter</span>
-    <span class="n">d</span><span class="o">=</span><span class="mf">5.6</span><span class="p">,</span>         <span class="c1"># High-redshift power-law slope</span>
+    <span class="n">a</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span>       <span class="c1"># Evolution parameter a</span>
+    <span class="n">b</span><span class="o">=</span><span class="mf">2.7</span><span class="p">,</span>         <span class="c1"># Evolution parameter b</span>
+    <span class="n">c</span><span class="o">=</span><span class="mf">2.9</span><span class="p">,</span>         <span class="c1"># Evolution parameter c</span>
+    <span class="n">d</span><span class="o">=</span><span class="mf">5.6</span><span class="p">,</span>         <span class="c1"># Evolution parameter d</span>
 <span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Merger rate density function:&quot;</span><span class="p">,</span> <span class="n">merger_rate_density_function</span><span class="p">)</span>
@@ -947,16 +793,16 @@ getting gw_params from json file ler_data/gw_param.json...
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Merger rate density function: merger_rate_density_madau_dickinson2014
-Parameters: {&#39;R0&#39;: 8.9e-08, &#39;a&#39;: 0.015, &#39;b&#39;: 2.7, &#39;c&#39;: 2.9, &#39;d&#39;: 5.6}
+Merger rate density function: merger_rate_density_bbh_oguri2018
+Parameters: {&#39;R0&#39;: 1.0550000000000001e-07, &#39;b2&#39;: 1.6, &#39;b3&#39;: 2.1, &#39;b4&#39;: 30}
 </pre></div></div>
 </div>
 </section>
-<section id="2.3-Define-Custom-Source-Frame-Masses">
-<h3>2.3 Define Custom Source Frame Masses<a class="headerlink" href="#2.3-Define-Custom-Source-Frame-Masses" title="Link to this heading"></a></h3>
+<section id="2.1-Define-Custom-Source-Frame-Masses">
+<h3>2.1 Define Custom Source Frame Masses<a class="headerlink" href="#2.1-Define-Custom-Source-Frame-Masses" title="Link to this heading"></a></h3>
 <p>Use a uniform distribution to sample binary masses (mass_1 and mass_2). Ensure mass_1 &gt;= mass_2 by swapping if necessary.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -1002,6 +848,7 @@ Parameters: {&#39;R0&#39;: 8.9e-08, &#39;a&#39;: 0.015, &#39;b&#39;: 2.7, &#39;c
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test mass samples:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  mass_1: </span><span class="si">{</span><span class="n">m1_test</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  mass_2: </span><span class="si">{</span><span class="n">m2_test</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  mass_1 &gt;= mass_2: </span><span class="si">{</span><span class="p">(</span><span class="n">m1_test</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">m2_test</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1011,17 +858,18 @@ Parameters: {&#39;R0&#39;: 8.9e-08, &#39;a&#39;: 0.015, &#39;b&#39;: 2.7, &#39;c
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Test mass samples:
-  mass_1: [1.60158744 1.93524681 1.89892506 2.20317838 1.99252456]
-  mass_2: [1.5980401  1.36008097 1.34899862 1.75961137 1.92068867]
+  mass_1: [1.25390248 1.97542099 1.824485   2.15927396 1.63832471]
+  mass_2: [1.04427987 1.2296851  1.01247127 1.54740765 1.0178791 ]
+  mass_1 &gt;= mass_2: True
 </pre></div></div>
 </div>
 </section>
 <section id="2.4-Define-Custom-Detection-Criteria">
 <h3>2.4 Define Custom Detection Criteria<a class="headerlink" href="#2.4-Define-Custom-Detection-Criteria" title="Link to this heading"></a></h3>
 <p>Create a custom detection function using 3G detectors (Einstein Telescope and Cosmic Explorer) with a higher SNR threshold. We use <code class="docutils literal notranslate"><span class="pre">pdet</span> <span class="pre">=</span> <span class="pre">optimal_SNR_net</span> <span class="pre">&gt;</span> <span class="pre">12</span></code> instead of the default <code class="docutils literal notranslate"><span class="pre">pdet</span></code> based on <code class="docutils literal notranslate"><span class="pre">observed_SNR_net</span> <span class="pre">&gt;</span> <span class="pre">10</span></code>.</p>
-<p>This function takes GW parameters as input and returns Pdet as a boolean array indicating detectability.</p>
+<p>This function takes GW parameters as input and returns Pdet as a boolean or probability array indicating detectability.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gwsnr</span> <span class="kn">import</span> <span class="n">GWSNR</span>
@@ -1088,7 +936,7 @@ Test mass samples:
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
@@ -1103,36 +951,21 @@ Interpolator will be loaded for CE detector from ./interpolator_json/CE/partialS
 
 
 Custom detection criteria defined for 3G detectors (ET + CE)
-Detection network SNR threshold: 12
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-OMP: Info #276: omp_set_nested routine deprecated, please use omp_set_max_active_levels instead.
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+Detection network threshold: 12 SNR
 
-Test detection calculation:
-  mass_1 array: [2. 2.]
-  mass_2 array: [1. 1.]
+Test Pdet calculation:
+  mass_1 array : [2. 2.]
+  mass_2 array : [1. 1.]
   luminosity_distance array: [ 1000. 10000.]
-  Pdet result: {&#39;pdet_net&#39;: array([ True, False])}
+  Pdet array : {&#39;pdet_net&#39;: array([ True, False])}
 </pre></div></div>
 </div>
 </section>
 <section id="2.5-Initialize-GWRATES-with-Custom-Settings">
 <h3>2.5 Initialize GWRATES with Custom Settings<a class="headerlink" href="#2.5-Initialize-GWRATES-with-Custom-Settings" title="Link to this heading"></a></h3>
-<p>Create a GWRATES instance with the custom functions and parameters defined in the previous sections.</p>
+<p>Create a GWRATES instance with the custom functions and parameters defined above.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">GWRATES</span>
@@ -1146,7 +979,6 @@ Test detection calculation:
     <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">event_type</span><span class="o">=</span><span class="s2">&quot;BNS&quot;</span><span class="p">,</span>  <span class="c1"># Binary Neutron Star</span>
     <span class="n">spin_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">spin_precession</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 
     <span class="c1"># Custom source parameter priors</span>
     <span class="n">source_priors</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
@@ -1174,16 +1006,16 @@ Test detection calculation:
 Initializing GWRATES class...
 
 
-Initializing CBCSourceRedshiftDistribution class...
+Initializing CBCSourceRedshiftDistribution...
 
-luminosity_distance interpolator will be loaded from ./interpolator_json/luminosity_distance/luminosity_distance_1.json
-differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_1.json
-using ler available merger rate density model: merger_rate_density_madau_dickinson2014
-merger_rate_density_madau_dickinson2014 interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_madau_dickinson2014_5.json
-merger_rate_density_detector_frame interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_detector_frame_6.json
+luminosity_distance interpolator will be loaded from ./interpolator_json/luminosity_distance/luminosity_distance_2.json
+differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_2.json
+using ler available merger rate density model: merger_rate_density_bbh_oguri2018
+merger_rate_density_bbh_oguri2018 interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_bbh_oguri2018_4.json
+merger_rate_density_detector_frame interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_detector_frame_5.json
 source_redshift interpolator will be loaded from ./interpolator_json/source_redshift/source_redshift_2.json
 
-Initializing CBCSourceParameterDistribution class...
+Initializing CBCSourceParameterDistribution...
 
 using ler available zs function : source_redshift
 using user defined custom source_frame_masses function
@@ -1193,6 +1025,8 @@ using ler available dec function : sampler_cosine
 using ler available phase function : sampler_uniform
 using ler available psi function : sampler_uniform
 using ler available theta_jn function : sampler_sine
+using ler available a_1 function : sampler_uniform
+using ler available a_2 function : sampler_uniform
 #----------------------------------------
 # GWRATES initialization input arguments:
 #----------------------------------------
@@ -1202,8 +1036,8 @@ using ler available theta_jn function : sampler_sine
     z_min = 0.001,
     z_max = 10,
     event_type = &#39;BNS&#39;,
-    cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=None),
-    pdet_finder = &lt;function detection_criteria at 0x16685c430&gt;,
+    cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=None),
+    pdet_finder = &lt;function detection_criteria at 0x30282aa70&gt;,
     json_file_names = dict(
         gwrates_params = &#39;gwrates_params.json&#39;,
         gw_param = &#39;gw_param.json&#39;,
@@ -1214,18 +1048,20 @@ using ler available theta_jn function : sampler_sine
 
     # GWRATES also takes other CBCSourceParameterDistribution class input arguments as kwargs, as follows:
     source_priors = dict(
-        merger_rate_density = &#39;merger_rate_density_madau_dickinson2014&#39;,
+        merger_rate_density = &#39;merger_rate_density_bbh_oguri2018&#39;,
         zs = &#39;source_redshift&#39;,
-        source_frame_masses = &lt;function source_frame_masses_uniform at 0x107201090&gt;,
+        source_frame_masses = &lt;function source_frame_masses_uniform at 0x10af6a8c0&gt;,
         geocent_time = &#39;sampler_uniform&#39;,
         ra = &#39;sampler_uniform&#39;,
         dec = &#39;sampler_cosine&#39;,
         phase = &#39;sampler_uniform&#39;,
         psi = &#39;sampler_uniform&#39;,
         theta_jn = &#39;sampler_sine&#39;,
+        a_1 = &#39;sampler_uniform&#39;,
+        a_2 = &#39;sampler_uniform&#39;,
     ),
     source_priors_params = dict(
-        merger_rate_density = {&#39;R0&#39;: 8.9e-08, &#39;a&#39;: 0.015, &#39;b&#39;: 2.7, &#39;c&#39;: 2.9, &#39;d&#39;: 5.6},
+        merger_rate_density = {&#39;R0&#39;: 1.0550000000000001e-07, &#39;b2&#39;: 1.6, &#39;b3&#39;: 2.1, &#39;b4&#39;: 30},
         zs = None,
         source_frame_masses = {&#39;mmin&#39;: 1.0, &#39;mmax&#39;: 2.3},
         geocent_time = {&#39;xmin&#39;: 1238166018, &#39;xmax&#39;: 1269702018},
@@ -1234,8 +1070,10 @@ using ler available theta_jn function : sampler_sine
         phase = {&#39;xmin&#39;: 0.0, &#39;xmax&#39;: 6.283185307179586},
         psi = {&#39;xmin&#39;: 0.0, &#39;xmax&#39;: 3.141592653589793},
         theta_jn = None,
+        a_1 = {&#39;xmin&#39;: -0.05, &#39;xmax&#39;: 0.05},
+        a_2 = {&#39;xmin&#39;: -0.05, &#39;xmax&#39;: 0.05},
     ),
-    spin_zero = True,
+    spin_zero = False,
     spin_precession = False,
 </pre></div></div>
 </div>
@@ -1243,7 +1081,7 @@ using ler available theta_jn function : sampler_sine
 <section id="2.6-Sample-GW-Parameters-with-Custom-Settings">
 <h3>2.6 Sample GW Parameters with Custom Settings<a class="headerlink" href="#2.6-Sample-GW-Parameters-with-Custom-Settings" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample GW population with custom settings</span>
@@ -1264,7 +1102,6 @@ using ler available theta_jn function : sampler_sine
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Simulated GW params will be stored in ./ler_data_custom/custom_gw_params.json
-removing ./ler_data_custom/custom_gw_params.json if it exists
 Batch no. 1
 sampling gw source params...
 calculating pdet...
@@ -1280,7 +1117,7 @@ Sampled 100000 custom BNS events
 <section id="2.7-Calculate-Rates-with-Custom-Settings">
 <h3>2.7 Calculate Rates with Custom Settings<a class="headerlink" href="#2.7-Calculate-Rates-with-Custom-Settings" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate detection rates with custom settings</span>
@@ -1303,15 +1140,15 @@ Sampled 100000 custom BNS events
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Getting gw parameters from json file ./ler_data_custom/custom_gw_params.json...
-total GW event rate (yr^-1): 78639.1916644344
-number of simulated GW detectable events: 23715
+total GW event rate (yr^-1): 73925.64600292277
+number of simulated GW detectable events: 20367
 number of simulated all GW events: 100000
 storing detectable params in ./ler_data_custom/gw_param_detectable.json
 
-=== Custom BNS Detection Results (3G Detectors Sensitivity) ===
-Detectable BNS event rate: 7.8639e+04 events per year
-Total BNS event rate: 3.3160e+05 events per year
-Detectable fraction: 23.72%
+=== Custom BNS Detection Results (under 3G detectors sesitivity) ===
+Detectable BNS event rate: 7.3926e+04 events per year
+Total BNS event rate: 3.6297e+05 events per year
+Detectable fraction: 20.37%
 </pre></div></div>
 </div>
 </section>
@@ -1373,7 +1210,7 @@ binary_masses_BNS_bimodal interpolator will be loaded from ./interpolator_json/s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_GWRATES_complete_examples_39_1.png" src="../_images/examples_GWRATES_complete_examples_39_1.png" />
+<img alt="../_images/examples_GWRATES_complete_examples_34_1.png" src="../_images/examples_GWRATES_complete_examples_34_1.png" />
 </div>
 </div>
 </section>
@@ -1381,16 +1218,14 @@ binary_masses_BNS_bimodal interpolator will be loaded from ./interpolator_json/s
 <hr class="docutils" />
 <section id="Part-3:-Advanced-Sampling---Generating-Detectable-Events">
 <h2>Part 3: Advanced Sampling - Generating Detectable Events<a class="headerlink" href="#Part-3:-Advanced-Sampling---Generating-Detectable-Events" title="Link to this heading"></a></h2>
-<p>This section demonstrates how to generate a specific number of detectable events and monitor detection rate convergence as a function of sample size.</p>
+<p>This section demonstrates how to generate a specific number of detectable events and monitor detection rate convergence.</p>
 <section id="3.1-Initialize-GWRATES-for-N-Event-Sampling">
 <h3>3.1 Initialize GWRATES for N-Event Sampling<a class="headerlink" href="#3.1-Initialize-GWRATES-for-N-Event-Sampling" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">GWRATES</span>
-
-<span class="c1"># Create a new GWRATES instance for N-event sampling</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new GWRATES instance for N-event sampling</span>
 <span class="n">ler_n_events</span> <span class="o">=</span> <span class="n">GWRATES</span><span class="p">(</span>
     <span class="n">npool</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
     <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1413,7 +1248,7 @@ Initializing GWRATES class...
 <h3>3.2 Sample Until N Detectable Events Are Found<a class="headerlink" href="#3.2-Sample-Until-N-Detectable-Events-Are-Found" title="Link to this heading"></a></h3>
 <p>This function will: - Continue sampling in batches until at least N detectable events are found - Monitor rate convergence using a stopping criteria (e.g., relative rate difference &lt; 0.5%) - Calculate rates dynamically at each batch - Allow resuming from the last batch if interrupted</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample until we have at least 10,000 detectable events with converged rates</span>
@@ -1421,7 +1256,7 @@ Initializing GWRATES class...
     <span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>  <span class="c1"># Target number of detectable events</span>
     <span class="n">batch_size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span>  <span class="c1"># Events per batch</span>
     <span class="n">stopping_criteria</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">relative_diff_percentage</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># Stop when rate change &lt; 0.5% (use 0.1% for better convergence)</span>
+        <span class="n">relative_diff_percentage</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># Stop when rate change &lt; 0.5% (use 0.1% for better convergence)</span>
         <span class="n">number_of_last_batches_to_check</span><span class="o">=</span><span class="mi">4</span>  <span class="c1"># Check last 4 batches</span>
     <span class="p">),</span>
     <span class="n">pdet_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># Probability threshold for detection</span>
@@ -1443,210 +1278,147 @@ Initializing GWRATES class...
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-stopping criteria set to when relative difference of total rate for the last 4 cumulative batches is less than 0.1%.
+stopping criteria set to when relative difference of total rate for the last 4 cumulative batches is less than 0.5%.
 sample collection will stop when the stopping criteria is met and number of detectable events exceeds the specified size.
-removing ./ler_data/gw_params_n_detectable.json if it exists
-removing ./ler_data/meta_gw.json if it exists
+removing ./ler_data/gw_params_n_detectable.json and ./ler_data/meta_gw.json if they exist
 collected number of detectable events =  0
-collected number of detectable events =  345
+collected number of detectable events =  334
 total number of events =  100000
-total rate (yr^-1): 315.9641235325173
-collected number of detectable events =  667
+total rate (yr^-1): 274.6375860299267
+collected number of detectable events =  656
 total number of events =  200000
-total rate (yr^-1): 305.4319860814334
-collected number of detectable events =  993
+total rate (yr^-1): 269.7039767000478
+collected number of detectable events =  948
 total number of events =  300000
-total rate (yr^-1): 303.14239098337174
-collected number of detectable events =  1314
+total rate (yr^-1): 259.8367580402899
+collected number of detectable events =  1287
 total number of events =  400000
-total rate (yr^-1): 300.85279588531
-collected number of detectable events =  1639
+total rate (yr^-1): 264.56480031475724
+collected number of detectable events =  1657
 total number of events =  500000
-total rate (yr^-1): 300.21170925785276
-percentage difference of total rate for the last 4 cumulative batches = [1.73886516 0.976205   0.21354484 0.        ]
-collected number of detectable events =  1947
+total rate (yr^-1): 272.4996886536458
+percentage difference of total rate for the last 4 cumulative batches = [1.02595051 4.64695232 2.91188896 0.        ]
+collected number of detectable events =  2016
 total number of events =  600000
-total rate (yr^-1): 297.1894437284112
-percentage difference of total rate for the last 4 cumulative batches = [2.00308166 1.23266564 1.01694915 0.        ]
-collected number of detectable events =  2280
+total rate (yr^-1): 276.28212247321966
+percentage difference of total rate for the last 4 cumulative batches = [5.95238095 4.24107143 1.36904762 0.        ]
+collected number of detectable events =  2369
 total number of events =  700000
-total rate (yr^-1): 298.3015327760412
-percentage difference of total rate for the last 4 cumulative batches = [0.85526316 0.64035088 0.37280702 0.        ]
-collected number of detectable events =  2605
+total rate (yr^-1): 278.2790595829326
+percentage difference of total rate for the last 4 cumulative batches = [4.92823976 2.07682566 0.71760236 0.        ]
+collected number of detectable events =  2725
 total number of events =  800000
-total rate (yr^-1): 298.21976152253905
-percentage difference of total rate for the last 4 cumulative batches = [0.66794626 0.34548944 0.0274198  0.        ]
-collected number of detectable events =  2926
+total rate (yr^-1): 280.08511299833464
+percentage difference of total rate for the last 4 cumulative batches = [2.70825688 1.35779817 0.64482307 0.        ]
+collected number of detectable events =  3108
 total number of events =  900000
-total rate (yr^-1): 297.74912253015964
-percentage difference of total rate for the last 4 cumulative batches = [0.18796992 0.18552876 0.15806562 0.        ]
-collected number of detectable events =  3262
+total rate (yr^-1): 283.95662587525356
+percentage difference of total rate for the last 4 cumulative batches = [2.7027027  1.99944843 1.36341699 0.        ]
+collected number of detectable events =  3472
 total number of events =  1000000
-total rate (yr^-1): 298.7463683950932
-percentage difference of total rate for the last 4 cumulative batches = [0.14890076 0.17627223 0.33381021 0.        ]
-collected number of detectable events =  3573
+total rate (yr^-1): 285.4915265556603
+percentage difference of total rate for the last 4 cumulative batches = [2.52633311 1.8937212  0.53763441 0.        ]
+collected number of detectable events =  3862
 total number of events =  1100000
-total rate (yr^-1): 297.4808467408918
-percentage difference of total rate for the last 4 cumulative batches = [0.24839071 0.09018254 0.42541282 0.        ]
-collected number of detectable events =  3924
+total rate (yr^-1): 288.6908974544303
+percentage difference of total rate for the last 4 cumulative batches = [2.98096841 1.63991024 1.10823408 0.        ]
+collected number of detectable events =  4175
 total number of events =  1200000
-total rate (yr^-1): 299.47903882647296
-percentage difference of total rate for the last 4 cumulative batches = [0.57764186 0.24464832 0.66722269 0.        ]
-collected number of detectable events =  4251
+total rate (yr^-1): 286.0808187811736
+percentage difference of total rate for the last 4 cumulative batches = [0.74251497 0.20598802 0.9123571  0.        ]
+collected number of detectable events =  4505
 total number of events =  1300000
-total rate (yr^-1): 299.47903882647296
-percentage difference of total rate for the last 4 cumulative batches = [0.24464832 0.66722269 0.         0.        ]
-collected number of detectable events =  4559
+total rate (yr^-1): 284.94756450134037
+percentage difference of total rate for the last 4 cumulative batches = [0.190899   1.31369186 0.39770625 0.        ]
+collected number of detectable events =  4849
 total number of events =  1400000
-total rate (yr^-1): 298.2361157732395
-percentage difference of total rate for the last 4 cumulative batches = [0.25324533 0.41675806 0.41675806 0.        ]
-collected number of detectable events =  4876
+total rate (yr^-1): 284.79847191170114
+percentage difference of total rate for the last 4 cumulative batches = [1.36672978 0.45026466 0.05235021 0.        ]
+collected number of detectable events =  5170
 total number of events =  1500000
-total rate (yr^-1): 297.70841861730526
-percentage difference of total rate for the last 4 cumulative batches = [0.59474979 0.59474979 0.17725302 0.        ]
-collected number of detectable events =  5188
+total rate (yr^-1): 283.40844706082254
+percentage difference of total rate for the last 4 cumulative batches = [0.94294004 0.54307395 0.49046698 0.        ]
+collected number of detectable events =  5540
 total number of events =  1600000
-total rate (yr^-1): 296.9604842186051
-percentage difference of total rate for the last 4 cumulative batches = [0.84811103 0.42956273 0.25186327 0.        ]
-collected number of detectable events =  5488
+total rate (yr^-1): 284.71037174509615
+percentage difference of total rate for the last 4 cumulative batches = [0.08331019 0.03094379 0.45728039 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events =  5883
 total number of events =  1700000
-total rate (yr^-1): 295.654068192064
-percentage difference of total rate for the last 4 cumulative batches = [0.87333403 0.69484937 0.44187318 0.        ]
-collected number of detectable events =  5774
+total rate (yr^-1): 284.5531734086049
+percentage difference of total rate for the last 4 cumulative batches = [0.0862048  0.40228908 0.05524392 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events =  6224
 total number of events =  1800000
-total rate (yr^-1): 293.7804910268527
-percentage difference of total rate for the last 4 cumulative batches = [1.33702806 1.08243852 0.63774731 0.        ]
-collected number of detectable events =  6055
+total rate (yr^-1): 284.3220784182075
+percentage difference of total rate for the last 4 cumulative batches = [0.32133676 0.13656812 0.0812793  0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events =  6586
 total number of events =  1900000
-total rate (yr^-1): 291.86312250028874
-percentage difference of total rate for the last 4 cumulative batches = [1.7464905  1.29887793 0.656941   0.        ]
-collected number of detectable events =  6364
+total rate (yr^-1): 285.02413198756653
+percentage difference of total rate for the last 4 cumulative batches = [0.11008199 0.16523463 0.24631373 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events =  6905
 total number of events =  2000000
-total rate (yr^-1): 291.4196640812957
-percentage difference of total rate for the last 4 cumulative batches = [1.45302621 0.81011244 0.15217176 0.        ]
-collected number of detectable events =  6663
+total rate (yr^-1): 283.8881035234497
+percentage difference of total rate for the last 4 cumulative batches = [0.23427184 0.15286829 0.40016769 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events =  7210
 total number of events =  2100000
-total rate (yr^-1): 290.5823264454331
-percentage difference of total rate for the last 4 cumulative batches = [1.10060533 0.44076874 0.28815849 0.        ]
-collected number of detectable events =  6964
+total rate (yr^-1): 282.3120894319606
+percentage difference of total rate for the last 4 cumulative batches = [0.71197411 0.96065406 0.55825243 0.        ]
+collected number of detectable events =  7555
 total number of events =  2200000
-total rate (yr^-1): 289.9043684163967
-percentage difference of total rate for the last 4 cumulative batches = [0.67565525 0.52268811 0.23385575 0.        ]
-collected number of detectable events =  7243
+total rate (yr^-1): 282.374382479055
+percentage difference of total rate for the last 4 cumulative batches = [0.93838169 0.53606883 0.02206045 0.        ]
+collected number of detectable events =  7905
 total number of events =  2300000
-total rate (yr^-1): 288.40934426540935
-percentage difference of total rate for the last 4 cumulative batches = [1.0437664  0.75343682 0.51836883 0.        ]
-collected number of detectable events =  7576
+total rate (yr^-1): 282.6100127006731
+percentage difference of total rate for the last 4 cumulative batches = [0.45224541 0.10541851 0.08337646 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events =  8234
 total number of events =  2400000
-total rate (yr^-1): 289.09954104859315
-percentage difference of total rate for the last 4 cumulative batches = [0.51289787 0.27839109 0.23874019 0.        ]
-collected number of detectable events =  7912
+total rate (yr^-1): 282.1065223765489
+percentage difference of total rate for the last 4 cumulative batches = [0.07286859 0.09494999 0.17847525 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events =  8578
 total number of events =  2500000
-total rate (yr^-1): 289.8444226538292
-percentage difference of total rate for the last 4 cumulative batches = [0.02068205 0.49512024 0.2569936  0.        ]
-collected number of detectable events =  8237
+total rate (yr^-1): 282.1366722113426
+percentage difference of total rate for the last 4 cumulative batches = [0.08425359 0.16776993 0.01068625 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events =  8909
 total number of events =  2600000
-total rate (yr^-1): 290.14453573437515
-percentage difference of total rate for the last 4 cumulative batches = [0.59804382 0.36016349 0.10343572 0.        ]
-collected number of detectable events =  8579
+total rate (yr^-1): 281.75336871725204
+percentage difference of total rate for the last 4 cumulative batches = [0.30404037 0.12534142 0.1360422  0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events =  9248
 total number of events =  2700000
-total rate (yr^-1): 290.9990569817999
-percentage difference of total rate for the last 4 cumulative batches = [0.65275673 0.39678284 0.29365086 0.        ]
-collected number of detectable events =  8882
+total rate (yr^-1): 281.6420931032116
+percentage difference of total rate for the last 4 cumulative batches = [0.16490052 0.17560554 0.03950958 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events =  9563
 total number of events =  2800000
-total rate (yr^-1): 290.5169094426314
-percentage difference of total rate for the last 4 cumulative batches = [0.2314794  0.12817626 0.16596195 0.        ]
-collected number of detectable events =  9166
+total rate (yr^-1): 280.833964414477
+percentage difference of total rate for the last 4 cumulative batches = [0.46387117 0.32738359 0.28776031 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events =  9906
 total number of events =  2900000
-total rate (yr^-1): 289.46798163908585
-percentage difference of total rate for the last 4 cumulative batches = [0.23372329 0.52892736 0.36236402 0.        ]
-collected number of detectable events =  9513
+total rate (yr^-1): 280.87548288379656
+percentage difference of total rate for the last 4 cumulative batches = [0.31255339 0.27293597 0.01478181 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events =  10244
 total number of events =  3000000
-total rate (yr^-1): 290.41224223814856
-percentage difference of total rate for the last 4 cumulative batches = [0.20206267 0.03604091 0.3251449  0.        ]
-collected number of detectable events =  9804
-total number of events =  3100000
-total rate (yr^-1): 289.6411656954465
-percentage difference of total rate for the last 4 cumulative batches = [0.30235472 0.05979263 0.26621787 0.        ]
-collected number of detectable events =  10153
-total number of events =  3200000
-total rate (yr^-1): 290.57823788275806
-percentage difference of total rate for the last 4 cumulative batches = [0.38208513 0.05712597 0.32248533 0.        ]
-Given size=10000 reached
-
-collected number of detectable events =  10490
-total number of events =  3300000
-total rate (yr^-1): 291.1254858020296
-percentage difference of total rate for the last 4 cumulative batches = [0.24499523 0.50985578 0.18797664 0.        ]
-Given size=10000 reached
-
-collected number of detectable events =  10799
-total number of events =  3400000
-total rate (yr^-1): 290.8863231055119
-percentage difference of total rate for the last 4 cumulative batches = [0.42805636 0.10591258 0.08221861 0.        ]
-Given size=10000 reached
-
-collected number of detectable events =  11091
-total number of events =  3500000
-total rate (yr^-1): 290.2159912297433
-percentage difference of total rate for the last 4 cumulative batches = [0.12481967 0.31338541 0.23097689 0.        ]
-Given size=10000 reached
-
-collected number of detectable events =  11421
-total number of events =  3600000
-total rate (yr^-1): 290.54961794403226
-percentage difference of total rate for the last 4 cumulative batches = [0.19819949 0.1158856  0.11482607 0.        ]
-Given size=10000 reached
-
-collected number of detectable events =  11752
-total number of events =  3700000
-total rate (yr^-1): 290.88996316131175
-percentage difference of total rate for the last 4 cumulative batches = [0.00125135 0.23169309 0.11700136 0.        ]
-Given size=10000 reached
-
-collected number of detectable events =  12099
-total number of events =  3800000
-total rate (yr^-1): 291.5980114889342
-percentage difference of total rate for the last 4 cumulative batches = [0.47394708 0.35953385 0.24281658 0.        ]
-Given size=10000 reached
-
-collected number of detectable events =  12438
-total number of events =  3900000
-total rate (yr^-1): 292.0818854327351
-percentage difference of total rate for the last 4 cumulative batches = [0.52460203 0.40807812 0.1656638  0.        ]
-Given size=10000 reached
-
-collected number of detectable events =  12736
-total number of events =  4000000
-total rate (yr^-1): 291.60283168914066
-percentage difference of total rate for the last 4 cumulative batches = [0.24446557 0.001653   0.16428295 0.        ]
-Given size=10000 reached
-
-collected number of detectable events =  13053
-total number of events =  4100000
-total rate (yr^-1): 291.57155917072805
-percentage difference of total rate for the last 4 cumulative batches = [0.00907232 0.17502608 0.0107255  0.        ]
-Given size=10000 reached
-
-collected number of detectable events =  13358
-total number of events =  4200000
-total rate (yr^-1): 291.2801078086519
-percentage difference of total rate for the last 4 cumulative batches = [0.27526    0.11079503 0.10005879 0.        ]
-Given size=10000 reached
-
-collected number of detectable events =  13684
-total number of events =  4300000
-total rate (yr^-1): 291.4494820639681
-percentage difference of total rate for the last 4 cumulative batches = [0.05261619 0.0418862  0.05811445 0.        ]
-stopping criteria of rate relative difference of 0.1% for the last 4 cumulative batches reached.
+total rate (yr^-1): 280.77718875155375
+percentage difference of total rate for the last 4 cumulative batches = [0.30803939 0.0202209  0.03500788 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
 Given size=10000 reached
 
 stored detectable GW params in ./ler_data/gw_params_n_detectable.json
 stored meta data in ./ler_data/meta_gw.json
 
 === N-Event Sampling Results ===
-Detectable event rate: 2.9145e+02 events per year
-Collected number of detectable events: 13684
+Detectable event rate: 2.8078e+02 events per year
+Collected number of detectable events: 10244
 </pre></div></div>
 </div>
 </section>
@@ -1654,7 +1426,7 @@ Collected number of detectable events: 13684
 <h3>3.3 Analyze Rate Convergence<a class="headerlink" href="#3.3-Analyze-Rate-Convergence" title="Link to this heading"></a></h3>
 <p>Plot the evolution of the detection rate across batches to verify convergence.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -1689,7 +1461,7 @@ Collected number of detectable events: 13684
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_GWRATES_complete_examples_46_0.png" src="../_images/examples_GWRATES_complete_examples_46_0.png" />
+<img alt="../_images/examples_GWRATES_complete_examples_41_0.png" src="../_images/examples_GWRATES_complete_examples_41_0.png" />
 </div>
 </div>
 </section>
@@ -1697,7 +1469,7 @@ Collected number of detectable events: 13684
 <h3>3.4 Assess Rate Stability<a class="headerlink" href="#3.4-Assess-Rate-Stability" title="Link to this heading"></a></h3>
 <p>Calculate the average rate from the last batches to verify convergence.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -1728,9 +1500,9 @@ Collected number of detectable events: 13684
 
 === Rate Stability Analysis ===
 Number of converged batches: 4
-Mean rate (converged): 2.9148e+02 events per year
-Standard deviation: 1.2678e-01 events per year
-Relative uncertainty: 0.04%
+Mean rate (converged): 2.8103e+02 events per year
+Standard deviation: 3.5386e-01 events per year
+Relative uncertainty: 0.13%
 </pre></div></div>
 </div>
 </section>
@@ -1738,11 +1510,11 @@ Relative uncertainty: 0.04%
 <h3>3.5 Compare All Sampled and Detectable Event Parameters<a class="headerlink" href="#3.5-Compare-All-Sampled-and-Detectable-Event-Parameters" title="Link to this heading"></a></h3>
 <p>Create an overlapping visualization comparing the parameter distributions of all sampled events with detectable events only.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># generate CBC (all) parameters</span>
-<span class="n">gw_param</span> <span class="o">=</span> <span class="n">ler_n_events</span><span class="o">.</span><span class="n">gw_cbc_statistics</span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">gw_param</span> <span class="o">=</span> <span class="n">ler_n_events</span><span class="o">.</span><span class="n">gw_cbc_statistics</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1752,18 +1524,14 @@ Relative uncertainty: 0.04%
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Simulated GW params will be stored in ./ler_data/gw_param.json
-removing ./ler_data/gw_param.json if it exists
 Batch no. 1
 sampling gw source params...
 calculating pdet...
-Batch no. 2
-sampling gw source params...
-calculating pdet...
-saving all gw parameters in ./ler_data/gw_param.json
+gw parameters already sampled.
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">corner</span>
@@ -1823,7 +1591,7 @@ WARNING:root:Too few points to create valid contours
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_GWRATES_complete_examples_51_1.png" src="../_images/examples_GWRATES_complete_examples_51_1.png" />
+<img alt="../_images/examples_GWRATES_complete_examples_46_1.png" src="../_images/examples_GWRATES_complete_examples_46_1.png" />
 </div>
 </div>
 </section>

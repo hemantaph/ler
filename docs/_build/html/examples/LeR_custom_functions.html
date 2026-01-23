@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LeR with Custom Functions and Parameters &mdash; ler 0.4.6 documentation</title>
+  <title>LeR with Custom Functions and Parameters &mdash; ler 0.5.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
@@ -20,7 +20,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=03f3338f"></script>
+      <script src="../_static/documentation_options.js?v=8e576371"></script>
       <script src="../_static/doctools.js?v=9a2dae69"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -62,7 +62,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -80,41 +80,41 @@
 <li class="toctree-l1"><a class="reference internal" href="GWRATES_complete_examples.html">GWRATES complete example</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">LeR with Custom Functions and Parameters</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Table-of-Contents">Table of Contents</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#LeR-initialization">LeR initialization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Code-snippet-for-initialization-with-default-input-arguments">Code snippet for initialization with default input arguments</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Initialize-LeR-with-default-settings">Initialize LeR with default settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#1.-LeR-initialization">1. LeR initialization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#1.1.-Code-snippet-for-initialization-with-default-input-arguments">1.1. Code snippet for initialization with default input arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#1.2.-Initialize-LeR-with-default-settings">1.2. Initialize LeR with default settings</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Examine-Available-Prior-Functions">Examine Available Prior Functions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Accessing-functions-as-Class-Attributes-(Unlensed)">Accessing functions as Class Attributes (Unlensed)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Testing-source-related-parameter-prior-functions">Testing source related parameter prior functions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Accessing-functions-as-Class-Attributes-(Lensed)">Accessing functions as Class Attributes (Lensed)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Accessing-functions-from-the-ler.gw_source_population-module-(Unlensed)">Accessing functions from the ler.gw_source_population module (Unlensed)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Accessing-functions-from-the-ler.lens_galaxy_population-module-(Lensed)">Accessing functions from the ler.lens_galaxy_population module (Lensed)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#2.-Examine-Available-Prior-Functions">2. Examine Available Prior Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#2.1.-Accessing-functions-as-Class-Attributes-(Unlensed)">2.1. Accessing functions as Class Attributes (Unlensed)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.2.-Testing-source-related-parameter-prior-functions">2.2. Testing source related parameter prior functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.3.-Accessing-functions-as-Class-Attributes-(Lensed)">2.3. Accessing functions as Class Attributes (Lensed)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.4.-Accessing-functions-from-the-ler.gw_source_population-module-(Unlensed)">2.4. Accessing functions from the ler.gw_source_population module (Unlensed)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.5.-Accessing-functions-from-the-ler.lens_galaxy_population-module-(Lensed)">2.5. Accessing functions from the ler.lens_galaxy_population module (Lensed)</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Using-Custom-Functions-in-LeR-Initialization">Using Custom Functions in LeR Initialization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Custom-Event-Type-with-non-spinning-configuration">Custom Event Type with non-spinning configuration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Custom-Merger-Rate-Density">Custom Merger Rate Density</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Custom-Source-Frame-Masses">Custom Source Frame Masses</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Custom-Lens-Model">Custom Lens Model</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Custom-Velocity-Dispersion">Custom Velocity Dispersion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#3.-Using-Custom-Functions-in-LeR-Initialization">3. Using Custom Functions in LeR Initialization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#3.1.-Custom-Event-Type-with-non-spinning-configuration">3.1. Custom Event Type with non-spinning configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3.2.-Custom-Merger-Rate-Density">3.2. Custom Merger Rate Density</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3.3.-Custom-Source-Frame-Masses">3.3. Custom Source Frame Masses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3.4.-Custom-Lens-Model">3.4. Custom Lens Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#3.4.1.-Custom-Velocity-Dispersion">3.4.1. Custom Velocity Dispersion</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#Custom-Axis-Ratio">Custom Axis Ratio</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Custom-Detection-Criteria">Custom Detection Criteria</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#LeR-initialization-with-custom-functions-and-parameters">LeR initialization with custom functions and parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Simulate-Unlensed-Population">Simulate Unlensed Population</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Simulate-Lensed-Population">Simulate Lensed Population</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Calculate-Rates-and-Compare-Results">Calculate Rates and Compare Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3.4.2.-Custom-Axis-Ratio">3.4.2. Custom Axis Ratio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3.5.-Custom-Detection-Criteria">3.5. Custom Detection Criteria</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3.6.-LeR-initialization-with-custom-functions-and-parameters">3.6. LeR initialization with custom functions and parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3.7.-Simulate-Unlensed-Population">3.7. Simulate Unlensed Population</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3.8.-Simulate-Lensed-Population">3.8. Simulate Lensed Population</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3.9.-Calculate-Rates-and-Compare-Results">3.9. Calculate Rates and Compare Results</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Compare-Custom-vs-Default-Models">Compare Custom vs Default Models</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Mass-Distribution-Comparison">Mass Distribution Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Axis-Ratio-Distribution-Comparison">Axis-Ratio Distribution Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#4.-Compare-Custom-vs-Default-Models">4. Compare Custom vs Default Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#4.1.-Mass-Distribution-Comparison">4.1. Mass Distribution Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#4.2.-Axis-Ratio-Distribution-Comparison">4.2. Axis-Ratio Distribution Comparison</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Summary">Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#5.-Summary">5. Summary</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
@@ -152,58 +152,59 @@
 <hr class="docutils" />
 <section id="Table-of-Contents">
 <h2>Table of Contents<a class="headerlink" href="#Table-of-Contents" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>LeR initialization</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#LeR-initialization"><span class="std std-ref">LeR initialization</span></a></p>
-<ul>
-<li><p><a class="reference internal" href="#Code-snippet-for-initialization-with-default-input-arguments"><span class="std std-ref">Code snippet for initialization with default input arguments</span></a></p></li>
-<li><p><a class="reference internal" href="#Initialize-LeR-with-default-settings"><span class="std std-ref">Initialize LeR with default settings</span></a></p></li>
+<li><p>1.1 Code snippet for initialization with default input arguments</p></li>
+<li><p>1.2 Initialize LeR with default settings</p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#Examine-Available-Prior-Functions"><span class="std std-ref">Examine Available Prior Functions</span></a></p>
-<ul>
-<li><p>Accessing functions as Class Attributes (Unlensed)</p></li>
-<li><p><a class="reference internal" href="#Testing-source-related-parameter-prior-functions"><span class="std std-ref">Testing source related parameter prior functions</span></a></p></li>
-<li><p>Accessing functions as Class Attributes (Lensed)</p></li>
-<li><p>Accessing functions from the ler.gw_source_population module (Unlensed)</p></li>
-<li><p>Accessing functions from the ler.lens_galaxy_population module (Lensed)</p></li>
+<li><p>Examine Available Prior Functions</p>
+<ul class="simple">
+<li><p>2.1 Accessing functions as Class Attributes (Unlensed)</p></li>
+<li><p>2.2 Testing source related parameter prior functions</p></li>
+<li><p>2.3 Accessing functions as Class Attributes (Lensed)</p></li>
+<li><p>2.4 Accessing functions from the ler.gw_source_population module (Unlensed)</p></li>
+<li><p>2.5 Accessing functions from the ler.lens_galaxy_population module (Lensed)</p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#Using-Custom-Functions-in-LeR-Initialization"><span class="std std-ref">Using Custom Functions in LeR Initialization</span></a></p>
+<li><p>Using Custom Functions in LeR Initialization</p>
+<ul class="simple">
+<li><p>3.1 Custom Event Type with non-spinning configuration</p></li>
+<li><p>3.2 Custom Merger Rate Density</p></li>
+<li><p>3.3 Custom Source Frame Masses</p></li>
+<li><p>3.4 Custom Lens Model</p>
 <ul>
-<li><p><a class="reference internal" href="#Custom-Event-Type-with-non-spinning-configuration"><span class="std std-ref">Custom Event Type with non-spinning configuration</span></a></p></li>
-<li><p><a class="reference internal" href="#Custom-Merger-Rate-Density"><span class="std std-ref">Custom Merger Rate Density</span></a></p></li>
-<li><p><a class="reference internal" href="#Custom-Source-Frame-Masses"><span class="std std-ref">Custom Source Frame Masses</span></a></p></li>
-<li><p><a class="reference internal" href="#Custom-Lens-Model"><span class="std std-ref">Custom Lens Model</span></a></p>
-<ul>
-<li><p><a class="reference internal" href="#Custom-Velocity-Dispersion"><span class="std std-ref">Custom Velocity Dispersion</span></a></p></li>
-<li><p><a class="reference internal" href="#Custom-Axis-Ratio"><span class="std std-ref">Custom Axis Ratio</span></a></p></li>
+<li><p>3.4.1 Custom Velocity Dispersion</p></li>
+<li><p>3.4.2 Custom Axis Ratio</p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#Custom-Detection-Criteria"><span class="std std-ref">Custom Detection Criteria</span></a></p></li>
-<li><p><a class="reference internal" href="#LeR-initialization-with-custom-functions-and-parameters"><span class="std std-ref">LeR initialization with custom functions and parameters</span></a></p></li>
-<li><p><a class="reference internal" href="#Simulate-Unlensed-Population"><span class="std std-ref">Simulate Unlensed Population</span></a></p></li>
-<li><p><a class="reference internal" href="#Simulate-Lensed-Population"><span class="std std-ref">Simulate Lensed Population</span></a></p></li>
-<li><p><a class="reference internal" href="#Calculate-Rates-and-Compare-Results"><span class="std std-ref">Calculate Rates and Compare Results</span></a></p></li>
+<li><p>3.5 Custom Detection Criteria</p></li>
+<li><p>3.6 LeR initialization with custom functions and parameters</p></li>
+<li><p>3.7 Simulate Unlensed Population</p></li>
+<li><p>3.8 Simulate Lensed Population</p></li>
+<li><p>3.9 Calculate Rates and Compare Results</p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#Compare-Custom-vs-Default-Models"><span class="std std-ref">Compare Custom vs Default Models</span></a></p>
-<ul>
-<li><p><a class="reference internal" href="#Mass-Distribution-Comparison"><span class="std std-ref">Mass Distribution Comparison</span></a></p></li>
-<li><p><a class="reference internal" href="#Axis-Ratio-Distribution-Comparison"><span class="std std-ref">Axis-Ratio Distribution Comparison</span></a></p></li>
+<li><p>Compare Custom vs Default Models</p>
+<ul class="simple">
+<li><p>4.1 Mass Distribution Comparison</p></li>
+<li><p>4.2 Axis-Ratio Distribution Comparison</p></li>
 </ul>
 </li>
-</ul>
+<li><p>Summary</p></li>
+</ol>
 </section>
 <hr class="docutils" />
-<section id="LeR-initialization">
-<h2>LeR initialization<a class="headerlink" href="#LeR-initialization" title="Link to this heading"></a></h2>
-<section id="Code-snippet-for-initialization-with-default-input-arguments">
-<h3>Code snippet for initialization with default input arguments<a class="headerlink" href="#Code-snippet-for-initialization-with-default-input-arguments" title="Link to this heading"></a></h3>
+<section id="1.-LeR-initialization">
+<h2>1. LeR initialization<a class="headerlink" href="#1.-LeR-initialization" title="Link to this heading"></a></h2>
+<section id="1.1.-Code-snippet-for-initialization-with-default-input-arguments">
+<h3>1.1. Code snippet for initialization with default input arguments<a class="headerlink" href="#1.1.-Code-snippet-for-initialization-with-default-input-arguments" title="Link to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler.rates</span> <span class="kn">import</span> <span class="n">LeR</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
-<span class="n">cosmo</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">cosmo</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
 
 <span class="c1"># Uncomment the below code if you need to change the default arguments.</span>
 <span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span>
@@ -369,8 +370,8 @@
 </pre></div>
 </div>
 </section>
-<section id="Initialize-LeR-with-default-settings">
-<h3>Initialize LeR with default settings<a class="headerlink" href="#Initialize-LeR-with-default-settings" title="Link to this heading"></a></h3>
+<section id="1.2.-Initialize-LeR-with-default-settings">
+<h3>1.2. Initialize LeR with default settings<a class="headerlink" href="#1.2.-Initialize-LeR-with-default-settings" title="Link to this heading"></a></h3>
 <p>Set <code class="docutils literal notranslate"><span class="pre">verbose=False</span></code> to suppress lengthy output</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -396,11 +397,11 @@ Initializing LeR class...
 </section>
 </section>
 <hr class="docutils" />
-<section id="Examine-Available-Prior-Functions">
-<h2>Examine Available Prior Functions<a class="headerlink" href="#Examine-Available-Prior-Functions" title="Link to this heading"></a></h2>
+<section id="2.-Examine-Available-Prior-Functions">
+<h2>2. Examine Available Prior Functions<a class="headerlink" href="#2.-Examine-Available-Prior-Functions" title="Link to this heading"></a></h2>
 <p>There are two ways of accessing the built-in GW parameter prior functions and their default parameters.</p>
-<section id="Accessing-functions-as-Class-Attributes-(Unlensed)">
-<h3>Accessing functions as Class Attributes (Unlensed)<a class="headerlink" href="#Accessing-functions-as-Class-Attributes-(Unlensed)" title="Link to this heading"></a></h3>
+<section id="2.1.-Accessing-functions-as-Class-Attributes-(Unlensed)">
+<h3>2.1. Accessing functions as Class Attributes (Unlensed)<a class="headerlink" href="#2.1.-Accessing-functions-as-Class-Attributes-(Unlensed)" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -498,8 +499,8 @@ theta_jn:
 </pre></div></div>
 </div>
 </section>
-<section id="Testing-source-related-parameter-prior-functions">
-<h3>Testing source related parameter prior functions<a class="headerlink" href="#Testing-source-related-parameter-prior-functions" title="Link to this heading"></a></h3>
+<section id="2.2.-Testing-source-related-parameter-prior-functions">
+<h3>2.2. Testing source related parameter prior functions<a class="headerlink" href="#2.2.-Testing-source-related-parameter-prior-functions" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -528,8 +529,8 @@ Merger Rate Denisty: [2.21298914e-08 2.57321630e-08 2.98600744e-08] Mpc^-3 yr^-1
 </pre></div></div>
 </div>
 </section>
-<section id="Accessing-functions-as-Class-Attributes-(Lensed)">
-<h3>Accessing functions as Class Attributes (Lensed)<a class="headerlink" href="#Accessing-functions-as-Class-Attributes-(Lensed)" title="Link to this heading"></a></h3>
+<section id="2.3.-Accessing-functions-as-Class-Attributes-(Lensed)">
+<h3>2.3. Accessing functions as Class Attributes (Lensed)<a class="headerlink" href="#2.3.-Accessing-functions-as-Class-Attributes-(Lensed)" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
@@ -623,8 +624,8 @@ Velocity dispersion: [179.63602901 145.22139721 115.70296045 106.18811337
 </pre></div></div>
 </div>
 </section>
-<section id="Accessing-functions-from-the-ler.gw_source_population-module-(Unlensed)">
-<h3>Accessing functions from the ler.gw_source_population module (Unlensed)<a class="headerlink" href="#Accessing-functions-from-the-ler.gw_source_population-module-(Unlensed)" title="Link to this heading"></a></h3>
+<section id="2.4.-Accessing-functions-from-the-ler.gw_source_population-module-(Unlensed)">
+<h3>2.4. Accessing functions from the ler.gw_source_population module (Unlensed)<a class="headerlink" href="#2.4.-Accessing-functions-from-the-ler.gw_source_population-module-(Unlensed)" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
@@ -686,8 +687,8 @@ Merger Rate Denisty: [2.21298914e-08 2.57321630e-08 2.98600744e-08] Mpc^-3 yr^-1
 </pre></div></div>
 </div>
 </section>
-<section id="Accessing-functions-from-the-ler.lens_galaxy_population-module-(Lensed)">
-<h3>Accessing functions from the ler.lens_galaxy_population module (Lensed)<a class="headerlink" href="#Accessing-functions-from-the-ler.lens_galaxy_population-module-(Lensed)" title="Link to this heading"></a></h3>
+<section id="2.5.-Accessing-functions-from-the-ler.lens_galaxy_population-module-(Lensed)">
+<h3>2.5. Accessing functions from the ler.lens_galaxy_population module (Lensed)<a class="headerlink" href="#2.5.-Accessing-functions-from-the-ler.lens_galaxy_population-module-(Lensed)" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
@@ -749,8 +750,8 @@ Velocity dispersion: [100.68125009 168.74814017 107.05317212 192.6835846
 </section>
 </section>
 <hr class="docutils" />
-<section id="Using-Custom-Functions-in-LeR-Initialization">
-<h2>Using Custom Functions in LeR Initialization<a class="headerlink" href="#Using-Custom-Functions-in-LeR-Initialization" title="Link to this heading"></a></h2>
+<section id="3.-Using-Custom-Functions-in-LeR-Initialization">
+<h2>3. Using Custom Functions in LeR Initialization<a class="headerlink" href="#3.-Using-Custom-Functions-in-LeR-Initialization" title="Link to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">ler</span></code> package allows full customization of sampling functions and detection criteria. This section demonstrates a <strong>Binary Neutron Star (BNS)</strong> configuration with custom settings:</p>
 <table class="docutils align-default">
 <thead>
@@ -796,8 +797,8 @@ Velocity dispersion: [100.68125009 168.74814017 107.05317212 192.6835846
 <li><p><strong>Merger rate density</strong>: Must be a function of redshift, i.e., <span class="math notranslate nohighlight">\(F(z_s)\)</span>.</p></li>
 <li><p><strong>Velocity dispersion function (galaxy number density)</strong>: Must be a function of velocity dispersion, i.e., <span class="math notranslate nohighlight">\(F(\sigma)\)</span> or <span class="math notranslate nohighlight">\(F(\sigma, z_l)\)</span>.</p></li>
 </ul>
-<section id="Custom-Event-Type-with-non-spinning-configuration">
-<h3>Custom Event Type with non-spinning configuration<a class="headerlink" href="#Custom-Event-Type-with-non-spinning-configuration" title="Link to this heading"></a></h3>
+<section id="3.1.-Custom-Event-Type-with-non-spinning-configuration">
+<h3>3.1. Custom Event Type with non-spinning configuration<a class="headerlink" href="#3.1.-Custom-Event-Type-with-non-spinning-configuration" title="Link to this heading"></a></h3>
 <p>Using <code class="docutils literal notranslate"><span class="pre">event_type='BNS'</span></code> in the LeR class initialization will default to the following GW parameter priors corresponding to BNS. Other allowed event types are ‘BBH’ and ‘NSBH’.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">source_priors</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="n">merger_rate_density</span> <span class="o">=</span> <span class="s1">&#39;merger_rate_density_madau_dickinson2014&#39;</span><span class="p">,</span>
@@ -834,11 +835,11 @@ Velocity dispersion: [100.68125009 168.74814017 107.05317212 192.6835846
 </pre></div>
 </div>
 </section>
-<section id="Custom-Merger-Rate-Density">
-<h3>Custom Merger Rate Density<a class="headerlink" href="#Custom-Merger-Rate-Density" title="Link to this heading"></a></h3>
+<section id="3.2.-Custom-Merger-Rate-Density">
+<h3>3.2. Custom Merger Rate Density<a class="headerlink" href="#3.2.-Custom-Merger-Rate-Density" title="Link to this heading"></a></h3>
 <p>Using the default BNS merger rate density prior model with the local merger rate density change from the default value of <span class="math notranslate nohighlight">\(R_0 = 89 \times 10^{-9} \, \text{Mpc}^{-3}\text{yr}^{-1}\)</span> (GWTC-4) to <span class="math notranslate nohighlight">\(R_0 = 105.5 \times 10^{-9} \, \text{Mpc}^{-3}\text{yr}^{-1}\)</span> (GWTC-3).</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merger_rate_density_function</span> <span class="o">=</span> <span class="s1">&#39;merger_rate_density_madau_dickinson2014&#39;</span>
@@ -865,11 +866,11 @@ Parameters: {&#39;R0&#39;: 8.9e-08, &#39;a&#39;: 0.015, &#39;b&#39;: 2.7, &#39;c
 </pre></div></div>
 </div>
 </section>
-<section id="Custom-Source-Frame-Masses">
-<h3>Custom Source Frame Masses<a class="headerlink" href="#Custom-Source-Frame-Masses" title="Link to this heading"></a></h3>
+<section id="3.3.-Custom-Source-Frame-Masses">
+<h3>3.3. Custom Source Frame Masses<a class="headerlink" href="#3.3.-Custom-Source-Frame-Masses" title="Link to this heading"></a></h3>
 <p>Using a uniform distribution to sample the binary masses mass_1 and mass_2. Swap values if mass_1 &lt; mass_2.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -919,13 +920,13 @@ Parameters: {&#39;R0&#39;: 8.9e-08, &#39;a&#39;: 0.015, &#39;b&#39;: 2.7, &#39;c
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-mass_1: [2.23567651 1.8713216  1.63706892 2.1271594  1.98181497] M_sun
-mass_2: [2.06991154 1.25900846 1.35433734 2.03050001 1.30739588] M_sun
+mass_1: [2.09023289 1.46860688 1.67053465 1.60833021 1.97848449] M_sun
+mass_2: [1.07456818 1.03191177 1.41843627 1.22341249 1.41124184] M_sun
 </pre></div></div>
 </div>
 </section>
-<section id="Custom-Lens-Model">
-<h3>Custom Lens Model<a class="headerlink" href="#Custom-Lens-Model" title="Link to this heading"></a></h3>
+<section id="3.4.-Custom-Lens-Model">
+<h3>3.4. Custom Lens Model<a class="headerlink" href="#3.4.-Custom-Lens-Model" title="Link to this heading"></a></h3>
 <p>Using <code class="docutils literal notranslate"><span class="pre">lens_model='sie_galaxy'</span></code> in the <code class="docutils literal notranslate"><span class="pre">LeR</span></code> initialization will use the following settings:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lens_param_samplers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="n">source_redshift_sl</span><span class="o">=</span><span class="s2">&quot;strongly_lensed_source_redshifts&quot;</span><span class="p">,</span>
@@ -971,11 +972,11 @@ mass_2: [2.06991154 1.25900846 1.35433734 2.03050001 1.30739588] M_sun
 </pre></div>
 </div>
 <p>We will change the velocity dispersion and axis ratio samplers to our custom functions.</p>
-<section id="Custom-Velocity-Dispersion">
-<h4>Custom Velocity Dispersion<a class="headerlink" href="#Custom-Velocity-Dispersion" title="Link to this heading"></a></h4>
+<section id="3.4.1.-Custom-Velocity-Dispersion">
+<h4>3.4.1. Custom Velocity Dispersion<a class="headerlink" href="#3.4.1.-Custom-Velocity-Dispersion" title="Link to this heading"></a></h4>
 <p>Unlike other lens parameter, custom velocity dispersion needs to be a density function.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
@@ -1024,7 +1025,7 @@ Velocity dispersion density function values: [9.75545769e-05 3.09054569e-05 5.78
 </div>
 <p>Uncomment and run the following if you want to use <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code> class object.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import numpy as np</span>
@@ -1097,10 +1098,10 @@ Velocity dispersion density function values: [9.75545769e-05 3.09054569e-05 5.78
 </div>
 </section>
 </section>
-<section id="Custom-Axis-Ratio">
-<h3>Custom Axis Ratio<a class="headerlink" href="#Custom-Axis-Ratio" title="Link to this heading"></a></h3>
+<section id="3.4.2.-Custom-Axis-Ratio">
+<h3>3.4.2. Custom Axis Ratio<a class="headerlink" href="#3.4.2.-Custom-Axis-Ratio" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">CubicSpline</span>  <span class="c1"># noqa: E402</span>
@@ -1142,12 +1143,12 @@ Velocity dispersion density function values: [9.75545769e-05 3.09054569e-05 5.78
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Axis ratio samples: [0.53932252 0.76120391 0.31770006 0.64044733 0.835603  ]
+Axis ratio samples: [0.9850404  0.89142491 0.76789661 0.41975975 0.6750933 ]
 </pre></div></div>
 </div>
 <p>Uncomment and run the following if you want to use <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code> class object.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># from scipy.interpolate import CubicSpline  # noqa: E402</span>
@@ -1205,11 +1206,11 @@ Axis ratio samples: [0.53932252 0.76120391 0.31770006 0.64044733 0.835603  ]
 </div>
 </div>
 </section>
-<section id="Custom-Detection-Criteria">
-<h3>Custom Detection Criteria<a class="headerlink" href="#Custom-Detection-Criteria" title="Link to this heading"></a></h3>
+<section id="3.5.-Custom-Detection-Criteria">
+<h3>3.5. Custom Detection Criteria<a class="headerlink" href="#3.5.-Custom-Detection-Criteria" title="Link to this heading"></a></h3>
 <p>Define a custom pdet_finder using 3G detectors (Einstein Telescope and Cosmic Explorer) with SNR threshold of 12.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define a function that sets detection criteria</span>
@@ -1247,7 +1248,7 @@ Axis ratio samples: [0.53932252 0.76120391 0.31770006 0.64044733 0.835603  ]
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
@@ -1255,10 +1256,35 @@ Axis ratio samples: [0.53932252 0.76120391 0.31770006 0.64044733 0.835603  ]
 
 Initializing GWSNR class...
 
-Interpolator will be loaded for ET1 detector from ./interpolator_json/ET1/partialSNR_dict_0.json
-Interpolator will be loaded for ET2 detector from ./interpolator_json/ET2/partialSNR_dict_0.json
-Interpolator will be loaded for ET3 detector from ./interpolator_json/ET3/partialSNR_dict_0.json
-Interpolator will be loaded for CE detector from ./interpolator_json/CE/partialSNR_dict_0.json
+Interpolator will be generated for ET1 detector at ./interpolator_json/ET1/partialSNR_dict_0.json
+Interpolator will be generated for ET2 detector at ./interpolator_json/ET2/partialSNR_dict_0.json
+Interpolator will be generated for ET3 detector at ./interpolator_json/ET3/partialSNR_dict_0.json
+Interpolator will be generated for CE detector at ./interpolator_json/CE/partialSNR_dict_0.json
+Please be patient while the interpolator is generated
+Generating interpolator for [&#39;ET1&#39;, &#39;ET2&#39;, &#39;ET3&#39;, &#39;CE&#39;] detectors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|█████████████████████████████████████████████████████████| 4000/4000 [00:03&lt;00:00, 1283.60it/s]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+Saving Partial-SNR for ET1 detector with shape (20, 200)
+
+Saving Partial-SNR for ET2 detector with shape (20, 200)
+
+Saving Partial-SNR for ET3 detector with shape (20, 200)
+
+Saving Partial-SNR for CE detector with shape (20, 200)
 
 
 GW parameters: {&#39;mass_1&#39;: array([20., 20.]), &#39;mass_2&#39;: array([10., 10.]), &#39;luminosity_distance&#39;: array([1000., 2000.])}
@@ -1266,11 +1292,11 @@ Detection criteria results: {&#39;optimal_snr_ET1&#39;: array([26.4831826, 13.24
 </pre></div></div>
 </div>
 </section>
-<section id="LeR-initialization-with-custom-functions-and-parameters">
-<h3>LeR initialization with custom functions and parameters<a class="headerlink" href="#LeR-initialization-with-custom-functions-and-parameters" title="Link to this heading"></a></h3>
+<section id="3.6.-LeR-initialization-with-custom-functions-and-parameters">
+<h3>3.6. LeR initialization with custom functions and parameters<a class="headerlink" href="#3.6.-LeR-initialization-with-custom-functions-and-parameters" title="Link to this heading"></a></h3>
 <p>Create a <code class="docutils literal notranslate"><span class="pre">LeR</span></code> instance with custom source priors, lens samplers, and detection criteria for BNS events.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
@@ -1327,28 +1353,29 @@ angular_diameter_distance interpolator will be loaded from ./interpolator_json/a
 angular_diameter_distance interpolator will be loaded from ./interpolator_json/angular_diameter_distance/angular_diameter_distance_0.json
 differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_0.json
 using user provided custom velocity_dispersion function
-velocity_dispersion_custom interpolator will be loaded from ./interpolator_json/velocity_dispersion/velocity_dispersion_custom_4.json
+velocity_dispersion_custom interpolator will be generated at ./interpolator_json/velocity_dispersion/velocity_dispersion_custom_1.json
 using user provided custom axis_ratio sampler function
 using ler available axis_rotation_angle function : axis_rotation_angle_uniform
 using ler available density_profile_slope function : density_profile_slope_normal
 using ler available external_shear function : external_shear_normal
 using ler available lens_redshift function : lens_redshift_strongly_lensed_numerical
 Numerically solving the lens redshift distribution...
-lens_redshift_strongly_lensed_numerical_sie_galaxy interpolator will be loaded from ./interpolator_json/lens_redshift/lens_redshift_strongly_lensed_numerical_sie_galaxy_9.json
-lens_redshift_intrinsic interpolator will be loaded from ./interpolator_json/lens_redshift_intrinsic/lens_redshift_intrinsic_3.json
+Using multithreaded njit
+lens_redshift_strongly_lensed_numerical_sie_galaxy interpolator will be generated at ./interpolator_json/lens_redshift/lens_redshift_strongly_lensed_numerical_sie_galaxy_2.json
+lens_redshift_intrinsic interpolator will be generated at ./interpolator_json/lens_redshift_intrinsic/lens_redshift_intrinsic_2.json
 using ler available density_profile_slope_sl function : density_profile_slope_normal
 using ler available external_shear_sl function : external_shear_normal
 using ler available optical depth function : optical_depth_numerical
-optical_depth_numerical interpolator will be loaded from ./interpolator_json/optical_depth/optical_depth_numerical_14.json
+optical_depth_numerical interpolator will be generated at ./interpolator_json/optical_depth/optical_depth_numerical_2.json
 
 Initializing CBCSourceRedshiftDistribution class...
 
 luminosity_distance interpolator will be loaded from ./interpolator_json/luminosity_distance/luminosity_distance_0.json
 differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_0.json
 using ler available merger rate density model: merger_rate_density_madau_dickinson2014
-merger_rate_density_madau_dickinson2014 interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_madau_dickinson2014_2.json
-merger_rate_density_detector_frame interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_detector_frame_3.json
-source_redshift interpolator will be loaded from ./interpolator_json/source_redshift/source_redshift_1.json
+merger_rate_density_madau_dickinson2014 interpolator will be generated at ./interpolator_json/merger_rate_density/merger_rate_density_madau_dickinson2014_2.json
+merger_rate_density_detector_frame interpolator will be generated at ./interpolator_json/merger_rate_density/merger_rate_density_detector_frame_3.json
+source_redshift interpolator will be generated at ./interpolator_json/source_redshift/source_redshift_1.json
 
 Initializing CBCSourceParameterDistribution class...
 
@@ -1373,8 +1400,8 @@ Faster, njitted and importance sampling based lens parameter sampler will be use
     z_max = 10.0,
     event_type = &#39;BNS&#39;,
     lens_type = &#39;sie_galaxy&#39;,
-    cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=None),
-    pdet_finder = &lt;function detection_criteria at 0x30b24ec20&gt;,
+    cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=0.0),
+    pdet_finder = &lt;function detection_criteria at 0x316e003a0&gt;,
     json_file_names = dict(
         ler_params = &#39;ler_params.json&#39;,
         unlensed_param = &#39;unlensed_param.json&#39;,
@@ -1419,7 +1446,7 @@ Faster, njitted and importance sampling based lens parameter sampler will be use
     source_priors = dict(
         merger_rate_density = &#39;merger_rate_density_madau_dickinson2014&#39;,
         zs = &#39;source_redshift&#39;,
-        source_frame_masses = &lt;function source_frame_masses_uniform at 0x305e6c820&gt;,
+        source_frame_masses = &lt;function source_frame_masses_uniform at 0x30ea03a30&gt;,
         geocent_time = &#39;sampler_uniform&#39;,
         ra = &#39;sampler_uniform&#39;,
         dec = &#39;sampler_cosine&#39;,
@@ -1462,8 +1489,8 @@ Faster, njitted and importance sampling based lens parameter sampler will be use
     lens_param_samplers = dict(
         source_redshift_sl = &#39;strongly_lensed_source_redshifts&#39;,
         lens_redshift = &#39;lens_redshift_strongly_lensed_numerical&#39;,
-        velocity_dispersion = CPUDispatcher(&lt;function &lt;lambda&gt; at 0x30b24caf0&gt;),
-        axis_ratio = CPUDispatcher(&lt;function &lt;lambda&gt; at 0x30b24c040&gt;),
+        velocity_dispersion = CPUDispatcher(&lt;function &lt;lambda&gt; at 0x30d9667a0&gt;),
+        axis_ratio = CPUDispatcher(&lt;function &lt;lambda&gt; at 0x30ea01a20&gt;),
         axis_rotation_angle = &#39;axis_rotation_angle_uniform&#39;,
         external_shear = &#39;external_shear_normal&#39;,
         density_profile_slope = &#39;density_profile_slope_normal&#39;,
@@ -1473,8 +1500,8 @@ Faster, njitted and importance sampling based lens parameter sampler will be use
     lens_param_samplers_params = dict(
         source_redshift_sl = None,
         lens_redshift = {&#39;integration_size&#39;: 25000, &#39;use_multiprocessing&#39;: False},
-        velocity_dispersion = {&#39;sigma_min&#39;: 100.0, &#39;sigma_max&#39;: 400.0, &#39;alpha&#39;: 0.94, &#39;beta&#39;: 1.85, &#39;phistar&#39;: 0.02099, &#39;sigmastar&#39;: 161.0, &#39;name&#39;: &#39;CPUDispatcher(&lt;function &lt;lambda&gt; at 0x30b24caf0&gt;)&#39;},
-        axis_ratio = {&#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0, &#39;name&#39;: &#39;CPUDispatcher(&lt;function &lt;lambda&gt; at 0x30b24c040&gt;)&#39;},
+        velocity_dispersion = {&#39;sigma_min&#39;: 100.0, &#39;sigma_max&#39;: 400.0, &#39;alpha&#39;: 0.94, &#39;beta&#39;: 1.85, &#39;phistar&#39;: 0.02099, &#39;sigmastar&#39;: 161.0, &#39;name&#39;: &#39;CPUDispatcher(&lt;function &lt;lambda&gt; at 0x30d9667a0&gt;)&#39;},
+        axis_ratio = {&#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0, &#39;name&#39;: &#39;CPUDispatcher(&lt;function &lt;lambda&gt; at 0x30ea01a20&gt;)&#39;},
         axis_rotation_angle = {&#39;phi_min&#39;: 0.0, &#39;phi_max&#39;: 6.283185307179586, &#39;name&#39;: &#39;axis_rotation_angle_uniform&#39;},
         external_shear = {&#39;mean&#39;: 0.0, &#39;std&#39;: 0.0, &#39;name&#39;: &#39;external_shear_normal&#39;},
         density_profile_slope = {&#39;mean&#39;: 2.0, &#39;std&#39;: 0.0, &#39;name&#39;: &#39;density_profile_slope_normal&#39;},
@@ -1490,11 +1517,11 @@ Faster, njitted and importance sampling based lens parameter sampler will be use
 </pre></div></div>
 </div>
 </section>
-<section id="Simulate-Unlensed-Population">
-<h3>Simulate Unlensed Population<a class="headerlink" href="#Simulate-Unlensed-Population" title="Link to this heading"></a></h3>
+<section id="3.7.-Simulate-Unlensed-Population">
+<h3>3.7. Simulate Unlensed Population<a class="headerlink" href="#3.7.-Simulate-Unlensed-Population" title="Link to this heading"></a></h3>
 <p>Generate unlensed BNS events using the custom mass distribution and merger rate density.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">unlensed_params</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -1512,29 +1539,29 @@ Faster, njitted and importance sampling based lens parameter sampler will be use
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-unlensed params will be stored in ./ler_data_custom/new_unlensed_params.json
-removing ./ler_data_custom/new_unlensed_params.json if it exists
+unlensed params will be stored in ./ler_data_custom/unlensed_param.json
+removing ./ler_data_custom/unlensed_param.json if it exists
 Batch no. 1
 sampling gw source params...
 calculating pdet...
 Batch no. 2
 sampling gw source params...
 calculating pdet...
-saving all unlensed parameters in ./ler_data_custom/new_unlensed_params.json
+saving all unlensed parameters in ./ler_data_custom/unlensed_param.json
 
 Total unlensed events simulated: 100000
-Sample source redshift values (first 5): [2.01592263 2.2300552  4.42895145 2.94937447 3.21781353]
+Sample source redshift values (first 5): [1.0798551  2.65632985 2.30421358 1.69783832 3.2816481 ]
 Sample masses (first 3):
-  mass_1: [1.45329514 1.96548468 2.24679732]
-  mass_2: [1.30105817 1.35028269 1.14193659]
+  mass_1: [1.55198577 1.88467379 1.81525025]
+  mass_2: [1.46257376 1.57992731 1.16406823]
 </pre></div></div>
 </div>
 </section>
-<section id="Simulate-Lensed-Population">
-<h3>Simulate Lensed Population<a class="headerlink" href="#Simulate-Lensed-Population" title="Link to this heading"></a></h3>
+<section id="3.8.-Simulate-Lensed-Population">
+<h3>3.8. Simulate Lensed Population<a class="headerlink" href="#3.8.-Simulate-Lensed-Population" title="Link to this heading"></a></h3>
 <p>Generate lensed BNS events with custom lens parameters.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lensed_params</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">lensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1549,30 +1576,103 @@ Sample masses (first 3):
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+lensed params will be stored in ./ler_data_custom/lensed_param.json
+removing ./ler_data_custom/lensed_param.json if it exists
+resuming from ./ler_data_custom/lensed_param.json
+Batch no. 1
+sampling lensed params...
+sampling lens parameters with sample_all_routine_epl_shear_sl...
+solving lens equations...
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|███████████████████████████████████████████████████████| 50000/50000 [00:10&lt;00:00, 4816.21it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calculating pdet...
+Batch no. 2
+sampling lensed params...
+sampling lens parameters with sample_all_routine_epl_shear_sl...
+solving lens equations...
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|███████████████████████████████████████████████████████| 50000/50000 [00:10&lt;00:00, 4809.01it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Invalid sample found. Resampling 1 lensed events...
+sampling lens parameters with sample_all_routine_epl_shear_sl...
+solving lens equations...
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|█████████████████████████████████████████████████████████████████| 1/1 [00:00&lt;00:00, 12.23it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calculating pdet...
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-lensed params will be stored in ./ler_data_custom/new_lensed_params.json
-resuming from ./ler_data_custom/new_lensed_params.json
-lensed parameters already sampled.
-saving all lensed parameters in ./ler_data_custom/new_lensed_params.json
+saving all lensed parameters in ./ler_data_custom/lensed_param.json
 
 Total lensed events simulated: 100000
-Sample source redshift values (first 5): [2.62306545 2.47487797 2.157893   3.27988992 4.03900702]
+Sample source redshift values (first 5): [4.25945945 1.28500027 2.61792349 3.42629727 1.72747368]
 Lens parameters (first 3):
-  zl: [0.54555757 0.30722322 0.86237951]
-  sigma: [162.84398628 226.89039305 218.70283461]
-  q: [0.69185282 0.76046845 0.57285717]
+  zl: [0.73197694 0.74514873 0.55391098]
+  sigma: [296.85963794 163.39531054 204.47901801]
+  q: [0.52023232 0.51420932 0.904827  ]
 </pre></div></div>
 </div>
 </section>
-<section id="Calculate-Rates-and-Compare-Results">
-<h3>Calculate Rates and Compare Results<a class="headerlink" href="#Calculate-Rates-and-Compare-Results" title="Link to this heading"></a></h3>
+<section id="3.9.-Calculate-Rates-and-Compare-Results">
+<h3>3.9. Calculate Rates and Compare Results<a class="headerlink" href="#3.9.-Calculate-Rates-and-Compare-Results" title="Link to this heading"></a></h3>
 <p>Calculate unlensed and lensed detection rates using the custom detection criteria.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate detection rates</span>
@@ -1592,36 +1692,36 @@ Lens parameters (first 3):
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Getting unlensed_param from json file ./ler_data_custom/new_unlensed_params.json...
-total unlensed rate (yr^-1): 79073.58906999836
-number of simulated unlensed detectable events: 23846
+Getting unlensed_param from json file ./ler_data_custom/unlensed_param.json...
+total unlensed rate (yr^-1): 79053.69300632227
+number of simulated unlensed detectable events: 23840
 number of simulated all unlensed events: 100000
 storing detectable params in ./ler_data_custom/unlensed_param_detectable.json
-Getting lensed_param from json file ./ler_data_custom/new_lensed_params.json...
-total lensed rate (yr^-1): 102.50441798314746
-number of simulated lensed detectable events: 8070
+Getting lensed_param from json file ./ler_data_custom/lensed_param.json...
+total lensed rate (yr^-1): 104.48202564718511
+number of simulated lensed detectable events: 8227
 number of simulated all lensed events: 100000
 storing detectable params in ./ler_data_custom/lensed_param_detectable.json
-unlensed_rate: 79073.58906999836
-lensed_rate: 102.50441798314746
-ratio: 771.4163996619022
+unlensed_rate: 79053.69300632227
+lensed_rate: 104.48202564718511
+ratio: 756.6248119391441
 
 === Detection Rates (BNS with Custom Configuration) ===
-Unlensed rate: 7.9074e+04 events/year
-Lensed rate:   1.0250e+02 events/year
-Rate ratio (lensed/unlensed): 771.4164
+Unlensed rate: 7.9054e+04 events/year
+Lensed rate:   1.0448e+02 events/year
+Rate ratio (lensed/unlensed): 756.6248
 </pre></div></div>
 </div>
 </section>
 </section>
 <hr class="docutils" />
-<section id="Compare-Custom-vs-Default-Models">
-<h2>Compare Custom vs Default Models<a class="headerlink" href="#Compare-Custom-vs-Default-Models" title="Link to this heading"></a></h2>
-<section id="Mass-Distribution-Comparison">
-<h3>Mass Distribution Comparison<a class="headerlink" href="#Mass-Distribution-Comparison" title="Link to this heading"></a></h3>
+<section id="4.-Compare-Custom-vs-Default-Models">
+<h2>4. Compare Custom vs Default Models<a class="headerlink" href="#4.-Compare-Custom-vs-Default-Models" title="Link to this heading"></a></h2>
+<section id="4.1.-Mass-Distribution-Comparison">
+<h3>4.1. Mass Distribution Comparison<a class="headerlink" href="#4.1.-Mass-Distribution-Comparison" title="Link to this heading"></a></h3>
 <p>Compare the custom uniform mass distribution with the default BNS bimodal distribution.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ler.utils</span> <span class="k">as</span> <span class="nn">lerplt</span>
@@ -1665,11 +1765,11 @@ Rate ratio (lensed/unlensed): 771.4164
 </div>
 </div>
 </section>
-<section id="Axis-Ratio-Distribution-Comparison">
-<h3>Axis-Ratio Distribution Comparison<a class="headerlink" href="#Axis-Ratio-Distribution-Comparison" title="Link to this heading"></a></h3>
+<section id="4.2.-Axis-Ratio-Distribution-Comparison">
+<h3>4.2. Axis-Ratio Distribution Comparison<a class="headerlink" href="#4.2.-Axis-Ratio-Distribution-Comparison" title="Link to this heading"></a></h3>
 <p>Compare the default axis-ratio distribution (Rayleigh distribution, Collet et al. 2018) with custom axis-ratio distribution (Padilla and Strauss 2008)</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[61]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare axis-ratio distributions</span>
@@ -1709,7 +1809,7 @@ Rate ratio (lensed/unlensed): 771.4164
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-axis_ratio_rayleigh interpolator will be loaded from ./interpolator_json/axis_ratio/axis_ratio_rayleigh_3.json
+axis_ratio_rayleigh interpolator will be generated at ./interpolator_json/axis_ratio/axis_ratio_rayleigh_2.json
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1721,8 +1821,8 @@ axis_ratio_rayleigh interpolator will be loaded from ./interpolator_json/axis_ra
 </div>
 </section>
 </section>
-<section id="Summary">
-<h2>Summary<a class="headerlink" href="#Summary" title="Link to this heading"></a></h2>
+<section id="5.-Summary">
+<h2>5. Summary<a class="headerlink" href="#5.-Summary" title="Link to this heading"></a></h2>
 <p>This notebook demonstrated how to customize the <code class="docutils literal notranslate"><span class="pre">LeR</span></code> class for gravitational wave population studies:</p>
 <ul class="simple">
 <li><p><strong>Custom source priors</strong>: Replaced the default BNS bimodal mass distribution with a uniform distribution</p></li>

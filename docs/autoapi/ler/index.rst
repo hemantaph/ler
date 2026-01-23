@@ -276,8 +276,6 @@ Classes
    +------------------------------------------------+------------------+-------+------------------------------------------------+
    | :meth:`~ler_directory`                         | ``str``          |       | Directory for output parameter files           |
    +------------------------------------------------+------------------+-------+------------------------------------------------+
-   | :meth:`~list_of_detectors`                     | ``list``         |       | List of detector names                         |
-   +------------------------------------------------+------------------+-------+------------------------------------------------+
    | :meth:`~pdet_finder`                           | ``callable``     |       | Detection probability finder function          |
    +------------------------------------------------+------------------+-------+------------------------------------------------+
    | :meth:`~ler_args`                              | ``dict``         |       | All LeR initialization arguments               |
@@ -624,35 +622,6 @@ Classes
                   cross_section = {'create_new': False, 'resolution': [25, 25, 45, 15, 15]},
                   gwsnr = False,
               )
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:property:: list_of_detectors
-
-      
-      List of gravitational wave detector names.
-
-
-
-      :Returns:
-
-          **list_of_detectors** : ``list``
-              List of detector identifiers used for pdet calculations.
-
-              Typically set from gwsnr.detector_list during initialization.
 
 
 

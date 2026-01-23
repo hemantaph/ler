@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; ler 0.4.6 documentation</title>
+  <title>Index &mdash; ler 0.5.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
@@ -18,7 +18,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=03f3338f"></script>
+      <script src="_static/documentation_options.js?v=8e576371"></script>
       <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -56,7 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -1343,6 +1343,8 @@
         <li><a href="autoapi/ler/image_properties/index.html#module-ler.image_properties">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     ler.image_properties.image_properties
 
@@ -1350,8 +1352,6 @@
         <li><a href="autoapi/ler/image_properties/image_properties/index.html#module-ler.image_properties.image_properties">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     ler.image_properties.multiprocessing_routine
 
@@ -1497,16 +1497,10 @@
         <li><a href="autoapi/ler/utils/index.html#ler.utils.TrainingDataGenerator.ler_init_args">(ler.utils.TrainingDataGenerator attribute)</a>
 </li>
       </ul></li>
-      <li><a href="autoapi/ler/index.html#ler.LeR.list_of_detectors">list_of_detectors (ler.LeR property)</a>
+      <li><a href="autoapi/ler/rates/index.html#ler.rates.GWRATES.list_of_detectors">list_of_detectors (ler.rates.GWRATES property)</a>
 
       <ul>
-        <li><a href="autoapi/ler/rates/index.html#ler.rates.GWRATES.list_of_detectors">(ler.rates.GWRATES property)</a>
-</li>
         <li><a href="autoapi/ler/rates/gwrates/index.html#ler.rates.gwrates.GWRATES.list_of_detectors">(ler.rates.gwrates.GWRATES property)</a>
-</li>
-        <li><a href="autoapi/ler/rates/index.html#ler.rates.LeR.list_of_detectors">(ler.rates.LeR property)</a>
-</li>
-        <li><a href="autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.list_of_detectors">(ler.rates.ler.LeR property)</a>
 </li>
       </ul></li>
       <li><a href="autoapi/ler/utils/index.html#ler.utils.load_hdf5">load_hdf5() (in module ler.utils)</a>
@@ -1864,9 +1858,15 @@
         <li><a href="autoapi/ler/utils/plots/index.html#ler.utils.plots.param_plot">(in module ler.utils.plots)</a>
 </li>
       </ul></li>
-      <li><a href="autoapi/ler/index.html#ler.LeR.pdet_finder">pdet_finder (ler.LeR property)</a>
+      <li><a href="autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.pdet_finder">pdet_finder (ler.image_properties.image_properties.ImageProperties property)</a>
 
       <ul>
+        <li><a href="autoapi/ler/image_properties/index.html#ler.image_properties.ImageProperties.pdet_finder">(ler.image_properties.ImageProperties property)</a>
+</li>
+        <li><a href="autoapi/ler/lens_galaxy_population/index.html#ler.lens_galaxy_population.ImageProperties.pdet_finder">(ler.lens_galaxy_population.ImageProperties property)</a>
+</li>
+        <li><a href="autoapi/ler/index.html#ler.LeR.pdet_finder">(ler.LeR property)</a>
+</li>
         <li><a href="autoapi/ler/rates/index.html#ler.rates.GWRATES.pdet_finder">(ler.rates.GWRATES property)</a>
 </li>
         <li><a href="autoapi/ler/rates/gwrates/index.html#ler.rates.gwrates.GWRATES.pdet_finder">(ler.rates.gwrates.GWRATES property)</a>
@@ -1874,6 +1874,14 @@
         <li><a href="autoapi/ler/rates/index.html#ler.rates.LeR.pdet_finder">(ler.rates.LeR property)</a>
 </li>
         <li><a href="autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.pdet_finder">(ler.rates.ler.LeR property)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.pdet_finder_output_keys">pdet_finder_output_keys (ler.image_properties.image_properties.ImageProperties property)</a>
+
+      <ul>
+        <li><a href="autoapi/ler/image_properties/index.html#ler.image_properties.ImageProperties.pdet_finder_output_keys">(ler.image_properties.ImageProperties property)</a>
+</li>
+        <li><a href="autoapi/ler/lens_galaxy_population/index.html#ler.lens_galaxy_population.ImageProperties.pdet_finder_output_keys">(ler.lens_galaxy_population.ImageProperties property)</a>
 </li>
       </ul></li>
       <li><a href="autoapi/ler/utils/index.html#id5">pdf_cubic_spline_interpolator() (in module ler.utils)</a>, <a href="autoapi/ler/utils/index.html#ler.utils.pdf_cubic_spline_interpolator">[1]</a>
@@ -1900,6 +1908,8 @@
         <li><a href="autoapi/ler/utils/index.html#id21">(ler.utils.FunctionConditioning method)</a>, <a href="autoapi/ler/utils/index.html#ler.utils.FunctionConditioning.pdf_norm_const_generator">[1]</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/ler/gw_source_population/cbc_source_parameter_distribution/index.html#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.phase">phase (ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution property)</a>
 
       <ul>
@@ -1910,8 +1920,6 @@
         <li><a href="autoapi/ler/rates/index.html#ler.rates.CBCSourceParameterDistribution.phase">(ler.rates.CBCSourceParameterDistribution property)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/ler/gw_source_population/cbc_source_parameter_distribution/index.html#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.phi_12">phi_12 (ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution property)</a>
 
       <ul>

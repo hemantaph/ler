@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytical Formulation for Gravitational Wave Event Rates &mdash; ler 0.5.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/scalefix.css" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=776609e1" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8e576371"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "processEnvironments": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore", "processHtmlClass": "tex2jax_process"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Lensed event rates" href="Lensed_events.html" />
+    <link rel="prev" title="Gravitational wave event rates" href="GW_events.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Analytical Formulation for Gravitational Wave Event Rates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#table-1-prior-distributions-for-gw-source-parameters-used-in-the-unlensed-event-rate-calculations">Table 1: Prior distributions for GW source parameters used in the unlensed event rate calculations.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Analytical Formulation for Gravitational Wave Event Rates</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/analytical_formulation_unlensed.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="analytical-formulation-for-gravitational-wave-event-rates">
+<h1>Analytical Formulation for Gravitational Wave Event Rates<a class="headerlink" href="#analytical-formulation-for-gravitational-wave-event-rates" title="Link to this heading"></a></h1>
+<p>The annual rate of detectable <strong>unlensed</strong> gravitational wave (GW) events, <span class="math notranslate nohighlight">\(\frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}\)</span>, can be determined by integrating the intrinsic rate of compact binary mergers across cosmic time and comoving volume, weighted by the probability that these events are detected. If the total intrinsic merger rate per year in the detector frame is denoted by <span class="math notranslate nohighlight">\(\frac{\Delta N_{\rm U}}{\Delta t}\)</span>, and the average detection probability is <span class="math notranslate nohighlight">\(P({\rm obs})\)</span>, then the observed event rate can be written as</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+\begin{split}
+\frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}
+= \frac{\Delta N_{\rm U}}{\Delta t} \times P({\rm obs}) \,.
+\end{split}
+\end{equation}
+\]</div>
+<p>The detection probability <span class="math notranslate nohighlight">\(P({\rm obs})\)</span> is effectively marginalized over all relevant GW source parameters <span class="math notranslate nohighlight">\(\vec{\theta}\)</span>, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[
+\vec{\theta}\in \{z_s, m_1, m_2, a_1, a_2, \theta_1, \theta_2, \phi_{12}, \phi_{JL}, \iota, \phi, \psi, {\rm RA}, {\rm Dec}, t_c\}.
+\]</div>
+<p>Refer to <a class="reference internal" href="#table-1-prior-distributions-for-gw-source-parameters-used-in-the-unlensed-event-rate-calculations"><span class="std std-ref">Table 1</span></a> for the list of GW parameters and their prior distributions used in this analysis.</p>
+<p>To account explicitly for the parameter dependence, the observed event rate can be written as an integral over <span class="math notranslate nohighlight">\(\vec{\theta}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+\begin{split}
+\frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}
+= \frac{\Delta N_{\rm U}}{\Delta t} \int_{\vec{\theta}} P({\rm obs}|\vec{\theta}) \, P(\vec{\theta}) \, d\vec{\theta},
+\end{split}
+\end{equation}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(P({\rm obs}|\vec{\theta})\)</span> is the conditional probability of detecting a source given its parameters <span class="math notranslate nohighlight">\(\vec{\theta}\)</span>, and <span class="math notranslate nohighlight">\(P(\vec{\theta})\)</span> is the joint prior distribution of source parameters. Assuming the priors factorize in the standard way, <span class="math notranslate nohighlight">\(P(\vec{\theta})\)</span> can be expanded into its constituent parts as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{split}
+P(\vec{\theta}) &amp;= P(z_s) \, P(m_1, m_2) \, P(a_1) \, P(a_2) \, P(\theta_1, \theta_2) \, P(\phi_{12}) \, P(\phi_{JL}) \\
+&amp; \quad \times P(\iota) \, P(\phi) \, P(\psi) \, P({\rm RA}) \, P({\rm Dec}) \, P(t_c).
+\end{split}
+\end{equation}
+\end{split}\]</div>
+<p><code class="docutils literal notranslate"><span class="pre">ler</span></code> uses redshift (<span class="math notranslate nohighlight">\(z_s\)</span>) instead of luminosity distance (<span class="math notranslate nohighlight">\(D_L\)</span>) as a source parameter, and we assume that it is uncorrelated with the other parameters. The probability density <span class="math notranslate nohighlight">\(P(z_s)\)</span> is taken to be the normalized redshift distribution of sources, and it is proportional to the differential intrinsic merger rate in the detector frame and the comoving volume element. This can be written as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{split}
+P(z_s) &amp;\propto \frac{d^2 N}{dt \, dV_c} \frac{dV_c}{dz_s} \\
+&amp;\propto \frac{1}{(1+z_s)}\frac{d^2 N}{d\tau \, dV_c} \frac{dV_c}{dz_s} \\
+&amp; \propto \frac{1}{(1+z_s)} R_{\rm U}(z_s) \frac{dV_c}{dz_s},
+\end{split} 
+\end{equation}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(R_{\rm U}(z_s)\)</span> denotes the intrinsic merger rate density in the source frame. Here the intrinsic merger rate is expressed in terms of source-frame proper time <span class="math notranslate nohighlight">\(\tau\)</span> (with <span class="math notranslate nohighlight">\(d\tau = dt/(1+z_s)\)</span>) and comoving volume <span class="math notranslate nohighlight">\(V_c\)</span>. The factor <span class="math notranslate nohighlight">\(1/(1+z_s)\)</span> accounts for time dilation due to cosmic expansion, and <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}dz_s\)</span> represents a spherical-shell volume element in comoving coordinates at redshift <span class="math notranslate nohighlight">\(z_s\)</span>.</p>
+<p>With the normalization factor <span class="math notranslate nohighlight">\({\cal N}_{\rm U}\)</span>, the complete expression for <span class="math notranslate nohighlight">\(P(z_s)\)</span> becomes</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+\begin{split}
+P(z_s) = \frac{1}{{\cal N}_{\rm U}} \frac{R_{\rm U}(z_s)}{1+z_s} \frac{dV_c}{dz_s}.
+\end{split}
+\end{equation}
+\]</div>
+<p>The normalization constant is</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+\begin{split}
+{\cal N}_{\rm U} = \int_{z_s} \frac{R_{\rm U}(z_s)}{1+z_s} \frac{dV_c}{dz_s} \, dz_s.
+\end{split}
+\end{equation}
+\]</div>
+<p><span class="math notranslate nohighlight">\({\cal N}_{\rm U}\)</span> also represents the total intrinsic merger rate per year in the detector frame (i.e., <span class="math notranslate nohighlight">\(\frac{\Delta N_{\rm U}}{\Delta t}\)</span>). The observed GW event rate can therefore be rewritten as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{split}
+\frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}
+&amp;= {\cal N}_{\rm U} \int_{\vec{\theta}} P({\rm obs}| \vec{\theta})\, P(\vec{\theta}) \, d\vec{\theta} \\
+&amp;= {\cal N}_{\rm U} \bigg\langle P({\rm obs}| \vec{\theta}) \bigg\rangle_{\vec{\theta} \sim P(\vec{\theta})},
+\end{split}
+\end{equation}
+\end{split}\]</div>
+<p>where the final expression highlights a numerical Monte Carlo integration, and the average detection probability <span class="math notranslate nohighlight">\(\langle P({\rm obs}| \vec{\theta}) \rangle\)</span> is computed over a large sample of GW source parameters drawn from the prior distribution <span class="math notranslate nohighlight">\(P(\vec{\theta})\)</span>.</p>
+<p>The conditional detection probability <span class="math notranslate nohighlight">\(P({\rm obs}|\vec{\theta})\)</span>, representing the detection criterion or probability of detection <span class="math notranslate nohighlight">\(P_{\rm det}\)</span>, is defined using a detection threshold <span class="math notranslate nohighlight">\(\rho_{\rm th}\)</span> (<code class="docutils literal notranslate"><span class="pre">ler</span></code> default: 10) on the observed signal-to-noise ratio (SNR), <span class="math notranslate nohighlight">\(\rho_{\rm obs}\)</span>, of the GW signal. It can be expressed in the step-function form as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{split}
+P({\rm obs}| \vec{\theta}) = P_{\rm det} (\vec{\theta}, \rho_{\rm th}) = 
+\begin{cases}
+1, &amp; \text{if } \rho_{\rm obs}(\vec{\theta}) &gt; \rho_{\rm th} \\
+0, &amp; \text{otherwise}.
+\end{cases}
+\end{split}
+\end{equation}
+\end{split}\]</div>
+<p><code class="docutils literal notranslate"><span class="pre">ler</span></code> uses the <code class="docutils literal notranslate"><span class="pre">gwsnr</span></code> package to estimate <span class="math notranslate nohighlight">\(P_{\rm det}\)</span>. The observed SNR <span class="math notranslate nohighlight">\(\rho_{\rm obs}\)</span> is modeled either as a Gaussian random variate centered at <span class="math notranslate nohighlight">\(\rho_{\rm opt}\)</span> (or <span class="math notranslate nohighlight">\(\rho_{\rm opt,net}\)</span> for a detector network) with unit variance (Fishbach et al. 2020; Abbott et al. 2019), or as a non-central <span class="math notranslate nohighlight">\(\chi\)</span> distribution (<code class="docutils literal notranslate"><span class="pre">scipy.stats.ncx2</span></code>) with non-centrality parameter <span class="math notranslate nohighlight">\(\lambda = \rho_{\rm opt}\)</span> (or <span class="math notranslate nohighlight">\(\rho_{\rm opt,net}\)</span>) and two degrees of freedom for a single detector, extended to <span class="math notranslate nohighlight">\(2N\)</span> for a network of <span class="math notranslate nohighlight">\(N\)</span> detectors (Essick 2023). Refer to the <code class="docutils literal notranslate"><span class="pre">gwsnr</span></code> documentation for more details on SNR modeling and detection probability calculations.</p>
+<hr class="docutils" />
+<section id="table-1-prior-distributions-for-gw-source-parameters-used-in-the-unlensed-event-rate-calculations">
+<h2>Table 1: Prior distributions for GW source parameters used in the unlensed event rate calculations.<a class="headerlink" href="#table-1-prior-distributions-for-gw-source-parameters-used-in-the-unlensed-event-rate-calculations" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Unit</p></th>
+<th class="head"><p>Prior</p></th>
+<th class="head"><p>Min</p></th>
+<th class="head"><p>Max</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(m_{1,2}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(M_\odot\)</span></p></td>
+<td><p>PowerLaw+Peak<br>(GWTC-3: <span class="math notranslate nohighlight">\(\alpha\)</span>=3.78,<br><span class="math notranslate nohighlight">\(\mu_g\)</span>=32.27, <span class="math notranslate nohighlight">\(\sigma_g\)</span>=3.88,<br><span class="math notranslate nohighlight">\(\lambda_p\)</span>=0.03, <span class="math notranslate nohighlight">\(\delta_m\)</span>=4.8,<br><span class="math notranslate nohighlight">\(\beta\)</span>=0.81)</p></td>
+<td><p>4.98</p></td>
+<td><p>112.5</p></td>
+<td><p>Component masses of the binary</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(a_{1,2}\)</span></p></td>
+<td><p>-</p></td>
+<td><p>uniform</p></td>
+<td><p>0</p></td>
+<td><p>0.99</p></td>
+<td><p>Dimensionless spin magnitudes <br>of the components</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\theta_{1,2}\)</span></p></td>
+<td><p>rad</p></td>
+<td><p><span class="math notranslate nohighlight">\(\sin(\theta)\)</span></p></td>
+<td><p>0</p></td>
+<td><p><span class="math notranslate nohighlight">\(\pi\)</span></p></td>
+<td><p>Tilt angles of the spin vectors</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\phi_{12}\)</span></p></td>
+<td><p>rad</p></td>
+<td><p>uniform</p></td>
+<td><p>0</p></td>
+<td><p><span class="math notranslate nohighlight">\(2\pi\)</span></p></td>
+<td><p>Azimuthal angle between the <br>spin vectors</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\phi_{JL}\)</span></p></td>
+<td><p>rad</p></td>
+<td><p>uniform</p></td>
+<td><p>0</p></td>
+<td><p><span class="math notranslate nohighlight">\(2\pi\)</span></p></td>
+<td><p>Azimuthal angle between total <br>angular momentum and orbital <br>angular momentum</p></td>
+</tr>
+<tr class="row-odd"><td><p>RA</p></td>
+<td><p>rad</p></td>
+<td><p>uniform</p></td>
+<td><p>0</p></td>
+<td><p><span class="math notranslate nohighlight">\(2\pi\)</span></p></td>
+<td><p>Right ascension sky coordinate</p></td>
+</tr>
+<tr class="row-even"><td><p>Dec</p></td>
+<td><p>rad</p></td>
+<td><p><span class="math notranslate nohighlight">\(\cos({\rm Dec})\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-\pi/2\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\pi/2\)</span></p></td>
+<td><p>Declination sky coordinate</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\iota\)</span></p></td>
+<td><p>rad</p></td>
+<td><p><span class="math notranslate nohighlight">\(\sin(\iota)\)</span></p></td>
+<td><p>0</p></td>
+<td><p><span class="math notranslate nohighlight">\(\pi\)</span></p></td>
+<td><p>Inclination angle relative to <br>line of sight</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\psi\)</span></p></td>
+<td><p>rad</p></td>
+<td><p>uniform</p></td>
+<td><p>0</p></td>
+<td><p><span class="math notranslate nohighlight">\(\pi\)</span></p></td>
+<td><p>Polarization angle of the GW <br>signal</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\phi\)</span></p></td>
+<td><p>rad</p></td>
+<td><p>uniform</p></td>
+<td><p>0</p></td>
+<td><p><span class="math notranslate nohighlight">\(2\pi\)</span></p></td>
+<td><p>Orbital phase at coalescence or <br>reference phase</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="GW_events.html" class="btn btn-neutral float-left" title="Gravitational wave event rates" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Lensed_events.html" class="btn btn-neutral float-right" title="Lensed event rates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

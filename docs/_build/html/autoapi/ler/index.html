@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler &mdash; ler 0.4.6 documentation</title>
+  <title>ler &mdash; ler 0.5.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
@@ -19,7 +19,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=03f3338f"></script>
+      <script src="../../_static/documentation_options.js?v=8e576371"></script>
       <script src="../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -57,7 +57,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -374,22 +374,17 @@ lensed_param_detectable=”lensed_param_detectable.json”</p>
 <td></td>
 <td><p>Directory for output parameter files</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.LeR.list_of_detectors" title="ler.LeR.list_of_detectors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">list_of_detectors()</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
-<td></td>
-<td><p>List of detector names</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.LeR.pdet_finder" title="ler.LeR.pdet_finder"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pdet_finder()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.LeR.pdet_finder" title="ler.LeR.pdet_finder"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pdet_finder()</span></code></a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
 <td></td>
 <td><p>Detection probability finder function</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.LeR.ler_args" title="ler.LeR.ler_args"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ler_args()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.LeR.ler_args" title="ler.LeR.ler_args"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ler_args()</span></code></a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
 <td></td>
 <td><p>All LeR initialization arguments</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.LeR.create_new_interpolator" title="ler.LeR.create_new_interpolator"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_new_interpolator()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.LeR.create_new_interpolator" title="ler.LeR.create_new_interpolator"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_new_interpolator()</span></code></a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
 <td></td>
 <td><p>Interpolator creation settings</p></td>
@@ -596,21 +591,6 @@ cross_section = {‘create_new’: False, ‘resolution’: [25, 25, 45, 15, 15]
 gwsnr = False,</p>
 </div></blockquote>
 <p>)</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="ler.LeR.list_of_detectors">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_of_detectors</span></span><a class="headerlink" href="#ler.LeR.list_of_detectors" title="Link to this definition"></a></dt>
-<dd><p>List of gravitational wave detector names.</p>
-<dl class="field-list">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>list_of_detectors</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">list</span></code></span></dt><dd><p>List of detector identifiers used for pdet calculations.</p>
-<p>Typically set from gwsnr.detector_list during initialization.</p>
 </dd>
 </dl>
 </dd>

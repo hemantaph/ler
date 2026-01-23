@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.image_properties.image_properties &mdash; ler 0.4.6 documentation</title>
+  <title>ler.image_properties.image_properties &mdash; ler 0.5.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
@@ -18,7 +18,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=03f3338f"></script>
+      <script src="../../../_static/documentation_options.js?v=8e576371"></script>
       <script src="../../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -56,7 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -171,8 +171,8 @@
 <span class="sd">        Maximum number of images to consider per event. \n</span>
 <span class="sd">        default: 4</span>
 <span class="sd">    time_window : ``float``</span>
-<span class="sd">        Time window for lensed events (units: seconds). \n</span>
-<span class="sd">        default: 365*24*3600*20 (20 years)</span>
+<span class="sd">        Time window for lensed events from min(geocent_time) (units: seconds). \n</span>
+<span class="sd">        default: 365*24*3600*2 (2 years)</span>
 <span class="sd">    lens_model_list : ``list``</span>
 <span class="sd">        List of lens models to use. \n</span>
 <span class="sd">        default: [&#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;]</span>
@@ -241,6 +241,11 @@
 <span class="sd">    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+</span>
 <span class="sd">    | :attr:`~spin_precession`                            | ``bool``                  |          | Flag for spin precession                       |</span>
 <span class="sd">    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+</span>
+<span class="sd">    | :attr:`~pdet_finder`                                | ``callable``              |          | Probability of detection calculator            |</span>
+<span class="sd">    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+</span>
+<span class="sd">    | :attr:`~pdet_finder_output_keys`                     | ``list``                  |          | Keys for probability of detection outputs      |</span>
+<span class="sd">    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
@@ -249,9 +254,10 @@
                  <span class="n">n_max_images</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
                  <span class="n">lens_model_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span>
                  <span class="n">cosmology</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">time_window</span><span class="o">=</span><span class="mi">365</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">3600</span><span class="o">*</span><span class="mi">20</span><span class="p">,</span>
+                 <span class="n">time_window</span><span class="o">=</span><span class="mi">365</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">3600</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="c1"># 2 years</span>
                  <span class="n">spin_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">spin_precession</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">pdet_finder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">npool</span> <span class="o">=</span> <span class="n">npool</span>
@@ -262,6 +268,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">spin_precession</span> <span class="o">=</span> <span class="n">spin_precession</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_window</span> <span class="o">=</span> <span class="n">time_window</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span> <span class="o">=</span> <span class="n">cosmology</span> <span class="k">if</span> <span class="n">cosmology</span> <span class="k">else</span> <span class="n">cosmo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder</span> <span class="o">=</span> <span class="n">pdet_finder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder_output_keys</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="ImageProperties.image_properties">
 <a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/index.html#ler.image_properties.image_properties.ImageProperties.image_properties">[docs]</a>
@@ -446,7 +454,7 @@
 
 <div class="viewcode-block" id="ImageProperties.get_lensed_snrs">
 <a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/index.html#ler.image_properties.image_properties.ImageProperties.get_lensed_snrs">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_lensed_snrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">pdet_calculator</span><span class="p">,</span> <span class="n">list_of_detectors</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_lensed_snrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">pdet_finder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute detection probability for each lensed image.</span>
 
@@ -466,18 +474,15 @@
 <span class="sd">            - &#39;magnifications&#39;: image magnifications (shape: size x n_max_images) \n</span>
 <span class="sd">            - &#39;time_delays&#39;: image time delays (shape: size x n_max_images) \n</span>
 <span class="sd">            - &#39;image_type&#39;: morse phase type (shape: size x n_max_images) \n</span>
-<span class="sd">        pdet_calculator : ``callable``</span>
+<span class="sd">        pdet_finder : ``callable``</span>
 <span class="sd">            Function that computes detection probability given GW parameters.</span>
-<span class="sd">        list_of_detectors : ``list`` or ``None``</span>
-<span class="sd">            List of detector names (e.g., [&#39;H1&#39;, &#39;L1&#39;, &#39;V1&#39;]) for per-detector results. \n</span>
-<span class="sd">            default: None</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        result_dict : ``dict``</span>
 <span class="sd">            Dictionary containing: \n</span>
 <span class="sd">            - &#39;pdet_net&#39;: network detection probability (shape: size x n_max_images) \n</span>
-<span class="sd">            - Individual detector probabilities if list_of_detectors provided \n</span>
+<span class="sd">            - Individual detector probabilities if pdet_finder outputs them \n</span>
 <span class="sd">        lensed_param : ``dict``</span>
 <span class="sd">            Updated dictionary with effective parameters: \n</span>
 <span class="sd">            - &#39;effective_luminosity_distance&#39;: magnification-corrected distance \n</span>
@@ -495,14 +500,16 @@
         <span class="n">image_type</span><span class="p">[</span><span class="n">image_type</span><span class="o">==</span><span class="mf">2.</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span>
         <span class="n">image_type</span><span class="p">[</span><span class="n">image_type</span><span class="o">==</span><span class="mf">3.</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
         <span class="c1"># Get the binary parameters</span>
-        <span class="n">mass_1</span><span class="p">,</span> <span class="n">mass_2</span><span class="p">,</span> <span class="n">theta_jn</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">a_1</span><span class="p">,</span> <span class="n">a_2</span><span class="p">,</span> <span class="n">tilt_1</span><span class="p">,</span> <span class="n">tilt_2</span><span class="p">,</span> <span class="n">phi_12</span><span class="p">,</span> <span class="n">phi_jl</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">mass_1</span><span class="p">,</span> <span class="n">mass_2</span><span class="p">,</span> <span class="n">luminosity_distance</span><span class="p">,</span> <span class="n">theta_jn</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">geocent_time</span><span class="p">,</span> <span class="n">a_1</span><span class="p">,</span> <span class="n">a_2</span><span class="p">,</span> <span class="n">tilt_1</span><span class="p">,</span> <span class="n">tilt_2</span><span class="p">,</span> <span class="n">phi_12</span><span class="p">,</span> <span class="n">phi_jl</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;mass_1&quot;</span><span class="p">],</span>
             <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;mass_2&quot;</span><span class="p">],</span>
+            <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;luminosity_distance&quot;</span><span class="p">],</span>
             <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;theta_jn&quot;</span><span class="p">],</span>
             <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;psi&quot;</span><span class="p">],</span>
             <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;ra&quot;</span><span class="p">],</span>
             <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;dec&quot;</span><span class="p">],</span>
             <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;phase&quot;</span><span class="p">],</span>
+            <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;geocent_time&quot;</span><span class="p">],</span>
             <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">),</span>
             <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">),</span>
             <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">),</span>
@@ -519,79 +526,32 @@
                     <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;phi_12&quot;</span><span class="p">],</span>
                     <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;phi_jl&quot;</span><span class="p">],</span>
                 <span class="p">)</span>
-        
-        <span class="c1"># setting up pdet dictionary</span>
-        <span class="n">result_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-        <span class="p">)</span>
-        
-        <span class="c1"># if detector list are provided for pdet calculation</span>
-        <span class="k">if</span> <span class="n">list_of_detectors</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">list_of_detectors</span><span class="p">:</span>
-                <span class="n">result_dict</span><span class="p">[</span><span class="n">detector</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                <span class="p">)</span>
-        
-        <span class="c1"># for updating the lensed_param</span>
-        <span class="k">if</span> <span class="s2">&quot;luminosity_distance&quot;</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="p">:</span>
-            <span class="n">luminosity_distance_</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;luminosity_distance&quot;</span><span class="p">]</span>
-            <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_luminosity_distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-            <span class="n">dl_eff_present</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">elif</span> <span class="s2">&quot;effective_luminosity_distance&quot;</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="p">:</span>
-            <span class="n">dl_eff</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_luminosity_distance&quot;</span><span class="p">]</span>
-            <span class="n">dl_eff_present</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;luminosity_distance or effective_luminosity_distance not given&quot;</span><span class="p">)</span>
-        
-        <span class="k">if</span> <span class="s2">&quot;geocent_time&quot;</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="p">:</span>
-            <span class="n">geocent_time</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;geocent_time&quot;</span><span class="p">]</span>
-            <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_geocent_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-            <span class="n">time_eff_present</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">elif</span> <span class="s2">&quot;effective_geocent_time&quot;</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="p">:</span>
-            <span class="n">time_eff</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_geocent_time&quot;</span><span class="p">]</span>
-            <span class="n">time_eff_present</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;geocent_time or effective_geocent_time not given&quot;</span><span class="p">)</span>
-        
-        <span class="k">if</span> <span class="s2">&quot;phase&quot;</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="p">:</span>
-            <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_phase&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-            <span class="n">phase_eff_present</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">elif</span> <span class="s2">&quot;effective_phase&quot;</span> <span class="ow">in</span> <span class="n">lensed_param</span><span class="p">:</span>
-            <span class="n">phase_eff</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_phase&quot;</span><span class="p">]</span>
-            <span class="n">phase_eff_present</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;phase or effective_phase not given&quot;</span><span class="p">)</span>
 
+        <span class="c1"># checking pdet_finder output keys</span>
+        <span class="n">result_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_pdet_finder_output_keys</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">pdet_finder</span><span class="p">);</span>
 
+        <span class="c1"># updating the lensed_param with effective parameters if not already present</span>
+        <span class="n">lensed_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_updating_lensed_param</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">)</span>
+        
         <span class="c1"># Get the optimal signal to noise ratios for each image</span>
         <span class="c1"># iterate over the image type (column)</span>
         <span class="n">geocent_time_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">geocent_time</span><span class="p">)</span>
         <span class="n">geocent_time_max</span> <span class="o">=</span> <span class="n">geocent_time_min</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_window</span>
-
+    
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">):</span>
             
             <span class="c1"># get the effective time for each image type</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">time_eff_present</span><span class="p">:</span>
-                <span class="n">effective_geocent_time</span> <span class="o">=</span> <span class="n">geocent_time</span> <span class="o">+</span> <span class="n">time_delays</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">effective_geocent_time</span> <span class="o">=</span> <span class="n">time_eff</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+            <span class="n">effective_geocent_time</span> <span class="o">=</span> <span class="n">geocent_time</span> <span class="o">+</span> <span class="n">time_delays</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> 
                 
             <span class="c1"># choose only the events that are within the time range and also not nan</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">effective_geocent_time</span> <span class="o">&lt;=</span> <span class="n">geocent_time_max</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">effective_geocent_time</span> <span class="o">&gt;=</span> <span class="n">geocent_time_min</span><span class="p">)</span>
 
             <span class="c1"># get the effective luminosity distance for each image type</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">dl_eff_present</span><span class="p">:</span>
-                <span class="n">effective_luminosity_distance</span> <span class="o">=</span> <span class="n">luminosity_distance_</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">magnifications</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
-                <span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">effective_luminosity_distance</span> <span class="o">=</span> <span class="n">dl_eff</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+            <span class="n">effective_luminosity_distance</span> <span class="o">=</span> <span class="n">luminosity_distance</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">magnifications</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]))</span>
+
             <span class="c1"># get the effective phase for each image type</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">phase_eff_present</span><span class="p">:</span>
-                <span class="n">effective_phase</span> <span class="o">=</span> <span class="n">phase</span> <span class="o">-</span> <span class="n">image_type</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>  <span class="c1"># morse phase correction</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">effective_phase</span> <span class="o">=</span> <span class="n">phase_eff</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+            <span class="c1"># morse phase correction</span>
+            <span class="n">effective_phase</span> <span class="o">=</span> <span class="n">phase</span> <span class="o">-</span> <span class="n">image_type</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> 
             
             <span class="c1"># check for nan values</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">effective_luminosity_distance</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">effective_geocent_time</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">effective_phase</span><span class="p">)</span>
@@ -599,7 +559,7 @@
             <span class="c1"># Each image has their own effective luminosity distance and effective geocent time</span>
             <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="c1"># Returns a dictionary</span>
-                <span class="n">pdet</span> <span class="o">=</span> <span class="n">pdet_calculator</span><span class="p">(</span>
+                <span class="n">pdet</span> <span class="o">=</span> <span class="n">pdet_finder</span><span class="p">(</span>
                     <span class="n">gw_param_dict</span><span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
                         <span class="n">mass_1</span><span class="o">=</span><span class="n">mass_1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
                         <span class="n">mass_2</span><span class="o">=</span><span class="n">mass_2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
@@ -618,28 +578,108 @@
                         <span class="n">phi_jl</span><span class="o">=</span><span class="n">phi_jl</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
                     <span class="p">),</span>
                 <span class="p">)</span>
-                <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdet</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">]</span>
 
-                <span class="k">if</span> <span class="n">list_of_detectors</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">list_of_detectors</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">pdet</span><span class="p">:</span>
-                            <span class="n">result_dict</span><span class="p">[</span><span class="n">detector</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdet</span><span class="p">[</span><span class="n">detector</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">keys</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder_output_keys</span><span class="p">:</span>
+                    <span class="n">result_dict</span><span class="p">[</span><span class="n">keys</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdet</span><span class="p">[</span><span class="n">keys</span><span class="p">]</span>
 
             <span class="c1"># Update lensed_param with effective values only if they weren&#39;t already present</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">dl_eff_present</span><span class="p">:</span>
-                <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_luminosity_distance&quot;</span><span class="p">][:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">effective_luminosity_distance</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">time_eff_present</span><span class="p">:</span>
-                <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_geocent_time&quot;</span><span class="p">][:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">effective_geocent_time</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">phase_eff_present</span><span class="p">:</span>
-                <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_phase&quot;</span><span class="p">][:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">effective_phase</span>
+            <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_luminosity_distance&quot;</span><span class="p">][:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">effective_luminosity_distance</span>
+            <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_geocent_time&quot;</span><span class="p">][:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">effective_geocent_time</span>
+            <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_phase&quot;</span><span class="p">][:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">effective_phase</span>
 
         <span class="k">return</span> <span class="n">result_dict</span><span class="p">,</span> <span class="n">lensed_param</span></div>
 
 
+    <span class="k">def</span> <span class="nf">_check_pdet_finder_output_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">,</span> <span class="n">pdet_finder</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Helper function to check and set pdet_finder output keys.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        size : ``int``</span>
+<span class="sd">            Number of lensed events.</span>
+<span class="sd">        lensed_param : ``dict``</span>
+<span class="sd">            Dictionary containing lensed source and image parameters.</span>
+<span class="sd">        pdet_finder : ``callable``</span>
+<span class="sd">            Function that computes detection probability given GW parameters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result_dict : ``dict``</span>
+<span class="sd">            Initialized dictionary to hold pdet_finder outputs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># checking pdet_finder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder</span> <span class="o">=</span> <span class="n">pdet_finder</span> <span class="k">if</span> <span class="n">pdet_finder</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;pdet_finder function must be provided&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder_output_keys</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># setting up pdet dictionary</span>
+            <span class="c1"># get the keys of the output dictionary of pdet_finder</span>
+            <span class="n">gw_param_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">mass_1</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;mass_1&quot;</span><span class="p">][:</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">mass_2</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;mass_2&quot;</span><span class="p">][:</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">luminosity_distance</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;luminosity_distance&quot;</span><span class="p">][:</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">theta_jn</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;theta_jn&quot;</span><span class="p">][:</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">psi</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;psi&quot;</span><span class="p">][:</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">phase</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;phase&quot;</span><span class="p">][:</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">geocent_time</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;geocent_time&quot;</span><span class="p">][:</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">ra</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;ra&quot;</span><span class="p">][:</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">dec</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;dec&quot;</span><span class="p">][:</span><span class="mi">1</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin_zero</span><span class="p">:</span>
+                <span class="n">gw_param_dict</span><span class="p">[</span><span class="s2">&quot;a_1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;a_1&quot;</span><span class="p">][:</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">gw_param_dict</span><span class="p">[</span><span class="s2">&quot;a_2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;a_2&quot;</span><span class="p">][:</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin_precession</span><span class="p">:</span>
+                    <span class="n">gw_param_dict</span><span class="p">[</span><span class="s2">&quot;tilt_1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;tilt_1&quot;</span><span class="p">][:</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">gw_param_dict</span><span class="p">[</span><span class="s2">&quot;tilt_2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;tilt_2&quot;</span><span class="p">][:</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">gw_param_dict</span><span class="p">[</span><span class="s2">&quot;phi_12&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;phi_12&quot;</span><span class="p">][:</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">gw_param_dict</span><span class="p">[</span><span class="s2">&quot;phi_jl&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;phi_jl&quot;</span><span class="p">][:</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="n">pdet</span> <span class="o">=</span> <span class="n">pdet_finder</span><span class="p">(</span><span class="n">gw_param_dict</span><span class="o">=</span> <span class="n">gw_param_dict</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pdet</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;pdet_net&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pdet</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;pdet_finder must return a dictionary with key &#39;pdet_net&#39;&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder_output_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pdet</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        
+        <span class="c1"># setting up result dictionary</span>
+        <span class="n">result_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">keys</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder_output_keys</span><span class="p">:</span>
+            <span class="n">result_dict</span><span class="p">[</span><span class="n">keys</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result_dict</span>
+
+    <span class="k">def</span> <span class="nf">_updating_lensed_param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">lensed_param</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Helper function to initialize effective parameters in lensed_param.</span>
+<span class="sd">        Initializes effective_luminosity_distance, effective_geocent_time, effective_phase.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        size : ``int``</span>
+<span class="sd">            Number of lensed events.</span>
+<span class="sd">        lensed_param : ``dict``</span>
+<span class="sd">            Dictionary containing lensed source and image parameters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        lensed_param : ``dict``</span>
+<span class="sd">            Updated dictionary with initialized effective parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># for updating the lensed_param</span>
+        <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_luminosity_distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_geocent_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;effective_phase&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max_images</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+        <span class="k">return</span> <span class="n">lensed_param</span>
+
     <span class="c1"># -------------</span>
     <span class="c1"># Properties</span>
     <span class="c1"># -------------</span>
-
     <span class="nd">@property</span>
 <div class="viewcode-block" id="ImageProperties.npool">
 <a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.npool">[docs]</a>
@@ -802,7 +842,48 @@
 
     <span class="nd">@spin_precession</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">spin_precession</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_spin_precession</span> <span class="o">=</span> <span class="n">value</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_spin_precession</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ImageProperties.pdet_finder">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.pdet_finder">[docs]</a>
+    <span class="k">def</span> <span class="nf">pdet_finder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Detection probability finder function.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pdet_finder : ``callable``</span>
+<span class="sd">            Function that calculates detection probability for GW events. \n</span>
+<span class="sd">            The function signature should be: \n</span>
+<span class="sd">            ``pdet_finder(gw_param_dict) -&gt; dict`` with key &#39;pdet_net&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pdet_finder</span></div>
+
+
+    <span class="nd">@pdet_finder</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">pdet_finder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pdet_finder</span> <span class="o">=</span> <span class="n">value</span>   
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ImageProperties.pdet_finder_output_keys">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/image_properties/index.html#ler.image_properties.image_properties.ImageProperties.pdet_finder_output_keys">[docs]</a>
+    <span class="k">def</span> <span class="nf">pdet_finder_output_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Output keys from the detection probability finder function.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pdet_finder_output_keys : ``list``</span>
+<span class="sd">            List of keys returned by the pdet_finder function. \n</span>
+<span class="sd">            default: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pdet_finder_output_keys</span></div>
+
+
+    <span class="nd">@pdet_finder_output_keys</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">pdet_finder_output_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pdet_finder_output_keys</span> <span class="o">=</span> <span class="n">value</span></div>
 
 </pre></div>
 

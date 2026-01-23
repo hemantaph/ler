@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.rates.ler &mdash; ler 0.4.6 documentation</title>
+  <title>ler.rates.ler &mdash; ler 0.5.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
@@ -18,7 +18,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=03f3338f"></script>
+      <script src="../../../_static/documentation_options.js?v=8e576371"></script>
       <script src="../../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -56,7 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -311,8 +311,6 @@
 <span class="sd">    +------------------------------------------------+------------------+-------+------------------------------------------------+</span>
 <span class="sd">    | :meth:`~ler_directory`                         | ``str``          |       | Directory for output parameter files           |</span>
 <span class="sd">    +------------------------------------------------+------------------+-------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~list_of_detectors`                     | ``list``         |       | List of detector names                         |</span>
-<span class="sd">    +------------------------------------------------+------------------+-------+------------------------------------------------+</span>
 <span class="sd">    | :meth:`~pdet_finder`                           | ``callable``     |       | Detection probability finder function          |</span>
 <span class="sd">    +------------------------------------------------+------------------+-------+------------------------------------------------+</span>
 <span class="sd">    | :meth:`~ler_args`                              | ``dict``         |       | All LeR initialization arguments               |</span>
@@ -416,7 +414,6 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gwsnr_initialization</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder</span> <span class="o">=</span> <span class="n">pdet_finder</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">list_of_detectors</span> <span class="o">=</span> <span class="kc">None</span>
 
             <span class="c1"># store all the ler input parameters</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_store_ler_params</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;ler_params&quot;</span><span class="p">])</span>
@@ -650,9 +647,6 @@
                 <span class="s2">&quot;snr_recalculation_waveform_approximant&quot;</span>
             <span class="p">],</span>
         <span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;list_of_detectors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gwsnr</span><span class="o">.</span><span class="n">detector_list</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">list_of_detectors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;list_of_detectors&quot;</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;pdet_args&quot;</span><span class="p">][</span><span class="s2">&quot;pdet_kwargs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gwsnr</span><span class="o">.</span><span class="n">pdet_kwargs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;pdet_args&quot;</span><span class="p">][</span><span class="s2">&quot;psds_list&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gwsnr</span><span class="o">.</span><span class="n">psds_list</span>
@@ -1415,8 +1409,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;calculating pdet...&quot;</span><span class="p">)</span>
         <span class="n">pdet</span><span class="p">,</span> <span class="n">lensed_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lensed_snrs</span><span class="p">(</span>
             <span class="n">lensed_param</span><span class="o">=</span><span class="n">lensed_param</span><span class="p">,</span>
-            <span class="n">list_of_detectors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">list_of_detectors</span><span class="p">,</span>
-            <span class="n">pdet_calculator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder</span><span class="p">,</span>
+            <span class="n">pdet_finder</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">lensed_param</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pdet</span><span class="p">)</span>
 
@@ -2705,26 +2698,6 @@
     <span class="nd">@ler_directory</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">ler_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ler_directory</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="nd">@property</span>
-<div class="viewcode-block" id="LeR.list_of_detectors">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.list_of_detectors">[docs]</a>
-    <span class="k">def</span> <span class="nf">list_of_detectors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        List of gravitational wave detector names.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        list_of_detectors : ``list``</span>
-<span class="sd">            List of detector identifiers used for pdet calculations. \n</span>
-<span class="sd">            Typically set from gwsnr.detector_list during initialization.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_of_detectors</span></div>
-
-
-    <span class="nd">@list_of_detectors</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">list_of_detectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_list_of_detectors</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="LeR.pdet_finder">

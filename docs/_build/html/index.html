@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to ler’s documentation! &mdash; ler 0.4.6 documentation</title>
+  <title>Welcome to ler’s documentation! &mdash; ler 0.5.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
@@ -19,7 +19,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=03f3338f"></script>
+      <script src="_static/documentation_options.js?v=8e576371"></script>
       <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -60,7 +60,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -221,10 +221,8 @@
 <li class="toctree-l2"><a class="reference internal" href="GW_events.html#Statistical-Form-of-Detectable-Merger-Rate-(Monte-Carlo-Integration)">Statistical Form of Detectable Merger Rate (Monte Carlo Integration)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="GW_equations.html#Initial-setup">Initial setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="GW_equations.html#Rate-equation-(statistical-formulation)">Rate equation (statistical formulation)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="GW_equations.html#The-order-of-sampling-and-rate-calculation-steps-in-LeR-are-listed-below.">The order of sampling and rate calculation steps in LeR are listed below.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analytical_formulation_unlensed.html#table-1-prior-distributions-for-gw-source-parameters-used-in-the-unlensed-event-rate-calculations">Table 1: Prior distributions for GW source parameters used in the unlensed event rate calculations.</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a><ul>
@@ -280,11 +278,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="examples/LeR_short_examples.html">LeR Short Example</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples/LeR_short_examples.html#Table-of-Contents">Table of Contents</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/LeR_short_examples.html#Basic-GW-Event-Simulation-and-Rate-Calculation">Basic GW Event Simulation and Rate Calculation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/LeR_short_examples.html#Lensed-GW-Population-Simulation-and-Rates">Lensed GW Population Simulation and Rates</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/LeR_short_examples.html#Rate-Comparison-and-Visualization">Rate Comparison and Visualization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/LeR_short_examples.html#Available-Internal-Functions-and-Their-Usage">Available Internal Functions and Their Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/LeR_short_examples.html#Summary">Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/LeR_short_examples.html#1.-LeR-initialization-with-default-arguments">1. LeR initialization with default arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/LeR_short_examples.html#2.-Basic-GW-Event-Simulation-and-Rate-Calculation">2. Basic GW Event Simulation and Rate Calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/LeR_short_examples.html#3.-Lensed-GW-Population-Simulation-and-Rates">3. Lensed GW Population Simulation and Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/LeR_short_examples.html#4.-Rate-Comparison-and-Visualization">4. Rate Comparison and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/LeR_short_examples.html#5.-Available-Internal-Functions-and-Their-Usage">5. Available Internal Functions and Their Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/LeR_short_examples.html#6.-Summary">6. Summary</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples/GWRATES_complete_examples.html">GWRATES complete example</a><ul>
@@ -297,11 +296,11 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples/LeR_custom_functions.html#Table-of-Contents">Table of Contents</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/LeR_custom_functions.html#LeR-initialization">LeR initialization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/LeR_custom_functions.html#Examine-Available-Prior-Functions">Examine Available Prior Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/LeR_custom_functions.html#Using-Custom-Functions-in-LeR-Initialization">Using Custom Functions in LeR Initialization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/LeR_custom_functions.html#Compare-Custom-vs-Default-Models">Compare Custom vs Default Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/LeR_custom_functions.html#Summary">Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/LeR_custom_functions.html#1.-LeR-initialization">1. LeR initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/LeR_custom_functions.html#2.-Examine-Available-Prior-Functions">2. Examine Available Prior Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/LeR_custom_functions.html#3.-Using-Custom-Functions-in-LeR-Initialization">3. Using Custom Functions in LeR Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/LeR_custom_functions.html#4.-Compare-Custom-vs-Default-Models">4. Compare Custom vs Default Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/LeR_custom_functions.html#5.-Summary">5. Summary</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a><ul>

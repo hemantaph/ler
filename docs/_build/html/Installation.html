@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Installation &mdash; ler 0.4.6 documentation</title>
+  <title>Installation &mdash; ler 0.5.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
@@ -20,7 +20,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=03f3338f"></script>
+      <script src="_static/documentation_options.js?v=8e576371"></script>
       <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -65,7 +65,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -117,18 +117,10 @@
 <p>For package development and contribution refer here (<a class="reference internal" href="#development"><span class="std std-ref">ler for development</span></a>).</p>
 </div>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-cGlwIChzdGFuZGFyZCk=" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-cGlwIChzdGFuZGFyZCk=" name="cGlwIChzdGFuZGFyZCk=" role="tab" tabindex="0">pip (standard)</button><button aria-controls="panel-0-cGlwICh3aXRoIGd3c25yIEpBWCBiYWNrZW5kKQ==" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-cGlwICh3aXRoIGd3c25yIEpBWCBiYWNrZW5kKQ==" name="cGlwICh3aXRoIGd3c25yIEpBWCBiYWNrZW5kKQ==" role="tab" tabindex="-1">pip (with gwsnr JAX backend)</button><button aria-controls="panel-0-cGlwICh3aXRoIGd3c25yIE1MWCBiYWNrZW5kOyBBcHBsZSBTaWxpY29uKQ==" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-cGlwICh3aXRoIGd3c25yIE1MWCBiYWNrZW5kOyBBcHBsZSBTaWxpY29uKQ==" name="cGlwICh3aXRoIGd3c25yIE1MWCBiYWNrZW5kOyBBcHBsZSBTaWxpY29uKQ==" role="tab" tabindex="-1">pip (with gwsnr MLX backend; Apple Silicon)</button><button aria-controls="panel-0-cGlwICh3aXRoIHRlbnNvcmZsb3cgYmFzZWQgQU5OKQ==" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-cGlwICh3aXRoIHRlbnNvcmZsb3cgYmFzZWQgQU5OKQ==" name="cGlwICh3aXRoIHRlbnNvcmZsb3cgYmFzZWQgQU5OKQ==" role="tab" tabindex="-1">pip (with tensorflow based ANN)</button></div><div aria-labelledby="tab-0-cGlwIChzdGFuZGFyZCk=" class="sphinx-tabs-panel code-tab group-tab" id="panel-0-cGlwIChzdGFuZGFyZCk=" name="cGlwIChzdGFuZGFyZCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>ler
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-cGlw" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-cGlw" name="cGlw" role="tab" tabindex="0">pip</button><button aria-controls="panel-0-cGlw-1" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-cGlw-1" name="cGlw-1" role="tab" tabindex="-1">pip</button></div><div aria-labelledby="tab-0-cGlw" class="sphinx-tabs-panel code-tab group-tab" id="panel-0-cGlw" name="cGlw" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>add<span class="w"> </span>ler
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-0-cGlwICh3aXRoIGd3c25yIEpBWCBiYWNrZW5kKQ==" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-0-cGlwICh3aXRoIGd3c25yIEpBWCBiYWNrZW5kKQ==" name="cGlwICh3aXRoIGd3c25yIEpBWCBiYWNrZW5kKQ==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>ler<span class="w"> </span>jax<span class="w"> </span>jaxlib
-pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span><span class="s2">&quot;jax[cuda12]&quot;</span><span class="w"> </span><span class="c1"># optional, for Nvidia GPU support</span>
-</pre></div>
-</div>
-</div><div aria-labelledby="tab-0-cGlwICh3aXRoIGd3c25yIE1MWCBiYWNrZW5kOyBBcHBsZSBTaWxpY29uKQ==" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-0-cGlwICh3aXRoIGd3c25yIE1MWCBiYWNrZW5kOyBBcHBsZSBTaWxpY29uKQ==" name="cGlwICh3aXRoIGd3c25yIE1MWCBiYWNrZW5kOyBBcHBsZSBTaWxpY29uKQ==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>ler<span class="w"> </span>mlx
-</pre></div>
-</div>
-</div><div aria-labelledby="tab-0-cGlwICh3aXRoIHRlbnNvcmZsb3cgYmFzZWQgQU5OKQ==" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-0-cGlwICh3aXRoIHRlbnNvcmZsb3cgYmFzZWQgQU5OKQ==" name="cGlwICh3aXRoIHRlbnNvcmZsb3cgYmFzZWQgQU5OKQ==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>ler<span class="w"> </span>scikit-learn<span class="w"> </span>tensorflow
-pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>ml-dtypes<span class="w"> </span><span class="c1"># optional, for compatibility</span>
+</div><div aria-labelledby="tab-0-cGlw-1" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-0-cGlw-1" name="cGlw-1" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>ler
 </pre></div>
 </div>
 </div></div>

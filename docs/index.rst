@@ -140,7 +140,7 @@ Glossary
    Summary
    code_overview
    GW_events
-   GW_equations
+   analytical_formulation_unlensed
    Lensed_events
    Lensed_equations
    

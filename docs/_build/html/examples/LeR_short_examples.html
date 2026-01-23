@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LeR Short Example &mdash; ler 0.4.6 documentation</title>
+  <title>LeR Short Example &mdash; ler 0.5.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
@@ -20,7 +20,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=03f3338f"></script>
+      <script src="../_static/documentation_options.js?v=8e576371"></script>
       <script src="../_static/doctools.js?v=9a2dae69"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -62,7 +62,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../GW_equations.html">Gravitational wave events sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -77,35 +77,33 @@
 <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">LeR Short Example</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Table-of-Contents">Table of Contents</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#LeR-initialization-with-default-arguments">LeR initialization with default arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Table-of-Contents">Table of Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#1.-LeR-initialization-with-default-arguments">1. LeR initialization with default arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#2.-Basic-GW-Event-Simulation-and-Rate-Calculation">2. Basic GW Event Simulation and Rate Calculation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#2.1-Simulate-Unlensed-GW-Population">2.1 Simulate Unlensed GW Population</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.2-Calculate-Unlensed-Detection-Rates">2.2 Calculate Unlensed Detection Rates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.3-Inspect-Generated-Unlensed-Parameters">2.3 Inspect Generated Unlensed Parameters</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Basic-GW-Event-Simulation-and-Rate-Calculation">Basic GW Event Simulation and Rate Calculation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Simulate-Unlensed-GW-Population">Simulate Unlensed GW Population</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Calculate-Unlensed-Detection-Rates">Calculate Unlensed Detection Rates</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Inspect-Generated-Unlensed-Parameters">Inspect Generated Unlensed Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#3.-Lensed-GW-Population-Simulation-and-Rates">3. Lensed GW Population Simulation and Rates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#3.1-Simulate-Lensed-GW-Population">3.1 Simulate Lensed GW Population</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3.2-Calculate-Lensed-Detection-Rates">3.2 Calculate Lensed Detection Rates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3.3-Inspect-Generated-Lensed-Parameters">3.3 Inspect Generated Lensed Parameters</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Lensed-GW-Population-Simulation-and-Rates">Lensed GW Population Simulation and Rates</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Simulate-Lensed-GW-Population">Simulate Lensed GW Population</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Calculate-Lensed-Detection-Rates">Calculate Lensed Detection Rates</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Inspect-Generated-Lensed-Parameters">Inspect Generated Lensed Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#4.-Rate-Comparison-and-Visualization">4. Rate Comparison and Visualization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#4.1-Compare-Lensed-vs-Unlensed-Rates">4.1 Compare Lensed vs Unlensed Rates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#4.2-Access-Saved-Data-Files">4.2 Access Saved Data Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#4.3-Load-and-Examine-Saved-Parameters">4.3 Load and Examine Saved Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#4.4-Visualize-Parameter-Distributions">4.4 Visualize Parameter Distributions</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Rate-Comparison-and-Visualization">Rate Comparison and Visualization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Compare-Lensed-vs-Unlensed-Rates">Compare Lensed vs Unlensed Rates</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Access-Saved-Data-Files">Access Saved Data Files</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Load-and-Examine-Saved-Parameters">Load and Examine Saved Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Visualize-Parameter-Distributions">Visualize Parameter Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#5.-Available-Internal-Functions-and-Their-Usage">5. Available Internal Functions and Their Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#5.1-Explore-Functions-and-Parameters">5.1 Explore Functions and Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#5.2-Short-Example-on-Using-Internal-Functions">5.2 Short Example on Using Internal Functions</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Available-Internal-Functions-and-Their-Usage">Available Internal Functions and Their Usage</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Explore-Functions-and-Parameters">Explore Functions and Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Short-Example-on-Using-Internal-Functions">Short Example on Using Internal Functions</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#Summary">Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#6.-Summary">6. Summary</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="GWRATES_complete_examples.html">GWRATES complete example</a></li>
@@ -145,41 +143,42 @@
 <p>This notebook demonstrates how to simulate both lensed and unlensed CBC populations and compare their detection rates using the <code class="docutils literal notranslate"><span class="pre">LeR</span></code> class.</p>
 <section id="Table-of-Contents">
 <h2>Table of Contents<a class="headerlink" href="#Table-of-Contents" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>LeR initialization with default arguments</p></li>
+<li><p>Basic GW Event Simulation and Rate Calculation</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#LeR-initialization-with-default-arguments"><span class="std std-ref">LeR initialization with default arguments</span></a></p></li>
-<li><p><a class="reference internal" href="#Basic-GW-Event-Simulation-and-Rate-Calculation"><span class="std std-ref">Basic GW Event Simulation and Rate Calculation</span></a></p>
-<ul>
-<li><p><a class="reference internal" href="#Simulate-Unlensed-GW-Population"><span class="std std-ref">Simulate Unlensed GW Population</span></a></p></li>
-<li><p><a class="reference internal" href="#Calculate-Unlensed-Detection-Rates"><span class="std std-ref">Calculate Unlensed Detection Rates</span></a></p></li>
-<li><p><a class="reference internal" href="#Inspect-Generated-Unlensed-Parameters"><span class="std std-ref">Inspect Generated Unlensed Parameters</span></a></p></li>
+<li><p>2.1 Simulate Unlensed GW Population</p></li>
+<li><p>2.2 Calculate Unlensed Detection Rates</p></li>
+<li><p>2.3 Inspect Generated Unlensed Parameters</p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#Lensed-GW-Population-Simulation-and-Rates"><span class="std std-ref">Lensed GW Population Simulation and Rates</span></a></p>
-<ul>
-<li><p><a class="reference internal" href="#Simulate-Lensed-GW-Population"><span class="std std-ref">Simulate Lensed GW Population</span></a></p></li>
-<li><p><a class="reference internal" href="#Calculate-Lensed-Detection-Rates"><span class="std std-ref">Calculate Lensed Detection Rates</span></a></p></li>
-<li><p><a class="reference internal" href="#Inspect-Generated-Lensed-Parameters"><span class="std std-ref">Inspect Generated Lensed Parameters</span></a></p></li>
+<li><p>Lensed GW Population Simulation and Rates</p>
+<ul class="simple">
+<li><p>3.1 Simulate Lensed GW Population</p></li>
+<li><p>3.2 Calculate Lensed Detection Rates</p></li>
+<li><p>3.3 Inspect Generated Lensed Parameters</p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#Rate-Comparison-and-Visualization"><span class="std std-ref">Rate Comparison and Visualization</span></a></p>
-<ul>
-<li><p><a class="reference internal" href="#Compare-Lensed-vs-Unlensed-Rates"><span class="std std-ref">Compare Lensed vs Unlensed Rates</span></a></p></li>
-<li><p><a class="reference internal" href="#Access-Saved-Data-Files"><span class="std std-ref">Access Saved Data Files</span></a></p></li>
-<li><p><a class="reference internal" href="#Load-and-Examine-Saved-Parameters"><span class="std std-ref">Load and Examine Saved Parameters</span></a></p></li>
-<li><p><a class="reference internal" href="#Visualize-Parameter-Distributions"><span class="std std-ref">Visualize Parameter Distributions</span></a></p></li>
+<li><p>Rate Comparison and Visualization</p>
+<ul class="simple">
+<li><p>4.1 Compare Lensed vs Unlensed Rates</p></li>
+<li><p>4.2 Access Saved Data Files</p></li>
+<li><p>4.3 Load and Examine Saved Parameters</p></li>
+<li><p>4.4 Visualize Parameter Distributions</p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#Available-Internal-Functions-and-Their-Usage"><span class="std std-ref">Available Internal Functions and Their Usage</span></a></p>
-<ul>
-<li><p><a class="reference internal" href="#Explore-Functions-and-Parameters"><span class="std std-ref">Explore Functions and Parameters</span></a></p></li>
-<li><p><a class="reference internal" href="#Short-Example-on-Using-Internal-Functions"><span class="std std-ref">Short Example on Using Internal Functions</span></a></p></li>
+<li><p>Available Internal Functions and Their Usage</p>
+<ul class="simple">
+<li><p>5.1 Explore Functions and Parameters</p></li>
+<li><p>5.2 Short Example on Using Internal Functions</p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#Summary"><span class="std std-ref">Summary</span></a></p></li>
-</ul>
+<li><p>Summary</p></li>
+</ol>
+</section>
 <hr class="docutils" />
-<section id="LeR-initialization-with-default-arguments">
-<h3>LeR initialization with default arguments<a class="headerlink" href="#LeR-initialization-with-default-arguments" title="Link to this heading"></a></h3>
+<section id="1.-LeR-initialization-with-default-arguments">
+<h2>1. LeR initialization with default arguments<a class="headerlink" href="#1.-LeR-initialization-with-default-arguments" title="Link to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">LeR</span></code> class is the main interface for simulating unlensed and lensed GW events and calculating detection rates. By default, it uses:</p>
 <ul class="simple">
 <li><p><strong>Event type:</strong> BBH (Binary Black Hole).</p></li>
@@ -188,7 +187,7 @@
 </ul>
 <p>All outputs will be saved in the <code class="docutils literal notranslate"><span class="pre">./ler_data</span></code> directory by default.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import LeR</span>
@@ -220,19 +219,19 @@ differential_comoving_volume interpolator will be loaded from ./interpolator_jso
 using ler available velocity dispersion function : velocity_dispersion_ewoud
 velocity_dispersion_ewoud interpolator will be loaded from ./interpolator_json/velocity_dispersion/velocity_dispersion_ewoud_0.json
 using ler available axis_ratio function : axis_ratio_rayleigh
-axis_ratio_rayleigh interpolator will be loaded from ./interpolator_json/axis_ratio/axis_ratio_rayleigh_0.json
+axis_ratio_rayleigh interpolator will be loaded from ./interpolator_json/axis_ratio/axis_ratio_rayleigh_1.json
 using ler available axis_rotation_angle function : axis_rotation_angle_uniform
 using ler available density_profile_slope function : density_profile_slope_normal
 using ler available external_shear function : external_shear_normal
 Cross section interpolation data points loaded from ./interpolator_json/cross_section_function/cross_section_function_0.json
 using ler available lens_redshift function : lens_redshift_strongly_lensed_numerical
 Numerically solving the lens redshift distribution...
-lens_redshift_strongly_lensed_numerical_epl_shear_galaxy interpolator will be loaded from ./interpolator_json/lens_redshift/lens_redshift_strongly_lensed_numerical_epl_shear_galaxy_0.json
-lens_redshift_intrinsic interpolator will be loaded from ./interpolator_json/lens_redshift_intrinsic/lens_redshift_intrinsic_0.json
+lens_redshift_strongly_lensed_numerical_epl_shear_galaxy interpolator will be loaded from ./interpolator_json/lens_redshift/lens_redshift_strongly_lensed_numerical_epl_shear_galaxy_1.json
+lens_redshift_intrinsic interpolator will be loaded from ./interpolator_json/lens_redshift_intrinsic/lens_redshift_intrinsic_1.json
 using ler available density_profile_slope_sl function : density_profile_slope_normal
 using ler available external_shear_sl function : external_shear_normal
 using ler available optical depth function : optical_depth_numerical
-optical_depth_numerical interpolator will be loaded from ./interpolator_json/optical_depth/optical_depth_numerical_0.json
+optical_depth_numerical interpolator will be loaded from ./interpolator_json/optical_depth/optical_depth_numerical_1.json
 
 Initializing CBCSourceRedshiftDistribution class...
 
@@ -260,9 +259,9 @@ Faster, njitted and importance sampling based lens parameter sampler will be use
 Initializing GWSNR class...
 
 psds not given. Choosing bilby&#39;s default psds
-Interpolator will be loaded for L1 detector from ./interpolator_json/L1/partialSNR_dict_0.pickle
-Interpolator will be loaded for H1 detector from ./interpolator_json/H1/partialSNR_dict_0.pickle
-Interpolator will be loaded for V1 detector from ./interpolator_json/V1/partialSNR_dict_0.pickle
+Interpolator will be loaded for L1 detector from ./interpolator_json/L1/partialSNR_dict_0.json
+Interpolator will be loaded for H1 detector from ./interpolator_json/H1/partialSNR_dict_0.json
+Interpolator will be loaded for V1 detector from ./interpolator_json/V1/partialSNR_dict_0.json
 
 Chosen GWSNR initialization parameters:
 
@@ -277,12 +276,15 @@ min(mtot):  9.96
 max(mtot) (with the given fmin=20.0): 500.0
 detectors:  [&#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;]
 psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
-       4984.081  , 4995.378  ]), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
-       6.51153524e-46, 6.43165104e-46, 6.55252996e-46]), &lt;scipy.interpolate._interpolate.interp1d object at 0x3093389a0&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
-       4984.081  , 4995.378  ]), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
-       6.51153524e-46, 6.43165104e-46, 6.55252996e-46]), &lt;scipy.interpolate._interpolate.interp1d object at 0x3093386d0&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
-        9954.0389  ,  9976.993   , 10000.      ]), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,
-       1.51304203e-43, 1.52010157e-43, 1.52719372e-43]), &lt;scipy.interpolate._interpolate.interp1d object at 0x16ebe9ee0&gt;]]
+       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
+       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x304993ab0&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
+       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
+       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x3040aa5c0&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
+        9954.0389  ,  9976.993   , 10000.      ], shape=(3000,)), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,
+       1.51304203e-43, 1.52010157e-43, 1.52719372e-43],
+      shape=(3000,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x304160cc0&gt;]]
 
 
 #-------------------------------------
@@ -296,7 +298,7 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
     event_type = &#39;BBH&#39;,
     lens_type = &#39;epl_shear_galaxy&#39;,
     cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=0.0),
-    pdet_finder = &lt;bound method GWSNR.pdet of &lt;gwsnr.core.gwsnr.GWSNR object at 0x16dbe3a90&gt;&gt;,
+    pdet_finder = &lt;bound method GWSNR.pdet of &lt;gwsnr.core.gwsnr.GWSNR object at 0x313d6be80&gt;&gt;,
     json_file_names = dict(
         ler_params = &#39;ler_params.json&#39;,
         unlensed_param = &#39;unlensed_param.json&#39;,
@@ -394,7 +396,7 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
     lens_param_samplers_params = dict(
         source_redshift_sl = None,
         lens_redshift = {&#39;integration_size&#39;: 25000, &#39;use_multiprocessing&#39;: False},
-        velocity_dispersion = {&#39;sigma_min&#39;: 100.0, &#39;sigma_max&#39;: 400.0, &#39;alpha&#39;: 0.94, &#39;beta&#39;: 1.85, &#39;phistar&#39;: 0.02099, &#39;sigmastar&#39;: 113.78, &#39;name&#39;: &#39;velocity_dispersion_ewoud&#39;},
+        velocity_dispersion = {&#39;sigma_min&#39;: 100.0, &#39;sigma_max&#39;: 400.0, &#39;alpha&#39;: 0.94, &#39;beta&#39;: 1.85, &#39;phistar&#39;: np.float64(0.02099), &#39;sigmastar&#39;: 113.78, &#39;name&#39;: &#39;velocity_dispersion_ewoud&#39;},
         axis_ratio = {&#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0, &#39;name&#39;: &#39;axis_ratio_rayleigh&#39;},
         axis_rotation_angle = {&#39;phi_min&#39;: 0.0, &#39;phi_max&#39;: 6.283185307179586, &#39;name&#39;: &#39;axis_rotation_angle_uniform&#39;},
         external_shear = {&#39;mean&#39;: 0.0, &#39;std&#39;: 0.05, &#39;name&#39;: &#39;external_shear_normal&#39;},
@@ -420,6 +422,8 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
         snr_th_net = 10.0,
         pdet_type = &#39;boolean&#39;,
         distribution_type = &#39;noncentral_chi2&#39;,
+        include_optimal_snr = False,
+        include_observed_snr = False,
     ),
     mtot_min = 9.96,
     mtot_max = 500.0,
@@ -449,12 +453,15 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
     snr_recalculation_range = [6, 14],
     snr_recalculation_waveform_approximant = &#39;IMRPhenomXPHM&#39;,
     psds_list = [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
-       4984.081  , 4995.378  ]), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
-       6.51153524e-46, 6.43165104e-46, 6.55252996e-46]), &lt;scipy.interpolate._interpolate.interp1d object at 0x3093389a0&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
-       4984.081  , 4995.378  ]), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
-       6.51153524e-46, 6.43165104e-46, 6.55252996e-46]), &lt;scipy.interpolate._interpolate.interp1d object at 0x3093386d0&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
-        9954.0389  ,  9976.993   , 10000.      ]), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,
-       1.51304203e-43, 1.52010157e-43, 1.52719372e-43]), &lt;scipy.interpolate._interpolate.interp1d object at 0x16ebe9ee0&gt;]],
+       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
+       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x304993ab0&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
+       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
+       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x3040aa5c0&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
+        9954.0389  ,  9976.993   , 10000.      ], shape=(3000,)), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,
+       1.51304203e-43, 1.52010157e-43, 1.52719372e-43],
+      shape=(3000,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x304160cc0&gt;]],
 </pre></div></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># To print all initialization input arguments, use:</span>
@@ -462,21 +469,20 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
 </pre></div>
 </div>
 </section>
-</section>
 <hr class="docutils" />
-<section id="Basic-GW-Event-Simulation-and-Rate-Calculation">
-<h2>Basic GW Event Simulation and Rate Calculation<a class="headerlink" href="#Basic-GW-Event-Simulation-and-Rate-Calculation" title="Link to this heading"></a></h2>
+<section id="2.-Basic-GW-Event-Simulation-and-Rate-Calculation">
+<h2>2. Basic GW Event Simulation and Rate Calculation<a class="headerlink" href="#2.-Basic-GW-Event-Simulation-and-Rate-Calculation" title="Link to this heading"></a></h2>
 <p>This section demonstrates how to simulate unlensed binary black hole mergers and calculate their detection rates.</p>
-<section id="Simulate-Unlensed-GW-Population">
-<h3>Simulate Unlensed GW Population<a class="headerlink" href="#Simulate-Unlensed-GW-Population" title="Link to this heading"></a></h3>
+<section id="2.1-Simulate-Unlensed-GW-Population">
+<h3>2.1 Simulate Unlensed GW Population<a class="headerlink" href="#2.1-Simulate-Unlensed-GW-Population" title="Link to this heading"></a></h3>
 <p>Generate a population of unlensed Compact Binary Coalescence (CBC) events. This step: - Samples intrinsic (masses and spins) and extrinsic (redshift, sky location, inclination angle, etc.) GW parameters from initialized priors. - Calculates the probability of detection (Pdet) for each event based on the detector network sensitivity. - Stores the output in <code class="docutils literal notranslate"><span class="pre">./ler_data/unlensed_param.json</span></code>.</p>
 <p><strong>Note:</strong> For realistic results, use <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">&gt;=</span> <span class="pre">1,000,000</span></code> with <code class="docutils literal notranslate"><span class="pre">batch_size</span> <span class="pre">=</span> <span class="pre">100,000</span></code></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate 100,000 unlensed GW events in batches of 50,000</span>
-<span class="c1"># use &#39;print(ler.gw_cbc_statistics.__doc__)&#39; to see all the input args</span>
+<span class="c1"># use &#39;print(ler.unlensed_cbc_statistics.__doc__)&#39; to see all the input args</span>
 <span class="n">unlensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Total unlensed events simulated: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">unlensed_param</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -500,15 +506,15 @@ calculating pdet...
 saving all unlensed parameters in ./ler_data/unlensed_param.json
 
 Total unlensed events simulated: 100000
-Sampled source redshift values (first 5): [1.0647935  0.5437863  4.03831859 7.09419838 0.82008202]
+Sampled source redshift values (first 5): [2.38659538 1.87375022 3.05753123 2.03724768 3.06881079]
 </pre></div></div>
 </div>
 </section>
-<section id="Calculate-Unlensed-Detection-Rates">
-<h3>Calculate Unlensed Detection Rates<a class="headerlink" href="#Calculate-Unlensed-Detection-Rates" title="Link to this heading"></a></h3>
+<section id="2.2-Calculate-Unlensed-Detection-Rates">
+<h3>2.2 Calculate Unlensed Detection Rates<a class="headerlink" href="#2.2-Calculate-Unlensed-Detection-Rates" title="Link to this heading"></a></h3>
 <p>Select detectable events and calculate the detection rate. This function: - Filters events using a Pdet threshold. By default, Pdet is based on observed detector network SNR &gt; 10 (<code class="docutils literal notranslate"><span class="pre">gwsnr</span></code>’s default), where the SNR follows a non-central chi-squared distribution centered at the optimal SNR (Essick et al. 2023). - Returns the rate in detectable events per year. - Saves detectable events to <code class="docutils literal notranslate"><span class="pre">./ler_data/unlensed_param_detectable.json</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the detection rate and extract detectable unlensed events</span>
@@ -528,20 +534,20 @@ Sampled source redshift values (first 5): [1.0647935  0.5437863  4.03831859 7.09
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Getting unlensed_param from json file ./ler_data/unlensed_param.json...
-total unlensed rate (yr^-1): 289.4048203950014
-number of simulated unlensed detectable events: 316
+total unlensed rate (yr^-1): 294.89984863034954
+number of simulated unlensed detectable events: 322
 number of simulated all unlensed events: 100000
 storing detectable params in ./ler_data/unlensed_param_detectable.json
 
 === Unlensed Detection Rate Summary ===
-Detectable event rate: 2.89e+02 events per year
+Detectable event rate: 2.95e+02 events per year
 Total event rate: 9.16e+04 events per year
-Percentage fraction of the detectable events: 3.16e-01%
+Percentage fraction of the detectable events: 3.22e-01%
 </pre></div></div>
 </div>
 </section>
-<section id="Inspect-Generated-Unlensed-Parameters">
-<h3>Inspect Generated Unlensed Parameters<a class="headerlink" href="#Inspect-Generated-Unlensed-Parameters" title="Link to this heading"></a></h3>
+<section id="2.3-Inspect-Generated-Unlensed-Parameters">
+<h3>2.3 Inspect Generated Unlensed Parameters<a class="headerlink" href="#2.3-Inspect-Generated-Unlensed-Parameters" title="Link to this heading"></a></h3>
 <p>View the available parameters in the generated event population.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -571,16 +577,16 @@ Example values for mass_1_source (first 5 events):
 </section>
 </section>
 <hr class="docutils" />
-<section id="Lensed-GW-Population-Simulation-and-Rates">
-<h2>Lensed GW Population Simulation and Rates<a class="headerlink" href="#Lensed-GW-Population-Simulation-and-Rates" title="Link to this heading"></a></h2>
+<section id="3.-Lensed-GW-Population-Simulation-and-Rates">
+<h2>3. Lensed GW Population Simulation and Rates<a class="headerlink" href="#3.-Lensed-GW-Population-Simulation-and-Rates" title="Link to this heading"></a></h2>
 <p>This part demonstrates the simulation of lensed GW events and rate calculation. Lensing includes additional parameters such as lens galaxy properties (lens redshift, velocity dispersion, etc.) and image characteristics (magnification, time delays, etc.).</p>
-<section id="Simulate-Lensed-GW-Population">
-<h3>Simulate Lensed GW Population<a class="headerlink" href="#Simulate-Lensed-GW-Population" title="Link to this heading"></a></h3>
+<section id="3.1-Simulate-Lensed-GW-Population">
+<h3>3.1 Simulate Lensed GW Population<a class="headerlink" href="#3.1-Simulate-Lensed-GW-Population" title="Link to this heading"></a></h3>
 <p>Generate a population of lensed CBC events including lens galaxy properties and image parameters: - Source parameters (redshift, masses, spins) - Lens parameters (redshift, Einstein radius, ellipticity, shear components) - Image parameters (magnifications, time delays)</p>
 <p>This step stores output in <code class="docutils literal notranslate"><span class="pre">./ler_data/lensed_param.json</span></code></p>
 <p><strong>Note:</strong> The simulation includes: - Lens galaxy population sampling - Selection based on lensing cross-section - Lens equation solving for multiple image generation - Pdet calculation for each image</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate 100,000 unlensed GW events in batches of 50,000</span>
@@ -610,25 +616,7 @@ solving lens equations...
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|███████████████████████████████████████████████████████| 50000/50000 [00:22&lt;00:00, 2269.72it/s]
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Invalid sample found. Resampling 1 lensed events...
-sampling lens parameters with sample_all_routine_epl_shear_sl...
-solving lens equations...
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-100%|█████████████████████████████████████████████████████████████████| 1/1 [00:00&lt;00:00, 10.75it/s]
+100%|███████████████████████████████████████████████████████| 50000/50000 [00:11&lt;00:00, 4524.78it/s]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -637,21 +625,6 @@ solving lens equations...
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 calculating pdet...
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
 Batch no. 2
 sampling lensed params...
 sampling lens parameters with sample_all_routine_epl_shear_sl...
@@ -663,7 +636,7 @@ solving lens equations...
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|███████████████████████████████████████████████████████| 50000/50000 [00:11&lt;00:00, 4270.40it/s]
+100%|███████████████████████████████████████████████████████| 50000/50000 [00:10&lt;00:00, 4563.30it/s]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -675,22 +648,22 @@ calculating pdet...
 saving all lensed parameters in ./ler_data/lensed_param.json
 
 Total lensed events simulated: 100000
-Sampled source redshift values (first 5): [2.17878885 2.9993495  3.15648155 3.20451842 1.46809552]
+Sampled source redshift values (first 5): [2.96150209 3.62643698 2.22925302 6.69295117 3.6017759 ]
 </pre></div></div>
 </div>
 </section>
-<section id="Calculate-Lensed-Detection-Rates">
-<h3>Calculate Lensed Detection Rates<a class="headerlink" href="#Calculate-Lensed-Detection-Rates" title="Link to this heading"></a></h3>
+<section id="3.2-Calculate-Lensed-Detection-Rates">
+<h3>3.2 Calculate Lensed Detection Rates<a class="headerlink" href="#3.2-Calculate-Lensed-Detection-Rates" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Calculate the lensed detection rate, with each event requiring at least two detectable images for a valid detection.</p></li>
 <li><p>The detection rate is stored in <code class="docutils literal notranslate"><span class="pre">./ler_data/lensed_param_detectable.json</span></code>.</p></li>
 </ul>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the detection rate for lensed events</span>
-<span class="c1"># use &#39;ler.lensed_rate.__doc__&#39; to see all the input args</span>
+<span class="c1"># use &#39;print(ler.lensed_rate.__doc__)&#39; to see all the input args</span>
 <span class="n">rate_lensed</span><span class="p">,</span> <span class="n">lensed_param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">lensed_rate</span><span class="p">()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Lensed Detection Rate Summary ===&quot;</span><span class="p">)</span>
@@ -706,20 +679,20 @@ Sampled source redshift values (first 5): [2.17878885 2.9993495  3.15648155 3.20
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Getting lensed_param from json file ./ler_data/lensed_param.json...
-total lensed rate (yr^-1): 0.10987440042477357
-number of simulated lensed detectable events: 97
+total lensed rate (yr^-1): 0.10082199896856103
+number of simulated lensed detectable events: 89
 number of simulated all lensed events: 100000
 storing detectable params in ./ler_data/lensed_param_detectable.json
 
 === Lensed Detection Rate Summary ===
-Detectable event rate: 1.10e-01 events per year
+Detectable event rate: 1.01e-01 events per year
 Total event rate: 1.13e+02 events per year
-Percentage fraction of the detectable events: 9.70e-02%
+Percentage fraction of the detectable events: 8.90e-02%
 </pre></div></div>
 </div>
 </section>
-<section id="Inspect-Generated-Lensed-Parameters">
-<h3>Inspect Generated Lensed Parameters<a class="headerlink" href="#Inspect-Generated-Lensed-Parameters" title="Link to this heading"></a></h3>
+<section id="3.3-Inspect-Generated-Lensed-Parameters">
+<h3>3.3 Inspect Generated Lensed Parameters<a class="headerlink" href="#3.3-Inspect-Generated-Lensed-Parameters" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
@@ -758,13 +731,13 @@ Lens-specific parameters include:
 </section>
 </section>
 <hr class="docutils" />
-<section id="Rate-Comparison-and-Visualization">
-<h2>Rate Comparison and Visualization<a class="headerlink" href="#Rate-Comparison-and-Visualization" title="Link to this heading"></a></h2>
+<section id="4.-Rate-Comparison-and-Visualization">
+<h2>4. Rate Comparison and Visualization<a class="headerlink" href="#4.-Rate-Comparison-and-Visualization" title="Link to this heading"></a></h2>
 <p>Compare the lensed and unlensed detection rates, access saved data files, and visualize parameter distributions.</p>
-<section id="Compare-Lensed-vs-Unlensed-Rates">
-<h3>Compare Lensed vs Unlensed Rates<a class="headerlink" href="#Compare-Lensed-vs-Unlensed-Rates" title="Link to this heading"></a></h3>
+<section id="4.1-Compare-Lensed-vs-Unlensed-Rates">
+<h3>4.1 Compare Lensed vs Unlensed Rates<a class="headerlink" href="#4.1-Compare-Lensed-vs-Unlensed-Rates" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare lensed and unlensed rates</span>
@@ -782,14 +755,14 @@ Lens-specific parameters include:
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-unlensed_rate: 289.4048203950014
-lensed_rate: 0.10987440042477357
-ratio: 2633.9604063927964
+unlensed_rate: 294.89984863034954
+lensed_rate: 0.10082199896856103
+ratio: 2924.9553832225356
 
 === Rate Comparison ===
-Unlensed detection rate: 2.8940e+02 events/yr
-Lensed detection rate: 1.0987e-01 events/yr
-Rate ratio (lensed/unlensed): 2633.9604
+Unlensed detection rate: 2.9490e+02 events/yr
+Lensed detection rate: 1.0082e-01 events/yr
+Rate ratio (lensed/unlensed): 2924.9554
 </pre></div></div>
 </div>
 <p>Bonus: The following command simultaneously selects detectable events, calculates rates, and compares unlensed and lensed events.</p>
@@ -797,8 +770,8 @@ Rate ratio (lensed/unlensed): 2633.9604
 </pre></div>
 </div>
 </section>
-<section id="Access-Saved-Data-Files">
-<h3>Access Saved Data Files<a class="headerlink" href="#Access-Saved-Data-Files" title="Link to this heading"></a></h3>
+<section id="4.2-Access-Saved-Data-Files">
+<h3>4.2 Access Saved Data Files<a class="headerlink" href="#4.2-Access-Saved-Data-Files" title="Link to this heading"></a></h3>
 <p>All simulation results are saved in JSON files for future reference and analysis. View the saved file locations and load parameters from disk.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -828,8 +801,8 @@ Saved JSON files:
 </pre></div></div>
 </div>
 </section>
-<section id="Load-and-Examine-Saved-Parameters">
-<h3>Load and Examine Saved Parameters<a class="headerlink" href="#Load-and-Examine-Saved-Parameters" title="Link to this heading"></a></h3>
+<section id="4.3-Load-and-Examine-Saved-Parameters">
+<h3>4.3 Load and Examine Saved Parameters<a class="headerlink" href="#4.3-Load-and-Examine-Saved-Parameters" title="Link to this heading"></a></h3>
 <p>Reload parameters from JSON files for further analysis. This example also hightlights some of the useful functions from <code class="docutils literal notranslate"><span class="pre">ler.utils</span></code> module.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -873,11 +846,11 @@ Rate ratio: 3480.8049
 </pre></div></div>
 </div>
 </section>
-<section id="Visualize-Parameter-Distributions">
-<h3>Visualize Parameter Distributions<a class="headerlink" href="#Visualize-Parameter-Distributions" title="Link to this heading"></a></h3>
+<section id="4.4-Visualize-Parameter-Distributions">
+<h3>4.4 Visualize Parameter Distributions<a class="headerlink" href="#4.4-Visualize-Parameter-Distributions" title="Link to this heading"></a></h3>
 <p>Create KDE (Kernel Density Estimation) plots to compare the distributions of source redshift for lensed and unlensed populations.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize parameter distributions</span>
@@ -953,10 +926,10 @@ getting gw_params from json file ler_data/lensed_param.json...
 </section>
 </section>
 <hr class="docutils" />
-<section id="Available-Internal-Functions-and-Their-Usage">
-<h2>Available Internal Functions and Their Usage<a class="headerlink" href="#Available-Internal-Functions-and-Their-Usage" title="Link to this heading"></a></h2>
-<section id="Explore-Functions-and-Parameters">
-<h3>Explore Functions and Parameters<a class="headerlink" href="#Explore-Functions-and-Parameters" title="Link to this heading"></a></h3>
+<section id="5.-Available-Internal-Functions-and-Their-Usage">
+<h2>5. Available Internal Functions and Their Usage<a class="headerlink" href="#5.-Available-Internal-Functions-and-Their-Usage" title="Link to this heading"></a></h2>
+<section id="5.1-Explore-Functions-and-Parameters">
+<h3>5.1 Explore Functions and Parameters<a class="headerlink" href="#5.1-Explore-Functions-and-Parameters" title="Link to this heading"></a></h3>
 <p>Inspect the internal functions and parameters used for <code class="docutils literal notranslate"><span class="pre">LeR</span></code> initialization.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -1151,8 +1124,8 @@ cross_section = dict(
 </pre></div></div>
 </div>
 </section>
-<section id="Short-Example-on-Using-Internal-Functions">
-<h3>Short Example on Using Internal Functions<a class="headerlink" href="#Short-Example-on-Using-Internal-Functions" title="Link to this heading"></a></h3>
+<section id="5.2-Short-Example-on-Using-Internal-Functions">
+<h3>5.2 Short Example on Using Internal Functions<a class="headerlink" href="#5.2-Short-Example-on-Using-Internal-Functions" title="Link to this heading"></a></h3>
 <p>Following is a code snippet to initialize <code class="docutils literal notranslate"><span class="pre">LeR</span></code> with internal functions. Refer to the dedicated <code class="docutils literal notranslate"><span class="pre">LeR</span> <span class="pre">with</span> <span class="pre">custom</span> <span class="pre">functions</span></code> example for more details.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span>
     <span class="n">source_priors</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
@@ -1171,8 +1144,8 @@ cross_section = dict(
 </section>
 </section>
 <hr class="docutils" />
-<section id="Summary">
-<h2>Summary<a class="headerlink" href="#Summary" title="Link to this heading"></a></h2>
+<section id="6.-Summary">
+<h2>6. Summary<a class="headerlink" href="#6.-Summary" title="Link to this heading"></a></h2>
 <p>This notebook demonstrates gravitational wave detection rate simulations using the <strong>LeR</strong> framework for both unlensed and strongly lensed compact binary coalescence (CBC) events.</p>
 <p><strong>Workflow:</strong> Initialize LeR with default BBH sources, EPL+Shear lens model, and O4-sensitivity detectors (H1, L1, V1) → simulate 100,000 unlensed CBC events and compute detection rates → sample lens galaxy properties, solve lens equations, and compute lensed rates (requiring ≥2 detectable images) → compare rates and visualize redshift distributions.</p>
 <p><strong>Sampled Parameters:</strong> - <em>GW source:</em> redshift, masses, spins, sky location, orientation, luminosity distance, detection probability - <em>Lens:</em> redshift, velocity dispersion, Einstein radius, axis ratio, density slope, shear - <em>Images:</em> magnifications, time delays, image types, effective luminosity distances</p>

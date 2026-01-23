@@ -3373,7 +3373,7 @@ Attributes
           !! processed by numpydoc !!
 
 
-.. py:class:: ImageProperties(npool=4, n_min_images=2, n_max_images=4, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, time_window=365 * 24 * 3600 * 20, spin_zero=True, spin_precession=False)
+.. py:class:: ImageProperties(npool=4, n_min_images=2, n_max_images=4, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, time_window=365 * 24 * 3600 * 2, spin_zero=True, spin_precession=False, pdet_finder=None)
 
 
    
@@ -3411,9 +3411,9 @@ Attributes
            default: 4
 
        **time_window** : ``float``
-           Time window for lensed events (units: seconds).
+           Time window for lensed events from min(geocent_time) (units: seconds).
 
-           default: 365*24*3600*20 (20 years)
+           default: 365*24*3600*2 (2 years)
 
        **lens_model_list** : ``list``
            List of lens models to use.
@@ -3502,6 +3502,10 @@ Attributes
    | :attr:`~spin_zero`                                  | ``bool``                  |          | Flag for zero spin assumption                  |
    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
    | :attr:`~spin_precession`                            | ``bool``                  |          | Flag for spin precession                       |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   | :attr:`~pdet_finder`                                | ``callable``              |          | Probability of detection calculator            |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   | :attr:`~pdet_finder_output_keys`                     | ``list``                  |          | Keys for probability of detection outputs      |
    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
 
 
@@ -3748,6 +3752,66 @@ Attributes
       ..
           !! processed by numpydoc !!
 
+   .. py:property:: pdet_finder
+
+      
+      Detection probability finder function.
+
+
+
+      :Returns:
+
+          **pdet_finder** : ``callable``
+              Function that calculates detection probability for GW events.
+
+              The function signature should be:
+
+              ``pdet_finder(gw_param_dict) -> dict`` with key 'pdet_net'.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: pdet_finder_output_keys
+
+      
+      Output keys from the detection probability finder function.
+
+
+
+      :Returns:
+
+          **pdet_finder_output_keys** : ``list``
+              List of keys returned by the pdet_finder function.
+
+              default: None
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
    .. py:method:: image_properties(lens_parameters)
 
       
@@ -3813,7 +3877,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_lensed_snrs(lensed_param, pdet_calculator, list_of_detectors=None)
+   .. py:method:: get_lensed_snrs(lensed_param, pdet_finder=None)
 
       
       Compute detection probability for each lensed image.
@@ -3843,13 +3907,8 @@ Attributes
 
               - 'image_type': morse phase type (shape: size x n_max_images)
 
-          **pdet_calculator** : ``callable``
+          **pdet_finder** : ``callable``
               Function that computes detection probability given GW parameters.
-
-          **list_of_detectors** : ``list`` or ``None``
-              List of detector names (e.g., ['H1', 'L1', 'V1']) for per-detector results.
-
-              default: None
 
       :Returns:
 
@@ -3858,7 +3917,7 @@ Attributes
 
               - 'pdet_net': network detection probability (shape: size x n_max_images)
 
-              - Individual detector probabilities if list_of_detectors provided
+              - Individual detector probabilities if pdet_finder outputs them
 
           **lensed_param** : ``dict``
               Updated dictionary with effective parameters:
