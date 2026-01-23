@@ -1,57 +1,9 @@
 #!/usr/bin/env python
-from setuptools import setup, find_packages
-import sys
-from pathlib import Path
-import os
+"""
+Minimal setup.py for backward compatibility.
+All package configuration is now in pyproject.toml.
+"""
+from setuptools import setup
 
-# read the contents of your README file
-this_directory = Path(__file__).parent
-long_description = (this_directory / "README.md").read_text()
-
-# check that python version is 3.10 or above
-python_version = sys.version_info
-if python_version < (3, 10):
-    sys.exit("Python < 3.10 is not supported, aborting setup")
-
-# Read requirements from requirements.txt
-def parse_requirements(filename):
-    with open(filename, 'r') as f:
-        lines = f.read().splitlines()
-    return [line.strip() for line in lines if line.strip() and not line.startswith('#')]
-
-requirements = parse_requirements("requirements.txt")
-
-# Get version
-version = {}
-with open(os.path.join(this_directory, "ler", "_version.py")) as fp:
-    exec(fp.read(), version)
-
-setup(
-    name='ler',
-    version=version['__version__'],
-    description='ler: LVK (LIGO-Virgo-KAGRA collaboration) Event (compact-binary mergers) Rate calculator and simulator',
-    long_description=long_description,
-    long_description_content_type='text/markdown',
-    author='Hemantakumar Phurailatpam',
-    license="MIT",
-    author_email='hemantaphurailatpam@gmail.com',
-    url='https://github.com/hemantaph/ler',
-    packages=find_packages(),
-    include_package_data=True,
-    package_data={
-        'ler': ['rates/ler_data/*'],
-        'ler.rates': ['ler_data/*'],
-        'ler.rates.ler_data': ['*.zip'],
-    },
-    python_requires='>=3.10',
-    classifiers=[
-        'Development Status :: 4 - Beta',
-        'Intended Audience :: Science/Research',
-        'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11',
-        'Programming Language :: Python :: 3.12',
-    ],
-    install_requires=requirements,
-)
+if __name__ == "__main__":
+    setup()

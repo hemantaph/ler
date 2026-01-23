@@ -647,7 +647,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         zs = self.zs(size)
 
         # Sample lens redshift
-        zl = self.lens_redshift_intrinsic.rvs(size, zs)
+        zl = self.lens_redshift_intrinsic.rvs(size, self.z_max * np.ones(size))
 
         # Sample velocity dispersion
         if self.velocity_dispersion.conditioned_y_array is not None:

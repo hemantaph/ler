@@ -63,8 +63,8 @@ class ImageProperties():
         Maximum number of images to consider per event. \n
         default: 4
     time_window : ``float``
-        Time window for lensed events (units: seconds). \n
-        default: 365*24*3600*20 (20 years)
+        Time window for lensed events from min(geocent_time) (units: seconds). \n
+        default: 365*24*3600*2 (2 years)
     lens_model_list : ``list``
         List of lens models to use. \n
         default: ['EPL_NUMBA', 'SHEAR']
@@ -133,6 +133,11 @@ class ImageProperties():
     +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
     | :attr:`~spin_precession`                            | ``bool``                  |          | Flag for spin precession                       |
     +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+    | :attr:`~pdet_finder`                                | ``callable``              |          | Probability of detection calculator            |
+    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+    | :attr:`~pdet_finder_output_keys`                     | ``list``                  |          | Keys for probability of detection outputs      |
+    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+
     """
 
     def __init__(self, 
@@ -141,9 +146,10 @@ class ImageProperties():
                  n_max_images=4,
                  lens_model_list=['EPL_NUMBA', 'SHEAR'],
                  cosmology=None,
-                 time_window=365*24*3600*20,
+                 time_window=365*24*3600*2, # 2 years
                  spin_zero=True,
                  spin_precession=False,
+                 pdet_finder=None,
         ):
 
         self.npool = npool
@@ -154,6 +160,8 @@ class ImageProperties():
         self.spin_precession = spin_precession
         self.time_window = time_window
         self.cosmo = cosmology if cosmology else cosmo
+        self.pdet_finder = pdet_finder
+        self.pdet_finder_output_keys = None
 
     def image_properties(self, lens_parameters):
         """
@@ -333,7 +341,7 @@ class ImageProperties():
 
         return lens_parameters
 
-    def get_lensed_snrs(self, lensed_param, pdet_calculator, list_of_detectors=None):
+    def get_lensed_snrs(self, lensed_param, pdet_finder=None):
         """
         Compute detection probability for each lensed image.
 
@@ -353,18 +361,15 @@ class ImageProperties():
             - 'magnifications': image magnifications (shape: size x n_max_images) \n
             - 'time_delays': image time delays (shape: size x n_max_images) \n
             - 'image_type': morse phase type (shape: size x n_max_images) \n
-        pdet_calculator : ``callable``
+        pdet_finder : ``callable``
             Function that computes detection probability given GW parameters.
-        list_of_detectors : ``list`` or ``None``
-            List of detector names (e.g., ['H1', 'L1', 'V1']) for per-detector results. \n
-            default: None
 
         Returns
         -------
         result_dict : ``dict``
             Dictionary containing: \n
             - 'pdet_net': network detection probability (shape: size x n_max_images) \n
-            - Individual detector probabilities if list_of_detectors provided \n
+            - Individual detector probabilities if pdet_finder outputs them \n
         lensed_param : ``dict``
             Updated dictionary with effective parameters: \n
             - 'effective_luminosity_distance': magnification-corrected distance \n
@@ -382,14 +387,16 @@ class ImageProperties():
         image_type[image_type==2.] = np.pi/2
         image_type[image_type==3.] = np.pi
         # Get the binary parameters
-        mass_1, mass_2, theta_jn, psi, ra, dec, phase, a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl = (
+        mass_1, mass_2, luminosity_distance, theta_jn, psi, ra, dec, phase, geocent_time, a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl = (
             lensed_param["mass_1"],
             lensed_param["mass_2"],
+            lensed_param["luminosity_distance"],
             lensed_param["theta_jn"],
             lensed_param["psi"],
             lensed_param["ra"],
             lensed_param["dec"],
             lensed_param["phase"],
+            lensed_param["geocent_time"],
             np.zeros(size),
             np.zeros(size),
             np.zeros(size),
@@ -406,79 +413,32 @@ class ImageProperties():
                     lensed_param["phi_12"],
                     lensed_param["phi_jl"],
                 )
-        
-        # setting up pdet dictionary
-        result_dict = dict()
-        result_dict["pdet_net"] = (
-            np.ones((size, self.n_max_images)) * np.nan
-        )
-        
-        # if detector list are provided for pdet calculation
-        if list_of_detectors:
-            for detector in list_of_detectors:
-                result_dict[detector] = (
-                    np.ones((size, self.n_max_images)) * np.nan
-                )
-        
-        # for updating the lensed_param
-        if "luminosity_distance" in lensed_param:
-            luminosity_distance_ = lensed_param["luminosity_distance"]
-            lensed_param["effective_luminosity_distance"] = np.ones((size, self.n_max_images)) * np.nan
-            dl_eff_present = False
-        elif "effective_luminosity_distance" in lensed_param:
-            dl_eff = lensed_param["effective_luminosity_distance"]
-            dl_eff_present = True
-        else:
-            raise ValueError("luminosity_distance or effective_luminosity_distance not given")
-        
-        if "geocent_time" in lensed_param:
-            geocent_time = lensed_param["geocent_time"]
-            lensed_param["effective_geocent_time"] = np.ones((size, self.n_max_images)) * np.nan
-            time_eff_present = False
-        elif "effective_geocent_time" in lensed_param:
-            time_eff = lensed_param["effective_geocent_time"]
-            time_eff_present = True
-        else:
-            raise ValueError("geocent_time or effective_geocent_time not given")
-        
-        if "phase" in lensed_param:
-            lensed_param["effective_phase"] = np.ones((size, self.n_max_images)) * np.nan
-            phase_eff_present = False
-        elif "effective_phase" in lensed_param:
-            phase_eff = lensed_param["effective_phase"]
-            phase_eff_present = True
-        else:
-            raise ValueError("phase or effective_phase not given")
 
+        # checking pdet_finder output keys
+        result_dict = self._check_pdet_finder_output_keys(size, lensed_param, pdet_finder);
 
+        # updating the lensed_param with effective parameters if not already present
+        lensed_param = self._updating_lensed_param(size, lensed_param)
+        
         # Get the optimal signal to noise ratios for each image
         # iterate over the image type (column)
         geocent_time_min = np.min(geocent_time)
         geocent_time_max = geocent_time_min + self.time_window
-
+    
         for i in range(self.n_max_images):
             
             # get the effective time for each image type
-            if not time_eff_present:
-                effective_geocent_time = geocent_time + time_delays[:, i]
-            else:
-                effective_geocent_time = time_eff[:, i]
+            effective_geocent_time = geocent_time + time_delays[:, i] 
                 
             # choose only the events that are within the time range and also not nan
             idx = (effective_geocent_time <= geocent_time_max) & (effective_geocent_time >= geocent_time_min)
 
             # get the effective luminosity distance for each image type
-            if not dl_eff_present:
-                effective_luminosity_distance = luminosity_distance_ / np.sqrt(
-                    np.abs(magnifications[:, i])
-                )
-            else:
-                effective_luminosity_distance = dl_eff[:, i]
+            effective_luminosity_distance = luminosity_distance / np.sqrt(np.abs(magnifications[:, i]))
+
             # get the effective phase for each image type
-            if not phase_eff_present:
-                effective_phase = phase - image_type[:, i]  # morse phase correction
-            else:
-                effective_phase = phase_eff[:, i]
+            # morse phase correction
+            effective_phase = phase - image_type[:, i] 
             
             # check for nan values
             idx = idx & ~np.isnan(effective_luminosity_distance) & ~np.isnan(effective_geocent_time) & ~np.isnan(effective_phase)
@@ -486,7 +446,7 @@ class ImageProperties():
             # Each image has their own effective luminosity distance and effective geocent time
             if sum(idx) != 0:
                 # Returns a dictionary
-                pdet = pdet_calculator(
+                pdet = pdet_finder(
                     gw_param_dict= dict(
                         mass_1=mass_1[idx],
                         mass_2=mass_2[idx],
@@ -505,27 +465,107 @@ class ImageProperties():
                         phi_jl=phi_jl[idx],
                     ),
                 )
-                result_dict["pdet_net"][idx, i] = pdet["pdet_net"]
 
-                if list_of_detectors:
-                    for detector in list_of_detectors:
-                        if detector in pdet:
-                            result_dict[detector][idx, i] = pdet[detector]
+                for keys in self.pdet_finder_output_keys:
+                    result_dict[keys][idx, i] = pdet[keys]
 
             # Update lensed_param with effective values only if they weren't already present
-            if not dl_eff_present:
-                lensed_param["effective_luminosity_distance"][:, i] = effective_luminosity_distance
-            if not time_eff_present:
-                lensed_param["effective_geocent_time"][:, i] = effective_geocent_time
-            if not phase_eff_present:
-                lensed_param["effective_phase"][:, i] = effective_phase
+            lensed_param["effective_luminosity_distance"][:, i] = effective_luminosity_distance
+            lensed_param["effective_geocent_time"][:, i] = effective_geocent_time
+            lensed_param["effective_phase"][:, i] = effective_phase
 
         return result_dict, lensed_param
+
+    def _check_pdet_finder_output_keys(self, size, lensed_param, pdet_finder):
+        """
+        Helper function to check and set pdet_finder output keys.
+        
+        Parameters
+        ----------
+        size : ``int``
+            Number of lensed events.
+        lensed_param : ``dict``
+            Dictionary containing lensed source and image parameters.
+        pdet_finder : ``callable``
+            Function that computes detection probability given GW parameters.
+
+        Returns
+        -------
+        result_dict : ``dict``
+            Initialized dictionary to hold pdet_finder outputs.
+        """
+
+        # checking pdet_finder
+        self.pdet_finder = pdet_finder if pdet_finder else self.pdet_finder
+        if self.pdet_finder is None:
+            raise ValueError("pdet_finder function must be provided")
+
+        if self.pdet_finder_output_keys is None:
+            # setting up pdet dictionary
+            # get the keys of the output dictionary of pdet_finder
+            gw_param_dict = dict(
+                mass_1 = lensed_param["mass_1"][:1],
+                mass_2 = lensed_param["mass_2"][:1],
+                luminosity_distance = lensed_param["luminosity_distance"][:1],
+                theta_jn = lensed_param["theta_jn"][:1],
+                psi = lensed_param["psi"][:1],
+                phase = lensed_param["phase"][:1],
+                geocent_time = lensed_param["geocent_time"][:1],
+                ra = lensed_param["ra"][:1],
+                dec = lensed_param["dec"][:1],
+            )
+            if not self.spin_zero:
+                gw_param_dict["a_1"] = lensed_param["a_1"][:1]
+                gw_param_dict["a_2"] = lensed_param["a_2"][:1]
+                if self.spin_precession:
+                    gw_param_dict["tilt_1"] = lensed_param["tilt_1"][:1]
+                    gw_param_dict["tilt_2"] = lensed_param["tilt_2"][:1]
+                    gw_param_dict["phi_12"] = lensed_param["phi_12"][:1]
+                    gw_param_dict["phi_jl"] = lensed_param["phi_jl"][:1]
+
+            pdet = pdet_finder(gw_param_dict= gw_param_dict)
+            if not isinstance(pdet, dict) or "pdet_net" not in pdet:
+                raise ValueError("pdet_finder must return a dictionary with key 'pdet_net'")
+            else:
+                self.pdet_finder_output_keys = list(pdet.keys())
+        
+        # setting up result dictionary
+        result_dict = dict()
+        for keys in self.pdet_finder_output_keys:
+            result_dict[keys] = (
+                np.ones((size, self.n_max_images)) * np.nan
+            )
+
+        return result_dict
+
+    def _updating_lensed_param(self, size, lensed_param):
+        """
+        Helper function to initialize effective parameters in lensed_param.
+        Initializes effective_luminosity_distance, effective_geocent_time, effective_phase.
+
+        Parameters
+        ----------
+        size : ``int``
+            Number of lensed events.
+        lensed_param : ``dict``
+            Dictionary containing lensed source and image parameters.
+
+        Returns
+        -------
+        lensed_param : ``dict``
+            Updated dictionary with initialized effective parameters.
+        """
+
+        # for updating the lensed_param
+        lensed_param["effective_luminosity_distance"] = np.ones((size, self.n_max_images)) * np.nan
+        lensed_param["effective_geocent_time"] = np.ones((size, self.n_max_images)) * np.nan
+        lensed_param["effective_phase"] = np.ones((size, self.n_max_images)) * np.nan
+
+        return lensed_param
 
     # -------------
     # Properties
     # -------------
-
     @property
     def npool(self):
         """
@@ -665,3 +705,38 @@ class ImageProperties():
     @spin_precession.setter
     def spin_precession(self, value):
         self._spin_precession = value
+
+    @property
+    def pdet_finder(self):
+        """
+        Detection probability finder function.
+
+        Returns
+        -------
+        pdet_finder : ``callable``
+            Function that calculates detection probability for GW events. \n
+            The function signature should be: \n
+            ``pdet_finder(gw_param_dict) -> dict`` with key 'pdet_net'.
+        """
+        return self._pdet_finder
+
+    @pdet_finder.setter
+    def pdet_finder(self, value):
+        self._pdet_finder = value   
+
+    @property
+    def pdet_finder_output_keys(self):
+        """
+        Output keys from the detection probability finder function.
+
+        Returns
+        -------
+        pdet_finder_output_keys : ``list``
+            List of keys returned by the pdet_finder function. \n
+            default: None
+        """
+        return self._pdet_finder_output_keys
+
+    @pdet_finder_output_keys.setter
+    def pdet_finder_output_keys(self, value):
+        self._pdet_finder_output_keys = value

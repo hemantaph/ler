@@ -2,7 +2,7 @@ setuptools>=65.5.0
 matplotlib>=3.4.2
 numpy<=1.26.4
 numba>=0.60.0
-gwsnr>=0.3.8
+gwsnr>=0.4.0
 importlib_resources
 lenstronomy>=1.10.4
 astropy>=5.1

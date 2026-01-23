@@ -206,8 +206,6 @@ class LeR(LensGalaxyParameterDistribution):
     +------------------------------------------------+------------------+-------+------------------------------------------------+
     | :meth:`~ler_directory`                         | ``str``          |       | Directory for output parameter files           |
     +------------------------------------------------+------------------+-------+------------------------------------------------+
-    | :meth:`~list_of_detectors`                     | ``list``         |       | List of detector names                         |
-    +------------------------------------------------+------------------+-------+------------------------------------------------+
     | :meth:`~pdet_finder`                           | ``callable``     |       | Detection probability finder function          |
     +------------------------------------------------+------------------+-------+------------------------------------------------+
     | :meth:`~ler_args`                              | ``dict``         |       | All LeR initialization arguments               |
@@ -311,7 +309,6 @@ class LeR(LensGalaxyParameterDistribution):
                 self.pdet_finder = self._gwsnr_initialization(params=params)
             else:
                 self.pdet_finder = pdet_finder
-                self.list_of_detectors = None
 
             # store all the ler input parameters
             self._store_ler_params(output_jsonfile=self.json_file_names["ler_params"])
@@ -545,9 +542,6 @@ class LeR(LensGalaxyParameterDistribution):
                 "snr_recalculation_waveform_approximant"
             ],
         )
-
-        self.ler_args["list_of_detectors"] = gwsnr.detector_list
-        self.list_of_detectors = self.ler_args["list_of_detectors"]
 
         self.ler_args["pdet_args"]["pdet_kwargs"] = gwsnr.pdet_kwargs
         self.ler_args["pdet_args"]["psds_list"] = gwsnr.psds_list
@@ -1293,8 +1287,7 @@ class LeR(LensGalaxyParameterDistribution):
         print("calculating pdet...")
         pdet, lensed_param = self.get_lensed_snrs(
             lensed_param=lensed_param,
-            list_of_detectors=self.list_of_detectors,
-            pdet_calculator=self.pdet_finder,
+            pdet_finder=self.pdet_finder,
         )
         lensed_param.update(pdet)
 
@@ -2537,23 +2530,6 @@ class LeR(LensGalaxyParameterDistribution):
     @ler_directory.setter
     def ler_directory(self, value):
         self._ler_directory = value
-
-    @property
-    def list_of_detectors(self):
-        """
-        List of gravitational wave detector names.
-
-        Returns
-        -------
-        list_of_detectors : ``list``
-            List of detector identifiers used for pdet calculations. \n
-            Typically set from gwsnr.detector_list during initialization.
-        """
-        return self._list_of_detectors
-
-    @list_of_detectors.setter
-    def list_of_detectors(self, value):
-        self._list_of_detectors = value
 
     @property
     def pdet_finder(self):
