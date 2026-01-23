@@ -10,23 +10,13 @@ Installation
 
 .. tabs::
 
-   .. code-tab:: bash pip (standard)
+   .. code-tab:: bash pip 
+
+        uv add ler
+
+   .. code-tab:: bash pip 
 
         pip install ler
-
-   .. code-tab:: bash pip (with gwsnr JAX backend)
-
-      pip install ler jax jaxlib
-      pip install -U "jax[cuda12]" # optional, for Nvidia GPU support
-
-   .. code-tab:: bash pip (with gwsnr MLX backend; Apple Silicon)
-
-      pip install ler mlx
-
-   .. code-tab:: bash pip (with tensorflow based ANN)
-
-      pip install ler scikit-learn tensorflow
-      pip install --upgrade ml-dtypes # optional, for compatibility
 
 
 This will also install the dependencies needed by the lastest ``ler`` version.  
