@@ -1,0 +1,141 @@
+# Analytical Formulation for Gravitational Wave Event Rates
+
+The annual rate of detectable (unlensed) gravitational-wave (GW) events, $\frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}$, gives the expected number of observed compact-binary coalescences (BBH, BNS, and NSBH) per year for a given detector or detector network. It is obtained by combining the total intrinsic merger rate in the detector frame, $\frac{\Delta N_{\rm U}}{\Delta t}$, with the population-averaged probability of detection, $P({\rm obs})$, such that
+
+$$
+\begin{equation}
+\begin{split}
+\frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}
+= \frac{\Delta N_{\rm U}}{\Delta t} \times P({\rm obs}) \,,
+\end{split}
+\end{equation}
+$$
+
+where $P({\rm obs})$ is evaluated by marginalizing over the full set of GW parameters $\vec{\theta}$, i.e.,
+
+$$
+\vec{\theta}\in \{z_s, m_1, m_2, a_1, a_2, \theta_1, \theta_2, \phi_{12}, \phi_{JL}, \iota, \phi, \psi, {\rm RA}, {\rm Dec}, t_c\} \, .
+$$
+
+See [Table 1](#table-1-prior-distributions-for-gw-source-parameters-used-in-the-unlensed-event-rate-calculations) for parameter descriptions and adopted prior distributions used in this analysis.
+
+To make the parameter dependence explicit, the observed event rate can be written as an integral over $\vec{\theta}$, and it reads
+
+$$
+\begin{equation}
+\begin{split}
+\frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}
+= \frac{\Delta N_{\rm U}}{\Delta t} \int_{\vec{\theta}} P({\rm obs}|\vec{\theta}) \, P(\vec{\theta}) \, d\vec{\theta} \, ,
+\end{split}
+\end{equation}
+$$
+
+where $P({\rm obs}|\vec{\theta})$ is the conditional probability of detecting a source given its parameters $\vec{\theta}$, and $P(\vec{\theta})$ is the joint prior distribution of source parameters. Assuming the priors factorize, $P(\vec{\theta})$ can be expanded as
+
+$$
+\begin{equation}
+\begin{split}
+P(\vec{\theta}) &= P(z_s) \, P(m_1, m_2) \, P(a_1) \, P(a_2) \, P(\theta_1, \theta_2) \, P(\phi_{12}) \, P(\phi_{JL}) \\
+& \quad \times P(\iota) \, P(\phi) \, P(\psi) \, P({\rm RA}) \, P({\rm Dec}) \, P(t_c) \, .
+\end{split}
+\end{equation}
+$$
+
+The `ler` package uses redshift, $z_s$, rather than luminosity distance, $D_L$, as a source parameter, and it's intrinsic distribution is assumed to be uncorrelated with the other parameters. The redshift probability density distribution, $P(z_s)$, is defined as the normalized distribution of sources in redshift, and it is proportional to the intrinsic merger rate density in the detector frame and the comoving volume element. This can be written as
+
+$$
+\begin{equation}
+\begin{split}
+P(z_s) &\propto \frac{d^2 N}{dt \, dV_c} \frac{dV_c}{dz_s} \\
+&\propto \frac{1}{(1+z_s)}\frac{d^2 N}{d\tau \, dV_c} \frac{dV_c}{dz_s} \\
+& \propto \frac{1}{(1+z_s)} R_{\rm U}(z_s) \frac{dV_c}{dz_s},
+\end{split} 
+\end{equation}
+$$
+
+where $R_{\rm U}(z_s)$ denotes the intrinsic merger rate density in the source frame. The intrinsic rate is expressed per unit source-frame proper time $\tau$ and per unit comoving volume $V_c$, with $d\tau = dt/(1+z_s)$. The factor $1/(1+z_s)$ accounts for cosmological time dilation, and $\frac{dV_c}{dz_s}dz_s$ represents the comoving shell volume element at redshift $z_s$.
+
+With the normalization factor ${\cal N}_{\rm U}$, the complete expression for $P(z_s)$ becomes
+
+$$
+\begin{equation}
+\begin{split}
+P(z_s) = \frac{1}{{\cal N}_{\rm U}} \frac{R_{\rm U}(z_s)}{1+z_s} \frac{dV_c}{dz_s}.
+\end{split}
+\end{equation}
+$$
+
+The normalization constant is
+
+$$
+\begin{equation}
+\begin{split}
+{\cal N}_{\rm U} = \int_{z_s} \frac{R_{\rm U}(z_s)}{1+z_s} \frac{dV_c}{dz_s} \, dz_s.
+\end{split}
+\end{equation}
+$$
+
+${\cal N}_{\rm U}$ also represents the total intrinsic merger rate per year in the detector frame (i.e., ${\cal N}_{\rm U}=\frac{\Delta N_{\rm U}}{\Delta t}$). The observed GW event rate can therefore be rewritten as
+
+$$
+\begin{equation}
+\begin{split}
+\frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}
+&= {\cal N}_{\rm U} \int_{\vec{\theta}} P({\rm obs}| \vec{\theta})\, P(\vec{\theta}) \, d\vec{\theta} \\
+&= {\cal N}_{\rm U} \bigg\langle P({\rm obs}| \vec{\theta}) \bigg\rangle_{\vec{\theta} \sim P(\vec{\theta})},
+\end{split}
+\end{equation}
+$$
+
+where the final expression is evaluated numerically using Monte Carlo integration. The average detection probability $\langle P({\rm obs}| \vec{\theta}) \rangle$ is computed from a large sample of GW parameters drawn from $P(\vec{\theta})$.
+
+The conditional detection probability $P({\rm obs}|\vec{\theta})$, which defines the detection criterion or probability of detection $P_{\rm det}$, is set by a threshold $\rho_{\rm th}$ (`ler` default: 10) on the observed signal-to-noise ratio (SNR) $\rho_{\rm obs}$. In step-function form, this is
+
+$$
+\begin{equation}
+\begin{split}
+P({\rm obs}| \vec{\theta}) = P_{\rm det} (\vec{\theta}, \rho_{\rm th}) = 
+\begin{cases}
+1, & \text{if } \rho_{\rm obs}(\vec{\theta}) > \rho_{\rm th} \\
+0, & \text{otherwise}.
+\end{cases}
+\end{split}
+\end{equation}
+$$
+
+`ler` uses the `gwsnr` package to estimate $P_{\rm det}$. The observed SNR $\rho_{\rm obs}$ is modeled either as a Gaussian random variate centered at $\rho_{\rm opt}$ (or $\rho_{\rm opt,net}$ for a detector network) with unit variance (Fishbach et al. 2020; Abbott et al. 2019), or as a non-central $\chi$ distribution (`scipy.stats.ncx2`) with non-centrality parameter $\lambda = \rho_{\rm opt}$ (or $\rho_{\rm opt,net}$) and two degrees of freedom for a single detector, extended to $2N$ for a network of $N$ detectors (Essick 2023). Refer to the `gwsnr` documentation for more details on SNR modeling and detection probability calculations.
+
+---
+
+### Table 1: Prior distributions for GW source parameters used in the unlensed event rate calculations.
+
+| Parameter | Unit | Prior | Min | Max | Description |
+|-----------|------|-------|-----|-----|-------------|
+| $m_{1,2}$ | $M_\odot$ | PowerLaw+Peak<br>(GWTC-3: $\alpha$=3.78,<br>$\mu_g$=32.27, $\sigma_g$=3.88,<br>$\lambda_p$=0.03, $\delta_m$=4.8,<br>$\beta$=0.81) | 4.98 | 112.5 | Component masses of the binary |
+| $a_{1,2}$ | - | uniform | 0 | 0.99 | Dimensionless spin magnitudes <br>of the components |
+| $\theta_{1,2}$ | rad | $\sin(\theta)$ | 0 | $\pi$ | Tilt angles of the spin vectors |
+| $\phi_{12}$ | rad | uniform | 0 | $2\pi$ | Azimuthal angle between the <br>spin vectors |
+| $\phi_{JL}$ | rad | uniform | 0 | $2\pi$ | Azimuthal angle between total <br>angular momentum and orbital <br>angular momentum |
+| RA | rad | uniform | 0 | $2\pi$ | Right ascension sky coordinate |
+| Dec | rad | $\cos({\rm Dec})$ | $-\pi/2$ | $\pi/2$ | Declination sky coordinate |
+| $\iota$ | rad | $\sin(\iota)$ | 0 | $\pi$ | Inclination angle relative to <br>line of sight |
+| $\psi$ | rad | uniform | 0 | $\pi$ | Polarization angle of the GW <br>signal |
+| $\phi$ | rad | uniform | 0 | $2\pi$ | Orbital phase at coalescence or <br>reference phase |
+
+<!-- ---
+
+### Table 1: Prior distributions for GW source parameters used in the unlensed event rate calculations.
+
+| Parameter | Unit | Prior | Min | Max | Description |
+|-----------|------|-------|-----|-----|-------------|
+| $m_{1,2}$ | $M_\odot$ | PowerLaw+Peak<br>(GWTC-3: $\alpha$=3.78,<br>$\mu_g$=32.27, $\sigma_g$=3.88,<br>$\lambda_p$=0.03, $\delta_m$=4.8,<br>$\beta$=0.81) | 4.98 | 112.5 | Component masses of the binary |
+| $a_{1,2}$ | - | uniform | 0 | 0.99 | Dimensionless spin magnitudes <br>of the components |
+| $\theta_{1,2}$ | rad | $\sin(\theta)$ | 0 | $\pi$ | Tilt angles of the spin vectors |
+| $\phi_{12}$ | rad | uniform | 0 | $2\pi$ | Azimuthal angle between the <br>spin vectors |
+| $\phi_{JL}$ | rad | uniform | 0 | $2\pi$ | Azimuthal angle between total <br>angular momentum and orbital <br>angular momentum |
+| RA | rad | uniform | 0 | $2\pi$ | Right ascension sky coordinate |
+| Dec | rad | $\cos({\rm Dec})$ | $-\pi/2$ | $\pi/2$ | Declination sky coordinate |
+| $\iota$ | rad | $\sin(\iota)$ | 0 | $\pi$ | Inclination angle relative to <br>line of sight |
+| $\psi$ | rad | uniform | 0 | $\pi$ | Polarization angle of the GW <br>signal |
+| $\phi$ | rad | uniform | 0 | $2\pi$ | Orbital phase at coalescence or <br>reference phase | -->
+

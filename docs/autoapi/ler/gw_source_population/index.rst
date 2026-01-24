@@ -3784,7 +3784,7 @@ Attributes
 
    This model uses a Madau-Dickinson-like functional form to fit the
    merger rate density of field BHs, accounting for time delays and
-   metallicity effects.
+   metallicity effects. Coefficients from Madau & Dickinson (2014) are translated as: B-> alpha_F, D-> beta_F, C-> c_F.
 
    density(zs) ∝ (1 + zs) ** alpha_F / (1 + ((1 + zs) / c_F) ** beta_F)
 
