@@ -37,12 +37,12 @@ $$
 \begin{equation}
 \begin{split}
 \frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}
-= \frac{\Delta N_{\rm U}}{\Delta t} \int_{\vec{\theta}} P({\rm obs}|\vec{\theta}) \, P(\vec{\theta}) \, d\vec{\theta} \,,
+= \frac{\Delta N_{\rm U}}{\Delta t} \int_{\vec{\theta}} P({\rm obs} \mid \vec{\theta}) \, P(\vec{\theta}) \, d\vec{\theta} \,,
 \end{split}
 \end{equation}
 $$
 
-where $P({\rm obs}|\vec{\theta})$ is the conditional probability of detection for a source with parameters $\vec{\theta}$, and $P(\vec{\theta})$ is the joint prior distribution. In most applications, the joint prior is constructed from standard assumptions such as isotropic sky location and orientation, along with independent or dependent priors on intrinsic parameters.
+where $P({\rm obs} \mid \vec{\theta})$ is the conditional probability of detection for a source with parameters $\vec{\theta}$, and $P(\vec{\theta})$ is the joint prior distribution. In most applications, the joint prior is constructed from standard assumptions such as isotropic sky location and orientation, along with independent or dependent priors on intrinsic parameters.
 
 ## Redshift Distribution and Intrinsic Merger Rates
 
@@ -56,7 +56,7 @@ P(z_s) \propto \frac{1}{(1+z_s)} R_{\rm U}(z_s) \frac{dV_c}{dz_s} \,,
 \end{equation}
 $$
 
-where $R_{\rm U}(z_s)$ is expressed per unit source-frame proper time $\tau$ and per unit comoving volume, with $d\tau = dt/(1+z_s)$. The factor $1/(1+z_s)$ accounts for cosmological time dilation between the source-frame time $\tau$ and the detector-frame time $t$. The term $\frac{dV_c}{dz_s}dz_s$ represents the comoving shell volume element at redshift $z_s$, and the integration over $z_s$ in the event-rate calculation is carried out over the full redshift range of interest.
+where $R_{\rm U}(z_s)$ is expressed per unit source-frame proper time $\tau$ and per unit comoving volume, with $d\tau = dt/(1+z_s)$. The factor $1/(1+z_s)$ accounts for cosmological time dilation between the source-frame time $\tau$ and the detector-frame time $t$ (Dominik et al. 2013). The term $\frac{dV_c}{dz_s}dz_s$ represents the comoving shell volume element at redshift $z_s$, and the integration over $z_s$ in the event-rate calculation is carried out over the full redshift range of interest.
 
 Normalizing the redshift distribution introduces the constant ${\cal N}_{\rm U}$, which is equal to the total intrinsic merger rate per year in the detector-frame. The normalized form becomes
 
@@ -84,8 +84,8 @@ $$
 \begin{equation}
 \begin{split}
 \frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}
-&= {\cal N}_{\rm U} \int_{\vec{\theta}} P({\rm obs}|\vec{\theta}) \, P(\vec{\theta}) \, d\vec{\theta} \\
-&= {\cal N}_{\rm U} \bigg\langle P({\rm obs}| \vec{\theta}) \bigg\rangle_{\vec{\theta} \sim P(\vec{\theta})} \,,
+&= {\cal N}_{\rm U} \int_{\vec{\theta}} P({\rm obs} \mid \vec{\theta}) \, P(\vec{\theta}) \, d\vec{\theta} \\
+&= {\cal N}_{\rm U} \bigg\langle P({\rm obs} \mid  \vec{\theta}) \bigg\rangle_{\vec{\theta} \sim P(\vec{\theta})} \,,
 \end{split}
 \end{equation}
 $$
@@ -94,12 +94,12 @@ which is evaluated numerically using Monte Carlo integration by drawing samples 
 
 ## Detection Criterion and SNR Modeling
 
-The conditional detection probability $P({\rm obs}|\vec{\theta})$ is determined by a detection threshold $\rho_{\rm th}$ on the observed signal-to-noise ratio (SNR) $\rho_{\rm obs}$. In the simplest step-function model, the detection probability is
+The conditional detection probability $P({\rm obs} \mid \vec{\theta})$ is determined by a detection threshold $\rho_{\rm th}$ on the observed signal-to-noise ratio (SNR) $\rho_{\rm obs}$. In the simplest step-function model, the detection probability is
 
 $$
 \begin{equation}
 \begin{split}
-P({\rm obs}| \vec{\theta}) = P_{\rm det} (\vec{\theta}, \rho_{\rm th}) = 
+P({\rm obs} \mid  \vec{\theta}) = P_{\rm det} (\vec{\theta}, \rho_{\rm th}) = 
 \begin{cases}
 1, & \text{if } \rho_{\rm obs}(\vec{\theta}) > \rho_{\rm th} \\
 0, & \text{otherwise},
