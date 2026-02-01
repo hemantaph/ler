@@ -153,6 +153,9 @@ html_css_files = [
     'custom.css',  # Add this line to include your custom CSS
 ]
 
+# Ensure PDF files are copied to the build
+html_copy_source = True
+
 # -- Configure autoapi -------------------------------------
 autodoc_typehints = "signature"  # autoapi respects this
 

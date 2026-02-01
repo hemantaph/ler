@@ -1,0 +1,12 @@
+\contentsline {section}{\numberline {1}Overview}{2}{section.1}%
+\contentsline {section}{\numberline {2}Introduction}{2}{section.2}%
+\contentsline {section}{\numberline {3}Parameter-Marginalized Event Rate}{2}{section.3}%
+\contentsline {section}{\numberline {4}Redshift Distribution and Intrinsic Merger Rates}{2}{section.4}%
+\contentsline {section}{\numberline {5}Detection Criterion and SNR Modeling}{3}{section.5}%
+\contentsline {paragraph}{Remark.}{4}{section*.3}%
+\contentsline {section}{\numberline {6}Simulation Results}{4}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Simulation Settings}{4}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}GW Source Parameter Priors}{4}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Detectable vs Intrinsic Populations}{4}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Rate Estimates}{4}{subsection.6.4}%
+\contentsline {paragraph}{Note.}{4}{section*.5}%

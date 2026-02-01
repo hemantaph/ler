@@ -141,6 +141,7 @@ Glossary
    code_overview
    GW_events
    analytical_formulation_unlensed
+   analytical_formulation_unlensed_pdf
    Lensed_events
    Lensed_equations
    

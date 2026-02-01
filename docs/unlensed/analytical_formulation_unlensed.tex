@@ -1,0 +1,260 @@
+\documentclass[11pt]{article}
+
+% -------------------------------------------------
+% Packages
+% -------------------------------------------------
+\usepackage{amsmath,amssymb}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{array}
+
+\geometry{margin=1in}
+
+% -------------------------------------------------
+% Metadata
+% -------------------------------------------------
+\title{Analytical Formulation for Gravitational Wave Event Rates}
+\author{Phurailatpam Hemantakumar\\
+\href{https://hemantaph.com}{https://hemantaph.com}}
+\date{Last updated: June 2024}
+
+% -------------------------------------------------
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+% =================================================
+\section{Overview}
+
+This document presents the analytical framework for calculating gravitational-wave (GW) event rates from compact-binary coalescences (CBCs), encompassing binary black holes (BBH), binary neutron stars (BNS), and neutron star--black hole binaries (NSBH). The formulation combines cosmic merger-rate densities with detector sensitivity and selection effects to predict annual detection rates. Practical implementations using the \texttt{ler} package are referenced throughout.
+
+% =================================================
+\section{Introduction}
+
+The annual rate of detectable (unlensed) GW events,
+$\Delta N^{\rm obs}_{\rm U} / \Delta t$,
+represents the expected number of observed CBC mergers per year for a given detector network. It is obtained by combining the total intrinsic merger rate in the detector frame,
+$\Delta N_{\rm U} / \Delta t$,
+with the population-averaged probability of detection $P({\rm obs})$:
+%
+\begin{equation}
+\begin{split}
+\frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}
+=
+\frac{\Delta N_{\rm U}}{\Delta t}
+\times
+P({\rm obs}) \, .
+\end{split}
+\end{equation}
+
+% =================================================
+\section{Parameter-Marginalized Event Rate}
+
+Let the full parameter vector be
+$\vec{\theta} = \{\vec{\theta}_{\rm int}, \vec{\theta}_{\rm ext}\}$,
+where intrinsic parameters describe the source-frame properties of the binary, and extrinsic parameters describe its configuration relative to the detector network. Explicitly,
+%
+\begin{equation}
+\begin{split}
+\vec{\theta} =
+\{&
+z_s, m_1, m_2, a_1, a_2,
+\theta_1, \theta_2, \phi_{12}, \phi_{JL}, \\
+&\iota, \phi, \psi, {\rm RA}, {\rm Dec}, t_c
+\} .
+\end{split}
+\end{equation}
+
+Given a joint prior $P(\vec{\theta})$ and conditional detection probability
+$P({\rm obs} \mid \vec{\theta})$,
+the population-averaged detection probability is
+%
+\begin{equation}
+\begin{split}
+P({\rm obs})
+=
+\int
+P({\rm obs} \mid \vec{\theta})\,
+P(\vec{\theta})\,
+d\vec{\theta} .
+\end{split}
+\end{equation}
+
+The detectable event rate therefore becomes
+%
+\begin{equation}
+\begin{split}
+\frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}
+=
+\frac{\Delta N_{\rm U}}{\Delta t}
+\int
+P({\rm obs} \mid \vec{\theta})\,
+P(\vec{\theta})\,
+d\vec{\theta} .
+\end{split}
+\end{equation}
+
+% =================================================
+\section{Redshift Distribution and Intrinsic Merger Rates}
+
+The \texttt{ler} framework parameterizes source distance using redshift $z_s$ and assumes $z_s$ is statistically independent of other source parameters. The redshift probability density is proportional to the detector-frame merger-rate density and the comoving volume element:
+%
+\begin{equation}
+\begin{split}
+P(z_s)
+&\propto
+\frac{d^2 N}{dt\, dV_c}
+\frac{dV_c}{dz_s} \\
+&\propto
+\frac{d^2 N}{d\tau\, dV_c}
+\frac{d\tau}{dt}
+\frac{dV_c}{dz_s} \\
+&\propto
+\frac{R_{\rm U}(z_s)}{1+z_s}
+\frac{dV_c}{dz_s} .
+\end{split}
+\end{equation}
+
+Here $R_{\rm U}(z_s)$ is the source-frame merger-rate density per comoving volume, and the factor $(1+z_s)^{-1}$ accounts for cosmological time dilation.
+
+Normalizing the distribution introduces
+${\cal N}_{\rm U}$,
+the total intrinsic merger rate per detector-frame year:
+%
+\begin{equation}
+\begin{split}
+P(z_s)
+=
+\frac{1}{{\cal N}_{\rm U}}
+\frac{R_{\rm U}(z_s)}{1+z_s}
+\frac{dV_c}{dz_s} ,
+\end{split}
+\end{equation}
+%
+with
+%
+\begin{equation}
+\begin{split}
+{\cal N}_{\rm U}
+=
+\int_{z_{\rm min}}^{z_{\rm max}}
+\frac{R_{\rm U}(z_s)}{1+z_s}
+\frac{dV_c}{dz_s}
+\, dz_s .
+\end{split}
+\end{equation}
+
+The observed event rate can therefore be written compactly as
+%
+\begin{equation}
+\begin{split}
+\frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}
+=
+{\cal N}_{\rm U}
+\left\langle
+P({\rm obs} \mid \vec{\theta})
+\right\rangle_{\vec{\theta} \sim P(\vec{\theta})} .
+\end{split}
+\end{equation}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\textwidth]{../_static/Merger_rate_density_and_PDF_of_redshift.png}
+\caption{
+Redshift evolution of the merger-rate density $R(z_s)$ (left axis) and normalized redshift probability density $P(z_s)$ (right axis) for BBH mergers. The model follows a Madau--Dickinson–like prescription including metallicity and time-delay effects.
+}
+\label{fig:redshift_pdf}
+\end{figure}
+
+% =================================================
+\section{Detection Criterion and SNR Modeling}
+
+The conditional detection probability is defined through an SNR threshold $\rho_{\rm th}$:
+%
+\begin{equation}
+\begin{split}
+P({\rm obs} \mid \vec{\theta})
+\equiv
+P_{\rm det}(\vec{\theta}, \rho_{\rm th})
+=
+\Theta\!\left[
+\rho_{\rm obs}(\vec{\theta}) - \rho_{\rm th}
+\right] ,
+\end{split}
+\end{equation}
+%
+where $\Theta$ is the Heaviside step function.
+
+In practice, the observed SNR $\rho_{\rm obs}$ is treated as a stochastic variable derived from the optimal SNR $\rho_{\rm opt}$. The \texttt{ler} and \texttt{gwsnr} packages adopt a non-central chi-squared model by default, following modern population-analysis practice.
+
+\paragraph{Remark.}
+The detection-probability formalism is generic and applies to any signal characterized by an SNR-like detection statistic, including electromagnetic transients.
+
+% =================================================
+\section{Simulation Results}
+
+All results shown below are generated using the default configuration of the \texttt{ler} package.
+
+\subsection{Simulation Settings}
+
+A flat $\Lambda$CDM cosmology is assumed with
+$H_0 = 70\,{\rm km\,s^{-1}\,Mpc^{-1}}$,
+$\Omega_m = 0.3$,
+and $\Omega_\Lambda = 0.7$.
+
+Waveforms are generated using the IMRPhenomXPHM approximant with a sampling frequency of $2048\,{\rm Hz}$. The detection threshold is $\rho_{\rm th}=10$, and a $100\%$ duty cycle is assumed.
+
+\subsection{GW Source Parameter Priors}
+
+\begin{longtable}{p{2.2cm} p{1.2cm} p{3.2cm} p{2.4cm} p{4.4cm}}
+\caption{Prior distributions for GW source parameters.}
+\label{tab:priors}\\
+\toprule
+Parameter & Unit & Prior & Range & Description \\
+\midrule
+$z_s$ & -- & Derived & $[0,10]$ & Source redshift \\
+$m_{1,2}$ & $M_\odot$ & PowerLaw+Peak / Bimodal & see text & Component masses \\
+$a_{1,2}$ & -- & Uniform & $[0,0.99]$ & Spin magnitudes \\
+$\theta_{1,2}$ & rad & Sine & $[0,\pi]$ & Spin tilt angles \\
+RA & rad & Uniform & $[0,2\pi]$ & Right ascension \\
+Dec & rad & Cosine & $[-\pi/2,\pi/2]$ & Declination \\
+$\iota$ & rad & Sine & $[0,\pi]$ & Inclination \\
+$\psi$ & rad & Uniform & $[0,\pi]$ & Polarization angle \\
+\bottomrule
+\end{longtable}
+
+\subsection{Detectable vs Intrinsic Populations}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\textwidth]{../_static/Unlensed_Events.png}
+\caption{
+Corner plot comparing intrinsic (blue) and detectable (orange) BBH populations for the LIGO--Virgo--KAGRA O4 network. Detectable events are biased toward lower redshift and higher masses.
+}
+\label{fig:corner}
+\end{figure}
+
+\subsection{Rate Estimates}
+
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Detector Network & BBH yr$^{-1}$ & BNS yr$^{-1}$ & BBH:BNS \\
+\midrule
+L1--H1--V1 (O4) & 292.7 & 7.4 & 39.5 \\
+CE--ET (3G) & 8.87$\times 10^4$ & 1.49$\times 10^5$ & 0.6 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Note.}
+O4 rates assume design sensitivity and a 100\% duty cycle and should be regarded as optimistic upper limits.
+
+% =================================================
+\end{document}
