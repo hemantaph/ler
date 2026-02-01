@@ -1027,7 +1027,7 @@ Classes
               +------------------------------+-----------+-------------------------------------------------------+
               | q                            |           | axis ratio                                            |
               +------------------------------+-----------+-------------------------------------------------------+
-              | theta_E                      | arcsec    | Einstein radius                                       |
+              | theta_E                      | radian    | Einstein radius                                       |
               +------------------------------+-----------+-------------------------------------------------------+
               | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
               |                              |           | positive x-axis (RA-like axis) to the major axis of   |
@@ -1057,6 +1057,8 @@ Classes
               +------------------------------+-----------+-------------------------------------------------------+
               | a_2                          |           | spin of the secondary compact binary                  |
               +------------------------------+-----------+-------------------------------------------------------+
+              | luminosity_distance          | Mpc       | luminosity distance of the source                      |
+              +------------------------------+-----------+-------------------------------------------------------+
               | mass_1_source                | Msun      | mass of the primary compact binary (source frame)     |
               +------------------------------+-----------+-------------------------------------------------------+
               | mass_2_source                | Msun      | mass of the secondary compact binary (source frame)   |
@@ -1065,9 +1067,9 @@ Classes
               +------------------------------+-----------+-------------------------------------------------------+
               | mass_2                       | Msun      | mass of the secondary compact binary (detector frame) |
               +------------------------------+-----------+-------------------------------------------------------+
-              | x0_image_positions           | arcsec    | x-coordinate (RA-like axis) of the images             |
+              | x0_image_positions           | radian    | x-coordinate (RA-like axis) of the images             |
               +------------------------------+-----------+-------------------------------------------------------+
-              | x1_image_positions           | arcsec    | y-coordinate (Dec-like axis) of the images            |
+              | x1_image_positions           | radian    | y-coordinate (Dec-like axis) of the images            |
               +------------------------------+-----------+-------------------------------------------------------+
               | magnifications               |           | magnifications                                        |
               +------------------------------+-----------+-------------------------------------------------------+
@@ -1077,11 +1079,24 @@ Classes
               +------------------------------+-----------+-------------------------------------------------------+
               | n_images                     |           | number of images                                      |
               +------------------------------+-----------+-------------------------------------------------------+
-              | x_source                     | arcsec    | x-coordinate (RA-like axis) of the source             |
+              | x_source                     | radian    | x-coordinate (RA-like axis) of the source             |
               +------------------------------+-----------+-------------------------------------------------------+
-              | y_source                     | arcsec    | y-coordinate (Dec-like axis) of the source            |
+              | y_source                     | radian    | y-coordinate (Dec-like axis) of the source            |
               +------------------------------+-----------+-------------------------------------------------------+
               | effective_luminosity_distance| Mpc       | effective luminosity distance of the images           |
+              |                              |           | luminosity_distance / sqrt(|magnifications_i|)        |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | effective_geocent_time       | s         | effective GPS time of coalescence of the images       |
+              |                              |           | geocent_time + time_delays_i                          |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | effective_phase              | rad       | morse-phase-corrected phase                           |
+              |                              |           | phi - morse_phase_i                                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | effective_ra                 | rad       | RA of the image                                       |
+              |                              |           | ra + (x0_image_positions_i - x_source)/cos(dec)       |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | effective_dec                | rad       | Dec of the image                                      |
+              |                              |           | dec + (x1_image_positions_i - y_source)               |
               +------------------------------+-----------+-------------------------------------------------------+
               | effective_geocent_time       | s         | effective GPS time of coalescence of the images       |
               +------------------------------+-----------+-------------------------------------------------------+
@@ -1230,7 +1245,7 @@ Classes
               +------------------------------+-----------+-------------------------------------------------------+
               | q                            |           | axis ratio                                            |
               +------------------------------+-----------+-------------------------------------------------------+
-              | theta_E                      | arcsec    | Einstein radius                                       |
+              | theta_E                      | radian    | Einstein radius                                       |
               +------------------------------+-----------+-------------------------------------------------------+
               | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
               |                              |           | positive x-axis (RA-like axis) to the major axis of   |
@@ -1260,6 +1275,8 @@ Classes
               +------------------------------+-----------+-------------------------------------------------------+
               | a_2                          |           | spin of the secondary compact binary                  |
               +------------------------------+-----------+-------------------------------------------------------+
+              | luminosity_distance          | Mpc       | luminosity distance of the source                      |
+              +------------------------------+-----------+-------------------------------------------------------+
               | mass_1_source                | Msun      | mass of the primary compact binary (source frame)     |
               +------------------------------+-----------+-------------------------------------------------------+
               | mass_2_source                | Msun      | mass of the secondary compact binary (source frame)   |
@@ -1268,9 +1285,9 @@ Classes
               +------------------------------+-----------+-------------------------------------------------------+
               | mass_2                       | Msun      | mass of the secondary compact binary (detector frame) |
               +------------------------------+-----------+-------------------------------------------------------+
-              | x0_image_positions           | arcsec    | x-coordinate (RA-like axis) of the images             |
+              | x0_image_positions           | radian    | x-coordinate (RA-like axis) of the images             |
               +------------------------------+-----------+-------------------------------------------------------+
-              | x1_image_positions           | arcsec    | y-coordinate (Dec-like axis) of the images            |
+              | x1_image_positions           | radian    | y-coordinate (Dec-like axis) of the images            |
               +------------------------------+-----------+-------------------------------------------------------+
               | magnifications               |           | magnifications                                        |
               +------------------------------+-----------+-------------------------------------------------------+
@@ -1280,13 +1297,24 @@ Classes
               +------------------------------+-----------+-------------------------------------------------------+
               | n_images                     |           | number of images                                      |
               +------------------------------+-----------+-------------------------------------------------------+
-              | x_source                     | arcsec    | x-coordinate (RA-like axis) of the source             |
+              | x_source                     | radian    | x-coordinate (RA-like axis) of the source             |
               +------------------------------+-----------+-------------------------------------------------------+
-              | y_source                     | arcsec    | y-coordinate (Dec-like axis) of the source            |
+              | y_source                     | radian    | y-coordinate (Dec-like axis) of the source            |
               +------------------------------+-----------+-------------------------------------------------------+
               | effective_luminosity_distance| Mpc       | effective luminosity distance of the images           |
+              |                              |           | luminosity_distance / sqrt(|magnifications_i|)        |
               +------------------------------+-----------+-------------------------------------------------------+
               | effective_geocent_time       | s         | effective GPS time of coalescence of the images       |
+              |                              |           | geocent_time + time_delays_i                          |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | effective_phase              | rad       | morse-phase-corrected phase                           |
+              |                              |           | phi - morse_phase_i                                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | effective_ra                 | rad       | RA of the image                                       |
+              |                              |           | ra + (x0_image_positions_i - x_source)/cos(dec)       |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | effective_dec                | rad       | Dec of the image                                      |
+              |                              |           | dec + (x1_image_positions_i - y_source)               |
               +------------------------------+-----------+-------------------------------------------------------+
               | pdet_L1                      |           | detection probability of L1                           |
               +------------------------------+-----------+-------------------------------------------------------+

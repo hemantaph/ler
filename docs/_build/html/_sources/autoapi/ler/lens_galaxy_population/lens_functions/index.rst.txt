@@ -119,7 +119,7 @@ Functions
    :Parameters:
 
        **theta_E** : ``float``
-           Einstein radius (arcseconds).
+           Einstein radius (radian).
 
        **e1** : ``float``
            First ellipticity component.
@@ -139,7 +139,7 @@ Functions
    :Returns:
 
        **area** : ``float``
-           Cross-section area (arcseconds^2).
+           Cross-section area (radian^2).
 
            Returns 0.0 if caustic computation fails.
 

@@ -1863,7 +1863,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         """
 
         self._available_gw_prior = dict(
-            merger_rate_density=self.merger_rate_density_model_list,
+            merger_rate_density=self.available_merger_rate_density_model,
             zs=dict(
                 source_redshift=None,
             ),

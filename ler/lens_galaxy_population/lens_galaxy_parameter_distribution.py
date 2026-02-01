@@ -381,8 +381,9 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         input_params_image = dict(
             n_min_images=2,
             n_max_images=4,
-            time_window=365 * 24 * 3600 * 20,
+            time_window=365 * 24 * 3600 * 2,
             lens_model_list=["EPL_NUMBA", "SHEAR"],
+            effective_params_in_output=True,
         )
         input_params_image.update(params)
 
@@ -396,6 +397,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             time_window=input_params_image["time_window"],
             spin_zero=self.spin_zero,
             spin_precession=self.spin_precession,
+            effective_params_in_output=input_params_image["effective_params_in_output"],
         )
 
     def sample_lens_parameters(self, size=1000):
@@ -428,7 +430,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             +------------------------------+-----------+-------------------------------------------------------+
             | q                            |           | axis ratio                                            |
             +------------------------------+-----------+-------------------------------------------------------+
-            | theta_E                      | arcsec    | Einstein radius                                       |
+            | theta_E                      | radian    | Einstein radius                                       |
             +------------------------------+-----------+-------------------------------------------------------+
             | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
             |                              |           | positive x-axis (RA-like axis) to the major axis of   |
@@ -457,6 +459,8 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             | a_1                          |           | spin of the primary compact binary                    |
             +------------------------------+-----------+-------------------------------------------------------+
             | a_2                          |           | spin of the secondary compact binary                  |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | luminosity_distance          | Mpc       | luminosity distance of the source                      |
             +------------------------------+-----------+-------------------------------------------------------+
             | mass_1_source                | Msun      | mass of the primary compact binary (source frame)     |
             +------------------------------+-----------+-------------------------------------------------------+
@@ -514,7 +518,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             +------------------------------+-----------+-------------------------------------------------------+
             | q                            |           | axis ratio                                            |
             +------------------------------+-----------+-------------------------------------------------------+
-            | theta_E                      | arcsec    | Einstein radius                                       |
+            | theta_E                      | radian    | Einstein radius                                       |
             +------------------------------+-----------+-------------------------------------------------------+
             | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
             |                              |           | positive x-axis (RA-like axis) to the major axis of   |
@@ -628,7 +632,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             +------------------------------+-----------+-------------------------------------------------------+
             | q                            |           | axis ratio                                            |
             +------------------------------+-----------+-------------------------------------------------------+
-            | theta_E                      | arcsec    | Einstein radius                                       |
+            | theta_E                      | radian    | Einstein radius                                       |
             +------------------------------+-----------+-------------------------------------------------------+
             | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
             |                              |           | positive x-axis (RA-like axis) to the major axis of   |

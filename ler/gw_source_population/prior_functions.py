@@ -107,6 +107,8 @@ def merger_rate_density_madau_dickinson2014_function(zs, R0=19 * 1e-9, a=0.015, 
     """
     Compute the merger rate density for BBH using Madau & Dickinson (2014) model.
 
+    density(zs) ∝ (1 + zs) ** b / (1 + ((1 + zs) / c) ** d)
+
     Reference: Eqn. 15 of https://arxiv.org/pdf/1403.0007
 
     Parameters

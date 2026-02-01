@@ -61,16 +61,21 @@
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Analytical Formulation for Gravitational Wave Event Rates</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#id1">Analytical Formulation for Gravitational Wave Event Rates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#parameter-marginalized-event-rate">Parameter-Marginalized Event Rate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#redshift-distribution-and-intrinsic-merger-rates">Redshift Distribution and Intrinsic Merger Rates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#detection-criterion-and-snr-modeling">Detection Criterion and SNR Modeling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#gw-source-parameter-priors">GW Source Parameter Priors</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#table-1-prior-distributions-for-gw-source-parameters-used-in-the-unlensed-event-rate-calculations">Table 1: Prior distributions for GW source parameters used in the unlensed event rate calculations.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#simulation-results">Simulation Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#simulation-settings">Simulation Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gw-source-parameter-priors">GW Source Parameter Priors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#plot-comparison-for-detectable-and-intrinsic-populations">Plot Comparison for Detectable and Intrinsic Populations</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#rate-estimates-for-different-gw-detector-networks">Rate Estimates for Different GW Detector Networks</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
@@ -118,19 +123,34 @@
              
   <section id="analytical-formulation-for-gravitational-wave-event-rates">
 <h1>Analytical Formulation for Gravitational Wave Event Rates<a class="headerlink" href="#analytical-formulation-for-gravitational-wave-event-rates" title="Link to this heading"></a></h1>
+</section>
+<section id="id1">
+<h1>Analytical Formulation for Gravitational Wave Event Rates<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<p>Written by <a class="reference external" href="https://hemantaph.com">Phurailatpam Hemantakumar</a>. Last updated: June 2024.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This document presents the analytical framework for calculating gravitational-wave (GW) event rates from compact-binary coalescences (CBCs), encompassing binary black holes (BBH), binary neutron stars (BNS), and neutron star–black hole binaries (NSBH). The formulation integrates cosmic merger rate densities with detector sensitivity functions to predict annual detection rates. Implementation examples using the <code class="docutils literal notranslate"><span class="pre">ler</span></code> package demonstrate practical applications of this framework.</p>
+</section>
 <section id="table-of-contents">
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
-<ol class="arabic simple">
+<ul class="simple">
 <li><p><a class="reference internal" href="#introduction"><span class="std std-ref">Introduction</span></a></p></li>
 <li><p><a class="reference internal" href="#parameter-marginalized-event-rate"><span class="std std-ref">Parameter-Marginalized Event Rate</span></a></p></li>
 <li><p><a class="reference internal" href="#redshift-distribution-and-intrinsic-merger-rates"><span class="std std-ref">Redshift Distribution and Intrinsic Merger Rates</span></a></p></li>
 <li><p><a class="reference internal" href="#detection-criterion-and-snr-modeling"><span class="std std-ref">Detection Criterion and SNR Modeling</span></a></p></li>
+<li><p><a class="reference internal" href="#simulation-results"><span class="std std-ref">Simulation Results</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#simulation-settings"><span class="std std-ref">Simulation Settings</span></a></p></li>
 <li><p><a class="reference internal" href="#gw-source-parameter-priors"><span class="std std-ref">GW Source Parameter Priors</span></a></p></li>
-</ol>
+<li><p><a class="reference internal" href="#plot-comparison-for-detectable-and-intrinsic-populations"><span class="std std-ref">Plot Comparison for Detectable and Intrinsic Populations</span></a></p></li>
+<li><p><a class="reference internal" href="#rate-estimates-for-different-gw-detector-networks"><span class="std std-ref">Rate Estimates for Different GW Detector Networks</span></a></p></li>
+</ul>
+</li>
+</ul>
 </section>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
-<p>The annual rate of detectable (unlensed) gravitational-wave (GW) events, <span class="math notranslate nohighlight">\(\frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}\)</span>, gives the expected number of observed compact-binary coalescences (BBH, BNS, and NSBH) per year for a given detector or detector network. It is obtained by combining the total intrinsic merger rate in the detector-frame, <span class="math notranslate nohighlight">\(\frac{\Delta N_{\rm U}}{\Delta t}\)</span>, with the population-averaged probability of detection, <span class="math notranslate nohighlight">\(P({\rm obs})\)</span>, such that</p>
+<p>The annual rate of detectable (unlensed) GW events, <span class="math notranslate nohighlight">\(\frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}\)</span>, gives the expected number of observed CBC mergers per year for a given detector network. It is obtained by combining the total intrinsic merger rate in the detector-frame, <span class="math notranslate nohighlight">\(\frac{\Delta N_{\rm U}}{\Delta t}\)</span>, with the population-averaged probability of detection, <span class="math notranslate nohighlight">\(P({\rm obs})\)</span>, such that</p>
 <div class="math notranslate nohighlight">
 \[
 \begin{equation}
@@ -143,36 +163,50 @@
 </section>
 <section id="parameter-marginalized-event-rate">
 <h2>Parameter-Marginalized Event Rate<a class="headerlink" href="#parameter-marginalized-event-rate" title="Link to this heading"></a></h2>
-<p>The detection probability <span class="math notranslate nohighlight">\(P({\rm obs})\)</span> is obtained by marginalizing over the relevant GW source parameters <span class="math notranslate nohighlight">\(\vec{\theta}\)</span>, i.e.,</p>
+<p>The observed event rate is obtained by averaging the detection probability over the compact-binary parameters that determine the emitted signal and its projection onto a detector network. Let <span class="math notranslate nohighlight">\(\vec{\theta}=\{\vec{\theta}_{\rm int},\vec{\theta}_{\rm ext}\}\)</span>, where the intrinsic parameters <span class="math notranslate nohighlight">\(\vec{\theta}_{\rm int}\)</span> describe the binary’s source-frame properties and the extrinsic parameters <span class="math notranslate nohighlight">\(\vec{\theta}_{\rm ext}\)</span> describe the source configuration relative to the observer. In this work,</p>
 <div class="math notranslate nohighlight">
-\[
-\vec{\theta}\in \{z_s, m_1, m_2, a_1, a_2, \theta_1, \theta_2, \phi_{12}, \phi_{JL}, \iota, \phi, \psi, {\rm RA}, {\rm Dec}, t_c\},
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(z_s\)</span> is the source redshift, <span class="math notranslate nohighlight">\((m_1,m_2)\)</span> are component masses, <span class="math notranslate nohighlight">\((a_1,a_2)\)</span> are dimensionless spin magnitudes, <span class="math notranslate nohighlight">\((\theta_1,\theta_2,\phi_{12},\phi_{JL})\)</span> describe spin orientations, <span class="math notranslate nohighlight">\(\iota\)</span> is the inclination angle, <span class="math notranslate nohighlight">\((\phi,\psi)\)</span> are the coalescence phase and polarization angle, <span class="math notranslate nohighlight">\(({\rm RA},{\rm Dec})\)</span> specify sky position, and <span class="math notranslate nohighlight">\(t_c\)</span> is the coalescence time. The prior distributions used in this analysis are summarized in <a class="reference internal" href="#gw-source-parameter-priors"><span class="std std-ref">Table 1</span></a>.</p>
-<p>Making the parameter dependence explicit, the observed event rate can be written as</p>
-<div class="math notranslate nohighlight">
-\[
+\[ 
 \begin{equation}
 \begin{split}
-\frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}
-= \frac{\Delta N_{\rm U}}{\Delta t} \int_{\vec{\theta}} P({\rm obs}|\vec{\theta}) \, P(\vec{\theta}) \, d\vec{\theta} \,,
+\vec{\theta} = \{z_s, m_1, m_2, a_1, a_2, \theta_1, \theta_2, \phi_{12}, \phi_{JL}, \iota, \phi, \psi, {\rm RA}, {\rm Dec}, t_c\} \,,
 \end{split}
 \end{equation}
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(P({\rm obs}|\vec{\theta})\)</span> is the conditional probability of detection for a source with parameters <span class="math notranslate nohighlight">\(\vec{\theta}\)</span>, and <span class="math notranslate nohighlight">\(P(\vec{\theta})\)</span> is the joint prior distribution. In most applications, the joint prior is constructed from standard assumptions such as isotropic sky location and orientation, along with independent or dependent priors on intrinsic parameters.</p>
+<p>where source-frame component masses <span class="math notranslate nohighlight">\((m_1,m_2)\)</span>, the dimensionless spin magnitudes <span class="math notranslate nohighlight">\((a_1,a_2)\)</span>, and the spin-orientation angles <span class="math notranslate nohighlight">\((\theta_1,\theta_2,\phi_{12},\phi_{JL})\)</span> are intrinsic parameters, while the source redshift <span class="math notranslate nohighlight">\(z_s\)</span>, the sky position <span class="math notranslate nohighlight">\(({\rm RA},{\rm Dec})\)</span>, the inclination <span class="math notranslate nohighlight">\(\iota\)</span>, the polarization angle <span class="math notranslate nohighlight">\(\psi\)</span>, the coalescence phase <span class="math notranslate nohighlight">\(\phi\)</span>, and the coalescence time <span class="math notranslate nohighlight">\(t_c\)</span> are extrinsic parameters.</p>
+<p>Given a joint prior <span class="math notranslate nohighlight">\(P(\vec{\theta})\)</span> and a conditional detection probability <span class="math notranslate nohighlight">\(P({\rm obs}\mid\vec{\theta})\)</span>, the population-averaged detection probability is</p>
+<div class="math notranslate nohighlight">
+\[ 
+\begin{equation}
+\begin{split}
+P({\rm obs}) = \int P({\rm obs}\mid \vec{\theta})\,P(\vec{\theta})\,d\vec{\theta} \,,
+\end{split}
+\end{equation}
+\]</div>
+<p>so the annual detectable rate becomes</p>
+<div class="math notranslate nohighlight">
+\[ 
+\begin{equation}
+\begin{split}
+\frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t} = \frac{\Delta N_{\rm U}}{\Delta t} \int P({\rm obs} \mid \vec{\theta})\, P(\vec{\theta})\, d\vec{\theta} \,.
+\end{split}
+\end{equation}
+\]</div>
+<p>The priors and parameter ranges used for <span class="math notranslate nohighlight">\(P(\vec{\theta})\)</span> are summarized in Table 1.</p>
 </section>
 <section id="redshift-distribution-and-intrinsic-merger-rates">
 <h2>Redshift Distribution and Intrinsic Merger Rates<a class="headerlink" href="#redshift-distribution-and-intrinsic-merger-rates" title="Link to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">ler</span></code> package uses redshift <span class="math notranslate nohighlight">\(z_s\)</span> to represent source distance rather than luminosity distance <span class="math notranslate nohighlight">\(D_L\)</span>, and assumes that <span class="math notranslate nohighlight">\(z_s\)</span> is uncorrelated with the other source parameters. The redshift probability density <span class="math notranslate nohighlight">\(P(z_s)\)</span> is defined as the normalized distribution of sources over cosmic history and is proportional to the detector-frame intrinsic merger rate density <span class="math notranslate nohighlight">\(\frac{d^2 N}{dt \, dV_c}\)</span> and the comoving volume element <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}\)</span>. Equivalently, using the source-frame intrinsic merger rate density  <span class="math notranslate nohighlight">\(\frac{d^2 N}{d\tau dV_c}\)</span> (or <span class="math notranslate nohighlight">\(R_{\rm U}(z_s)\)</span>), it can be written as</p>
 <div class="math notranslate nohighlight">
-\[
+\[\begin{split}
 \begin{equation}
 \begin{split}
-P(z_s) \propto \frac{1}{(1+z_s)} R_{\rm U}(z_s) \frac{dV_c}{dz_s} \,,
+P(z_s) &amp; \propto \frac{d^2 N}{dt \, dV_c} \frac{dV_c}{dz_s} \\
+&amp;\propto \frac{d^2 N}{d\tau \, dV_c} \frac{d\tau}{dt} \frac{dV_c}{dz_s} \\
+&amp;\propto \frac{R_{\rm U}(z_s)}{(1+z_s)} \frac{dV_c}{dz_s} \,,
 \end{split}
 \end{equation}
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(R_{\rm U}(z_s)\)</span> is expressed per unit source-frame proper time <span class="math notranslate nohighlight">\(\tau\)</span> and per unit comoving volume, with <span class="math notranslate nohighlight">\(d\tau = dt/(1+z_s)\)</span>. The factor <span class="math notranslate nohighlight">\(1/(1+z_s)\)</span> accounts for cosmological time dilation between the source-frame time <span class="math notranslate nohighlight">\(\tau\)</span> and the detector-frame time <span class="math notranslate nohighlight">\(t\)</span>. The term <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}dz_s\)</span> represents the comoving shell volume element at redshift <span class="math notranslate nohighlight">\(z_s\)</span>, and the integration over <span class="math notranslate nohighlight">\(z_s\)</span> in the event-rate calculation is carried out over the full redshift range of interest.</p>
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(R_{\rm U}(z_s)\)</span> is expressed per unit source-frame proper time <span class="math notranslate nohighlight">\(\tau\)</span> and per unit comoving volume, with <span class="math notranslate nohighlight">\(\frac{d\tau}{dt} = \frac{1}{1+z_s}\)</span>. The factor <span class="math notranslate nohighlight">\(\frac{1}{1+z_s}\)</span> accounts for cosmological time dilation between the source-frame time <span class="math notranslate nohighlight">\(\tau\)</span> and the detector-frame time <span class="math notranslate nohighlight">\(t\)</span> (Dominik et al. 2013). The term <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}dz_s\)</span> represents the comoving shell volume element at redshift <span class="math notranslate nohighlight">\(z_s\)</span>, and the integration over <span class="math notranslate nohighlight">\(z_s\)</span> in the event-rate calculation is carried out over the full redshift range of interest.</p>
 <p>Normalizing the redshift distribution introduces the constant <span class="math notranslate nohighlight">\({\cal N}_{\rm U}\)</span>, which is equal to the total intrinsic merger rate per year in the detector-frame. The normalized form becomes</p>
 <div class="math notranslate nohighlight">
 \[
@@ -197,35 +231,52 @@ P(z_s) = \frac{1}{{\cal N}_{\rm U}} \frac{R_{\rm U}(z_s)}{1+z_s} \frac{dV_c}{dz_
 \begin{equation}
 \begin{split}
 \frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}
-&amp;= {\cal N}_{\rm U} \int_{\vec{\theta}} P({\rm obs}|\vec{\theta}) \, P(\vec{\theta}) \, d\vec{\theta} \\
-&amp;= {\cal N}_{\rm U} \bigg\langle P({\rm obs}| \vec{\theta}) \bigg\rangle_{\vec{\theta} \sim P(\vec{\theta})} \,,
+&amp;= {\cal N}_{\rm U} \int_{\vec{\theta}} P({\rm obs} \mid \vec{\theta}) \, P(\vec{\theta}) \, d\vec{\theta} \\
+&amp;= {\cal N}_{\rm U} \bigg\langle P({\rm obs} \mid  \vec{\theta}) \bigg\rangle_{\vec{\theta} \sim P(\vec{\theta})} \,,
 \end{split}
 \end{equation}
 \end{split}\]</div>
 <p>which is evaluated numerically using Monte Carlo integration by drawing samples from <span class="math notranslate nohighlight">\(P(\vec{\theta})\)</span>.</p>
+<p>For visualization <span class="math notranslate nohighlight">\(R_{\rm U}(z_s)\)</span> and <span class="math notranslate nohighlight">\(P(z_s)\)</span> are plotted below.</p>
+<div align="center">
+  <img src="_static/Merger_rate_density_and_PDF_of_redshift.png" alt="Merger rate density and PDF of redshift for BBH mergers" width="600"/>
+</div>
+<p><a name="fig1"></a></p>
+<blockquote>
+<div><p><strong>Figure 1 :</strong> Redshift evolution of the merger rate density <span class="math notranslate nohighlight">\(R(z_s)\)</span> (blue, left axis) and the probability density function <span class="math notranslate nohighlight">\(P(z_s)\)</span> (orange, right axis) for BBH mergers. Both curves are based on a Madau-Dickinson like model that incorporates time delays and metallicity effects (Ng et al. 2021). The merger rate density is given in <span class="math notranslate nohighlight">\(\mathrm{Mpc}^{-3}\,\mathrm{yr}^{-1}\)</span>, with the GWTC-4 local rate <span class="math notranslate nohighlight">\(R_0 = 1.9^{+0.7}_{-0.5} \times 10^{-8}\)</span> and shaded regions showing the uncertainty bounds. The normalized <span class="math notranslate nohighlight">\(P(z_s)\)</span> has no uncertainty band, as the local rate <span class="math notranslate nohighlight">\(R_0\)</span> cancels in its calculation. The rate peaks at <span class="math notranslate nohighlight">\(z_s \approx 2\)</span>, reflecting the cosmic star formation history modulated by metallicity (which suppresses BBH formation at low redshift) and time delays. Both <span class="math notranslate nohighlight">\(R(z_s)\)</span> and <span class="math notranslate nohighlight">\(P(z_s)\)</span> decline at higher redshifts, providing insight into gravitational wave detection prospects and the cosmic evolution of compact binaries.</p>
+</div></blockquote>
 </section>
 <section id="detection-criterion-and-snr-modeling">
 <h2>Detection Criterion and SNR Modeling<a class="headerlink" href="#detection-criterion-and-snr-modeling" title="Link to this heading"></a></h2>
-<p>The conditional detection probability <span class="math notranslate nohighlight">\(P({\rm obs}|\vec{\theta})\)</span> is determined by a detection threshold <span class="math notranslate nohighlight">\(\rho_{\rm th}\)</span> on the observed signal-to-noise ratio (SNR) <span class="math notranslate nohighlight">\(\rho_{\rm obs}\)</span>. In the simplest step-function model, the detection probability is</p>
+<p>The conditional detection probability <span class="math notranslate nohighlight">\(P({\rm obs} \mid \vec{\theta})\)</span> is determined by applying a detection threshold <span class="math notranslate nohighlight">\(\rho_{\rm th}\)</span> to the observed signal-to-noise ratio (SNR) <span class="math notranslate nohighlight">\(\rho_{\rm obs}\)</span>. In the simplest step-function model, an event is considered detected if its SNR exceeds this threshold. The detection probability is therefore defined as</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}
+\[
 \begin{equation}
 \begin{split}
-P({\rm obs}| \vec{\theta}) = P_{\rm det} (\vec{\theta}, \rho_{\rm th}) = 
-\begin{cases}
-1, &amp; \text{if } \rho_{\rm obs}(\vec{\theta}) &gt; \rho_{\rm th} \\
-0, &amp; \text{otherwise},
-\end{cases}
+P({\rm obs} \mid  \vec{\theta}) \equiv P_{\rm det} (\vec{\theta}, \rho_{\rm th}) = 
+\Theta[\rho_{\rm obs}(\vec{\theta}) - \rho_{\rm th}] \, ,
 \end{split}
 \end{equation}
-\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(P_{\rm det}\)</span> denotes the probability of detection under the chosen detection criterion. In <code class="docutils literal notranslate"><span class="pre">ler</span></code>, <span class="math notranslate nohighlight">\(P_{\rm det}\)</span> is estimated using the <a class="reference external" href="https://gwsnr.hemantaph.com"><code class="docutils literal notranslate"><span class="pre">gwsnr</span></code></a> package. The observed SNR <span class="math notranslate nohighlight">\(\rho_{\rm obs}\)</span> is modeled either as a Gaussian random variate centered at <span class="math notranslate nohighlight">\(\rho_{\rm opt}\)</span> (or <span class="math notranslate nohighlight">\(\rho_{\rm opt,net}\)</span> for a detector network) with unit variance (Fishbach et al. 2020; Abbott et al. 2019), or as a non-central <span class="math notranslate nohighlight">\(\chi\)</span> distribution (<code class="docutils literal notranslate"><span class="pre">scipy.stats.ncx2</span></code>) with non-centrality parameter <span class="math notranslate nohighlight">\(\lambda = \rho_{\rm opt}\)</span> (or <span class="math notranslate nohighlight">\(\rho_{\rm opt,net}\)</span>) and two degrees of freedom for a single detector, extended to <span class="math notranslate nohighlight">\(2N\)</span> for a network of <span class="math notranslate nohighlight">\(N\)</span> detectors (Essick 2023). Refer to the <code class="docutils literal notranslate"><span class="pre">gwsnr</span></code> documentation for more details on SNR modeling and detection probability calculations.</p>
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Theta\)</span> is the Heaviside step function. In <code class="docutils literal notranslate"><span class="pre">ler</span></code>, <span class="math notranslate nohighlight">\(P_{\rm det}\)</span> is evaluated through the <a class="reference external" href="https://gwsnr.hemantaph.com"><code class="docutils literal notranslate"><span class="pre">gwsnr</span></code></a> backend.</p>
+<p>To evaluate this criterion, <span class="math notranslate nohighlight">\(\rho_{\rm obs}\)</span> is modeled statistically from the optimal SNR <span class="math notranslate nohighlight">\(\rho_{\rm opt}\)</span>. Common approaches treat <span class="math notranslate nohighlight">\(\rho_{\rm obs}\)</span> as either a Gaussian random variable with mean <span class="math notranslate nohighlight">\(\rho_{\rm opt}\)</span> and unit variance (Fishbach et al. 2020; Abbott et al. 2019), or as a non-central chi-squared variable (default in <code class="docutils literal notranslate"><span class="pre">gwsnr</span></code> and <code class="docutils literal notranslate"><span class="pre">ler</span></code>) (Essick 2023). The <code class="docutils literal notranslate"><span class="pre">gwsnr</span></code> package computes <span class="math notranslate nohighlight">\(\rho_{\rm opt}\)</span> efficiently using interpolation or direct inner products, enabling rapid estimation of <span class="math notranslate nohighlight">\(P_{\rm det}\)</span>. See the <code class="docutils literal notranslate"><span class="pre">gwsnr</span></code> documentation for details on <a class="reference external" href="https://gwsnr.hemantaph.com/detectionstatistics.html">detection statistics</a>, <a class="reference external" href="https://gwsnr.hemantaph.com/interpolation.html">optimal SNR</a>, and <a class="reference external" href="https://gwsnr.hemantaph.com/probabilityofdetection.html">probability of detection</a>.</p>
+<blockquote>
+<div><p><strong>Note:</strong> <span class="math notranslate nohighlight">\(P_{\rm det}\)</span> in <code class="docutils literal notranslate"><span class="pre">ler</span></code> is generic and can be used for any detection problem with an SNR-like statistic, including electromagnetic signal detection (e.g., GRB detectability from BNS mergers; More &amp; Phurailatpam 2024).</p>
+</div></blockquote>
+</section>
+<section id="simulation-results">
+<h2>Simulation Results<a class="headerlink" href="#simulation-results" title="Link to this heading"></a></h2>
+<p>This section reports results generated with the default configuration of the <code class="docutils literal notranslate"><span class="pre">ler</span></code> package. Although <code class="docutils literal notranslate"><span class="pre">ler</span></code> supports alternative population prescriptions, including user-defined models, all numbers and figures shown here use the standard settings and assumptions summarized below.</p>
+<section id="simulation-settings">
+<h3>Simulation Settings<a class="headerlink" href="#simulation-settings" title="Link to this heading"></a></h3>
+<p>All calculations assume a flat <span class="math notranslate nohighlight">\(\Lambda{\rm CDM}\)</span> cosmology with <span class="math notranslate nohighlight">\(H_0 = 70\,{\rm km}\,{\rm s}^{-1}\,{\rm Mpc}^{-1}\)</span>, <span class="math notranslate nohighlight">\(\Omega_m = 0.3\)</span>, and <span class="math notranslate nohighlight">\(\Omega_\Lambda = 0.7\)</span>.</p>
+<p>Detection probabilities are evaluated through the <a class="reference external" href="https://gwsnr.hemantaph.com"><code class="docutils literal notranslate"><span class="pre">gwsnr</span></code></a> backend. Waveforms are generated with the IMRPhenomXPHM approximant, and detector responses are computed with a sampling frequency of <span class="math notranslate nohighlight">\(2048\,{\rm Hz}\)</span>. The lower frequency cutoff is set to <span class="math notranslate nohighlight">\(f_{\rm low}=20\,{\rm Hz}\)</span> for the LIGO–Virgo–KAGRA network at O4 design sensitivity and <span class="math notranslate nohighlight">\(f_{\rm low}=10\,{\rm Hz}\)</span> for the third-generation (3G) network consisting of Einstein Telescope (ET) and Cosmic Explorer (CE). The detection threshold is set to <span class="math notranslate nohighlight">\(\rho_{\rm th}=10\)</span> for both single detectors and networks. The detector duty cycle is assumed to be 100%.</p>
 </section>
 <section id="gw-source-parameter-priors">
-<h2>GW Source Parameter Priors<a class="headerlink" href="#gw-source-parameter-priors" title="Link to this heading"></a></h2>
-<p>The prior distributions and parameter ranges used in the unlensed event rate calculation are summarized in Table 1. These choices follow standard assumptions used in GW population analyses and are consistent with GWTC-3 motivated population models.</p>
-<section id="table-1-prior-distributions-for-gw-source-parameters-used-in-the-unlensed-event-rate-calculations">
-<h3>Table 1: Prior distributions for GW source parameters used in the unlensed event rate calculations.<a class="headerlink" href="#table-1-prior-distributions-for-gw-source-parameters-used-in-the-unlensed-event-rate-calculations" title="Link to this heading"></a></h3>
+<h3>GW Source Parameter Priors<a class="headerlink" href="#gw-source-parameter-priors" title="Link to this heading"></a></h3>
+<p>The prior distributions and parameter ranges used in the event-rate calculations are summarized in Table 1. These choices follow common conventions in gravitational-wave population analyses and are largely consistent with GWTC-3–motivated models, with local rate normalizations taken from the corresponding GWTC-4 reference values quoted below.</p>
+<p><a name="table1"></a>
+<strong>Table 1: Prior distributions for GW source parameters</strong></p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Parameter</p></th>
@@ -238,15 +289,15 @@ P({\rm obs}| \vec{\theta}) = P_{\rm det} (\vec{\theta}, \rho_{\rm th}) =
 <tbody>
 <tr class="row-even"><td class="text-left"><p><span class="math notranslate nohighlight">\(z_s\)</span></p></td>
 <td class="text-left"><p>-</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(P(z_s)\)</span> with <span class="math notranslate nohighlight">\(R_{\rm U}(z_s)\)</span> <br>given by SFR <br>Madau-Dickinson <br>functional form</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(P(z_s)\)</span> <br>derived from <br>Madau-<br>Dickinson <br>SFR</p></td>
 <td class="text-left"><p>[0, 10]</p></td>
-<td class="text-left"><p>Source redshift <br>(B=2.57, C=3.36, D=5.83) <br>(Ng et al. 2021)</p></td>
+<td class="text-left"><p>Source redshift <br><br><strong>BBH</strong> (Ng et al. 2021, GWTC-4)<br>B=2.57, C=3.36, D=5.83, <br>Median <span class="math notranslate nohighlight">\(R_0 = 1.9 \times 10^{-8}\ \mathrm{Mpc}^{-3}\ \mathrm{yr}^{-1}\)</span> <br><br><strong>BNS</strong> (M&amp;D 2014, GWTC-4)<br>B=2.7, C=2.9, D=5.6 <br>Median <span class="math notranslate nohighlight">\(R_0 = 8.9\times 10^{-8} {\rm Mpc}^{-3}\,{\rm yr}^{-1}\)</span></p></td>
 </tr>
 <tr class="row-odd"><td class="text-left"><p><span class="math notranslate nohighlight">\(m_{1,2}\)</span></p></td>
 <td class="text-left"><p><span class="math notranslate nohighlight">\(M_\odot\)</span></p></td>
-<td class="text-left"><p>PowerLaw<br>+Peak</p></td>
-<td class="text-left"><p>[4.98, 112.5]</p></td>
-<td class="text-left"><p>Component masses <br>(<span class="math notranslate nohighlight">\(\alpha\)</span>=3.78, <span class="math notranslate nohighlight">\(\mu_g\)</span>=32.27, <span class="math notranslate nohighlight">\(\sigma_g\)</span>=3.88, <br><span class="math notranslate nohighlight">\(\lambda_p\)</span>=0.03, <span class="math notranslate nohighlight">\(\delta_m\)</span>=4.8, <span class="math notranslate nohighlight">\(\beta\)</span>=0.81) <br>(Abbott et al. 2023, GWTC-3)</p></td>
+<td class="text-left"><p><br><br><br><strong>BBH</strong><br>PowerLaw<br>+Peak <br><br><strong>BNS</strong><br>Bimodal-<br>Gaussian</p></td>
+<td class="text-left"><p><br><br><strong>BBH</strong><br>[4.98, 112.5]<br><br><br><strong>BNS</strong><br>[1.0, 2.3]<br></p></td>
+<td class="text-left"><p>Component masses <br>(source-frame)<br><br><strong>BBH</strong> (GWTC-3)<br><span class="math notranslate nohighlight">\(\alpha\)</span>=3.78, <span class="math notranslate nohighlight">\(\mu_g\)</span>=32.27, <span class="math notranslate nohighlight">\(\sigma_g\)</span>=3.88, <br><span class="math notranslate nohighlight">\(\lambda_p\)</span>=0.03, <span class="math notranslate nohighlight">\(\delta_m\)</span>=4.8, <span class="math notranslate nohighlight">\(\beta\)</span>=0.81<br><br><strong>BNS</strong> (Farr et al. 2020)<br><span class="math notranslate nohighlight">\(w\)</span>=0.643, <span class="math notranslate nohighlight">\(\mu_L\)</span>=1.352, <br><span class="math notranslate nohighlight">\(\sigma_L\)</span>=0.08, <span class="math notranslate nohighlight">\(\mu_R\)</span>=1.88, <span class="math notranslate nohighlight">\(\sigma_R\)</span>=0.3</p></td>
 </tr>
 <tr class="row-even"><td class="text-left"><p><span class="math notranslate nohighlight">\(a_{1,2}\)</span></p></td>
 <td class="text-left"><p>-</p></td>
@@ -305,12 +356,51 @@ P({\rm obs}| \vec{\theta}) = P_{\rm det} (\vec{\theta}, \rho_{\rm th}) =
 <tr class="row-odd"><td class="text-left"><p><span class="math notranslate nohighlight">\(t_c\)</span></p></td>
 <td class="text-left"><p>s</p></td>
 <td class="text-left"><p>Uniform</p></td>
-<td class="text-left"><p>[0, 1 year]</p></td>
+<td class="text-left"><p>[0, 1 yr]</p></td>
 <td class="text-left"><p>Coalescence time within a year</p></td>
 </tr>
 </tbody>
 </table>
 </section>
+<section id="plot-comparison-for-detectable-and-intrinsic-populations">
+<h3>Plot Comparison for Detectable and Intrinsic Populations<a class="headerlink" href="#plot-comparison-for-detectable-and-intrinsic-populations" title="Link to this heading"></a></h3>
+<p>Selection effects in gravitational-wave observations are illustrated by comparing the intrinsic BBH population to the subset that satisfies the detectability criterion for a given detector network.</p>
+<div align="center">
+  <img src="_static/Unlensed_Events.png" alt="Corner plot comparing intrinsic and detectable BBH populations" width="600"/>
+</div>
+<p><a name="fig2"></a></p>
+<blockquote>
+<div><p><strong>Figure 2:</strong> Corner plot comparing the simulated intrinsic BBH population (blue) with the detectable subset (orange) for the LIGO–Virgo–KAGRA network ([‘L1’, ‘H1’, ‘V1’]) at O4 design sensitivity. The population model assumes a Madau–Dickinson–like merger-rate density (see Figure 1) and a PowerLaw+Peak component-mass distribution. Shown parameters are the source redshift <span class="math notranslate nohighlight">\(z_s\)</span> and component masses <span class="math notranslate nohighlight">\(m_1\)</span> and <span class="math notranslate nohighlight">\(m_2\)</span> (in <span class="math notranslate nohighlight">\(M_\odot\)</span>). The detectable subset is biased toward lower redshift and higher masses because these systems typically yield larger network SNR. Orientation effects, which also modulate SNR through the antenna pattern and inclination, are not shown.</p>
+</div></blockquote>
+</section>
+</section>
+<section id="rate-estimates-for-different-gw-detector-networks">
+<h2>Rate Estimates for Different GW Detector Networks<a class="headerlink" href="#rate-estimates-for-different-gw-detector-networks" title="Link to this heading"></a></h2>
+<p>Estimated annual merger rates for BBH and BNS populations are listed below for two detector configurations under the population and detection settings described above.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Detector Configuration</p></th>
+<th class="head text-left"><p>BBH (Pop I–II) <br>Merger Rate (<span class="math notranslate nohighlight">\({\rm yr}^{-1}\)</span>)</p></th>
+<th class="head text-left"><p>BNS <br>Merger Rate (<span class="math notranslate nohighlight">\({\rm yr}^{-1}\)</span>)</p></th>
+<th class="head text-left"><p>Ratio <br>BBH:BNS</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>[L1, H1, V1] (O4)</p></td>
+<td class="text-left"><p>292.7</p></td>
+<td class="text-left"><p>7.4</p></td>
+<td class="text-left"><p>39.5</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>[CE, ET] (3G)</p></td>
+<td class="text-left"><p>88716</p></td>
+<td class="text-left"><p>149307</p></td>
+<td class="text-left"><p>0.6</p></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><p><strong>Notes:</strong> O4 design sensitivity and 100% duty cycle are optimistic assumptions for the LIGO–Virgo–KAGRA network. Rates are likely overestimated compared to real observing runs.</p>
+</div></blockquote>
 </section>
 </section>
 

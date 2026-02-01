@@ -60,6 +60,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analytical_formulation_unlensed.html#id1">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -189,7 +190,7 @@ region to ensure multiple imaging.</p>
 <li><p>[5]: gamma2 - external shear component 2</p></li>
 <li><p>[6]: zl - lens redshift</p></li>
 <li><p>[7]: zs - source redshift</p></li>
-<li><p>[8]: einstein_radius - Einstein radius (units: arcsec)</p></li>
+<li><p>[8]: einstein_radius - Einstein radius (units: radians)</p></li>
 <li><p>[9]: iteration - iteration index for tracking</p></li>
 <li><p>[10:]: lens_model_list - lens model names (e.g., ‘EPL_NUMBA’, ‘SHEAR’)</p></li>
 </ul>
@@ -198,13 +199,13 @@ region to ensure multiple imaging.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>x_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Source x-position (units: arcsec).</p>
+<dt><strong>x_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Source x-position (units: radians).</p>
 </dd>
-<dt><strong>y_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Source y-position (units: arcsec).</p>
+<dt><strong>y_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Source y-position (units: radians).</p>
 </dd>
-<dt><strong>x0_image_position</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Image x-positions (units: arcsec).</p>
+<dt><strong>x0_image_position</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Image x-positions (units: radians).</p>
 </dd>
-<dt><strong>x1_image_position</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Image y-positions (units: arcsec).</p>
+<dt><strong>x1_image_position</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Image y-positions (units: radians).</p>
 </dd>
 <dt><strong>magnifications</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Magnification factors for each image.</p>
 </dd>

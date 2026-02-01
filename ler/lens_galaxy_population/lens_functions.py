@@ -84,7 +84,7 @@ def cross_section(theta_E, e1, e2, gamma, gamma1, gamma2):
     Parameters
     ----------
     theta_E : ``float``
-        Einstein radius (arcseconds).
+        Einstein radius (radian).
     e1 : ``float``
         First ellipticity component.
     e2 : ``float``
@@ -99,7 +99,7 @@ def cross_section(theta_E, e1, e2, gamma, gamma1, gamma2):
     Returns
     -------
     area : ``float``
-        Cross-section area (arcseconds^2). \n
+        Cross-section area (radian^2). \n
         Returns 0.0 if caustic computation fails.
     """
     kwargs_lens = [

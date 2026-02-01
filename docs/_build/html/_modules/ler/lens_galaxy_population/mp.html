@@ -57,6 +57,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html#id1">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -346,7 +347,7 @@
 <span class="sd">    idx : ``int``</span>
 <span class="sd">        Worker index for result ordering.</span>
 <span class="sd">    area : ``float``</span>
-<span class="sd">        Cross-section area in square arcseconds.</span>
+<span class="sd">        Cross-section area (dimensionless, for theta_E = 1).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">,</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">params</span>
     <span class="n">area</span> <span class="o">=</span> <span class="n">cross_section</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">)</span>
@@ -366,14 +367,14 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    params : ``tuple``</span>
-<span class="sd">        Packed parameters (theta_E, e1, e2, gamma, gamma1, gamma2, idx).</span>
+<span class="sd">        Packed parameters (theta_E, e1, e2, gamma, gamma1, gamma2, idx). theta_E is in radians.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    idx : ``int``</span>
 <span class="sd">        Worker index for result ordering.</span>
 <span class="sd">    area : ``float``</span>
-<span class="sd">        Cross-section area in square arcseconds.</span>
+<span class="sd">        Cross-section area (radian^2).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">theta_E</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">,</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">params</span>
     <span class="n">area</span> <span class="o">=</span> <span class="n">cross_section</span><span class="p">(</span><span class="n">theta_E</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">)</span>

@@ -65,6 +65,9 @@ class ImageProperties():
     time_window : ``float``
         Time window for lensed events from min(geocent_time) (units: seconds). \n
         default: 365*24*3600*2 (2 years)
+    effective_params_in_output : ``bool``
+        Whether to include effective parameters (effective_phase, effective_ra, effective_dec) in the output. \n
+        default: True
     lens_model_list : ``list``
         List of lens models to use. \n
         default: ['EPL_NUMBA', 'SHEAR']
@@ -125,6 +128,8 @@ class ImageProperties():
     +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
     | :attr:`~time_window`                                | ``float``                 | s        | Time window for lensed events                  |
     +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+    | :attr:`~effective_params_in_output`                 | ``bool``                  |          | To include effective parameters in output      |
+    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
     | :attr:`~lens_model_list`                            | ``list``                  |          | List of lens models                            |
     +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
     | :attr:`~cosmo`                                      | ``astropy.cosmology``     |          | Cosmology for calculations                     |
@@ -135,7 +140,7 @@ class ImageProperties():
     +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
     | :attr:`~pdet_finder`                                | ``callable``              |          | Probability of detection calculator            |
     +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-    | :attr:`~pdet_finder_output_keys`                     | ``list``                  |          | Keys for probability of detection outputs      |
+    | :attr:`~pdet_finder_output_keys`                    | ``list``                  |          | Keys for probability of detection outputs      |
     +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
 
     """
@@ -150,6 +155,7 @@ class ImageProperties():
                  spin_zero=True,
                  spin_precession=False,
                  pdet_finder=None,
+                 effective_params_in_output=True,
         ):
 
         self.npool = npool
@@ -162,6 +168,7 @@ class ImageProperties():
         self.cosmo = cosmology if cosmology else cosmo
         self.pdet_finder = pdet_finder
         self.pdet_finder_output_keys = None
+        self.effective_params_in_output = effective_params_in_output
 
     def image_properties(self, lens_parameters):
         """
@@ -173,28 +180,55 @@ class ImageProperties():
         Parameters
         ----------
         lens_parameters : ``dict``
-            Dictionary containing lens and source parameters with keys: \n
-            - 'zs': source redshift (array) \n
-            - 'zl': lens redshift (array) \n
-            - 'gamma1': external shear component 1 (array) \n
-            - 'gamma2': external shear component 2 (array) \n
-            - 'phi': position angle of lens ellipticity (array) \n
-            - 'q': axis ratio of lens (array) \n
-            - 'gamma': power-law slope of mass density (array) \n
-            - 'theta_E': Einstein radius in radians (array) \n
+            Dictionary containing lens and source parameters shown in the table: \n
+            +------------------------------+-----------+-------------------------------------------------------+
+            | Parameter                    | Units     | Description                                           |
+            +==============================+===========+=======================================================+
+            | zl                           |           | redshift of the lens                                  |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | zs                           |           | redshift of the source                                |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | sigma                        | km s^-1   | velocity dispersion                                   |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | q                            |           | axis ratio                                            |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | theta_E                      | radian    | Einstein radius                                       |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
+            |                              |           | positive x-axis (RA-like axis) to the major axis of   |
+            |                              |           | the projected mass distribution.                      |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | gamma                        |           | density profile slope of EPL galaxy                   |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | gamma1                       |           | external shear component in the x-direction           |
+            |                              |           | (RA-like axis)                                        |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | gamma2                       |           | external shear component in the y-direction           |
+            |                              |           | (Dec-like axis)                                       |
+            +------------------------------+-----------+-------------------------------------------------------+
 
         Returns
         -------
         lens_parameters : ``dict``
-            Updated dictionary with additional image properties: \n
-            - 'x0_image_positions': x-coordinates of images (shape: size x n_max_images) \n
-            - 'x1_image_positions': y-coordinates of images (shape: size x n_max_images) \n
-            - 'magnifications': magnification factors (shape: size x n_max_images) \n
-            - 'time_delays': time delays relative to first image (shape: size x n_max_images, units: s) \n
-            - 'image_type': morse phase classification (1=minimum, 2=saddle, 3=maximum) \n
-            - 'n_images': number of images per event (array) \n
-            - 'x_source': source x-position (array) \n
-            - 'y_source': source y-position (array) \n
+            Updated dictionary with additional image properties with the following description: \n
+            +------------------------------+-----------+-------------------------------------------------------+
+            | x0_image_positions           | radian    | x-coordinate (RA-like axis) of the images             |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | x1_image_positions           | radian    | y-coordinate (Dec-like axis) of the images            |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | magnifications               |           | magnifications                                        |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | time_delays                  |           | time delays                                           |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | image_type                   |           | image type                                            |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | n_images                     |           | number of images                                      |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | x_source                     | radian    | x-coordinate (RA-like axis) of the source             |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | y_source                     | radian    | y-coordinate (Dec-like axis) of the source            |
+            +------------------------------+-----------+-------------------------------------------------------+
+            
         """
 
         zs = lens_parameters["zs"]
@@ -341,7 +375,7 @@ class ImageProperties():
 
         return lens_parameters
 
-    def get_lensed_snrs(self, lensed_param, pdet_finder=None):
+    def get_lensed_snrs(self, lensed_param, pdet_finder=None, effective_params_in_output=False):
         """
         Compute detection probability for each lensed image.
 
@@ -352,17 +386,47 @@ class ImageProperties():
         Parameters
         ----------
         lensed_param : ``dict``
-            Dictionary containing lensed source and image parameters with keys: \n
-            - 'mass_1', 'mass_2': detector-frame masses (array) \n
-            - 'luminosity_distance' or 'effective_luminosity_distance': distance (array) \n
-            - 'geocent_time' or 'effective_geocent_time': GPS time (array) \n
-            - 'phase' or 'effective_phase': coalescence phase (array) \n
-            - 'theta_jn', 'psi', 'ra', 'dec': orientation and position (arrays) \n
-            - 'magnifications': image magnifications (shape: size x n_max_images) \n
-            - 'time_delays': image time delays (shape: size x n_max_images) \n
-            - 'image_type': morse phase type (shape: size x n_max_images) \n
+            Dictionary containing lensed source and image parameters given below: \n
+            +------------------------------+-----------+-------------------------------------------------------+
+            | Parameter                    | Units     | Description                                           |
+            +==============================+===========+=======================================================+
+            | geocent_time                 | s         | geocent time                                          |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | ra                           | rad       | right ascension                                       |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | dec                          | rad       | declination                                           |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | phase                        | rad       | phase of GW at reference freq                         |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | psi                          | rad       | polarization angle                                    |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | theta_jn                     | rad       | inclination angle                                     |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | a_1                          |           | spin of the primary compact binary                    |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | a_2                          |           | spin of the secondary compact binary                  |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | luminosity_distance          | Mpc       | luminosity distance of the source                      |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | mass_1                       | Msun      | mass of the primary compact binary (detector frame)   |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | mass_2                       | Msun      | mass of the secondary compact binary (detector frame) |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | x0_image_positions           | radian    | x-coordinate (RA-like axis) of the images             |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | x1_image_positions           | radian    | y-coordinate (Dec-like axis) of the images            |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | magnifications               |           | magnifications                                        |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | time_delays                  |           | time delays                                           |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | image_type                   |           | image type                                            |
+            +------------------------------+-----------+-------------------------------------------------------+
+
         pdet_finder : ``callable``
             Function that computes detection probability given GW parameters.
+        effective_params_in_output : ``bool``
+            If True, includes effective parameters in output lensed_param. \n
 
         Returns
         -------
@@ -371,15 +435,38 @@ class ImageProperties():
             - 'pdet_net': network detection probability (shape: size x n_max_images) \n
             - Individual detector probabilities if pdet_finder outputs them \n
         lensed_param : ``dict``
-            Updated dictionary with effective parameters: \n
-            - 'effective_luminosity_distance': magnification-corrected distance \n
-            - 'effective_geocent_time': time-delay-corrected GPS time \n
-            - 'effective_phase': morse-phase-corrected coalescence phase \n
+            Updated dictionary with effective parameters shown below: \n
+            +----------------------------------+-----------+------------------------------------------------|
+            | Parameter                        | Units     | Description                      
+            +==================================+===========+================================================+
+            | effective_luminosity_distance    | Mpc       | magnification-corrected distance               |
+            |                                  |           | luminosity_distance / sqrt(|magnifications_i|) |
+            +----------------------------------+-----------+------------------------------------------------|
+            | effective_geocent_time           | s         | time-delay-corrected GPS time                  |
+            |                                  |           | geocent_time + time_delays_i                   |
+            +----------------------------------+-----------+------------------------------------------------|
+            | effective_phase                  | rad       | morse-phase-corrected phase                    |
+            |                                  |           | phi - morse_phase_i                            |
+            +----------------------------------+-----------+------------------------------------------------+
+            | effective_ra                     | rad       | RA of the image                                |
+            |                                  |           | ra + (x0_image_positions_i - x_source)/cos(dec)|
+            +----------------------------------+-----------+------------------------------------------------+
+            | effective_dec                    | rad       | Dec of the image                               |
+            |                                  |           | dec + (x1_image_positions_i - y_source)        |
+            +----------------------------------+-----------+------------------------------------------------+
         """
+
+        effective_params_in_output = effective_params_in_output or self.effective_params_in_output
+
         # needed to calculate effective luminosity distance and effective time delay
         magnifications = lensed_param["magnifications"]
         time_delays = lensed_param["time_delays"]
         image_type = lensed_param["image_type"].copy()  # copy to avoid modifying original
+        x_source = lensed_param["x_source"]
+        y_source = lensed_param["y_source"]
+        x0_image_positions = lensed_param["x0_image_positions"]
+        x1_image_positions = lensed_param["x1_image_positions"]
+
         size = len(magnifications)
 
         # image type to morse phase
@@ -416,9 +503,6 @@ class ImageProperties():
 
         # checking pdet_finder output keys
         result_dict = self._check_pdet_finder_output_keys(size, lensed_param, pdet_finder);
-
-        # updating the lensed_param with effective parameters if not already present
-        lensed_param = self._updating_lensed_param(size, lensed_param)
         
         # Get the optimal signal to noise ratios for each image
         # iterate over the image type (column)
@@ -439,9 +523,14 @@ class ImageProperties():
             # get the effective phase for each image type
             # morse phase correction
             effective_phase = phase - image_type[:, i] 
+
+            # get the effective sky location for each image type
+            # flat sky location assumption
+            effective_dec = dec + (x1_image_positions[:, i] - y_source)
+            effective_ra = ra + (x0_image_positions[:, i] - x_source) / np.cos(dec)
             
             # check for nan values
-            idx = idx & ~np.isnan(effective_luminosity_distance) & ~np.isnan(effective_geocent_time) & ~np.isnan(effective_phase)
+            idx = idx & ~np.isnan(effective_luminosity_distance) & ~np.isnan(effective_geocent_time) & ~np.isnan(effective_phase) & ~np.isnan(effective_ra) & ~np.isnan(effective_dec)
 
             # Each image has their own effective luminosity distance and effective geocent time
             if sum(idx) != 0:
@@ -455,8 +544,8 @@ class ImageProperties():
                         psi=psi[idx],
                         phase= effective_phase[idx],
                         geocent_time=effective_geocent_time[idx],
-                        ra=ra[idx],
-                        dec=dec[idx],
+                        ra=effective_ra[idx],
+                        dec=effective_dec[idx],
                         a_1=a_1[idx],
                         a_2=a_2[idx],
                         tilt_1=tilt_1[idx],
@@ -469,12 +558,71 @@ class ImageProperties():
                 for keys in self.pdet_finder_output_keys:
                     result_dict[keys][idx, i] = pdet[keys]
 
-            # Update lensed_param with effective values only if they weren't already present
-            lensed_param["effective_luminosity_distance"][:, i] = effective_luminosity_distance
-            lensed_param["effective_geocent_time"][:, i] = effective_geocent_time
-            lensed_param["effective_phase"][:, i] = effective_phase
+        if effective_params_in_output:
+            lensed_param = self.produce_effective_params(lensed_param)
 
         return result_dict, lensed_param
+
+    def produce_effective_params(self, lensed_param):
+        """
+        Produce effective parameters for each lensed image.
+
+        Calculates the effective luminosity distance, geocent time, phase,
+        RA, and Dec for each image accounting for magnification and morse phase.
+
+        Parameters
+        ----------
+        lensed_param : ``dict``
+            Dictionary containing lensed source and image parameters.
+
+        Returns
+        -------
+        lensed_param : ``dict``
+            Updated dictionary with effective parameters shown below: \n
+            +----------------------------------+-----------+------------------------------------------------|
+            | Parameter                        | Units     | Description                      
+            +==================================+===========+================================================+
+            | effective_luminosity_distance    | Mpc       | magnification-corrected distance               |
+            |                                  |           | luminosity_distance / sqrt(|magnifications_i|) |
+            +----------------------------------+-----------+------------------------------------------------|
+            | effective_geocent_time           | s         | time-delay-corrected GPS time                  |
+            |                                  |           | geocent_time + time_delays_i                   |
+            +----------------------------------+-----------+------------------------------------------------|
+            | effective_phase                  | rad       | morse-phase-corrected phase                    |
+            |                                  |           | phi - morse_phase_i                            |
+            +----------------------------------+-----------+------------------------------------------------+
+            | effective_ra                     | rad       | RA of the image                                |
+            |                                  |           | ra + (x0_image_positions_i - x_source)/cos(dec)|
+            +----------------------------------+-----------+------------------------------------------------+
+            | effective_dec                    | rad       | Dec of the image                               |
+            |                                  |           | dec + (x1_image_positions_i - y_source)        |
+            +----------------------------------+-----------+------------------------------------------------+
+        """
+
+        # needed to calculate effective luminosity distance and effective time delay
+        magnifications = lensed_param["magnifications"]
+        time_delays = lensed_param["time_delays"]
+        image_type = lensed_param["image_type"].copy()  # copy to avoid modifying original
+        x_source = lensed_param["x_source"]
+        y_source = lensed_param["y_source"]
+        x0_image_positions = lensed_param["x0_image_positions"]
+        x1_image_positions = lensed_param["x1_image_positions"]
+        ra = lensed_param["ra"]
+        dec = lensed_param["dec"]
+
+        # Update lensed_param with effective values only if they weren't already present
+        lensed_param["effective_luminosity_distance"] = lensed_param["luminosity_distance"][:, np.newaxis] / np.sqrt(np.abs(magnifications))
+        lensed_param["effective_geocent_time"] = lensed_param["geocent_time"][:, np.newaxis] + time_delays
+        # image type to morse phase
+        image_type[image_type==1.] = 0.
+        image_type[image_type==2.] = np.pi/2.
+        image_type[image_type==3.] = np.pi
+        lensed_param["effective_phase"] = lensed_param["phase"][:, np.newaxis] - image_type
+        # flat sky location assumption
+        lensed_param["effective_ra"] = ra[:, np.newaxis] + (x0_image_positions - x_source[:, np.newaxis]) / np.cos(dec[:, np.newaxis])
+        lensed_param["effective_dec"] = dec[:, np.newaxis] + (x1_image_positions - y_source[:, np.newaxis])
+
+        return lensed_param
 
     def _check_pdet_finder_output_keys(self, size, lensed_param, pdet_finder):
         """
@@ -537,31 +685,6 @@ class ImageProperties():
             )
 
         return result_dict
-
-    def _updating_lensed_param(self, size, lensed_param):
-        """
-        Helper function to initialize effective parameters in lensed_param.
-        Initializes effective_luminosity_distance, effective_geocent_time, effective_phase.
-
-        Parameters
-        ----------
-        size : ``int``
-            Number of lensed events.
-        lensed_param : ``dict``
-            Dictionary containing lensed source and image parameters.
-
-        Returns
-        -------
-        lensed_param : ``dict``
-            Updated dictionary with initialized effective parameters.
-        """
-
-        # for updating the lensed_param
-        lensed_param["effective_luminosity_distance"] = np.ones((size, self.n_max_images)) * np.nan
-        lensed_param["effective_geocent_time"] = np.ones((size, self.n_max_images)) * np.nan
-        lensed_param["effective_phase"] = np.ones((size, self.n_max_images)) * np.nan
-
-        return lensed_param
 
     # -------------
     # Properties
@@ -633,6 +756,23 @@ class ImageProperties():
     @time_window.setter
     def time_window(self, value):
         self._time_window = value
+
+    @property
+    def effective_params_in_output(self):
+        """
+        Flag to include effective parameters in output.
+
+        Returns
+        -------
+        effective_params_in_output : ``bool``
+            Whether to include effective parameters in the output of get_lensed_snrs. \n
+            default: False
+        """
+        return self._effective_params_in_output
+
+    @effective_params_in_output.setter
+    def effective_params_in_output(self, value):
+        self._effective_params_in_output = value
 
     @property
     def lens_model_list(self):

@@ -199,7 +199,7 @@ Classes
    +------------------------------------------------+---------------------------+-------+----------------------------------------------+
    | :attr:`~merger_rate_density`                   | ``callable``              |       | Merger rate density function R(z)            |
    +------------------------------------------------+---------------------------+-------+----------------------------------------------+
-   | :attr:`~merger_rate_density_model_list`        | ``dict``                  |       | Available merger rate density models         |
+   | :attr:`~available_merger_rate_density_model`   | ``dict``                  |       | Available merger rate density models         |
    +------------------------------------------------+---------------------------+-------+----------------------------------------------+
    | :attr:`~source_redshift`                       | ``FunctionConditioning``  |       | Source redshift sampler                      |
    +------------------------------------------------+---------------------------+-------+----------------------------------------------+
@@ -607,7 +607,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: merger_rate_density_model_list
+   .. py:property:: available_merger_rate_density_model
 
       
       Dictionary of available merger rate density models and default parameters.
@@ -616,7 +616,7 @@ Classes
 
       :Returns:
 
-          **merger_rate_density_model_list** : ``dict``
+          **available_merger_rate_density_model** : ``dict``
               Dictionary with model names as keys and parameter dicts as values.
 
               Available models:

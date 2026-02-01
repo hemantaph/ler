@@ -60,6 +60,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analytical_formulation_unlensed.html#id1">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -268,7 +269,7 @@ Pool.map() for parallel computation.</p>
 <dd class="field-even"><dl>
 <dt><strong>idx</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Worker index for result ordering.</p>
 </dd>
-<dt><strong>area</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Cross-section area in square arcseconds.</p>
+<dt><strong>area</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Cross-section area (dimensionless, for theta_E = 1).</p>
 </dd>
 </dl>
 </dd>
@@ -284,7 +285,7 @@ Designed to be called via multiprocessing Pool.map().</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>params</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></span></dt><dd><p>Packed parameters (theta_E, e1, e2, gamma, gamma1, gamma2, idx).</p>
+<dt><strong>params</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></span></dt><dd><p>Packed parameters (theta_E, e1, e2, gamma, gamma1, gamma2, idx). theta_E is in radians.</p>
 </dd>
 </dl>
 </dd>
@@ -292,7 +293,7 @@ Designed to be called via multiprocessing Pool.map().</p>
 <dd class="field-even"><dl>
 <dt><strong>idx</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Worker index for result ordering.</p>
 </dd>
-<dt><strong>area</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Cross-section area in square arcseconds.</p>
+<dt><strong>area</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Cross-section area (radian^2).</p>
 </dd>
 </dl>
 </dd>

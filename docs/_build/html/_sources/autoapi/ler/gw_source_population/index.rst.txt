@@ -346,7 +346,7 @@ Attributes
    +------------------------------------------------+---------------------------+-------+----------------------------------------------+
    | :attr:`~merger_rate_density`                   | ``callable``              |       | Merger rate density function R(z)            |
    +------------------------------------------------+---------------------------+-------+----------------------------------------------+
-   | :attr:`~merger_rate_density_model_list`        | ``dict``                  |       | Available merger rate density models         |
+   | :attr:`~available_merger_rate_density_model`   | ``dict``                  |       | Available merger rate density models         |
    +------------------------------------------------+---------------------------+-------+----------------------------------------------+
    | :attr:`~source_redshift`                       | ``FunctionConditioning``  |       | Source redshift sampler                      |
    +------------------------------------------------+---------------------------+-------+----------------------------------------------+
@@ -754,7 +754,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: merger_rate_density_model_list
+   .. py:property:: available_merger_rate_density_model
 
       
       Dictionary of available merger rate density models and default parameters.
@@ -763,7 +763,7 @@ Attributes
 
       :Returns:
 
-          **merger_rate_density_model_list** : ``dict``
+          **available_merger_rate_density_model** : ``dict``
               Dictionary with model names as keys and parameter dicts as values.
 
               Available models:
@@ -1265,7 +1265,7 @@ Attributes
    +------------------------------------------------+---------------------------+-------+----------------------------------------------+
    | :attr:`~merger_rate_density`                   | ``callable``              |       | Merger rate density function R(z)            |
    +------------------------------------------------+---------------------------+-------+----------------------------------------------+
-   | :attr:`~merger_rate_density_model_list`        | ``dict``                  |       | Available merger rate density models         |
+   | :attr:`~available_merger_rate_density_model`   | ``dict``                  |       | Available merger rate density models         |
    +------------------------------------------------+---------------------------+-------+----------------------------------------------+
    | :attr:`~source_redshift`                       | ``FunctionConditioning``  |       | Source redshift sampler                      |
    +------------------------------------------------+---------------------------+-------+----------------------------------------------+
@@ -1673,7 +1673,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: merger_rate_density_model_list
+   .. py:property:: available_merger_rate_density_model
 
       
       Dictionary of available merger rate density models and default parameters.
@@ -1682,7 +1682,7 @@ Attributes
 
       :Returns:
 
-          **merger_rate_density_model_list** : ``dict``
+          **available_merger_rate_density_model** : ``dict``
               Dictionary with model names as keys and parameter dicts as values.
 
               Available models:
@@ -3720,6 +3720,8 @@ Attributes
 
    
    Compute the merger rate density for BBH using Madau & Dickinson (2014) model.
+
+   density(zs) ∝ (1 + zs) ** b / (1 + ((1 + zs) / c) ** d)
 
    Reference: Eqn. 15 of https://arxiv.org/pdf/1403.0007
 

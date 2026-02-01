@@ -1,0 +1,668 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytical Formulation for Lensed Gravitational Wave Event Rates &mdash; ler 0.5.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/scalefix.css" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=776609e1" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8e576371"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "processEnvironments": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore", "processHtmlClass": "tex2jax_process"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Analytical Formulation for Lensed Gravitational Wave Event Rates</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/analytical_formulation_lensed copy 2.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="analytical-formulation-for-lensed-gravitational-wave-event-rates">
+<h1>Analytical Formulation for Lensed Gravitational Wave Event Rates<a class="headerlink" href="#analytical-formulation-for-lensed-gravitational-wave-event-rates" title="Link to this heading"></a></h1>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#introduction"><span class="std std-ref">Introduction</span></a></p></li>
+<li><p><a class="reference internal" href="#parameter-marginalized-event-rate"><span class="std std-ref">Parameter-Marginalized Event Rate</span></a></p></li>
+</ol>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>The annual rate of detectable strongly lensed gravitational-wave (GW) events, <span class="math notranslate nohighlight">\(\frac{\Delta N^{\rm obs}_{\rm L}}{\Delta t}\)</span>, is the expected number of observed lensed compact-binary mergers per year for a given detector or detector network. This rate is obtained by scaling the total intrinsic merger rate, <span class="math notranslate nohighlight">\(\frac{\Delta N_{\rm U}}{\Delta t}\)</span>, by the probability that an intrinsically occurring merger is both strongly lensed and detectable. Denoting this joint probability by <span class="math notranslate nohighlight">\(P({\rm SL, obs})\)</span>, one may write</p>
+<div class="math notranslate nohighlight">
+\[ 
+\begin{equation}
+\begin{split}
+\frac{\Delta N^{\rm obs}_{\rm L}}{\Delta t}
+= \frac{\Delta N_{\rm U}}{\Delta t}\, P({\rm SL, obs}) \, .
+\end{split}
+\end{equation} 
+\]</div>
+<p>Using the product rule, the joint probability can be decomposed as <span class="math notranslate nohighlight">\(P({\rm SL, obs}) = P({\rm SL})\,P({\rm obs}\mid{\rm SL})\)</span>, where <span class="math notranslate nohighlight">\(P({\rm SL})\)</span> is the strong-lensing probability in the intrinsic population and <span class="math notranslate nohighlight">\(P({\rm obs}\mid{\rm SL})\)</span> is the conditional detection probability for an event known to be strongly lensed. Substitution gives
+<div class="math notranslate nohighlight">
+\[ \begin{equation}
+\begin{split}
+\frac{\Delta N^{\rm obs}_{\rm L}}{\Delta t}
+= \frac{\Delta N_{\rm U}}{\Delta t}\, P({\rm SL})\, P({\rm obs}\mid{\rm SL})
+= \frac{\Delta N_{\rm L}}{\Delta t}\, P({\rm obs}\mid{\rm SL}) \, .
+\end{split}
+\end{equation} \]</div>
+</p>
+<p>Here <span class="math notranslate nohighlight">\(\frac{\Delta N_{\rm L}}{\Delta t}\)</span> is the total rate of strongly lensed mergers irrespective of detectability. For notational convenience, it is denoted by <span class="math notranslate nohighlight">\({\cal N}_{\rm L}\)</span> and defined by
+<div class="math notranslate nohighlight">
+\[ \begin{equation}
+\begin{split}
+\frac{\Delta N_{\rm L}}{\Delta t}
+= \frac{\Delta N_{\rm U}}{\Delta t}\, P({\rm SL})
+\equiv {\cal N}_{\rm L} \, .
+\end{split}
+\end{equation} \]</div>
+</p>
+</section>
+<section id="parameter-marginalized-event-rate">
+<h2>Parameter-Marginalized Event Rate<a class="headerlink" href="#parameter-marginalized-event-rate" title="Link to this heading"></a></h2>
+<p>The conditional detection probability <span class="math notranslate nohighlight">\(P({\rm obs}\mid{\rm SL})\)</span> is obtained by marginalizing over the unlensed GW source parameters <span class="math notranslate nohighlight">\(\vec{\theta}_{\rm U}\)</span>, the lens parameters <span class="math notranslate nohighlight">\(\vec{\theta_{\rm L}}\)</span>, and the source position on the lens-source plane, <span class="math notranslate nohighlight">\(\vec{\beta}\)</span>. The definition of <span class="math notranslate nohighlight">\(\vec{\theta}_{\rm U}\)</span> follows the unlensed-event formulation in <a class="reference external" href="https://ler.hemantaph.com/analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a>. For an Elliptical Power Law lens with external shear (EPL+Shear), the lens-parameter vector is</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+\begin{split}
+\vec{\theta_{\rm L}}\in \{z_L,\sigma,q,\phi_{\rm rot},\gamma,\gamma_1,\gamma_2\} \,,
+\end{split}
+\end{equation}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(z_L\)</span> is the lens redshift, <span class="math notranslate nohighlight">\(\sigma\)</span> is the velocity dispersion, <span class="math notranslate nohighlight">\(q\)</span> is the projected axis ratio, <span class="math notranslate nohighlight">\(\phi_{\rm rot}\)</span> is the lens orientation, <span class="math notranslate nohighlight">\(\gamma\)</span> is the density-profile slope, and <span class="math notranslate nohighlight">\((\gamma_1,\gamma_2)\)</span> are the external shear components. The source position is written as <span class="math notranslate nohighlight">\(\vec{\beta}\in\{\beta_x,\beta_y\}\)</span> and denotes the angular offset of the source from the lens center on the source plane. The sampling strategy for lens-paramters and source positons are dicussed in the following sections. The priors adopted for these parameters are summarized in <a class="reference internal" href="#"><span class="doc">Table 2</span></a> and <a class="reference internal" href="#"><span class="doc">Table 3</span></a>.</p>
+<p>With this notation, the annual rate of detectable strongly lensed events can be expressed as a parameter-marginalized expectation over strongly lensed configurations,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{split}
+\frac{\Delta N^{\rm obs}_{\rm L}}{\Delta t}
+&amp;= \frac{\Delta N_{\rm L}}{\Delta t}
+\int_{\vec{\theta_{\rm U}}}\int_{\vec{\theta_{\rm L}}}\int_{\vec{\beta}} P({\rm obs} \mid \vec{\theta_{\rm U}}, \vec{\theta_{\rm L}}, \vec{\beta}, {\rm SL}) \\
+&amp;\quad\quad\quad\quad\quad\quad\quad\quad \times P(\vec{\theta_{\rm U}}, \vec{\theta_{\rm L}}, \vec{\beta} \mid {\rm SL}) d\vec{\theta_{\rm U}}\, d\vec{\theta_{\rm L}}\, d\vec{\beta} \,,
+\end{split}
+\end{equation}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(P({\rm obs}\mid \vec{\theta}_{\rm U},\vec{\theta_{\rm L}},\vec{\beta},{\rm SL})\)</span> is the detection probability for a specific source–lens configuration, and <span class="math notranslate nohighlight">\(P(\vec{\theta}_{\rm U},\vec{\theta_{\rm L}},\vec{\beta}\mid{\rm SL})\)</span> is the joint distribution of parameters conditioned on the event being strongly lensed.</p>
+<p>It is convenient to separate the source redshift from the remaining intrinsic GW parameters by writing <span class="math notranslate nohighlight">\(\vec{\theta}_{\rm U}=(z_s,\vec{\theta}^{*}_{\rm U})\)</span>, where <span class="math notranslate nohighlight">\(\vec{\theta}^{*}_{\rm U}\)</span> denotes the unlensed source parameters excluding <span class="math notranslate nohighlight">\(z_s\)</span>. Similarly, we write <span class="math notranslate nohighlight">\(\vec{\theta_{\rm L}}=(z_L,\vec{\theta}^{*}_{\rm L})\)</span>, where <span class="math notranslate nohighlight">\(\vec{\theta}^{*}_{\rm L}\)</span> denotes the lens parameters excluding <span class="math notranslate nohighlight">\(z_L\)</span>.</p>
+<p>Assuming that <span class="math notranslate nohighlight">\(\vec{\theta}^{*}_{\rm U}\)</span> is independent of the detailed lensing configuration once <span class="math notranslate nohighlight">\(z_s\)</span> is fixed and the event is conditioned to be strongly lensed, the joint distribution factorizes as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} 
+\begin{equation}
+\begin{split}
+P(\vec{\theta}_{\rm U},\vec{\theta_{\rm L}},\vec{\beta}\mid{\rm SL})
+&amp;= P(\vec{\theta}^{*}_{\rm U})\,
+P(\vec{\beta}\mid z_s, z_L,\vec{\theta}^{*}_{\rm L},{\rm SL})\\
+&amp;\quad\times
+P(z_s, z_L,\vec{\theta}^{*}_{\rm L}\mid{\rm SL}) \, .
+\end{split}
+\end{equation} 
+\end{split}\]</div>
+<p>Substituting this factorization into the rate expression yields</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{split}
+&amp;\frac{\Delta N^{\rm obs}_{\rm L}}{\Delta t}\\
+&amp;\quad\quad= \frac{\Delta N_{\rm L}}{\Delta t}
+\int_{\vec{\theta}_{\rm U}}\int_{\vec{\theta_{\rm L}}}\int_{\vec{\beta}}
+ P({\rm obs} \mid \vec{\theta}^*_{\rm U}, z_s, z_L,\vec{\theta}^{*}_{\rm L}, \vec{\beta}, {\rm SL}) \\
+&amp;\quad\quad\quad\quad\quad\quad\quad\quad \times P(\vec{\theta}^*_{\rm U})\, P(\vec{\beta} \mid z_s, z_L,\vec{\theta}^{*}_{\rm L}, {\rm SL}) \\
+&amp;\quad\quad\quad\quad\quad\quad\quad\quad \times P(z_s, z_L,\vec{\theta}^{*}_{\rm L} \mid {\rm SL}) \, d\vec{\theta}_{\rm U}\, d\vec{\theta_{\rm L}}\, d\vec{\beta} \,,
+\end{split}
+\end{equation}
+\end{split}\]</div>
+<p>In practice, the multidimensional integral is evaluated with Monte Carlo sampling over the strongly lensed population, so that the observable lensed rate can be written as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} 
+\begin{equation}
+\begin{split}
+&amp;\frac{\Delta N^{\rm obs}_{\rm L}}{\Delta t}\\
+&amp;\quad\quad = {\cal N}_{\rm L}
+\left\langle
+P({\rm obs}\mid \vec{\theta}^{*}_{\rm U},z_s,z_L,\vec{\theta}^{*}_{\rm L},\vec{\beta},{\rm SL})
+\right\rangle_{\substack{
+\vec{\theta}^{*}_{\rm U}\sim P(\vec{\theta}^{*}_{\rm U}) \\
+(z_s,z_L,\vec{\theta}^{*}_{\rm L})\sim P(z_s,z_L,\vec{\theta}^{*}_{\rm L}\mid{\rm SL}) \\
+\vec{\beta}\sim P(\vec{\beta}\mid z_s,z_L,\vec{\theta}^{*}_{\rm L},{\rm SL})
+}} \,,
+\end{split}
+\end{equation} 
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\langle\cdot\rangle\)</span> denotes an average over samples drawn from the indicated distributions.</p>
+</section>
+<section id="decomposing-the-joint-sourcelens-parameter-distribution">
+<h2>Decomposing the Joint Source–Lens Parameter Distribution<a class="headerlink" href="#decomposing-the-joint-sourcelens-parameter-distribution" title="Link to this heading"></a></h2>
+<p>The joint distribution of source redshift and lens parameters conditioned on strong lensing can then be written using the chain rule as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{split}
+P(z_s, z_L, \vec{\theta}^{*}_{\rm L}\mid{\rm SL})
+&amp;= P(z_s\mid{\rm SL})\,P(z_L\mid z_s,{\rm SL})\\
+&amp;\quad\times P(\vec{\theta}^{*}_{\rm L}\mid z_L, z_s,{\rm SL}) \,.
+\end{split}
+\end{equation} 
+\end{split}\]</div>
+<p>This factorization is useful because each term has a direct physical meaning and a corresponding sampling strategy. The first factor, <span class="math notranslate nohighlight">\(P(z_s\mid{\rm SL})\)</span>, is the lensed-source redshift distribution obtained by weighting the intrinsic source redshift distribution <span class="math notranslate nohighlight">\(P(z_s)\)</span> by the strong-lensing optical depth <span class="math notranslate nohighlight">\(P({\rm SL}\mid z_s)\)</span>. The second factor, <span class="math notranslate nohighlight">\(P(z_L\mid z_s,{\rm SL})\)</span>, describes the lens-redshift distribution for a given lensed source redshift and is determined by the effective lensing kernel <span class="math notranslate nohighlight">\(\Phi_{\rm SL}(z_L,z_s)\)</span> (see next section).
+The third factor, <span class="math notranslate nohighlight">\(P(\vec{\theta}^{*}_{\rm L}\mid z_L,z_s,{\rm SL})\)</span>, is the conditional distribution of lens structural parameters at fixed <span class="math notranslate nohighlight">\((z_L,z_s)\)</span> under the strong-lensing condition, and it is proportional to the strong-lensing cross-section for that configuration times the intrinsic lens-parameter priors. For EPL+Shear lenses, the conditional distribution of <span class="math notranslate nohighlight">\(\vec{\theta}^{*}_{\rm L}\)</span> can be expressed as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{split}
+&amp;P(\vec{\theta}^{*}_{\rm L}\mid z_L, z_s,{\rm SL})\\
+&amp;\quad \propto P({\rm SL}\mid z_L, z_s, \vec{\theta}^{*}_{\rm L}) \\
+&amp;\quad\quad\times P(\vec{\theta_{\rm L}^*} \mid z_L, z_s) \\
+&amp;\quad \propto P({\rm SL} \mid \sigma, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2, z_L, z_s) \\
+&amp;\quad\quad\times P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \, P(\sigma \mid z_L) \, ,
+\end{split}
+\end{equation}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(P({\rm SL}\mid z_L, z_s, \vec{\theta}^{*}_{\rm L})\)</span> is set by the lensing cross-section (more details on cross-section in the following section) at fixed <span class="math notranslate nohighlight">\((z_L,z_s,\vec{\theta}^{*}_{\rm L})\)</span>. Normalization is implicit in the proportionality and is handled numerically in the Monte Carlo procedure.</p>
+<p>With this decomposition, sampling from <span class="math notranslate nohighlight">\(P(z_s, z_L, \vec{\theta}^{*}_{\rm L}\mid{\rm SL})\)</span> proceeds naturally in three stages. One first draws <span class="math notranslate nohighlight">\(z_s\)</span> from <span class="math notranslate nohighlight">\(P(z_s\mid{\rm SL})\)</span>, then draws <span class="math notranslate nohighlight">\(z_L\)</span> from <span class="math notranslate nohighlight">\(P(z_L\mid z_s,{\rm SL})\)</span> at that <span class="math notranslate nohighlight">\(z_s\)</span>, and finally draws <span class="math notranslate nohighlight">\(\vec{\theta}^{*}_{\rm L}\)</span> from its intrinsic priors while accounting for the strong-lensing cross-section through weighting or importance sampling at the chosen <span class="math notranslate nohighlight">\((z_s,z_L)\)</span>. The construction of each factor is detailed in the sections below.</p>
+</section>
+<section id="source-redshift-distributions-of-lensed-events">
+<h2>Source Redshift Distributions of Lensed Events<a class="headerlink" href="#source-redshift-distributions-of-lensed-events" title="Link to this heading"></a></h2>
+<p>The redshift distribution of strongly lensed sources, <span class="math notranslate nohighlight">\(P(z_s\mid{\rm SL})\)</span>, is not the same as the intrinsic source redshift distribution <span class="math notranslate nohighlight">\(P(z_s)\)</span> because the strong-lensing probability varies with redshift. By Bayes’ theorem,</p>
+<div class="math notranslate nohighlight">
+\[ 
+\begin{equation}
+\begin{split}
+P(z_s\mid{\rm SL})
+= \frac{P({\rm SL}\mid z_s)\,P(z_s)}{P({\rm SL})} \, ,
+\end{split}
+\end{equation}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(P({\rm SL}\mid z_s)\)</span> is the strong-lensing optical depth for a source at redshift <span class="math notranslate nohighlight">\(z_s\)</span>, and <span class="math notranslate nohighlight">\(P({\rm SL})\)</span> is the population-averaged strong-lensing probability.</p>
+<p>Using the intrinsic redshift distribution implied by the unlensed-event rate density (see <a class="reference external" href="https://ler.hemantaph.com/analytical_formulation_unlensed.html#redshift-distribution-and-intrinsic-merger-rates">Analytical Formulation for Gravitational Wave Event Rates</a>),</p>
+<div class="math notranslate nohighlight">
+\[ 
+\begin{equation}
+\begin{split}
+P(z_s)
+= \frac{1}{{\cal N}_{\rm U}}
+\frac{R_{\rm U}(z_s)}{1+z_s}\,
+\frac{dV_c}{dz_s} \, ,
+\end{split}
+\end{equation} \]</div>
+<p>the lensed-source redshift distribution becomes
+<div class="math notranslate nohighlight">
+\[\begin{split} \begin{equation}
+\begin{split}
+P(z_s\mid{\rm SL})
+&amp;= \frac{P({\rm SL}\mid z_s)}{P({\rm SL})}
+\left[
+\frac{1}{{\cal N}_{\rm U}}
+\frac{R_{\rm U}(z_s)}{1+z_s}\,
+\frac{dV_c}{dz_s}
+\right] \\
+&amp;= \frac{1}{{\cal N}_{\rm L}}\,
+P({\rm SL}\mid z_s)\,
+\frac{R_{\rm U}(z_s)}{1+z_s}\,
+\frac{dV_c}{dz_s} \, .
+\end{split}
+\end{equation} 
+\end{split}\]</div>
+</p>
+<p>Here <span class="math notranslate nohighlight">\(R_{\rm U}(z_s)\)</span> is the intrinsic merger-rate density in the source frame, <span class="math notranslate nohighlight">\(dV_c/dz_s\)</span> is the comoving volume element, and <span class="math notranslate nohighlight">\((1+z_s)^{-1}\)</span> accounts for cosmological time dilation when converting from source-frame to detector-frame time. The normalization constant <span class="math notranslate nohighlight">\({\cal N}_{\rm U}\)</span> is the total intrinsic (unlensed) merger rate per unit detector-frame time, while <span class="math notranslate nohighlight">\({\cal N}_{\rm L}\)</span> is the total intrinsic strongly lensed merger rate per unit detector-frame time.</p>
+<p>The lensed-rate normalization follows directly from the requirement <span class="math notranslate nohighlight">\(\int P(z_s\mid{\rm SL})\,dz_s=1\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{split}
+{\cal N}_{\rm L}
+&amp;= {\cal N}_{\rm U}\,P({\rm SL}) \\
+&amp;= {\cal N}_{\rm U}\int P({\rm SL}\mid z_s)\,P(z_s)\,dz_s \\
+&amp;= \int P({\rm SL}\mid z_s)\,
+\frac{R_{\rm U}(z_s)}{1+z_s}\,
+\frac{dV_c}{dz_s}\,dz_s \, .
+\end{split}
+\end{equation}
+\end{split}\]</div>
+<p>The overall strong-lensing probability is therefore <span class="math notranslate nohighlight">\(P({\rm SL})={\cal N}_{\rm L}/{\cal N}_{\rm U}\)</span>, which is the fraction of intrinsically occurring mergers that are strongly lensed in the population model. In this work, the optical depth <span class="math notranslate nohighlight">\(P({\rm SL}\mid z_s)\)</span> is computed for the adopted EPL+Shear lens population and is described in the next section.</p>
+</section>
+<section id="optical-depth">
+<h2>Optical Depth<a class="headerlink" href="#optical-depth" title="Link to this heading"></a></h2>
+<p>The strong-lensing optical depth <span class="math notranslate nohighlight">\(P({\rm SL}\mid z_s)\)</span> is the probability that a GW source at redshift <span class="math notranslate nohighlight">\(z_s\)</span> is strongly lensed by an intervening galaxy population, resulting in multiple images. It can be written as the sky-fraction covered by the strong-lensing angular cross-sections of the lens population between the observer and the source, and it reads</p>
+<div class="math notranslate nohighlight">
+\[ 
+\begin{equation}
+\begin{split}
+P({\rm SL}\mid z_s)
+&amp;= \int_{0}^{z_s}
+\left[
+\int_{\vec{\theta}^{*}_{\rm L}}
+\frac{\sigma_{\rm SL}(z_L,z_s,\vec{\theta}^{*}_{\rm L})}{4\pi}\,
+\frac{d^2N(z_L,\vec{\theta}^{*}_{\rm L})}{dV_c\,d\vec{\theta}^{*}_{\rm L}}\,
+\frac{dV_c}{dz_L}\,
+d\vec{\theta}^{*}_{\rm L}
+\right] dz_L \, ,
+\end{split}
+\end{equation}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma_{\rm SL}(z_L,z_s,\vec{\theta}^{*}_{\rm L})\)</span> is the angular cross-section for a single lens with parameters <span class="math notranslate nohighlight">\((z_L,\vec{\theta}^{*}_{\rm L})\)</span> and it is detailed in the following section.</p>
+<p>Defining the effective lensing kernel
+<div class="math notranslate nohighlight">
+\[ \begin{equation}
+\begin{split}
+\Phi_{\rm SL}(z_L,z_s)
+&amp;= \int_{\vec{\theta}^{*}_{\rm L}}
+\frac{\sigma_{\rm SL}(z_L,z_s,\vec{\theta}^{*}_{\rm L})}{4\pi}\,
+\frac{d^2N(z_L,\vec{\theta}^{*}_{\rm L})}{dV_c\,d\vec{\theta}^{*}_{\rm L}}\,
+\frac{dV_c}{dz_L}\,
+d\vec{\theta}^{*}_{\rm L} \, ,
+\end{split}
+\end{equation} \]</div>
+
+the optical depth becomes
+<div class="math notranslate nohighlight">
+\[ \begin{equation}
+\begin{split}
+P({\rm SL}\mid z_s) = \int_{0}^{z_s} \Phi_{\rm SL}(z_L,z_s)\,dz_L \, .
+\end{split}
+\end{equation} \]</div>
+</p>
+<p>For EPL+Shear lenses with <span class="math notranslate nohighlight">\(\vec{\theta}^{*}_{\rm L}=\{\sigma,q,\phi_{\rm rot},\gamma,\gamma_1,\gamma_2\}\)</span>, we use the velocity-dispersion function <span class="math notranslate nohighlight">\(\phi(\sigma,z_L)=d^2N(z_L,\sigma)/(dV_c\,d\sigma)\)</span> and priors for the remaining parameters, giving</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} 
+\begin{equation}
+\begin{split}
+\Phi_{\rm SL}(z_L, z_s)
+&amp;= \int_{\sigma,q,\phi_{\rm rot},\gamma,\gamma_1,\gamma_2} P({\rm SL}|z_s,z_L,\sigma,q,\phi_{\rm rot},\gamma,\gamma_1,\gamma_2) \\
+&amp; \quad \times P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \\
+&amp; \quad \times \frac{d^2N(z_L, \sigma)}{dV_c \, d\sigma} \, \frac{dV_c}{dz_L} \, d\sigma \, dq \, d\phi_{\rm rot} \, d\gamma \, d\gamma_1 \, d\gamma_2\, .
+\end{split}
+\end{equation} 
+\end{split}\]</div>
+<p>The integration is numerically evaluated using Monte Carlo sampling over the lens parameter space. While lens parameters are sampled from their intrinsic ppopulation, <span class="math notranslate nohighlight">\(\sigma\)</span> is drawn from a proposal distribution <span class="math notranslate nohighlight">\(P_o(\sigma)=\frac{1}{\sigma_{\max}-\sigma_{\min}}=\frac{1}{\Delta \sigma}\)</span> for convenience. Thus, the effective lensing kernel can be expressed as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} 
+\begin{equation}
+\begin{split}
+\Phi_{\rm SL}(z_L,z_s)
+= \Delta\sigma
+\left\langle
+\frac{\sigma^{\rm MI}_{\rm EPL}}{4\pi}\,
+\phi(\sigma,z_L)\,
+\frac{dV_c}{dz_L}
+\right\rangle_{\substack{
+\sigma\sim P_o(\sigma),\\
+q\sim P(q\mid\sigma),\\
+\phi_{\rm rot}\sim P(\phi_{\rm rot}),\\
+\gamma\sim P(\gamma),\\
+(\gamma_1,\gamma_2)\sim P(\gamma_1,\gamma_2)
+}} \, ,
+\end{split}
+\end{equation} 
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma^{\rm MI}_{\rm EPL}\)</span> is the multi-image caustic cross-section for EPL+Shear lenses (see following section).</p>
+<p>The kernel <span class="math notranslate nohighlight">\(\Phi_{\rm SL}(z_L,z_s)\)</span>, which also represents the effective lensing cross-section for lenses at redshift <span class="math notranslate nohighlight">\(z_L\)</span>, marginalized over the lens parameters <span class="math notranslate nohighlight">\(\vec{\theta_{\rm L}^*}\)</span> and normalized by the total solid angle of the sky, is used both to evaluate <span class="math notranslate nohighlight">\(P({\rm SL}\mid z_s)\)</span> and to sample <span class="math notranslate nohighlight">\(z_L\)</span> from <span class="math notranslate nohighlight">\(P(z_L\mid z_s,{\rm SL})\)</span> as described in the next section.</p>
+</section>
+<section id="lens-redshift-distribution-of-lensed-events">
+<h2>Lens Redshift Distribution of Lensed Events<a class="headerlink" href="#lens-redshift-distribution-of-lensed-events" title="Link to this heading"></a></h2>
+<p>For sources at fixed redshift <span class="math notranslate nohighlight">\(z_s\)</span> that are conditioned to be strongly lensed, the lens-redshift distribution is proportional to the effective lensing kernel <span class="math notranslate nohighlight">\(\Phi_{\rm SL}(z_L,z_s)\)</span>, giving</p>
+<div class="math notranslate nohighlight">
+\[ 
+\begin{equation}
+\begin{split}
+P(z_L\mid z_s,{\rm SL})
+&amp;= \frac{1}{{\cal N}_\Phi(z_s)}\, \Phi_{\rm SL}(z_L,z_s) \, ,
+\end{split}
+\end{equation} 
+\]</div>
+<p>where <span class="math notranslate nohighlight">\({\cal N}_\Phi(z_s)=\int_{0}^{z_s}\Phi_{\rm SL}(z_L,z_s)\,dz_L\)</span> is the normalization constant at fixed <span class="math notranslate nohighlight">\(z_s\)</span>.</p>
+<p>In <a class="reference external" href="https://ler.hemantaph.com/"><code class="docutils literal notranslate"><span class="pre">ler</span></code></a>, <span class="math notranslate nohighlight">\(\Phi_{\rm SL}(z_L,z_s)\)</span> and the corresponding <span class="math notranslate nohighlight">\(P(z_L\mid z_s,{\rm SL})\)</span> are precomputed on a <span class="math notranslate nohighlight">\((z_L,z_s)\)</span> grid for the adopted EPL+Shear lens population. Values at arbitrary <span class="math notranslate nohighlight">\((z_L,z_s)\)</span> are obtained by two-dimensional interpolation, and sampling at fixed <span class="math notranslate nohighlight">\(z_s\)</span> is performed by inverse-transform sampling using the cumulative distribution function of <span class="math notranslate nohighlight">\(P(z_L\mid z_s,{\rm SL})\)</span>.</p>
+<p>For comparison, the intrinsic lens redshift distribution without conditioning on strong lensing is obtained by marginalizing over lens parameters,
+<div class="math notranslate nohighlight">
+\[\begin{split} \begin{equation}
+\begin{split}
+P(z_L)
+&amp;= \frac{1}{{\cal N}_{z_L}}
+\int_{\vec{\theta}^{*}_{\rm L}}
+\frac{d^2N(z_L,\vec{\theta}^{*}_{\rm L})}{dV_c\, d\vec{\theta}^{*}_{\rm L}}\,
+\frac{dV_c}{dz_L}\,
+d\vec{\theta}^{*}_{\rm L} \\
+&amp;= \frac{\Delta\sigma}{{\cal N}_{z_L}}
+\left\langle
+\phi(\sigma,z_L)\,
+\frac{dV_c}{dz_L}
+\right\rangle_{\substack{
+\sigma\sim P_o(\sigma),\\
+q\sim P(q\mid\sigma),\\
+\phi_{\rm rot}\sim P(\phi_{\rm rot}),\\
+\gamma\sim P(\gamma),\\
+(\gamma_1,\gamma_2)\sim P(\gamma_1,\gamma_2)
+}} \, .
+\end{split}
+\end{equation} 
+\end{split}\]</div>
+</p>
+<p>with normalization <span class="math notranslate nohighlight">\({\cal N}_{z_L}\)</span>.</p>
+</section>
+<section id="multi-image-lensing-cross-section">
+<h2>Multi-Image Lensing Cross-Section<a class="headerlink" href="#multi-image-lensing-cross-section" title="Link to this heading"></a></h2>
+<p>In the lensed-event sampling, the strong-lensing condition is enforced by requiring that the lens-source configuration produces multiple images. Configurations that do not satisfy the multi-imaging condition are rejected and resampled.</p>
+<p>For EPL+Shear lenses, multi-imaging occurs when the lens and source are aligned and source position lies inside the relevant caustic region on the source plane. The corresponding angular area defines the strong-lensing cross-section, denoted <span class="math notranslate nohighlight">\(\sigma^{\rm MI}_{\rm EPL}\)</span>. For a given lens configuration <span class="math notranslate nohighlight">\((z_L,z_s,\vec{\theta}^{*}_{\rm L})\)</span>, the probability that a randomly oriented line of sight yields strong lensing is the cross-section normalized by the full sky,</p>
+<div class="math notranslate nohighlight">
+\[ 
+\begin{equation}
+\begin{split}
+P({\rm SL}\mid z_L, z_s, \vec{\theta}^{*}_{\rm L})
+= \frac{\sigma^{\rm MI}_{\rm EPL}}{4\pi} \, .
+\end{split}
+\end{equation}
+\]</div>
+<p>Direct evaluation of <span class="math notranslate nohighlight">\(\sigma^{\rm MI}_{\rm EPL}\)</span> by tracing caustics with <a class="reference external" href="https://lenstronomy.readthedocs.io"><code class="docutils literal notranslate"><span class="pre">lenstronomy</span></code></a> is computationally expensive. In <a class="reference external" href="https://ler.hemantaph.com/"><code class="docutils literal notranslate"><span class="pre">ler</span></code></a>, <span class="math notranslate nohighlight">\(\sigma^{\rm MI}_{\rm EPL}\)</span> is therefore precomputed on a grid in <span class="math notranslate nohighlight">\((q,\phi_{\rm rot},\gamma,\gamma_1,\gamma_2)\)</span> at unit Einstein radius <span class="math notranslate nohighlight">\(\theta_{\rm E}=1\)</span>, and interpolated during sampling. For arbitrary <span class="math notranslate nohighlight">\((\sigma,z_L,z_s)\)</span>, the Einstein radius is</p>
+<div class="math notranslate nohighlight">
+\[ 
+\begin{equation}
+\begin{split}
+\theta_{\rm E}
+= 4\pi\left(\frac{\sigma}{c}\right)^2
+\frac{D_{LS}(z_L,z_s)}{D_S(z_s)} \, ,
+\end{split}
+\end{equation} 
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(D_{LS}\)</span> and <span class="math notranslate nohighlight">\(D_S\)</span> are angular-diameter distances.</p>
+<p>The cross-section is then rescaled from the <span class="math notranslate nohighlight">\(\theta_{\rm E}=1\)</span> values using the calibrated relation</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} 
+\begin{equation}
+\begin{split}
+\sigma^{\rm MI}_{\rm EPL}(\theta_{\rm E}, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2)
+&amp;= \sigma^{\rm MI}_{\rm EPL}(1, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2) \\
+&amp;\quad\times \left({\rm intercept} + {\rm slope}\,\pi\,\theta_{\rm E}^2\right) \, ,
+\end{split}
+\end{equation}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\({\rm intercept}\)</span> and <span class="math notranslate nohighlight">\({\rm slope}\)</span> are precomputed constants. This interpolation and rescaling scheme accelerates cross-section evaluation and, consequently, the computation of <span class="math notranslate nohighlight">\(\Phi_{\rm SL}(z_L,z_s)\)</span> and the optical depth <span class="math notranslate nohighlight">\(P({\rm SL}\mid z_s)\)</span>.</p>
+</section>
+<section id="lens-parameter-distributions-of-lensed-events">
+<h2>Lens Parameter Distributions of Lensed Events<a class="headerlink" href="#lens-parameter-distributions-of-lensed-events" title="Link to this heading"></a></h2>
+<p>At fixed <span class="math notranslate nohighlight">\((z_L,z_s)\)</span>, the conditional distribution of EPL+Shear lens parameters under the strong-lensing condition is obtained by weighting the intrinsic lens population by the multi-image cross-section, and it reads</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{split}
+&amp;P(\sigma, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2 \mid z_L, z_s, {\rm SL})\\
+&amp;\quad \propto P({\rm SL} \mid \sigma, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2, z_L, z_s) \\
+&amp;\quad\quad \times P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \, P(\sigma \mid z_L) \\
+&amp;\quad \propto \sigma^{\rm MI}_{\rm EPL} \, P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \, P(\sigma \mid z_L) \,.
+\end{split}
+\end{equation}
+\end{split}\]</div>
+<p>Direct rejection sampling from <span class="math notranslate nohighlight">\(P(\sigma\mid z_L)\)</span> is inefficient because the strong-lensing weight <span class="math notranslate nohighlight">\(\sigma^{\rm MI}_{\rm EPL}\)</span> favours high-<span class="math notranslate nohighlight">\(\sigma\)</span> lenses, while <span class="math notranslate nohighlight">\(P(\sigma\mid z_L)\)</span> typically favours low-<span class="math notranslate nohighlight">\(\sigma\)</span> lenses, leading to a low acceptance rate. Moreover, maximum value of <span class="math notranslate nohighlight">\(\sigma^{\rm DC}_{\rm EPL}\)</span> is not known analytically for EPL+Shear lenses, making it difficult to use the standard rejection sampling method. In <a class="reference external" href="https://ler.hemantaph.com/"><code class="docutils literal notranslate"><span class="pre">ler</span></code></a>, sampling is therefore performed with importance sampling by introducing a proposal distribution <span class="math notranslate nohighlight">\(P_o(\sigma)\)</span> for the velocity dispersion. Writing</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{split}
+&amp;P(\sigma, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2 \mid z_L, z_s, {\rm SL})\\
+&amp;\quad \propto \left[\frac{ \sigma^{\rm MI}_{\rm EPL}\, P(\sigma \mid z_L)}{P_o(\sigma)}\right] \\
+&amp;\quad\quad \times P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \, P_o(\sigma) \,,
+\end{split}
+\end{equation}
+\end{split}\]</div>
+<p>one draws <span class="math notranslate nohighlight">\(\sigma\sim P_o(\sigma)\)</span> and samples <span class="math notranslate nohighlight">\((q,\phi_{\rm rot},\gamma,\gamma_1,\gamma_2)\)</span> from their intrinsic priors, then assigns each configuration the importance weight</p>
+<div class="math notranslate nohighlight">
+\[ 
+\begin{equation}
+\begin{split}
+w(\sigma, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2;z_L,z_s)=\frac{\sigma^{\rm MI}_{\rm EPL}\,P(\sigma\mid z_L)}{P_o(\sigma)} \, .
+\end{split}
+\end{equation} \]</div>
+<p>A convenient choice is a uniform proposal on <span class="math notranslate nohighlight">\([\sigma_{\min},\sigma_{\max}]\)</span>, for which <span class="math notranslate nohighlight">\(P_o(\sigma)=1/(\sigma_{\max}-\sigma_{\min})\)</span>. The weighted samples are then used to estimate expectations over <span class="math notranslate nohighlight">\(P(\vec{\theta}^{*}_{\rm L}\mid z_L,z_s,{\rm SL})\)</span> in the event-rate calculation.</p>
+</section>
+<section id="source-position-distribution-and-image-properties">
+<h2>Source Position Distribution and Image Properties<a class="headerlink" href="#source-position-distribution-and-image-properties" title="Link to this heading"></a></h2>
+<p>Source-plane coordinates are expressed in units of the Einstein radius by setting <span class="math notranslate nohighlight">\(\theta_{\rm E}=1\)</span> when sampling <span class="math notranslate nohighlight">\(\vec{\beta}\)</span> and solving the lens equation. All angular and time-delay quantities are subsequently rescaled to physical units using the actual <span class="math notranslate nohighlight">\(\theta_{\rm E}(\sigma,z_L,z_s)\)</span> of each lens configuration.</p>
+<p>For a given set of lens-shape parameters <span class="math notranslate nohighlight">\((q,\phi_{\rm rot},\gamma,\gamma_1,\gamma_2)\)</span>, the source position <span class="math notranslate nohighlight">\(\vec{\beta}\in\{\beta_x,\beta_y\}\)</span> is drawn uniformly over the multi-imaging caustic region on the source plane. This guarantees that the configuration produces multiple images, typically two or four in the EPL+Shear model, with the central demagnified image ignored in this work.</p>
+<p>For each sampled configuration, the lens equation is solved with <a class="reference external" href="https://lenstronomy.readthedocs.io"><code class="docutils literal notranslate"><span class="pre">lenstronomy</span></code></a> to obtain image positions <span class="math notranslate nohighlight">\(\vec{\theta}_i\in\{\theta_{x,i},\theta_{y,i}\}\)</span>, magnifications <span class="math notranslate nohighlight">\(\mu_i\)</span>, and arrival-time delays <span class="math notranslate nohighlight">\(t_i\)</span> for each image <span class="math notranslate nohighlight">\(i\)</span>. The dimensionless quantities computed at <span class="math notranslate nohighlight">\(\theta_{\rm E}=1\)</span> are rescaled to the physical angular and temporal units using the corresponding <span class="math notranslate nohighlight">\(\theta_{\rm E}\)</span>.</p>
+<p>Image parity is determined from the Jacobian of the lens mapping and summarized by the Morse index <span class="math notranslate nohighlight">\(n_i\)</span>, with Type-I (minimum) images having <span class="math notranslate nohighlight">\(n_i=0\)</span>, Type-II (saddle) images having <span class="math notranslate nohighlight">\(n_i=1/2\)</span>, and Type-III (maximum) images having <span class="math notranslate nohighlight">\(n_i=1\)</span>. Only Type-I and Type-II images are retained. Images are ordered by arrival time, <span class="math notranslate nohighlight">\(t_1&lt;t_2&lt;t_3&lt;t_4\)</span>, and up to four images are considered.</p>
+<p>Lensing modifies the inferred GW parameters for each image through magnification, phase shifts, and arrival-time delays. The image-specific parameter set is updated as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{split}
+\vec{\theta}_{{\rm GW},i} &amp;\in \Bigg\{
+\frac{d_L(z_s)}{\sqrt{\lvert \mu_i\rvert}},\;
+\phi_c - n_i\pi,\;
+t_c + t_i,\; \\
+&amp;\quad\quad {\rm RA} + \frac{\theta_{x,i}-\beta_x}{\cos({\rm Dec})},\;
+{\rm Dec} + (\theta_{y,i}-\beta_y),\;\ldots
+\Bigg\}
+\end{split} \notag
+\end{equation}
+\end{split}\]</div>
+<p>while detector-frame component masses and spins are unchanged from the unlensed values. The sky-location offsets associated with <span class="math notranslate nohighlight">\(\vec{\theta}_i-\vec{\beta}\)</span> are typically negligible for current GW detector networks and have no impact on SNR. Detectability is therefore evaluated by computing the SNR for each image using <span class="math notranslate nohighlight">\(\vec{\theta}_{{\rm GW},i}\)</span>, as described in the next section.</p>
+</section>
+<section id="detection-probability-of-lensed-events">
+<h2>Detection Probability of Lensed Events<a class="headerlink" href="#detection-probability-of-lensed-events" title="Link to this heading"></a></h2>
+<p>For a given lensed configuration specified by <span class="math notranslate nohighlight">\((\vec{\theta}^{*}_{\rm U}, z_s, \vec{\theta}_{\rm L}, \vec{\beta})\)</span> under the strong-lensing condition, the detection probability <span class="math notranslate nohighlight">\(P({\rm obs}\mid \vec{\theta}^{*}_{\rm U}, z_s, \vec{\theta}_{\rm L}, \vec{\beta}, {\rm SL})\)</span> is determined by the detectability of the individual lensed images. For each image <span class="math notranslate nohighlight">\(i\)</span>, the signal-to-noise ratio <span class="math notranslate nohighlight">\(\rho(\vec{\theta}_{{\rm GW},i})\)</span> is evaluated using the lensed GW parameters <span class="math notranslate nohighlight">\(\vec{\theta}_{{\rm GW},i}\)</span>, which incorporate magnification, arrival-time delay, and phase shift.</p>
+<p>An event is counted as observable when at least two images satisfy the detection criterion, i.e. having SNR above a chosen threshold <span class="math notranslate nohighlight">\(\rho_{\rm th}\)</span>. Thus, the detection probability is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+\begin{split}
+&amp;P({\rm obs} \mid \vec{\theta}^*_{\rm U}, z_s, \vec{\theta_{\rm L}}, \vec{\beta}, {\rm SL}) \\
+&amp;\quad = \left\{ 
+  \begin{array}{ c l }
+    1 &amp; \sum_i^{\rm images} \Theta[\rho(\vec{\theta}_{{\rm GW},i}) - \rho_{th}]\ge 2 \\
+    0 &amp; {\rm otherwise}
+  \end{array}
+\right. \,,
+\end{split}
+\end{equation}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Theta\)</span> is the Heaviside step function, giving 1 when its argument is positive and 0 otherwise.</p>
+</section>
+<section id="complete-expression-for-lensed-event-rate">
+<h2>Complete Expression for Lensed Event Rate<a class="headerlink" href="#complete-expression-for-lensed-event-rate" title="Link to this heading"></a></h2>
+</section>
+</section>
+<section id="the-annual-rate-of-detectable-strongly-lensed-gw-events-is-written-as-the-total-intrinsic-strong-lensing-rate-cal-n-rm-l-multiplied-by-the-mean-detection-probability-over-the-strongly-lensed-population-begin-equation-begin-split-frac-delta-n-rm-obs-rm-l-delta-t">
+<h1>The annual rate of detectable strongly lensed GW events is written as the total intrinsic strong-lensing rate <span class="math notranslate nohighlight">\({\cal N}_{\rm L}\)</span> multiplied by the mean detection probability over the strongly lensed population:
+$$ \begin{equation}
+\begin{split}
+\frac{\Delta N^{\rm obs}_{\rm L}}{\Delta t}<a class="headerlink" href="#the-annual-rate-of-detectable-strongly-lensed-gw-events-is-written-as-the-total-intrinsic-strong-lensing-rate-cal-n-rm-l-multiplied-by-the-mean-detection-probability-over-the-strongly-lensed-population-begin-equation-begin-split-frac-delta-n-rm-obs-rm-l-delta-t" title="Link to this heading"></a></h1>
+<p>{\cal N}<em>{\rm L}
+\bigg\langle
+P({\rm obs}\mid \vec{\theta}^{*}</em>{\rm U}, z_s, \vec{\theta}<em>{\rm L}, \vec{\beta}, {\rm SL})
+\bigg\rangle</em>{\substack{
+\vec{\theta}^{<em>}_{\rm U}\sim P(\vec{\theta}^{</em>}<em>{\rm U}) \
+z_s \sim P(z_s \mid {\rm SL}) \
+z_L \sim P(z_L \mid z_s, {\rm SL}) \
+\vec{\theta}^{*}</em>{\rm L} \sim P(\vec{\theta}^{*}<em>{\rm L} \mid z_L, z_s, {\rm SL}) \
+\vec{\beta} \sim P(\vec{\beta} \mid z_s, \vec{\theta}</em>{\rm L}, {\rm SL})
+}} , .
+\end{split}
+\end{equation} $$</p>
+<p>The distributions appearing in the average define the Monte Carlo sampling procedure. The corresponding parameter priors and their adopted forms are summarized below.</p>
+<section id="lens-parameter-priors">
+<h2>Lens Parameter Priors<a class="headerlink" href="#lens-parameter-priors" title="Link to this heading"></a></h2>
+<p>Redshifts conditioned on strong lensing:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Parameter</p></th>
+<th class="head text-left"><p>Unit</p></th>
+<th class="head text-left"><p>Prior <br>Distribution</p></th>
+<th class="head text-left"><p>Range <br>[Min, Max]</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><span class="math notranslate nohighlight">\(z_s\)</span></p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\propto \frac{P({\rm SL} \mid z_s) R_{\rm U}(z_s)}{1+z_s}\,\frac{dV_c}{dz_s}\)</span><br> Intrinsic merger rate<br> weighted by SL<br> optical depth</p></td>
+<td class="text-left"><p>[0.0, 10.0]</p></td>
+<td class="text-left"><p>Source redshift</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><span class="math notranslate nohighlight">\(z_L\)</span></p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\frac{\Phi(z_L,z_s)}{{\cal N}_\Phi(z_s)}\)</span><br> Integrated number<br> density weighted<br> by SL cross-section</p></td>
+<td class="text-left"><p>[0.0, <span class="math notranslate nohighlight">\(z_s\)</span>]</p></td>
+<td class="text-left"><p>Lens redshift</p></td>
+</tr>
+</tbody>
+</table>
+<p>Lens intrinsic priors used with cross-section weighting:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Parameter</p></th>
+<th class="head text-left"><p>Unit</p></th>
+<th class="head text-left"><p>Prior <br>Distribution</p></th>
+<th class="head text-left"><p>Range <br>[Min, Max]</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><span class="math notranslate nohighlight">\(\sigma\)</span></p></td>
+<td class="text-left"><p>km/s</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\frac{d^2N(z_L, \sigma)}{dV_c \, d\sigma}\)</span><br> number density</p></td>
+<td class="text-left"><p>[100, 400]</p></td>
+<td class="text-left"><p>Velocity dispersion<br> Oguri et al. 2018</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><span class="math notranslate nohighlight">\(q\)</span></p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>Rayleigh<br> distribution</p></td>
+<td class="text-left"><p>[0.2, 1.0]</p></td>
+<td class="text-left"><p>Axis ratio<br> Collett et al. 2015</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><span class="math notranslate nohighlight">\(\phi_{\rm rot}\)</span></p></td>
+<td class="text-left"><p>rad</p></td>
+<td class="text-left"><p>Uniform</p></td>
+<td class="text-left"><p>[0, <span class="math notranslate nohighlight">\(\pi\)</span>]</p></td>
+<td class="text-left"><p>Lens orientation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><span class="math notranslate nohighlight">\(\gamma\)</span></p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>Normal</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>Density profile slope<br> (Mean: 2.0, Std: 0.1)<br> Sonnenfeld et al. 2024</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><span class="math notranslate nohighlight">\(\gamma_1, \gamma_2\)</span></p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>Normal</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>External shear components<br> (Mean: 0.0, Std: 0.05)<br> Collet et al. 2015</p></td>
+</tr>
+</tbody>
+</table>
+<p>The intrinsic lens-parameter priors above are combined with the multi-image cross-section through importance weighting to obtain samples from <span class="math notranslate nohighlight">\(P(\vec{\theta}^{*}_{\rm L}\mid z_L,z_s,{\rm SL})\)</span>, as described in the previous section.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

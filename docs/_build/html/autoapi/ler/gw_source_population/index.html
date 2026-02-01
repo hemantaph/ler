@@ -60,6 +60,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html#id1">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -515,7 +516,7 @@ source redshifts weighted by the merger rate density in the detector frame.</p>
 <td></td>
 <td><p>Merger rate density function R(z)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id27" title="ler.gw_source_population.CBCSourceRedshiftDistribution.merger_rate_density_model_list"><code class="xref py py-attr docutils literal notranslate"><span class="pre">merger_rate_density_model_list</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id27" title="ler.gw_source_population.CBCSourceRedshiftDistribution.available_merger_rate_density_model"><code class="xref py py-attr docutils literal notranslate"><span class="pre">available_merger_rate_density_model</span></code></a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
 <td></td>
 <td><p>Available merger rate density models</p></td>
@@ -755,13 +756,13 @@ in source frame (units: Mpc^-3 yr^-1).</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="ler.gw_source_population.CBCSourceRedshiftDistribution.merger_rate_density_model_list">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">merger_rate_density_model_list</span></span><a class="headerlink" href="#ler.gw_source_population.CBCSourceRedshiftDistribution.merger_rate_density_model_list" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="ler.gw_source_population.CBCSourceRedshiftDistribution.available_merger_rate_density_model">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_merger_rate_density_model</span></span><a class="headerlink" href="#ler.gw_source_population.CBCSourceRedshiftDistribution.available_merger_rate_density_model" title="Link to this definition"></a></dt>
 <dd><p>Dictionary of available merger rate density models and default parameters.</p>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>merger_rate_density_model_list</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary with model names as keys and parameter dicts as values.</p>
+<dt><strong>available_merger_rate_density_model</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary with model names as keys and parameter dicts as values.</p>
 <p>Available models:</p>
 <ul class="simple">
 <li><p>‘merger_rate_density_bbh_oguri2018’</p></li>
@@ -1170,7 +1171,7 @@ source redshifts weighted by the merger rate density in the detector frame.</p>
 <td></td>
 <td><p>Merger rate density function R(z)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id27" title="ler.gw_source_population.CBCSourceRedshiftDistribution.merger_rate_density_model_list"><code class="xref py py-attr docutils literal notranslate"><span class="pre">merger_rate_density_model_list</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id27" title="ler.gw_source_population.CBCSourceRedshiftDistribution.available_merger_rate_density_model"><code class="xref py py-attr docutils literal notranslate"><span class="pre">available_merger_rate_density_model</span></code></a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
 <td></td>
 <td><p>Available merger rate density models</p></td>
@@ -1411,12 +1412,12 @@ in source frame (units: Mpc^-3 yr^-1).</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="id27">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">merger_rate_density_model_list</span></span><a class="headerlink" href="#id27" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_merger_rate_density_model</span></span><a class="headerlink" href="#id27" title="Link to this definition"></a></dt>
 <dd><p>Dictionary of available merger rate density models and default parameters.</p>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>merger_rate_density_model_list</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary with model names as keys and parameter dicts as values.</p>
+<dt><strong>available_merger_rate_density_model</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary with model names as keys and parameter dicts as values.</p>
 <p>Available models:</p>
 <ul class="simple">
 <li><p>‘merger_rate_density_bbh_oguri2018’</p></li>
@@ -2821,6 +2822,7 @@ unnormalized.</p>
 <dt class="sig sig-object py" id="ler.gw_source_population.merger_rate_density_madau_dickinson2014_function">
 <span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.</span></span><span class="sig-name descname"><span class="pre">merger_rate_density_madau_dickinson2014_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">19</span> <span class="pre">*</span> <span class="pre">1e-09</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.015</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.6</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/gw_source_population/prior_functions.html#merger_rate_density_madau_dickinson2014_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.merger_rate_density_madau_dickinson2014_function" title="Link to this definition"></a></dt>
 <dd><p>Compute the merger rate density for BBH using Madau &amp; Dickinson (2014) model.</p>
+<p>density(zs) ∝ (1 + zs) ** b / (1 + ((1 + zs) / c) ** d)</p>
 <p>Reference: Eqn. 15 of <a class="reference external" href="https://arxiv.org/pdf/1403.0007">https://arxiv.org/pdf/1403.0007</a></p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

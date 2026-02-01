@@ -149,7 +149,7 @@ class CBCSourceRedshiftDistribution(object):
     +------------------------------------------------+---------------------------+-------+----------------------------------------------+
     | :attr:`~merger_rate_density`                   | ``callable``              |       | Merger rate density function R(z)            |
     +------------------------------------------------+---------------------------+-------+----------------------------------------------+
-    | :attr:`~merger_rate_density_model_list`        | ``dict``                  |       | Available merger rate density models         |
+    | :attr:`~available_merger_rate_density_model`   | ``dict``                  |       | Available merger rate density models         |
     +------------------------------------------------+---------------------------+-------+----------------------------------------------+
     | :attr:`~source_redshift`                       | ``FunctionConditioning``  |       | Source redshift sampler                      |
     +------------------------------------------------+---------------------------+-------+----------------------------------------------+
@@ -327,13 +327,13 @@ class CBCSourceRedshiftDistribution(object):
             merger_rate_density_ = merger_rate_density
 
             if isinstance(merger_rate_density, str):
-                if merger_rate_density in self.merger_rate_density_model_list:
-                    merger_rate_density_param_ = self.merger_rate_density_model_list[
+                if merger_rate_density in self.available_merger_rate_density_model:
+                    merger_rate_density_param_ = self.available_merger_rate_density_model[
                         merger_rate_density
                     ]
                 else:
                     raise ValueError(
-                        f"'merger rate density' sampler '{merger_rate_density}' not available.\n Available 'merger rate density' samplers and its parameters are: {self.merger_rate_density_model_list}"
+                        f"'merger rate density' sampler '{merger_rate_density}' not available.\n Available 'merger rate density' samplers and its parameters are: {self.available_merger_rate_density_model}"
                     )
             elif callable(merger_rate_density):
                 print("using user provided custom merger rate density function")
@@ -457,7 +457,7 @@ class CBCSourceRedshiftDistribution(object):
         identifier_dict["resolution"] = self.create_new_interpolator[
             "merger_rate_density"
         ]["resolution"]
-        param_dict = self.merger_rate_density_model_list[
+        param_dict = self.available_merger_rate_density_model[
             "merger_rate_density_bbh_oguri2018"
         ].copy()
         param_dict.update(kwargs)
@@ -528,7 +528,7 @@ class CBCSourceRedshiftDistribution(object):
         identifier_dict["resolution"] = self.create_new_interpolator[
             "merger_rate_density"
         ]["resolution"]
-        param_dict = self.merger_rate_density_model_list["sfr_with_time_delay"].copy()
+        param_dict = self.available_merger_rate_density_model["sfr_with_time_delay"].copy()
         param_dict.update(kwargs)
         identifier_dict.update(param_dict)
 
@@ -678,7 +678,7 @@ class CBCSourceRedshiftDistribution(object):
         identifier_dict["resolution"] = self.create_new_interpolator[
             "merger_rate_density"
         ]["resolution"]
-        param_dict = self.merger_rate_density_model_list[
+        param_dict = self.available_merger_rate_density_model[
             "merger_rate_density_madau_dickinson2014"
         ].copy()
         param_dict.update(kwargs)
@@ -765,7 +765,7 @@ class CBCSourceRedshiftDistribution(object):
         identifier_dict["resolution"] = self.create_new_interpolator[
             "merger_rate_density"
         ]["resolution"]
-        param_dict = self.merger_rate_density_model_list[
+        param_dict = self.available_merger_rate_density_model[
             "merger_rate_density_madau_dickinson_belczynski_ng"
         ].copy()
         param_dict.update(kwargs)
@@ -848,7 +848,7 @@ class CBCSourceRedshiftDistribution(object):
         identifier_dict["resolution"] = self.create_new_interpolator[
             "merger_rate_density"
         ]["resolution"]
-        param_dict = self.merger_rate_density_model_list[
+        param_dict = self.available_merger_rate_density_model[
             "merger_rate_density_bbh_popIII_ken2022"
         ].copy()
         param_dict.update(kwargs)
@@ -932,7 +932,7 @@ class CBCSourceRedshiftDistribution(object):
         identifier_dict["resolution"] = self.create_new_interpolator[
             "merger_rate_density"
         ]["resolution"]
-        param_dict = self.merger_rate_density_model_list[
+        param_dict = self.available_merger_rate_density_model[
             "merger_rate_density_bbh_primordial_ken2022"
         ].copy()
         param_dict.update(kwargs)
@@ -987,7 +987,7 @@ class CBCSourceRedshiftDistribution(object):
     @merger_rate_density.setter
     def merger_rate_density(self, function):
 
-        if function in self.merger_rate_density_model_list:
+        if function in self.available_merger_rate_density_model:
             print(f"using ler available merger rate density model: {function}")
             args = self.merger_rate_density_param
             if args is None:
@@ -1037,7 +1037,7 @@ class CBCSourceRedshiftDistribution(object):
 
         else:
             raise ValueError(
-                "merger_rate_density must be a function, FunctionConditioning object, or a string from the available 'merger_rate_density_model_list'"
+                "merger_rate_density must be a function, FunctionConditioning object, or a string from the available 'available_merger_rate_density_model'"
             )
 
     @property
@@ -1253,13 +1253,13 @@ class CBCSourceRedshiftDistribution(object):
         self._normalization_pdf_z = value
 
     @property
-    def merger_rate_density_model_list(self):
+    def available_merger_rate_density_model(self):
         """
         Dictionary of available merger rate density models and default parameters. \n
 
         Returns
         -------
-        merger_rate_density_model_list : ``dict``
+        available_merger_rate_density_model : ``dict``
             Dictionary with model names as keys and parameter dicts as values. \n
             Available models: \n
             - 'merger_rate_density_bbh_oguri2018' \n
@@ -1269,12 +1269,12 @@ class CBCSourceRedshiftDistribution(object):
         """
         # Return cached version if available
         if (
-            hasattr(self, "_merger_rate_density_model_list")
-            and self._merger_rate_density_model_list is not None
+            hasattr(self, "_available_merger_rate_density_model")
+            and self._available_merger_rate_density_model is not None
         ):
-            return self._merger_rate_density_model_list
+            return self._available_merger_rate_density_model
 
-        self._merger_rate_density_model_list = dict(
+        self._available_merger_rate_density_model = dict(
             merger_rate_density_bbh_oguri2018=dict(R0=19 * 1e-9, b2=1.6, b3=2.1, b4=30),
             merger_rate_density_madau_dickinson2014=dict(
                 R0=19 * 1e-9, a=0.015, b=2.7, c=2.9, d=5.6
@@ -1293,4 +1293,4 @@ class CBCSourceRedshiftDistribution(object):
             ),
         )
 
-        return self._merger_rate_density_model_list
+        return self._available_merger_rate_density_model

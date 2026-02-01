@@ -57,6 +57,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html#id1">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -455,8 +456,9 @@
             <span class="c1"># ImageProperties class params</span>
             <span class="n">n_min_images</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="n">n_max_images</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-            <span class="n">time_window</span><span class="o">=</span><span class="mi">365</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">3600</span> <span class="o">*</span> <span class="mi">20</span><span class="p">,</span>
+            <span class="n">time_window</span><span class="o">=</span><span class="mi">365</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">3600</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
             <span class="n">lens_model_list</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;EPL_NUMBA&quot;</span><span class="p">,</span> <span class="s2">&quot;SHEAR&quot;</span><span class="p">],</span>
+            <span class="n">effective_params_in_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="c1"># CBCSourceParameterDistribution class params</span>
             <span class="n">event_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">event_type</span><span class="p">,</span>
             <span class="n">source_priors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -490,6 +492,7 @@
             <span class="n">n_min_images</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;n_min_images&quot;</span><span class="p">],</span>
             <span class="n">n_max_images</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;n_max_images&quot;</span><span class="p">],</span>
             <span class="n">time_window</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;time_window&quot;</span><span class="p">],</span>
+            <span class="n">effective_params_in_output</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;effective_params_in_output&quot;</span><span class="p">],</span>
             <span class="n">lens_model_list</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_model_list&quot;</span><span class="p">],</span>
             <span class="c1"># CBCSourceParameterDistribution class params</span>
             <span class="n">event_type</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;event_type&quot;</span><span class="p">],</span>
@@ -753,6 +756,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    n_min_images = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;n_min_images&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    n_max_images = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;n_max_images&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    time_window = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;time_window&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    effective_params_in_output = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;effective_params_in_output&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    lens_model_list = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;lens_model_list&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="s2">&quot;pdet_args&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">:</span>
@@ -1248,7 +1252,7 @@
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | q                            |           | axis ratio                                            |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | theta_E                      | arcsec    | Einstein radius                                       |</span>
+<span class="sd">            | theta_E                      | radian    | Einstein radius                                       |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | phi                          | rad       | axis rotation angle. counter-clockwise from the       |</span>
 <span class="sd">            |                              |           | positive x-axis (RA-like axis) to the major axis of   |</span>
@@ -1278,6 +1282,8 @@
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | a_2                          |           | spin of the secondary compact binary                  |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
+<span class="sd">            | luminosity_distance          | Mpc       | luminosity distance of the source                      |</span>
+<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | mass_1_source                | Msun      | mass of the primary compact binary (source frame)     |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | mass_2_source                | Msun      | mass of the secondary compact binary (source frame)   |</span>
@@ -1286,9 +1292,9 @@
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | mass_2                       | Msun      | mass of the secondary compact binary (detector frame) |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | x0_image_positions           | arcsec    | x-coordinate (RA-like axis) of the images             |</span>
+<span class="sd">            | x0_image_positions           | radian    | x-coordinate (RA-like axis) of the images             |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | x1_image_positions           | arcsec    | y-coordinate (Dec-like axis) of the images            |</span>
+<span class="sd">            | x1_image_positions           | radian    | y-coordinate (Dec-like axis) of the images            |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | magnifications               |           | magnifications                                        |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
@@ -1298,11 +1304,24 @@
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | n_images                     |           | number of images                                      |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | x_source                     | arcsec    | x-coordinate (RA-like axis) of the source             |</span>
+<span class="sd">            | x_source                     | radian    | x-coordinate (RA-like axis) of the source             |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | y_source                     | arcsec    | y-coordinate (Dec-like axis) of the source            |</span>
+<span class="sd">            | y_source                     | radian    | y-coordinate (Dec-like axis) of the source            |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | effective_luminosity_distance| Mpc       | effective luminosity distance of the images           |</span>
+<span class="sd">            |                              |           | luminosity_distance / sqrt(|magnifications_i|)        |</span>
+<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
+<span class="sd">            | effective_geocent_time       | s         | effective GPS time of coalescence of the images       |</span>
+<span class="sd">            |                              |           | geocent_time + time_delays_i                          |</span>
+<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
+<span class="sd">            | effective_phase              | rad       | morse-phase-corrected phase                           |</span>
+<span class="sd">            |                              |           | phi - morse_phase_i                                   |</span>
+<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
+<span class="sd">            | effective_ra                 | rad       | RA of the image                                       |</span>
+<span class="sd">            |                              |           | ra + (x0_image_positions_i - x_source)/cos(dec)       |</span>
+<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
+<span class="sd">            | effective_dec                | rad       | Dec of the image                                      |</span>
+<span class="sd">            |                              |           | dec + (x1_image_positions_i - y_source)               |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | effective_geocent_time       | s         | effective GPS time of coalescence of the images       |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
@@ -1476,7 +1495,7 @@
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | q                            |           | axis ratio                                            |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | theta_E                      | arcsec    | Einstein radius                                       |</span>
+<span class="sd">            | theta_E                      | radian    | Einstein radius                                       |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | phi                          | rad       | axis rotation angle. counter-clockwise from the       |</span>
 <span class="sd">            |                              |           | positive x-axis (RA-like axis) to the major axis of   |</span>
@@ -1506,6 +1525,8 @@
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | a_2                          |           | spin of the secondary compact binary                  |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
+<span class="sd">            | luminosity_distance          | Mpc       | luminosity distance of the source                      |</span>
+<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | mass_1_source                | Msun      | mass of the primary compact binary (source frame)     |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | mass_2_source                | Msun      | mass of the secondary compact binary (source frame)   |</span>
@@ -1514,9 +1535,9 @@
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | mass_2                       | Msun      | mass of the secondary compact binary (detector frame) |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | x0_image_positions           | arcsec    | x-coordinate (RA-like axis) of the images             |</span>
+<span class="sd">            | x0_image_positions           | radian    | x-coordinate (RA-like axis) of the images             |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | x1_image_positions           | arcsec    | y-coordinate (Dec-like axis) of the images            |</span>
+<span class="sd">            | x1_image_positions           | radian    | y-coordinate (Dec-like axis) of the images            |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | magnifications               |           | magnifications                                        |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
@@ -1526,13 +1547,24 @@
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | n_images                     |           | number of images                                      |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | x_source                     | arcsec    | x-coordinate (RA-like axis) of the source             |</span>
+<span class="sd">            | x_source                     | radian    | x-coordinate (RA-like axis) of the source             |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | y_source                     | arcsec    | y-coordinate (Dec-like axis) of the source            |</span>
+<span class="sd">            | y_source                     | radian    | y-coordinate (Dec-like axis) of the source            |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | effective_luminosity_distance| Mpc       | effective luminosity distance of the images           |</span>
+<span class="sd">            |                              |           | luminosity_distance / sqrt(|magnifications_i|)        |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | effective_geocent_time       | s         | effective GPS time of coalescence of the images       |</span>
+<span class="sd">            |                              |           | geocent_time + time_delays_i                          |</span>
+<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
+<span class="sd">            | effective_phase              | rad       | morse-phase-corrected phase                           |</span>
+<span class="sd">            |                              |           | phi - morse_phase_i                                   |</span>
+<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
+<span class="sd">            | effective_ra                 | rad       | RA of the image                                       |</span>
+<span class="sd">            |                              |           | ra + (x0_image_positions_i - x_source)/cos(dec)       |</span>
+<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
+<span class="sd">            | effective_dec                | rad       | Dec of the image                                      |</span>
+<span class="sd">            |                              |           | dec + (x1_image_positions_i - y_source)               |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | pdet_L1                      |           | detection probability of L1                           |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
@@ -2265,10 +2297,29 @@
             <span class="n">remove_file</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># get sample size as size from json file</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">):</span>
+            <span class="n">buffer_condition</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
                 <span class="n">param_final</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
-                <span class="n">n_collected</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">param_final</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">])</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;data on output file </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2"> not found or corrupted. Starting from scratch.&quot;</span>
+                <span class="p">)</span>
+                <span class="n">remove_file</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+                <span class="n">remove_file</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">)</span>
+                <span class="n">buffer_condition</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">try</span><span class="p">:</span>
                 <span class="n">meta_data</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;data on meta data file </span><span class="si">{</span><span class="n">meta_data_path</span><span class="si">}</span><span class="s2"> not found or corrupted. Starting from scratch.&quot;</span>
+                <span class="p">)</span>
+                <span class="n">remove_file</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+                <span class="n">remove_file</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">)</span>
+                <span class="n">buffer_condition</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="n">buffer_condition</span><span class="p">:</span>
+                <span class="n">n_collected</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">param_final</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">])</span>
                 <span class="n">n</span> <span class="o">=</span> <span class="n">meta_data</span><span class="p">[</span><span class="s2">&quot;detectable_events&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                 <span class="n">events_total</span> <span class="o">=</span> <span class="n">meta_data</span><span class="p">[</span><span class="s2">&quot;events_total&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
@@ -2431,16 +2482,19 @@
 
         <span class="c1"># save meta data</span>
         <span class="n">meta_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">events_total</span><span class="o">=</span><span class="p">[</span><span class="n">events_total</span><span class="p">],</span>
-            <span class="n">detectable_events</span><span class="o">=</span><span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">n</span><span class="p">)],</span>
-            <span class="n">total_rate</span><span class="o">=</span><span class="p">[</span><span class="n">total_rate</span><span class="p">],</span>
+            <span class="n">events_total</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">events_total</span><span class="p">]),</span>
+            <span class="n">detectable_events</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">n</span><span class="p">]),</span>
+            <span class="n">total_rate</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">total_rate</span><span class="p">]),</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">dict_</span> <span class="o">=</span> <span class="n">append_json</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">,</span> <span class="n">meta_data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
-                <span class="n">dict_</span> <span class="o">=</span> <span class="n">append_json</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">,</span> <span class="n">meta_data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error in appending meta data. Replacing the existing meta data file.&quot;</span><span class="p">)</span>
+                <span class="c1"># remove and recreate the meta data file</span>
+                <span class="n">remove_file</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">)</span>
+                <span class="n">dict_</span> <span class="o">=</span> <span class="n">append_json</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">,</span> <span class="n">meta_data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">dict_</span> <span class="o">=</span> <span class="n">append_json</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">,</span> <span class="n">meta_data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 

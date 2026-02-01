@@ -229,7 +229,7 @@ def cross_section_unit_mp(params):
     idx : ``int``
         Worker index for result ordering.
     area : ``float``
-        Cross-section area in square arcseconds.
+        Cross-section area (dimensionless, for theta_E = 1).
     """
     e1, e2, gamma, gamma1, gamma2, idx = params
     area = cross_section(1.0, e1, e2, gamma, gamma1, gamma2)
@@ -246,14 +246,14 @@ def cross_section_mp(params):
     Parameters
     ----------
     params : ``tuple``
-        Packed parameters (theta_E, e1, e2, gamma, gamma1, gamma2, idx).
+        Packed parameters (theta_E, e1, e2, gamma, gamma1, gamma2, idx). theta_E is in radians.
 
     Returns
     -------
     idx : ``int``
         Worker index for result ordering.
     area : ``float``
-        Cross-section area in square arcseconds.
+        Cross-section area (radian^2).
     """
     theta_E, e1, e2, gamma, gamma1, gamma2, idx = params
     area = cross_section(theta_E, e1, e2, gamma, gamma1, gamma2)

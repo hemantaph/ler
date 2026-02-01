@@ -90,7 +90,7 @@ Attributes
 
            - [7]: zs - source redshift
 
-           - [8]: einstein_radius - Einstein radius (units: arcsec)
+           - [8]: einstein_radius - Einstein radius (units: radians)
 
            - [9]: iteration - iteration index for tracking
 
@@ -99,16 +99,16 @@ Attributes
    :Returns:
 
        **x_source** : ``float``
-           Source x-position (units: arcsec).
+           Source x-position (units: radians).
 
        **y_source** : ``float``
-           Source y-position (units: arcsec).
+           Source y-position (units: radians).
 
        **x0_image_position** : ``numpy.ndarray``
-           Image x-positions (units: arcsec).
+           Image x-positions (units: radians).
 
        **x1_image_position** : ``numpy.ndarray``
-           Image y-positions (units: arcsec).
+           Image y-positions (units: radians).
 
        **magnifications** : ``numpy.ndarray``
            Magnification factors for each image.

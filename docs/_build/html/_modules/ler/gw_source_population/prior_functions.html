@@ -57,6 +57,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html#id1">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -217,6 +218,8 @@
 <span class="k">def</span> <span class="nf">merger_rate_density_madau_dickinson2014_function</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">R0</span><span class="o">=</span><span class="mi">19</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">2.7</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">2.9</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">5.6</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the merger rate density for BBH using Madau &amp; Dickinson (2014) model.</span>
+
+<span class="sd">    density(zs) ∝ (1 + zs) ** b / (1 + ((1 + zs) / c) ** d)</span>
 
 <span class="sd">    Reference: Eqn. 15 of https://arxiv.org/pdf/1403.0007</span>
 

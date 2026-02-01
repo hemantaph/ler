@@ -191,7 +191,7 @@ Attributes
            Worker index for result ordering.
 
        **area** : ``float``
-           Cross-section area in square arcseconds.
+           Cross-section area (dimensionless, for theta_E = 1).
 
 
 
@@ -219,7 +219,7 @@ Attributes
    :Parameters:
 
        **params** : ``tuple``
-           Packed parameters (theta_E, e1, e2, gamma, gamma1, gamma2, idx).
+           Packed parameters (theta_E, e1, e2, gamma, gamma1, gamma2, idx). theta_E is in radians.
 
    :Returns:
 
@@ -227,7 +227,7 @@ Attributes
            Worker index for result ordering.
 
        **area** : ``float``
-           Cross-section area in square arcseconds.
+           Cross-section area (radian^2).
 
 
 

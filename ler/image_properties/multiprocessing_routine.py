@@ -83,20 +83,20 @@ def solve_lens_equation(lens_parameters):
         - [5]: gamma2 - external shear component 2 \n
         - [6]: zl - lens redshift \n
         - [7]: zs - source redshift \n
-        - [8]: einstein_radius - Einstein radius (units: arcsec) \n
+        - [8]: einstein_radius - Einstein radius (units: radians) \n
         - [9]: iteration - iteration index for tracking \n
         - [10:]: lens_model_list - lens model names (e.g., 'EPL_NUMBA', 'SHEAR') \n
 
     Returns
     -------
     x_source : ``float``
-        Source x-position (units: arcsec).
+        Source x-position (units: radians).
     y_source : ``float``
-        Source y-position (units: arcsec).
+        Source y-position (units: radians).
     x0_image_position : ``numpy.ndarray``
-        Image x-positions (units: arcsec).
+        Image x-positions (units: radians).
     x1_image_position : ``numpy.ndarray``
-        Image y-positions (units: arcsec).
+        Image y-positions (units: radians).
     magnifications : ``numpy.ndarray``
         Magnification factors for each image.
     time_delays : ``numpy.ndarray``

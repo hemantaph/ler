@@ -60,6 +60,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analytical_formulation_unlensed.html#id1">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -280,7 +281,7 @@ source redshifts weighted by the merger rate density in the detector frame.</p>
 <td></td>
 <td><p>Merger rate density function R(z)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_model_list" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_model_list"><code class="xref py py-attr docutils literal notranslate"><span class="pre">merger_rate_density_model_list</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.available_merger_rate_density_model" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.available_merger_rate_density_model"><code class="xref py py-attr docutils literal notranslate"><span class="pre">available_merger_rate_density_model</span></code></a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
 <td></td>
 <td><p>Available merger rate density models</p></td>
@@ -520,13 +521,13 @@ in source frame (units: Mpc^-3 yr^-1).</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_model_list">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">merger_rate_density_model_list</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.merger_rate_density_model_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_model_list" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.available_merger_rate_density_model">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_merger_rate_density_model</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_redshift_distribution.html#CBCSourceRedshiftDistribution.available_merger_rate_density_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.available_merger_rate_density_model" title="Link to this definition"></a></dt>
 <dd><p>Dictionary of available merger rate density models and default parameters.</p>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>merger_rate_density_model_list</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary with model names as keys and parameter dicts as values.</p>
+<dt><strong>available_merger_rate_density_model</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary with model names as keys and parameter dicts as values.</p>
 <p>Available models:</p>
 <ul class="simple">
 <li><p>‘merger_rate_density_bbh_oguri2018’</p></li>

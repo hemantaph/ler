@@ -57,6 +57,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html#id1">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -498,8 +499,9 @@
         <span class="n">input_params_image</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">n_min_images</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="n">n_max_images</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-            <span class="n">time_window</span><span class="o">=</span><span class="mi">365</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">3600</span> <span class="o">*</span> <span class="mi">20</span><span class="p">,</span>
+            <span class="n">time_window</span><span class="o">=</span><span class="mi">365</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">3600</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
             <span class="n">lens_model_list</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;EPL_NUMBA&quot;</span><span class="p">,</span> <span class="s2">&quot;SHEAR&quot;</span><span class="p">],</span>
+            <span class="n">effective_params_in_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">input_params_image</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 
@@ -513,6 +515,7 @@
             <span class="n">time_window</span><span class="o">=</span><span class="n">input_params_image</span><span class="p">[</span><span class="s2">&quot;time_window&quot;</span><span class="p">],</span>
             <span class="n">spin_zero</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spin_zero</span><span class="p">,</span>
             <span class="n">spin_precession</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spin_precession</span><span class="p">,</span>
+            <span class="n">effective_params_in_output</span><span class="o">=</span><span class="n">input_params_image</span><span class="p">[</span><span class="s2">&quot;effective_params_in_output&quot;</span><span class="p">],</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="LensGalaxyParameterDistribution.sample_lens_parameters">
@@ -547,7 +550,7 @@
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | q                            |           | axis ratio                                            |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | theta_E                      | arcsec    | Einstein radius                                       |</span>
+<span class="sd">            | theta_E                      | radian    | Einstein radius                                       |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | phi                          | rad       | axis rotation angle. counter-clockwise from the       |</span>
 <span class="sd">            |                              |           | positive x-axis (RA-like axis) to the major axis of   |</span>
@@ -576,6 +579,8 @@
 <span class="sd">            | a_1                          |           | spin of the primary compact binary                    |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | a_2                          |           | spin of the secondary compact binary                  |</span>
+<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
+<span class="sd">            | luminosity_distance          | Mpc       | luminosity distance of the source                      |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | mass_1_source                | Msun      | mass of the primary compact binary (source frame)     |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
@@ -636,7 +641,7 @@
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | q                            |           | axis ratio                                            |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | theta_E                      | arcsec    | Einstein radius                                       |</span>
+<span class="sd">            | theta_E                      | radian    | Einstein radius                                       |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | phi                          | rad       | axis rotation angle. counter-clockwise from the       |</span>
 <span class="sd">            |                              |           | positive x-axis (RA-like axis) to the major axis of   |</span>
@@ -756,7 +761,7 @@
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | q                            |           | axis ratio                                            |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | theta_E                      | arcsec    | Einstein radius                                       |</span>
+<span class="sd">            | theta_E                      | radian    | Einstein radius                                       |</span>
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">            | phi                          | rad       | axis rotation angle. counter-clockwise from the       |</span>
 <span class="sd">            |                              |           | positive x-axis (RA-like axis) to the major axis of   |</span>

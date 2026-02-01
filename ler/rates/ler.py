@@ -350,8 +350,9 @@ class LeR(LensGalaxyParameterDistribution):
             # ImageProperties class params
             n_min_images=2,
             n_max_images=4,
-            time_window=365 * 24 * 3600 * 20,
+            time_window=365 * 24 * 3600 * 2,
             lens_model_list=["EPL_NUMBA", "SHEAR"],
+            effective_params_in_output=True,
             # CBCSourceParameterDistribution class params
             event_type=self.event_type,
             source_priors=None,
@@ -385,6 +386,7 @@ class LeR(LensGalaxyParameterDistribution):
             n_min_images=input_params["n_min_images"],
             n_max_images=input_params["n_max_images"],
             time_window=input_params["time_window"],
+            effective_params_in_output=input_params["effective_params_in_output"],
             lens_model_list=input_params["lens_model_list"],
             # CBCSourceParameterDistribution class params
             event_type=input_params["event_type"],
@@ -648,6 +650,7 @@ class LeR(LensGalaxyParameterDistribution):
         print(f"    n_min_images = {self.ler_args['n_min_images']},")
         print(f"    n_max_images = {self.ler_args['n_max_images']},")
         print(f"    time_window = {self.ler_args['time_window']},")
+        print(f"    effective_params_in_output = {self.ler_args['effective_params_in_output']},")
         print(f"    lens_model_list = {self.ler_args['lens_model_list']},")
 
         if "pdet_args" in self.ler_args:
@@ -1129,7 +1132,7 @@ class LeR(LensGalaxyParameterDistribution):
             +------------------------------+-----------+-------------------------------------------------------+
             | q                            |           | axis ratio                                            |
             +------------------------------+-----------+-------------------------------------------------------+
-            | theta_E                      | arcsec    | Einstein radius                                       |
+            | theta_E                      | radian    | Einstein radius                                       |
             +------------------------------+-----------+-------------------------------------------------------+
             | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
             |                              |           | positive x-axis (RA-like axis) to the major axis of   |
@@ -1159,6 +1162,8 @@ class LeR(LensGalaxyParameterDistribution):
             +------------------------------+-----------+-------------------------------------------------------+
             | a_2                          |           | spin of the secondary compact binary                  |
             +------------------------------+-----------+-------------------------------------------------------+
+            | luminosity_distance          | Mpc       | luminosity distance of the source                      |
+            +------------------------------+-----------+-------------------------------------------------------+
             | mass_1_source                | Msun      | mass of the primary compact binary (source frame)     |
             +------------------------------+-----------+-------------------------------------------------------+
             | mass_2_source                | Msun      | mass of the secondary compact binary (source frame)   |
@@ -1167,9 +1172,9 @@ class LeR(LensGalaxyParameterDistribution):
             +------------------------------+-----------+-------------------------------------------------------+
             | mass_2                       | Msun      | mass of the secondary compact binary (detector frame) |
             +------------------------------+-----------+-------------------------------------------------------+
-            | x0_image_positions           | arcsec    | x-coordinate (RA-like axis) of the images             |
+            | x0_image_positions           | radian    | x-coordinate (RA-like axis) of the images             |
             +------------------------------+-----------+-------------------------------------------------------+
-            | x1_image_positions           | arcsec    | y-coordinate (Dec-like axis) of the images            |
+            | x1_image_positions           | radian    | y-coordinate (Dec-like axis) of the images            |
             +------------------------------+-----------+-------------------------------------------------------+
             | magnifications               |           | magnifications                                        |
             +------------------------------+-----------+-------------------------------------------------------+
@@ -1179,11 +1184,24 @@ class LeR(LensGalaxyParameterDistribution):
             +------------------------------+-----------+-------------------------------------------------------+
             | n_images                     |           | number of images                                      |
             +------------------------------+-----------+-------------------------------------------------------+
-            | x_source                     | arcsec    | x-coordinate (RA-like axis) of the source             |
+            | x_source                     | radian    | x-coordinate (RA-like axis) of the source             |
             +------------------------------+-----------+-------------------------------------------------------+
-            | y_source                     | arcsec    | y-coordinate (Dec-like axis) of the source            |
+            | y_source                     | radian    | y-coordinate (Dec-like axis) of the source            |
             +------------------------------+-----------+-------------------------------------------------------+
             | effective_luminosity_distance| Mpc       | effective luminosity distance of the images           |
+            |                              |           | luminosity_distance / sqrt(|magnifications_i|)        |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | effective_geocent_time       | s         | effective GPS time of coalescence of the images       |
+            |                              |           | geocent_time + time_delays_i                          |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | effective_phase              | rad       | morse-phase-corrected phase                           |
+            |                              |           | phi - morse_phase_i                                   |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | effective_ra                 | rad       | RA of the image                                       |
+            |                              |           | ra + (x0_image_positions_i - x_source)/cos(dec)       |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | effective_dec                | rad       | Dec of the image                                      |
+            |                              |           | dec + (x1_image_positions_i - y_source)               |
             +------------------------------+-----------+-------------------------------------------------------+
             | effective_geocent_time       | s         | effective GPS time of coalescence of the images       |
             +------------------------------+-----------+-------------------------------------------------------+
@@ -1351,7 +1369,7 @@ class LeR(LensGalaxyParameterDistribution):
             +------------------------------+-----------+-------------------------------------------------------+
             | q                            |           | axis ratio                                            |
             +------------------------------+-----------+-------------------------------------------------------+
-            | theta_E                      | arcsec    | Einstein radius                                       |
+            | theta_E                      | radian    | Einstein radius                                       |
             +------------------------------+-----------+-------------------------------------------------------+
             | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
             |                              |           | positive x-axis (RA-like axis) to the major axis of   |
@@ -1381,6 +1399,8 @@ class LeR(LensGalaxyParameterDistribution):
             +------------------------------+-----------+-------------------------------------------------------+
             | a_2                          |           | spin of the secondary compact binary                  |
             +------------------------------+-----------+-------------------------------------------------------+
+            | luminosity_distance          | Mpc       | luminosity distance of the source                      |
+            +------------------------------+-----------+-------------------------------------------------------+
             | mass_1_source                | Msun      | mass of the primary compact binary (source frame)     |
             +------------------------------+-----------+-------------------------------------------------------+
             | mass_2_source                | Msun      | mass of the secondary compact binary (source frame)   |
@@ -1389,9 +1409,9 @@ class LeR(LensGalaxyParameterDistribution):
             +------------------------------+-----------+-------------------------------------------------------+
             | mass_2                       | Msun      | mass of the secondary compact binary (detector frame) |
             +------------------------------+-----------+-------------------------------------------------------+
-            | x0_image_positions           | arcsec    | x-coordinate (RA-like axis) of the images             |
+            | x0_image_positions           | radian    | x-coordinate (RA-like axis) of the images             |
             +------------------------------+-----------+-------------------------------------------------------+
-            | x1_image_positions           | arcsec    | y-coordinate (Dec-like axis) of the images            |
+            | x1_image_positions           | radian    | y-coordinate (Dec-like axis) of the images            |
             +------------------------------+-----------+-------------------------------------------------------+
             | magnifications               |           | magnifications                                        |
             +------------------------------+-----------+-------------------------------------------------------+
@@ -1401,13 +1421,24 @@ class LeR(LensGalaxyParameterDistribution):
             +------------------------------+-----------+-------------------------------------------------------+
             | n_images                     |           | number of images                                      |
             +------------------------------+-----------+-------------------------------------------------------+
-            | x_source                     | arcsec    | x-coordinate (RA-like axis) of the source             |
+            | x_source                     | radian    | x-coordinate (RA-like axis) of the source             |
             +------------------------------+-----------+-------------------------------------------------------+
-            | y_source                     | arcsec    | y-coordinate (Dec-like axis) of the source            |
+            | y_source                     | radian    | y-coordinate (Dec-like axis) of the source            |
             +------------------------------+-----------+-------------------------------------------------------+
             | effective_luminosity_distance| Mpc       | effective luminosity distance of the images           |
+            |                              |           | luminosity_distance / sqrt(|magnifications_i|)        |
             +------------------------------+-----------+-------------------------------------------------------+
             | effective_geocent_time       | s         | effective GPS time of coalescence of the images       |
+            |                              |           | geocent_time + time_delays_i                          |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | effective_phase              | rad       | morse-phase-corrected phase                           |
+            |                              |           | phi - morse_phase_i                                   |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | effective_ra                 | rad       | RA of the image                                       |
+            |                              |           | ra + (x0_image_positions_i - x_source)/cos(dec)       |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | effective_dec                | rad       | Dec of the image                                      |
+            |                              |           | dec + (x1_image_positions_i - y_source)               |
             +------------------------------+-----------+-------------------------------------------------------+
             | pdet_L1                      |           | detection probability of L1                           |
             +------------------------------+-----------+-------------------------------------------------------+
@@ -2127,10 +2158,29 @@ class LeR(LensGalaxyParameterDistribution):
             remove_file(meta_data_path)
         else:
             # get sample size as size from json file
-            if os.path.exists(meta_data_path):
+            buffer_condition = os.path.exists(output_path)
+            try:
                 param_final = get_param_from_json(output_path)
-                n_collected = len(param_final["zs"])
+            except:
+                print(
+                    f"data on output file {output_path} not found or corrupted. Starting from scratch."
+                )
+                remove_file(output_path)
+                remove_file(meta_data_path)
+                buffer_condition = False
+
+            try:
                 meta_data = get_param_from_json(meta_data_path)
+            except:
+                print(
+                    f"data on meta data file {meta_data_path} not found or corrupted. Starting from scratch."
+                )
+                remove_file(output_path)
+                remove_file(meta_data_path)
+                buffer_condition = False
+
+            if buffer_condition:
+                n_collected = len(param_final["zs"])
                 n = meta_data["detectable_events"][-1]
                 events_total = meta_data["events_total"][-1]
 
@@ -2293,16 +2343,19 @@ class LeR(LensGalaxyParameterDistribution):
 
         # save meta data
         meta_data = dict(
-            events_total=[events_total],
-            detectable_events=[float(n)],
-            total_rate=[total_rate],
+            events_total=np.array([events_total]),
+            detectable_events=np.array([n]),
+            total_rate=np.array([total_rate]),
         )
 
         if os.path.exists(meta_data_path):
             try:
                 dict_ = append_json(meta_data_path, meta_data, replace=False)
             except:
-                dict_ = append_json(meta_data_path, meta_data, replace=True)
+                print("Error in appending meta data. Replacing the existing meta data file.")
+                # remove and recreate the meta data file
+                remove_file(meta_data_path)
+                dict_ = append_json(meta_data_path, meta_data, replace=False)
         else:
             dict_ = append_json(meta_data_path, meta_data, replace=True)
 

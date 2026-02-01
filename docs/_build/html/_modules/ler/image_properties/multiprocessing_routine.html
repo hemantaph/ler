@@ -57,6 +57,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html#id1">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
 </ul>
@@ -194,20 +195,20 @@
 <span class="sd">        - [5]: gamma2 - external shear component 2 \n</span>
 <span class="sd">        - [6]: zl - lens redshift \n</span>
 <span class="sd">        - [7]: zs - source redshift \n</span>
-<span class="sd">        - [8]: einstein_radius - Einstein radius (units: arcsec) \n</span>
+<span class="sd">        - [8]: einstein_radius - Einstein radius (units: radians) \n</span>
 <span class="sd">        - [9]: iteration - iteration index for tracking \n</span>
 <span class="sd">        - [10:]: lens_model_list - lens model names (e.g., &#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;) \n</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    x_source : ``float``</span>
-<span class="sd">        Source x-position (units: arcsec).</span>
+<span class="sd">        Source x-position (units: radians).</span>
 <span class="sd">    y_source : ``float``</span>
-<span class="sd">        Source y-position (units: arcsec).</span>
+<span class="sd">        Source y-position (units: radians).</span>
 <span class="sd">    x0_image_position : ``numpy.ndarray``</span>
-<span class="sd">        Image x-positions (units: arcsec).</span>
+<span class="sd">        Image x-positions (units: radians).</span>
 <span class="sd">    x1_image_position : ``numpy.ndarray``</span>
-<span class="sd">        Image y-positions (units: arcsec).</span>
+<span class="sd">        Image y-positions (units: radians).</span>
 <span class="sd">    magnifications : ``numpy.ndarray``</span>
 <span class="sd">        Magnification factors for each image.</span>
 <span class="sd">    time_delays : ``numpy.ndarray``</span>
