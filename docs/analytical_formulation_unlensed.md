@@ -1,7 +1,5 @@
 # Analytical Formulation for Gravitational Wave Event Rates
 
-# Analytical Formulation for Gravitational Wave Event Rates
-
 Written by [Phurailatpam Hemantakumar](https://hemantaph.com). Last updated: June 2024.
 
 ## Overview
