@@ -188,7 +188,7 @@ Functions
    | :meth:`~sample_all_routine_epl_shear_sl`            | Sample EPL+shear lens parameters with strong   |
    |                                                     | lensing condition                              |
    +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~strongly_lensed_source_redshifts`           | Sample source redshifts with lensing condition |
+   | :meth:`~strongly_lensed_source_redshift`           | Sample source redshifts with lensing condition |
    +-----------------------------------------------------+------------------------------------------------+
 
    Instance Attributes
@@ -223,6 +223,33 @@ Functions
 
    ..
        !! processed by numpydoc !!
+   .. py:property:: source_redshift_sl
+
+      
+      Function to sample source redshifts conditioned on strong lensing.
+
+
+
+      :Returns:
+
+          **source_redshift_sl** : ``ler.functions.FunctionConditioning``
+              Function for sampling source redshifts conditioned on strong lensing.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
    .. py:property:: normalization_pdf_z_lensed
 
       
@@ -374,10 +401,6 @@ Functions
 
       ..
           !! processed by numpydoc !!
-
-   .. py:attribute:: sample_source_redshift_sl
-
-      
 
    .. py:attribute:: sample_lens_parameters_routine
 
@@ -544,20 +567,26 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: strongly_lensed_source_redshifts(size=1000)
+   .. py:method:: strongly_lensed_source_redshift(size, get_attribute=False, **kwargs)
 
       
       Sample source redshifts conditioned on strong lensing.
 
-      Uses rejection sampling to generate source redshifts from the CBC source
-      population weighted by the optical depth, which increases with redshift.
 
       :Parameters:
 
           **size** : ``int``
-              Number of redshifts to sample.
+              Number of samples to generate.
 
               default: 1000
+
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters
 
       :Returns:
 
@@ -577,8 +606,8 @@ Functions
 
       >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
       >>> lens = LensGalaxyParameterDistribution()
-      >>> zs = lens.strongly_lensed_source_redshifts(size=1000)
-      >>> print(f"Mean source redshift: {zs.mean():.2f}")
+      >>> zs = lens.strongly_lensed_source_redshift(size=1000)
+      >>> print(f"strongly lensed source redshift: {zs.mean():.2f}")
 
 
 

@@ -11,7 +11,7 @@
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css?v=2aa19091" />
       <link rel="stylesheet" type="text/css" href="_static/scalefix.css" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css?v=776609e1" />
       <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
@@ -59,11 +59,8 @@
 <li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="code_overview.html">Code overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="analytical_formulation_unlensed_pdf.html">Analytical Formulation (PDF)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -210,7 +207,7 @@ ler = LeR(
     # LeR also takes LensGalaxyParameterDistribution class params as kwargs, as follows:
     lens_type = &#39;epl_shear_galaxy&#39;,
     lens_functions = {&#39;cross_section_based_sampler&#39;: &#39;rejection_sampling_with_cross_section_SIE&#39;, &#39;optical_depth&#39;: &#39;optical_depth_SIE_hemanta&#39;, &#39;param_sampler_type&#39;: &#39;sample_all_routine&#39;},
-    lens_param_samplers = {&#39;source_redshift_sl&#39;: &#39;strongly_lensed_source_redshifts&#39;, &#39;lens_redshift&#39;: &#39;lens_redshift_SDSS_catalogue&#39;, &#39;velocity_dispersion&#39;: &#39;velocity_dispersion_ewoud&#39;, &#39;axis_ratio&#39;: &#39;axis_ratio_rayleigh&#39;, &#39;axis_rotation_angle&#39;: &#39;axis_rotation_angle_uniform&#39;, &#39;external_shear&#39;: &#39;shear_norm&#39;, &#39;density_profile_slope&#39;: &#39;density_profile_slope_normal&#39;, &#39;source_parameters&#39;: &#39;sample_gw_parameters&#39;},
+    lens_param_samplers = {&#39;source_redshift_sl&#39;: &#39;strongly_lensed_source_redshift&#39;, &#39;lens_redshift&#39;: &#39;lens_redshift_SDSS_catalogue&#39;, &#39;velocity_dispersion&#39;: &#39;velocity_dispersion_ewoud&#39;, &#39;axis_ratio&#39;: &#39;axis_ratio_rayleigh&#39;, &#39;axis_rotation_angle&#39;: &#39;axis_rotation_angle_uniform&#39;, &#39;external_shear&#39;: &#39;shear_norm&#39;, &#39;density_profile_slope&#39;: &#39;density_profile_slope_normal&#39;, &#39;source_parameters&#39;: &#39;sample_gw_parameters&#39;},
     lens_param_samplers_params = {&#39;source_redshift_sl&#39;: None, &#39;lens_redshift&#39;: None, &#39;velocity_dispersion&#39;: None, &#39;axis_ratio&#39;: {&#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0}, &#39;axis_rotation_angle&#39;: {&#39;phi_min&#39;: 0.0, &#39;phi_max&#39;: 6.283185307179586}, &#39;external_shear&#39;: {&#39;scale&#39;: 0.05}, &#39;density_profile_slope&#39;: {&#39;mean&#39;: 2.0, &#39;std&#39;: 0.2}, &#39;source_parameters&#39;: None},
 
     # LeR also takes ImageProperties class params as kwargs, as follows:

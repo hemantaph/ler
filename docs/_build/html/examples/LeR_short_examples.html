@@ -11,7 +11,7 @@
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
       <link rel="stylesheet" type="text/css" href="../_static/scalefix.css" />
       <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=776609e1" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
@@ -61,11 +61,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../code_overview.html">Code overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../analytical_formulation_unlensed_pdf.html">Analytical Formulation (PDF)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Lensed_events.html">Lensed event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -384,7 +381,7 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
         cross_section = None,
     ),
     lens_param_samplers = dict(
-        source_redshift_sl = &#39;strongly_lensed_source_redshifts&#39;,
+        source_redshift_sl = &#39;strongly_lensed_source_redshift&#39;,
         lens_redshift = &#39;lens_redshift_strongly_lensed_numerical&#39;,
         velocity_dispersion = &#39;velocity_dispersion_ewoud&#39;,
         axis_ratio = &#39;axis_ratio_rayleigh&#39;,
@@ -1061,7 +1058,7 @@ theta_jn = dict(
 # ----------------------------------------------------
 
 source_redshift_sl = dict(
-    strongly_lensed_source_redshifts = None,
+    strongly_lensed_source_redshift = None,
 )
 lens_redshift = dict(
     lens_redshift_strongly_lensed_sis_haris = None,

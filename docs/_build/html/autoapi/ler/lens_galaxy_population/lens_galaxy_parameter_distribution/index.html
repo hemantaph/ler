@@ -58,11 +58,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../code_overview.html">Code overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../analytical_formulation_unlensed_pdf.html">Analytical Formulation (PDF)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_events.html">Lensed event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul class="current">
@@ -131,7 +128,7 @@ dispersion, axis ratio, rotation angle, shear, and density profile slope.</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../../gw_source_population/index.html#ler.gw_source_population.CBCSourceParameterDistribution" title="ler.gw_source_population.CBCSourceParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code></a></p></li>
 <li><p><a class="reference internal" href="../../image_properties/index.html#ler.image_properties.ImageProperties" title="ler.image_properties.ImageProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageProperties</span></code></a></p></li>
-<li><p><a class="reference internal" href="../index.html#id0" title="ler.lens_galaxy_population.OpticalDepth"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a></p></li>
+<li><p><a class="reference internal" href="../index.html#id18" title="ler.lens_galaxy_population.OpticalDepth"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a></p></li>
 </ul>
 <dl>
 <dt>Usage:</dt><dd><p>Basic workflow example:</p>
@@ -222,7 +219,7 @@ using cross-section based rejection or importance sampling.</p>
 <dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Additional keyword arguments passed to parent classes:</p>
 <p><a class="reference internal" href="../../gw_source_population/index.html#ler.gw_source_population.CBCSourceParameterDistribution" title="ler.gw_source_population.CBCSourceParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code></a>,</p>
 <p><a class="reference internal" href="../../image_properties/index.html#ler.image_properties.ImageProperties" title="ler.image_properties.ImageProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageProperties</span></code></a>,</p>
-<p><a class="reference internal" href="../index.html#id0" title="ler.lens_galaxy_population.OpticalDepth"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a>.</p>
+<p><a class="reference internal" href="../index.html#id18" title="ler.lens_galaxy_population.OpticalDepth"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a>.</p>
 </dd>
 </dl>
 </dd>
@@ -238,33 +235,6 @@ using cross-section based rejection or importance sampling.</p>
 <section id="instance-methods">
 <h4>Instance Methods<a class="headerlink" href="#instance-methods" title="Link to this heading"></a></h4>
 <p>LensGalaxyParameterDistribution has the following methods:</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Method</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_lens_parameters" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_lens_parameters"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_lens_parameters()</span></code></a></p></td>
-<td><p>Sample lens and source parameters</p></td>
-</tr>
-<tr class="row-odd"><td colspan="2"><dl>
-<dt><a class="reference internal" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_all_routine_epl_shear_intrinsic" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_all_routine_epl_shear_intrinsic"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_all_routine_epl_shear_intrinsic()</span></code></a>    | Sample EPL+shear lens parameters from intrinsic</dt><dd><div class="line-block">
-<div class="line">distributions</div>
-</div>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_all_routine_epl_shear_sl" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_all_routine_epl_shear_sl"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_all_routine_epl_shear_sl()</span></code></a></p></td>
-<td><p>Sample EPL+shear lens parameters with strong
-lensing condition</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.strongly_lensed_source_redshifts" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.strongly_lensed_source_redshifts"><code class="xref py py-meth docutils literal notranslate"><span class="pre">strongly_lensed_source_redshifts()</span></code></a></p></td>
-<td><p>Sample source redshifts with lensing condition</p></td>
-</tr>
-</tbody>
-</table>
 </section>
 <section id="instance-attributes">
 <h4>Instance Attributes<a class="headerlink" href="#instance-attributes" title="Link to this heading"></a></h4>
@@ -330,6 +300,20 @@ lensing condition</p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.source_redshift_sl">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source_redshift_sl</span></span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.source_redshift_sl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.source_redshift_sl" title="Link to this definition"></a></dt>
+<dd><p>Function to sample source redshifts conditioned on strong lensing.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>source_redshift_sl</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">ler.functions.FunctionConditioning</span></code></span></dt><dd><p>Function for sampling source redshifts conditioned on strong lensing.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.normalization_pdf_z_lensed">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">normalization_pdf_z_lensed</span></span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.normalization_pdf_z_lensed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.normalization_pdf_z_lensed" title="Link to this definition"></a></dt>
@@ -402,11 +386,6 @@ lensing condition</p></td>
 <p>Type of event to generate.</p>
 <p>e.g. ‘BBH’, ‘BNS’, ‘NSBH’</p>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_source_redshift_sl">
-<span class="sig-name descname"><span class="pre">sample_source_redshift_sl</span></span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.sample_source_redshift_sl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_source_redshift_sl" title="Link to this definition"></a></dt>
-<dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_lens_parameters_routine">
@@ -523,16 +502,19 @@ the projected mass distribution.</p></td>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.strongly_lensed_source_redshifts">
-<span class="sig-name descname"><span class="pre">strongly_lensed_source_redshifts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.strongly_lensed_source_redshifts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.strongly_lensed_source_redshifts" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.strongly_lensed_source_redshift">
+<span class="sig-name descname"><span class="pre">strongly_lensed_source_redshift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.strongly_lensed_source_redshift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.strongly_lensed_source_redshift" title="Link to this definition"></a></dt>
 <dd><p>Sample source redshifts conditioned on strong lensing.</p>
-<p>Uses rejection sampling to generate source redshifts from the CBC source
-population weighted by the optical depth, which increases with redshift.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of redshifts to sample.</p>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to generate.</p>
 <p>default: 1000</p>
+</dd>
+<dt><strong>get_attribute</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, returns the sampler object instead of samples.</p>
+<p>default: False</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Additional parameters</p>
 </dd>
 </dl>
 </dd>
@@ -546,8 +528,8 @@ population weighted by the optical depth, which increases with redshift.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.lens_galaxy_population</span> <span class="kn">import</span> <span class="n">LensGalaxyParameterDistribution</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lens</span> <span class="o">=</span> <span class="n">LensGalaxyParameterDistribution</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">zs</span> <span class="o">=</span> <span class="n">lens</span><span class="o">.</span><span class="n">strongly_lensed_source_redshifts</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean source redshift: </span><span class="si">{</span><span class="n">zs</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zs</span> <span class="o">=</span> <span class="n">lens</span><span class="o">.</span><span class="n">strongly_lensed_source_redshift</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;strongly lensed source redshift: </span><span class="si">{</span><span class="n">zs</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

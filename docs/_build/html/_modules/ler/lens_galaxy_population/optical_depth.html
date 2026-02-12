@@ -55,11 +55,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed_pdf.html">Analytical Formulation (PDF)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -466,7 +463,7 @@
 
         <span class="k">if</span> <span class="n">lens_type</span> <span class="o">==</span> <span class="s2">&quot;epl_shear_galaxy&quot;</span><span class="p">:</span>
             <span class="n">lens_param_samplers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-                <span class="n">source_redshift_sl</span><span class="o">=</span><span class="s2">&quot;strongly_lensed_source_redshifts&quot;</span><span class="p">,</span>
+                <span class="n">source_redshift_sl</span><span class="o">=</span><span class="s2">&quot;strongly_lensed_source_redshift&quot;</span><span class="p">,</span>
                 <span class="n">lens_redshift</span><span class="o">=</span><span class="s2">&quot;lens_redshift_strongly_lensed_numerical&quot;</span><span class="p">,</span>
                 <span class="n">velocity_dispersion</span><span class="o">=</span><span class="s2">&quot;velocity_dispersion_ewoud&quot;</span><span class="p">,</span>
                 <span class="n">axis_ratio</span><span class="o">=</span><span class="s2">&quot;axis_ratio_rayleigh&quot;</span><span class="p">,</span>
@@ -510,7 +507,7 @@
             <span class="p">)</span>
         <span class="k">elif</span> <span class="n">lens_type</span> <span class="o">==</span> <span class="s2">&quot;sie_galaxy&quot;</span><span class="p">:</span>
             <span class="n">lens_param_samplers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-                <span class="n">source_redshift_sl</span><span class="o">=</span><span class="s2">&quot;strongly_lensed_source_redshifts&quot;</span><span class="p">,</span>
+                <span class="n">source_redshift_sl</span><span class="o">=</span><span class="s2">&quot;strongly_lensed_source_redshift&quot;</span><span class="p">,</span>
                 <span class="n">lens_redshift</span><span class="o">=</span><span class="s2">&quot;lens_redshift_strongly_lensed_numerical&quot;</span><span class="p">,</span>
                 <span class="n">velocity_dispersion</span><span class="o">=</span><span class="s2">&quot;velocity_dispersion_ewoud&quot;</span><span class="p">,</span>
                 <span class="n">axis_ratio</span><span class="o">=</span><span class="s2">&quot;axis_ratio_rayleigh&quot;</span><span class="p">,</span>
@@ -552,7 +549,7 @@
             <span class="p">)</span>
         <span class="k">elif</span> <span class="n">lens_type</span> <span class="o">==</span> <span class="s2">&quot;sis_galaxy&quot;</span><span class="p">:</span>
             <span class="n">lens_param_samplers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-                <span class="n">source_redshift_sl</span><span class="o">=</span><span class="s2">&quot;strongly_lensed_source_redshifts&quot;</span><span class="p">,</span>
+                <span class="n">source_redshift_sl</span><span class="o">=</span><span class="s2">&quot;strongly_lensed_source_redshift&quot;</span><span class="p">,</span>
                 <span class="n">lens_redshift</span><span class="o">=</span><span class="s2">&quot;lens_redshift_strongly_lensed_sis_haris&quot;</span><span class="p">,</span>
                 <span class="n">velocity_dispersion</span><span class="o">=</span><span class="s2">&quot;velocity_dispersion_bernardi&quot;</span><span class="p">,</span>
                 <span class="n">axis_ratio</span><span class="o">=</span><span class="s2">&quot;axis_ratio_uniform&quot;</span><span class="p">,</span>
@@ -629,8 +626,9 @@
             <span class="n">angular_diameter_distance</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
             <span class="n">angular_diameter_distance_z1z2</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
             <span class="n">differential_comoving_volume</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
-            <span class="n">density_profile_slope</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span>
+            <span class="c1"># density_profile_slope=dict(create_new=False, resolution=100),</span>
             <span class="n">lens_parameters_kde_sl</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">5000</span><span class="p">),</span>
+            <span class="n">source_redshift_sl</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">lens_type</span> <span class="o">==</span> <span class="s2">&quot;sis_galaxy&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
@@ -2288,11 +2286,11 @@
         <span class="n">z_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="mf">0.0001</span>
         <span class="n">z_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span>
         <span class="n">resolution</span> <span class="o">=</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
-        <span class="n">zs_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">)</span>
+        <span class="c1"># zs_array = np.geomspace(z_min, z_max, resolution)</span>
         <span class="c1"># z_min = self.z_min + 0.001 if self.z_min == 0.0 else self.z_min</span>
         <span class="c1"># z_max = self.z_max</span>
         <span class="c1"># z_resolution = identifier_dict[&quot;resolution&quot;]</span>
-        <span class="c1"># zs_array = redshift_optimal_spacing(z_min, z_max, z_resolution)</span>
+        <span class="n">zs_array</span> <span class="o">=</span> <span class="n">redshift_optimal_spacing</span><span class="p">(</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">tau</span><span class="p">(</span><span class="n">zs</span><span class="p">):</span>
             <span class="c1"># self.lens_redshift.function gives cross-section</span>
@@ -3556,7 +3554,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_available_lens_samplers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">source_redshift_sl</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">strongly_lensed_source_redshifts</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+            <span class="n">source_redshift_sl</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">strongly_lensed_source_redshift</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">tau_approximation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="c1"># strongly_lensed_source_redshift_rjs=dict(</span>
+                <span class="c1">#     tau_approximation=True,</span>
+                <span class="c1"># ),</span>
+            <span class="p">),</span>
             <span class="n">lens_redshift</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
                 <span class="n">lens_redshift_strongly_lensed_sis_haris</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">lens_redshift_strongly_lensed_numerical</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>

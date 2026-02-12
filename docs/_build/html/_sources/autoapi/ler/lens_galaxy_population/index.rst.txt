@@ -29,6 +29,7 @@ Classes
    ler.lens_galaxy_population.OpticalDepth
    ler.lens_galaxy_population.CBCSourceParameterDistribution
    ler.lens_galaxy_population.ImageProperties
+   ler.lens_galaxy_population.FunctionConditioning
    ler.lens_galaxy_population.LensGalaxyParameterDistribution
    ler.lens_galaxy_population.FunctionConditioning
    ler.lens_galaxy_population.OpticalDepth
@@ -40,6 +41,7 @@ Functions
 
 .. autoapisummary::
 
+   ler.lens_galaxy_population.redshift_optimal_spacing
    ler.lens_galaxy_population.cubic_spline_interpolator
    ler.lens_galaxy_population.inverse_transform_sampler
    ler.lens_galaxy_population.cubic_spline_interpolator2d_array
@@ -4080,6 +4082,46 @@ Attributes
           !! processed by numpydoc !!
 
 
+.. py:class:: FunctionConditioning(function=None, x_array=None, conditioned_y_array=None, y_array=None, non_zero_function=False, gaussian_kde=False, gaussian_kde_kwargs={}, identifier_dict={}, directory='./interpolator_json', sub_directory='default', name='default', create_new=False, create_function=False, create_function_inverse=False, create_pdf=False, create_rvs=False, multiprocessing_function=False, callback=None)
+
+
+   .. py:attribute:: info
+
+      
+
+   .. py:attribute:: callback
+      :value: 'None'
+
+      
+
+   .. py:method:: __call__(*args)
+
+
+   .. py:method:: create_decision_function(create_function, create_function_inverse, create_pdf, create_rvs)
+
+
+   .. py:method:: create_gaussian_kde(x_array, y_array, gaussian_kde_kwargs)
+
+
+   .. py:method:: create_interpolator(function, x_array, conditioned_y_array, create_function_inverse, create_pdf, create_rvs, multiprocessing_function)
+
+
+   .. py:method:: create_z_array(x_array, function, conditioned_y_array, create_pdf, create_rvs, multiprocessing_function)
+
+
+   .. py:method:: cdf_values_generator(x_array, z_array, conditioned_y_array)
+
+
+   .. py:method:: pdf_norm_const_generator(x_array, function_spline, conditioned_y_array)
+
+
+   .. py:method:: function_spline_generator(x_array, z_array, conditioned_y_array)
+
+
+
+.. py:function:: redshift_optimal_spacing(z_min, z_max, resolution)
+
+
 .. py:class:: LensGalaxyParameterDistribution(npool=4, z_min=0.0, z_max=10.0, cosmology=None, event_type='BBH', lens_type='epl_shear_galaxy', lens_functions=None, lens_functions_params=None, lens_param_samplers=None, lens_param_samplers_params=None, directory='./interpolator_json', create_new_interpolator=False, buffer_size=1000, **kwargs)
 
 
@@ -4221,7 +4263,7 @@ Attributes
    | :meth:`~sample_all_routine_epl_shear_sl`            | Sample EPL+shear lens parameters with strong   |
    |                                                     | lensing condition                              |
    +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~strongly_lensed_source_redshifts`           | Sample source redshifts with lensing condition |
+   | :meth:`~strongly_lensed_source_redshift`           | Sample source redshifts with lensing condition |
    +-----------------------------------------------------+------------------------------------------------+
 
    Instance Attributes
@@ -4256,6 +4298,33 @@ Attributes
 
    ..
        !! processed by numpydoc !!
+   .. py:property:: source_redshift_sl
+
+      
+      Function to sample source redshifts conditioned on strong lensing.
+
+
+
+      :Returns:
+
+          **source_redshift_sl** : ``ler.functions.FunctionConditioning``
+              Function for sampling source redshifts conditioned on strong lensing.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
    .. py:property:: normalization_pdf_z_lensed
 
       
@@ -4407,10 +4476,6 @@ Attributes
 
       ..
           !! processed by numpydoc !!
-
-   .. py:attribute:: sample_source_redshift_sl
-
-      
 
    .. py:attribute:: sample_lens_parameters_routine
 
@@ -4577,20 +4642,26 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: strongly_lensed_source_redshifts(size=1000)
+   .. py:method:: strongly_lensed_source_redshift(size, get_attribute=False, **kwargs)
 
       
       Sample source redshifts conditioned on strong lensing.
 
-      Uses rejection sampling to generate source redshifts from the CBC source
-      population weighted by the optical depth, which increases with redshift.
 
       :Parameters:
 
           **size** : ``int``
-              Number of redshifts to sample.
+              Number of samples to generate.
 
               default: 1000
+
+          **get_attribute** : ``bool``
+              If True, returns the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Additional parameters
 
       :Returns:
 
@@ -4610,8 +4681,8 @@ Attributes
 
       >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
       >>> lens = LensGalaxyParameterDistribution()
-      >>> zs = lens.strongly_lensed_source_redshifts(size=1000)
-      >>> print(f"Mean source redshift: {zs.mean():.2f}")
+      >>> zs = lens.strongly_lensed_source_redshift(size=1000)
+      >>> print(f"strongly lensed source redshift: {zs.mean():.2f}")
 
 
 
@@ -8264,11 +8335,14 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: importance_sampler(zs, zl, sigma_min, sigma_max, q_rvs, phi_rvs, gamma_rvs, shear_rvs, sigma_pdf, cross_section, n_prop)
+.. py:function:: importance_sampler(zs, zl, sigma_min, sigma_max, q_rvs, phi_rvs, gamma_rvs, shear_rvs, number_density, cross_section, n_prop)
 
    
    Core importance sampling algorithm for lens parameters.
 
+   This function samples lens galaxy parameters weighted by their lensing
+   cross sections using importance sampling with a uniform proposal distribution
+   for velocity dispersion.
 
    :Parameters:
 
@@ -8296,8 +8370,8 @@ Attributes
        **shear_rvs** : ``callable``
            Function to sample external shear: shear_rvs(n) -> (gamma1, gamma2).
 
-       **sigma_pdf** : ``callable``
-           PDF of velocity dispersion: sigma_pdf(sigma, zl) -> array.
+       **number_density** : ``callable``
+           Number density or velocity dispersion function: number_density(sigma, zl) -> array.
 
        **cross_section** : ``callable``
            Function to compute lensing cross section.
@@ -8340,7 +8414,7 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: importance_sampler_mp(zs, zl, sigma_min, sigma_max, q_rvs, phi_rvs, gamma_rvs, shear_rvs, sigma_pdf, cross_section, n_prop, npool=4)
+.. py:function:: importance_sampler_mp(zs, zl, sigma_min, sigma_max, q_rvs, phi_rvs, gamma_rvs, shear_rvs, number_density, cross_section, n_prop, npool=4)
 
    
    Multiprocessing version of importance sampling for lens parameters.
@@ -8372,8 +8446,8 @@ Attributes
        **shear_rvs** : ``callable``
            Function to sample external shear: shear_rvs(n) -> (gamma1, gamma2).
 
-       **sigma_pdf** : ``callable``
-           PDF of velocity dispersion: sigma_pdf(sigma, zl) -> array.
+       **number_density** : ``callable``
+           Number density or velocity dispersion function: number_density(sigma, zl) -> array.
 
        **cross_section** : ``callable``
            Function to compute lensing cross section.
@@ -8421,7 +8495,7 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: create_importance_sampler(sigma_min, sigma_max, q_rvs, phi_rvs, gamma_rvs, shear_rvs, sigma_pdf, cross_section, n_prop, use_njit_sampler=True, npool=4)
+.. py:function:: create_importance_sampler(sigma_min, sigma_max, q_rvs, phi_rvs, gamma_rvs, shear_rvs, number_density, cross_section, n_prop, use_njit_sampler=True, npool=4)
 
    
    Create an importance sampler for cross-section weighted lens parameters.
@@ -8450,8 +8524,8 @@ Attributes
        **shear_rvs** : ``callable``
            Function to sample external shear: shear_rvs(n) -> (gamma1, gamma2).
 
-       **sigma_pdf** : ``callable``
-           PDF of velocity dispersion: sigma_pdf(sigma, zl) -> array.
+       **number_density** : ``callable``
+           Number density or velocity dispersion function: number_density(sigma, zl) -> array.
 
        **cross_section** : ``callable``
            Function to compute lensing cross section.
@@ -8500,7 +8574,7 @@ Attributes
    ... def shear_rvs(n):
    ...     return 0.05 * np.random.randn(n), 0.05 * np.random.randn(n)
    >>> @njit
-   ... def sigma_pdf(sigma, zl):
+   ... def number_density(sigma, zl):
    ...     return np.ones_like(sigma)
    >>> @njit
    ... def cross_section(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):
@@ -8512,7 +8586,7 @@ Attributes
    ...     phi_rvs=phi_rvs,
    ...     gamma_rvs=gamma_rvs,
    ...     shear_rvs=shear_rvs,
-   ...     sigma_pdf=sigma_pdf,
+   ...     number_density=number_density,
    ...     cross_section=cross_section,
    ...     n_prop=100,
    ... )

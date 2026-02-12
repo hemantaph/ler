@@ -55,11 +55,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed_pdf.html">Analytical Formulation (PDF)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -180,7 +177,9 @@
 <div class="viewcode-block" id="lens_redshift_strongly_lensed_sis_haris_pdf">
 <a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/sampler_functions/index.html#ler.lens_galaxy_population.lens_redshift_strongly_lensed_sis_haris_pdf">[docs]</a>
 <span class="k">def</span> <span class="nf">lens_redshift_strongly_lensed_sis_haris_pdf</span><span class="p">(</span>
-    <span class="n">zl</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">cosmo</span><span class="o">=</span><span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">zl</span><span class="p">,</span>
+    <span class="n">zs</span><span class="p">,</span>
+    <span class="n">cosmo</span><span class="o">=</span><span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute lens redshift PDF for SIS model (Haris et al. 2018).</span>
@@ -222,7 +221,11 @@
 <div class="viewcode-block" id="lens_redshift_strongly_lensed_sis_haris_rvs">
 <a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/sampler_functions/index.html#ler.lens_galaxy_population.lens_redshift_strongly_lensed_sis_haris_rvs">[docs]</a>
 <span class="k">def</span> <span class="nf">lens_redshift_strongly_lensed_sis_haris_rvs</span><span class="p">(</span>
-    <span class="n">size</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">cosmo</span><span class="o">=</span><span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">size</span><span class="p">,</span>
+    <span class="n">zs</span><span class="p">,</span>
+    <span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">z_max</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+    <span class="n">cosmo</span><span class="o">=</span><span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sample lens redshifts for SIS model (Haris et al. 2018).</span>
@@ -1369,12 +1372,44 @@
     <span class="n">phi_rvs</span><span class="p">,</span>
     <span class="n">gamma_rvs</span><span class="p">,</span>
     <span class="n">shear_rvs</span><span class="p">,</span>
-    <span class="n">sigma_pdf</span><span class="p">,</span>
+    <span class="n">number_density</span><span class="p">,</span>
     <span class="n">cross_section</span><span class="p">,</span>
     <span class="n">n_prop</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Core importance sampling algorithm for lens parameters.</span>
+
+<span class="sd">    This function samples lens galaxy parameters weighted by their lensing</span>
+<span class="sd">    cross sections using importance sampling with a uniform proposal distribution</span>
+<span class="sd">    for velocity dispersion.</span>
+
+<span class="sd">    Algorithm</span>
+<span class="sd">    ---------</span>
+<span class="sd">    For each lens-source pair (zl_i, zs_i):</span>
+
+<span class="sd">    1. **Draw proposal samples** (n_prop samples per lens):</span>
+<span class="sd">       - sigma_k ~ Uniform(sigma_min, sigma_max)  with proposal density q(sigma) = 1/(sigma_max - sigma_min)</span>
+<span class="sd">       - q_k ~ p(q|sigma_k)  (axis ratio conditioned on velocity dispersion)</span>
+<span class="sd">       - φ_k ~ p(φ)  (orientation angle prior)</span>
+<span class="sd">       - gamma_k ~ p(gamma)  (power-law index prior)</span>
+<span class="sd">       - (gamma1_k, gamma2_k) ~ p(gamma1, gamma2)  (external shear prior)</span>
+
+<span class="sd">    2. **Compute lensing cross sections**:</span>
+<span class="sd">       - cs_k = CrossSection(zs_i, zl_i, sigma_k, q_k, φ_k, gamma_k, gamma1_k, gamma2_k)</span>
+<span class="sd">       - Normalize: cs_k ← cs_k / Σ_k cs_k</span>
+
+<span class="sd">    3. **Compute importance weights**:</span>
+<span class="sd">       - The target distribution is: p(θ|zl) ∝ p(sigma|zl) x CrossSection(θ)</span>
+<span class="sd">       - The proposal distribution is: q(θ) ∝ Uniform(sigma) x p(q|sigma) x p(φ) x p(gamma) x p(shear)</span>
+<span class="sd">       - Importance weight: w_k = cs_k x [p(sigma_k|zl) / q(sigma)]</span>
+<span class="sd">       - Normalize: w_k ← w_k / Σ_k w_k</span>
+
+<span class="sd">    4. **Resample**:</span>
+<span class="sd">       - Draw one sample index from {1, ..., n_prop} with probabilities {w_1, ..., w_n_prop}</span>
+<span class="sd">       - Return the corresponding parameter values as the posterior sample</span>
+
+<span class="sd">    The algorithm produces samples from the posterior distribution of lens</span>
+<span class="sd">    parameters weighted by their contribution to the strong lensing cross section.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1394,8 +1429,8 @@
 <span class="sd">        Function to sample power-law index: gamma_rvs(n) -&gt; array.</span>
 <span class="sd">    shear_rvs : ``callable``</span>
 <span class="sd">        Function to sample external shear: shear_rvs(n) -&gt; (gamma1, gamma2).</span>
-<span class="sd">    sigma_pdf : ``callable``</span>
-<span class="sd">        PDF of velocity dispersion: sigma_pdf(sigma, zl) -&gt; array.</span>
+<span class="sd">    number_density : ``callable``</span>
+<span class="sd">        Number density or velocity dispersion function: number_density(sigma, zl) -&gt; array.</span>
 <span class="sd">    cross_section : ``callable``</span>
 <span class="sd">        Function to compute lensing cross section.</span>
 <span class="sd">    n_prop : ``int``</span>
@@ -1427,7 +1462,7 @@
 
     <span class="n">p0</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma_max</span> <span class="o">-</span> <span class="n">sigma_min</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">n_samples</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">n_samples</span><span class="p">):</span>  <span class="c1"># for each (zl, zs) pair</span>
         <span class="c1"># Draw proposals from uniform distribution</span>
         <span class="n">sigma_prop</span> <span class="o">=</span> <span class="n">_sigma_proposal_uniform</span><span class="p">(</span><span class="n">n_prop</span><span class="p">,</span> <span class="n">sigma_min</span><span class="p">,</span> <span class="n">sigma_max</span><span class="p">)</span>
 
@@ -1452,38 +1487,18 @@
             <span class="n">gamma2_prop</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="c1"># Stabilize: normalize cross sections</span>
-        <span class="n">cs_sum</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cs</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
-            <span class="n">cs_sum</span> <span class="o">+=</span> <span class="n">cs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="n">cs_sum</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cs</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
-                <span class="n">cs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">cs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">/</span> <span class="n">cs_sum</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cs</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
-                <span class="n">cs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
-
         <span class="c1"># Compute importance weights</span>
-        <span class="n">p_sigma</span> <span class="o">=</span> <span class="n">sigma_pdf</span><span class="p">(</span><span class="n">sigma_prop</span><span class="p">,</span> <span class="n">zl_arr</span><span class="p">)</span>
+        <span class="n">sigma_function</span> <span class="o">=</span> <span class="n">number_density</span><span class="p">(</span><span class="n">sigma_prop</span><span class="p">,</span> <span class="n">zl_arr</span><span class="p">)</span>
 
-        <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_prop</span><span class="p">)</span>
-        <span class="n">w_sum</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_prop</span><span class="p">):</span>
-            <span class="n">wk</span> <span class="o">=</span> <span class="n">cs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">p_sigma</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">/</span> <span class="n">p0</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">wk</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">):</span>
-                <span class="n">wk</span> <span class="o">=</span> <span class="mf">0.0</span>
-            <span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">wk</span>
-            <span class="n">w_sum</span> <span class="o">+=</span> <span class="n">wk</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">cs</span> <span class="o">*</span> <span class="p">(</span><span class="n">sigma_function</span> <span class="o">/</span> <span class="n">p0</span><span class="p">)</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">w</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">w_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
 
         <span class="c1"># Normalize weights</span>
         <span class="k">if</span> <span class="n">w_sum</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_prop</span><span class="p">):</span>
-                <span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">/=</span> <span class="n">w_sum</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">w</span> <span class="o">/</span> <span class="n">w_sum</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">inv</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">n_prop</span>
-            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_prop</span><span class="p">):</span>
-                <span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">inv</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_prop</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_prop</span>
 
         <span class="c1"># Draw posterior sample via weighted choice</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">_weighted_choice_1d</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
@@ -1528,7 +1543,7 @@
     <span class="n">phi_rvs</span> <span class="o">=</span> <span class="n">shared_data</span><span class="p">[</span><span class="s2">&quot;phi_rvs&quot;</span><span class="p">]</span>
     <span class="n">gamma_rvs</span> <span class="o">=</span> <span class="n">shared_data</span><span class="p">[</span><span class="s2">&quot;gamma_rvs&quot;</span><span class="p">]</span>
     <span class="n">shear_rvs</span> <span class="o">=</span> <span class="n">shared_data</span><span class="p">[</span><span class="s2">&quot;shear_rvs&quot;</span><span class="p">]</span>
-    <span class="n">sigma_pdf</span> <span class="o">=</span> <span class="n">shared_data</span><span class="p">[</span><span class="s2">&quot;sigma_pdf&quot;</span><span class="p">]</span>
+    <span class="n">number_density</span> <span class="o">=</span> <span class="n">shared_data</span><span class="p">[</span><span class="s2">&quot;number_density&quot;</span><span class="p">]</span>
     <span class="n">cross_section</span> <span class="o">=</span> <span class="n">shared_data</span><span class="p">[</span><span class="s2">&quot;cross_section&quot;</span><span class="p">]</span>
     <span class="n">n_prop</span> <span class="o">=</span> <span class="n">shared_data</span><span class="p">[</span><span class="s2">&quot;n_prop&quot;</span><span class="p">]</span>
 
@@ -1556,20 +1571,12 @@
         <span class="n">gamma_prop</span><span class="p">,</span>
         <span class="n">gamma1_prop</span><span class="p">,</span>
         <span class="n">gamma2_prop</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="c1"># Stabilize: normalize cross sections</span>
-    <span class="n">cs_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cs</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">cs_sum</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
-        <span class="n">cs</span> <span class="o">=</span> <span class="n">cs</span> <span class="o">/</span> <span class="n">cs_sum</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">cs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_prop</span><span class="p">)</span>
+    <span class="p">)</span><span class="o">/</span> <span class="p">(</span><span class="mf">4.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
 
     <span class="c1"># Compute importance weights</span>
-    <span class="n">p_sigma</span> <span class="o">=</span> <span class="n">sigma_pdf</span><span class="p">(</span><span class="n">sigma_prop</span><span class="p">,</span> <span class="n">zl_arr</span><span class="p">)</span>
+    <span class="n">sigma_function</span> <span class="o">=</span> <span class="n">number_density</span><span class="p">(</span><span class="n">sigma_prop</span><span class="p">,</span> <span class="n">zl_arr</span><span class="p">)</span>
 
-    <span class="n">w</span> <span class="o">=</span> <span class="n">cs</span> <span class="o">*</span> <span class="p">(</span><span class="n">p_sigma</span> <span class="o">/</span> <span class="n">p0</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">cs</span> <span class="o">*</span> <span class="p">(</span><span class="n">sigma_function</span> <span class="o">/</span> <span class="n">p0</span><span class="p">)</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">w</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
     <span class="n">w_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
 
@@ -1605,7 +1612,7 @@
     <span class="n">phi_rvs</span><span class="p">,</span>
     <span class="n">gamma_rvs</span><span class="p">,</span>
     <span class="n">shear_rvs</span><span class="p">,</span>
-    <span class="n">sigma_pdf</span><span class="p">,</span>
+    <span class="n">number_density</span><span class="p">,</span>
     <span class="n">cross_section</span><span class="p">,</span>
     <span class="n">n_prop</span><span class="p">,</span>
     <span class="n">npool</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
@@ -1631,8 +1638,8 @@
 <span class="sd">        Function to sample power-law index: gamma_rvs(n) -&gt; array.</span>
 <span class="sd">    shear_rvs : ``callable``</span>
 <span class="sd">        Function to sample external shear: shear_rvs(n) -&gt; (gamma1, gamma2).</span>
-<span class="sd">    sigma_pdf : ``callable``</span>
-<span class="sd">        PDF of velocity dispersion: sigma_pdf(sigma, zl) -&gt; array.</span>
+<span class="sd">    number_density : ``callable``</span>
+<span class="sd">        Number density or velocity dispersion function: number_density(sigma, zl) -&gt; array.</span>
 <span class="sd">    cross_section : ``callable``</span>
 <span class="sd">        Function to compute lensing cross section.</span>
 <span class="sd">    n_prop : ``int``</span>
@@ -1666,7 +1673,7 @@
         <span class="s2">&quot;phi_rvs&quot;</span><span class="p">:</span> <span class="n">phi_rvs</span><span class="p">,</span>
         <span class="s2">&quot;gamma_rvs&quot;</span><span class="p">:</span> <span class="n">gamma_rvs</span><span class="p">,</span>
         <span class="s2">&quot;shear_rvs&quot;</span><span class="p">:</span> <span class="n">shear_rvs</span><span class="p">,</span>
-        <span class="s2">&quot;sigma_pdf&quot;</span><span class="p">:</span> <span class="n">sigma_pdf</span><span class="p">,</span>
+        <span class="s2">&quot;number_density&quot;</span><span class="p">:</span> <span class="n">number_density</span><span class="p">,</span>
         <span class="s2">&quot;cross_section&quot;</span><span class="p">:</span> <span class="n">cross_section</span><span class="p">,</span>
         <span class="s2">&quot;n_prop&quot;</span><span class="p">:</span> <span class="n">n_prop</span><span class="p">,</span>
     <span class="p">}</span>
@@ -1714,7 +1721,7 @@
     <span class="n">phi_rvs</span><span class="p">,</span>
     <span class="n">gamma_rvs</span><span class="p">,</span>
     <span class="n">shear_rvs</span><span class="p">,</span>
-    <span class="n">sigma_pdf</span><span class="p">,</span>
+    <span class="n">number_density</span><span class="p">,</span>
     <span class="n">cross_section</span><span class="p">,</span>
     <span class="n">n_prop</span><span class="p">,</span>
     <span class="n">use_njit_sampler</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -1741,8 +1748,8 @@
 <span class="sd">        Function to sample power-law index: gamma_rvs(n) -&gt; array.</span>
 <span class="sd">    shear_rvs : ``callable``</span>
 <span class="sd">        Function to sample external shear: shear_rvs(n) -&gt; (gamma1, gamma2).</span>
-<span class="sd">    sigma_pdf : ``callable``</span>
-<span class="sd">        PDF of velocity dispersion: sigma_pdf(sigma, zl) -&gt; array.</span>
+<span class="sd">    number_density : ``callable``</span>
+<span class="sd">        Number density or velocity dispersion function: number_density(sigma, zl) -&gt; array.</span>
 <span class="sd">    cross_section : ``callable``</span>
 <span class="sd">        Function to compute lensing cross section.</span>
 <span class="sd">    n_prop : ``int``</span>
@@ -1776,7 +1783,7 @@
 <span class="sd">    ... def shear_rvs(n):</span>
 <span class="sd">    ...     return 0.05 * np.random.randn(n), 0.05 * np.random.randn(n)</span>
 <span class="sd">    &gt;&gt;&gt; @njit</span>
-<span class="sd">    ... def sigma_pdf(sigma, zl):</span>
+<span class="sd">    ... def number_density(sigma, zl):</span>
 <span class="sd">    ...     return np.ones_like(sigma)</span>
 <span class="sd">    &gt;&gt;&gt; @njit</span>
 <span class="sd">    ... def cross_section(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):</span>
@@ -1788,7 +1795,7 @@
 <span class="sd">    ...     phi_rvs=phi_rvs,</span>
 <span class="sd">    ...     gamma_rvs=gamma_rvs,</span>
 <span class="sd">    ...     shear_rvs=shear_rvs,</span>
-<span class="sd">    ...     sigma_pdf=sigma_pdf,</span>
+<span class="sd">    ...     number_density=number_density,</span>
 <span class="sd">    ...     cross_section=cross_section,</span>
 <span class="sd">    ...     n_prop=100,</span>
 <span class="sd">    ... )</span>
@@ -1813,7 +1820,7 @@
                 <span class="n">phi_rvs</span><span class="o">=</span><span class="n">phi_rvs</span><span class="p">,</span>
                 <span class="n">gamma_rvs</span><span class="o">=</span><span class="n">gamma_rvs</span><span class="p">,</span>
                 <span class="n">shear_rvs</span><span class="o">=</span><span class="n">shear_rvs</span><span class="p">,</span>
-                <span class="n">sigma_pdf</span><span class="o">=</span><span class="n">sigma_pdf</span><span class="p">,</span>
+                <span class="n">number_density</span><span class="o">=</span><span class="n">number_density</span><span class="p">,</span>
                 <span class="n">cross_section</span><span class="o">=</span><span class="n">cross_section</span><span class="p">,</span>
                 <span class="n">n_prop</span><span class="o">=</span><span class="n">n_prop</span><span class="p">,</span>
             <span class="p">)</span>
@@ -1833,7 +1840,7 @@
                 <span class="n">phi_rvs</span><span class="o">=</span><span class="n">phi_rvs</span><span class="p">,</span>
                 <span class="n">gamma_rvs</span><span class="o">=</span><span class="n">gamma_rvs</span><span class="p">,</span>
                 <span class="n">shear_rvs</span><span class="o">=</span><span class="n">shear_rvs</span><span class="p">,</span>
-                <span class="n">sigma_pdf</span><span class="o">=</span><span class="n">sigma_pdf</span><span class="p">,</span>
+                <span class="n">number_density</span><span class="o">=</span><span class="n">number_density</span><span class="p">,</span>
                 <span class="n">cross_section</span><span class="o">=</span><span class="n">cross_section</span><span class="p">,</span>
                 <span class="n">n_prop</span><span class="o">=</span><span class="n">n_prop</span><span class="p">,</span>
                 <span class="n">npool</span><span class="o">=</span><span class="n">npool</span><span class="p">,</span>

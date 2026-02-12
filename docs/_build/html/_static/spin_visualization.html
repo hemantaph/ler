@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Binary Black Hole Precession (Final UI Polish)</title>
+    <style>
+        body { margin: 0; overflow: hidden; font-family: 'Segoe UI', sans-serif; background-color: #000000; }
+        
+        #info {
+            position: absolute; top: 10px; width: 100%; pointer-events: none; z-index: 10;
+            display: flex; flex-direction: column; align-items: flex-start;
+            padding-left: 20px;
+        }
+        
+        .panel {
+            background: rgba(0, 0, 0, 0.5);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border: 1px solid #444;
+            text-align: left;
+        }
+
+        /* --- Unified Panel Style --- */
+        .ui-panel {
+            position: absolute;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: rgba(255, 255, 255, 0.7);
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            padding: 0;
+            border-radius: 4px;
+            border: 1px solid #555;
+            pointer-events: auto;
+            z-index: 20;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            overflow: hidden;
+            width: 150px;
+            transition: height 0.3s ease;
+        }
+
+        /* Header (Click to toggle) */
+        .panel-header {
+            background: rgba(30, 30, 30, 0.5);
+            padding: 8px 12px;
+            font-weight: bold;
+            border-bottom: 1px solid #555;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+        }
+        .panel-header:hover { background: rgba(50, 50, 50, 0.9); }
+        
+        /* Content Container */
+        .panel-content {
+            padding: 0;
+            display: block;
+        }
+
+        /* Collapsed State */
+        .ui-panel.collapsed .panel-content {
+            display: none;
+        }
+        .ui-panel.collapsed {
+            width: auto; /* Shrink to text width when closed */
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .ui-panel.collapsed .panel-header {
+            background: rgba(30, 30, 30, 0.5);
+        }
+
+        /* Specific Positions */
+        #controlsPanel { top: 10px; }
+        #cameraPanel { bottom: 10px; }
+
+        /* Camera Details Style */
+        .camera-line { margin: 4px 0; border-bottom: 1px dashed #444; padding-bottom: 2px; }
+
+        /* --- 3D Label Styles --- */
+        .label {
+            font-family: 'Consolas', monospace;
+            font-weight: bold;
+            font-size: 11px;
+            padding: 2px 5px;
+            border-radius: 3px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #666;
+            position: absolute;
+            pointer-events: none;
+            white-space: nowrap;
+            color: #fff;
+        }
+        
+        h3 { margin: 0 0 5px 0; color: rgba(255, 255, 255, 0.7); font-size: 16px; }
+        p { margin: 2px 0; font-size: 13px; color: rgba(255, 255, 255, 0.7); }
+        .c-green { color: #2e7d32; }
+        .c-purple { color: #7b1fa2; }
+
+        /* --- Dat.GUI Overrides for Embedding --- */
+        .dg.main {
+            width: 100% !important;
+            margin: 0 !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+        .dg.main .close-button {
+            display: none !important;
+        }
+        .dg .c .slider { background: #333 !important; }
+        .dg .c .slider:hover { background: #444 !important; }
+        .dg .c .slider-fg { background: #888 !important; }
+        .dg .cr.number input[type=text] { 
+            width: 35px !important; 
+            color: rgba(255, 255, 255, 0.7); 
+            text-align: center;
+            padding: 2px 2px;
+        }
+        .dg li.title { background: rgba(51, 51, 51, 0.5) !important; color: #fff !important; text-shadow: none !important; font-weight: normal; }
+        .dg li:not(.folder) { background: rgba(0, 0, 0, 0.3) !important; border-bottom: 1px solid #444 !important; color: rgba(255, 255, 255, 0.7) !important; }
+        .dg .property-name { width: 25% !important; overflow: hidden !important; text-overflow: ellipsis !important; }
+        .dg .c { width: 75% !important; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
+</head>
+<body>
+
+    <div id="info">
+        <div class="panel">
+            <h3>Coordinate System</h3>
+            <p><b class="c-purple">Purple plane</b> = J-coordinate</p>
+            <p><b class="c-green">Green plane</b> = L-coordinate</p>
+        </div>
+    </div>
+
+    <div id="controlsPanel" class="ui-panel collapsed">
+        <div class="panel-header" onclick="togglePanel('controlsPanel')">
+            CONTROLS <span>▼</span>
+        </div>
+        <div class="panel-content" id="guiContainer">
+            </div>
+    </div>
+
+    <div id="cameraPanel" class="ui-panel collapsed">
+        <div class="panel-header" onclick="togglePanel('cameraPanel')">
+            CAMERA STATE <span>▼</span>
+        </div>
+        <div class="panel-content">
+            <div class="camera-line" id="camPos">Pos: 0.0, 0.0, 0.0</div>
+            <div class="camera-line" id="camAzimuth">Azimuth: 0.0°</div>
+            <div class="camera-line" id="camPolar">Polar: 0.0°</div>
+            <div class="camera-line" id="camDist">Dist: 0.0</div>
+        </div>
+    </div>
+
+    <script>
+        // UI Toggle Function
+        function togglePanel(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('collapsed');
+            const span = el.querySelector('.panel-header span');
+            span.textContent = el.classList.contains('collapsed') ? '▼' : '▲';
+        }
+
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x000000);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        
+        // --- FINAL CAMERA STATE ---
+        camera.position.set(12.0, -5.2, 13.6);
+        camera.up.set(0, 0, 1);
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+
+        scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+        const dl = new THREE.DirectionalLight(0xffffff, 0.5);
+        dl.position.set(10, -10, 20);
+        scene.add(dl);
+
+        // --- J-Frame Elements ---
+        const gridJ = new THREE.PolarGridHelper(15, 8, 8, 64, 0xba68c8, 0xba68c8);
+        gridJ.rotation.x = Math.PI/2;
+        gridJ.material.transparent = true;
+        gridJ.material.opacity = 0.30;
+        scene.add(gridJ);
+
+        const arrowJ = new THREE.ArrowHelper(new THREE.Vector3(0,0,1), new THREE.Vector3(), 6, 0x7b1fa2, 0.5, 0.3);
+        scene.add(arrowJ);
+
+        const refArrowLen = 5.0;
+        const refArrow = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), new THREE.Vector3(), refArrowLen, 0x808080, 0.5, 0.4);
+        const lineGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0), new THREE.Vector3(refArrowLen - 0.5,0,0)]);
+        const lineMat = new THREE.LineBasicMaterial({ color: 0x808080, linewidth: 3 });
+        scene.add(refArrow);
+        scene.add(new THREE.Line(lineGeo, lineMat));
+
+        // --- Projection Visuals ---
+        const projLArrow = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), new THREE.Vector3(), 1, 0x2e7d32, 0.4, 0.3);
+        scene.add(projLArrow);
+        
+        const projShaft = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: 0x2e7d32, linewidth: 2 }));
+        scene.add(projShaft);
+
+        const extProjLine = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineDashedMaterial({ 
+            color: 0x2e7d32, dashSize: 0.2, gapSize: 0.3, transparent: true, opacity: 0.8 
+        }));
+        scene.add(extProjLine);
+
+        const jlArcLine = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: 0x7b1fa2, linewidth: 3 }));
+        scene.add(jlArcLine);
+
+        // --- Cone ---
+        const coneGroup = new THREE.Group();
+        scene.add(coneGroup);
+        const coneGeo = new THREE.ConeGeometry(1, 1, 64, 1, true);
+        coneGeo.translate(0, -0.5, 0).rotateX(-Math.PI/2);   
+        const coneMesh = new THREE.Mesh(coneGeo, new THREE.MeshBasicMaterial({ color: 0xba68c8, transparent: true, opacity: 0.15, side: THREE.DoubleSide, depthWrite: false }));
+        coneGroup.add(coneMesh);
+
+        // --- L-Frame Container ---
+        const lContainer = new THREE.Group();
+        scene.add(lContainer);
+
+        const gridL = new THREE.PolarGridHelper(10, 8, 8, 64, 0x4caf50, 0xe8f5e9);
+        gridL.rotation.x = Math.PI/2;
+        gridL.material.transparent = true;
+        gridL.material.opacity = 0.6;
+        lContainer.add(gridL);
+
+        const L_MAG = 5.0;
+        const arrowL = new THREE.ArrowHelper(new THREE.Vector3(0,0,1), new THREE.Vector3(), L_MAG, 0x2e7d32, 0.5, 0.3);
+        lContainer.add(arrowL);
+
+        // --- UI Labels ---
+        function createLabel(text, color) {
+            const el = document.createElement('div');
+            el.className = 'label';
+            el.innerHTML = text;
+            if(color) el.style.color = color;
+            document.body.appendChild(el);
+            return el;
+        }
+
+        const lblJ = createLabel("J", "#7b1fa2");
+        const lblL = createLabel("L", "#2e7d32");
+        const lblRef = createLabel("φ<sub>ref</sub>", "#808080");
+        const lblPhiJL = createLabel("φsub>JL</sub>", "#7b1fa2");
+        const lblPhi12 = createLabel("φsub>12</sub>", "#f57c00");
+        const lblProjL = createLabel("Proj(L)", "#2e7d32");
+        const lblProjS1 = createLabel("Proj(S<sub>1</sub>)", "#cc0000");
+        const lblProjS2 = createLabel("Proj(S<sub>2</sub>)", "#0044cc");
+
+        function updateLabel(elem, pos, text) {
+            if(text) elem.innerHTML = text;
+            const vec = pos.clone().project(camera);
+            if (vec.z > 1) { elem.style.display = 'none'; return; }
+            elem.style.display = 'block';
+            elem.style.left = ((vec.x * .5 + .5) * window.innerWidth) + 'px';
+            elem.style.top = ((-(vec.y * .5) + .5) * window.innerHeight) + 'px';
+        }
+
+        // --- Black Hole System ---
+        class BlackHole {
+            constructor(id, colorHex, labelColor) {
+                this.id = id;
+                this.group = new THREE.Group();
+                lContainer.add(this.group); 
+                this.mesh = new THREE.Mesh(new THREE.SphereGeometry(0.8, 32, 32), new THREE.MeshStandardMaterial({ color: 0x333333 }));
+                this.group.add(this.mesh);
+                this.arrow = new THREE.ArrowHelper(new THREE.Vector3(0,0,1), new THREE.Vector3(), 1, colorHex, 0.4, 0.2);
+                this.group.add(this.arrow);
+                const laGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0), new THREE.Vector3(0,0,3.5)]);
+                const laLine = new THREE.Line(laGeo, new THREE.LineDashedMaterial({ color: 0xaaaaaa, dashSize: 0.3, gapSize: 0.2, scale: 1 }));
+                laLine.computeLineDistances();
+                this.group.add(laLine);
+                this.thetaArc = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: colorHex }));
+                this.group.add(this.thetaArc);
+                this.lbl = createLabel(`BH${id}`, labelColor);
+                this.lblTheta = createLabel("", labelColor);
+                this.lblSpin = createLabel("", labelColor); 
+            }
+
+            update(mass, spinMag, theta, phi, r) {
+                const s = Math.pow(mass, 1/3) * 0.15;
+                this.mesh.scale.set(s,s,s);
+                const pos = new THREE.Vector3(this.id===1?r:-r, 0, 0);
+                this.group.position.copy(pos);
+                const thRad = THREE.MathUtils.degToRad(theta);
+                const phiRad = THREE.MathUtils.degToRad(phi);
+                const spinVec = new THREE.Vector3(spinMag * Math.sin(thRad) * Math.cos(phiRad), spinMag * Math.sin(thRad) * Math.sin(phiRad), spinMag * Math.cos(thRad));
+                const arrowLen = 1.5 + spinMag * 2.5;
+                this.arrow.setDirection(spinVec.clone().normalize());
+                this.arrow.setLength(arrowLen, 0.4, 0.2);
+                const curve = new THREE.EllipseCurve(0,0, 1.2, 1.2, Math.PI/2, Math.PI/2 - thRad, true, 0);
+                this.thetaArc.geometry.dispose();
+                this.thetaArc.geometry = new THREE.BufferGeometry().setFromPoints(curve.getPoints(16));
+                this.thetaArc.rotation.set(Math.PI/2, phiRad, 0);
+                
+                const worldPos = pos.clone().applyMatrix4(lContainer.matrixWorld);
+                updateLabel(this.lbl, worldPos.clone().add(new THREE.Vector3(0, 0.5, -0.5))); 
+                updateLabel(this.lblTheta, worldPos.clone().add(new THREE.Vector3(0, 0, 1.8)), `θ<sub>${this.id}</sub>: ${theta.toFixed(1)}°`);
+                
+                const tipLocal = spinVec.clone().normalize().multiplyScalar(arrowLen);
+                const tipWorld = tipLocal.add(pos).applyMatrix4(lContainer.matrixWorld).add(new THREE.Vector3(0.2, 0.2, -0.2));
+                updateLabel(this.lblSpin, tipWorld, `|S<sub>${this.id}</sub>|=a<sub>${this.id}</sub>=${spinMag}`);
+
+                return spinVec;
+            }
+        }
+
+        const bh1 = new BlackHole(1, 0xd32f2f, "#cc0000");
+        const bh2 = new BlackHole(2, 0x1976d2, "#0044cc");
+        
+        const params = {
+            autoRotate: true,
+            sep: 8.0, phiJL: 75.0,
+            m1: 30, a1: 0.8, theta1: 143.0, phi1: 30.0,
+            m2: 20, a2: 0.9, theta2: 82.0, phi2: 150.0
+        };
+
+        // --- EMBEDDED GUI ---
+        const gui = new dat.GUI({ autoPlace: false });
+        document.getElementById('guiContainer').appendChild(gui.domElement);
+        // We do not close() it here because the container handles the toggle logic
+        // But we want it closed by default in the UI, so the container has class "collapsed"
+
+        gui.add(params, 'autoRotate').name('Rotate');
+        gui.add(params, 'sep', 5, 12).name('r').step(0.1);
+        gui.add(params, 'phiJL', 0, 360).name('φ<sub>JL</sub>').step(1);
+        const f1 = gui.addFolder('BH 1 (Red)');
+        f1.add(params, 'm1', 5, 50).name('m<sub>1</sub>').step(1); 
+        f1.add(params, 'a1', 0, 0.99).name('a<sub>1</sub>').step(0.01); 
+        f1.add(params, 'theta1', 0, 180).name('θ<sub>1</sub>').step(1); 
+        f1.add(params, 'phi1', 0, 360).name('φ<sub>1</sub>').step(1);
+        const f2 = gui.addFolder('BH 2 (Blue)');
+        f2.add(params, 'm2', 5, 50).name('m<sub>2</sub>').step(1); 
+        f2.add(params, 'a2', 0, 0.99).name('a<sub>2</sub>').step(0.01); 
+        f2.add(params, 'theta2', 0, 180).name('θ<sub>2</sub>').step(1); 
+        f2.add(params, 'phi2', 0, 360).name('φ<sub>2</sub>').step(1);
+
+        const phi12Arc = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: 0xf57c00, linewidth: 3 }));
+        lContainer.add(phi12Arc);
+        const projS1 = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), new THREE.Vector3(), 3, 0xd32f2f, 0.3, 0.2);
+        const projS2 = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), new THREE.Vector3(), 3, 0x1976d2, 0.3, 0.2);
+        lContainer.add(projS1); lContainer.add(projS2);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+
+            // Auto-rotation of L around J
+            if (params.autoRotate) {
+                params.phiJL = (params.phiJL + 0.2) % 360;
+            }
+
+            const M = params.m1 + params.m2;
+            const r1 = params.sep * (params.m2 / M), r2 = params.sep * (params.m1 / M);
+            const S1 = bh1.update(params.m1, params.a1, params.theta1, params.phi1, r1);
+            const S2 = bh2.update(params.m2, params.a2, params.theta2, params.phi2, r2);
+            const J_local = new THREE.Vector3(0, 0, L_MAG).add(S1).add(S2);
+            const qAlignJ = new THREE.Quaternion().setFromUnitVectors(J_local.clone().normalize(), new THREE.Vector3(0,0,1));
+            lContainer.quaternion.copy(qAlignJ);
+            const L_dir = new THREE.Vector3(0,0,1).applyQuaternion(qAlignJ);
+            const targetPhi = THREE.MathUtils.degToRad(params.phiJL);
+            lContainer.quaternion.premultiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,0,1), targetPhi - Math.atan2(L_dir.y, L_dir.x))); 
+
+            const height = L_MAG * L_dir.z; 
+            const radius = Math.sqrt(L_MAG*L_MAG - height*height);
+            coneMesh.scale.set(radius, radius, height);
+
+            const L_f = new THREE.Vector3(0,0,1).applyMatrix4(lContainer.matrixWorld).normalize();
+            const L_p_len = Math.sqrt(L_f.x**2 + L_f.y**2) * 4.0, L_p_dir = new THREE.Vector3(L_f.x, L_f.y, 0).normalize();
+            projLArrow.setDirection(L_p_dir); projLArrow.setLength(L_p_len, 0.3, 0.2);
+            projShaft.geometry.setFromPoints([new THREE.Vector3(0,0,0), L_p_dir.clone().multiplyScalar(L_p_len - 0.3)]);
+            extProjLine.geometry.setFromPoints([L_p_dir.clone().multiplyScalar(L_p_len + 0.5), L_p_dir.clone().multiplyScalar(10)]);
+            extProjLine.computeLineDistances();
+
+            const jlC = new THREE.EllipseCurve(0,0, 3.0, 3.0, 0, targetPhi, false, 0);
+            jlArcLine.geometry.dispose(); jlArcLine.geometry = new THREE.BufferGeometry().setFromPoints(jlC.getPoints(30));
+
+            // Projections S1/S2 Logic
+            const p1 = THREE.MathUtils.degToRad(params.phi1), p2 = THREE.MathUtils.degToRad(params.phi2);
+            const pS1Dir = new THREE.Vector3(Math.cos(p1), Math.sin(p1), 0);
+            const pS2Dir = new THREE.Vector3(Math.cos(p2), Math.sin(p2), 0);
+            projS1.setDirection(pS1Dir); projS1.setLength(3.0, 0.3, 0.2);
+            projS2.setDirection(pS2Dir); projS2.setLength(3.0, 0.3, 0.2);
+            
+            // Labels for Proj S1/S2
+            const tipProjS1 = pS1Dir.clone().multiplyScalar(3.2).applyMatrix4(lContainer.matrixWorld).add(new THREE.Vector3(-0.6, -1.2, 0.5));
+            const tipProjS2 = pS2Dir.clone().multiplyScalar(3.2).applyMatrix4(lContainer.matrixWorld).add(new THREE.Vector3(-0.6, -1.2, 0.5));
+            updateLabel(lblProjS1, tipProjS1);
+            updateLabel(lblProjS2, tipProjS2);
+
+            let p12 = p2 - p1; if(p12<0) p12+=Math.PI*2;
+            const c12 = new THREE.EllipseCurve(0,0, 2.5, 2.5, p1, p1+p12, false, 0);
+            phi12Arc.geometry.dispose(); phi12Arc.geometry = new THREE.BufferGeometry().setFromPoints(c12.getPoints(20));
+
+            updateLabel(lblJ, new THREE.Vector3(0, 0, J_local.length() + 1.8));
+            updateLabel(lblL, new THREE.Vector3(0, 0, L_MAG).applyMatrix4(lContainer.matrixWorld).add(new THREE.Vector3(0, 0, 0.4)));
+            updateLabel(lblRef, new THREE.Vector3(5.5, 0, 0));
+            updateLabel(lblProjL, L_p_dir.clone().multiplyScalar(L_p_len + 1.0));
+            updateLabel(lblPhiJL, new THREE.Vector3(Math.cos(targetPhi/2)*3.2, Math.sin(targetPhi/2)*3.2, 0), `φ<sub>JL</sub>: ${params.phiJL.toFixed(1)}°`);
+            updateLabel(lblPhi12, new THREE.Vector3(Math.cos(p1+p12/2)*4.0, Math.sin(p1+p12/2)*4.0, 0).applyMatrix4(lContainer.matrixWorld), `φ<sub>12</sub>: ${THREE.MathUtils.radToDeg(p12).toFixed(1)}°`);
+
+            // Update Camera State Panel
+            const camPos = camera.position;
+            const dist = Math.sqrt(camPos.x**2 + camPos.y**2 + camPos.z**2);
+            const azimuth = Math.atan2(camPos.y, camPos.x) * 180 / Math.PI;
+            const polar = Math.acos(camPos.z / dist) * 180 / Math.PI;
+            document.getElementById('camPos').textContent = `Pos: ${camPos.x.toFixed(1)}, ${camPos.y.toFixed(1)}, ${camPos.z.toFixed(1)}`;
+            document.getElementById('camAzimuth').textContent = `Azimuth: ${azimuth.toFixed(1)}°`;
+            document.getElementById('camPolar').textContent = `Polar: ${polar.toFixed(1)}°`;
+            document.getElementById('camDist').textContent = `Dist: ${dist.toFixed(1)}`;
+
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
+        
+        animate();
+    </script>
+</body>
+</html>

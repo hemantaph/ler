@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GW Coordinate Frames (Dark UI)</title>
+    <style>
+        body { margin: 0; overflow: hidden; font-family: 'Segoe UI', sans-serif; background-color: #050505; }
+        
+        #info {
+            position: absolute; top: 10px; width: 100%; pointer-events: none; z-index: 10;
+            display: flex; flex-direction: column; align-items: flex-start;
+            padding-left: 20px;
+        }
+        
+        .panel {
+            background: rgba(0, 0, 0, 0.5);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border: 1px solid #444;
+            text-align: left;
+            margin-bottom: 10px;
+            pointer-events: auto;
+        }
+
+        .ui-panel {
+            position: absolute;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: rgba(255, 255, 255, 0.7);
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            padding: 0;
+            border-radius: 4px;
+            border: 1px solid #555;
+            pointer-events: auto;
+            z-index: 20;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            overflow: hidden;
+            width: 150px;
+            transition: height 0.3s ease;
+        }
+
+        .panel-header {
+            background: rgba(30, 30, 30, 0.5);
+            padding: 8px 12px;
+            font-weight: bold;
+            border-bottom: 1px solid #555;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+        }
+        .panel-header:hover { background: rgba(50, 50, 50, 0.9); }
+        .panel-content { padding: 0; display: block; }
+        .ui-panel.collapsed .panel-content { display: none; }
+        .ui-panel.collapsed { width: auto; background: rgba(0, 0, 0, 0.5); }
+        .ui-panel.collapsed .panel-header { background: rgba(30, 30, 30, 0.5); }
+
+        #controlsPanel { top: 10px; }
+        #cameraPanel { bottom: 10px; right: 10px; width: 150px; }
+        .camera-line { margin: 4px 0; border-bottom: 1px dashed #444; padding-bottom: 2px; }
+        .val { color: rgba(255, 255, 255, 0.7); float: right; }
+
+        .label {
+            font-family: 'Consolas', monospace;
+            font-weight: bold;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #555;
+            position: absolute;
+            pointer-events: none;
+            white-space: nowrap;
+            color: #fff;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+        
+        .axis-label {
+            font-size: 14px;
+            border: none;
+            background: none;
+            padding: 0;
+            text-shadow: 1px 1px 3px black;
+        }
+
+        h3 { margin: 0 0 5px 0; color: rgba(255, 255, 255, 0.7); font-size: 15px; text-transform: uppercase; letter-spacing: 1px;}
+        p { margin: 2px 0; font-size: 12px; color: rgba(255, 255, 255, 0.7); }
+        
+        .c-det { color: #56B4E9; font-weight: bold; }
+        .c-wave { color: #009E73; font-weight: bold; }
+        .c-src { color: #E69F00; font-weight: bold; }
+        .c-ref { color: #CC79A7; font-weight: bold; }
+
+        /* Dat.GUI Overrides */
+        .dg.main { width: 100% !important; margin: 0 !important; box-shadow: none !important; border: none !important; }
+        .dg.main .close-button { display: none !important; }
+        .dg .c .slider { background: #333 !important; }
+        .dg .c .slider:hover { background: #444 !important; }
+        .dg .c .slider-fg { background: #888 !important; }
+        .dg .cr.number input[type=text] { width: 35px !important; color: rgba(255, 255, 255, 0.7); text-align: center; padding: 2px 2px; }
+        .dg li.title { background: rgba(51, 51, 51, 0.5) !important; color: #fff !important; text-shadow: none !important; font-weight: normal; }
+        .dg li:not(.folder) { background: rgba(0, 0, 0, 0.3) !important; border-bottom: 1px solid #444 !important; color: rgba(255, 255, 255, 0.7) !important; }
+        .dg .property-name { width: 25% !important; overflow: hidden !important; text-overflow: ellipsis !important; color: rgba(255, 255, 255, 0.7) !important; }
+        .dg .c { width: 75% !important; }
+    </style>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
+</head>
+<body>
+
+    <div id="info">
+        <div class="panel">
+            <h3>Coordinate<br>Frames</h3>
+            <p><span class="c-det">■ Observer</span> :<br>Equatorial (geocentric)<br>(z=rotation axis,<br>x=vernal equinox)</p>
+            <p><span class="c-wave">■ Wave Frame</span> :<br> Sky Plane</p>
+            <p><span class="c-src">■ Source Frame</span> :<br> Orbital Plane</p>
+        </div>
+    </div>
+
+    <div id="controlsPanel" class="ui-panel collapsed">
+        <div class="panel-header" onclick="togglePanel('controlsPanel')">
+            PARAMETERS <span>▼</span>
+        </div>
+        <div class="panel-content" id="guiContainer"></div>
+    </div>
+
+    <div id="cameraPanel" class="ui-panel collapsed">
+        <div class="panel-header" onclick="togglePanel('cameraPanel')">
+            CAMERA STATE <span>▼</span>
+        </div>
+        <div class="panel-content">
+            <div class="camera-line">Pos <span class="val" id="camPos">0,0,0</span></div>
+            <div class="camera-line">Azimuth <span class="val" id="camAzimuth">0°</span></div>
+            <div class="camera-line">Polar <span class="val" id="camPolar">0°</span></div>
+            <div class="camera-line">Dist <span class="val" id="camDist">0</span></div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. CONFIGURATION ---
+        const COL_DET = 0x56B4E9;
+        const COL_WAVE = 0x009E73;
+        const COL_SRC = 0xE69F00;
+        const COL_REF = 0xCC79A7;
+        const COL_RA = 0x00BFC4;
+        const COL_DEC = 0xE76F51;
+        const AXIS_LEN = 12;
+        const LABEL_OFFSET = AXIS_LEN * 1.2;
+        const POL_AMP = 0.6;
+        const POL_OMEGA = 2.0; // GW frequency = 2 * orbital frequency
+        const RA_ARC_RADIUS = 7.0;
+        const DEC_ARC_RADIUS = 6.0;
+
+        // Label offset configurations
+        const detectorLabelOffset = new THREE.Vector3(0, -5, 0);
+        const refLabelOffset = new THREE.Vector3(0, -2, 2);
+        const refLabelScale = 1.5;
+        const psiLabelOffset = new THREE.Vector3(0, 0, 0);
+        const psiLabelScale = 1.4;
+        const sourceLabelOffset = new THREE.Vector3(0, -5, LABEL_OFFSET*0.5);
+        const iotaLabelOffset = new THREE.Vector3(0, 1, 2);
+        const iotaLabelScale = 1.1;
+
+        const params = {
+            ra: 45, dec: 45, dist: 50, psi: 75, iota: 30, orbitSpeed: 1, showPlanes: true,
+            polMode: 'Plus (+)'
+        };
+
+        // --- 2. SETUP SCENE ---
+        function togglePanel(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('collapsed');
+            const span = el.querySelector('.panel-header span');
+            span.textContent = el.classList.contains('collapsed') ? '▲' : '▼';
+        }
+
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x050505);
+        scene.fog = new THREE.FogExp2(0x050505, 0.0015);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 500);
+        camera.position.set(-6, -65, 22);
+        camera.up.set(0, 0, 1);
+        camera.zoom = 1.1;
+        camera.updateProjectionMatrix();
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.target.set(+10, 0, +18);
+        controls.update();
+
+        scene.add(new THREE.AmbientLight(0x404040));
+        const dl = new THREE.DirectionalLight(0xffffff, 1);
+        dl.position.set(20, -20, 50);
+        scene.add(dl);
+
+        // --- 3. HELPER FUNCTIONS ---
+        function createLabel(text, color, isAxis = false) {
+            const el = document.createElement('div');
+            el.className = isAxis ? 'label axis-label' : 'label';
+            el.innerHTML = text;
+            if(color) {
+                const colorStr = typeof color === 'number' ? '#' + color.toString(16).padStart(6, '0') : color;
+                el.style.color = colorStr;
+                if(!isAxis) el.style.borderColor = colorStr;
+            }
+            document.body.appendChild(el);
+            return { el: el, pos: new THREE.Vector3() };
+        }
+
+        function updateLabelPos(labelObj, pos) {
+            if (pos) labelObj.pos.copy(pos);
+            const vec = labelObj.pos.clone().project(camera);
+            if (vec.z > 1) { labelObj.el.style.display = 'none'; return; }
+            labelObj.el.style.display = 'block';
+            labelObj.el.style.left = ((vec.x * 0.5 + 0.5) * window.innerWidth) + 'px';
+            labelObj.el.style.top = ((-(vec.y * 0.5) + 0.5) * window.innerHeight) + 'px';
+        }
+
+        function createAxes(parent, size, color, labels) {
+            const grp = new THREE.Group();
+            parent.add(grp);
+            const mat = new THREE.LineBasicMaterial({ color: color, linewidth: 2 });
+            
+            grp.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(size,0,0)]), mat));
+            grp.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(0,size,0)]), mat));
+            grp.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(0,0,size)]), mat));
+            
+            const coneGeo = new THREE.ConeGeometry(0.3, 1.2, 8); coneGeo.translate(0, 0.6, 0); coneGeo.rotateZ(-Math.PI/2);
+            const coneMat = new THREE.MeshBasicMaterial({ color: color });
+            const xc = new THREE.Mesh(coneGeo, coneMat); xc.position.set(size,0,0); grp.add(xc);
+            const yc = new THREE.Mesh(coneGeo, coneMat); yc.position.set(0,size,0); yc.rotation.z = Math.PI/2; grp.add(yc);
+            const zc = new THREE.Mesh(coneGeo, coneMat); zc.position.set(0,0,size); zc.rotation.y = -Math.PI/2; grp.add(zc);
+
+            if(labels) {
+                return {
+                    x: createLabel(labels[0], color, true),
+                    y: createLabel(labels[1], color, true),
+                    z: createLabel(labels[2], color, true),
+                    local: true, parent: grp
+                };
+            }
+            return null;
+        }
+
+        function updatePolarizationTexture(tOrb) {
+            const w = polCanvas.width;
+            const h = polCanvas.height;
+            const cx = w * 0.5;
+            const cy = h * 0.5;
+            const scale = w * 0.18;
+
+            polCtx.clearRect(0, 0, w, h);
+
+            const phase = POL_OMEGA * tOrb;
+            let hp = 0;
+            let hx = 0;
+            if (params.polMode === 'Plus (+)') {
+                hp = POL_AMP * Math.sin(phase);
+                hx = 0;
+            } else if (params.polMode === 'Cross (x)') {
+                hp = 0;
+                hx = POL_AMP * Math.sin(phase);
+            } else {
+                hp = POL_AMP * Math.cos(phase);
+                hx = POL_AMP * Math.sin(phase);
+            }
+
+            // Use wave-frame axes directly (x''/y'') so + aligns with x'' and x aligns at 45°
+            const c = 1;
+            const s = 0;
+
+            // Wave basis axes (x'' and y'')
+            const L = scale * 1.6;
+            polCtx.lineWidth = 2;
+            polCtx.strokeStyle = 'rgba(255, 70, 70, 0.9)';
+            polCtx.beginPath();
+            polCtx.moveTo(cx, cy);
+            polCtx.lineTo(cx + L * c, cy + L * s);
+            polCtx.stroke();
+
+            polCtx.strokeStyle = 'rgba(80, 255, 120, 0.9)';
+            polCtx.beginPath();
+            polCtx.moveTo(cx, cy);
+            polCtx.lineTo(cx - L * s, cy + L * c);
+            polCtx.stroke();
+
+            // Deformed particle ring
+            polCtx.fillStyle = 'rgba(30, 144, 255, 0.9)';
+            for (let i = 0; i < polBase.length; i++) {
+                const bx = polBase[i].x;
+                const by = polBase[i].y;
+
+                // Wave frame coordinates (x'', y'')
+                const x_wave = c * bx + s * by;
+                const y_wave = -s * bx + c * by;
+
+                // Linearized GW distortion
+                const dx = 0.5 * (hp * x_wave + hx * y_wave);
+                const dy = 0.5 * (hx * x_wave - hp * y_wave);
+
+                const x_w_def = x_wave + dx;
+                const y_w_def = y_wave + dy;
+
+                // Wave frame (no extra rotation)
+                const x_final = c * x_w_def - s * y_w_def;
+                const y_final = s * x_w_def + c * y_w_def;
+
+                polCtx.beginPath();
+                polCtx.arc(cx + x_final * scale, cy + y_final * scale, 3, 0, Math.PI * 2);
+                polCtx.fill();
+            }
+
+            polTexture.needsUpdate = true;
+        }
+
+        // --- 4. SCENE OBJECTS ---
+
+        // Observer Frame (Geocentric Equatorial) - Fixed
+        const detectorGroup = new THREE.Group();
+        scene.add(detectorGroup);
+        const gridDet = new THREE.GridHelper(80, 20, 0x333333, 0x111111); gridDet.rotation.x = Math.PI/2;
+        detectorGroup.add(gridDet);
+        const detLabels = createAxes(detectorGroup, AXIS_LEN, COL_DET, ['x', 'y', 'z']);
+        const lblDetMain = createLabel("Observer (Equatorial)", "#56B4E9");
+
+        // RA/Dec arcs in observer frame
+        const raArc = new THREE.Line(
+            new THREE.BufferGeometry(),
+            new THREE.LineBasicMaterial({ color: COL_RA, linewidth: 2 })
+        );
+        detectorGroup.add(raArc);
+
+        const decArc = new THREE.Line(
+            new THREE.BufferGeometry(),
+            new THREE.LineBasicMaterial({ color: COL_DEC, linewidth: 2 })
+        );
+        detectorGroup.add(decArc);
+
+        const lblRA = createLabel("RA", "#00BFC4");
+        const lblDec = createLabel("Dec", "#E76F51");
+
+        // Wave Frame (Midpoint)
+        const waveGroup = new THREE.Group();
+        scene.add(waveGroup);
+        
+        // Green: Sky plane (unchanged)
+        const wavePlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(20, 20),
+            new THREE.MeshBasicMaterial({ color: COL_WAVE, transparent: true, opacity: 0.1, side: THREE.DoubleSide, depthWrite: false })
+        );
+        waveGroup.add(wavePlane);
+
+        // Polarization visualization overlay on the sky plane (canvas texture)
+        const polCanvas = document.createElement('canvas');
+        polCanvas.width = 256;
+        polCanvas.height = 256;
+        const polCtx = polCanvas.getContext('2d');
+        const polTexture = new THREE.CanvasTexture(polCanvas);
+        polTexture.minFilter = THREE.LinearFilter;
+        polTexture.magFilter = THREE.LinearFilter;
+
+        const polMaterial = new THREE.MeshBasicMaterial({
+            map: polTexture,
+            transparent: true,
+            opacity: 0.9,
+            depthWrite: false
+        });
+        polMaterial.polygonOffset = true;
+        polMaterial.polygonOffsetFactor = -1;
+        polMaterial.polygonOffsetUnits = -1;
+
+        const polPlane = new THREE.Mesh(new THREE.PlaneGeometry(20, 20), polMaterial);
+        polPlane.renderOrder = 1;
+        waveGroup.add(polPlane);
+
+        const POL_NUM = 32;
+        const POL_RADIUS = 1.6;
+        const polTheta = Array.from({ length: POL_NUM }, (_, i) => (i / POL_NUM) * Math.PI * 2);
+        const polBase = polTheta.map((t) => ({ x: Math.cos(t) * POL_RADIUS, y: Math.sin(t) * POL_RADIUS }));
+
+        // Yellow: Equatorial plane at the sky-frame location (parallel to observer x-y)
+        // NOTE: This must NOT inherit waveGroup rotation; it must stay parallel to global XY.
+        const equatorialPlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(20, 20),
+            new THREE.MeshBasicMaterial({ color: COL_DET, transparent: true, opacity: 0.2, side: THREE.DoubleSide, depthWrite: false })
+        );
+        scene.add(equatorialPlane);
+
+        const waveLabels = createAxes(waveGroup, AXIS_LEN, COL_WAVE, ["x''", "y''", "z''"]);
+        const lblRef = createLabel("Asc. node", "#CC79A7");
+        const lblPsi = createLabel("ψ", "#CC79A7");
+        
+        // Wave Frame Internal: Ascending line-of-nodes & Psi Arc
+        const refLine = new THREE.Line(
+            new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(1,0,0)]),
+            new THREE.LineDashedMaterial({ color: COL_REF, dashSize: 0.8, gapSize: 0.4 })
+        );
+        waveGroup.add(refLine);
+
+        const psiArc = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: COL_REF }));
+        waveGroup.add(psiArc);
+
+        // Source Frame
+        const sourceGroup = new THREE.Group();
+        scene.add(sourceGroup);
+        const srcLabels = createAxes(sourceGroup, AXIS_LEN * 0.8, COL_SRC, ["x'", "y'", "z'"]);
+        const lblSrcMain = createLabel("Source Frame", "#E69F00");
+        const lblIota = createLabel("ι", "#F0E442");
+
+        // Binary System
+        const bhGeo = new THREE.SphereGeometry(1.0, 16, 16);
+        const bhMat = new THREE.MeshStandardMaterial({ color: 0x555555, roughness: 0.4, metalness: 0.3 });
+        const bh1 = new THREE.Mesh(bhGeo, bhMat);
+        const bh2 = new THREE.Mesh(bhGeo, bhMat);
+        sourceGroup.add(bh1); sourceGroup.add(bh2);
+        const orbitPath = new THREE.Line(
+            new THREE.BufferGeometry().setFromPoints(new THREE.EllipseCurve(0,0,4,4,0,2*Math.PI).getPoints(64)),
+            new THREE.LineBasicMaterial({ color: COL_SRC, transparent: true, opacity: 0.4 })
+        );
+        sourceGroup.add(orbitPath);
+
+        // --- INCLINATION VISUALIZATION (Source Local) ---
+        const losGhostLine = new THREE.Line(
+            new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]),
+            new THREE.LineDashedMaterial({ color: 0xaaaaaa, dashSize: 0.5, gapSize: 0.3, transparent: true, opacity: 0.8 })
+        );
+        sourceGroup.add(losGhostLine);
+        
+        const iotaArc = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: 0xF0E442 }));
+        sourceGroup.add(iotaArc);
+
+        // Global LOS Line (Visual only)
+        const losLineGlobal = new THREE.Line(
+            new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]),
+            new THREE.LineDashedMaterial({ color: 0x444444, dashSize: 1, gapSize: 1 })
+        );
+        scene.add(losLineGlobal);
+
+        // --- 5. CORE LOGIC ---
+        function updateGeometry() {
+            // 1. Calculate Positions
+            const r = params.dist;
+            const theta = THREE.MathUtils.degToRad(90 - params.dec);
+            const phi = THREE.MathUtils.degToRad(params.ra);
+            const srcPos = new THREE.Vector3(
+                r * Math.sin(theta) * Math.cos(phi),
+                r * Math.sin(theta) * Math.sin(phi),
+                r * Math.cos(theta)
+            );
+            const detPos = new THREE.Vector3(0,0,0);
+
+            sourceGroup.position.copy(srcPos);
+            waveGroup.position.copy(srcPos).multiplyScalar(0.5);
+
+            // Equatorial plane lives at wave frame location, but stays parallel to observer XY
+            equatorialPlane.position.copy(waveGroup.position);
+            equatorialPlane.rotation.set(0, 0, 0);
+            equatorialPlane.visible = params.showPlanes;
+
+            // Update Global LOS Visual
+            const gLosPos = losLineGlobal.geometry.attributes.position;
+            gLosPos.setXYZ(1, srcPos.x, srcPos.y, srcPos.z);
+            gLosPos.needsUpdate = true;
+            losLineGlobal.computeLineDistances();
+
+            // RA/Dec arcs in observer frame
+            const srcDir = srcPos.clone().normalize();
+            let raRad = Math.atan2(srcDir.y, srcDir.x);
+            if (raRad < 0) raRad += Math.PI * 2;
+            const decRad = Math.asin(srcDir.z);
+
+            const raPts = [];
+            const raSegs = 40;
+            for (let i = 0; i <= raSegs; i++) {
+                const a = (raRad * i) / raSegs;
+                raPts.push(new THREE.Vector3(
+                    RA_ARC_RADIUS * Math.cos(a),
+                    RA_ARC_RADIUS * Math.sin(a),
+                    0
+                ));
+            }
+            raArc.geometry.setFromPoints(raPts);
+
+            const decPts = [];
+            const decSegs = 30;
+            for (let i = 0; i <= decSegs; i++) {
+                const a = (decRad * i) / decSegs;
+                const v = new THREE.Vector3(
+                    DEC_ARC_RADIUS * Math.cos(a),
+                    0,
+                    DEC_ARC_RADIUS * Math.sin(a)
+                ).applyAxisAngle(new THREE.Vector3(0, 0, 1), raRad);
+                decPts.push(v);
+            }
+            decArc.geometry.setFromPoints(decPts);
+
+            // 2. Wave Frame Orientation (z'' aligns with LOS vector)
+            const nVec = new THREE.Vector3().subVectors(detPos, srcPos).normalize(); // Source -> Observer
+            const z_wave = nVec.clone();
+
+            // --- Ascending line-of-nodes reference (intersection of sky plane and equatorial plane) ---
+            // Sky plane normal: z_wave
+            // Equatorial plane normal (observer Z): globalZ
+            const globalZ = new THREE.Vector3(0,0,1);
+
+            // Direction of intersection line in world coordinates:
+            // refDir ∝ globalZ × z_wave  (lies in both planes)
+            let refDir = new THREE.Vector3().crossVectors(globalZ, z_wave);
+            if (refDir.lengthSq() < 0.0001) {
+                // fallback if source near celestial pole -> intersection ill-defined
+                refDir = new THREE.Vector3(1,0,0);
+            } else {
+                refDir.normalize();
+            }
+
+            // Psi is the angle from the ascending line-of-nodes (refDir) to the wave x-axis in the sky plane
+            const psiRad = THREE.MathUtils.degToRad(params.psi);
+            const x_wave = refDir.clone().applyAxisAngle(z_wave, psiRad).normalize();
+            const y_wave = new THREE.Vector3().crossVectors(z_wave, x_wave).normalize();
+
+            const waveMat = new THREE.Matrix4().makeBasis(x_wave, y_wave, z_wave);
+            waveGroup.rotation.setFromRotationMatrix(waveMat);
+
+            // 2b. Wave visuals: dashed reference line (ascending line of nodes) and psi arc
+            const refLen = AXIS_LEN * 0.8;
+
+            // In wave local coordinates, the reference line is at angle -psi from local x-axis
+            const refLocalX = Math.cos(-psiRad) * refLen;
+            const refLocalY = Math.sin(-psiRad) * refLen;
+
+            const refPos = refLine.geometry.attributes.position;
+            refPos.setXYZ(1, refLocalX, refLocalY, 0);
+            refPos.needsUpdate = true;
+            refLine.computeLineDistances();
+
+            const psiCurve = new THREE.EllipseCurve(0, 0, refLen*0.5, refLen*0.5, -psiRad, 0, false, 0);
+            psiArc.geometry.setFromPoints(psiCurve.getPoints(24));
+
+            // 3. Source Frame Orientation & Iota (unchanged)
+            const iotaRad = THREE.MathUtils.degToRad(params.iota);
+            sourceGroup.quaternion.setFromRotationMatrix(waveMat);
+            sourceGroup.rotateX(iotaRad);
+
+            // --- Inclination geometry (unchanged) ---
+            sourceGroup.updateMatrixWorld();
+            const invSourceMat = new THREE.Matrix4().copy(sourceGroup.matrixWorld).invert();
+            const nVecLocal = nVec.clone().transformDirection(invSourceMat).normalize();
+
+            const ghostLen = 8;
+            const ghostTip = nVecLocal.clone().multiplyScalar(ghostLen);
+            const ghostPos = losGhostLine.geometry.attributes.position;
+            ghostPos.setXYZ(1, ghostTip.x, ghostTip.y, ghostTip.z);
+            ghostPos.needsUpdate = true;
+            losGhostLine.computeLineDistances();
+
+            const axisNormal = new THREE.Vector3().crossVectors(nVecLocal, new THREE.Vector3(0,0,1)).normalize();
+            const arcPts = [];
+            const arcRadius = 6;
+            const segs = 20;
+            const measuredAngle = nVecLocal.angleTo(new THREE.Vector3(0,0,1));
+            for(let i=0; i<=segs; i++) {
+                const tt = i/segs;
+                const ang = tt * measuredAngle;
+                const v = nVecLocal.clone().applyAxisAngle(axisNormal, ang).multiplyScalar(arcRadius);
+                arcPts.push(v);
+            }
+            iotaArc.geometry.setFromPoints(arcPts);
+
+            // --- LABELS ---
+            function updateAxesLabels(obj, len) {
+                const vX = new THREE.Vector3(len, 0, 0).applyMatrix4(obj.parent.matrixWorld);
+                const vY = new THREE.Vector3(0, len, 0).applyMatrix4(obj.parent.matrixWorld);
+                const vZ = new THREE.Vector3(0, 0, len).applyMatrix4(obj.parent.matrixWorld);
+                updateLabelPos(obj.x, vX); updateLabelPos(obj.y, vY); updateLabelPos(obj.z, vZ);
+            }
+
+            updateAxesLabels(detLabels, LABEL_OFFSET);
+            updateLabelPos(lblDetMain, detectorLabelOffset);
+
+            // RA/Dec labels
+            if (raPts.length > 0) {
+                const midRa = raPts[Math.floor(raPts.length / 2)];
+                updateLabelPos(lblRA, midRa.clone().add(new THREE.Vector3(0.6, 0.6, 0)));
+            }
+            if (decPts.length > 0) {
+                const midDec = decPts[Math.floor(decPts.length / 2)];
+                updateLabelPos(lblDec, midDec.clone().add(new THREE.Vector3(0.4, 0.4, 0.4)));
+            }
+
+            updateAxesLabels(waveLabels, LABEL_OFFSET);
+            updateLabelPos(
+                lblRef,
+                new THREE.Vector3(refLocalX, refLocalY, 0)
+                    .multiplyScalar(refLabelScale)
+                    .add(refLabelOffset)
+                    .applyMatrix4(waveGroup.matrixWorld)
+            );
+            updateLabelPos(
+                lblPsi,
+                new THREE.Vector3(Math.cos(-psiRad/2)*6, Math.sin(-psiRad/2)*6, 0)
+                    .multiplyScalar(psiLabelScale)
+                    .add(psiLabelOffset)
+                    .applyMatrix4(waveGroup.matrixWorld)
+            );
+
+            updateAxesLabels(srcLabels, LABEL_OFFSET);
+            updateLabelPos(lblSrcMain, sourceGroup.position.clone().add(sourceLabelOffset));
+
+            if(arcPts.length > 10) {
+                const midPt = arcPts[10].clone().multiplyScalar(iotaLabelScale).add(iotaLabelOffset).applyMatrix4(sourceGroup.matrixWorld);
+                updateLabelPos(lblIota, midPt);
+            }
+
+            wavePlane.visible = params.showPlanes;
+            polPlane.visible = params.showPlanes;
+        }
+
+        const gui = new dat.GUI({ autoPlace: false });
+        document.getElementById('guiContainer').appendChild(gui.domElement);
+        gui.add(params, 'ra', 0, 360).name('RA').onChange(updateGeometry);
+        gui.add(params, 'dec', -90, 90).name('Dec').onChange(updateGeometry);
+        gui.add(params, 'dist', 20, 80).name('Dist').onChange(updateGeometry);
+        gui.add(params, 'psi', 0, 180).name('ψ').onChange(updateGeometry);
+        gui.add(params, 'iota', 0, 180).name('ι').onChange(updateGeometry);
+        gui.add(params, 'polMode', ['Plus (+)', 'Cross (x)', 'Circular']).name('Pol Mode');
+        gui.add(params, 'showPlanes').name('Show Planes').onChange(updateGeometry);
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            updateGeometry();
+
+            const time = Date.now() * 0.001 * params.orbitSpeed;
+            updatePolarizationTexture(time);
+
+            bh1.position.set(Math.cos(time)*4, Math.sin(time)*4, 0);
+            bh2.position.set(-Math.cos(time)*4, -Math.sin(time)*4, 0);
+            
+            const cp = camera.position;
+            document.getElementById('camPos').textContent = `${cp.x.toFixed(0)},${cp.y.toFixed(0)},${cp.z.toFixed(0)}`;
+            document.getElementById('camDist').textContent = cp.length().toFixed(1);
+            document.getElementById('camPolar').textContent = (Math.acos(cp.z / cp.length()) * (180/Math.PI)).toFixed(1) + "°";
+            document.getElementById('camAzimuth').textContent = (Math.atan2(cp.y, cp.x) * (180/Math.PI)).toFixed(1) + "°";
+
+            renderer.render(scene, camera);
+        }
+
+        updateGeometry();
+        animate();
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

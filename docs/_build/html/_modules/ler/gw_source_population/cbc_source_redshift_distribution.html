@@ -55,11 +55,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed_pdf.html">Analytical Formulation (PDF)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_events.html">Lensed event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -111,11 +108,6 @@
 <span class="sd">based on various merger rate density models. It supports multiple astrophysical</span>
 <span class="sd">merger rate density prescriptions including PopI/II, PopIII, and primordial</span>
 <span class="sd">black hole models.</span>
-
-<span class="sd">Inheritance hierarchy:</span>
-
-<span class="sd">- :class:`~ler.gw_source_population.CBCSourceParameterDistribution` \n</span>
-<span class="sd">  ↳ inherits from this class</span>
 
 <span class="sd">Usage:</span>
 <span class="sd">    Basic workflow example:</span>
@@ -285,7 +277,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span> <span class="o">=</span> <span class="n">event_type</span>
         <span class="c1"># if None is passed, use the default cosmology</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span> <span class="o">=</span> <span class="n">cosmology</span> <span class="k">if</span> <span class="n">cosmology</span> <span class="k">else</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">cosmology</span>
+            <span class="k">if</span> <span class="n">cosmology</span>
+            <span class="k">else</span> <span class="n">LambdaCDM</span><span class="p">(</span>
+                <span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
         <span class="c1"># setting up the interpolator creation parameters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup_decision_dictionary</span><span class="p">(</span>
@@ -437,9 +435,9 @@
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">merger_rate_density</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">merger_rate_density</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_merger_rate_density_model</span><span class="p">:</span>
-                    <span class="n">merger_rate_density_param_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_merger_rate_density_model</span><span class="p">[</span>
-                        <span class="n">merger_rate_density</span>
-                    <span class="p">]</span>
+                    <span class="n">merger_rate_density_param_</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">available_merger_rate_density_model</span><span class="p">[</span><span class="n">merger_rate_density</span><span class="p">]</span>
+                    <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;&#39;merger rate density&#39; sampler &#39;</span><span class="si">{</span><span class="n">merger_rate_density</span><span class="si">}</span><span class="s2">&#39; not available.</span><span class="se">\n</span><span class="s2"> Available &#39;merger rate density&#39; samplers and its parameters are: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">available_merger_rate_density_model</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -642,7 +640,9 @@
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
             <span class="s2">&quot;merger_rate_density&quot;</span>
         <span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
-        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_merger_rate_density_model</span><span class="p">[</span><span class="s2">&quot;sfr_with_time_delay&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_merger_rate_density_model</span><span class="p">[</span>
+            <span class="s2">&quot;sfr_with_time_delay&quot;</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
 

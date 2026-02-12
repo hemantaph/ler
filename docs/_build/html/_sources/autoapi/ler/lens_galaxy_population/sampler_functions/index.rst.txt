@@ -918,11 +918,14 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: importance_sampler(zs, zl, sigma_min, sigma_max, q_rvs, phi_rvs, gamma_rvs, shear_rvs, sigma_pdf, cross_section, n_prop)
+.. py:function:: importance_sampler(zs, zl, sigma_min, sigma_max, q_rvs, phi_rvs, gamma_rvs, shear_rvs, number_density, cross_section, n_prop)
 
    
    Core importance sampling algorithm for lens parameters.
 
+   This function samples lens galaxy parameters weighted by their lensing
+   cross sections using importance sampling with a uniform proposal distribution
+   for velocity dispersion.
 
    :Parameters:
 
@@ -950,8 +953,8 @@ Functions
        **shear_rvs** : ``callable``
            Function to sample external shear: shear_rvs(n) -> (gamma1, gamma2).
 
-       **sigma_pdf** : ``callable``
-           PDF of velocity dispersion: sigma_pdf(sigma, zl) -> array.
+       **number_density** : ``callable``
+           Number density or velocity dispersion function: number_density(sigma, zl) -> array.
 
        **cross_section** : ``callable``
            Function to compute lensing cross section.
@@ -994,7 +997,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: importance_sampler_mp(zs, zl, sigma_min, sigma_max, q_rvs, phi_rvs, gamma_rvs, shear_rvs, sigma_pdf, cross_section, n_prop, npool=4)
+.. py:function:: importance_sampler_mp(zs, zl, sigma_min, sigma_max, q_rvs, phi_rvs, gamma_rvs, shear_rvs, number_density, cross_section, n_prop, npool=4)
 
    
    Multiprocessing version of importance sampling for lens parameters.
@@ -1026,8 +1029,8 @@ Functions
        **shear_rvs** : ``callable``
            Function to sample external shear: shear_rvs(n) -> (gamma1, gamma2).
 
-       **sigma_pdf** : ``callable``
-           PDF of velocity dispersion: sigma_pdf(sigma, zl) -> array.
+       **number_density** : ``callable``
+           Number density or velocity dispersion function: number_density(sigma, zl) -> array.
 
        **cross_section** : ``callable``
            Function to compute lensing cross section.
@@ -1075,7 +1078,7 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: create_importance_sampler(sigma_min, sigma_max, q_rvs, phi_rvs, gamma_rvs, shear_rvs, sigma_pdf, cross_section, n_prop, use_njit_sampler=True, npool=4)
+.. py:function:: create_importance_sampler(sigma_min, sigma_max, q_rvs, phi_rvs, gamma_rvs, shear_rvs, number_density, cross_section, n_prop, use_njit_sampler=True, npool=4)
 
    
    Create an importance sampler for cross-section weighted lens parameters.
@@ -1104,8 +1107,8 @@ Functions
        **shear_rvs** : ``callable``
            Function to sample external shear: shear_rvs(n) -> (gamma1, gamma2).
 
-       **sigma_pdf** : ``callable``
-           PDF of velocity dispersion: sigma_pdf(sigma, zl) -> array.
+       **number_density** : ``callable``
+           Number density or velocity dispersion function: number_density(sigma, zl) -> array.
 
        **cross_section** : ``callable``
            Function to compute lensing cross section.
@@ -1154,7 +1157,7 @@ Functions
    ... def shear_rvs(n):
    ...     return 0.05 * np.random.randn(n), 0.05 * np.random.randn(n)
    >>> @njit
-   ... def sigma_pdf(sigma, zl):
+   ... def number_density(sigma, zl):
    ...     return np.ones_like(sigma)
    >>> @njit
    ... def cross_section(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):
@@ -1166,7 +1169,7 @@ Functions
    ...     phi_rvs=phi_rvs,
    ...     gamma_rvs=gamma_rvs,
    ...     shear_rvs=shear_rvs,
-   ...     sigma_pdf=sigma_pdf,
+   ...     number_density=number_density,
    ...     cross_section=cross_section,
    ...     n_prop=100,
    ... )

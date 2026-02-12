@@ -139,10 +139,8 @@ Glossary
    Installation
    Summary
    code_overview
-   GW_events
    analytical_formulation_unlensed
-   Lensed_events
-   Lensed_equations
+   analytical_formulation_lensed
    
 .. toctree::
    :maxdepth: 2

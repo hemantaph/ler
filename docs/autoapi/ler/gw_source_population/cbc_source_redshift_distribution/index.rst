@@ -13,12 +13,6 @@
    merger rate density prescriptions including PopI/II, PopIII, and primordial
    black hole models.
 
-   Inheritance hierarchy:
-
-   - :class:`~ler.gw_source_population.CBCSourceParameterDistribution`
-
-     ↳ inherits from this class
-
    Usage:
        Basic workflow example:
 

@@ -58,11 +58,8 @@
 <li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="code_overview.html">Code overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GW_events.html">Gravitational wave event rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="analytical_formulation_unlensed_pdf.html">Analytical Formulation (PDF)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Lensed_events.html">Lensed event rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Lensed_equations.html">Lensed event sampling (Analytical formulation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -401,8 +398,8 @@ P({\rm SL} \mid z_L, z_s, \vec{\theta_{\rm L}^*}) = \frac{\sigma^{\rm DC}_{\rm E
 cs = cs_unit * (csunit_to_cs_intercept + csunit_to_cs_slope * area_sis) -->
 <p>The scaling relation is given by
 $$</p>
-<div class="amsmath math notranslate nohighlight" id="equation-fea1345d-4d7c-4fb6-9fa9-9ff5d9317c6b">
-<span class="eqno">(1)<a class="headerlink" href="#equation-fea1345d-4d7c-4fb6-9fa9-9ff5d9317c6b" title="Permalink to this equation"></a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-08b16adf-f470-4b0b-add2-db11c5728157">
+<span class="eqno">(1)<a class="headerlink" href="#equation-08b16adf-f470-4b0b-add2-db11c5728157" title="Permalink to this equation"></a></span>\[\begin{equation}
 \begin{split}
 &amp;\sigma^{\rm DC}_{\rm EPL}(\theta_{\rm E}(\sigma, z_L, z_s), q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2) \\
 &amp;\quad\quad= \sigma^{\rm DC}_{\rm EPL}(\theta_{\rm E}=1, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2) \\
@@ -411,8 +408,8 @@ $$</p>
 \end{equation}\]</div>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}where `intercept` and `slope` are precomputed constants. This approach significantly speeds up the computation of $\sigma^{\rm DC}_{\rm EPL}$ during sampling and also enables speedy calculation of the effective lensing kernel $\Phi(z_L,z_s)$ and thus the optical depth $P({\rm SL}|z_s)$. \\## Lens Parameter Distributions of Lensed Events\\The conditional lens-parameter distribution for strongly lensed sources, $P(\vec{\theta_{\rm L}^*} \mid z_L, z_s, {\rm SL})$ at fixed $z_L$ and $z_s$, for EPL+Shear lenses, can be expressed as\end{aligned}\end{align} \]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-5966396d-43e0-4173-99a1-b006cc7f7af6">
-<span class="eqno">(2)<a class="headerlink" href="#equation-5966396d-43e0-4173-99a1-b006cc7f7af6" title="Permalink to this equation"></a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-82d872a9-36e4-4443-b521-7474e676995c">
+<span class="eqno">(2)<a class="headerlink" href="#equation-82d872a9-36e4-4443-b521-7474e676995c" title="Permalink to this equation"></a></span>\[\begin{equation}
 \begin{split}
 &amp;P(\sigma, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2 \mid z_L, z_s, {\rm SL})\\
 &amp;\quad \propto P({\rm SL} \mid \sigma, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2, z_L, z_s) \\
@@ -422,8 +419,8 @@ $$</p>
 \end{equation}\]</div>
 <div class="math notranslate nohighlight">
 \[Rejection sampling is in-efficient as for $P(\sigma \mid z_L)$, as most of the drawn configurations will not satisfy the strong-lensing condition. Moreover, maximum value of $\sigma^{\rm DC}_{\rm EPL}$ is not known analytically for EPL+Shear lenses, making it difficult to use the standard rejection sampling method. To overcome these challenges, `ler` employs an importance sampling approach. Rewriting the sampling equation as\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-ad7303e6-49e8-4c0a-b7e7-fbbec99086ce">
-<span class="eqno">(3)<a class="headerlink" href="#equation-ad7303e6-49e8-4c0a-b7e7-fbbec99086ce" title="Permalink to this equation"></a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-0f7358ae-5e52-4a1c-a722-56f74cddd6be">
+<span class="eqno">(3)<a class="headerlink" href="#equation-0f7358ae-5e52-4a1c-a722-56f74cddd6be" title="Permalink to this equation"></a></span>\[\begin{equation}
 \begin{split}
 &amp;P(\sigma, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2 \mid z_L, z_s, {\rm SL})\\
 &amp;\quad \propto\frac{ \sigma^{\rm DC}_{\rm EPL}\, P(\sigma \mid z_L)}{P_o(\sigma)} \, P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \, P_o(\sigma) \,,
@@ -433,8 +430,8 @@ $$</p>
 \[ \begin{align}\begin{aligned}where $P_o(\sigma)$ is a convenient proposal distribution for $\sigma$ that allows efficient sampling such as uniform distribution $\left( P_o(\sigma)=\frac{1}{\sigma_{\max}-\sigma_{\min}}\right)$. \\We use $\frac{ \sigma^{\rm DC}_{\rm EPL}\, P(\sigma \mid z_L)}{P_o(\sigma)}$ as the importance weight for each sampled configuration. The lens parameters are then drawn from their intrinsic distributions, with $\sigma$ drawn from the proposal distribution $P_o(\sigma)$.\\## Source Position Distribution and Image Properties\\We set $\theta_{\rm E}$ as the unit of angular scale on the source plane for sampling source positions and lens equation solving. The image properties are later rescaled to physical units using the actual $\theta_{\rm E}$ for each lens configuration.\\Thus, the source position $\vec{\beta}$ is sampled uniformly within the double-image caustic region defined by the lens parameters ($\theta_{\rm E}=1, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2$), resulting in multiple images (2, 3 or 4 etc.) for each sampled configuration.\\For each sampled configuration, the lens equation is solved using [`lenstronomy`](https://lenstronomy.readthedocs.io), yielding the image positions $\vec{\theta_i}\in\{\theta_{x,i}, \theta_{y,i}\}$, arrival-time delays $t_i$, and magnifications $\mu_i$ for each image, with the subscript $i$ denotes the $i^{\rm th}$ image.. $\vec{\beta}$, $\theta_i$, and $t_i$ are then re-scaled using the actual $\theta_{\rm E}$.\\Image types are identified using the trace and determinant of the Jacobian matrix of the lens mapping, which determines the Morse index $n_i$. The images are classified as Type-I (minima, $n_i=0$), Type-II (saddle points, $n_i=1/2$), and Type-III (maxima, $n_i=1$). In this study, central demagnified Type-III images are neglected. Images are ordered by arrival time such that $t_1&lt;t_2&lt;t_3&lt;t_4$, and configurations with up to four images are considered.\\Strong lensing modifies the observed GW signal for each image. 
 &lt;!-- The coalescence time becomes $t_c+t_i$, the effective luminosity distance becomes $d_L/\sqrt{ \mid \mu_i \mid }$, and the coalescence phase is shifted to $\phi_c-n_i\pi$.  --&gt;
 So the GW parameters for each image are updated to\end{aligned}\end{align} \]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-1998fbf8-780d-4532-8052-b656c2f8f87d">
-<span class="eqno">(4)<a class="headerlink" href="#equation-1998fbf8-780d-4532-8052-b656c2f8f87d" title="Permalink to this equation"></a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-99def677-d6f2-4d38-b072-b514ea201248">
+<span class="eqno">(4)<a class="headerlink" href="#equation-99def677-d6f2-4d38-b072-b514ea201248" title="Permalink to this equation"></a></span>\[\begin{equation}
 \begin{split}
 \vec{\theta_{{\rm GW},i}} &amp;\in \Bigg\{
 \frac{d_L(z_s)}{\sqrt{\lvert \mu_i\rvert}},\;
@@ -448,8 +445,8 @@ t_c + t_i,\; \\
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}the detector-frame masses and spins remain unchanged from the unlensed values. Even though the sky-location changes (with image positions) due to lensing, the effect is negligible for GW detectors given their poor angular resolution, and also this will not affect the SNR calculation significantly. SNR for each image and the detectability are then evaluated using these updated GW parameters as described in the next section.\\## Detection Probability of Lensed Events\\The detection probability for a specific lensed source–lens configuration, $P({\rm obs} \mid \vec{\theta}^*_{\rm U}, z_s, \vec{\theta_{\rm L}}, \vec{\beta}, {\rm SL})$, is determined by evaluating the detectability of each image produced by the lensing. For each image $i$, the signal-to-noise ratio (SNR) is computed using the updated GW parameters $\vec{\theta}_{{\rm GW},i}$ that account for lensing effects. An event is considered detectable if at least two of its images meets the detection criteria. Thus, the detection probability can be expressed as
 \end{aligned}\end{align} \]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-01c2a6a0-a9ee-4ae8-8136-c97f45e8b0fb">
-<span class="eqno">(5)<a class="headerlink" href="#equation-01c2a6a0-a9ee-4ae8-8136-c97f45e8b0fb" title="Permalink to this equation"></a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-bd6aac74-146c-4617-af1a-2258bf9677f4">
+<span class="eqno">(5)<a class="headerlink" href="#equation-bd6aac74-146c-4617-af1a-2258bf9677f4" title="Permalink to this equation"></a></span>\[\begin{equation}
 \begin{split}
 &amp;P({\rm obs} \mid \vec{\theta}^*_{\rm U}, z_s, \vec{\theta_{\rm L}}, \vec{\beta}, {\rm SL}) \\
 &amp;\quad = \left\{ 
@@ -462,8 +459,8 @@ t_c + t_i,\; \\
 \end{equation}\]</div>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}where $\Theta$ is the Heaviside step function, and $\rho_{th}$ is the SNR detection threshold. The summation runs over all images produced by the lensing configuration. If two or more images have SNRs exceeding the threshold, the lensed event is deemed detectable, and the detection probability is set to 1; otherwise, it is set to 0.\\## Complete Expression for Lensed Event Rate\\Combining all the components discussed above, the final expression for the annual rate of detectable strongly lensed GW events is given by\end{aligned}\end{align} \]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-909f51bf-173f-43cd-9926-22a714f328b5">
-<span class="eqno">(6)<a class="headerlink" href="#equation-909f51bf-173f-43cd-9926-22a714f328b5" title="Permalink to this equation"></a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-5bc5f3b5-3aeb-4a18-bcfb-ec2df3e42eeb">
+<span class="eqno">(6)<a class="headerlink" href="#equation-5bc5f3b5-3aeb-4a18-bcfb-ec2df3e42eeb" title="Permalink to this equation"></a></span>\[\begin{equation}
 \begin{split}
 \frac{\Delta N^{\rm obs}_{\rm L}}{\Delta t}
 &amp;= {\cal N}_{\rm L} \bigg\langle P({\rm obs} \mid \vec{\theta}^*_{\rm U}, z_s, \vec{\theta_{\rm L}}, \vec{\beta}, {\rm SL}) \bigg\rangle_{\substack{

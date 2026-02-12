@@ -1,6 +1,6 @@
 # Analytical Formulation for Gravitational Wave Event Rates
 
-Written by [Phurailatpam Hemantakumar](https://hemantaph.com). Last updated: June 2024.
+Written by [Phurailatpam Hemantakumar](https://hemantaph.com). Last updated: 2026-02-06.
 
 ## Overview
 
@@ -12,6 +12,7 @@ This document presents the analytical framework for calculating gravitational-wa
 - [Parameter-Marginalized Event Rate](#parameter-marginalized-event-rate)
 - [Redshift Distribution and Intrinsic Merger Rates](#redshift-distribution-and-intrinsic-merger-rates)
 - [Detection Criterion and SNR Modeling](#detection-criterion-and-snr-modeling)
+- [Complete Expression for GW (unlensed) Event Rate](#complete-expression-for-gw-unlensed-event-rate)
 - [Simulation Results](#simulation-results)
   - [Simulation Settings](#simulation-settings)
   - [GW Source Parameter Priors](#gw-source-parameter-priors)
@@ -34,17 +35,47 @@ $$
 
 ## Parameter-Marginalized Event Rate
 
-The observed event rate is obtained by averaging the detection probability over the compact-binary parameters that determine the emitted signal and its projection onto a detector network. Let $\vec{\theta}=\{\vec{\theta}_{\rm int},\vec{\theta}_{\rm ext}\}$, where the intrinsic parameters $\vec{\theta}_{\rm int}$ describe the binary’s source-frame properties and the extrinsic parameters $\vec{\theta}_{\rm ext}$ describe the source configuration relative to the observer. In this work,
+The observed event rate is obtained by averaging the detection probability over the compact-binary parameters that determine the emitted signal and its projection onto a detector network. 
+
+Typically GW parameters can be $\{\vec{\theta}_{\rm int},\vec{\theta}_{\rm ext}\}$, where the intrinsic parameters $\vec{\theta}_{\rm int}$ describe the binary’s source properties and the extrinsic parameters $\vec{\theta}_{\rm ext}$ describe the source configuration relative to the observer (in a geocentric frame). In this work,
 
 $$ 
 \begin{equation}
 \begin{split}
-\vec{\theta} = \{z_s, m_1, m_2, a_1, a_2, \theta_1, \theta_2, \phi_{12}, \phi_{JL}, \iota, \phi, \psi, {\rm RA}, {\rm Dec}, t_c\} \,,
+\vec{\theta} = \{z_s, m_1, m_2, a_1, a_2, \theta_1, \theta_2, \phi_{12}, \phi_{\rm JL}, \iota, \phi, \psi, {\rm RA}, {\rm Dec}, t_c\} \,,
 \end{split}
 \end{equation}
 $$
 
-where source-frame component masses $(m_1,m_2)$, the dimensionless spin magnitudes $(a_1,a_2)$, and the spin-orientation angles $(\theta_1,\theta_2,\phi_{12},\phi_{JL})$ are intrinsic parameters, while the source redshift $z_s$, the sky position $({\rm RA},{\rm Dec})$, the inclination $\iota$, the polarization angle $\psi$, the coalescence phase $\phi$, and the coalescence time $t_c$ are extrinsic parameters.
+where detector-frame component masses $(m_1,m_2)$, the dimensionless spin magnitudes $(a_1,a_2)$, and the spin-orientation angles $(\theta_1,\theta_2,\phi_{12},\phi_{\rm JL})$ are intrinsic parameters, while the source redshift $z_s$, the sky position $({\rm RA},{\rm Dec})$, the inclination $\iota$, the polarization angle $\psi$, the reference phase $\phi$, and the geocentric coalescence time $t_c$ are extrinsic parameters. The binary orientation and sky location ($(\iota,{\rm RA},{\rm Dec},\psi)$) are wrt to the geocentric frame. $\phi$ is defined at a chosen reference frequency $f_{\rm ref}$ (default is $f_{\rm min}$). Assessing detectability requires mapping the population parameters $\vec{\theta}$ to the detector-frame parameterization used for waveform generation and signal-to-noise ratio SNR evaluation. Even though the actually population component mass are sampled in the source frame as $m^{\rm src}_{1,2}$ it 
+
+
+Spin degrees of freedom specified by $(a_1,a_2,\theta_1,\theta_2,\phi_{12},\phi_{\rm JL})$ are internally (in backend `bilby` or `LALSimulation`) converted to the spin coordinates required by the selected waveform model (for example, Cartesian spin components at $f_{\rm ref}$). The detector response is then computed for each interferometer by projecting this common source configuration through detector-specific antenna patterns and time delays, yielding per-detector strains and SNR contributions.
+
+<iframe src="_static/gw_coordinates.html"
+        width="100%"
+        height="600"
+        frameborder="0"
+        allowfullscreen
+        style="border:1px solid #ccc; border-radius:10px;"></iframe>
+
+*Interactive plot show GW related orientation angles*
+
+<iframe src="_static/spin_visualization.html"
+        width="100%"
+        height="600"
+        frameborder="0"
+        allowfullscreen
+        style="border:1px solid #ccc; border-radius:10px;"></iframe>
+
+*Interactive plot show spin related orientation angles*
+
+
+---
+
+Assessing detectability requires mapping the population parameters $\vec{\theta}$ to the detector-frame parameterization used for waveform generation and signal-to-noise ratio SNR evaluation. In particular, the source redshift $z_s$ is converted to a luminosity distance $d_L$ using the assumed cosmology, and source-frame component masses are red-shifted to detector-frame masses via $m_{1,2}=(1+z_s)\,m^{\rm src}_{1,2}$. The resulting detector-frame parameter set may be written as
+
+where $(\iota,{\rm RA},{\rm Dec},\psi)$ specify the binary orientation and sky location in a geocentric frame. The phase $\phi$ is the reference orbital phase defined at a chosen reference frequency $f_{\rm ref}$ (default is $f_{\rm min}$), and $t_c$ is the geocentric coalescence time. Spin degrees of freedom specified by $(a_1,a_2,\theta_1,\theta_2,\phi_{12},\phi_{\rm JL})$ are internally converted to the spin coordinates required by the selected waveform model (for example, Cartesian spin components at $f_{\rm ref}$). The detector response is then computed for each interferometer by projecting this common source configuration through detector-specific antenna patterns and time delays, yielding per-detector strains and SNR contributions.
 
 Given a joint prior $P(\vec{\theta})$ and a conditional detection probability $P({\rm obs}\mid\vec{\theta})$, the population-averaged detection probability is
 
@@ -105,33 +136,34 @@ $$
 \end{equation}
 $$
 
-Using this normalization, the observed event rate can be expressed as the intrinsic detector-frame rate multiplied by the expectation value of the detection probability over the prior distribution,
-
-$$
-\begin{equation}
-\begin{split}
-\frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}
-&= {\cal N}_{\rm U} \int_{\vec{\theta}} P({\rm obs} \mid \vec{\theta}) \, P(\vec{\theta}) \, d\vec{\theta} \\
-&= {\cal N}_{\rm U} \bigg\langle P({\rm obs} \mid  \vec{\theta}) \bigg\rangle_{\vec{\theta} \sim P(\vec{\theta})} \,,
-\end{split}
-\end{equation}
-$$
-
-which is evaluated numerically using Monte Carlo integration by drawing samples from $P(\vec{\theta})$. 
-
-For visualization $R_{\rm U}(z_s)$ and $P(z_s)$ are plotted below.
+For visualization, $R_{\rm U}(z_s)$ and $P(z_s)$ are plotted below.
 
 <div align="center">
   <img src="_static/Merger_rate_density_and_PDF_of_redshift.png" alt="Merger rate density and PDF of redshift for BBH mergers" width="600"/>
 </div>
 
-<a name="fig1"></a>
+<div id="fig1"></div>
+
 >**Figure 1 :** Redshift evolution of the merger rate density $R(z_s)$ (blue, left axis) and the probability density function $P(z_s)$ (orange, right axis) for BBH mergers. Both curves are based on a Madau-Dickinson like model that incorporates time delays and metallicity effects (Ng et al. 2021). The merger rate density is given in $\mathrm{Mpc}^{-3}\,\mathrm{yr}^{-1}$, with the GWTC-4 local rate $R_0 = 1.9^{+0.7}_{-0.5} \times 10^{-8}$ and shaded regions showing the uncertainty bounds. The normalized $P(z_s)$ has no uncertainty band, as the local rate $R_0$ cancels in its calculation. The rate peaks at $z_s \approx 2$, reflecting the cosmic star formation history modulated by metallicity (which suppresses BBH formation at low redshift) and time delays. Both $R(z_s)$ and $P(z_s)$ decline at higher redshifts, providing insight into gravitational wave detection prospects and the cosmic evolution of compact binaries.
 
 
 ## Detection Criterion and SNR Modeling
 
-The conditional detection probability $P({\rm obs} \mid \vec{\theta})$ is determined by applying a detection threshold $\rho_{\rm th}$ to the observed signal-to-noise ratio (SNR) $\rho_{\rm obs}$. In the simplest step-function model, an event is considered detected if its SNR exceeds this threshold. The detection probability is therefore defined as
+Assessing detectability requires mapping the population parameters $\vec{\theta}$ to the detector-frame parameterization used for waveform generation and signal-to-noise ratio SNR evaluation. In particular, the source redshift $z_s$ is converted to a luminosity distance $d_L$ using the assumed cosmology, and source-frame component masses are red-shifted to detector-frame masses via $m_{1,2}=(1+z_s)\,m^{\rm src}_{1,2}$. The resulting detector-frame parameter set may be written as
+
+
+$$
+\begin{equation}
+\begin{split}
+\vec{\theta}_{\rm det}
+= \{d_L, m_1, m_2, a_1, a_2, \theta_1, \theta_2, \phi_{12}, \phi_{\rm JL}, \iota, \phi, \psi, {\rm RA}, {\rm Dec}, t_c\} \,,
+\end{split}
+\end{equation}
+$$
+
+where $(\iota,{\rm RA},{\rm Dec},\psi)$ specify the binary orientation and sky location in a geocentric frame. The phase $\phi$ is the reference orbital phase defined at a chosen reference frequency $f_{\rm ref}$ (default is $f_{\rm min}$), and $t_c$ is the geocentric coalescence time. Spin degrees of freedom specified by $(a_1,a_2,\theta_1,\theta_2,\phi_{12},\phi_{\rm JL})$ are internally converted to the spin coordinates required by the selected waveform model (for example, Cartesian spin components at $f_{\rm ref}$). The detector response is then computed for each interferometer by projecting this common source configuration through detector-specific antenna patterns and time delays, yielding per-detector strains and SNR contributions.
+
+The conditional detection probability $P({\rm obs}\mid \vec{\theta})$, equivalently $P({\rm obs}\mid\vec{\theta}_{\rm det})$, is determined by applying a detection threshold $\rho_{\rm th}$ to the observed SNR $\rho_{\rm obs}$. In the simplest step-function model, an event is considered detected if its SNR exceeds this threshold. The detection probability is therefore defined as
 
 $$
 \begin{equation}
@@ -148,6 +180,23 @@ To evaluate this criterion, $\rho_{\rm obs}$ is modeled statistically from the o
 
 >**Note:** $P_{\rm det}$ in `ler` is generic and can be used for any detection problem with an SNR-like statistic, including electromagnetic signal detection (e.g., GRB detectability from BNS mergers; More & Phurailatpam 2024).
 
+## Complete Expression for GW (unlensed) Event Rate
+
+The observed GW event rate can be expressed as the intrinsic detector-frame rate multiplied by the expectation value of the detection probability over the prior distribution,
+
+$$
+\begin{equation}
+\begin{split}
+\frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}
+&= {\cal N}_{\rm U} \int_{\vec{\theta}} P({\rm obs} \mid \vec{\theta}) \, P(\vec{\theta}) \, d\vec{\theta} \\
+&= {\cal N}_{\rm U} \bigg\langle P({\rm obs} \mid  \vec{\theta}) \bigg\rangle_{\vec{\theta} \sim P(\vec{\theta})} \,,
+\end{split}
+\end{equation}
+$$
+
+which is evaluated numerically using [Monte Carlo integration](https://en.wikipedia.org/wiki/Monte_Carlo_integration) by drawing samples from $P(\vec{\theta})$. 
+
+
 
 ## Simulation Results
 
@@ -163,17 +212,18 @@ Detection probabilities are evaluated through the [`gwsnr`](https://gwsnr.hemant
 
 The prior distributions and parameter ranges used in the event-rate calculations are summarized in Table 1. These choices follow common conventions in gravitational-wave population analyses and are largely consistent with GWTC-3–motivated models, with local rate normalizations taken from the corresponding GWTC-4 reference values quoted below.
 
-<a name="table1"></a>
+<div name="table1"></div>
+
 **Table 1: Prior distributions for GW source parameters**
 
 | Parameter | Unit | Prior <br>Distribution | Range <br>[Min, Max] | Description |
 | :--- | :--- | :--- | :--- | :--- |
 | $z_s$ | - | $P(z_s)$ <br>derived from <br>Madau-<br>Dickinson <br>SFR | [0, 10] | Source redshift <br><br>**BBH** (Ng et al. 2021, GWTC-4)<br>B=2.57, C=3.36, D=5.83, <br>Median $R_0 = 1.9 \times 10^{-8}\ \mathrm{Mpc}^{-3}\ \mathrm{yr}^{-1}$ <br><br>**BNS** (M&D 2014, GWTC-4)<br>B=2.7, C=2.9, D=5.6 <br>Median $R_0 = 8.9\times 10^{-8} {\rm Mpc}^{-3}\,{\rm yr}^{-1}$ |
-| $m_{1,2}$ | $M_\odot$ | <br><br><br>**BBH**<br>PowerLaw<br>+Peak <br><br>**BNS**<br>Bimodal-<br>Gaussian | <br><br>**BBH**<br>[4.98, 112.5]<br><br><br>**BNS**<br>[1.0, 2.3]<br> | Component masses <br>(source-frame)<br><br>**BBH** (GWTC-3)<br>$\alpha$=3.78, $\mu_g$=32.27, $\sigma_g$=3.88, <br>$\lambda_p$=0.03, $\delta_m$=4.8, $\beta$=0.81<br><br>**BNS** (Farr et al. 2020)<br>$w$=0.643, $\mu_L$=1.352, <br>$\sigma_L$=0.08, $\mu_R$=1.88, $\sigma_R$=0.3 |
+| $m^{\rm src}_{1,2}$ | $M_\odot$ | <br><br><br>**BBH**<br>PowerLaw<br>+Peak <br><br>**BNS**<br>Bimodal-<br>Gaussian | <br><br>**BBH**<br>[4.98, 112.5]<br><br><br>**BNS**<br>[1.0, 2.3]<br> | Component masses <br>(source-frame)<br><br>**BBH** (GWTC-3)<br>$\alpha$=3.78, $\mu_g$=32.27, $\sigma_g$=3.88, <br>$\lambda_p$=0.03, $\delta_m$=4.8, $\beta$=0.81<br><br>**BNS** (Farr et al. 2020)<br>$w$=0.643, $\mu_L$=1.352, <br>$\sigma_L$=0.08, $\mu_R$=1.88, $\sigma_R$=0.3 |
 | $a_{1,2}$ | - | Uniform | [0, 0.99] | Dimensionless spin magnitudes |
 | $\theta_{1,2}$ | rad | Sine | [0, $\pi$] | Spin vector tilt angles |
 | $\phi_{12}$ | rad | Uniform | [0, $2\pi$] | Azimuthal angle between spin vectors |
-| $\phi_{JL}$ | rad | Uniform | [0, $2\pi$] | Angle between total and orbital <br>angular momentum |
+| $\phi_{\rm JL}$ | rad | Uniform | [0, $2\pi$] | Angle between total and orbital <br>angular momentum |
 | RA | rad | Uniform | [0, $2\pi$] | Right ascension |
 | Dec | rad | Cosine | [$-\frac{\pi}{2}$, $\frac{\pi}{2}$] | Declination |
 | $\iota$ | rad | Sine | [0, $\pi$] | Inclination relative to line of sight |
@@ -186,15 +236,16 @@ The prior distributions and parameter ranges used in the event-rate calculations
 Selection effects in gravitational-wave observations are illustrated by comparing the intrinsic BBH population to the subset that satisfies the detectability criterion for a given detector network.
 
 <div align="center">
-  <img src="_static/Unlensed_Events.png" alt="Corner plot comparing intrinsic and detectable BBH populations" width="600"/>
+  <img src="_static/Unlensed_Events.png" alt="Corner plot comparing intrinsic and detectable BBH populations" width="700"/>
 </div>
 
-<a name="fig2"></a>
->**Figure 2:** Corner plot comparing the simulated intrinsic BBH population (blue) with the detectable subset (orange) for the LIGO–Virgo–KAGRA network (['L1', 'H1', 'V1']) at O4 design sensitivity. The population model assumes a Madau–Dickinson–like merger-rate density (see [Figure 1](#fig1)) and a PowerLaw+Peak component-mass distribution. Shown parameters are the source redshift $z_s$ and component masses $m_1$ and $m_2$ (in $M_\odot$). The detectable subset is biased toward lower redshift and higher masses because these systems typically yield larger network SNR. Orientation effects, which also modulate SNR through the antenna pattern and inclination, are not shown.
+<div id="fig2"></div>
+
+>**Figure 2:** Corner plot comparing the simulated intrinsic BBH population (blue) with the detectable subset (orange) for the LIGO–Virgo–KAGRA network (['L1', 'H1', 'V1']) at O4 design sensitivity. The population model assumes a Madau–Dickinson–like merger-rate density (see [Figure 1](#fig1)) and a PowerLaw+Peak source-frame component-mass distribution. Shown parameters are the source redshift $z_s$ and component masses in (observed) detector-frame $\left(m_1, m_2\right)$ and (infered) source-frame $\left(m^{\rm src}_1=\frac{m_1}{1+z_s}, m^{\rm src}_2=\frac{m_2}{1+z_s}\right)$, in the unit of $M_\odot$. The detectable subset is biased toward lower redshift and higher masses because these systems typically yield larger network SNR. Orientation effects, which also modulate SNR through the antenna pattern and inclination, are not shown.
 
 ## Rate Estimates for Different GW Detector Networks
 
-Estimated annual merger rates for BBH and BNS populations are listed below for two detector configurations under the population and detection settings described above.
+Estimated detectable annual merger rates for BBH and BNS populations are listed below for two detector configurations under the population and detection settings described above.
 
 | Detector Configuration | BBH (Pop I–II) <br>Merger Rate (${\rm yr}^{-1}$) | BNS <br>Merger Rate (${\rm yr}^{-1}$) | Ratio <br>BBH:BNS |
 | :--- | :--- | :--- | :--- |
