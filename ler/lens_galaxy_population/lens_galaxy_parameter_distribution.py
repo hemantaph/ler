@@ -34,10 +34,17 @@ from .sampler_functions import _njit_checks
 
 from ..gw_source_population import CBCSourceParameterDistribution
 from ..image_properties import ImageProperties
+from ..utils import (
+    FunctionConditioning,
+    redshift_optimal_spacing,
+)
+
 warnings.filterwarnings("ignore")
 
 
-class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImageProperties, OpticalDepth):
+class LensGalaxyParameterDistribution(
+    CBCSourceParameterDistribution, ImageProperties, OpticalDepth
+):
     """
     Sample lens galaxy parameters conditioned on strong lensing.
 
@@ -127,7 +134,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
     | :meth:`~sample_all_routine_epl_shear_sl`            | Sample EPL+shear lens parameters with strong   |
     |                                                     | lensing condition                              |
     +-----------------------------------------------------+------------------------------------------------+
-    | :meth:`~strongly_lensed_source_redshifts`           | Sample source redshifts with lensing condition |
+    | :meth:`~strongly_lensed_source_redshift`           | Sample source redshifts with lensing condition |
     +-----------------------------------------------------+------------------------------------------------+
 
     Instance Attributes
@@ -173,7 +180,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         directory="./interpolator_json",
         create_new_interpolator=False,
         buffer_size=1000,
-        **kwargs
+        **kwargs,
     ):
         print("\nInitializing LensGalaxyParameterDistribution class...\n")
         self.event_type = event_type
@@ -195,26 +202,28 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         )
 
         # Function to sample source redshifts conditioned on strong lensing
-        self.sample_source_redshift_sl = getattr(self, self.lens_param_samplers["source_redshift_sl"])
+        self.source_redshift_sl = self.lens_param_samplers["source_redshift_sl"]
 
         # Function to sample lens parameters
-        self.sample_lens_parameters_routine = getattr(self, self.lens_functions["param_sampler_type"])
+        self.sample_lens_parameters_routine = getattr(
+            self, self.lens_functions["param_sampler_type"]
+        )
 
         # Function to select lens parameters conditioned on strong lensing
         self.cross_section_based_sampler = self._initialization_cross_section_sampler()
 
         # Compute normalization constant for lensed event pdf
         def pdf_unnormalized_(z):
-            return self.merger_rate_density_detector_frame(np.array([z])) * self.optical_depth.function(np.array([z]))
+            return self.merger_rate_density_detector_frame(
+                np.array([z])
+            ) * self.optical_depth.function(np.array([z]))
 
         def pdf_unnormalized(z):
             return pdf_unnormalized_(z)[0]
 
-        self.normalization_pdf_z_lensed = float(quad(
-            pdf_unnormalized,
-            self.z_min,
-            self.z_max
-        )[0])
+        self.normalization_pdf_z_lensed = float(
+            quad(pdf_unnormalized, self.z_min, self.z_max)[0]
+        )
 
     def _initialization_cross_section_sampler(self):
         """
@@ -235,30 +244,44 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         number_density = self.velocity_dispersion.function
         cross_section_function = self.cross_section
 
-
-        if cross_section_function.__code__.co_argcount <= 4: # sie or sis cross-section
+        if cross_section_function.__code__.co_argcount <= 4:  # sie or sis cross-section
             gamma_rvs = self.density_profile_slope_sl.rvs
             shear_rvs = self.external_shear_sl.rvs
             # not yet implemented
             # q_rvs = self.axis_ratio_sl.rvs
             # phi_rvs = self.axis_rotation_angle_sl.rvs
-            
-        use_njit_sampler, dict_ = _njit_checks(sigma_rvs, q_rvs, phi_rvs, gamma_rvs, shear_rvs, sigma_pdf, number_density, cross_section_function)
 
-        sigma_rvs = dict_['sigma_rvs']
-        sigma_pdf = dict_['sigma_pdf']
-        q_rvs = dict_['q_rvs']
-        phi_rvs = dict_['phi_rvs']
-        gamma_rvs = dict_['gamma_rvs']
-        shear_rvs = dict_['shear_rvs']
-        cross_section_function = dict_['cross_section_function']
+        use_njit_sampler, dict_ = _njit_checks(
+            sigma_rvs,
+            q_rvs,
+            phi_rvs,
+            gamma_rvs,
+            shear_rvs,
+            sigma_pdf,
+            number_density,
+            cross_section_function,
+        )
+
+        sigma_rvs = dict_["sigma_rvs"]
+        sigma_pdf = dict_["sigma_pdf"]
+        q_rvs = dict_["q_rvs"]
+        phi_rvs = dict_["phi_rvs"]
+        gamma_rvs = dict_["gamma_rvs"]
+        shear_rvs = dict_["shear_rvs"]
+        cross_section_function = dict_["cross_section_function"]
 
         sigma_max = self.lens_param_samplers_params["velocity_dispersion"]["sigma_max"]
 
         # Choose sampling method based on configuration
-        if self.lens_functions["cross_section_based_sampler"] == "rejection_sampling_with_cross_section":
+        if (
+            self.lens_functions["cross_section_based_sampler"]
+            == "rejection_sampling_with_cross_section"
+        ):
             from .sampler_functions import create_rejection_sampler
-            safety_factor = self.lens_functions_params["cross_section_based_sampler"]["safety_factor"]
+
+            safety_factor = self.lens_functions_params["cross_section_based_sampler"][
+                "safety_factor"
+            ]
 
             cross_section_based_sampler = create_rejection_sampler(
                 sigma_max=sigma_max,
@@ -272,9 +295,15 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
                 use_njit_sampler=use_njit_sampler,
             )
 
-        elif self.lens_functions["cross_section_based_sampler"] == "importance_sampling_with_cross_section":
+        elif (
+            self.lens_functions["cross_section_based_sampler"]
+            == "importance_sampling_with_cross_section"
+        ):
             from .sampler_functions import create_importance_sampler
-            sigma_min = self.lens_param_samplers_params["velocity_dispersion"]["sigma_min"]
+
+            sigma_min = self.lens_param_samplers_params["velocity_dispersion"][
+                "sigma_min"
+            ]
             n_prop = self.lens_functions_params["cross_section_based_sampler"]["n_prop"]
             cross_section_based_sampler = create_importance_sampler(
                 sigma_min=sigma_min,
@@ -283,7 +312,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
                 phi_rvs=phi_rvs,
                 gamma_rvs=gamma_rvs,
                 shear_rvs=shear_rvs,
-                sigma_pdf=sigma_pdf,
+                number_density=number_density,
                 cross_section=cross_section_function,
                 n_prop=n_prop,
                 use_njit_sampler=use_njit_sampler,
@@ -470,7 +499,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             +------------------------------+-----------+-------------------------------------------------------+
             | mass_2                       | Msun      | mass of the secondary compact binary (detector frame) |
             +------------------------------+-----------+-------------------------------------------------------+
-            
+
         Examples
         --------
         >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
@@ -478,7 +507,9 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         >>> params = lens.sample_lens_parameters(size=1000)
         >>> print(params.keys())
         """
-        print(f"sampling lens parameters with {self.lens_functions['param_sampler_type']}...")
+        print(
+            f"sampling lens parameters with {self.lens_functions['param_sampler_type']}..."
+        )
 
         # Sample lens parameters with strong lensing condition
         lens_parameters = self.sample_lens_parameters_routine(size=size)
@@ -534,7 +565,7 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
             +------------------------------+-----------+-------------------------------------------------------+
         """
         # Sample source redshift with strong lensing weighting
-        zs = self.sample_source_redshift_sl(size)
+        zs = self.source_redshift_sl(size)
 
         # Sample lens redshift conditioned on source redshift
         zl = self.lens_redshift.rvs(size, zs)
@@ -556,18 +587,67 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
 
         return lens_parameters
 
-    def strongly_lensed_source_redshifts(self, size=1000):
+    # def strongly_lensed_source_redshift_rjs(self, size=1000):
+    #     """
+    #     Sample source redshifts conditioned on strong lensing.
+
+    #     Uses rejection sampling to generate source redshifts from the CBC source
+    #     population weighted by the optical depth, which increases with redshift.
+
+    #     Parameters
+    #     ----------
+    #     size : ``int``
+    #         Number of redshifts to sample. \n
+    #         default: 1000
+
+    #     Returns
+    #     -------
+    #     redshifts : ``numpy.ndarray``
+    #         Array of source redshifts conditioned on strong lensing.
+
+    #     Examples
+    #     --------
+    #     >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+    #     >>> lens = LensGalaxyParameterDistribution()
+    #     >>> zs = lens.strongly_lensed_source_redshift(size=1000)
+    #     >>> print(f"Mean source redshift: {zs.mean():.2f}")
+    #     """
+    #     z_max = self.z_max
+
+    #     def zs_function(zs_sl):
+    #         # Sample from source population
+    #         zs = self.zs(size)
+
+    #         # Apply optical depth weighting
+    #         tau = self.optical_depth(zs)
+    #         tau_max = self.optical_depth(np.array([z_max]))[0]
+
+    #         # Rejection sampling
+    #         r = np.random.uniform(0, tau_max, size=len(zs))
+    #         zs_sl += list(zs[r < tau])
+
+    #         if len(zs_sl) >= size:
+    #             return zs_sl[:size]
+    #         else:
+    #             return zs_function(zs_sl)
+
+    #     zs_sl = []
+    #     return np.array(zs_function(zs_sl))
+
+    def strongly_lensed_source_redshift(self, size, get_attribute=False, **kwargs):
         """
         Sample source redshifts conditioned on strong lensing.
-
-        Uses rejection sampling to generate source redshifts from the CBC source
-        population weighted by the optical depth, which increases with redshift.
 
         Parameters
         ----------
         size : ``int``
-            Number of redshifts to sample. \n
+            Number of samples to generate. \n
             default: 1000
+        get_attribute : ``bool``
+            If True, returns the sampler object instead of samples. \n
+            default: False
+        **kwargs : ``dict``
+            Additional parameters
 
         Returns
         -------
@@ -578,30 +658,69 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
         --------
         >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
         >>> lens = LensGalaxyParameterDistribution()
-        >>> zs = lens.strongly_lensed_source_redshifts(size=1000)
-        >>> print(f"Mean source redshift: {zs.mean():.2f}")
+        >>> zs = lens.strongly_lensed_source_redshift(size=1000)
+        >>> print(f"strongly lensed source redshift: {zs.mean():.2f}")
         """
+
+        identifier_dict = {"name": "strongly_lensed_source_redshift"}
+        identifier_dict["resolution"] = self.create_new_interpolator[
+            "source_redshift_sl"
+        ]["resolution"]
+        identifier_dict["z_min"] = self.z_min
+        identifier_dict["z_max"] = self.z_max
+        identifier_dict["cosmology"] = self.cosmo
+        identifier_dict["resolution"] = self.create_new_interpolator[
+            "source_redshift_sl"
+        ]["resolution"]
+        identifier_dict["optical_depth"] = self.optical_depth.info  # can be None
+        identifier_dict["source_redshift"] = self.source_redshift.info
+
+        param_dict = self.available_lens_samplers["source_redshift_sl"][
+            "strongly_lensed_source_redshift"
+        ]
+        if param_dict:
+            param_dict.update(kwargs)
+        else:
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
+
+        z_min = self.z_min if self.z_min > 0.0 else 0.0001
         z_max = self.z_max
+        resolution = identifier_dict["resolution"]
+        zs_array = redshift_optimal_spacing(z_min, z_max, resolution)
 
-        def zs_function(zs_sl):
-            # Sample from source population
-            zs = self.zs(size)
+        if param_dict["tau_approximation"]:
 
-            # Apply optical depth weighting
-            tau = self.optical_depth(zs)
-            tau_max = self.optical_depth(np.array([z_max]))[0]
+            def n_zs_sl(zs):
+                # gives number density of strongly lensed sources
+                P_sl_zs = self.optical_depth(zs)
+                return P_sl_zs * self.source_redshift.function(zs)
 
-            # Rejection sampling
-            r = np.random.uniform(0, tau_max, size=len(zs))
-            zs_sl += list(zs[r < tau])
+        else:
 
-            if len(zs_sl) >= size:
-                return zs_sl[:size]
-            else:
-                return zs_function(zs_sl)
+            def n_zs_sl(zs):
+                # gives number density of strongly lensed sources
+                tau = self.optical_depth(zs)
+                P_sl_zs = tau * np.exp(-tau)
+                return P_sl_zs * self.source_redshift.function(zs)
 
-        zs_sl = []
-        return np.array(zs_function(zs_sl))
+        zs_sl_object = FunctionConditioning(
+            function=n_zs_sl,
+            x_array=zs_array,
+            conditioned_y_array=None,
+            identifier_dict=identifier_dict,
+            directory=self.directory,
+            sub_directory="source_redshift_sl",
+            name=identifier_dict["name"],
+            create_new=self.create_new_interpolator["source_redshift_sl"]["create_new"],
+            create_function_inverse=False,
+            create_function=True,
+            create_pdf=True,
+            create_rvs=True,
+            callback="rvs",
+        )
+
+        return zs_sl_object if get_attribute else zs_sl_object.rvs(size)
 
     def sample_all_routine_epl_shear_intrinsic(self, size=1000):
         """
@@ -760,3 +879,42 @@ class LensGalaxyParameterDistribution(CBCSourceParameterDistribution, ImagePrope
     def normalization_pdf_z_lensed(self, value):
         self._normalization_pdf_z_lensed = value
 
+    @property
+    def source_redshift_sl(self):
+        """
+        Function to sample source redshifts conditioned on strong lensing.
+
+        Returns
+        -------
+        source_redshift_sl : ``ler.functions.FunctionConditioning``
+            Function for sampling source redshifts conditioned on strong lensing.
+        """
+        return self._source_redshift_sl
+
+    @source_redshift_sl.setter
+    def source_redshift_sl(self, prior):
+        if prior in self.available_lens_samplers["source_redshift_sl"]:
+            print(f"using ler available source_redshift_sl function : {prior}")
+            args = self.lens_param_samplers_params["source_redshift_sl"]
+            if args is None:
+                self._source_redshift_sl = getattr(self, prior)(
+                    size=None, get_attribute=True
+                )
+            else:
+                self._source_redshift_sl = getattr(self, prior)(
+                    size=None, get_attribute=True, **args
+                )
+        elif isinstance(prior, FunctionConditioning):
+            print(
+                "using user provided custom source_redshift_sl class/object of type ler.utils.FunctionConditioning"
+            )
+            self._source_redshift_sl = prior
+        elif callable(prior):
+            print("using user provided custom source_redshift_sl sampler function")
+            self._source_redshift_sl = FunctionConditioning(
+                function=None, x_array=None, create_rvs=prior
+            )
+        else:
+            raise ValueError(
+                "source_redshift_sl should be string in available_lens_samplers['source_redshift_sl'] or class object of 'ler.utils.FunctionConditioning' or callable function with input argument 'size'"
+            )

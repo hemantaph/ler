@@ -8,11 +8,6 @@ based on various merger rate density models. It supports multiple astrophysical
 merger rate density prescriptions including PopI/II, PopIII, and primordial
 black hole models.
 
-Inheritance hierarchy:
-
-- :class:`~ler.gw_source_population.CBCSourceParameterDistribution` \n
-  ↳ inherits from this class
-
 Usage:
     Basic workflow example:
 
@@ -179,7 +174,13 @@ class CBCSourceRedshiftDistribution(object):
         self.directory = directory
         self.event_type = event_type
         # if None is passed, use the default cosmology
-        self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
+        self.cosmo = (
+            cosmology
+            if cosmology
+            else LambdaCDM(
+                H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0
+            )
+        )
 
         # setting up the interpolator creation parameters
         self.create_new_interpolator = self._setup_decision_dictionary(
@@ -328,9 +329,9 @@ class CBCSourceRedshiftDistribution(object):
 
             if isinstance(merger_rate_density, str):
                 if merger_rate_density in self.available_merger_rate_density_model:
-                    merger_rate_density_param_ = self.available_merger_rate_density_model[
-                        merger_rate_density
-                    ]
+                    merger_rate_density_param_ = (
+                        self.available_merger_rate_density_model[merger_rate_density]
+                    )
                 else:
                     raise ValueError(
                         f"'merger rate density' sampler '{merger_rate_density}' not available.\n Available 'merger rate density' samplers and its parameters are: {self.available_merger_rate_density_model}"
@@ -528,7 +529,9 @@ class CBCSourceRedshiftDistribution(object):
         identifier_dict["resolution"] = self.create_new_interpolator[
             "merger_rate_density"
         ]["resolution"]
-        param_dict = self.available_merger_rate_density_model["sfr_with_time_delay"].copy()
+        param_dict = self.available_merger_rate_density_model[
+            "sfr_with_time_delay"
+        ].copy()
         param_dict.update(kwargs)
         identifier_dict.update(param_dict)
 

@@ -71,7 +71,9 @@ def available_sampler_list():
 # ---------------------------------
 @njit
 def lens_redshift_strongly_lensed_sis_haris_pdf(
-    zl, zs, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
+    zl,
+    zs,
+    cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0),
 ):
     """
     Compute lens redshift PDF for SIS model (Haris et al. 2018).
@@ -110,7 +112,11 @@ def lens_redshift_strongly_lensed_sis_haris_pdf(
 
 
 def lens_redshift_strongly_lensed_sis_haris_rvs(
-    size, zs, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
+    size,
+    zs,
+    z_min=0.001,
+    z_max=10.0,
+    cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0),
 ):
     """
     Sample lens redshifts for SIS model (Haris et al. 2018).
@@ -1218,12 +1224,44 @@ def importance_sampler(
     phi_rvs,
     gamma_rvs,
     shear_rvs,
-    sigma_pdf,
+    number_density,
     cross_section,
     n_prop,
 ):
     """
     Core importance sampling algorithm for lens parameters.
+
+    This function samples lens galaxy parameters weighted by their lensing
+    cross sections using importance sampling with a uniform proposal distribution
+    for velocity dispersion.
+
+    Algorithm
+    ---------
+    For each lens-source pair (zl_i, zs_i):
+
+    1. **Draw proposal samples** (n_prop samples per lens):
+       - sigma_k ~ Uniform(sigma_min, sigma_max)  with proposal density q(sigma) = 1/(sigma_max - sigma_min)
+       - q_k ~ p(q|sigma_k)  (axis ratio conditioned on velocity dispersion)
+       - φ_k ~ p(φ)  (orientation angle prior)
+       - gamma_k ~ p(gamma)  (power-law index prior)
+       - (gamma1_k, gamma2_k) ~ p(gamma1, gamma2)  (external shear prior)
+
+    2. **Compute lensing cross sections**:
+       - cs_k = CrossSection(zs_i, zl_i, sigma_k, q_k, φ_k, gamma_k, gamma1_k, gamma2_k)
+       - Normalize: cs_k ← cs_k / Σ_k cs_k
+
+    3. **Compute importance weights**:
+       - The target distribution is: p(θ|zl) ∝ p(sigma|zl) x CrossSection(θ)
+       - The proposal distribution is: q(θ) ∝ Uniform(sigma) x p(q|sigma) x p(φ) x p(gamma) x p(shear)
+       - Importance weight: w_k = cs_k x [p(sigma_k|zl) / q(sigma)]
+       - Normalize: w_k ← w_k / Σ_k w_k
+
+    4. **Resample**:
+       - Draw one sample index from {1, ..., n_prop} with probabilities {w_1, ..., w_n_prop}
+       - Return the corresponding parameter values as the posterior sample
+
+    The algorithm produces samples from the posterior distribution of lens
+    parameters weighted by their contribution to the strong lensing cross section.
 
     Parameters
     ----------
@@ -1243,8 +1281,8 @@ def importance_sampler(
         Function to sample power-law index: gamma_rvs(n) -> array.
     shear_rvs : ``callable``
         Function to sample external shear: shear_rvs(n) -> (gamma1, gamma2).
-    sigma_pdf : ``callable``
-        PDF of velocity dispersion: sigma_pdf(sigma, zl) -> array.
+    number_density : ``callable``
+        Number density or velocity dispersion function: number_density(sigma, zl) -> array.
     cross_section : ``callable``
         Function to compute lensing cross section.
     n_prop : ``int``
@@ -1276,7 +1314,7 @@ def importance_sampler(
 
     p0 = 1.0 / (sigma_max - sigma_min)
 
-    for i in prange(n_samples):
+    for i in prange(n_samples):  # for each (zl, zs) pair
         # Draw proposals from uniform distribution
         sigma_prop = _sigma_proposal_uniform(n_prop, sigma_min, sigma_max)
 
@@ -1301,38 +1339,18 @@ def importance_sampler(
             gamma2_prop,
         )
 
-        # Stabilize: normalize cross sections
-        cs_sum = 0.0
-        for k in range(cs.size):
-            cs_sum += cs[k]
-
-        if cs_sum > 0.0:
-            for k in range(cs.size):
-                cs[k] = cs[k] / cs_sum
-        else:
-            for k in range(cs.size):
-                cs[k] = 1.0
-
         # Compute importance weights
-        p_sigma = sigma_pdf(sigma_prop, zl_arr)
+        sigma_function = number_density(sigma_prop, zl_arr)
 
-        w = np.empty(n_prop)
-        w_sum = 0.0
-        for k in range(n_prop):
-            wk = cs[k] * (p_sigma[k] / p0)
-            if not (wk > 0.0):
-                wk = 0.0
-            w[k] = wk
-            w_sum += wk
+        w = cs * (sigma_function / p0)
+        w = np.where(w > 0.0, w, 0.0)
+        w_sum = np.sum(w)
 
         # Normalize weights
         if w_sum > 0.0:
-            for k in range(n_prop):
-                w[k] /= w_sum
+            w = w / w_sum
         else:
-            inv = 1.0 / n_prop
-            for k in range(n_prop):
-                w[k] = inv
+            w = np.ones(n_prop) / n_prop
 
         # Draw posterior sample via weighted choice
         idx = _weighted_choice_1d(w)
@@ -1376,7 +1394,7 @@ def _importance_sampler_worker(params):
     phi_rvs = shared_data["phi_rvs"]
     gamma_rvs = shared_data["gamma_rvs"]
     shear_rvs = shared_data["shear_rvs"]
-    sigma_pdf = shared_data["sigma_pdf"]
+    number_density = shared_data["number_density"]
     cross_section = shared_data["cross_section"]
     n_prop = shared_data["n_prop"]
 
@@ -1404,20 +1422,12 @@ def _importance_sampler_worker(params):
         gamma_prop,
         gamma1_prop,
         gamma2_prop,
-    )
-
-    # Stabilize: normalize cross sections
-    cs_sum = np.sum(cs)
-
-    if cs_sum > 0.0:
-        cs = cs / cs_sum
-    else:
-        cs = np.ones(n_prop)
+    )/ (4.0*np.pi)
 
     # Compute importance weights
-    p_sigma = sigma_pdf(sigma_prop, zl_arr)
+    sigma_function = number_density(sigma_prop, zl_arr)
 
-    w = cs * (p_sigma / p0)
+    w = cs * (sigma_function / p0)
     w = np.where(w > 0.0, w, 0.0)
     w_sum = np.sum(w)
 
@@ -1451,7 +1461,7 @@ def importance_sampler_mp(
     phi_rvs,
     gamma_rvs,
     shear_rvs,
-    sigma_pdf,
+    number_density,
     cross_section,
     n_prop,
     npool=4,
@@ -1477,8 +1487,8 @@ def importance_sampler_mp(
         Function to sample power-law index: gamma_rvs(n) -> array.
     shear_rvs : ``callable``
         Function to sample external shear: shear_rvs(n) -> (gamma1, gamma2).
-    sigma_pdf : ``callable``
-        PDF of velocity dispersion: sigma_pdf(sigma, zl) -> array.
+    number_density : ``callable``
+        Number density or velocity dispersion function: number_density(sigma, zl) -> array.
     cross_section : ``callable``
         Function to compute lensing cross section.
     n_prop : ``int``
@@ -1512,7 +1522,7 @@ def importance_sampler_mp(
         "phi_rvs": phi_rvs,
         "gamma_rvs": gamma_rvs,
         "shear_rvs": shear_rvs,
-        "sigma_pdf": sigma_pdf,
+        "number_density": number_density,
         "cross_section": cross_section,
         "n_prop": n_prop,
     }
@@ -1557,7 +1567,7 @@ def create_importance_sampler(
     phi_rvs,
     gamma_rvs,
     shear_rvs,
-    sigma_pdf,
+    number_density,
     cross_section,
     n_prop,
     use_njit_sampler=True,
@@ -1584,8 +1594,8 @@ def create_importance_sampler(
         Function to sample power-law index: gamma_rvs(n) -> array.
     shear_rvs : ``callable``
         Function to sample external shear: shear_rvs(n) -> (gamma1, gamma2).
-    sigma_pdf : ``callable``
-        PDF of velocity dispersion: sigma_pdf(sigma, zl) -> array.
+    number_density : ``callable``
+        Number density or velocity dispersion function: number_density(sigma, zl) -> array.
     cross_section : ``callable``
         Function to compute lensing cross section.
     n_prop : ``int``
@@ -1619,7 +1629,7 @@ def create_importance_sampler(
     ... def shear_rvs(n):
     ...     return 0.05 * np.random.randn(n), 0.05 * np.random.randn(n)
     >>> @njit
-    ... def sigma_pdf(sigma, zl):
+    ... def number_density(sigma, zl):
     ...     return np.ones_like(sigma)
     >>> @njit
     ... def cross_section(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):
@@ -1631,7 +1641,7 @@ def create_importance_sampler(
     ...     phi_rvs=phi_rvs,
     ...     gamma_rvs=gamma_rvs,
     ...     shear_rvs=shear_rvs,
-    ...     sigma_pdf=sigma_pdf,
+    ...     number_density=number_density,
     ...     cross_section=cross_section,
     ...     n_prop=100,
     ... )
@@ -1656,7 +1666,7 @@ def create_importance_sampler(
                 phi_rvs=phi_rvs,
                 gamma_rvs=gamma_rvs,
                 shear_rvs=shear_rvs,
-                sigma_pdf=sigma_pdf,
+                number_density=number_density,
                 cross_section=cross_section,
                 n_prop=n_prop,
             )
@@ -1676,7 +1686,7 @@ def create_importance_sampler(
                 phi_rvs=phi_rvs,
                 gamma_rvs=gamma_rvs,
                 shear_rvs=shear_rvs,
-                sigma_pdf=sigma_pdf,
+                number_density=number_density,
                 cross_section=cross_section,
                 n_prop=n_prop,
                 npool=npool,

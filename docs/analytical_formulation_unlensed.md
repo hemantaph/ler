@@ -33,51 +33,10 @@ $$
 \end{equation}
 $$
 
+
 ## Parameter-Marginalized Event Rate
 
-The observed event rate is obtained by averaging the detection probability over the compact-binary parameters that determine the emitted signal and its projection onto a detector network. 
-
-Typically GW parameters can be $\{\vec{\theta}_{\rm int},\vec{\theta}_{\rm ext}\}$, where the intrinsic parameters $\vec{\theta}_{\rm int}$ describe the binary’s source properties and the extrinsic parameters $\vec{\theta}_{\rm ext}$ describe the source configuration relative to the observer (in a geocentric frame). In this work,
-
-$$ 
-\begin{equation}
-\begin{split}
-\vec{\theta} = \{z_s, m_1, m_2, a_1, a_2, \theta_1, \theta_2, \phi_{12}, \phi_{\rm JL}, \iota, \phi, \psi, {\rm RA}, {\rm Dec}, t_c\} \,,
-\end{split}
-\end{equation}
-$$
-
-where detector-frame component masses $(m_1,m_2)$, the dimensionless spin magnitudes $(a_1,a_2)$, and the spin-orientation angles $(\theta_1,\theta_2,\phi_{12},\phi_{\rm JL})$ are intrinsic parameters, while the source redshift $z_s$, the sky position $({\rm RA},{\rm Dec})$, the inclination $\iota$, the polarization angle $\psi$, the reference phase $\phi$, and the geocentric coalescence time $t_c$ are extrinsic parameters. The binary orientation and sky location ($(\iota,{\rm RA},{\rm Dec},\psi)$) are wrt to the geocentric frame. $\phi$ is defined at a chosen reference frequency $f_{\rm ref}$ (default is $f_{\rm min}$). Assessing detectability requires mapping the population parameters $\vec{\theta}$ to the detector-frame parameterization used for waveform generation and signal-to-noise ratio SNR evaluation. Even though the actually population component mass are sampled in the source frame as $m^{\rm src}_{1,2}$ it 
-
-
-Spin degrees of freedom specified by $(a_1,a_2,\theta_1,\theta_2,\phi_{12},\phi_{\rm JL})$ are internally (in backend `bilby` or `LALSimulation`) converted to the spin coordinates required by the selected waveform model (for example, Cartesian spin components at $f_{\rm ref}$). The detector response is then computed for each interferometer by projecting this common source configuration through detector-specific antenna patterns and time delays, yielding per-detector strains and SNR contributions.
-
-<iframe src="_static/gw_coordinates.html"
-        width="100%"
-        height="600"
-        frameborder="0"
-        allowfullscreen
-        style="border:1px solid #ccc; border-radius:10px;"></iframe>
-
-*Interactive plot show GW related orientation angles*
-
-<iframe src="_static/spin_visualization.html"
-        width="100%"
-        height="600"
-        frameborder="0"
-        allowfullscreen
-        style="border:1px solid #ccc; border-radius:10px;"></iframe>
-
-*Interactive plot show spin related orientation angles*
-
-
----
-
-Assessing detectability requires mapping the population parameters $\vec{\theta}$ to the detector-frame parameterization used for waveform generation and signal-to-noise ratio SNR evaluation. In particular, the source redshift $z_s$ is converted to a luminosity distance $d_L$ using the assumed cosmology, and source-frame component masses are red-shifted to detector-frame masses via $m_{1,2}=(1+z_s)\,m^{\rm src}_{1,2}$. The resulting detector-frame parameter set may be written as
-
-where $(\iota,{\rm RA},{\rm Dec},\psi)$ specify the binary orientation and sky location in a geocentric frame. The phase $\phi$ is the reference orbital phase defined at a chosen reference frequency $f_{\rm ref}$ (default is $f_{\rm min}$), and $t_c$ is the geocentric coalescence time. Spin degrees of freedom specified by $(a_1,a_2,\theta_1,\theta_2,\phi_{12},\phi_{\rm JL})$ are internally converted to the spin coordinates required by the selected waveform model (for example, Cartesian spin components at $f_{\rm ref}$). The detector response is then computed for each interferometer by projecting this common source configuration through detector-specific antenna patterns and time delays, yielding per-detector strains and SNR contributions.
-
-Given a joint prior $P(\vec{\theta})$ and a conditional detection probability $P({\rm obs}\mid\vec{\theta})$, the population-averaged detection probability is
+The observed event rate is obtained by averaging the detection probability over the GW parameters that determine the emitted signal and its projection onto a detector network. Given a joint prior $P(\vec{\theta})$ and a conditional detection probability $P({\rm obs}\mid\vec{\theta})$, the population-averaged detection probability is
 
 $$ 
 \begin{equation}
@@ -97,7 +56,55 @@ $$
 \end{equation}
 $$
 
-The priors and parameter ranges used for $P(\vec{\theta})$ are summarized in [Table 1](#table1).
+Here $\vec{\theta}$ denotes the full parameter set specifying the source and its configuration relative to the observer. It is convenient to write $\vec{\theta}=\{\vec{\theta}_{\rm int},\vec{\theta}_{\rm ext}\}$, where the intrinsic parameters $\vec{\theta}_{\rm int}$ describe the binary’s source-frame properties and the extrinsic parameters $\vec{\theta}_{\rm ext}$ describe the source location and orientation in a geocentric equatorial frame that is independent of any particular detector. In this work,
+
+$$ 
+\begin{equation}
+\begin{split}
+\vec{\theta}_{\rm int}
+= \{m^{\rm src}_1, m^{\rm src}_2, a_1, a_2, \theta_1, \theta_2, \phi_{12}, \phi_{\rm JL}\} \,,
+\end{split}
+\end{equation}
+$$
+
+and
+
+$$ 
+\begin{equation}
+\begin{split}
+\vec{\theta}_{\rm ext}
+= \{z_s, \iota, \phi, \psi, {\rm RA}, {\rm Dec}, t_c\} \, .
+\end{split}
+\end{equation}
+$$
+
+The sampling priors and parameter ranges are summarized in [Table 1](#table1), with visual references in [Figure 1](#fig1) and [Figure 2](#fig2). The `ler` package samples source distance through the redshift $z_s$ rather than the luminosity distance $d_L$, and it samples source-frame component masses $m^{\rm src}_{1,2}$ rather than the redshifted detector-frame masses $m_{1,2}=(1+z_s)m^{\rm src}_{1,2}$. Evaluating $P({\rm obs}\mid\vec{\theta})$ therefore requires an internal mapping to the detector-frame parameterization used by waveform and SNR calculations. In `ler`, the conversion $z_s\mapsto d_L$ is performed using the assumed cosmology and the mass redshifting $m^{\rm src}_{1,2}\mapsto m_{1,2}$ is applied internally, while the projection from the geocentric sky frame to each interferometer is handled by the `gwsnr` backend following the conventions of `bilby` and `LALSimulation`.
+
+<div id="fig1"></div>
+
+<div align="center">
+  <iframe src="_static/gw_coordinates.html"
+          width="90%"
+          height="600"
+          frameborder="0"
+          allowfullscreen
+          style="border:1px solid #ccc; border-radius:10px;"></iframe>
+</div>
+
+*Figure 1: GW coordinate system visualization (interactive). The figure shows three coordinate frames: the equatorial (observer) frame (blue), the wave frame (green), and the source frame (orbital plane) (yellow). In the equatorial frame, the $z$-axis points along Earth’s rotation axis and the $x$-axis points toward the vernal equinox. In the wave frame, the $z$-axis points along the GW propagation direction toward the geocentre, and the $(x,y)$ axes span the wave plane. In the source frame, the $z$-axis is aligned with the orbital angular momentum and the $(x,y)$ axes lie in the orbital plane. The inclination $\iota$ is the angle between the line of sight and the orbital angular momentum. The polarization angle $\psi$ is measured in the wave plane from the ascending line of nodes (the intersection of the equatorial plane with the wave plane) to the wave-frame $x$-axis, with the rotation taken about the wave-frame $z$-axis. See the `LALSimulation` polarization convention for details [Ref](https://lscsoft.docs.ligo.org/lalsuite/lalsimulation/group___l_a_l_simulation__h.html). The sky location is specified by $({\rm RA},{\rm Dec})$ in the equatorial frame, where ${\rm RA}$ is measured in the equatorial plane from the vernal equinox and ${\rm Dec}$ is measured from the equatorial plane toward the north celestial pole. The ring of test points in the wave plane illustrates the action of the $h_{+,\times}$ polarizations on the observed strain, wrt the wave-frame axes. The sizes and distances in the figure are not to scale, and the visualization is meant for qualitative understanding of the coordinate systems and angles rather than a quantitative representation of any particular system.*
+
+<div id="fig2"></div>
+
+<div align="center">
+  <iframe src="_static/spin_visualization.html"
+          width="90%"
+          height="600"
+          frameborder="0"
+          allowfullscreen
+          style="border:1px solid #ccc; border-radius:10px;"></iframe>
+</div>
+
+*Figure 2: Spin-orientation visualization (interactive) for a precessing BBH system. The figure shows the total angular momentum $\mathbf{J}$ (purple) and the orbital angular momentum $\mathbf{L}$ (green), together with the component spin vectors (red and blue) labelled by their dimensionless magnitudes $a_1$ and $a_2$. The tilt angles $\theta_1$ and $\theta_2$ are defined relative to $\mathbf{L}$, and $\phi_{12}$ is the azimuthal separation between the two spin vectors about $\mathbf{L}$. The angle $\phi_{\rm JL}$ parameterizes the azimuthal location of $\mathbf{L}$ around $\mathbf{J}$ at the chosen reference frequency $f_{\rm ref}$, using the internal reference direction ($\phi_{\rm ref}$) set by the waveform convention. The precession of the orbital plane is illustrated by the motion of $\mathbf{L}$ around $\mathbf{J}$. The length of the vectors is not to scale, and the figure is meant for qualitative visualization of the spin angles rather than a quantitative representation of the system’s angular momenta.*
 
 
 ## Redshift Distribution and Intrinsic Merger Rates
@@ -142,9 +149,9 @@ For visualization, $R_{\rm U}(z_s)$ and $P(z_s)$ are plotted below.
   <img src="_static/Merger_rate_density_and_PDF_of_redshift.png" alt="Merger rate density and PDF of redshift for BBH mergers" width="600"/>
 </div>
 
-<div id="fig1"></div>
+<div id="fig3"></div>
 
->**Figure 1 :** Redshift evolution of the merger rate density $R(z_s)$ (blue, left axis) and the probability density function $P(z_s)$ (orange, right axis) for BBH mergers. Both curves are based on a Madau-Dickinson like model that incorporates time delays and metallicity effects (Ng et al. 2021). The merger rate density is given in $\mathrm{Mpc}^{-3}\,\mathrm{yr}^{-1}$, with the GWTC-4 local rate $R_0 = 1.9^{+0.7}_{-0.5} \times 10^{-8}$ and shaded regions showing the uncertainty bounds. The normalized $P(z_s)$ has no uncertainty band, as the local rate $R_0$ cancels in its calculation. The rate peaks at $z_s \approx 2$, reflecting the cosmic star formation history modulated by metallicity (which suppresses BBH formation at low redshift) and time delays. Both $R(z_s)$ and $P(z_s)$ decline at higher redshifts, providing insight into gravitational wave detection prospects and the cosmic evolution of compact binaries.
+>**Figure 3 :** Redshift evolution of the merger rate density $R(z_s)$ (blue, left axis) and the probability density function $P(z_s)$ (orange, right axis) for BBH mergers. Both curves are based on a Madau-Dickinson like model that incorporates time delays and metallicity effects (Ng et al. 2021). The merger rate density is given in $\mathrm{Mpc}^{-3}\,\mathrm{yr}^{-1}$, with the GWTC-4 local rate $R_0 = 1.9^{+0.7}_{-0.5} \times 10^{-8}$ and shaded regions showing the uncertainty bounds. The normalized $P(z_s)$ has no uncertainty band, as the local rate $R_0$ cancels in its calculation. The rate peaks at $z_s \approx 2$, reflecting the cosmic star formation history modulated by metallicity (which suppresses BBH formation at low redshift) and time delays. Both $R(z_s)$ and $P(z_s)$ decline at higher redshifts, providing insight into gravitational wave detection prospects and the cosmic evolution of compact binaries.
 
 
 ## Detection Criterion and SNR Modeling
@@ -212,7 +219,7 @@ Detection probabilities are evaluated through the [`gwsnr`](https://gwsnr.hemant
 
 The prior distributions and parameter ranges used in the event-rate calculations are summarized in Table 1. These choices follow common conventions in gravitational-wave population analyses and are largely consistent with GWTC-3–motivated models, with local rate normalizations taken from the corresponding GWTC-4 reference values quoted below.
 
-<div name="table1"></div>
+<div id="table1"></div>
 
 **Table 1: Prior distributions for GW source parameters**
 
@@ -223,10 +230,10 @@ The prior distributions and parameter ranges used in the event-rate calculations
 | $a_{1,2}$ | - | Uniform | [0, 0.99] | Dimensionless spin magnitudes |
 | $\theta_{1,2}$ | rad | Sine | [0, $\pi$] | Spin vector tilt angles |
 | $\phi_{12}$ | rad | Uniform | [0, $2\pi$] | Azimuthal angle between spin vectors |
-| $\phi_{\rm JL}$ | rad | Uniform | [0, $2\pi$] | Angle between total and orbital <br>angular momentum |
+| $\phi_{\rm JL}$ | rad | Uniform | [0, $2\pi$] | Azimuthal angle of the orbital angular<br>momentum around the total angular<br>momentum, defining the phase of<br>precession relative to a reference direction |
 | RA | rad | Uniform | [0, $2\pi$] | Right ascension |
 | Dec | rad | Cosine | [$-\frac{\pi}{2}$, $\frac{\pi}{2}$] | Declination |
-| $\iota$ | rad | Sine | [0, $\pi$] | Inclination relative to line of sight |
+| $\iota$ | rad | Sine | [0, $\pi$] | Inclination of total angular momentum<br>relative to line of sight |
 | $\psi$ | rad | Uniform | [0, $\pi$] | GW signal polarization angle |
 | $\phi$ | rad | Uniform | [0, $2\pi$] | Coalescence orbital phase |
 | $t_c$ | s | Uniform | [0, 1 yr] | Coalescence time within a year |
@@ -239,13 +246,15 @@ Selection effects in gravitational-wave observations are illustrated by comparin
   <img src="_static/Unlensed_Events.png" alt="Corner plot comparing intrinsic and detectable BBH populations" width="700"/>
 </div>
 
-<div id="fig2"></div>
+<div id="fig4"></div>
 
->**Figure 2:** Corner plot comparing the simulated intrinsic BBH population (blue) with the detectable subset (orange) for the LIGO–Virgo–KAGRA network (['L1', 'H1', 'V1']) at O4 design sensitivity. The population model assumes a Madau–Dickinson–like merger-rate density (see [Figure 1](#fig1)) and a PowerLaw+Peak source-frame component-mass distribution. Shown parameters are the source redshift $z_s$ and component masses in (observed) detector-frame $\left(m_1, m_2\right)$ and (infered) source-frame $\left(m^{\rm src}_1=\frac{m_1}{1+z_s}, m^{\rm src}_2=\frac{m_2}{1+z_s}\right)$, in the unit of $M_\odot$. The detectable subset is biased toward lower redshift and higher masses because these systems typically yield larger network SNR. Orientation effects, which also modulate SNR through the antenna pattern and inclination, are not shown.
+>**Figure 4:** Corner plot comparing the simulated intrinsic BBH population (blue) with the detectable subset (orange) for the LIGO–Virgo–KAGRA network (['L1', 'H1', 'V1']) at O4 design sensitivity. The population model assumes a Madau–Dickinson–like merger-rate density (see [Figure 1](#fig3)) and a PowerLaw+Peak source-frame component-mass distribution. Shown parameters are the source redshift $z_s$ and component masses in (observed) detector-frame $\left(m_1, m_2\right)$ and (infered) source-frame $\left(m^{\rm src}_1=\frac{m_1}{1+z_s}, m^{\rm src}_2=\frac{m_2}{1+z_s}\right)$, in the unit of $M_\odot$. The detectable subset is biased toward lower redshift and higher masses because these systems typically yield larger network SNR. Orientation effects, which also modulate SNR through the antenna pattern and inclination, are not shown.
 
 ## Rate Estimates for Different GW Detector Networks
 
 Estimated detectable annual merger rates for BBH and BNS populations are listed below for two detector configurations under the population and detection settings described above.
+
+<div id="table2"></div>
 
 | Detector Configuration | BBH (Pop I–II) <br>Merger Rate (${\rm yr}^{-1}$) | BNS <br>Merger Rate (${\rm yr}^{-1}$) | Ratio <br>BBH:BNS |
 | :--- | :--- | :--- | :--- |

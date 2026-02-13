@@ -345,7 +345,7 @@ class OpticalDepth:
 
         if lens_type == "epl_shear_galaxy":
             lens_param_samplers = dict(
-                source_redshift_sl="strongly_lensed_source_redshifts",
+                source_redshift_sl="strongly_lensed_source_redshift",
                 lens_redshift="lens_redshift_strongly_lensed_numerical",
                 velocity_dispersion="velocity_dispersion_ewoud",
                 axis_ratio="axis_ratio_rayleigh",
@@ -389,7 +389,7 @@ class OpticalDepth:
             )
         elif lens_type == "sie_galaxy":
             lens_param_samplers = dict(
-                source_redshift_sl="strongly_lensed_source_redshifts",
+                source_redshift_sl="strongly_lensed_source_redshift",
                 lens_redshift="lens_redshift_strongly_lensed_numerical",
                 velocity_dispersion="velocity_dispersion_ewoud",
                 axis_ratio="axis_ratio_rayleigh",
@@ -431,7 +431,7 @@ class OpticalDepth:
             )
         elif lens_type == "sis_galaxy":
             lens_param_samplers = dict(
-                source_redshift_sl="strongly_lensed_source_redshifts",
+                source_redshift_sl="strongly_lensed_source_redshift",
                 lens_redshift="lens_redshift_strongly_lensed_sis_haris",
                 velocity_dispersion="velocity_dispersion_bernardi",
                 axis_ratio="axis_ratio_uniform",
@@ -508,8 +508,9 @@ class OpticalDepth:
             angular_diameter_distance=dict(create_new=False, resolution=500),
             angular_diameter_distance_z1z2=dict(create_new=False, resolution=500),
             differential_comoving_volume=dict(create_new=False, resolution=500),
-            density_profile_slope=dict(create_new=False, resolution=100),
+            # density_profile_slope=dict(create_new=False, resolution=100),
             lens_parameters_kde_sl=dict(create_new=False, resolution=5000),
+            source_redshift_sl=dict(create_new=False, resolution=500),
         )
         if lens_type == "sis_galaxy":
             self.create_new_interpolator.update(
@@ -2132,11 +2133,11 @@ class OpticalDepth:
         z_min = self.z_min if self.z_min > 0.0 else 0.0001
         z_max = self.z_max
         resolution = identifier_dict["resolution"]
-        zs_array = np.geomspace(z_min, z_max, resolution)
+        # zs_array = np.geomspace(z_min, z_max, resolution)
         # z_min = self.z_min + 0.001 if self.z_min == 0.0 else self.z_min
         # z_max = self.z_max
         # z_resolution = identifier_dict["resolution"]
-        # zs_array = redshift_optimal_spacing(z_min, z_max, z_resolution)
+        zs_array = redshift_optimal_spacing(z_min, z_max, resolution)
 
         def tau(zs):
             # self.lens_redshift.function gives cross-section
@@ -3340,7 +3341,14 @@ class OpticalDepth:
         """
 
         self._available_lens_samplers = dict(
-            source_redshift_sl=dict(strongly_lensed_source_redshifts=None),
+            source_redshift_sl=dict(
+                strongly_lensed_source_redshift=dict(
+                    tau_approximation=True,
+                ),
+                # strongly_lensed_source_redshift_rjs=dict(
+                #     tau_approximation=True,
+                # ),
+            ),
             lens_redshift=dict(
                 lens_redshift_strongly_lensed_sis_haris=None,
                 lens_redshift_strongly_lensed_numerical=dict(
