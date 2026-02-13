@@ -91,7 +91,8 @@ The sampling priors and parameter ranges are summarized in [Table 1](#table1), w
           style="border:1px solid #ccc; border-radius:10px;"></iframe>
 </div>
 
-*Figure 1: GW coordinate system visualization (interactive). The figure shows three coordinate frames: the equatorial (observer) frame (blue), the wave frame (green), and the source frame (orbital plane) (yellow). In the equatorial frame, the $z$-axis points along Earth’s rotation axis and the $x$-axis points toward the vernal equinox. In the wave frame, the $z$-axis points along the GW propagation direction toward the geocentre, and the $(x,y)$ axes span the wave plane. In the source frame, the $z$-axis is aligned with the orbital angular momentum and the $(x,y)$ axes lie in the orbital plane. The inclination $\iota$ is the angle between the line of sight and the orbital angular momentum. The polarization angle $\psi$ is measured in the wave plane from the ascending line of nodes (the intersection of the equatorial plane with the wave plane) to the wave-frame $x$-axis, with the rotation taken about the wave-frame $z$-axis. See the `LALSimulation` polarization convention for details [Ref](https://lscsoft.docs.ligo.org/lalsuite/lalsimulation/group___l_a_l_simulation__h.html). The sky location is specified by $({\rm RA},{\rm Dec})$ in the equatorial frame, where ${\rm RA}$ is measured in the equatorial plane from the vernal equinox and ${\rm Dec}$ is measured from the equatorial plane toward the north celestial pole. The ring of test points in the wave plane illustrates the action of the $h_{+,\times}$ polarizations on the observed strain, wrt the wave-frame axes. The sizes and distances in the figure are not to scale, and the visualization is meant for qualitative understanding of the coordinate systems and angles rather than a quantitative representation of any particular system.*
+*Figure 1: Interactive visualization of the gravitational-wave coordinate system following the LALSimulation conventions. The figure shows three frames: the Equatorial (Observer) frame (blue), the Wave frame (green), and the Source (Orbital) frame (yellow). In the equatorial frame, the $z$ axis is aligned with Earth’s rotation axis and the $x$ axis points toward the vernal equinox; the sky position is specified by $({\rm RA},{\rm Dec})$, with ${\rm RA}$ measured in the equatorial plane from the vernal equinox and ${\rm Dec}$ measured from the equatorial plane toward the north celestial pole. In the wave frame, the $z$ axis is along the GW propagation direction toward the geocentre and the $(x,y)$ axes span the wave plane, with the wave-frame $x$ axis defining the polarization basis. In the source frame, the $z$ axis is aligned with the orbital angular momentum and the $(x,y)$ axes lie in the orbital plane; the inclination $\iota$ is the angle between the line of sight and the orbital angular momentum (defined at $f_{\rm ref}$ for precessing systems). The polarization angle $\psi$ is measured in the wave plane from the ascending line of nodes, defined by the intersection of the equatorial plane with the wave plane, to the wave-frame $x$ axis, with rotation about the wave-frame $z$ axis; see the LALSimulation polarization convention for details [Ref](https://lscsoft.docs.ligo.org/lalsuite/lalsimulation/group___l_a_l_simulation__h.html). The ring of test points in the wave plane illustrates the action of the $h_{+,\times}$ polarizations on the observed strain, wrt the wave-frame axes. The sizes and distances in the figure are not to scale, and the visualization is meant for qualitative understanding of the coordinate systems and angles rather than a quantitative representation of any particular system.*
+
 
 <div id="fig2"></div>
 
@@ -104,7 +105,7 @@ The sampling priors and parameter ranges are summarized in [Table 1](#table1), w
           style="border:1px solid #ccc; border-radius:10px;"></iframe>
 </div>
 
-*Figure 2: Spin-orientation visualization (interactive) for a precessing BBH system. The figure shows the total angular momentum $\mathbf{J}$ (purple) and the orbital angular momentum $\mathbf{L}$ (green), together with the component spin vectors (red and blue) labelled by their dimensionless magnitudes $a_1$ and $a_2$. The tilt angles $\theta_1$ and $\theta_2$ are defined relative to $\mathbf{L}$, and $\phi_{12}$ is the azimuthal separation between the two spin vectors about $\mathbf{L}$. The angle $\phi_{\rm JL}$ parameterizes the azimuthal location of $\mathbf{L}$ around $\mathbf{J}$ at the chosen reference frequency $f_{\rm ref}$, using the internal reference direction ($\phi_{\rm ref}$) set by the waveform convention. The precession of the orbital plane is illustrated by the motion of $\mathbf{L}$ around $\mathbf{J}$. The length of the vectors is not to scale, and the figure is meant for qualitative visualization of the spin angles rather than a quantitative representation of the system’s angular momenta.*
+*Figure 2: Interactive spin-orientation visualization for a precessing BBH system. The figure shows the total angular momentum $\mathbf{J}$ (purple) and the orbital angular momentum $\mathbf{L}$ (green), together with the component spin vectors (red and blue) labelled by their dimensionless magnitudes $a_1$ and $a_2$. The tilt angles $\theta_1$ and $\theta_2$ are defined relative to $\mathbf{L}$, and $\phi_{12}$ is the azimuthal separation between the two spin vectors about $\mathbf{L}$. The angle $\phi_{\rm JL}$ parameterizes the azimuthal location of $\mathbf{L}$ around $\mathbf{J}$ at the chosen reference frequency $f_{\rm ref}$; equivalently, this is the angle between the projections of $\mathbf{L}$ and the line of sight onto the plane orthogonal to $\mathbf{J}$ at $f_{\rm ref}$. The precession of the orbital plane is illustrated by the motion of $\mathbf{L}$ around $\mathbf{J}$. The length of the vectors is not to scale, and the figure is meant for qualitative visualization of the spin angles rather than a quantitative representation of the system’s angular momenta.*
 
 
 ## Redshift Distribution and Intrinsic Merger Rates
@@ -225,18 +226,20 @@ The prior distributions and parameter ranges used in the event-rate calculations
 
 | Parameter | Unit | Prior <br>Distribution | Range <br>[Min, Max] | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| $z_s$ | - | $P(z_s)$ <br>derived from <br>Madau-<br>Dickinson <br>SFR | [0, 10] | Source redshift <br><br>**BBH** (Ng et al. 2021, GWTC-4)<br>B=2.57, C=3.36, D=5.83, <br>Median $R_0 = 1.9 \times 10^{-8}\ \mathrm{Mpc}^{-3}\ \mathrm{yr}^{-1}$ <br><br>**BNS** (M&D 2014, GWTC-4)<br>B=2.7, C=2.9, D=5.6 <br>Median $R_0 = 8.9\times 10^{-8} {\rm Mpc}^{-3}\,{\rm yr}^{-1}$ |
-| $m^{\rm src}_{1,2}$ | $M_\odot$ | <br><br><br>**BBH**<br>PowerLaw<br>+Peak <br><br>**BNS**<br>Bimodal-<br>Gaussian | <br><br>**BBH**<br>[4.98, 112.5]<br><br><br>**BNS**<br>[1.0, 2.3]<br> | Component masses <br>(source-frame)<br><br>**BBH** (GWTC-3)<br>$\alpha$=3.78, $\mu_g$=32.27, $\sigma_g$=3.88, <br>$\lambda_p$=0.03, $\delta_m$=4.8, $\beta$=0.81<br><br>**BNS** (Farr et al. 2020)<br>$w$=0.643, $\mu_L$=1.352, <br>$\sigma_L$=0.08, $\mu_R$=1.88, $\sigma_R$=0.3 |
-| $a_{1,2}$ | - | Uniform | [0, 0.99] | Dimensionless spin magnitudes |
-| $\theta_{1,2}$ | rad | Sine | [0, $\pi$] | Spin vector tilt angles |
-| $\phi_{12}$ | rad | Uniform | [0, $2\pi$] | Azimuthal angle between spin vectors |
-| $\phi_{\rm JL}$ | rad | Uniform | [0, $2\pi$] | Azimuthal angle of the orbital angular<br>momentum around the total angular<br>momentum, defining the phase of<br>precession relative to a reference direction |
-| RA | rad | Uniform | [0, $2\pi$] | Right ascension |
-| Dec | rad | Cosine | [$-\frac{\pi}{2}$, $\frac{\pi}{2}$] | Declination |
-| $\iota$ | rad | Sine | [0, $\pi$] | Inclination of total angular momentum<br>relative to line of sight |
-| $\psi$ | rad | Uniform | [0, $\pi$] | GW signal polarization angle |
-| $\phi$ | rad | Uniform | [0, $2\pi$] | Coalescence orbital phase |
-| $t_c$ | s | Uniform | [0, 1 yr] | Coalescence time within a year |
+| $z_s$ | - | $P(z_s)$ <br>derived from <br>Madau-<br>Dickinson <br>SFR | [0, 10] | Source redshift. <br><br>**BBH** (Ng et al. 2021, GWTC-4):<br>B=2.57, C=3.36, D=5.83, <br>Median $R_0 = 1.9 \times 10^{-8}\ \mathrm{Mpc}^{-3}\ \mathrm{yr}^{-1}$. <br><br>**BNS** (M&D 2014, GWTC-4):<br>B=2.7, C=2.9, D=5.6 <br>Median $R_0 = 8.9\times 10^{-8} {\rm Mpc}^{-3}\,{\rm yr}^{-1}$. |
+| $m^{\rm src}_{1,2}$ | $M_\odot$ | <br><br><br>**BBH**<br>PowerLaw<br>+Peak <br><br>**BNS**<br>Bimodal-<br>Gaussian | <br><br>**BBH**<br>[4.98, 112.5]<br><br><br>**BNS**<br>[1.0, 2.3]<br> | Component masses <br>(source-frame).<br><br>**BBH** (GWTC-3):<br>$\alpha$=3.78, $\mu_g$=32.27, $\sigma_g$=3.88, <br>$\lambda_p$=0.03, $\delta_m$=4.8, $\beta$=0.81 .<br><br>**BNS** (Farr et al. 2020):<br>$w$=0.643, $\mu_L$=1.352, <br>$\sigma_L$=0.08, $\mu_R$=1.88, $\sigma_R$=0.3 . |
+| $a_{1,2}$ | - | Uniform | [0, 0.99] | Dimensionless spin magnitudes for <br>primary and secondary objects. |
+| $\theta_{1,2}$ | rad | Sine | [0, $\pi$] | Spin tilt angles relative to $\vec{L}$ . |
+| $\phi_{12}$ | rad | Uniform | [0, $2\pi$] | Relative azimuthal angle between <br>the two spin vectors about $\vec{L}$ . |
+| $\phi_{\rm JL}$ | rad | Uniform | [0, $2\pi$] | Precession phase: azimuth of $\vec{L}$ about $\vec{J}$ <br>at $f_{\rm ref}$, measured relative to the <br>projected line of sight (in the plane $\perp \vec{J}$). |
+| RA | rad | Uniform | [0, $2\pi$] | Right ascension measured in the <br>equatorial plane from the vernal <br>equinox. |  
+| Dec | rad | Cosine | [$-\frac{\pi}{2}$, $\frac{\pi}{2}$] | Declination measured from the <br>equatorial plane toward the north <br>celestial pole. |
+| $\iota$ | rad | Sine | [0, $\pi$] | Inclination between the line of sight and <br>$\vec{L}$ at $f_{\rm ref}$. |
+| $\psi$ | rad | Uniform | [0, $\pi$] | Polarization angle, measured in the <br>wave plane from the ascending line <br>of nodes to the wave-frame $x$-axis |
+| $\phi$ | rad | Uniform | [0, $2\pi$] | Reference orbital phase at the reference <br>frequency $f_{\rm ref}$. |
+| $t_c$ | s | Uniform | [0, 1 yr] | Geocentric coalescence time. |
+
+
 
 ### Plot Comparison for Detectable and Intrinsic Populations
 

@@ -207,7 +207,7 @@ P({\rm obs}) = \int P({\rm obs}\mid \vec{\theta})\,P(\vec{\theta})\,d\vec{\theta
           allowfullscreen
           style="border:1px solid #ccc; border-radius:10px;"></iframe>
 </div>
-<p><em>Figure 1: GW coordinate system visualization (interactive). The figure shows three coordinate frames: the equatorial (observer) frame (blue), the wave frame (green), and the source frame (orbital plane) (yellow). In the equatorial frame, the <span class="math notranslate nohighlight">\(z\)</span>-axis points along Earth’s rotation axis and the <span class="math notranslate nohighlight">\(x\)</span>-axis points toward the vernal equinox. In the wave frame, the <span class="math notranslate nohighlight">\(z\)</span>-axis points along the GW propagation direction toward the geocentre, and the <span class="math notranslate nohighlight">\((x,y)\)</span> axes span the wave plane. In the source frame, the <span class="math notranslate nohighlight">\(z\)</span>-axis is aligned with the orbital angular momentum and the <span class="math notranslate nohighlight">\((x,y)\)</span> axes lie in the orbital plane. The inclination <span class="math notranslate nohighlight">\(\iota\)</span> is the angle between the line of sight and the orbital angular momentum. The polarization angle <span class="math notranslate nohighlight">\(\psi\)</span> is measured in the wave plane from the ascending line of nodes (the intersection of the equatorial plane with the wave plane) to the wave-frame <span class="math notranslate nohighlight">\(x\)</span>-axis, with the rotation taken about the wave-frame <span class="math notranslate nohighlight">\(z\)</span>-axis. See the <code class="docutils literal notranslate"><span class="pre">LALSimulation</span></code> polarization convention for details <a class="reference external" href="https://lscsoft.docs.ligo.org/lalsuite/lalsimulation/group___l_a_l_simulation__h.html">Ref</a>. The sky location is specified by <span class="math notranslate nohighlight">\(({\rm RA},{\rm Dec})\)</span> in the equatorial frame, where <span class="math notranslate nohighlight">\({\rm RA}\)</span> is measured in the equatorial plane from the vernal equinox and <span class="math notranslate nohighlight">\({\rm Dec}\)</span> is measured from the equatorial plane toward the north celestial pole. The ring of test points in the wave plane illustrates the action of the <span class="math notranslate nohighlight">\(h_{+,\times}\)</span> polarizations on the observed strain, wrt the wave-frame axes. The sizes and distances in the figure are not to scale, and the visualization is meant for qualitative understanding of the coordinate systems and angles rather than a quantitative representation of any particular system.</em></p>
+<p><em>Figure 1: Interactive visualization of the gravitational-wave coordinate system following the LALSimulation conventions. The figure shows three frames: the Equatorial (Observer) frame (blue), the Wave frame (green), and the Source (Orbital) frame (yellow). In the equatorial frame, the <span class="math notranslate nohighlight">\(z\)</span> axis is aligned with Earth’s rotation axis and the <span class="math notranslate nohighlight">\(x\)</span> axis points toward the vernal equinox; the sky position is specified by <span class="math notranslate nohighlight">\(({\rm RA},{\rm Dec})\)</span>, with <span class="math notranslate nohighlight">\({\rm RA}\)</span> measured in the equatorial plane from the vernal equinox and <span class="math notranslate nohighlight">\({\rm Dec}\)</span> measured from the equatorial plane toward the north celestial pole. In the wave frame, the <span class="math notranslate nohighlight">\(z\)</span> axis is along the GW propagation direction toward the geocentre and the <span class="math notranslate nohighlight">\((x,y)\)</span> axes span the wave plane, with the wave-frame <span class="math notranslate nohighlight">\(x\)</span> axis defining the polarization basis. In the source frame, the <span class="math notranslate nohighlight">\(z\)</span> axis is aligned with the orbital angular momentum and the <span class="math notranslate nohighlight">\((x,y)\)</span> axes lie in the orbital plane; the inclination <span class="math notranslate nohighlight">\(\iota\)</span> is the angle between the line of sight and the orbital angular momentum (defined at <span class="math notranslate nohighlight">\(f_{\rm ref}\)</span> for precessing systems). The polarization angle <span class="math notranslate nohighlight">\(\psi\)</span> is measured in the wave plane from the ascending line of nodes, defined by the intersection of the equatorial plane with the wave plane, to the wave-frame <span class="math notranslate nohighlight">\(x\)</span> axis, with rotation about the wave-frame <span class="math notranslate nohighlight">\(z\)</span> axis; see the LALSimulation polarization convention for details <a class="reference external" href="https://lscsoft.docs.ligo.org/lalsuite/lalsimulation/group___l_a_l_simulation__h.html">Ref</a>. The ring of test points in the wave plane illustrates the action of the <span class="math notranslate nohighlight">\(h_{+,\times}\)</span> polarizations on the observed strain, wrt the wave-frame axes. The sizes and distances in the figure are not to scale, and the visualization is meant for qualitative understanding of the coordinate systems and angles rather than a quantitative representation of any particular system.</em></p>
 <div id="fig2"></div>
 <div align="center">
   <iframe src="_static/spin_visualization.html"
@@ -217,7 +217,7 @@ P({\rm obs}) = \int P({\rm obs}\mid \vec{\theta})\,P(\vec{\theta})\,d\vec{\theta
           allowfullscreen
           style="border:1px solid #ccc; border-radius:10px;"></iframe>
 </div>
-<p><em>Figure 2: Spin-orientation visualization (interactive) for a precessing BBH system. The figure shows the total angular momentum <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> (purple) and the orbital angular momentum <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> (green), together with the component spin vectors (red and blue) labelled by their dimensionless magnitudes <span class="math notranslate nohighlight">\(a_1\)</span> and <span class="math notranslate nohighlight">\(a_2\)</span>. The tilt angles <span class="math notranslate nohighlight">\(\theta_1\)</span> and <span class="math notranslate nohighlight">\(\theta_2\)</span> are defined relative to <span class="math notranslate nohighlight">\(\mathbf{L}\)</span>, and <span class="math notranslate nohighlight">\(\phi_{12}\)</span> is the azimuthal separation between the two spin vectors about <span class="math notranslate nohighlight">\(\mathbf{L}\)</span>. The angle <span class="math notranslate nohighlight">\(\phi_{\rm JL}\)</span> parameterizes the azimuthal location of <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> around <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> at the chosen reference frequency <span class="math notranslate nohighlight">\(f_{\rm ref}\)</span>, using the internal reference direction set by the waveform convention. The precession of the orbital plane is illustrated by the motion of <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> around <span class="math notranslate nohighlight">\(\mathbf{J}\)</span>. The length of the vectors is not to scale, and the figure is meant for qualitative visualization of the spin angles rather than a quantitative representation of the system’s angular momenta.</em></p>
+<p><em>Figure 2: Interactive spin-orientation visualization for a precessing BBH system. The figure shows the total angular momentum <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> (purple) and the orbital angular momentum <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> (green), together with the component spin vectors (red and blue) labelled by their dimensionless magnitudes <span class="math notranslate nohighlight">\(a_1\)</span> and <span class="math notranslate nohighlight">\(a_2\)</span>. The tilt angles <span class="math notranslate nohighlight">\(\theta_1\)</span> and <span class="math notranslate nohighlight">\(\theta_2\)</span> are defined relative to <span class="math notranslate nohighlight">\(\mathbf{L}\)</span>, and <span class="math notranslate nohighlight">\(\phi_{12}\)</span> is the azimuthal separation between the two spin vectors about <span class="math notranslate nohighlight">\(\mathbf{L}\)</span>. The angle <span class="math notranslate nohighlight">\(\phi_{\rm JL}\)</span> parameterizes the azimuthal location of <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> around <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> at the chosen reference frequency <span class="math notranslate nohighlight">\(f_{\rm ref}\)</span>; equivalently, this is the angle between the projections of <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and the line of sight onto the plane orthogonal to <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> at <span class="math notranslate nohighlight">\(f_{\rm ref}\)</span>. The precession of the orbital plane is illustrated by the motion of <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> around <span class="math notranslate nohighlight">\(\mathbf{J}\)</span>. The length of the vectors is not to scale, and the figure is meant for qualitative visualization of the spin angles rather than a quantitative representation of the system’s angular momenta.</em></p>
 </section>
 <section id="redshift-distribution-and-intrinsic-merger-rates">
 <h2>Redshift Distribution and Intrinsic Merger Rates<a class="headerlink" href="#redshift-distribution-and-intrinsic-merger-rates" title="Link to this heading"></a></h2>
@@ -331,73 +331,73 @@ P({\rm obs} \mid  \vec{\theta}) \equiv P_{\rm det} (\vec{\theta}, \rho_{\rm th})
 <td class="text-left"><p>-</p></td>
 <td class="text-left"><p><span class="math notranslate nohighlight">\(P(z_s)\)</span> <br>derived from <br>Madau-<br>Dickinson <br>SFR</p></td>
 <td class="text-left"><p>[0, 10]</p></td>
-<td class="text-left"><p>Source redshift <br><br><strong>BBH</strong> (Ng et al. 2021, GWTC-4)<br>B=2.57, C=3.36, D=5.83, <br>Median <span class="math notranslate nohighlight">\(R_0 = 1.9 \times 10^{-8}\ \mathrm{Mpc}^{-3}\ \mathrm{yr}^{-1}\)</span> <br><br><strong>BNS</strong> (M&amp;D 2014, GWTC-4)<br>B=2.7, C=2.9, D=5.6 <br>Median <span class="math notranslate nohighlight">\(R_0 = 8.9\times 10^{-8} {\rm Mpc}^{-3}\,{\rm yr}^{-1}\)</span></p></td>
+<td class="text-left"><p>Source redshift. <br><br><strong>BBH</strong> (Ng et al. 2021, GWTC-4):<br>B=2.57, C=3.36, D=5.83, <br>Median <span class="math notranslate nohighlight">\(R_0 = 1.9 \times 10^{-8}\ \mathrm{Mpc}^{-3}\ \mathrm{yr}^{-1}\)</span>. <br><br><strong>BNS</strong> (M&amp;D 2014, GWTC-4):<br>B=2.7, C=2.9, D=5.6 <br>Median <span class="math notranslate nohighlight">\(R_0 = 8.9\times 10^{-8} {\rm Mpc}^{-3}\,{\rm yr}^{-1}\)</span>.</p></td>
 </tr>
 <tr class="row-odd"><td class="text-left"><p><span class="math notranslate nohighlight">\(m^{\rm src}_{1,2}\)</span></p></td>
 <td class="text-left"><p><span class="math notranslate nohighlight">\(M_\odot\)</span></p></td>
 <td class="text-left"><p><br><br><br><strong>BBH</strong><br>PowerLaw<br>+Peak <br><br><strong>BNS</strong><br>Bimodal-<br>Gaussian</p></td>
 <td class="text-left"><p><br><br><strong>BBH</strong><br>[4.98, 112.5]<br><br><br><strong>BNS</strong><br>[1.0, 2.3]<br></p></td>
-<td class="text-left"><p>Component masses <br>(source-frame)<br><br><strong>BBH</strong> (GWTC-3)<br><span class="math notranslate nohighlight">\(\alpha\)</span>=3.78, <span class="math notranslate nohighlight">\(\mu_g\)</span>=32.27, <span class="math notranslate nohighlight">\(\sigma_g\)</span>=3.88, <br><span class="math notranslate nohighlight">\(\lambda_p\)</span>=0.03, <span class="math notranslate nohighlight">\(\delta_m\)</span>=4.8, <span class="math notranslate nohighlight">\(\beta\)</span>=0.81<br><br><strong>BNS</strong> (Farr et al. 2020)<br><span class="math notranslate nohighlight">\(w\)</span>=0.643, <span class="math notranslate nohighlight">\(\mu_L\)</span>=1.352, <br><span class="math notranslate nohighlight">\(\sigma_L\)</span>=0.08, <span class="math notranslate nohighlight">\(\mu_R\)</span>=1.88, <span class="math notranslate nohighlight">\(\sigma_R\)</span>=0.3</p></td>
+<td class="text-left"><p>Component masses <br>(source-frame).<br><br><strong>BBH</strong> (GWTC-3):<br><span class="math notranslate nohighlight">\(\alpha\)</span>=3.78, <span class="math notranslate nohighlight">\(\mu_g\)</span>=32.27, <span class="math notranslate nohighlight">\(\sigma_g\)</span>=3.88, <br><span class="math notranslate nohighlight">\(\lambda_p\)</span>=0.03, <span class="math notranslate nohighlight">\(\delta_m\)</span>=4.8, <span class="math notranslate nohighlight">\(\beta\)</span>=0.81 .<br><br><strong>BNS</strong> (Farr et al. 2020):<br><span class="math notranslate nohighlight">\(w\)</span>=0.643, <span class="math notranslate nohighlight">\(\mu_L\)</span>=1.352, <br><span class="math notranslate nohighlight">\(\sigma_L\)</span>=0.08, <span class="math notranslate nohighlight">\(\mu_R\)</span>=1.88, <span class="math notranslate nohighlight">\(\sigma_R\)</span>=0.3 .</p></td>
 </tr>
 <tr class="row-even"><td class="text-left"><p><span class="math notranslate nohighlight">\(a_{1,2}\)</span></p></td>
 <td class="text-left"><p>-</p></td>
 <td class="text-left"><p>Uniform</p></td>
 <td class="text-left"><p>[0, 0.99]</p></td>
-<td class="text-left"><p>Dimensionless spin magnitudes</p></td>
+<td class="text-left"><p>Dimensionless spin magnitudes for <br>primary and secondary objects.</p></td>
 </tr>
 <tr class="row-odd"><td class="text-left"><p><span class="math notranslate nohighlight">\(\theta_{1,2}\)</span></p></td>
 <td class="text-left"><p>rad</p></td>
 <td class="text-left"><p>Sine</p></td>
 <td class="text-left"><p>[0, <span class="math notranslate nohighlight">\(\pi\)</span>]</p></td>
-<td class="text-left"><p>Spin vector tilt angles</p></td>
+<td class="text-left"><p>Spin tilt angles relative to <span class="math notranslate nohighlight">\(\vec{L}\)</span> .</p></td>
 </tr>
 <tr class="row-even"><td class="text-left"><p><span class="math notranslate nohighlight">\(\phi_{12}\)</span></p></td>
 <td class="text-left"><p>rad</p></td>
 <td class="text-left"><p>Uniform</p></td>
 <td class="text-left"><p>[0, <span class="math notranslate nohighlight">\(2\pi\)</span>]</p></td>
-<td class="text-left"><p>Azimuthal angle between spin vectors</p></td>
+<td class="text-left"><p>Relative azimuthal angle between <br>the two spin vectors about <span class="math notranslate nohighlight">\(\vec{L}\)</span> .</p></td>
 </tr>
 <tr class="row-odd"><td class="text-left"><p><span class="math notranslate nohighlight">\(\phi_{\rm JL}\)</span></p></td>
 <td class="text-left"><p>rad</p></td>
 <td class="text-left"><p>Uniform</p></td>
 <td class="text-left"><p>[0, <span class="math notranslate nohighlight">\(2\pi\)</span>]</p></td>
-<td class="text-left"><p>Azimuthal angle of the orbital angular<br>momentum around the total angular<br>momentum, defining the phase of<br>precession relative to a reference direction</p></td>
+<td class="text-left"><p>Precession phase: azimuth of <span class="math notranslate nohighlight">\(\vec{L}\)</span> about <span class="math notranslate nohighlight">\(\vec{J}\)</span> <br>at <span class="math notranslate nohighlight">\(f_{\rm ref}\)</span>, measured relative to the <br>projected line of sight (in the plane <span class="math notranslate nohighlight">\(\perp \vec{J}\)</span>).</p></td>
 </tr>
 <tr class="row-even"><td class="text-left"><p>RA</p></td>
 <td class="text-left"><p>rad</p></td>
 <td class="text-left"><p>Uniform</p></td>
 <td class="text-left"><p>[0, <span class="math notranslate nohighlight">\(2\pi\)</span>]</p></td>
-<td class="text-left"><p>Right ascension</p></td>
+<td class="text-left"><p>Right ascension measured in the <br>equatorial plane from the vernal <br>equinox.</p></td>
 </tr>
 <tr class="row-odd"><td class="text-left"><p>Dec</p></td>
 <td class="text-left"><p>rad</p></td>
 <td class="text-left"><p>Cosine</p></td>
 <td class="text-left"><p>[<span class="math notranslate nohighlight">\(-\frac{\pi}{2}\)</span>, <span class="math notranslate nohighlight">\(\frac{\pi}{2}\)</span>]</p></td>
-<td class="text-left"><p>Declination</p></td>
+<td class="text-left"><p>Declination measured from the <br>equatorial plane toward the north <br>celestial pole.</p></td>
 </tr>
 <tr class="row-even"><td class="text-left"><p><span class="math notranslate nohighlight">\(\iota\)</span></p></td>
 <td class="text-left"><p>rad</p></td>
 <td class="text-left"><p>Sine</p></td>
 <td class="text-left"><p>[0, <span class="math notranslate nohighlight">\(\pi\)</span>]</p></td>
-<td class="text-left"><p>Inclination relative to line of sight</p></td>
+<td class="text-left"><p>Inclination between the line of sight and <br><span class="math notranslate nohighlight">\(\vec{L}\)</span> at <span class="math notranslate nohighlight">\(f_{\rm ref}\)</span>.</p></td>
 </tr>
 <tr class="row-odd"><td class="text-left"><p><span class="math notranslate nohighlight">\(\psi\)</span></p></td>
 <td class="text-left"><p>rad</p></td>
 <td class="text-left"><p>Uniform</p></td>
 <td class="text-left"><p>[0, <span class="math notranslate nohighlight">\(\pi\)</span>]</p></td>
-<td class="text-left"><p>GW signal polarization angle</p></td>
+<td class="text-left"><p>Polarization angle, measured in the <br>wave plane from the ascending line <br>of nodes to the wave-frame <span class="math notranslate nohighlight">\(x\)</span>-axis</p></td>
 </tr>
 <tr class="row-even"><td class="text-left"><p><span class="math notranslate nohighlight">\(\phi\)</span></p></td>
 <td class="text-left"><p>rad</p></td>
 <td class="text-left"><p>Uniform</p></td>
 <td class="text-left"><p>[0, <span class="math notranslate nohighlight">\(2\pi\)</span>]</p></td>
-<td class="text-left"><p>Coalescence orbital phase</p></td>
+<td class="text-left"><p>Reference orbital phase at the reference <br>frequency <span class="math notranslate nohighlight">\(f_{\rm ref}\)</span>.</p></td>
 </tr>
 <tr class="row-odd"><td class="text-left"><p><span class="math notranslate nohighlight">\(t_c\)</span></p></td>
 <td class="text-left"><p>s</p></td>
 <td class="text-left"><p>Uniform</p></td>
 <td class="text-left"><p>[0, 1 yr]</p></td>
-<td class="text-left"><p>Coalescence time within a year</p></td>
+<td class="text-left"><p>Geocentric coalescence time.</p></td>
 </tr>
 </tbody>
 </table>

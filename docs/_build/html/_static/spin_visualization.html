@@ -122,6 +122,10 @@
         .dg li:not(.folder) { background: rgba(0, 0, 0, 0.3) !important; border-bottom: 1px solid #444 !important; color: rgba(255, 255, 255, 0.7) !important; }
         .dg .property-name { width: 25% !important; overflow: hidden !important; text-overflow: ellipsis !important; }
         .dg .c { width: 75% !important; }
+        .dg .cr.boolean { display: flex !important; align-items: center !important; }
+        .dg .cr.boolean .property-name { width: 70% !important; }
+        .dg .cr.boolean .c { width: 30% !important; }
+        .dg .cr.boolean .c input[type=checkbox] { margin-left: 0 !important; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -255,10 +259,10 @@
 
         const lblJ = createLabel("J", "#7b1fa2");
         const lblL = createLabel("L", "#2e7d32");
-        const lblRef = createLabel("φ<sub>ref</sub>", "#808080");
-        const lblPhiJL = createLabel("φsub>JL</sub>", "#7b1fa2");
-        const lblPhi12 = createLabel("φsub>12</sub>", "#f57c00");
-        const lblProjL = createLabel("Proj(L)", "#2e7d32");
+        const lblRef = createLabel("Proj(LOS)", "#808080");
+        const lblPhiJL = createLabel("φ<sub>JL</sub>", "#7b1fa2");
+        const lblPhi12 = createLabel("φ<sub>12</sub>", "#f57c00");
+        const lblProjL = createLabel("Proj(L)<br>atf<sub>ref</sub>", "#2e7d32");
         const lblProjS1 = createLabel("Proj(S<sub>1</sub>)", "#cc0000");
         const lblProjS2 = createLabel("Proj(S<sub>2</sub>)", "#0044cc");
 
@@ -324,11 +328,15 @@
         const bh2 = new BlackHole(2, 0x1976d2, "#0044cc");
         
         const params = {
-            autoRotate: true,
             sep: 8.0, phiJL: 75.0,
             m1: 30, a1: 0.8, theta1: 143.0, phi1: 30.0,
-            m2: 20, a2: 0.9, theta2: 82.0, phi2: 150.0
+            m2: 20, a2: 0.9, theta2: 82.0, phi2: 150.0,
+            precess: true, precessionSpeed: 5.0
         };
+
+        // Precession state
+        let precessionAngle = 0;
+        const clock = new THREE.Clock();
 
         // --- EMBEDDED GUI ---
         const gui = new dat.GUI({ autoPlace: false });
@@ -336,7 +344,7 @@
         // We do not close() it here because the container handles the toggle logic
         // But we want it closed by default in the UI, so the container has class "collapsed"
 
-        gui.add(params, 'autoRotate').name('Rotate');
+        gui.add(params, 'precess').name('Precess L');
         gui.add(params, 'sep', 5, 12).name('r').step(0.1);
         gui.add(params, 'phiJL', 0, 360).name('φ<sub>JL</sub>').step(1);
         const f1 = gui.addFolder('BH 1 (Red)');
@@ -360,28 +368,36 @@
             requestAnimationFrame(animate);
             controls.update();
 
-            // Auto-rotation of L around J
-            if (params.autoRotate) {
-                params.phiJL = (params.phiJL + 0.2) % 360;
-            }
-
             const M = params.m1 + params.m2;
             const r1 = params.sep * (params.m2 / M), r2 = params.sep * (params.m1 / M);
             const S1 = bh1.update(params.m1, params.a1, params.theta1, params.phi1, r1);
             const S2 = bh2.update(params.m2, params.a2, params.theta2, params.phi2, r2);
             const J_local = new THREE.Vector3(0, 0, L_MAG).add(S1).add(S2);
+            const J_mag = J_local.length();
+            arrowJ.setLength(J_mag, 0.5, 0.3);
             const qAlignJ = new THREE.Quaternion().setFromUnitVectors(J_local.clone().normalize(), new THREE.Vector3(0,0,1));
             lContainer.quaternion.copy(qAlignJ);
             const L_dir = new THREE.Vector3(0,0,1).applyQuaternion(qAlignJ);
             const targetPhi = THREE.MathUtils.degToRad(params.phiJL);
             lContainer.quaternion.premultiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,0,1), targetPhi - Math.atan2(L_dir.y, L_dir.x))); 
 
+            // --- Precession: rotate L (and its plane) around J ---
+            const dt = clock.getDelta();
+            if (params.precess) {
+                precessionAngle += THREE.MathUtils.degToRad(params.precessionSpeed) * dt;
+                if (precessionAngle > Math.PI * 2) precessionAngle -= Math.PI * 2;
+            }
+            const precQ = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,0,1), precessionAngle);
+            lContainer.quaternion.premultiply(precQ);
+
             const height = L_MAG * L_dir.z; 
             const radius = Math.sqrt(L_MAG*L_MAG - height*height);
             coneMesh.scale.set(radius, radius, height);
 
-            const L_f = new THREE.Vector3(0,0,1).applyMatrix4(lContainer.matrixWorld).normalize();
-            const L_p_len = Math.sqrt(L_f.x**2 + L_f.y**2) * 4.0, L_p_dir = new THREE.Vector3(L_f.x, L_f.y, 0).normalize();
+            // --- Proj(L) stays FIXED at the original phiJL angle (no precession) ---
+            const tiltAngle = Math.acos(L_dir.z); // angle between L and J
+            const L_p_len = Math.sin(tiltAngle) * 4.0;
+            const L_p_dir = new THREE.Vector3(Math.cos(targetPhi), Math.sin(targetPhi), 0);
             projLArrow.setDirection(L_p_dir); projLArrow.setLength(L_p_len, 0.3, 0.2);
             projShaft.geometry.setFromPoints([new THREE.Vector3(0,0,0), L_p_dir.clone().multiplyScalar(L_p_len - 0.3)]);
             extProjLine.geometry.setFromPoints([L_p_dir.clone().multiplyScalar(L_p_len + 0.5), L_p_dir.clone().multiplyScalar(10)]);
@@ -407,10 +423,10 @@
             const c12 = new THREE.EllipseCurve(0,0, 2.5, 2.5, p1, p1+p12, false, 0);
             phi12Arc.geometry.dispose(); phi12Arc.geometry = new THREE.BufferGeometry().setFromPoints(c12.getPoints(20));
 
-            updateLabel(lblJ, new THREE.Vector3(0, 0, J_local.length() + 1.8));
+            updateLabel(lblJ, new THREE.Vector3(0, 0, J_mag + 0.8));
             updateLabel(lblL, new THREE.Vector3(0, 0, L_MAG).applyMatrix4(lContainer.matrixWorld).add(new THREE.Vector3(0, 0, 0.4)));
             updateLabel(lblRef, new THREE.Vector3(5.5, 0, 0));
-            updateLabel(lblProjL, L_p_dir.clone().multiplyScalar(L_p_len + 1.0));
+            updateLabel(lblProjL, new THREE.Vector3(Math.cos(targetPhi), Math.sin(targetPhi), 0).multiplyScalar(L_p_len + 1.0));
             updateLabel(lblPhiJL, new THREE.Vector3(Math.cos(targetPhi/2)*3.2, Math.sin(targetPhi/2)*3.2, 0), `φ<sub>JL</sub>: ${params.phiJL.toFixed(1)}°`);
             updateLabel(lblPhi12, new THREE.Vector3(Math.cos(p1+p12/2)*4.0, Math.sin(p1+p12/2)*4.0, 0).applyMatrix4(lContainer.matrixWorld), `φ<sub>12</sub>: ${THREE.MathUtils.radToDeg(p12).toFixed(1)}°`);
 
