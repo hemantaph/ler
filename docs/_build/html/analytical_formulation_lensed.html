@@ -316,7 +316,7 @@ P({\rm SL}\mid z_s)\,
 \end{split}
 \end{equation} 
 \]</div>
-<p>so that <span class="math notranslate nohighlight">\(P({\rm SL})={\cal N}_{\rm L}/{\cal N}_{\rm U}\)</span>, which is the fraction of intrinsically occurring mergers that are strongly lensed in the population model. In this work, the optical depth <span class="math notranslate nohighlight">\(P({\rm SL}\mid z_s)\)</span> is computed for the adopted EPL+Shear lens population as detailed in the subsequent section. Once this probability is determined and the conditional distribution <span class="math notranslate nohighlight">\(P(z_s\mid {\rm SL})\)</span> is established, source redshifts are generated using <a class="reference external" href="https://en.wikipedia.org/wiki/Inverse_transform_sampling">inverse transform sampling</a>.</p>
+<p>so that <span class="math notranslate nohighlight">\(P({\rm SL})={\cal N}_{\rm L}/{\cal N}_{\rm U}\)</span>, which is the fraction of intrinsically occurring mergers that are strongly lensed in the population model. In this work, <span class="math notranslate nohighlight">\(P({\rm SL}\mid z_s)\)</span> is computed for the adopted EPL+Shear lens population as detailed in the subsequent section. Once this probability is determined and the conditional distribution <span class="math notranslate nohighlight">\(P(z_s\mid {\rm SL})\)</span> is established, source redshifts are generated using <a class="reference external" href="https://en.wikipedia.org/wiki/Inverse_transform_sampling">inverse transform sampling</a>.</p>
 </section>
 <section id="optical-depth">
 <h2>Optical Depth<a class="headerlink" href="#optical-depth" title="Link to this heading"></a></h2>
@@ -436,7 +436,7 @@ q\sim P(q\mid\sigma) \\
 </section>
 <section id="lens-redshift-distribution-of-lensed-events">
 <h2>Lens Redshift Distribution of Lensed Events<a class="headerlink" href="#lens-redshift-distribution-of-lensed-events" title="Link to this heading"></a></h2>
-<p>For fixed <span class="math notranslate nohighlight">\(z_s\)</span>, the lens-redshift distribution conditioned on strong lensing is proportional to the differential optical depth, and is given by</p>
+<p>For fixed <span class="math notranslate nohighlight">\(z_s\)</span>, the lens-redshift distribution conditioned on the occurance of strong lensing is directly proportional to the differential optical depth, and is given by</p>
 <div class="math notranslate nohighlight">
 \[ 
 \begin{equation}
@@ -446,10 +446,10 @@ P(z_L\mid z_s,{\rm SL})
 \end{split}
 \end{equation} 
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\tau(z_s)=\int_{0}^{z_s}\frac{d\tau}{dz_L}\,dz_L\)</span> is the normalization factor. In <code class="docutils literal notranslate"><span class="pre">ler</span></code>, <span class="math notranslate nohighlight">\(\frac{d\tau}{dz_L}\)</span> is pre-computed on a grid in <span class="math notranslate nohighlight">\(z_L\)</span> and <span class="math notranslate nohighlight">\(z_s\)</span> to allow for efficient interpolation and inverse-transform sampling of <span class="math notranslate nohighlight">\(z_L\)</span> for a given <span class="math notranslate nohighlight">\(z_s\)</span>, and to enable fast evaluation of <span class="math notranslate nohighlight">\(P({\rm SL}\mid z_s)\)</span>.</p>
-<p>For comparison, the intrinsic lens-redshift distribution without conditioning on strong lensing is obtained by marginalizing over lens parameters:</p>
+<p>where the normalization factor is the total optical depth <span class="math notranslate nohighlight">\(\tau(z_s)=\int_{0}^{z_s}(d\tau/dz_L)\,dz_L\)</span>. In <code class="docutils literal notranslate"><span class="pre">ler</span></code>, the differential optical depth <span class="math notranslate nohighlight">\(d\tau/dz_L\)</span> is pre-computed on a grid spanning the relevant redshift space (<span class="math notranslate nohighlight">\(z_L, z_s\)</span>). This grid enables efficient interpolation for inverse-transform sampling of <span class="math notranslate nohighlight">\(z_L\)</span> and allows for rapid evaluation of the strong-lensing probability <span class="math notranslate nohighlight">\(P({\rm SL}\mid z_s)\)</span>.</p>
+<p>For comparison, the intrinsic redshift distribution of the lens population, without conditioning on strong lensing and independent of any specific background source, is obtained by marginalizing the lens number density over the lens parameters</p>
 <div class="math notranslate nohighlight">
-\[ 
+\[ 
 \begin{equation}
 \begin{split}
 P(z_L)
@@ -459,9 +459,17 @@ P(z_L)
 \frac{dV_c}{dz_L}\,
 d\vec{\theta}^{*}_{\rm L} \, ,
 \end{split}
-\end{equation} 
+\end{equation} 
 \]</div>
-<p>with normalization <span class="math notranslate nohighlight">\({\cal N}_{z_L}\)</span>.</p>
+<p>where <span class="math notranslate nohighlight">\({\cal N}_{z_L}\)</span> is a normalization constant.</p>
+<p>The impact of the optical depth on the source redshift distributions of the lensed events is illustrated in Figure 1.</p>
+<div align="center">
+  <img src="_static/lensed_redshifts.png" alt="Merger rate density and PDF of redshift for BBH mergers" width="600"/>
+</div>
+<div id="fig1"></div>
+<blockquote>
+<div><p><strong>Figure 1:</strong> Redshift distributions (blue, left axis) for the intrinsic source population <span class="math notranslate nohighlight">\(P(z=z_s)\)</span>, the lensed-source population <span class="math notranslate nohighlight">\(P(z=z_s\mid{\rm SL})\)</span>, and the conditional lens distribution <span class="math notranslate nohighlight">\(P(z=z_L\mid z_s,{\rm SL})\)</span>, shown together with the optical depth <span class="math notranslate nohighlight">\(\tau(z=z_s)\)</span> (orange, right axis), which quantifies the strong-lensing probability for a source at redshift <span class="math notranslate nohighlight">\(z_s\)</span> in the low-optical-depth regime. The intrinsic <span class="math notranslate nohighlight">\(P(z_s)\)</span> follows the unlensed merger-rate model, while <span class="math notranslate nohighlight">\(P(z_s\mid{\rm SL})\)</span> is obtained by reweighting the intrinsic population by the lensing probability, <span class="math notranslate nohighlight">\(P(z_s\mid{\rm SL})\propto \tau(z_s),P(z_s)\)</span>, implemented via rejection sampling using <span class="math notranslate nohighlight">\(\tau(z_s)\)</span>. For each lensed source, the lens redshift is drawn from <span class="math notranslate nohighlight">\(0&lt;z_L&lt;z_s\)</span> with a density proportional to <span class="math notranslate nohighlight">\(\frac{d\tau}{dz_L}\)</span>, so that <span class="math notranslate nohighlight">\(P(z_L\mid z_s,{\rm SL})\)</span> traces where along the line of sight the lenses that produce strong lensing are most likely to occur. Since <span class="math notranslate nohighlight">\(\tau(z_s)\)</span> increases with redshift, strong lensing preferentially selects more distant sources and shifts <span class="math notranslate nohighlight">\(P(z_s\mid{\rm SL})\)</span> to higher redshift relative to <span class="math notranslate nohighlight">\(P(z_s)\)</span>, while <span class="math notranslate nohighlight">\(P(z_L\mid z_s,{\rm SL})\)</span> describes the redshift distribution of the lenses responsible for that lensed-source population.</p>
+</div></blockquote>
 </section>
 <section id="multi-image-caustic-cross-section">
 <h2>Multi-Image Caustic Cross-Section<a class="headerlink" href="#multi-image-caustic-cross-section" title="Link to this heading"></a></h2>

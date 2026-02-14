@@ -122,10 +122,10 @@
         .dg li:not(.folder) { background: rgba(0, 0, 0, 0.3) !important; border-bottom: 1px solid #444 !important; color: rgba(255, 255, 255, 0.7) !important; }
         .dg .property-name { width: 25% !important; overflow: hidden !important; text-overflow: ellipsis !important; }
         .dg .c { width: 75% !important; }
-        .dg .cr.boolean { display: flex !important; align-items: center !important; }
-        .dg .cr.boolean .property-name { width: 70% !important; }
-        .dg .cr.boolean .c { width: 30% !important; }
-        .dg .cr.boolean .c input[type=checkbox] { margin-left: 0 !important; }
+        .dg .cr.boolean { overflow: visible !important; height: auto !important; min-height: 27px !important; line-height: 27px !important; }
+        .dg .cr.boolean .property-name { width: 60% !important; }
+        .dg .cr.boolean .c { width: 40% !important; float: right !important; }
+        .dg .cr.boolean .c input[type=checkbox] { margin-top: 6px !important; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
