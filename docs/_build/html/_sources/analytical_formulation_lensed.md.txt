@@ -371,18 +371,18 @@ where ${\cal N}_{z_L}$ is a normalization constant.
 
 The impact of the optical depth on the source redshift distributions of the lensed events is illustrated in Figure 1.
 
+<div id="fig1"></div>
+
 <div align="center">
   <img src="_static/lensed_redshifts.png" alt="Merger rate density and PDF of redshift for BBH mergers" width="600"/>
 </div>
 
-<div id="fig1"></div>
-
->**Figure 1:** Redshift distributions (blue, left axis) for the intrinsic source population $P(z=z_s)$, the lensed-source population $P(z=z_s\mid{\rm SL})$, and the conditional lens distribution $P(z=z_L\mid z_s,{\rm SL})$, shown together with the optical depth $\tau(z=z_s)$ (orange, right axis), which quantifies the strong-lensing probability for a source at redshift $z_s$ in the low-optical-depth regime. The intrinsic $P(z_s)$ follows the unlensed merger-rate model, while $P(z_s\mid{\rm SL})$ is obtained by reweighting the intrinsic population by the lensing probability, $P(z_s\mid{\rm SL})\propto \tau(z_s),P(z_s)$, implemented via rejection sampling using $\tau(z_s)$. For each lensed source, the lens redshift is drawn from $0<z_L<z_s$ with a density proportional to $\frac{d\tau}{dz_L}$, so that $P(z_L\mid z_s,{\rm SL})$ traces where along the line of sight the lenses that produce strong lensing are most likely to occur. Since $\tau(z_s)$ increases with redshift, strong lensing preferentially selects more distant sources and shifts $P(z_s\mid{\rm SL})$ to higher redshift relative to $P(z_s)$, while $P(z_L\mid z_s,{\rm SL})$ describes the redshift distribution of the lenses responsible for that lensed-source population.
+>**Figure 1:** Redshift distributions (blue, left axis) for the intrinsic source population $P(z=z_s)$, the lensed-source population $P(z=z_s\mid{\rm SL})$, and the conditional lens distribution $P(z=z_L\mid z_s,{\rm SL})$, shown together with the optical depth $\tau(z=z_s)$ (orange, right axis), which quantifies the strong-lensing probability for a source at redshift $z_s$ in the low-optical-depth regime. The intrinsic $P(z_s)$ follows the unlensed merger-rate model, while $P(z_s\mid{\rm SL})$ is obtained by reweighting the intrinsic population by the lensing probability, $P(z_s\mid{\rm SL})\propto \tau(z_s)\,P(z_s)$, implemented via rejection sampling using $\tau(z_s)$. For each lensed source, the lens redshift is drawn from $0<z_L<z_s$ with a density proportional to $\frac{d\tau}{dz_L}$, so that $P(z_L\mid z_s,{\rm SL})$ traces where along the line of sight the lenses that produce strong lensing are most likely to occur. Since $\tau(z_s)$ increases with redshift, strong lensing preferentially selects more distant sources and shifts $P(z_s\mid{\rm SL})$ to higher redshift relative to $P(z_s)$, while $P(z_L\mid z_s,{\rm SL})$ describes the redshift distribution of the lenses responsible for that lensed-source population.
 
 
 ## Multi-Image Caustic Cross-Section
 
-The strong-lensing condition is satisfied when a source lies within the caustic region of the lens, resulting in multiple images. The angular area of this region is the multi-image caustic cross-section $\sigma_{\rm SL}$ (or $\sigma^{\rm EPL}_{\rm SL}$ for the EPL+Shear model). The probability of strong lensing for a specific configuration is the ratio of this cross-section to the total sky area
+The strong-lensing condition is satisfied when a source resides within the multi-image caustic region in the source plane, which encompasses the area enclosed by both the double and diamond caustics (see [Figure 2](#fig2)), thereby producing multiple images. The angular area of this region is defined as the multi-image caustic cross-section, $\sigma_{\rm SL}$ (denoted as $\sigma^{\rm EPL}_{\rm SL}$ for the EPL+Shear model). The probability of strong lensing for a specific configuration is the ratio of this cross-section to the total sky area
 
 $$ 
 \begin{equation}
@@ -501,6 +501,19 @@ $$
 while the other extrinsic and intrinsic parameters are unchanged from the unlensed values, including the detector-frame component masses $\left(m_1 \, (1+z_s),m_2 \, (1+z_s)\right)$. The sky-location offsets associated with $\vec{\theta}_i-\vec{\beta}$ are typically negligible for current GW detector networks and have no impact on SNR. Detectability is therefore evaluated by computing the SNR for each image using the modified GW pararameters $\vec{\theta}_{{\rm GW},i}$, as described in the next section.
 
 > **Note:** The lens-centre coordinates in the sky is given by $\left\{ {\rm RA} - \frac{\beta_x}{\cos({\rm Dec})}, {\rm Dec} - \beta_y \right\}$.
+
+
+An illustrative example of a multi-image configuration for an EPL+Shear lens is shown in Figure 2, where the source is located near a fold caustic boundary, resulting in four images with two highly magnified ones. The lens parameters are chosen to produce a typical caustic structure with an outer double-image caustic and an inner diamond-shaped quad-image caustic. The image properties (type, magnification) are determined by the source position relative to these caustics and the lens parameters that govern their shape and size.
+
+<div id="fig2"></div>
+
+<div align="center">
+  <img src="_static/lens_configuration.jpg" alt="Merger rate density and PDF of redshift for BBH mergers" width="600"/>
+</div>
+
+>**Figure 2:** Multi-image configuration for an EPL+Shear lens, showing the outer double-image caustic (orange dashed) and the inner quad-image (diamond) caustic (green solid) in the source plane. The Einstein ring (blue, dotted) serves as the angular scale reference, with $\theta_E(z_s=3.0, z_L=0.8, \sigma=160\,{\rm km/s}) \approx 2 \times 10^{-6}$ rad. The lens geometry is defined by an axis ratio $q=0.6$, orientation angle $\phi=0.52$ rad, mass density slope $\gamma=1.84$, and external shear components $\gamma_1=\gamma_2=-0.05$. A source located at $(\beta_x, \beta_y) = (-0.25, 0.04)$ lies inside the diamond caustic near a fold boundary, generating four lensed images (stars). These are labeled by index $i$ (ordered by arrival time, where $i=1$ arrives first), image type, and absolute magnification $|\mu_i|$. The caustic structure is governed by the lens parameters where $q$ determines ellipticity and $\phi$ controls counter-clockwise rotation relative to the x-axis. Increasing in $\gamma$ cause the outer caustic to expand rapidly while the inner diamond caustic shrinks, whereas shear components induce skewness and rotation. An interactive demonstration of these dependencies is provided in the [example notebook](https://colab.research.google.com/drive/1X1XDID3riGJhMgVBUueq-W72wOiSG3r9?usp=sharing). Notably, for the chosen configuration, the proximity of the source to the caustic fold results in high-magnification images which can significantly enhance the detectability of such gravitational lensing systems.
+
+**Figure 2:** Multi-image configuration for an EPL+Shear lens model, displaying the outer double-image caustic (orange dashed) and the inner quad-image (diamond) caustic (green solid) in the source plane. The Einstein ring (blue, dotted) serves as the angular scale reference, with $\theta_E(z_s=3.0, z_L=0.8, \sigma=160\,{\rm km/s}) \approx 2 \times 10^{-6}$ rad. The lens geometry is defined by an axis ratio $q=0.6$, orientation angle $\phi=0.52$ rad, mass density slope $\gamma=1.84$, and external shear components $\gamma_1=\gamma_2=-0.05$. A source located at $(\beta_x, \beta_y) = (-0.25, 0.04)$ lies inside the diamond caustic near a fold boundary, generating four lensed images (stars). These are labeled by index $i$ (ordered by arrival time, where $i=1$ arrives first), image type, and absolute magnification $|\mu_i|$. The caustic structure is governed by the lens parameters: $q$ determines ellipticity, while $\phi$ controls the counter-clockwise rotation relative to the x-axis. Increases in $\gamma$ cause the outer caustic to expand rapidly while the inner diamond caustic shrinks; conversely, shear components induce skewness and rotation. An interactive demonstration of these dependencies is available in the [example notebook](https://colab.research.google.com/drive/1X1XDID3riGJhMgVBUueq-W72wOiSG3r9?usp=sharing). Notably, the proximity of the source to the caustic fold results in high-magnification images, significantly enhancing the detectability of such systems.
 
 
 ## Detection Probability of Lensed Events
