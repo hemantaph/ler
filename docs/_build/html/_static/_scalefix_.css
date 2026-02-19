@@ -1,0 +1,32 @@
+/* Scale fix for sphinx-rtd-theme 3.x — restores classic font sizes */
+
+html {
+    font-size: 100%;          /* prevent mobile-like upscaling */
+}
+
+body {
+    font-size: 87.5%;         /* 14px base, matching RTD theme 2.x */
+}
+
+/* Sidebar */
+.wy-nav-side {
+    font-size: 100%;
+}
+
+/* Content area headings — tighten up spacing */
+.rst-content h1 { font-size: 1.75em; }
+.rst-content h2 { font-size: 1.50em; }
+.rst-content h3 { font-size: 1.25em; }
+.rst-content h4 { font-size: 1.10em; }
+
+/* Code blocks */
+.rst-content code,
+.rst-content tt {
+    font-size: 85%;
+}
+
+/* Tables */
+.rst-content table.docutils td,
+.rst-content table.docutils th {
+    font-size: inherit;
+}

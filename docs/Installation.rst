@@ -10,7 +10,7 @@ Installation
 
 .. tabs::
 
-   .. code-tab:: bash pip 
+   .. code-tab:: bash uv
 
         uv add ler
 
