@@ -277,7 +277,44 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to classify the lensed images wrt to the morse phase difference.</span>
 
-<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lensed_param : `dict`</span>
+<span class="sd">        dictionary of lensed GW source parameters.</span>
+<span class="sd">        lensed_param.keys() = [&#39;x_source&#39;, &#39;y_source&#39;, &#39;x0_image_position&#39;, &#39;x1_image_position&#39;, &#39;magnifications&#39;, &#39;time_delays&#39;, &#39;pdet_net&#39;, &#39;image_type&#39;]</span>
+<span class="sd">    pdet_threshold : `list`</span>
+<span class="sd">        threshold for pdet_net to consider the image as detectable.</span>
+<span class="sd">        default pdet_threshold = [0.5, 0.5].</span>
+<span class="sd">    classification_type : `str`</span>
+<span class="sd">        type of classification to be done.</span>
+<span class="sd">        default classification_type = &#39;morse_phase&#39;. other options: &#39;arrival_time&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dict</span>
+<span class="sd">        dictionary containing the relative magnification and time delay difference for the classified images.</span>
+<span class="sd">         if classification_type = &#39;morse_phase&#39;:</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;dt_rel0&quot;: np.array of relative time delay difference for images with morse phase difference = 0,</span>
+<span class="sd">                &quot;mu_rel0&quot;: np.array of relative magnification for images with morse phase difference = 0,</span>
+<span class="sd">                &quot;dt_rel90&quot;: np.array of relative time delay difference for images with morse phase difference = 90,</span>
+<span class="sd">                &quot;mu_rel90&quot;: np.array of relative magnification for images with morse phase difference = 90,</span>
+<span class="sd">            }</span>
+<span class="sd">         if classification_type = &#39;arrival_time&#39;:</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;dt_12&quot;: np.array of relative time delay difference for image 1 and image 2,</span>
+<span class="sd">                &quot;mu_12&quot;: np.array of relative magnification for image 1 and image 2,</span>
+<span class="sd">                &quot;dt_13&quot;: np.array of relative time delay difference for image 1 and image 3,</span>
+<span class="sd">                &quot;mu_13&quot;: np.array of relative magnification for image 1 and image 3,</span>
+<span class="sd">                &quot;dt_14&quot;: np.array of relative time delay difference for image 1 and image 4,</span>
+<span class="sd">                &quot;mu_14&quot;: np.array of relative magnification for image 1 and image 4,</span>
+<span class="sd">                &quot;dt_23&quot;: np.array of relative time delay difference for image 2 and image 3,</span>
+<span class="sd">                &quot;mu_23&quot;: np.array of relative magnification for image 2 and image 3,</span>
+<span class="sd">                &quot;dt_24&quot;: np.array of relative time delay difference for image 2 and image 4,</span>
+<span class="sd">                &quot;mu_24&quot;: np.array of relative magnification for image 2 and image 4,</span>
+<span class="sd">                &quot;dt_34&quot;: np.array of relative time delay difference for image 3 and image 4,</span>
+<span class="sd">                &quot;mu_34&quot;: np.array of relative magnification for image 3 and image 4,</span>
+<span class="sd">            }</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># get magnifications, time_delays and snr</span>

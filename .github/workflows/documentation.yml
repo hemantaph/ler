@@ -38,7 +38,6 @@ jobs:
           sudo apt-get install -y pandoc
       - name: Install Python dependencies
         run: |
-          pip install -U pip setuptools wheel
           pip install -r requirements_sphinx.txt  # Or pip install sphinx sphinx-rtd-theme
       - name: Install project dependencies
         run: |

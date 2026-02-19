@@ -541,7 +541,14 @@
             <span class="n">snr_type</span><span class="o">=</span><span class="s2">&quot;optimal_snr&quot;</span><span class="p">,</span>
             <span class="n">gwsnr_verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">multiprocessing_verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">pdet_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">pdet_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">snr_th</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+                <span class="n">snr_th_net</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+                <span class="n">pdet_type</span><span class="o">=</span><span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+                <span class="n">distribution_type</span><span class="o">=</span><span class="s2">&quot;noncentral_chi2&quot;</span><span class="p">,</span>
+                <span class="n">include_optimal_snr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">include_observed_snr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">),</span>
             <span class="c1"># Settings for interpolation grid</span>
             <span class="n">mtot_min</span><span class="o">=</span><span class="n">min_bh_mass</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
             <span class="n">mtot_max</span><span class="o">=</span><span class="p">(</span>

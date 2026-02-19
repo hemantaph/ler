@@ -234,6 +234,57 @@ default randomize = True.</p>
 <dt class="sig sig-object py" id="ler.utils.plots.relative_mu_dt_lensed">
 <span class="sig-prename descclassname"><span class="pre">ler.utils.plots.</span></span><span class="sig-name descname"><span class="pre">relative_mu_dt_lensed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.5,</span> <span class="pre">0.5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classification_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'morse_phase'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/plots.html#relative_mu_dt_lensed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.plots.relative_mu_dt_lensed" title="Link to this definition"></a></dt>
 <dd><p>Function to classify the lensed images wrt to the morse phase difference.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>lensed_param</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>dictionary of lensed GW source parameters.
+lensed_param.keys() = [‘x_source’, ‘y_source’, ‘x0_image_position’, ‘x1_image_position’, ‘magnifications’, ‘time_delays’, ‘pdet_net’, ‘image_type’]</p>
+</dd>
+<dt><strong>pdet_threshold</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>threshold for pdet_net to consider the image as detectable.
+default pdet_threshold = [0.5, 0.5].</p>
+</dd>
+<dt><strong>classification_type</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>type of classification to be done.
+default classification_type = ‘morse_phase’. other options: ‘arrival_time’.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt>dict</dt><dd><dl>
+<dt>dictionary containing the relative magnification and time delay difference for the classified images.</dt><dd><dl>
+<dt>if classification_type = ‘morse_phase’:</dt><dd><dl class="simple">
+<dt>{</dt><dd><p>“dt_rel0”: np.array of relative time delay difference for images with morse phase difference = 0,
+“mu_rel0”: np.array of relative magnification for images with morse phase difference = 0,
+“dt_rel90”: np.array of relative time delay difference for images with morse phase difference = 90,
+“mu_rel90”: np.array of relative magnification for images with morse phase difference = 90,</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+<dt>if classification_type = ‘arrival_time’:</dt><dd><dl class="simple">
+<dt>{</dt><dd><p>“dt_12”: np.array of relative time delay difference for image 1 and image 2,
+“mu_12”: np.array of relative magnification for image 1 and image 2,
+“dt_13”: np.array of relative time delay difference for image 1 and image 3,
+“mu_13”: np.array of relative magnification for image 1 and image 3,
+“dt_14”: np.array of relative time delay difference for image 1 and image 4,
+“mu_14”: np.array of relative magnification for image 1 and image 4,
+“dt_23”: np.array of relative time delay difference for image 2 and image 3,
+“mu_23”: np.array of relative magnification for image 2 and image 3,
+“dt_24”: np.array of relative time delay difference for image 2 and image 4,
+“mu_24”: np.array of relative magnification for image 2 and image 4,
+“dt_34”: np.array of relative time delay difference for image 3 and image 4,
+“mu_34”: np.array of relative magnification for image 3 and image 4,</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">

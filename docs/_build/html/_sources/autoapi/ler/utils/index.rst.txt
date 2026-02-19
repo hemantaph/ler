@@ -1750,7 +1750,46 @@ Functions
    Function to classify the lensed images wrt to the morse phase difference.
 
 
+   :Parameters:
 
+       **lensed_param** : `dict`
+           dictionary of lensed GW source parameters.
+           lensed_param.keys() = ['x_source', 'y_source', 'x0_image_position', 'x1_image_position', 'magnifications', 'time_delays', 'pdet_net', 'image_type']
+
+       **pdet_threshold** : `list`
+           threshold for pdet_net to consider the image as detectable.
+           default pdet_threshold = [0.5, 0.5].
+
+       **classification_type** : `str`
+           type of classification to be done.
+           default classification_type = 'morse_phase'. other options: 'arrival_time'.
+
+   :Returns:
+
+       dict
+           dictionary containing the relative magnification and time delay difference for the classified images.
+            if classification_type = 'morse_phase':
+               {
+                   "dt_rel0": np.array of relative time delay difference for images with morse phase difference = 0,
+                   "mu_rel0": np.array of relative magnification for images with morse phase difference = 0,
+                   "dt_rel90": np.array of relative time delay difference for images with morse phase difference = 90,
+                   "mu_rel90": np.array of relative magnification for images with morse phase difference = 90,
+               }
+            if classification_type = 'arrival_time':
+               {
+                   "dt_12": np.array of relative time delay difference for image 1 and image 2,
+                   "mu_12": np.array of relative magnification for image 1 and image 2,
+                   "dt_13": np.array of relative time delay difference for image 1 and image 3,
+                   "mu_13": np.array of relative magnification for image 1 and image 3,
+                   "dt_14": np.array of relative time delay difference for image 1 and image 4,
+                   "mu_14": np.array of relative magnification for image 1 and image 4,
+                   "dt_23": np.array of relative time delay difference for image 2 and image 3,
+                   "mu_23": np.array of relative magnification for image 2 and image 3,
+                   "dt_24": np.array of relative time delay difference for image 2 and image 4,
+                   "mu_24": np.array of relative magnification for image 2 and image 4,
+                   "dt_34": np.array of relative time delay difference for image 3 and image 4,
+                   "mu_34": np.array of relative magnification for image 3 and image 4,
+               }
 
 
 

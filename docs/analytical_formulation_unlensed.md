@@ -146,11 +146,11 @@ $$
 
 For visualization, $R_{\rm U}(z_s)$ and $P(z_s)$ are plotted below.
 
+<div id="fig3"></div>
+
 <div align="center">
   <img src="_static/Merger_rate_density_and_PDF_of_redshift.png" alt="Merger rate density and PDF of redshift for BBH mergers" width="600"/>
 </div>
-
-<div id="fig3"></div>
 
 >**Figure 3 :** Redshift evolution of the merger rate density $R(z_s)$ (blue, left axis) and the probability density function $P(z_s)$ (orange, right axis) for BBH mergers. Both curves are based on a Madau-Dickinson like model that incorporates time delays and metallicity effects (Ng et al. 2021). The merger rate density is given in $\mathrm{Mpc}^{-3}\,\mathrm{yr}^{-1}$, with the GWTC-4 local rate $R_0 = 1.9^{+0.7}_{-0.5} \times 10^{-8}$ and shaded regions showing the uncertainty bounds. The normalized $P(z_s)$ has no uncertainty band, as the local rate $R_0$ cancels in its calculation. The rate peaks at $z_s \approx 2$, reflecting the cosmic star formation history modulated by metallicity (which suppresses BBH formation at low redshift) and time delays. Both $R(z_s)$ and $P(z_s)$ decline at higher redshifts, providing insight into gravitational wave detection prospects and the cosmic evolution of compact binaries.
 
@@ -245,13 +245,13 @@ The prior distributions and parameter ranges used in the event-rate calculations
 
 Selection effects in gravitational-wave observations are illustrated by comparing the intrinsic BBH population to the subset that satisfies the detectability criterion for a given detector network.
 
+<div id="fig4"></div>
+
 <div align="center">
   <img src="_static/Unlensed_Events.png" alt="Corner plot comparing intrinsic and detectable BBH populations" width="700"/>
 </div>
 
-<div id="fig4"></div>
-
->**Figure 4:** Corner plot comparing the simulated intrinsic BBH population (blue) with the detectable subset (orange) for the LIGO–Virgo–KAGRA network (['L1', 'H1', 'V1']) at O4 design sensitivity. The population model assumes a Madau–Dickinson–like merger-rate density (see [Figure 1](#fig3)) and a PowerLaw+Peak source-frame component-mass distribution. Shown parameters are the source redshift $z_s$ and component masses in (observed) detector-frame $\left(m_1, m_2\right)$ and (infered) source-frame $\left(m^{\rm src}_1=\frac{m_1}{1+z_s}, m^{\rm src}_2=\frac{m_2}{1+z_s}\right)$, in the unit of $M_\odot$. The detectable subset is biased toward lower redshift and higher masses because these systems typically yield larger network SNR. Orientation effects, which also modulate SNR through the antenna pattern and inclination, are not shown.
+>**Figure 4:** Corner plot comparing the simulated intrinsic BBH population (blue) with the detectable subset (orange) for the LIGO–Virgo–KAGRA network (['L1', 'H1', 'V1']) at O4 design sensitivity. The population model assumes a Madau–Dickinson–like merger-rate density (see [Figure 1](#fig3)) and a PowerLaw+Peak source-frame component-mass distribution; while other parameter distributions follow priors given [Table 1](#table1). Shown parameters are the source redshift $z_s$ and component masses in (observed) detector-frame $\left(m_1, m_2\right)$ and (intrinsic) source-frame $\left(m^{\rm src}_1=\frac{m_1}{1+z_s}, m^{\rm src}_2=\frac{m_2}{1+z_s}\right)$, in the unit of $M_\odot$. The detectable subset is biased toward lower redshift and higher masses because these systems typically yield larger network SNR. Orientation effects, which also modulate SNR through the antenna pattern and inclination, are not shown.
 
 ## Rate Estimates for Different GW Detector Networks
 

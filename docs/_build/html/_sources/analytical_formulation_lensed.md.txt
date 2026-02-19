@@ -19,6 +19,14 @@ This document extends the framework in [Analytical Formulation for Gravitational
 - [Lens Parameter Distributions of Lensed Events](#lens-parameter-distributions-of-lensed-events)
 - [Source Position Distribution and Image Properties](#source-position-distribution-and-image-properties)
 - [Detection Probability of Lensed Events](#detection-probability-of-lensed-events)
+- [Complete Expression for Lensed Event Rate](#complete-expression-for-lensed-event-rate)
+- [Simulation Results](#simulation-results)
+  - [Simulation Settings](#simulation-settings)
+  - [Lens and source Parameter Priors](#lens-and-source-parameter-priors)
+  - [Plot Comparison for Lensed+Detectable, Lensed and Intrinsic Populations](#plot-comparison-for-lenseddetectable-lensed-and-intrinsic-populations)
+  - [Biases in the inferred GW parameters](#biases-in-the-inferred-gw-parameters)
+  - [Time Delays and Magnifications of Detected Lensed Events](#time-delays-and-magnifications-of-detected-lensed-events)
+  - [Rate Estimates and Comparisons](#rate-estimates-and-comparisons)
 
 ## Introduction
 
@@ -382,7 +390,7 @@ The impact of the optical depth on the source redshift distributions of the lens
 
 ## Multi-Image Caustic Cross-Section
 
-The strong-lensing condition is satisfied when a source resides within the multi-image caustic region in the source plane, which encompasses the area enclosed by both the double and diamond caustics (see [Figure 2](#fig2)), thereby producing multiple images. The angular area of this region is defined as the multi-image caustic cross-section, $\sigma_{\rm SL}$ (denoted as $\sigma^{\rm EPL}_{\rm SL}$ for the EPL+Shear model). The probability of strong lensing for a specific configuration is the ratio of this cross-section to the total sky area
+The strong-lensing condition is satisfied when a source resides within the multi-image caustic region in the source plane, which encompasses the area enclosed by both the double and diamond (quad) caustics (see [Figure 2](#fig2)), thereby producing multiple images. The angular area of this region is defined as the multi-image caustic cross-section, $\sigma_{\rm SL}$ (denoted as $\sigma^{\rm EPL}_{\rm SL}$ for the EPL+Shear model). The probability of strong lensing for a specific configuration is the ratio of this cross-section to the total sky area
 
 $$ 
 \begin{equation}
@@ -508,10 +516,10 @@ An illustrative example of a multi-image configuration for an EPL+Shear lens is 
 <div id="fig2"></div>
 
 <div align="center">
-  <img src="_static/lens_configuration.jpg" alt="Merger rate density and PDF of redshift for BBH mergers" width="600"/>
+  <img src="_static/lens_configuration.png" alt="Merger rate density and PDF of redshift for BBH mergers" width="600"/>
 </div>
 
->**Figure 2:** Multi-image configuration for an EPL+Shear lens, showing the outer double-image caustic (orange dashed) and the inner quad-image (diamond) caustic (green solid) in the source plane. The Einstein ring (blue, dotted) serves as the angular scale reference, with $\theta_E(z_s=3.0, z_L=0.8, \sigma=160\,{\rm km/s}) \approx 2 \times 10^{-6}$ rad. The lens geometry is defined by an axis ratio $q=0.6$, orientation angle $\phi=0.52$ rad, mass density slope $\gamma=1.84$, and external shear components $\gamma_1=\gamma_2=-0.05$. A source located at $(\beta_x, \beta_y) = (-0.25, 0.04)$ lies inside the diamond caustic near a fold boundary, generating four lensed images (stars). These are labeled by index $i$ (ordered by arrival time, where $i=1$ arrives first), image type, time-delay wrt the first image $\Delta t_{1,i}$ , and absolute magnification $|\mu_i|$. The caustic structure is governed by the lens parameters where $q$ determines ellipticity and $\phi$ controls counter-clockwise rotation relative to the x-axis. Increasing in $\gamma$ cause the outer caustic to expand rapidly while the inner diamond caustic shrinks, whereas shear components induce skewness and rotation. An interactive demonstration of these dependencies is provided in the [example notebook](https://colab.research.google.com/drive/1X1XDID3riGJhMgVBUueq-W72wOiSG3r9?usp=sharing). Notably, for the chosen configuration, the proximity of the source to the caustic fold results in high-magnification images which can significantly enhance the detectability of such gravitational lensing systems.
+>**Figure 2:** Multi-image configuration for an EPL+Shear lens, showing the outer double-image caustic (orange dashed) and the inner quad-image (diamond) caustic (green solid) in the source plane. The Einstein ring (blue, dotted) serves as the angular scale reference, with $\theta_E(z_s=3.0, z_L=0.8, \sigma=160\,{\rm km/s}) \approx 2 \times 10^{-6}$ rad. The lens geometry is defined by an axis ratio $q=0.6$, orientation angle $\phi=0.52$ rad, mass density slope $\gamma=1.84$, and external shear components $\gamma_1=\gamma_2=-0.05$. A source located at $(\beta_x, \beta_y) = (-0.25, 0.04)$ lies inside the diamond caustic near a fold boundary, generating four lensed images (stars). These are labeled by index $i$ (ordered by arrival time, where $i=1$ arrives first), image type, time-delay wrt the first image $\Delta t_{1,i}$ , and absolute magnification $|\mu_i|$. The caustic structure is governed by the lens (shape) parameters where $q$ determines ellipticity and $\phi$ controls counter-clockwise rotation relative to the x-axis. Increasing in $\gamma$ cause the outer caustic to expand rapidly while the inner diamond caustic shrinks, whereas shear components induce skewness and rotation. An interactive demonstration of these dependencies is provided in the Google Colab [Example Notebook](https://colab.research.google.com/drive/1X1XDID3riGJhMgVBUueq-W72wOiSG3r9?usp=sharing). Notably, for the chosen configuration, the proximity of the source to the caustic fold results in high-magnification images which can significantly enhance the detectability of such gravitational lensing systems.
 
 
 ## Detection Probability of Lensed Events
@@ -587,55 +595,99 @@ The specific parameter priors and their functional forms are detailed below.
 
 ## Simulation Results
 
-This section reports results (related to strong lensing) generated with the default configuration of the ler package, compare it with unlensed events. Although ler supports alternative population prescriptions, including user-defined models, all numbers and figures shown here use the standard settings and assumptions summarized below.
+This section details the results regarding strong gravitational-wave lensing generated using the default configuration of the `ler` package. These results are compared against unlensed events. While `ler` accommodates alternative population prescriptions and user-defined models, the subsequent calculations rely on standard settings and assumptions.
 
 ### Simulation Settings
 
-All calculations assume a flat $\Lambda{\rm CDM}$ cosmology with $H_0 = 70\,{\rm km}\,{\rm s}^{-1}\,{\rm Mpc}^{-1}$, $\Omega_m = 0.3$, and $\Omega_\Lambda = 0.7$.
-
-Detection probabilities are evaluated through the [`gwsnr`](https://gwsnr.hemantaph.com) backend. Waveforms are generated with the IMRPhenomXPHM approximant, and detector responses are computed with a sampling frequency of $2048\,{\rm Hz}$. The lower frequency cutoff is set to $f_{\rm low}=20\,{\rm Hz}$ for the LIGO–Virgo–KAGRA network at O4 design sensitivity and $f_{\rm low}=10\,{\rm Hz}$ for the third-generation (3G) network consisting of Einstein Telescope (ET) and Cosmic Explorer (CE). The detection threshold is set to $\rho_{\rm th}=10$ for both single detectors and networks. The detector duty cycle is assumed to be 100%.
+The cosmological framework assumes a flat $\Lambda{\rm CDM}$ model with $H_0 = 70\,{\rm km}\,{\rm s}^{-1}\,{\rm Mpc}^{-1}$, $\Omega_m = 0.3$, and $\Omega_\Lambda = 0.7$. Detection probabilities are computed via the [gwsnr](https://gwsnr.hemantaph.com) backend. Waveforms are generated using the IMRPhenomXPHM approximant. Detector responses are evaluated at a sampling frequency of $2048\,{\rm Hz}$ with a lower frequency cutoff of $f_{\rm low}=20\,{\rm Hz}$ for the LIGO–Virgo–KAGRA network at O4 design sensitivity.  The signal-to-noise ratio detection threshold is established at $\rho_{\rm th}=10$ for the network, assuming a complete 100% detector duty cycle.
 
 ### Lens and source Parameter Priors
 
 GW Source Parameter Priors are kept the same as in the section [GW Source Parameter Priors](https://ler.hemantaph.com/analytical_formulation_unlensed.html#gw-source-parameter-priors) of [Analytical Formulation for Gravitational Wave Event Rates](https://ler.hemantaph.com/analytical_formulation_unlensed.html). The lens prior distributions and parameter ranges used in the event-rate calculations are summarized in Table 1, Table 2 and Table 3. These choices follows common conventions such as GW population forllowing GWTC-3–motivated models for source and SDSS and SLACS observations of galaxy populations.
 
-#### Table 1: Redshifts
+Gravitational-wave source parameter priors align with those specified in the [unlensed framework](https://ler.hemantaph.com/analytical_formulation_unlensed.html). The lens prior distributions and parameter ranges employed in the event-rate calculations follow standard conventions based on GWTC-3 motivated source models alongside SDSS and SLACS galaxy observations. [Table 1](table1), [Table 2](table2), and [Table 3](table3) summarize these parameters. The source and lens redshifts are drawn from distributions conditioned on the occurrence of strong lensing. The optical depth $\tau(z_s)$ and the differential optical depth $d\tau/dz_L$ are pre-computed using the adopted EPL+Shear lens population and cosmology.
 
-The source and lens redshifts are drawn from distributions conditioned on the occurrence of strong lensing. The optical depth $\tau(z_s)$ and differential optical depth $d\tau/dz_L$ are pre-computed based on the adopted EPL+Shear lens population and cosmology.
+<div id="table1"></div>
+
+**Table 1: Prior distributions for source and lens redshifts.**
 
 | Parameter | Unit | Prior <br>Distribution | Range <br>[Min, Max] | Description |
 | :--- | :--- | :--- | :--- | :--- |
 | $z_s$ | - | $P(z_s\mid {\rm SL})$ <br>$\propto \tau(z_s)\,P(z_s)$ | [0, 10] | Source redshift <br>conditioned on ${\rm SL}$ |
 | $z_L$ | - | $P(z_L\mid z_s,{\rm SL})$ <br>$\propto \frac{d\tau}{dz_L}$ | [0, $z_s$] | Lens redshift <br>conditioned on $z_s$ and ${\rm SL}$ |
 
-#### Table 2: Lens parameter priors
+<br>
 
-Lens parameters priors, intrinsic or proposed, are listed below. Shape parameters assume a local flat coordinate system where the x-axis and the y-axis aligns with sky coordinates RA and Dec, respectively. 
+Lens parameter priors are listed below. Shape parameters assume a local flat coordinate system, with thin lens approximation, where the x-axis and the y-axis align with sky coordinates right ascension and declination respectively.
+
+<div id="table2"></div>
+
+**Table 2: Prior distributions for lens parameters**
 
 | Parameter | Unit | Prior <br>Distribution | Range <br>[Min, Max] | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| $\sigma$ | km/s | **Proposed prior** <br>Uniform <br><br>**Physical prior** <br>$P(\sigma\mid z_L)\propto$ <br>$\phi(\sigma, z_L)$ | [100, 400] | Velocity dispersion. <br><br>**Proposed prior :** <br> Used for importance sampling <br>and computing $\frac{d\tau}{dz_L}$. <br><br>**Physical prior :** <br>Based on the velocity <br>dispersion function $\phi(\sigma, z_L)$ <br>(Oguri et al. 2018; SDSS). <br>It is used to calculate <br>importance weights and <br>$d\tau/dz_L$, rather than for <br>direct sampling. |
+| $\sigma$ | km/s | **Proposed prior** <br>Uniform <br><br>**Physical prior** <br>$P(\sigma\mid z_L)\propto$ <br>$\phi(\sigma, z_L)$ | [100, 400] | Velocity dispersion. <br><br>**Proposed prior :** <br> Used for importance sampling <br>and computing $\frac{d\tau}{dz_L}$. <br><br>**Physical prior :** <br>Based on the velocity <br>dispersion function $\phi(\sigma, z_L)$ <br>(Oguri et al. 2018; SDSS+Illustris). <br>$\alpha$=0.94, $\beta$=1.85, <br>$\phi_*$=2.099x10$^{-2}$x(h/0.7)$^{3}$ Mpc$^{-3}$, <br>$\sigma_*$=113.78 km/s.<br>It is used to calculate <br>importance weights and <br>$d\tau/dz_L$, rather than for <br>direct sampling. |
 | $q$ | - | $P(q\mid \sigma)$ <br>Rayleigh <br>distribution | [0.2, 1.0] | Projected axis ratio, <br>conditioned on $\sigma$ <br>(Collett et al. 2015; SDSS). |
 | $\phi_{\rm rot}$ | rad | Uniform | [0, $\pi$] | Lens orientation angle, <br>measured counter-clockwise <br>from the x-axis. |
 | $\gamma$ | - | Normal | - | Density profile slope <br>(Sonnenfeld et al. 2024; SLACS). <br>Mean: 2.0, Std: 0.1 |
 | $\gamma_1, \gamma_2$ | - | Normal | - | External shear <br>(Collett et al. 2015; SDSS).<br> x and y components. <br>Mean: 0.0, Std: 0.05 |
 
-#### Table 3: Source position prior
+<br>
 
-Source position $\beta$ are defined in a local flat coordinate system with the x-axis aligned with RA and the y-axis aligned with Dec.
+Source positions $\beta$ are defined in a local flat coordinate system matching the orientation of the shape parameters.
+
+<div id="table3"></div>
+
+**Table 3: Prior distributions for source position**
 
 | Parameter | Unit | Prior Distribution | Description |
 | :--- | :--- | :--- | :--- |
 | $\beta_x$ | $\theta_{\rm E}$ | Uniform within<br> multi-image caustic | x-component <br>of source position from lens center |
 | $\beta_y$ | $\theta_{\rm E}$ | Uniform within<br> multi-image caustic | y-component <br>of source position from lens center |
 
+
 ### Plot Comparison for Lensed+Detectable, Lensed and Intrinsic Populations
 
-Selection effects in lensed gravitational-wave observations are illustrated by comparing the intrinsic BBH population to the subsets that satisfies the strong-lensing condition and the detection criteria. The former subset is referred to as the `lensed population`, while the latter is referred to as the `lensed+detectable population`. 
+Selection effects inherent in lensed gravitational-wave observations become apparent when comparing the intrinsic binary black hole population to the subsets satisfying the strong-lensing condition and the detection criteria. The first subset is denoted as the strongly lensed population, and the second is referred to as the detectable strongly lensed population.
+
+<div id="fig4"></div>
+
+<div align="center">
+  <img src="_static/Lensed_Events.png" alt="Corner plot comparing intrinsic and detectable BBH populations" width="700"/>
+</div>
+
+>**Figure 4:** Kernel density estimate corner plot with 10, 40, 68, and 95 percent contour levels comparing parameter distributions for simulated intrinsic events (green), strongly lensed events (SL, blue), and strongly lensed events that also satisfy the detection criterion (SL+obs, orange), shown for the source redshift $z_s$, lens redshift $z_L$, lens velocity dispersion $\sigma$, projected axis ratio $q$, and EPL density slope $\gamma$; other lens parameters are omitted because their distributions show no significant changes under the SL and SL+obs selections. The intrinsic source population follows the unlensed merger-rate model, adopting a Madau–Dickinson–like prescription with time-delay and metallicity effects (see [Figure 1](#fig1)) and standard GW-source priors as in the unlensed framework, while the intrinsic lens population is described by the velocity-dispersion function $\phi(\sigma,z_L)$ from Oguri et al. (2018), with SDSS-based local calibration and redshift evolution informed by Illustris (Torrey et al. 2015), and with axis ratios drawn from a $\sigma$-conditioned Rayleigh model (Collett 2015), together with the remaining shape priors in [Table 2](#table2). Strong lensing acts primarily through the optical depth and the lensing cross-section, set by the angular area of the multi-image caustic, so it preferentially selects higher-$z_s$ sources where the optical depth is larger and favors higher-$\sigma$ lenses because the cross-section scales steeply with Einstein radius, approximately as $\sigma^4$, while the conditional lens-redshift distribution peaks at intermediate redshifts $0<z_L<z_s$ where lensing efficiency is highest. The detectability requirement introduces a secondary selection layer. Once a source lies inside the multi-image caustic, the probability of inclusion in SL+obs increases with the number of images and their magnifications, and the largest magnifications typically arise for sources near caustic boundaries, particularly within the quad caustic, which can boost the SNR and extend the detection horizon, making larger quad-caustic regions relative to the double-caustic region more favorable. Consistent with these trends, the SL population shows a preference for steeper density profiles (higher $\gamma$) and rounder lenses (higher $q$) that generally yield larger caustic areas, whereas the SL+obs subset is biased toward lower redshift by SNR limitations and shows a mild shift toward more elliptical lenses (lower $q$) and slightly shallower slopes (lower $\gamma$) relative to SL because these configurations can increase the chances of highly magnified multi-image signals (including quads). The figure therefore demonstrates that strong lensing and detectability together imprint coupled selection effects on $(z_s,z_L,\sigma,q,\gamma)$ that must be modeled self-consistently when simulating observed lensed events and interpreting inferred source and lens properties, and an interactive illustration of how $(q,\phi,\gamma,\gamma_1,\gamma_2)$ reshape caustics and image magnifications is provided in the [example notebook](https://colab.research.google.com/drive/1X1XDID3riGJhMgVBUueq-W72wOiSG3r9?usp=sharing).
+
+
+### Biases in the inferred GW parameters
+
+When a strongly lensed gravitational wave is detected without being identified as such, parameter estimation proceeds using standard unlensed waveform templates. Since lensing magnifies the signal, the effective luminosity distance is artificially decreased. Under the assumption of standard cosmology, this shorter distance is interpreted as a lower source redshift. The source-frame masses, obtained by de-redshifting the detector-frame masses using this underestimated redshift, are consequently biased upward. This systematic shift is referred to as magnification bias.
+
+<div id="fig5"></div>
+
+<div align="center">
+  <img src="_static/mc_vs_zs.png" alt="Corner plot comparing inferred source redshift and chirp mass for lensed and unlensed events" width="450"/>
+</div>
+
+>**Figure 5:** Joint kernel density estimate (KDE) with 10, 40, 68, and 95 percent contour levels and marginal distributions comparing the inferred source redshift $z^*_s$ and inferred source-frame chirp mass ${\cal M}_c^{* \, {\rm src}}$ for the detectable unlensed (blue) and lensed (orange) populations. While the unlensed parameters reflect the true source properties, the inferred parameters for lensed events are systematically biased by magnification. The inferred redshift $z^*_s$ is derived from the effective luminosity distance $d_{L}^{\rm eff} = d_{L} / \sqrt{|\mu|}$, which subsequently affects the source-frame mass reconstruction via ${\cal M}_c^{* \, {\rm src}} = {\cal M}_c / (1+z^*_s)$, where ${\cal M}_c$ is the detector-frame chirp mass. Consequently, the lensed population exhibits a distinct shift toward higher inferred redshifts—though these still underestimate the true source redshifts of lensed events—and significantly higher inferred chirp masses relative to the unlensed population. This magnification bias demonstrates that unrecognized lensed events can contaminate the observed catalog by mimicking heavy binary black hole mergers and appearing as high-mass outliers; however, given the low expected rate of lensed events relative to unlensed ones ($\approx$ 1:3000 at O4 design sensitivity), this contamination is unlikely to significantly skew population studies or cosmological inferences even if unaccounted for.
+
+
+### Time Delays and Magnifications of Detected Lensed Events
+
+Strong gravitational lensing produces multiple copies of the same transient signal arriving at the detector at different times and with varying amplitudes. The distinct arrival times define a time delay between images, while the relative amplitudes yield a magnification ratio. Comparing these pairwise observables provides a simple discriminative tool for distinguishing genuine lensed image pairs from random coincidences of independent unlensed events.
+
+<div id="fig6"></div>
+
+<div align="center">
+  <img src="_static/dt_vs_dmu.png" alt="Corner plot comparing time delays and magnifications for detected lensed events" width="600"/>
+</div>
+
+>**Figure 6:** Joint kernel density estimate in the plane of pairwise time-delay difference $\log_{10}(\Delta t_{ij})$ and relative magnification $\log_{10}(|\mu_i/\mu_j|)$, comparing pairs of detected images from strongly lensed events (blue) to pairs of randomly chosen detected unlensed events (orange), with the corresponding marginal empirical cumulative distribution functions (CDFs) shown in the top and right panels. For lensed systems, $\Delta t_{ij}$ is the arrival-time delay between the $i$th and $j$th (detected) images of the same source (in days, with $i<j$), and $\mu_i$ and $\mu_j$ are the signed lensing magnifications; the ratio can be expressed in terms of effective luminosity distances as $|\mu_i / \mu_j|=(d^{\rm eff}_{L,i}/d^{\rm eff}_{L,j})^2$ with $d^{\rm eff}_{L}=d_L/\sqrt{|\mu|}$. The unlensed comparison represents the distribution of time separations and luminosity-distance ratios for unrelated (detected) events, rather than multiple images of a single source. The lensed population is concentrated at shorter delays and closer-to-unity magnification ratios, with 90% of pairs satisfying $\Delta t{ij}<15.09$ days (equivalently $\log_{10}(\Delta t_{ij})<1.179$) and $|\mu_i/\mu_j|<2.081$ (equivalently $\log_{10}(|\mu_i/\mu_j|)<0.318$), whereas the unlensed pairs exhibit a much broader distributions with 90% satisfying $\Delta t_{ij}<244.28$ days ($\log_{10}(\Delta t_{ij})<2.388$) and $|\mu_i/\mu_j|<17.282$ ($\log_{10}(|\mu_i/\mu_j|)<1.238$), including very small ratios arising from widely different distances. This separation motivates using $(\Delta t_{ij},|\mu_i/\mu_j|)$ as a diagnostic for lensing candidates identification, since pairs with small $\Delta t_{ij}$ and $|\mu_i/\mu_j|\simeq 1$ are more consistent with being multiple images of the same lensed event than with being unrelated detections ([Janquart et al. 2023](https://doi.org/10.1093/mnras/stad2909))
+
 
 ## Rate Estimates and Comparisons
 
-Estimated detectable annual merger rates for BBH (Pop I–II)  populations are listed below for 
+Estimated detectable annual merger rates for BBH (Pop I–II)  populations are listed below.
 
 | Detector <br>Configuration | Unlensed <br>Merger Rate (${\rm yr}^{-1}$) | Lensed <br>Merger Rate (${\rm yr}^{-1}$) | Ratio <br>Unlensed:Lensed |
 | :--- | :--- | :--- | :--- |

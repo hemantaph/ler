@@ -438,7 +438,14 @@ class LeR(LensGalaxyParameterDistribution):
             snr_type="optimal_snr",
             gwsnr_verbose=True,
             multiprocessing_verbose=True,
-            pdet_kwargs=None,
+            pdet_kwargs=dict(
+                snr_th=10.0,
+                snr_th_net=10.0,
+                pdet_type="boolean",
+                distribution_type="noncentral_chi2",
+                include_optimal_snr=True,
+                include_observed_snr=True,
+            ),
             # Settings for interpolation grid
             mtot_min=min_bh_mass * 2,
             mtot_max=(
