@@ -32,6 +32,30 @@ import pointpats
 MAX_RETRIES = 100
 MIN_MAGNIFICATION = 0.01
 
+# Global variable to hold shared data in worker processes
+# This avoids pickling large data for each work item - only once per worker
+_worker_shared_data = {}
+
+def _init_worker_multiprocessing(
+    n_min_images=2,
+    lensModelList=['EPL_NUMBA', 'SHEAR'],
+):
+    """
+    Initialize worker process with shared data.
+
+    This function is called once per worker process when the pool is created.
+    Shared data is stored in a global variable that workers can access.
+
+    Parameters
+    ----------
+    n_min_images : ``int``
+        Minimum number of images required for a valid lensing event.
+    lensModelList : ``list``
+        List of lens models to use. Default is ['EPL_NUMBA', 'SHEAR'].
+    """
+    global _worker_shared_data
+    _worker_shared_data["n_min_images"] = n_min_images
+    _worker_shared_data["lensModelList"] = lensModelList
 
 def _create_nan_result(iteration):
     """
@@ -61,7 +85,6 @@ def _create_nan_result(iteration):
         iteration,
     )
 
-
 def solve_lens_equation(lens_parameters):
     """
     Solve the lens equation to find image properties.
@@ -75,17 +98,15 @@ def solve_lens_equation(lens_parameters):
     ----------
     lens_parameters : ``numpy.ndarray``
         Array of lens configuration parameters with the following structure: \n
-        - [0]: n_min_images - minimum number of images required \n
-        - [1]: e1 - ellipticity component 1 \n
-        - [2]: e2 - ellipticity component 2 \n
-        - [3]: gamma - power-law slope of mass density \n
-        - [4]: gamma1 - external shear component 1 \n
-        - [5]: gamma2 - external shear component 2 \n
-        - [6]: zl - lens redshift \n
-        - [7]: zs - source redshift \n
-        - [8]: einstein_radius - Einstein radius (units: radians) \n
-        - [9]: iteration - iteration index for tracking \n
-        - [10:]: lens_model_list - lens model names (e.g., 'EPL_NUMBA', 'SHEAR') \n
+        - [0]: e1 - ellipticity component 1 \n
+        - [1]: e2 - ellipticity component 2 \n
+        - [2]: gamma - power-law slope of mass density \n
+        - [3]: gamma1 - external shear component 1 \n
+        - [4]: gamma2 - external shear component 2 \n
+        - [5]: zl - lens redshift \n
+        - [6]: zs - source redshift \n
+        - [7]: einstein_radius - Einstein radius (units: radians) \n
+        - [8]: iteration - iteration index for tracking \n
 
     Returns
     -------
@@ -112,25 +133,33 @@ def solve_lens_equation(lens_parameters):
 
     Examples
     --------
-    >>> from ler.image_properties.multiprocessing_routine import solve_lens_equation
+    >>> from ler.image_properties.multiprocessing_routine import solve_lens_equation, _init_worker_multiprocessing
     >>> import numpy as np
     >>> from multiprocessing import Pool
-    >>> lens_parameters1 = np.array([2, 0.024, -0.016, 1.89, 0.10, 0.09, 0.25, 0.94, 2.5e-06, 0, 'EPL_NUMBA', 'SHEAR'], dtype=object)
-    >>> lens_parameters2 = np.array([2, -0.040, -0.014, 2.00, 0.08, -0.01, 1.09, 2.55, 1.0e-06, 1, 'EPL_NUMBA', 'SHEAR'], dtype=object)
+    >>> lens_parameters1 = np.array([0.024, -0.016, 1.89, 0.10, 0.09, 0.25, 0.94, 2.5e-06, 0])
+    >>> lens_parameters2 = np.array([-0.040, -0.014, 2.00, 0.08, -0.01, 1.09, 2.55, 1.0e-06, 1])
     >>> input_arguments = np.vstack((lens_parameters1, lens_parameters2))
-    >>> with Pool(2) as p:
-    ...     result = p.map(solve_lens_equation, input_arguments)
-    >>> print(f"Number of images: {result[0][6]}")
+    >>> with Pool(
+    ...     processes=2, # Number of worker processes
+    ...     initializer=_init_worker_multiprocessing, # common
+    ...     initargs=(
+    ...         2, # n_min_images
+    ...         ['EPL_NUMBA', 'SHEAR'], # lensModelList
+    ...     ),
+    ... ) as pool:
+    ...     result = pool.map(solve_lens_equation, input_arguments)
     """
-    n_min_images = int(lens_parameters[0])
-    zl = lens_parameters[6]
-    zs = lens_parameters[7]
-    einstein_radius = lens_parameters[8]
-    iteration = lens_parameters[9]
+    n_min_images = _worker_shared_data["n_min_images"]
+    lensModelList = _worker_shared_data["lensModelList"]
+
+    zl = lens_parameters[5]
+    zs = lens_parameters[6]
+    einstein_radius = lens_parameters[7]
+    iteration = lens_parameters[8]
 
     # Initialize lens model for image position, magnification, and time-delay calculations
     lensModel = LensModel(
-        lens_model_list=lens_parameters[10:].tolist(), z_lens=zl, z_source=zs
+        lens_model_list=lensModelList, z_lens=zl, z_source=zs
     )
     lens_eq_solver = LensEquationSolver(lensModel)
 
@@ -139,15 +168,15 @@ def solve_lens_equation(lens_parameters):
     kwargs_lens = [
         {
             "theta_E": factor,
-            "e1": lens_parameters[1],
-            "e2": lens_parameters[2],
-            "gamma": lens_parameters[3],
+            "e1": lens_parameters[0],
+            "e2": lens_parameters[1],
+            "gamma": lens_parameters[2],
             "center_x": 0.0,
             "center_y": 0.0,
         },
         {
-            "gamma1": lens_parameters[4],
-            "gamma2": lens_parameters[5],
+            "gamma1": lens_parameters[3],
+            "gamma2": lens_parameters[4],
             "ra_0": 0,
             "dec_0": 0,
         },

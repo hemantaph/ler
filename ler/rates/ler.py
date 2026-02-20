@@ -293,18 +293,23 @@ class LeR(LensGalaxyParameterDistribution):
 
     def _parent_class_initialization(self, params=None, pdet_finder=None, verbose=True):
         """
-        Function to initialize the parent classes.
+        Helper function to initialize the parent classes.
 
         Parameters
         ----------
-        params : ``dict``
-            dictionary of parameters to initialize the parent classes
+        params : ``dict`` or ``None``
+            Dictionary of parameters to initialize the parent classes.
+        pdet_finder : ``callable`` or ``None``
+            Custom detection probability finder function.
+        verbose : ``bool``
+            If True, print initialization parameters. \n
+            default: True
         """
 
         def initialization():
             # initialization of parent class
             self._parent_initialization_helper(params=params)
-            # initialization self.snr and self.pdet_finder from GWSNR class
+            # initialization of self.pdet_finder from gwsnr or from custom function
             if not pdet_finder:
                 self.pdet_finder = self._gwsnr_initialization(params=params)
             else:
@@ -327,8 +332,8 @@ class LeR(LensGalaxyParameterDistribution):
 
         Parameters
         ----------
-        params : ``dict``
-            dictionary of parameters to initialize the parent classes
+        params : ``dict`` or ``None``
+            Dictionary of parameters to initialize the parent classes.
         """
 
         # initialization of LensGalaxyParameterDistribution class
@@ -352,7 +357,9 @@ class LeR(LensGalaxyParameterDistribution):
             n_max_images=4,
             time_window=365 * 24 * 3600 * 2,
             lens_model_list=["EPL_NUMBA", "SHEAR"],
-            effective_params_in_output=True,
+            include_effective_parameters=False,
+            multiprocessing_verbose=True,
+            include_redundant_parameters=False,
             # CBCSourceParameterDistribution class params
             event_type=self.event_type,
             source_priors=None,
@@ -386,8 +393,10 @@ class LeR(LensGalaxyParameterDistribution):
             n_min_images=input_params["n_min_images"],
             n_max_images=input_params["n_max_images"],
             time_window=input_params["time_window"],
-            effective_params_in_output=input_params["effective_params_in_output"],
+            include_effective_parameters=input_params["include_effective_parameters"],
             lens_model_list=input_params["lens_model_list"],
+            multiprocessing_verbose=input_params["multiprocessing_verbose"],
+            include_redundant_parameters=input_params["include_redundant_parameters"],
             # CBCSourceParameterDistribution class params
             event_type=input_params["event_type"],
             source_priors=input_params["source_priors"],
@@ -443,8 +452,8 @@ class LeR(LensGalaxyParameterDistribution):
                 snr_th_net=10.0,
                 pdet_type="boolean",
                 distribution_type="noncentral_chi2",
-                include_optimal_snr=True,
-                include_observed_snr=True,
+                include_optimal_snr=False,
+                include_observed_snr=False,
             ),
             # Settings for interpolation grid
             mtot_min=min_bh_mass * 2,
@@ -559,7 +568,7 @@ class LeR(LensGalaxyParameterDistribution):
 
     def _print_all_init_args(self):
         """
-        Function to print all the parameters.
+        Helper function to print all initialization parameters.
         """
 
         # print all relevant functions and sampler priors
@@ -657,8 +666,10 @@ class LeR(LensGalaxyParameterDistribution):
         print(f"    n_min_images = {self.ler_args['n_min_images']},")
         print(f"    n_max_images = {self.ler_args['n_max_images']},")
         print(f"    time_window = {self.ler_args['time_window']},")
-        print(f"    effective_params_in_output = {self.ler_args['effective_params_in_output']},")
+        print(f"    include_effective_parameters = {self.ler_args['include_effective_parameters']},")
         print(f"    lens_model_list = {self.ler_args['lens_model_list']},")
+        print(f"    multiprocessing_verbose = {self.ler_args['multiprocessing_verbose']},")
+        print(f"    include_redundant_parameters = {self.ler_args['include_redundant_parameters']},")
 
         if "pdet_args" in self.ler_args:
             print(
@@ -711,7 +722,7 @@ class LeR(LensGalaxyParameterDistribution):
         output_jsonfile=None,
     ):
         """
-        Generate unlensed GW source parameters.
+        Generate unlensed GW source parameters with detection probabilities.
 
         This function calls the unlensed_sampling_routine function to generate
         the parameters in batches. The generated parameters are stored in a JSON
@@ -757,9 +768,9 @@ class LeR(LensGalaxyParameterDistribution):
             +--------------------+--------------+--------------------------------------+
             | theta_jn           | rad          | inclination angle                    |
             +--------------------+--------------+--------------------------------------+
-            | a_1                |              | spin_1 of the compact binary         |
+            | a_1                |              | spin of the primary compact binary   |
             +--------------------+--------------+--------------------------------------+
-            | a_2                |              | spin_2 of the compact binary         |
+            | a_2                |              | spin of the secondary compact binary |
             +--------------------+--------------+--------------------------------------+
             | luminosity_distance| Mpc          | luminosity distance                  |
             +--------------------+--------------+--------------------------------------+
@@ -885,7 +896,50 @@ class LeR(LensGalaxyParameterDistribution):
         total_rate : ``float``
             Total unlensed rate (yr^-1).
         unlensed_param : ``dict``
-            Dictionary of unlensed GW source parameters of the detectable events.
+            dictionary of GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):\n
+            +--------------------+--------------+--------------------------------------+
+            | Parameter          | Units        | Description                          |
+            +====================+==============+======================================+
+            | zs                 |              | redshift of the source               |
+            +--------------------+--------------+--------------------------------------+
+            | geocent_time       | s            | GPS time of coalescence              |
+            +--------------------+--------------+--------------------------------------+
+            | ra                 | rad          | right ascension                      |
+            +--------------------+--------------+--------------------------------------+
+            | dec                | rad          | declination                          |
+            +--------------------+--------------+--------------------------------------+
+            | phase              | rad          | phase of GW at reference frequency   |
+            +--------------------+--------------+--------------------------------------+
+            | psi                | rad          | polarization angle                   |
+            +--------------------+--------------+--------------------------------------+
+            | theta_jn           | rad          | inclination angle                    |
+            +--------------------+--------------+--------------------------------------+
+            | a_1                |              | spin of the primary compact binary   |
+            +--------------------+--------------+--------------------------------------+
+            | a_2                |              | spin of the secondary compact binary |
+            +--------------------+--------------+--------------------------------------+
+            | luminosity_distance| Mpc          | luminosity distance                  |
+            +--------------------+--------------+--------------------------------------+
+            | mass_1_source      | Msun         | mass_1 of the compact binary         |
+            |                    |              | (source frame)                       |
+            +--------------------+--------------+--------------------------------------+
+            | mass_2_source      | Msun         | mass_2 of the compact binary         |
+            |                    |              | (source frame)                       |
+            +--------------------+--------------+--------------------------------------+
+            | mass_1             | Msun         | mass_1 of the compact binary         |
+            |                    |              | (detector frame)                     |
+            +--------------------+--------------+--------------------------------------+
+            | mass_2             | Msun         | mass_2 of the compact binary         |
+            |                    |              | (detector frame)                     |
+            +--------------------+--------------+--------------------------------------+
+            | pdet_L1            |              | pdet of L1                           |
+            +--------------------+--------------+--------------------------------------+
+            | pdet_H1            |              | pdet of H1                           |
+            +--------------------+--------------+--------------------------------------+
+            | pdet_V1            |              | pdet of V1                           |
+            +--------------------+--------------+--------------------------------------+
+            | pdet_net           |              | pdet of the network                  |
+            +--------------------+--------------+--------------------------------------+
 
         Examples
         --------
@@ -1075,6 +1129,9 @@ class LeR(LensGalaxyParameterDistribution):
         ----------
         total_rate : ``float``
             total rate.
+        pdet_type : ``str``
+            type of pdet condition used for calculating the rate. This is stored in the json file for record. \n
+            default pdet_type = 'boolean'. Other options is 'probability_distribution'.
         param_type : ``str``
             type of parameters.
             default param_type = 'unlensed'. Other options is 'lensed'.
@@ -1817,7 +1874,50 @@ class LeR(LensGalaxyParameterDistribution):
         Returns
         -------
         param_final : ``dict``
-            Dictionary of unlensed GW source parameters of detectable events.
+            dictionary of GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):\n
+            +--------------------+--------------+--------------------------------------+
+            | Parameter          | Units        | Description                          |
+            +====================+==============+======================================+
+            | zs                 |              | redshift of the source               |
+            +--------------------+--------------+--------------------------------------+
+            | geocent_time       | s            | GPS time of coalescence              |
+            +--------------------+--------------+--------------------------------------+
+            | ra                 | rad          | right ascension                      |
+            +--------------------+--------------+--------------------------------------+
+            | dec                | rad          | declination                          |
+            +--------------------+--------------+--------------------------------------+
+            | phase              | rad          | phase of GW at reference frequency   |
+            +--------------------+--------------+--------------------------------------+
+            | psi                | rad          | polarization angle                   |
+            +--------------------+--------------+--------------------------------------+
+            | theta_jn           | rad          | inclination angle                    |
+            +--------------------+--------------+--------------------------------------+
+            | a_1                |              | spin of the primary compact binary   |
+            +--------------------+--------------+--------------------------------------+
+            | a_2                |              | spin of the secondary compact binary |
+            +--------------------+--------------+--------------------------------------+
+            | luminosity_distance| Mpc          | luminosity distance                  |
+            +--------------------+--------------+--------------------------------------+
+            | mass_1_source      | Msun         | mass of the primary compact binary   |
+            |                    |              | (source frame)                       |
+            +--------------------+--------------+--------------------------------------+
+            | mass_2_source      | Msun         | mass of the secondary compact binary |
+            |                    |              | (source frame)                       |
+            +--------------------+--------------+--------------------------------------+
+            | mass_1             | Msun         | mass_1 of the compact binary         |
+            |                    |              | (detector frame)                     |
+            +--------------------+--------------+--------------------------------------+
+            | mass_2             | Msun         | mass_2 of the compact binary         |
+            |                    |              | (detector frame)                     |
+            +--------------------+--------------+--------------------------------------+
+            | pdet_L1            |              | pdet of L1                           |
+            +--------------------+--------------+--------------------------------------+
+            | pdet_H1            |              | pdet of H1                           |
+            +--------------------+--------------+--------------------------------------+
+            | pdet_V1            |              | pdet of V1                           |
+            +--------------------+--------------+--------------------------------------+
+            | pdet_net           |              | pdet of the network                  |
+            +--------------------+--------------+--------------------------------------+
 
         Examples
         --------
@@ -2233,6 +2333,26 @@ class LeR(LensGalaxyParameterDistribution):
         stopping_criteria,
         initial_continue_condition=True,
     ):
+        """
+        Helper function to check if sampling should continue.
+
+        Parameters
+        ----------
+        size_to_collect : ``int``
+            Target number of detectable events.
+        param_dict : ``dict``
+            Dictionary containing metadata (detectable_events, total_rate).
+        stopping_criteria : ``dict`` or ``None``
+            Stopping criteria configuration.
+        initial_continue_condition : ``bool``
+            Initial value for continue condition. \n
+            default: True
+
+        Returns
+        -------
+        continue_condition : ``bool``
+            Whether to continue sampling.
+        """
 
         continue_condition = initial_continue_condition
         already_collected_size = param_dict["detectable_events"][-1]
@@ -2297,7 +2417,7 @@ class LeR(LensGalaxyParameterDistribution):
             total rate (yr^-1).
         """
 
-        print(f"\n trmming final result to size={size}")
+        print(f"\n trimming final result to size={size}")
         param_final = get_param_from_json(output_path)
         # randomly select size number of samples
         len_ = len(list(param_final.values())[0])

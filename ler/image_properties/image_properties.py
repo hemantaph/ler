@@ -19,25 +19,28 @@ Copyright (C) 2026 Phurailatpam Hemanta Kumar. Distributed under MIT License.
 """
 
 import warnings
+
 warnings.filterwarnings("ignore")
 import logging
-logging.getLogger('numexpr.utils').setLevel(logging.ERROR)
+
+logging.getLogger("numexpr.utils").setLevel(logging.ERROR)
 # for multiprocessing
-from multiprocessing import Pool
+import multiprocessing as mp
 from tqdm import tqdm
 
 import numpy as np
 from numba import njit
 
 from astropy.cosmology import LambdaCDM
+
 cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
 # the following .py file will be called if they are not given in the class initialization
-from .multiprocessing_routine import solve_lens_equation
+from .multiprocessing_routine import solve_lens_equation, _init_worker_multiprocessing
 from ..lens_galaxy_population.lens_functions import phi_q2_ellipticity
 
 
-class ImageProperties():
+class ImageProperties:
     """
     Class to compute image properties of strongly lensed gravitational wave events.
 
@@ -65,7 +68,7 @@ class ImageProperties():
     time_window : ``float``
         Time window for lensed events from min(geocent_time) (units: seconds). \n
         default: 365*24*3600*2 (2 years)
-    effective_params_in_output : ``bool``
+    include_effective_parameters : ``bool``
         Whether to include effective parameters (effective_phase, effective_ra, effective_dec) in the output. \n
         default: True
     lens_model_list : ``list``
@@ -82,6 +85,12 @@ class ImageProperties():
         If True (and spin_zero=False), sample precessing spin parameters. \n
         If False (and spin_zero=False), sample aligned/anti-aligned spins. \n
         default: False
+    multiprocessing_verbose : ``bool``
+        If True, shows a progress bar for multiprocessing tasks. \n
+        default: True
+    include_redundant_parameters : ``bool``
+        If True, removes redundant parameters (e.g., theta_E, n_images, mass_1, mass_2, luminosity_distance) from output to save memory. \n
+    
 
     Examples
     --------
@@ -101,7 +110,7 @@ class ImageProperties():
     ... )
     >>> result = ip.image_properties(lens_parameters)
     >>> print(result.keys())
-    
+
 
     Instance Methods
     ----------
@@ -117,46 +126,53 @@ class ImageProperties():
     Instance Attributes
     ----------
     ImageProperties has the following attributes: \n
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-    | Attribute                                           | Type                      | Unit     | Description                                    |
-    +=====================================================+===========================+==========+================================================+
-    | :attr:`~npool`                                      | ``int``                   |          | Number of multiprocessing workers              |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-    | :attr:`~n_min_images`                               | ``int``                   |          | Minimum number of images required              |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-    | :attr:`~n_max_images`                               | ``int``                   |          | Maximum number of images per event             |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-    | :attr:`~time_window`                                | ``float``                 | s        | Time window for lensed events                  |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-    | :attr:`~effective_params_in_output`                 | ``bool``                  |          | To include effective parameters in output      |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-    | :attr:`~lens_model_list`                            | ``list``                  |          | List of lens models                            |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-    | :attr:`~cosmo`                                      | ``astropy.cosmology``     |          | Cosmology for calculations                     |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-    | :attr:`~spin_zero`                                  | ``bool``                  |          | Flag for zero spin assumption                  |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-    | :attr:`~spin_precession`                            | ``bool``                  |          | Flag for spin precession                       |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-    | :attr:`~pdet_finder`                                | ``callable``              |          | Probability of detection calculator            |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-    | :attr:`~pdet_finder_output_keys`                    | ``list``                  |          | Keys for probability of detection outputs      |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+    | Attribute                                           | Type                      | Unit     | Description                                                      |
+    +=====================================================+===========================+==========+==================================================================+
+    | :attr:`~npool`                                      | ``int``                   |          | Number of multiprocessing workers                                |
+    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+    | :attr:`~multiprocessing_verbose`                    | ``bool``                  |          | If True, shows a progress bar for multiprocessing tasks          |
+    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+    | :attr:`~n_min_images`                               | ``int``                   |          | Minimum number of images required                                |
+    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+    | :attr:`~n_max_images`                               | ``int``                   |          | Maximum number of images per event                               |
+    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+    | :attr:`~time_window`                                | ``float``                 | s        | Time window for lensed events                                    |
+    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+    | :attr:`~include_effective_parameters`               | ``bool``                  |          | To include effective parameters in output                        |
+    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+    | :attr:`~include_redundant_parameters`                | ``bool``                  |          | If True, removes redundant parameters from output to save memory |
+    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+    | :attr:`~lens_model_list`                            | ``list``                  |          | List of lens models                                              |
+    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+    | :attr:`~cosmo`                                      | ``astropy.cosmology``     |          | Cosmology for calculations                                       |
+    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+    | :attr:`~spin_zero`                                  | ``bool``                  |          | Flag for zero spin assumption                                    |
+    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+    | :attr:`~spin_precession`                            | ``bool``                  |          | Flag for spin precession                                         |
+    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+    | :attr:`~pdet_finder`                                | ``callable``              |          | Probability of detection calculator                              |
+    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+    | :attr:`~pdet_finder_output_keys`                    | ``list``                  |          | Keys for probability of detection outputs                        |
+    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
 
     """
 
-    def __init__(self, 
-                 npool=4,
-                 n_min_images=2, 
-                 n_max_images=4,
-                 lens_model_list=['EPL_NUMBA', 'SHEAR'],
-                 cosmology=None,
-                 time_window=365*24*3600*2, # 2 years
-                 spin_zero=True,
-                 spin_precession=False,
-                 pdet_finder=None,
-                 effective_params_in_output=True,
-        ):
+    def __init__(
+        self,
+        npool=4,
+        n_min_images=2,
+        n_max_images=4,
+        lens_model_list=["EPL_NUMBA", "SHEAR"],
+        cosmology=None,
+        time_window=365 * 24 * 3600 * 2,  # 2 years
+        spin_zero=True,
+        spin_precession=False,
+        pdet_finder=None,
+        include_effective_parameters=False,
+        multiprocessing_verbose=True,
+        include_redundant_parameters=False,
+    ):
 
         self.npool = npool
         self.n_min_images = n_min_images
@@ -164,11 +180,13 @@ class ImageProperties():
         self.lens_model_list = lens_model_list  # list of lens models
         self.spin_zero = spin_zero
         self.spin_precession = spin_precession
+        self.multiprocessing_verbose = multiprocessing_verbose
         self.time_window = time_window
         self.cosmo = cosmology if cosmology else cosmo
         self.pdet_finder = pdet_finder
         self.pdet_finder_output_keys = None
-        self.effective_params_in_output = effective_params_in_output
+        self.include_effective_parameters = include_effective_parameters
+        self.include_redundant_parameters = include_redundant_parameters
 
     def image_properties(self, lens_parameters):
         """
@@ -228,7 +246,7 @@ class ImageProperties():
             +------------------------------+-----------+-------------------------------------------------------+
             | y_source                     | radian    | y-coordinate (Dec-like axis) of the source            |
             +------------------------------+-----------+-------------------------------------------------------+
-            
+
         """
 
         zs = lens_parameters["zs"]
@@ -243,6 +261,9 @@ class ImageProperties():
 
         gamma = lens_parameters["gamma"]
         einstein_radius = lens_parameters["theta_E"]
+        if not self.include_redundant_parameters:
+            del lens_parameters["theta_E"]
+
         # Create the lens model list (note: can be a different lens model for different samples)
         lensModelList = np.array(self.lens_model_list) * np.ones(
             (size, len(self.lens_model_list)), dtype=object
@@ -251,22 +272,34 @@ class ImageProperties():
 
         # get image properties (with Multiprocessing)
         iterations = np.arange(size)
-        input_arguments = np.array(
-            [
-                min_img_arr,
-                e1,
-                e2,
-                gamma,
-                gamma1,
-                gamma2,
-                zl,
-                zs,
-                einstein_radius,
-                iterations,
-            ],
-            dtype=object,
-        ).T
-        input_arguments = np.concatenate((input_arguments, lensModelList), axis=1)
+        input_arguments = [
+            (
+                e1_i,
+                e2_i,
+                gamma_i,
+                gamma1_i,
+                gamma2_i,
+                zl_i,
+                zs_i,
+                einstein_radius_i,
+                iterations_i,
+            )
+            for (
+                e1_i,
+                e2_i,
+                gamma_i,
+                gamma1_i,
+                gamma2_i,
+                zl_i,
+                zs_i,
+                einstein_radius_i,
+                iterations_i,
+            ) in zip(e1, e2, gamma, gamma1, gamma2, zl, zs, einstein_radius, iterations)
+        ]
+
+        # input_arguments = np.concatenate((input_arguments, lensModelList), axis=1)
+
+        # For output
         # Initialize the image positions and lens argument list here.
         x0_image_positions = np.ones((size, self.n_max_images)) * np.nan
         x1_image_positions = np.ones((size, self.n_max_images)) * np.nan
@@ -279,67 +312,124 @@ class ImageProperties():
 
         # Solve the lens equation
         print("solving lens equations...")
-        if self.n_min_images == 2:
-            solve_lens_equation_ = solve_lens_equation
-        elif self.n_min_images > 2:
-            print("n_min_images > 2 is not supported yet")
-            raise NotImplementedError
-        else:
-            raise ValueError("n_min_images should be greater than 1")
-        with Pool(processes=self.npool) as pool:
-            # call the same function with different data in parallel
-            # imap->retain order in the list, while map->doesn't
-            for result in tqdm(
-                pool.imap_unordered(solve_lens_equation_, input_arguments),
-                total=len(input_arguments),
-                ncols=100,
-                disable=False,
-            ):
-                (
-                    x_source_i,
-                    y_source_i,
-                    x0_image_position_i,
-                    x1_image_position_i,
-                    magnifications_i,
-                    time_delays_i,
-                    n_image_i,
-                    determinant_i,
-                    trace_i,
-                    iter_i,
-                ) = result
+        # if self.n_min_images == 2:
+        #     solve_lens_equation_ = solve_lens_equation
+        # elif self.n_min_images > 2:
+        #     print("n_min_images > 2 is not supported yet")
+        #     raise NotImplementedError
+        # else:
+        #     raise ValueError("n_min_images should be greater than 1")
 
-                n_image_i = min(n_image_i, self.n_max_images)
-                n_images[iter_i] = n_image_i
-                x0_image_position = np.ones(self.n_max_images) * np.nan
-                x1_image_position = np.ones(self.n_max_images) * np.nan
-                x0_image_position[:n_image_i] = x0_image_position_i[:n_image_i]
-                x1_image_position[:n_image_i] = x1_image_position_i[:n_image_i]
-                x0_image_positions[
-                    iter_i
-                ] = x0_image_position  # shape = (size, n_max_images)
-                x1_image_positions[
-                    iter_i
-                ] = x1_image_position  # shape = (size, n_max_images)
-                magnification = np.ones(self.n_max_images) * np.nan
-                time_delay = np.ones(self.n_max_images) * np.nan
-                determinant = np.ones(self.n_max_images) * np.nan
-                trace = np.ones(self.n_max_images) * np.nan
-                magnification[:n_image_i] = magnifications_i[:n_image_i]
-                time_delay[:n_image_i] = time_delays_i[:n_image_i]
-                determinant[:n_image_i] = determinant_i[:n_image_i]
-                trace[:n_image_i] = trace_i[:n_image_i]
-                # Add the magnifications, time delays, determinants, and traces to their respective arrays
-                magnifications[iter_i] = magnification
-                time_delays[iter_i] = time_delay
-                determinants[iter_i] = determinant
-                traces[iter_i] = trace
-                x_source[iter_i] = x_source_i
-                y_source[iter_i] = y_source_i
+        self._multiprocessing_error()
+        with mp.Pool(
+            processes=self.npool,
+            initializer=_init_worker_multiprocessing,
+            initargs=(
+                self.n_min_images,
+                self.lens_model_list,
+            ),
+        ) as pool:
+            if self.multiprocessing_verbose:
+                for result in tqdm(
+                    pool.imap_unordered(
+                        solve_lens_equation, 
+                        input_arguments
+                    ),
+                    total=len(input_arguments),
+                    ncols=100,
+                ):
+                    (
+                        x_source_i,
+                        y_source_i,
+                        x0_image_position_i,
+                        x1_image_position_i,
+                        magnifications_i,
+                        time_delays_i,
+                        n_image_i,
+                        determinant_i,
+                        trace_i,
+                        iter_i,
+                    ) = result
+
+                    n_image_i = min(n_image_i, self.n_max_images)
+                    n_images[iter_i] = n_image_i
+                    x0_image_position = np.ones(self.n_max_images) * np.nan
+                    x1_image_position = np.ones(self.n_max_images) * np.nan
+                    x0_image_position[:n_image_i] = x0_image_position_i[:n_image_i]
+                    x1_image_position[:n_image_i] = x1_image_position_i[:n_image_i]
+                    x0_image_positions[iter_i] = (
+                        x0_image_position  # shape = (size, n_max_images)
+                    )
+                    x1_image_positions[iter_i] = (
+                        x1_image_position  # shape = (size, n_max_images)
+                    )
+                    magnification = np.ones(self.n_max_images) * np.nan
+                    time_delay = np.ones(self.n_max_images) * np.nan
+                    determinant = np.ones(self.n_max_images) * np.nan
+                    trace = np.ones(self.n_max_images) * np.nan
+                    magnification[:n_image_i] = magnifications_i[:n_image_i]
+                    time_delay[:n_image_i] = time_delays_i[:n_image_i]
+                    determinant[:n_image_i] = determinant_i[:n_image_i]
+                    trace[:n_image_i] = trace_i[:n_image_i]
+                    # Add the magnifications, time delays, determinants, and traces to their respective arrays
+                    magnifications[iter_i] = magnification
+                    time_delays[iter_i] = time_delay
+                    determinants[iter_i] = determinant
+                    traces[iter_i] = trace
+                    x_source[iter_i] = x_source_i
+                    y_source[iter_i] = y_source_i
+            else:
+                for result in pool.map(
+                    solve_lens_equation, 
+                    input_arguments
+                ):
+                    (
+                        x_source_i,
+                        y_source_i,
+                        x0_image_position_i,
+                        x1_image_position_i,
+                        magnifications_i,
+                        time_delays_i,
+                        n_image_i,
+                        determinant_i,
+                        trace_i,
+                        iter_i,
+                    ) = result
+
+                    n_image_i = min(n_image_i, self.n_max_images)
+                    n_images[iter_i] = n_image_i
+                    x0_image_position = np.ones(self.n_max_images) * np.nan
+                    x1_image_position = np.ones(self.n_max_images) * np.nan
+                    x0_image_position[:n_image_i] = x0_image_position_i[:n_image_i]
+                    x1_image_position[:n_image_i] = x1_image_position_i[:n_image_i]
+                    x0_image_positions[iter_i] = (
+                        x0_image_position  # shape = (size, n_max_images)
+                    )
+                    x1_image_positions[iter_i] = (
+                        x1_image_position  # shape = (size, n_max_images)
+                    )
+                    magnification = np.ones(self.n_max_images) * np.nan
+                    time_delay = np.ones(self.n_max_images) * np.nan
+                    determinant = np.ones(self.n_max_images) * np.nan
+                    trace = np.ones(self.n_max_images) * np.nan
+                    magnification[:n_image_i] = magnifications_i[:n_image_i]
+                    time_delay[:n_image_i] = time_delays_i[:n_image_i]
+                    determinant[:n_image_i] = determinant_i[:n_image_i]
+                    trace[:n_image_i] = trace_i[:n_image_i]
+                    # Add the magnifications, time delays, determinants, and traces to their respective arrays
+                    magnifications[iter_i] = magnification
+                    time_delays[iter_i] = time_delay
+                    determinants[iter_i] = determinant
+                    traces[iter_i] = trace
+                    x_source[iter_i] = x_source_i
+                    y_source[iter_i] = y_source_i
 
         # time-delays: convert to positive values
         # time-delays will be relative to the first arrived signal of an lensed event
-        time_delays = time_delays - np.array([np.sort(time_delays, axis=1)[:, 0]]).T # this is alright if time delays are already sorted
-        
+        time_delays = (
+            time_delays - np.array([np.sort(time_delays, axis=1)[:, 0]]).T
+        )  # this is alright if time delays are already sorted
+
         # image type classification (morse phase)
         image_type = np.zeros((size, self.n_max_images))
         for i in range(size):
@@ -363,11 +453,13 @@ class ImageProperties():
         }
 
         # sorting wrt time delays
-        idx_sort = np.argsort(time_delays, axis=1) # sort each row
+        idx_sort = np.argsort(time_delays, axis=1)  # sort each row
         # idx_sort has the shape (size, n_max_images)
         for key, value in image_parameters.items():
             # sort each row
-            image_parameters[key] = np.array([value[i,idx_sort[i]] for i in range(size)])
+            image_parameters[key] = np.array(
+                [value[i, idx_sort[i]] for i in range(size)]
+            )
         lens_parameters.update(image_parameters)
         lens_parameters["n_images"] = n_images
         lens_parameters["x_source"] = x_source
@@ -375,7 +467,30 @@ class ImageProperties():
 
         return lens_parameters
 
-    def get_lensed_snrs(self, lensed_param, pdet_finder=None, effective_params_in_output=False):
+    def _multiprocessing_error(self):
+        """
+        Check multiprocessing guard and raise error if not in main process.
+
+        Raises
+        ------
+        RuntimeError
+            If called from a subprocess instead of the main process, indicating
+            the code is not properly wrapped in ``if __name__ == "__main__":``.
+        """
+        # to access multi-cores instead of multithreading
+        if mp.current_process().name != "MainProcess":
+            print(
+                "\n\n[ERROR] This multiprocessing code must be run under 'if __name__ == \"__main__\":'.\n"
+                "Please wrap your script entry point in this guard.\n"
+                "See: https://docs.python.org/3/library/multiprocessing.html#multiprocessing-programming\n"
+            )
+            raise RuntimeError(
+                "\nMultiprocessing code must be run under 'if __name__ == \"__main__\":'.\n\n"
+            )
+
+    def get_lensed_snrs(
+        self, lensed_param, pdet_finder=None, include_effective_parameters=False
+    ):
         """
         Compute detection probability for each lensed image.
 
@@ -425,7 +540,7 @@ class ImageProperties():
 
         pdet_finder : ``callable``
             Function that computes detection probability given GW parameters.
-        effective_params_in_output : ``bool``
+        include_effective_parameters : ``bool``
             If True, includes effective parameters in output lensed_param. \n
 
         Returns
@@ -437,7 +552,7 @@ class ImageProperties():
         lensed_param : ``dict``
             Updated dictionary with effective parameters shown below: \n
             +----------------------------------+-----------+------------------------------------------------|
-            | Parameter                        | Units     | Description                      
+            | Parameter                        | Units     | Description
             +==================================+===========+================================================+
             | effective_luminosity_distance    | Mpc       | magnification-corrected distance               |
             |                                  |           | luminosity_distance / sqrt(|magnifications_i|) |
@@ -456,12 +571,20 @@ class ImageProperties():
             +----------------------------------+-----------+------------------------------------------------+
         """
 
-        effective_params_in_output = effective_params_in_output or self.effective_params_in_output
+        include_effective_parameters = (
+            include_effective_parameters or self.include_effective_parameters
+        )
+
+        if not self.include_redundant_parameters:
+            # remove redundant parameters to save memory
+            del lensed_param["n_images"], lensed_param["mass_1_source"], lensed_param["mass_2_source"]
 
         # needed to calculate effective luminosity distance and effective time delay
         magnifications = lensed_param["magnifications"]
         time_delays = lensed_param["time_delays"]
-        image_type = lensed_param["image_type"].copy()  # copy to avoid modifying original
+        image_type = lensed_param[
+            "image_type"
+        ].copy()  # copy to avoid modifying original
         x_source = lensed_param["x_source"]
         y_source = lensed_param["y_source"]
         x0_image_positions = lensed_param["x0_image_positions"]
@@ -470,11 +593,27 @@ class ImageProperties():
         size = len(magnifications)
 
         # image type to morse phase
-        image_type[image_type==1.] = 0.
-        image_type[image_type==2.] = np.pi/2
-        image_type[image_type==3.] = np.pi
+        image_type[image_type == 1.0] = 0.0
+        image_type[image_type == 2.0] = np.pi / 2
+        image_type[image_type == 3.0] = np.pi
         # Get the binary parameters
-        mass_1, mass_2, luminosity_distance, theta_jn, psi, ra, dec, phase, geocent_time, a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl = (
+        (
+            mass_1,
+            mass_2,
+            luminosity_distance,
+            theta_jn,
+            psi,
+            ra,
+            dec,
+            phase,
+            geocent_time,
+            a_1,
+            a_2,
+            tilt_1,
+            tilt_2,
+            phi_12,
+            phi_jl,
+        ) = (
             lensed_param["mass_1"],
             lensed_param["mass_2"],
             lensed_param["luminosity_distance"],
@@ -500,49 +639,66 @@ class ImageProperties():
                     lensed_param["phi_12"],
                     lensed_param["phi_jl"],
                 )
-
-        # checking pdet_finder output keys
-        result_dict = self._check_pdet_finder_output_keys(size, lensed_param, pdet_finder);
         
+        # checking pdet_finder output keys
+        result_dict = self._check_pdet_finder_output_keys(
+            size, lensed_param, pdet_finder
+        )
+
+        if not self.include_redundant_parameters:
+            del lensed_param["luminosity_distance"]
+
         # Get the optimal signal to noise ratios for each image
         # iterate over the image type (column)
         geocent_time_min = np.min(geocent_time)
         geocent_time_max = geocent_time_min + self.time_window
-    
+
+        pdet_finder_output_keys = self.pdet_finder_output_keys.copy()  # copy to avoid modifying original
         for i in range(self.n_max_images):
-            
+
             # get the effective time for each image type
-            effective_geocent_time = geocent_time + time_delays[:, i] 
-                
+            effective_geocent_time = geocent_time + time_delays[:, i]
+
             # choose only the events that are within the time range and also not nan
-            idx = (effective_geocent_time <= geocent_time_max) & (effective_geocent_time >= geocent_time_min)
+            idx = (effective_geocent_time <= geocent_time_max) & (
+                effective_geocent_time >= geocent_time_min
+            )
 
             # get the effective luminosity distance for each image type
-            effective_luminosity_distance = luminosity_distance / np.sqrt(np.abs(magnifications[:, i]))
+            effective_luminosity_distance = luminosity_distance / np.sqrt(
+                np.abs(magnifications[:, i])
+            )
 
             # get the effective phase for each image type
             # morse phase correction
-            effective_phase = phase - image_type[:, i] 
+            effective_phase = phase - image_type[:, i]
 
             # get the effective sky location for each image type
             # flat sky location assumption
             effective_dec = dec + (x1_image_positions[:, i] - y_source)
             effective_ra = ra + (x0_image_positions[:, i] - x_source) / np.cos(dec)
-            
+
             # check for nan values
-            idx = idx & ~np.isnan(effective_luminosity_distance) & ~np.isnan(effective_geocent_time) & ~np.isnan(effective_phase) & ~np.isnan(effective_ra) & ~np.isnan(effective_dec)
+            idx = (
+                idx
+                & ~np.isnan(effective_luminosity_distance)
+                & ~np.isnan(effective_geocent_time)
+                & ~np.isnan(effective_phase)
+                & ~np.isnan(effective_ra)
+                & ~np.isnan(effective_dec)
+            )
 
             # Each image has their own effective luminosity distance and effective geocent time
             if sum(idx) != 0:
                 # Returns a dictionary
                 pdet = pdet_finder(
-                    gw_param_dict= dict(
+                    gw_param_dict=dict(
                         mass_1=mass_1[idx],
                         mass_2=mass_2[idx],
                         luminosity_distance=effective_luminosity_distance[idx],
                         theta_jn=theta_jn[idx],
                         psi=psi[idx],
-                        phase= effective_phase[idx],
+                        phase=effective_phase[idx],
                         geocent_time=effective_geocent_time[idx],
                         ra=effective_ra[idx],
                         dec=effective_dec[idx],
@@ -555,13 +711,50 @@ class ImageProperties():
                     ),
                 )
 
-                for keys in self.pdet_finder_output_keys:
+                for keys in pdet_finder_output_keys:
                     result_dict[keys][idx, i] = pdet[keys]
 
-        if effective_params_in_output:
+
+        if include_effective_parameters:
             lensed_param = self.produce_effective_params(lensed_param)
 
         return result_dict, lensed_param
+
+    def recover_redundant_parameters(self, lensed_param):
+        """
+        Recover redundant parameters in lensed_param, i.e. theta_E, n_images, mass_1, mass_2, luminosity_distance.
+        """
+
+        zs = lensed_param["zs"]
+        # find theta_E 
+        if "theta_E" not in lensed_param:
+            lensed_param["theta_E"] = self.compute_einstein_radii(
+                lensed_param["sigma"], 
+                lensed_param["zl"], 
+                zs
+            )
+        else:
+            print("theta_E is already in lensed_param, skipping computation of theta_E")
+
+        if "n_images" not in lensed_param:
+            x0_image_positions = lensed_param["x0_image_positions"]
+            n_images = np.sum(~np.isnan(x0_image_positions), axis=1)
+            lensed_param["n_images"] = n_images.astype(int)
+        else:
+            print("n_images is already in lensed_param, skipping computation of n_images")
+
+        if "mass_1_source" not in lensed_param or "mass_2_source" not in lensed_param:
+            lensed_param["mass_1_source"] = lensed_param["mass_1"] / (1 + zs)
+            lensed_param["mass_2_source"] = lensed_param["mass_2"] / (1 + zs)
+        else:
+            print("mass_1_source and mass_2_source are already in lensed_param, skipping computation of source frame masses")
+
+        if "luminosity_distance" not in lensed_param:
+            lensed_param["luminosity_distance"] = self.luminosity_distance(zs)
+        else:
+            print("luminosity_distance is already in lensed_param, skipping computation of luminosity_distance")
+
+        return lensed_param
 
     def produce_effective_params(self, lensed_param):
         """
@@ -580,7 +773,7 @@ class ImageProperties():
         lensed_param : ``dict``
             Updated dictionary with effective parameters shown below: \n
             +----------------------------------+-----------+------------------------------------------------|
-            | Parameter                        | Units     | Description                      
+            | Parameter                        | Units     | Description
             +==================================+===========+================================================+
             | effective_luminosity_distance    | Mpc       | magnification-corrected distance               |
             |                                  |           | luminosity_distance / sqrt(|magnifications_i|) |
@@ -602,7 +795,9 @@ class ImageProperties():
         # needed to calculate effective luminosity distance and effective time delay
         magnifications = lensed_param["magnifications"]
         time_delays = lensed_param["time_delays"]
-        image_type = lensed_param["image_type"].copy()  # copy to avoid modifying original
+        image_type = lensed_param[
+            "image_type"
+        ].copy()  # copy to avoid modifying original
         x_source = lensed_param["x_source"]
         y_source = lensed_param["y_source"]
         x0_image_positions = lensed_param["x0_image_positions"]
@@ -611,23 +806,33 @@ class ImageProperties():
         dec = lensed_param["dec"]
 
         # Update lensed_param with effective values only if they weren't already present
-        lensed_param["effective_luminosity_distance"] = lensed_param["luminosity_distance"][:, np.newaxis] / np.sqrt(np.abs(magnifications))
-        lensed_param["effective_geocent_time"] = lensed_param["geocent_time"][:, np.newaxis] + time_delays
+        lensed_param["effective_luminosity_distance"] = lensed_param[
+            "luminosity_distance"
+        ][:, np.newaxis] / np.sqrt(np.abs(magnifications))
+        lensed_param["effective_geocent_time"] = (
+            lensed_param["geocent_time"][:, np.newaxis] + time_delays
+        )
         # image type to morse phase
-        image_type[image_type==1.] = 0.
-        image_type[image_type==2.] = np.pi/2.
-        image_type[image_type==3.] = np.pi
-        lensed_param["effective_phase"] = lensed_param["phase"][:, np.newaxis] - image_type
+        image_type[image_type == 1.0] = 0.0
+        image_type[image_type == 2.0] = np.pi / 2.0
+        image_type[image_type == 3.0] = np.pi
+        lensed_param["effective_phase"] = (
+            lensed_param["phase"][:, np.newaxis] - image_type
+        )
         # flat sky location assumption
-        lensed_param["effective_ra"] = ra[:, np.newaxis] + (x0_image_positions - x_source[:, np.newaxis]) / np.cos(dec[:, np.newaxis])
-        lensed_param["effective_dec"] = dec[:, np.newaxis] + (x1_image_positions - y_source[:, np.newaxis])
+        lensed_param["effective_ra"] = ra[:, np.newaxis] + (
+            x0_image_positions - x_source[:, np.newaxis]
+        ) / np.cos(dec[:, np.newaxis])
+        lensed_param["effective_dec"] = dec[:, np.newaxis] + (
+            x1_image_positions - y_source[:, np.newaxis]
+        )
 
         return lensed_param
 
     def _check_pdet_finder_output_keys(self, size, lensed_param, pdet_finder):
         """
         Helper function to check and set pdet_finder output keys.
-        
+
         Parameters
         ----------
         size : ``int``
@@ -643,6 +848,9 @@ class ImageProperties():
             Initialized dictionary to hold pdet_finder outputs.
         """
 
+        # setting up result dictionary
+        result_dict = dict()
+
         # checking pdet_finder
         self.pdet_finder = pdet_finder if pdet_finder else self.pdet_finder
         if self.pdet_finder is None:
@@ -652,15 +860,15 @@ class ImageProperties():
             # setting up pdet dictionary
             # get the keys of the output dictionary of pdet_finder
             gw_param_dict = dict(
-                mass_1 = lensed_param["mass_1"][:1],
-                mass_2 = lensed_param["mass_2"][:1],
-                luminosity_distance = lensed_param["luminosity_distance"][:1],
-                theta_jn = lensed_param["theta_jn"][:1],
-                psi = lensed_param["psi"][:1],
-                phase = lensed_param["phase"][:1],
-                geocent_time = lensed_param["geocent_time"][:1],
-                ra = lensed_param["ra"][:1],
-                dec = lensed_param["dec"][:1],
+                mass_1=lensed_param["mass_1"][:1],
+                mass_2=lensed_param["mass_2"][:1],
+                luminosity_distance=lensed_param["luminosity_distance"][:1],
+                theta_jn=lensed_param["theta_jn"][:1],
+                psi=lensed_param["psi"][:1],
+                phase=lensed_param["phase"][:1],
+                geocent_time=lensed_param["geocent_time"][:1],
+                ra=lensed_param["ra"][:1],
+                dec=lensed_param["dec"][:1],
             )
             if not self.spin_zero:
                 gw_param_dict["a_1"] = lensed_param["a_1"][:1]
@@ -671,18 +879,18 @@ class ImageProperties():
                     gw_param_dict["phi_12"] = lensed_param["phi_12"][:1]
                     gw_param_dict["phi_jl"] = lensed_param["phi_jl"][:1]
 
-            pdet = pdet_finder(gw_param_dict= gw_param_dict)
+            pdet = pdet_finder(gw_param_dict=gw_param_dict)
             if not isinstance(pdet, dict) or "pdet_net" not in pdet:
-                raise ValueError("pdet_finder must return a dictionary with key 'pdet_net'")
+                raise ValueError(
+                    "pdet_finder must return a dictionary with key 'pdet_net'"
+                )
             else:
                 self.pdet_finder_output_keys = list(pdet.keys())
-        
-        # setting up result dictionary
-        result_dict = dict()
-        for keys in self.pdet_finder_output_keys:
-            result_dict[keys] = (
-                np.ones((size, self.n_max_images)) * np.nan
-            )
+                for keys in pdet.keys():
+                    result_dict[keys] = np.ones((size, self.n_max_images)) * np.nan
+        else:
+            for keys in self.pdet_finder_output_keys:
+                result_dict[keys] = np.ones((size, self.n_max_images)) * np.nan
 
         return result_dict
 
@@ -758,21 +966,21 @@ class ImageProperties():
         self._time_window = value
 
     @property
-    def effective_params_in_output(self):
+    def include_effective_parameters(self):
         """
         Flag to include effective parameters in output.
 
         Returns
         -------
-        effective_params_in_output : ``bool``
+        include_effective_parameters : ``bool``
             Whether to include effective parameters in the output of get_lensed_snrs. \n
             default: False
         """
-        return self._effective_params_in_output
+        return self._include_effective_parameters
 
-    @effective_params_in_output.setter
-    def effective_params_in_output(self, value):
-        self._effective_params_in_output = value
+    @include_effective_parameters.setter
+    def include_effective_parameters(self, value):
+        self._include_effective_parameters = value
 
     @property
     def lens_model_list(self):
@@ -862,7 +1070,7 @@ class ImageProperties():
 
     @pdet_finder.setter
     def pdet_finder(self, value):
-        self._pdet_finder = value   
+        self._pdet_finder = value
 
     @property
     def pdet_finder_output_keys(self):

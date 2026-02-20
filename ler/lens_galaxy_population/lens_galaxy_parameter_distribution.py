@@ -412,7 +412,9 @@ class LensGalaxyParameterDistribution(
             n_max_images=4,
             time_window=365 * 24 * 3600 * 2,
             lens_model_list=["EPL_NUMBA", "SHEAR"],
-            effective_params_in_output=True,
+            include_effective_parameters=True,
+            multiprocessing_verbose=True,
+            include_redundant_parameters=False,
         )
         input_params_image.update(params)
 
@@ -426,7 +428,9 @@ class LensGalaxyParameterDistribution(
             time_window=input_params_image["time_window"],
             spin_zero=self.spin_zero,
             spin_precession=self.spin_precession,
-            effective_params_in_output=input_params_image["effective_params_in_output"],
+            include_effective_parameters=input_params_image["include_effective_parameters"],
+            multiprocessing_verbose=input_params_image["multiprocessing_verbose"],
+            include_redundant_parameters=input_params_image["include_redundant_parameters"],
         )
 
     def sample_lens_parameters(self, size=1000):

@@ -363,7 +363,7 @@ class FunctionConditioning():
                 idx = result<0.
                 result[idx] = 0.0
 
-                return result
+                return float(result[0])
 
             norm = quad(pdf_unorm, min(x_array), max(x_array))[0]
             return norm
@@ -377,7 +377,7 @@ class FunctionConditioning():
                     idx = result<0.
                     result[idx] = 0.0
 
-                    return result
+                    return float(result[0])
 
                 norm.append(quad(pdf_unorm, min(x_array[i]), max(x_array[i]))[0])
 

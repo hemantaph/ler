@@ -564,7 +564,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             +--------------------+--------------+--------------------------------------+
             | a_1                |              | spin_1 of the compact binary         |
             +--------------------+--------------+--------------------------------------+
-            | a_2                |              | spin_2 of the compact binary         |
+            | a_2                |              | spin of the secondary compact binary |
             +--------------------+--------------+--------------------------------------+
             | luminosity_distance| Mpc          | luminosity distance                  |
             +--------------------+--------------+--------------------------------------+
