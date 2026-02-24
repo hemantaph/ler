@@ -12,7 +12,7 @@
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
-      <link rel="stylesheet" type="text/css" href="_static/scalefix.css?v=11132fbc" />
+      <link rel="stylesheet" type="text/css" href="_static/scalefix.css?v=551ad726" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css?v=88a06014" />
       <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
@@ -167,23 +167,19 @@
 <p>The annual rate of detectable strongly lensed GW events, <span class="math notranslate nohighlight">\(\frac{\Delta N^{\rm obs}_{\rm L}}{\Delta t}\)</span>, is the expected number of observed lensed CBC mergers per year in a given detector network. It is obtained by scaling the total intrinsic (unlensed) merger rate in the detector frame, <span class="math notranslate nohighlight">\(\frac{\Delta N_{\rm U}}{\Delta t}\)</span>, by the joint probability that an intrinsic merger is strongly lensed and detected, denoted <span class="math notranslate nohighlight">\(P({\rm SL,obs})\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 \frac{\Delta N^{\rm obs}_{\rm L}}{\Delta t}
 = \frac{\Delta N_{\rm U}}{\Delta t}\, P({\rm SL,obs}) \, .
 \end{split}
-\end{equation} 
 \]</div>
 <p>Using the product rule, <span class="math notranslate nohighlight">\(P({\rm SL,obs})=P({\rm SL})\,P({\rm obs}\mid{\rm SL})\)</span>, where <span class="math notranslate nohighlight">\(P({\rm SL})\)</span> is the probability that an intrinsic merger is strongly lensed and <span class="math notranslate nohighlight">\(P({\rm obs}\mid{\rm SL})\)</span> is the conditional probability of detection given strong lensing. This yields</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 \frac{\Delta N^{\rm obs}_{\rm L}}{\Delta t}
 = \frac{\Delta N_{\rm U}}{\Delta t}\, P({\rm SL})\, P({\rm obs}\mid{\rm SL})
 = {\cal N}_{\rm L}\, P({\rm obs}\mid{\rm SL}) \, ,
 \end{split}
-\end{equation} 
 \]</div>
 <p>where <span class="math notranslate nohighlight">\({\cal N}_{\rm L}\equiv \frac{\Delta N_{\rm U}}{\Delta t}\,P({\rm SL})\)</span> is the total intrinsic rate of strongly lensed mergers, irrespective of detectability.</p>
 </section>
@@ -193,48 +189,39 @@
 <p>For the Elliptical Power Law with external shear (EPL+Shear) lens model, the lens-parameter vector is</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 \vec{\theta}_{\rm L}\in \{z_L,\sigma,q,\phi_{\rm rot},\gamma,\gamma_1,\gamma_2\} \, ,
 \end{split}
-\end{equation} 
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(z_L\)</span> is the lens redshift, <span class="math notranslate nohighlight">\(\sigma\)</span> is the velocity dispersion, <span class="math notranslate nohighlight">\(q\)</span> is the projected axis ratio, <span class="math notranslate nohighlight">\(\phi_{\rm rot}\)</span> is the major-axis orientation, <span class="math notranslate nohighlight">\(\gamma\)</span> is the EPL logarithmic density slope, and <span class="math notranslate nohighlight">\((\gamma_1,\gamma_2)\)</span> are the external shear components. The source position on the source plane is <span class="math notranslate nohighlight">\(\vec{\beta}\in\{\beta_x,\beta_y\}\)</span>, defined relative to the lens center. The adopted priors are summarized in Lens Parameter Priors.</p>
 <p>Given a joint prior distribution <span class="math notranslate nohighlight">\(P(\vec{\theta}_{\rm U},\vec{\theta}_{\rm L},\vec{\beta}\mid{\rm SL})\)</span> conditioned on strong lensing,  and a detection probability model <span class="math notranslate nohighlight">\(P({\rm obs}\mid \vec{\theta}_{\rm U},\vec{\theta}_{\rm L},\vec{\beta},{\rm SL})\)</span> for a specific source-lens configuration, the population-averaged detection probability becomes</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 P({\rm obs}\mid{\rm SL})
 = \int P({\rm obs}\mid \vec{\theta}_{\rm U},\vec{\theta}_{\rm L},\vec{\beta},{\rm SL})\,
 P(\vec{\theta}_{\rm U},\vec{\theta}_{\rm L},\vec{\beta}\mid{\rm SL})\,
 d\vec{\theta}_{\rm U}\,d\vec{\theta}_{\rm L}\,d\vec{\beta} \, .
 \end{split}
-\end{equation} 
 \]</div>
 <p>To evaluate this integral with <a class="reference external" href="https://en.wikipedia.org/wiki/Monte_Carlo_integration">Monte Carlo integration</a>, the unlensed GW parameters are split into the source redshift <span class="math notranslate nohighlight">\(z_s\)</span> and the remaining set <span class="math notranslate nohighlight">\(\vec{\theta}^{*}_{\rm U}\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 \vec{\theta}^{*}_{\rm U}\in \{m_1,m_2,a_1,a_2,\theta_1,\theta_2,\phi_{12},\phi_{\rm JL},\iota,\phi,\psi,t_c, {\rm RA},{\rm Dec}\} \, ,
 \end{split}
-\end{equation} 
 \]</div>
 <p>The lens parameters are split into the lens redshift <span class="math notranslate nohighlight">\(z_L\)</span> and the structural parameters <span class="math notranslate nohighlight">\(\vec{\theta}^{*}_{\rm L}=\{\sigma,q,\phi_{\rm rot},\gamma,\gamma_1,\gamma_2\}\)</span>. Under the assumption of isotropic sky locations for sources and lenses, the strong-lensing-conditioned distribution of <span class="math notranslate nohighlight">\((z_s,z_L,\vec{\theta}^{*}_{\rm L})\)</span> is independent of <span class="math notranslate nohighlight">\(({\rm RA},{\rm Dec})\)</span>, so that</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 P(z_s,z_L,\vec{\theta}^{*}_{\rm L}\mid {\rm SL})
 \equiv P(z_s,z_L,\vec{\theta}^{*}_{\rm L}\mid {\rm RA},{\rm Dec},{\rm SL}) \, .
 \end{split}
-\end{equation} 
 \]</div>
 <p>With these decompositions, the lensed detectable rate can be written as the expectation value</p>
 <div class="math notranslate nohighlight">
 \[\begin{split} 
-\begin{equation}
 \begin{split}
 \frac{\Delta N^{\rm obs}_{\rm L}}{\Delta t}
 \simeq {\cal N}_{\rm L}
@@ -246,7 +233,6 @@ P({\rm obs}\mid \vec{\theta}^{*}_{\rm U},z_s,z_L,\vec{\theta}^{*}_{\rm L},\vec{\
 \vec{\beta}\sim P(\vec{\beta}\mid z_s,z_L,\vec{\theta}^{*}_{\rm L},{\rm SL})
 }} \, .
 \end{split}
-\end{equation} 
 \end{split}\]</div>
 <p>The expectation value is evaluated by hierarchical sampling from the listed distributions. The sky location <span class="math notranslate nohighlight">\(({\rm RA},{\rm Dec})\)</span> is drawn once from <span class="math notranslate nohighlight">\(P({\rm RA},{\rm Dec})\)</span> and is then held fixed while sampling <span class="math notranslate nohighlight">\((z_s,z_L,\vec{\theta}^{*}_{\rm L})\)</span> and <span class="math notranslate nohighlight">\(\vec{\beta}\)</span> for the same event.</p>
 </section>
@@ -255,23 +241,19 @@ P({\rm obs}\mid \vec{\theta}^{*}_{\rm U},z_s,z_L,\vec{\theta}^{*}_{\rm L},\vec{\
 <p>Hierarchical sampling of the lensing configuration is enabled by the chain-rule decomposition, i.e.</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 P(z_s,z_L,\vec{\theta}^{*}_{\rm L}\mid{\rm SL})
 = P(z_s\mid{\rm SL})\,P(z_L\mid z_s,{\rm SL})\,P(\vec{\theta}^{*}_{\rm L}\mid z_L,z_s,{\rm SL}) \, .
 \end{split}
-\end{equation} 
 \]</div>
 <p>The lens-parameter factor can be expressed using Bayes’ theorem as</p>
 <div class="math notranslate nohighlight">
 \[\begin{split} 
-\begin{equation}
 \begin{split}
 P(\vec{\theta}^{*}_{\rm L}\mid z_L,z_s,{\rm SL})
 &amp;= \frac{P({\rm SL}\mid z_L,z_s,\vec{\theta}^{*}_{\rm L})\,P(\vec{\theta}^{*}_{\rm L}\mid z_L,z_s)}{P({\rm SL}\mid z_L,z_s)} \,,\\ 
 &amp;\propto \sigma_{\rm SL}(z_L,z_s,\vec{\theta}^{*}_{\rm L})\,P(\vec{\theta}^{*}_{\rm L}\mid z_L,z_s) \, ,
 \end{split}
-\end{equation} 
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\sigma_{\rm SL}\)</span> is the strong-lensing angular cross-section (<a class="reference internal" href="#multi-image-caustic-cross-section"><span class="std std-ref">multi-image caustic cross-section</span></a> in this documentation) and <span class="math notranslate nohighlight">\(P(\vec{\theta}^{*}_{\rm L}\mid z_L,z_s)\)</span> is the prior distribution of lens parameters at fixed redshifts. This factorization motivates drawing <span class="math notranslate nohighlight">\(z_s\)</span> first, then <span class="math notranslate nohighlight">\(z_L\)</span>, followed by sampling <span class="math notranslate nohighlight">\(\vec{\theta}^{*}_{\rm L}\)</span> with importance sampling to account for the cross-section weighting.</p>
 </section>
@@ -280,30 +262,25 @@ P(\vec{\theta}^{*}_{\rm L}\mid z_L,z_s,{\rm SL})
 <p>The redshift distribution of lensed sources differs from the intrinsic distribution because the probability of strong lensing increases with source distance. By Bayes’ theorem,</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 P(z_s\mid{\rm SL})
 = \frac{P({\rm SL}\mid z_s)\,P(z_s)}{P({\rm SL})}
 \propto P({\rm SL}\mid z_s)\,P(z_s) \, .
 \end{split}
-\end{equation} 
 \]</div>
 <p>Using the intrinsic unlensed redshift distribution,</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 P(z_s)
 = \frac{1}{{\cal N}_{\rm U}}\,
 \frac{R_{\rm U}(z_s)}{1+z_s}\,
 \frac{dV_c}{dz_s} \, ,
 \end{split}
-\end{equation} 
 \]</div>
 <p>the lensed-source redshift distribution becomes</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 P(z_s\mid{\rm SL})
 = \frac{1}{{\cal N}_{\rm L}}\,
@@ -311,12 +288,10 @@ P({\rm SL}\mid z_s)\,
 \frac{R_{\rm U}(z_s)}{1+z_s}\,
 \frac{dV_c}{dz_s} \, ,
 \end{split}
-\end{equation} 
 \]</div>
 <p>where <span class="math notranslate nohighlight">\({\cal N}_{\rm U}\)</span> is the total intrinsic merger rate per unit detector-frame time and <span class="math notranslate nohighlight">\({\cal N}_{\rm L}\)</span> is the total intrinsic strongly lensed merger rate per unit detector-frame time. The normalization satisfies</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 {\cal N}_{\rm L}
 = {\cal N}_{\rm U}\,P({\rm SL})
@@ -324,7 +299,6 @@ P({\rm SL}\mid z_s)\,
 \frac{R_{\rm U}(z_s)}{1+z_s}\,
 \frac{dV_c}{dz_s}\,dz_s \, ,
 \end{split}
-\end{equation} 
 \]</div>
 <p>so that <span class="math notranslate nohighlight">\(P({\rm SL})={\cal N}_{\rm L}/{\cal N}_{\rm U}\)</span>, which is the fraction of intrinsically occurring mergers that are strongly lensed in the population model. In this work, <span class="math notranslate nohighlight">\(P({\rm SL}\mid z_s)\)</span> is computed for the adopted EPL+Shear lens population as detailed in the subsequent section. Once this probability is determined and the conditional distribution <span class="math notranslate nohighlight">\(P(z_s\mid {\rm SL})\)</span> is established, source redshifts are generated using <a class="reference external" href="https://en.wikipedia.org/wiki/Inverse_transform_sampling">inverse transform sampling</a>.</p>
 </section>
@@ -334,16 +308,13 @@ P({\rm SL}\mid z_s)\,
 <p>A convenient way to derive this relationship is to treat strong-lensing encounters as a Poisson process along the line of sight. If <span class="math notranslate nohighlight">\(\lambda\)</span> denotes the expected number of encounters, the probability of observing exactly <span class="math notranslate nohighlight">\(k\)</span> encounters is given by</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 P(k) = \frac{\lambda^k e^{-\lambda}}{k!} \, .
 \end{split}
-\end{equation}
 \]</div>
 <p>For strong lensing, the Poisson mean <span class="math notranslate nohighlight">\(\lambda\)</span> corresponds to the integrated encounter expectation out to <span class="math notranslate nohighlight">\(z_s\)</span>, obtained by summing the angular target size of each potential lens over the lens population along the path. This gives</p>
 <div class="math notranslate nohighlight">
 \[\begin{split} 
-\begin{equation}
 \begin{split}
 \lambda
 &amp;= \int ({\rm target\ size}) \times ({\rm number\ density}) \times ({\rm path\ length}) \\
@@ -354,25 +325,21 @@ P(k) = \frac{\lambda^k e^{-\lambda}}{k!} \, .
 d\vec{\theta}^{*}_{\rm L}\,dz_L \\
 &amp;\equiv \tau(z_s) \, .
 \end{split}
-\end{equation}
 \end{split}\]</div>
 <p>Geometrically, <span class="math notranslate nohighlight">\(\tau(z_s)\)</span> represents the fraction of the sky covered by the effective strong-lensing cross-sections of all lenses along the line of sight, calculated under the single-lens approximation.</p>
 <p>The probability of encountering exactly one strong lens is therefore</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 P({\rm SL}\mid z_s)
 = P(k=1\mid \lambda=\tau(z_s))
 = \tau(z_s)\,e^{-\tau(z_s)} \, .
 \end{split}
-\end{equation}
 \]</div>
 <p>Since <span class="math notranslate nohighlight">\(\tau(z_s)\ll 1\)</span> for galaxy populations on cosmological volumes, this reduces to <span class="math notranslate nohighlight">\(P({\rm SL}\mid z_s)\simeq \tau(z_s)\)</span>. A rough estimate using <code class="docutils literal notranslate"><span class="pre">ler</span></code> shows that typically <span class="math notranslate nohighlight">\(\tau(z_s) \lesssim 0.004\)</span>, with the relative difference <span class="math notranslate nohighlight">\(\frac{P({\rm SL} \mid z_s) - \tau(z_s)}{P({\rm SL} \mid z_s)} \times 100 \lesssim 0.4\%\)</span>.</p>
 <p>In practice, the lens population is often specified by the velocity-dispersion function <span class="math notranslate nohighlight">\(\phi(\sigma,z_L)=\frac{d^2N(z_L,\sigma)}{dV_c\,d\sigma}\)</span>. Separating the remaining lens (caustic) shape parameters <span class="math notranslate nohighlight">\(\vec{\theta}^{**}_{\rm L}\)</span> from <span class="math notranslate nohighlight">\(\sigma\)</span>, the strong-lensing probability can be written as</p>
 <div class="math notranslate nohighlight">
 \[\begin{split} 
-\begin{equation}
 \begin{split}
 P({\rm SL}\mid z_s)
 &amp;\simeq \int_{0}^{z_s}\int_{\sigma,\vec{\theta}^{**}_{\rm L}}
@@ -382,22 +349,18 @@ P({\rm SL}\mid z_s)
 \frac{dV_c}{dz_L}\,
 d\sigma\,d\vec{\theta}^{**}_{\rm L}\,dz_L \, .
 \end{split}
-\end{equation}
 \end{split}\]</div>
 <p>It is convenient to introduce the differential optical depth with respect to lens redshift,</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 P({\rm SL}\mid z_s)
 \simeq \int_{0}^{z_s} \frac{d\tau}{dz_L}\,dz_L \, ,
 \end{split}
-\end{equation}
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 \frac{d\tau}{dz_L}
 = \int_{\sigma,\vec{\theta}^{**}_{\rm L}}
@@ -407,24 +370,20 @@ P(\vec{\theta}^{**}_{\rm L}\mid\sigma)\,
 \frac{dV_c}{dz_L}\,
 d\sigma\,d\vec{\theta}^{**}_{\rm L} \, .
 \end{split}
-\end{equation}
 \]</div>
 <p>The function <span class="math notranslate nohighlight">\(d\tau/dz_L\)</span> is used both to evaluate <span class="math notranslate nohighlight">\(\tau(z_s)\)</span> and to construct the lens-redshift distribution <span class="math notranslate nohighlight">\(P(z_L\mid z_s,{\rm SL})\)</span> in the next section.</p>
 <p>For the EPL+Shear model, the shape-parameter set is <span class="math notranslate nohighlight">\(\vec{\theta}^{**}_{\rm L}=\{q,\phi_{\rm rot},\gamma,\gamma_1,\gamma_2\}\)</span>, and the differential optical depth becomes</p>
 <div class="math notranslate nohighlight">
 \[\begin{split} 
-\begin{equation}
 \begin{split}
 \frac{d\tau}{dz_L}
 &amp;= \int_{\sigma,q,\phi_{\rm rot},\gamma,\gamma_1,\gamma_2} \frac{\sigma_{\rm SL}(z_L, \sigma, q,\phi_{\rm rot},\gamma,\gamma_1,\gamma_2)}{4\pi} \phi(\sigma,z_L) \\
 &amp; \quad \times P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma)  \frac{dV_c}{dz_L} \, d\sigma \, dq \, d\phi_{\rm rot} \, d\gamma \, d\gamma_1 \, d\gamma_2\, .
 \end{split}
-\end{equation} 
 \end{split}\]</div>
 <p>Numerically, this integral is approximated using Monte Carlo integration. To simplify the sampling process, we employ a uniform proposal distribution for the velocity dispersion, <span class="math notranslate nohighlight">\(P_o(\sigma) = 1/\Delta\sigma\)</span>, defined over the range of interest <span class="math notranslate nohighlight">\(\Delta\sigma\)</span>. Rewriting the integral as an expectation value, the differential optical depth reads</p>
 <div class="math notranslate nohighlight">
 \[\begin{split} 
-\begin{equation}
 \begin{split}
 \frac{d\tau}{dz_L}
 = \Delta\sigma
@@ -440,7 +399,6 @@ q\sim P(q\mid\sigma) \\
 \gamma_1,\gamma_2\sim P(\gamma_1,\gamma_2)
 }} \, ,
 \end{split}
-\end{equation} 
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\sigma^{\rm EPL}_{\rm SL}\)</span> denotes the multi-image caustic cross-section for the EPL+Shear model, and each parameter is sampled hierarchically from its respective prior.</p>
 </section>
@@ -449,18 +407,15 @@ q\sim P(q\mid\sigma) \\
 <p>For fixed <span class="math notranslate nohighlight">\(z_s\)</span>, the lens-redshift distribution conditioned on the occurance of strong lensing is directly proportional to the differential optical depth, and is given by</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 P(z_L\mid z_s,{\rm SL})
 = \frac{1}{\tau(z_s)}\,\frac{d\tau}{dz_L} \, ,
 \end{split}
-\end{equation} 
 \]</div>
 <p>where the normalization factor is the total optical depth <span class="math notranslate nohighlight">\(\tau(z_s)=\int_{0}^{z_s}(d\tau/dz_L)\,dz_L\)</span>. In <code class="docutils literal notranslate"><span class="pre">ler</span></code>, the differential optical depth <span class="math notranslate nohighlight">\(d\tau/dz_L\)</span> is pre-computed on a grid spanning the relevant redshift space (<span class="math notranslate nohighlight">\(z_L, z_s\)</span>). This grid enables efficient interpolation for inverse-transform sampling of <span class="math notranslate nohighlight">\(z_L\)</span> and allows for rapid evaluation of the strong-lensing probability <span class="math notranslate nohighlight">\(P({\rm SL}\mid z_s)\)</span>.</p>
 <p>For comparison, the intrinsic redshift distribution of the lens population, without conditioning on strong lensing and independent of any specific background source, is obtained by marginalizing the lens number density over the lens parameters</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 P(z_L)
 = \frac{1}{{\cal N}_{z_L}}
@@ -469,7 +424,6 @@ P(z_L)
 \frac{dV_c}{dz_L}\,
 d\vec{\theta}^{*}_{\rm L} \, ,
 \end{split}
-\end{equation} 
 \]</div>
 <p>where <span class="math notranslate nohighlight">\({\cal N}_{z_L}\)</span> is a normalization constant.</p>
 <p>The impact of the optical depth on the source redshift distributions of the lensed events is illustrated in Figure 1.</p>
@@ -486,35 +440,29 @@ d\vec{\theta}^{*}_{\rm L} \, ,
 <p>The strong-lensing condition is satisfied when a source resides within the multi-image caustic region in the source plane, which encompasses the area enclosed by both the double and diamond (quad) caustics (see Figure 2), thereby producing multiple images. The angular area of this region is defined as the multi-image caustic cross-section, <span class="math notranslate nohighlight">\(\sigma_{\rm SL}\)</span> (denoted as <span class="math notranslate nohighlight">\(\sigma^{\rm EPL}_{\rm SL}\)</span> for the EPL+Shear model). The probability of strong lensing for a specific configuration is the ratio of this cross-section to the total sky area</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 P({\rm SL}\mid z_L, z_s, \vec{\theta}^{*}_{\rm L})
 = \frac{\sigma_{\rm SL}}{4\pi} \, .
 \end{split}
-\end{equation} 
 \]</div>
 <p>Direct evaluation of <span class="math notranslate nohighlight">\(\sigma_{\rm SL}\)</span> by tracing caustics with <a class="reference external" href="https://lenstronomy.readthedocs.io">lenstronomy</a> is computationally expensive. In <code class="docutils literal notranslate"><span class="pre">ler</span></code>, <span class="math notranslate nohighlight">\(\sigma^{\rm EPL}_{\rm SL}\)</span> is therefore precomputed on the grid of lens (caustic) shape parameters <span class="math notranslate nohighlight">\(\vec{\theta}^{**}_{\rm L}\in \{q,\phi_{\rm rot},\gamma,\gamma_1,\gamma_2\}\)</span> at unit Einstein radius <span class="math notranslate nohighlight">\(\theta_{\rm E}=1\)</span>, and interpolated during sampling. For arbitrary <span class="math notranslate nohighlight">\((\sigma,z_L,z_s)\)</span>, the Einstein radius is</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 \theta_{\rm E}
 = 4\pi\left(\frac{\sigma}{c}\right)^2
 \frac{D_{LS}(z_L,z_s)}{D_S(z_s)} \, ,
 \end{split}
-\end{equation} 
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(D_{LS}\)</span> and <span class="math notranslate nohighlight">\(D_S\)</span> are angular-diameter distances.</p>
 <p>The cross-section is then rescaled from the <span class="math notranslate nohighlight">\(\theta_{\rm E}=1\)</span> values using the calibrated relation</p>
 <div class="math notranslate nohighlight">
 \[\begin{split} 
-\begin{equation}
 \begin{split}
 \sigma^{\rm EPL}_{\rm SL}(\theta_{\rm E}, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2)
 &amp;= \sigma^{\rm EPL}_{\rm SL}(1, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2) \\
 &amp;\quad\times \left({\rm intercept} + {\rm slope}\,\pi\,\theta_{\rm E}^2\right) \, ,
 \end{split}
-\end{equation}
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\({\rm intercept}\)</span> and <span class="math notranslate nohighlight">\({\rm slope}\)</span> are precomputed constants. This interpolation and rescaling scheme accelerates cross-section evaluation and, consequently, the computation of <span class="math notranslate nohighlight">\(\frac{d\tau}{dz_L}\)</span>.</p>
 <p>Going forward, I simply use the term ‘cross-section’ to refer to <span class="math notranslate nohighlight">\(\sigma_{\rm SL}\)</span> or <span class="math notranslate nohighlight">\(\sigma^{\rm EPL}_{\rm SL}\)</span>.</p>
@@ -524,44 +472,36 @@ P({\rm SL}\mid z_L, z_s, \vec{\theta}^{*}_{\rm L})
 <p>For a fixed redshift pair <span class="math notranslate nohighlight">\((z_L,z_s)\)</span>, the conditional distribution of lens parameters <span class="math notranslate nohighlight">\(P(\vec{\theta}^{*}_{\rm L}\mid z_L,z_s,{\rm SL})\)</span> is determined by weighting the intrinsic lens population with the strong-lensing cross-section <span class="math notranslate nohighlight">\(\sigma^{\rm EPL}_{\rm SL}(z_L,z_s,\vec{\theta}^{*}_{\rm L})\)</span>. For the EPL+Shear model, this target distribution is expressed as</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\begin{equation}
 \begin{split}
 &amp;P(\sigma, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2 \mid z_L, z_s, {\rm SL})\\
 &amp;\quad \propto P({\rm SL}\mid z_L, z_s, \sigma, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2) \, P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \, P(\sigma \mid z_L) \\
 &amp;\quad \propto \frac{\sigma^{\rm EPL}_{\rm SL}}{4\pi} \, P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \, P(\sigma \mid z_L) \, .
 \end{split}
-\end{equation}
 \end{split}\]</div>
 <p>Direct rejection sampling from the intrinsic distribution <span class="math notranslate nohighlight">\(P(\sigma\mid z_L)\)</span> is computationally inefficient because the lensing cross-section <span class="math notranslate nohighlight">\(\sigma^{\rm EPL}_{\rm SL}\)</span> scales roughly as <span class="math notranslate nohighlight">\(\sigma^4\)</span>, heavily favoring high-mass lenses that are exponentially rare in the intrinsic population. Furthermore, the lack of a strict analytical maximum for the cross-section complicates the definition of a rejection envelope.</p>
 <p>To address these challenges, <code class="docutils literal notranslate"><span class="pre">ler</span></code> employs <a class="reference external" href="https://en.wikipedia.org/wiki/Importance_sampling">importance sampling</a>. A proposal distribution <span class="math notranslate nohighlight">\(P_o(\sigma)\)</span>, typically chosen to be uniform over <span class="math notranslate nohighlight">\([\sigma_{\min},\sigma_{\max}]\)</span>, is introduced to rewrite the target density. By defining the intrinsic distribution <span class="math notranslate nohighlight">\(P(\sigma \mid z_L)\)</span> as the normalized velocity dispersion function <span class="math notranslate nohighlight">\(\phi(\sigma, z_L)/\int \phi(\sigma', z_L) d\sigma'\)</span>, the target distribution becomes</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\begin{equation}
 \begin{split}
 &amp;P(\sigma, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2 \mid z_L, z_s, {\rm SL})\\
 &amp;\quad \propto \left[\frac{ \sigma^{\rm EPL}_{\rm SL}\, P(\sigma \mid z_L)}{4\pi\,P_o(\sigma)}\right] P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \, P_o(\sigma) \\
 &amp;\quad = \frac{1}{{\cal W}(z_L)} \left[\frac{ \sigma^{\rm EPL}_{\rm SL}\, \phi(\sigma, z_L)}{P_o(\sigma)}\right] P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \, P_o(\sigma) \, .
 \end{split}
-\end{equation}
 \end{split}\]</div>
 <p>In this formulation, constant factors including <span class="math notranslate nohighlight">\(4\pi\)</span> and the normalization of the intrinsic velocity dispersion function are absorbed into the overall normalization constant <span class="math notranslate nohighlight">\({\cal W}(z_L)\)</span>. The term in the square brackets represents the unnormalized importance weight required to convert samples from the proposal distribution into samples from the cross-section-weighted target distribution.</p>
 <p>Computationally, this is implemented by generating a candidate batch of size <span class="math notranslate nohighlight">\(N_{\rm prop}\)</span> (defaulting to 200 in <code class="docutils literal notranslate"><span class="pre">ler</span></code>) for each <span class="math notranslate nohighlight">\((z_L, z_s)\)</span> pair. The velocity dispersion <span class="math notranslate nohighlight">\(\sigma_i\)</span> is drawn from the proposal <span class="math notranslate nohighlight">\(P_o(\sigma)\)</span>, while the remaining shape parameters are sampled directly from their intrinsic priors. Each candidate in the batch is assigned a normalized importance weight</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 w_i(\sigma_i, q_i, \phi_{{\rm rot},i}, \gamma_i, \gamma_{1,i}, \gamma_{2,i};z_L,z_s)=\frac{1}{{\cal W}(z_L)}\,\frac{\sigma^{\rm EPL}_{{\rm SL}, i}\,\phi(\sigma_i, z_L)}{P_o(\sigma_i)} \, ,
 \end{split}
-\end{equation} 
 \]</div>
 <p>where the batch normalization constant is defined as the sum of the unnormalized weights</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 {\cal W}(z_L)=\sum_{i=1}^{N_{\rm prop}}\frac{\sigma^{\rm EPL}_{{\rm SL}, i}\,\phi(\sigma_i, z_L)}{P_o(\sigma_i)} \, .
 \end{split}
-\end{equation} 
 \]</div>
 <p>A final lens configuration is selected from this batch by resampling with probabilities proportional to <span class="math notranslate nohighlight">\(w_i\)</span>, ensuring the final parameter set accurately reflects the properties of the strongly lensed population.</p>
 </section>
@@ -571,7 +511,6 @@ w_i(\sigma_i, q_i, \phi_{{\rm rot},i}, \gamma_i, \gamma_{1,i}, \gamma_{2,i};z_L,
 <p>Each image is assigned a Morse index <span class="math notranslate nohighlight">\(n_i\in\{0,1/2,1\}\)</span> corresponding to minima (Type I), saddles (Type II), and maxima (Type III), respectively. Type III images are typically highly demagnified and are neglected in the detectability criterion adopted here. Lensing modifies the observed GW parameters for each image <span class="math notranslate nohighlight">\(i\)</span> as follows</p>
 <div class="math notranslate nohighlight">
 \[\begin{split} 
-\begin{equation}
 \begin{split}
 d_L &amp;\rightarrow \frac{d_L(z_s)}{\sqrt{\lvert\mu_i\rvert}}\,, \\
 \phi_c &amp;\rightarrow \phi_c - n_i\pi\,, \\
@@ -579,7 +518,6 @@ t_c &amp;\rightarrow t_c + t_i \, , \\
 {\rm RA} &amp;\rightarrow {\rm RA} + \frac{\theta_{x,i}-\beta_x}{\cos({\rm Dec})}\,, \\
 {\rm Dec} &amp;\rightarrow {\rm Dec} + (\theta_{y,i}-\beta_y)\,, \\
 \end{split}
-\end{equation} 
 \end{split}\]</div>
 <p>while the other extrinsic and intrinsic parameters are unchanged from the unlensed values, including the detector-frame component masses <span class="math notranslate nohighlight">\(\left(m_1 \, (1+z_s),m_2 \, (1+z_s)\right)\)</span>. The sky-location offsets associated with <span class="math notranslate nohighlight">\(\vec{\theta}_i-\vec{\beta}\)</span> are typically negligible for current GW detector networks and have no impact on SNR. Detectability is therefore evaluated by computing the SNR for each image using the modified GW pararameters <span class="math notranslate nohighlight">\(\vec{\theta}_{{\rm GW},i}\)</span>, as described in the next section.</p>
 <blockquote>
@@ -588,10 +526,10 @@ t_c &amp;\rightarrow t_c + t_i \, , \\
 <p>An illustrative example of a multi-image configuration for an EPL+Shear lens is shown in Figure 2, where the source is located near a fold caustic boundary, resulting in four images with two highly magnified ones. The lens parameters are chosen to produce a typical caustic structure with an outer double-image caustic and an inner diamond-shaped quad-image caustic. The image properties (type, magnification) are determined by the source position relative to these caustics and the lens parameters that govern their shape and size.</p>
 <div id="fig2"></div>
 <div align="center">
-  <img src="_static/lens_configuration.png" alt="Merger rate density and PDF of redshift for BBH mergers" width="600"/>
+  <iframe src="_static/caustic_interactive.html" width="920" height="850" style="border:1px solid #ddd; border-radius:6px;" loading="lazy"></iframe>
 </div>
 <blockquote>
-<div><p><strong>Figure 2:</strong> Multi-image configuration for an EPL+Shear lens, showing the outer double-image caustic (orange dashed) and the inner quad-image (diamond) caustic (green solid) in the source plane. The Einstein ring (blue, dotted) serves as the angular scale reference, with <span class="math notranslate nohighlight">\(\theta_E(z_s=3.0, z_L=0.8, \sigma=160\,{\rm km/s}) \approx 2 \times 10^{-6}\)</span> rad. The lens geometry is defined by an axis ratio <span class="math notranslate nohighlight">\(q=0.6\)</span>, orientation angle <span class="math notranslate nohighlight">\(\phi=0.52\)</span> rad, mass density slope <span class="math notranslate nohighlight">\(\gamma=1.84\)</span>, and external shear components <span class="math notranslate nohighlight">\(\gamma_1=\gamma_2=-0.05\)</span>. A source located at <span class="math notranslate nohighlight">\((\beta_x, \beta_y) = (-0.25, 0.04)\)</span> lies inside the diamond caustic near a fold boundary, generating four lensed images (stars). These are labeled by index <span class="math notranslate nohighlight">\(i\)</span> (ordered by arrival time, where <span class="math notranslate nohighlight">\(i=1\)</span> arrives first), image type, time-delay wrt the first image <span class="math notranslate nohighlight">\(\Delta t_{1,i}\)</span> , and absolute magnification <span class="math notranslate nohighlight">\(|\mu_i|\)</span>. The caustic structure is governed by the lens (shape) parameters where <span class="math notranslate nohighlight">\(q\)</span> determines ellipticity and <span class="math notranslate nohighlight">\(\phi\)</span> controls counter-clockwise rotation relative to the x-axis. Increasing in <span class="math notranslate nohighlight">\(\gamma\)</span> cause the outer caustic to expand rapidly while the inner diamond caustic shrinks, whereas shear components induce skewness and rotation. An interactive demonstration of these dependencies is provided in the Google Colab <a class="reference external" href="https://colab.research.google.com/drive/1X1XDID3riGJhMgVBUueq-W72wOiSG3r9?usp=sharing">Example Notebook</a>. Notably, for the chosen configuration, the proximity of the source to the caustic fold results in high-magnification images which can significantly enhance the detectability of such gravitational lensing systems.</p>
+<div><p><strong>Figure 2:</strong> Interactive multi-image configuration for an EPL+Shear lens, showing the outer double-image caustic (orange dashed) and the inner quad-image (diamond) caustic (green solid) in the source plane. The Einstein ring (blue, dotted) serves as the angular scale reference. Use the sliders above to explore how the caustic structure depends on each lens parameter: <span class="math notranslate nohighlight">\(q\)</span> determines ellipticity, <span class="math notranslate nohighlight">\(\phi\)</span> controls counter-clockwise rotation relative to the x-axis, increasing <span class="math notranslate nohighlight">\(\gamma\)</span> causes the outer caustic to expand rapidly while the inner diamond caustic shrinks, and shear components <span class="math notranslate nohighlight">\((\gamma_1,\gamma_2)\)</span> induce skewness and rotation. The source position <span class="math notranslate nohighlight">\((\beta_x,\beta_y)\)</span> can be adjusted to see how image positions, types, and magnifications change. Lensed images (stars) are labeled by index <span class="math notranslate nohighlight">\(i\)</span> (ordered by arrival time), image type, and absolute magnification <span class="math notranslate nohighlight">\(|\mu_i|\)</span>. All coordinates are in units of the Einstein radius <span class="math notranslate nohighlight">\(\theta_E\)</span>. The proximity of the source to the caustic fold results in high-magnification images which can significantly enhance the detectability of such gravitational lensing systems. A Python-based version of this interactive demonstration, which also includes time-delay calculations, is available in the Google Colab <a class="reference external" href="https://colab.research.google.com/drive/1X1XDID3riGJhMgVBUueq-W72wOiSG3r9?usp=sharing">Example Notebook</a>.</p>
 </div></blockquote>
 </section>
 <section id="detection-probability-of-lensed-events">
@@ -599,21 +537,17 @@ t_c &amp;\rightarrow t_c + t_i \, , \\
 <p>For a specific lensed configuration, the detection probability is determined by the detectability of its images. The signal-to-noise ratio (SNR), <span class="math notranslate nohighlight">\(\rho(\vec{\theta}_{{\rm GW},i})\)</span>, is computed for each image using the modified GW parameters. An event is considered detected if at least two images meet the detection criterion. The probability is therefore a binary condition</p>
 <div class="math notranslate nohighlight">
 \[
-\begin{equation}
 \begin{split}
 &amp;P({\rm obs} \mid \vec{\theta}^*_{\rm U}, z_s, \vec{\theta_{\rm L}}, \vec{\beta}, {\rm SL}) = \Theta\left[\left(\sum_i P_{\rm det}(\vec{\theta}_{{\rm GW},i}, \rho_{\rm th}) \right) - 2\right] \, ,
 \end{split}
-\end{equation}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\Theta\)</span> is the Heaviside step function and the sum is over all images <span class="math notranslate nohighlight">\(i\)</span>. In the simplest step-function model, the individual image detection probability is defined as</p>
 <div class="math notranslate nohighlight">
 \[
-\begin{equation}
 \begin{split}
 P_{\rm det} (\vec{\theta}, \rho_{\rm th}) = 
 \Theta[\rho(\vec{\theta}_{{\rm GW},i}) - \rho_{\rm th}] \, ,
 \end{split}
-\end{equation}
 \]</div>
 <p>and in <code class="docutils literal notranslate"><span class="pre">ler</span></code>, it is estimated using the <a class="reference external" href="https://gwsnr.hemantaph.com">gwsnr</a> package.</p>
 </section>
@@ -622,7 +556,6 @@ P_{\rm det} (\vec{\theta}, \rho_{\rm th}) =
 <p>Summarizing the derivation steps, the annual rate of detectable strongly lensed GW events is given by</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\begin{equation}
 \begin{split}
 \frac{\Delta N^{\rm obs}_{\rm L}}{\Delta t}
 &amp;=
@@ -637,7 +570,6 @@ z_L \sim P(z_L \mid z_s, {\rm SL}) \\
 \vec{\beta} \sim P(\vec{\beta} \mid z_s, \vec{\theta}_{\rm L}, {\rm SL})
 }} \, .
 \end{split}
-\end{equation}
 \end{split}\]</div>
 <p>The computational procedure for evaluating the rate via Monte Carlo integration is summarized as follows:</p>
 <ol class="arabic simple">

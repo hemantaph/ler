@@ -12,7 +12,7 @@
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
-      <link rel="stylesheet" type="text/css" href="_static/scalefix.css?v=11132fbc" />
+      <link rel="stylesheet" type="text/css" href="_static/scalefix.css?v=551ad726" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css?v=88a06014" />
       <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
@@ -151,12 +151,10 @@
 <p>The annual rate of detectable (unlensed) GW events, <span class="math notranslate nohighlight">\(\frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}\)</span>, gives the expected number of observed CBC mergers per year for a given detector network. It is obtained by combining the total intrinsic merger rate in the detector-frame, <span class="math notranslate nohighlight">\(\frac{\Delta N_{\rm U}}{\Delta t}\)</span>, with the population-averaged probability of detection, <span class="math notranslate nohighlight">\(P({\rm obs})\)</span>, such that</p>
 <div class="math notranslate nohighlight">
 \[
-\begin{equation}
 \begin{split}
 \frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}
 = \frac{\Delta N_{\rm U}}{\Delta t} \times P({\rm obs}) \,.
 \end{split}
-\end{equation}
 \]</div>
 </section>
 <section id="parameter-marginalized-event-rate">
@@ -164,40 +162,32 @@
 <p>The observed event rate is obtained by averaging the detection probability over the GW parameters that determine the emitted signal and its projection onto a detector network. Given a joint prior <span class="math notranslate nohighlight">\(P(\vec{\theta})\)</span> and a conditional detection probability <span class="math notranslate nohighlight">\(P({\rm obs}\mid\vec{\theta})\)</span>, the population-averaged detection probability is</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 P({\rm obs}) = \int P({\rm obs}\mid \vec{\theta})\,P(\vec{\theta})\,d\vec{\theta} \,,
 \end{split}
-\end{equation}
 \]</div>
 <p>so the annual detectable rate becomes</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 \frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t} = \frac{\Delta N_{\rm U}}{\Delta t} \int P({\rm obs} \mid \vec{\theta})\, P(\vec{\theta})\, d\vec{\theta} \,.
 \end{split}
-\end{equation}
 \]</div>
 <p>Here <span class="math notranslate nohighlight">\(\vec{\theta}\)</span> denotes the full parameter set specifying the source and its configuration relative to the observer. It is convenient to write <span class="math notranslate nohighlight">\(\vec{\theta}=\{\vec{\theta}_{\rm int},\vec{\theta}_{\rm ext}\}\)</span>, where the intrinsic parameters <span class="math notranslate nohighlight">\(\vec{\theta}_{\rm int}\)</span> describe the binary’s source-frame properties and the extrinsic parameters <span class="math notranslate nohighlight">\(\vec{\theta}_{\rm ext}\)</span> describe the source location and orientation in a geocentric equatorial frame that is independent of any particular detector. In this work,</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 \vec{\theta}_{\rm int}
 = \{m^{\rm src}_1, m^{\rm src}_2, a_1, a_2, \theta_1, \theta_2, \phi_{12}, \phi_{\rm JL}\} \,,
 \end{split}
-\end{equation}
 \]</div>
 <p>and</p>
 <div class="math notranslate nohighlight">
 \[ 
-\begin{equation}
 \begin{split}
 \vec{\theta}_{\rm ext}
 = \{z_s, \iota, \phi, \psi, {\rm RA}, {\rm Dec}, t_c\} \, .
 \end{split}
-\end{equation}
 \]</div>
 <p>The sampling priors and parameter ranges are summarized in Table 1, with visual references in Figure 1 and Figure 2. The <code class="docutils literal notranslate"><span class="pre">ler</span></code> package samples source distance through the redshift <span class="math notranslate nohighlight">\(z_s\)</span> rather than the luminosity distance <span class="math notranslate nohighlight">\(d_L\)</span>, and it samples source-frame component masses <span class="math notranslate nohighlight">\(m^{\rm src}_{1,2}\)</span> rather than the redshifted detector-frame masses <span class="math notranslate nohighlight">\(m_{1,2}=(1+z_s)m^{\rm src}_{1,2}\)</span>. Evaluating <span class="math notranslate nohighlight">\(P({\rm obs}\mid\vec{\theta})\)</span> therefore requires an internal mapping to the detector-frame parameterization used by waveform and SNR calculations. In <code class="docutils literal notranslate"><span class="pre">ler</span></code>, the conversion <span class="math notranslate nohighlight">\(z_s\mapsto d_L\)</span> is performed using the assumed cosmology and the mass redshifting <span class="math notranslate nohighlight">\(m^{\rm src}_{1,2}\mapsto m_{1,2}\)</span> is applied internally, while the projection from the geocentric sky frame to each interferometer is handled by the <code class="docutils literal notranslate"><span class="pre">gwsnr</span></code> backend following the conventions of <code class="docutils literal notranslate"><span class="pre">bilby</span></code> and <code class="docutils literal notranslate"><span class="pre">LALSimulation</span></code>.</p>
 <div id="fig1"></div>
@@ -230,32 +220,26 @@ P({\rm obs}) = \int P({\rm obs}\mid \vec{\theta})\,P(\vec{\theta})\,d\vec{\theta
 <p>The <code class="docutils literal notranslate"><span class="pre">ler</span></code> package uses redshift <span class="math notranslate nohighlight">\(z_s\)</span> to represent source distance rather than luminosity distance <span class="math notranslate nohighlight">\(D_L\)</span>, and assumes that <span class="math notranslate nohighlight">\(z_s\)</span> is uncorrelated with the other source parameters. The redshift probability density <span class="math notranslate nohighlight">\(P(z_s)\)</span> is defined as the normalized distribution of sources over cosmic history and is proportional to the detector-frame intrinsic merger rate density <span class="math notranslate nohighlight">\(\frac{d^2 N}{dt \, dV_c}\)</span> and the comoving volume element <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}\)</span>. Equivalently, using the source-frame intrinsic merger rate density  <span class="math notranslate nohighlight">\(\frac{d^2 N}{d\tau dV_c}\)</span> (or <span class="math notranslate nohighlight">\(R_{\rm U}(z_s)\)</span>), it can be written as</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\begin{equation}
 \begin{split}
 P(z_s) &amp; \propto \frac{d^2 N}{dt \, dV_c} \frac{dV_c}{dz_s} \\
 &amp;\propto \frac{d^2 N}{d\tau \, dV_c} \frac{d\tau}{dt} \frac{dV_c}{dz_s} \\
 &amp;\propto \frac{R_{\rm U}(z_s)}{(1+z_s)} \frac{dV_c}{dz_s} \,,
 \end{split}
-\end{equation}
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(R_{\rm U}(z_s)\)</span> is expressed per unit source-frame proper time <span class="math notranslate nohighlight">\(\tau\)</span> and per unit comoving volume, with <span class="math notranslate nohighlight">\(\frac{d\tau}{dt} = \frac{1}{1+z_s}\)</span>. The factor <span class="math notranslate nohighlight">\(\frac{1}{1+z_s}\)</span> accounts for cosmological time dilation between the source-frame time <span class="math notranslate nohighlight">\(\tau\)</span> and the detector-frame time <span class="math notranslate nohighlight">\(t\)</span> (Dominik et al. 2013). The term <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_s}dz_s\)</span> represents the comoving shell volume element at redshift <span class="math notranslate nohighlight">\(z_s\)</span>, and the integration over <span class="math notranslate nohighlight">\(z_s\)</span> in the event-rate calculation is carried out over the full redshift range of interest.</p>
 <p>Normalizing the redshift distribution introduces the constant <span class="math notranslate nohighlight">\({\cal N}_{\rm U}\)</span>, which is equal to the total intrinsic merger rate per year in the detector-frame. The normalized form becomes</p>
 <div class="math notranslate nohighlight">
 \[
-\begin{equation}
 \begin{split}
 P(z_s) = \frac{1}{{\cal N}_{\rm U}} \frac{R_{\rm U}(z_s)}{1+z_s} \frac{dV_c}{dz_s} \,,
 \end{split}
-\end{equation}
 \]</div>
 <p>with</p>
 <div class="math notranslate nohighlight">
 \[
-\begin{equation}
 \begin{split}
 {\cal N}_{\rm U} = \int_{z_{\rm min}}^{z_{\rm max}} \frac{R_{\rm U}(z_s)}{1+z_s} \frac{dV_c}{dz_s} \, dz_s \,.
 \end{split}
-\end{equation}
 \]</div>
 <p>For visualization, <span class="math notranslate nohighlight">\(R_{\rm U}(z_s)\)</span> and <span class="math notranslate nohighlight">\(P(z_s)\)</span> are plotted below.</p>
 <div id="fig3"></div>
@@ -271,23 +255,19 @@ P(z_s) = \frac{1}{{\cal N}_{\rm U}} \frac{R_{\rm U}(z_s)}{1+z_s} \frac{dV_c}{dz_
 <p>Assessing detectability requires mapping the population parameters <span class="math notranslate nohighlight">\(\vec{\theta}\)</span> to the detector-frame parameterization used for waveform generation and signal-to-noise ratio SNR evaluation. In particular, the source redshift <span class="math notranslate nohighlight">\(z_s\)</span> is converted to a luminosity distance <span class="math notranslate nohighlight">\(d_L\)</span> using the assumed cosmology, and source-frame component masses are red-shifted to detector-frame masses via <span class="math notranslate nohighlight">\(m_{1,2}=(1+z_s)\,m^{\rm src}_{1,2}\)</span>. The resulting detector-frame parameter set may be written as</p>
 <div class="math notranslate nohighlight">
 \[
-\begin{equation}
 \begin{split}
 \vec{\theta}_{\rm det}
 = \{d_L, m_1, m_2, a_1, a_2, \theta_1, \theta_2, \phi_{12}, \phi_{\rm JL}, \iota, \phi, \psi, {\rm RA}, {\rm Dec}, t_c\} \,,
 \end{split}
-\end{equation}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\((\iota,{\rm RA},{\rm Dec},\psi)\)</span> specify the binary orientation and sky location in a geocentric frame. The phase <span class="math notranslate nohighlight">\(\phi\)</span> is the reference orbital phase defined at a chosen reference frequency <span class="math notranslate nohighlight">\(f_{\rm ref}\)</span> (default is <span class="math notranslate nohighlight">\(f_{\rm min}\)</span>), and <span class="math notranslate nohighlight">\(t_c\)</span> is the geocentric coalescence time. Spin degrees of freedom specified by <span class="math notranslate nohighlight">\((a_1,a_2,\theta_1,\theta_2,\phi_{12},\phi_{\rm JL})\)</span> are internally converted to the spin coordinates required by the selected waveform model (for example, Cartesian spin components at <span class="math notranslate nohighlight">\(f_{\rm ref}\)</span>). The detector response is then computed for each interferometer by projecting this common source configuration through detector-specific antenna patterns and time delays, yielding per-detector strains and SNR contributions.</p>
 <p>The conditional detection probability <span class="math notranslate nohighlight">\(P({\rm obs}\mid \vec{\theta})\)</span>, equivalently <span class="math notranslate nohighlight">\(P({\rm obs}\mid\vec{\theta}_{\rm det})\)</span>, is determined by applying a detection threshold <span class="math notranslate nohighlight">\(\rho_{\rm th}\)</span> to the observed SNR <span class="math notranslate nohighlight">\(\rho_{\rm obs}\)</span>. In the simplest step-function model, an event is considered detected if its SNR exceeds this threshold. The detection probability is therefore defined as</p>
 <div class="math notranslate nohighlight">
 \[
-\begin{equation}
 \begin{split}
 P({\rm obs} \mid  \vec{\theta}) \equiv P_{\rm det} (\vec{\theta}, \rho_{\rm th}) = 
 \Theta[\rho_{\rm obs}(\vec{\theta}) - \rho_{\rm th}] \, ,
 \end{split}
-\end{equation}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\Theta\)</span> is the Heaviside step function. In <code class="docutils literal notranslate"><span class="pre">ler</span></code>, <span class="math notranslate nohighlight">\(P_{\rm det}\)</span> is evaluated through the <a class="reference external" href="https://gwsnr.hemantaph.com"><code class="docutils literal notranslate"><span class="pre">gwsnr</span></code></a> backend.</p>
 <p>To evaluate this criterion, <span class="math notranslate nohighlight">\(\rho_{\rm obs}\)</span> is modeled statistically from the optimal SNR <span class="math notranslate nohighlight">\(\rho_{\rm opt}\)</span>. Common approaches treat <span class="math notranslate nohighlight">\(\rho_{\rm obs}\)</span> as either a Gaussian random variable with mean <span class="math notranslate nohighlight">\(\rho_{\rm opt}\)</span> and unit variance (Fishbach et al. 2020; Abbott et al. 2019), or as a non-central chi-squared variable (default in <code class="docutils literal notranslate"><span class="pre">gwsnr</span></code> and <code class="docutils literal notranslate"><span class="pre">ler</span></code>) (Essick 2023). The <code class="docutils literal notranslate"><span class="pre">gwsnr</span></code> package computes <span class="math notranslate nohighlight">\(\rho_{\rm opt}\)</span> efficiently using interpolation or direct inner products, enabling rapid estimation of <span class="math notranslate nohighlight">\(P_{\rm det}\)</span>. See the <code class="docutils literal notranslate"><span class="pre">gwsnr</span></code> documentation for details on <a class="reference external" href="https://gwsnr.hemantaph.com/detectionstatistics.html">detection statistics</a>, <a class="reference external" href="https://gwsnr.hemantaph.com/interpolation.html">optimal SNR</a>, and <a class="reference external" href="https://gwsnr.hemantaph.com/probabilityofdetection.html">probability of detection</a>.</p>
@@ -300,13 +280,11 @@ P({\rm obs} \mid  \vec{\theta}) \equiv P_{\rm det} (\vec{\theta}, \rho_{\rm th})
 <p>The observed GW event rate can be expressed as the intrinsic detector-frame rate multiplied by the expectation value of the detection probability over the prior distribution,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\begin{equation}
 \begin{split}
 \frac{\Delta N^{\rm obs}_{\rm U}}{\Delta t}
 &amp;= {\cal N}_{\rm U} \int_{\vec{\theta}} P({\rm obs} \mid \vec{\theta}) \, P(\vec{\theta}) \, d\vec{\theta} \\
 &amp;= {\cal N}_{\rm U} \bigg\langle P({\rm obs} \mid  \vec{\theta}) \bigg\rangle_{\vec{\theta} \sim P(\vec{\theta})} \,,
 \end{split}
-\end{equation}
 \end{split}\]</div>
 <p>which is evaluated numerically using <a class="reference external" href="https://en.wikipedia.org/wiki/Monte_Carlo_integration">Monte Carlo integration</a> by drawing samples from <span class="math notranslate nohighlight">\(P(\vec{\theta})\)</span>.</p>
 </section>
