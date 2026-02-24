@@ -4,7 +4,7 @@ Welcome to :red:`ler`'s documentation!
 .. raw:: html
 
    <div style="text-align: center; margin-top: 0px; margin-bottom: 10px; padding-top: 0px; padding-bottom: 10px;">
-      <img src="_static/lerlogo.png" width="220rem" alt="ler logo">
+      <img src="_static/lerlogo.png" width="220" alt="ler logo">
    </div>
 
 :red:`ler` : :red_first:`LVK` (LIGO-Virgo-KAGRA) :red_first:`Event` (compact-binary mergers) :red_first:`Rate` calculator and simulator
