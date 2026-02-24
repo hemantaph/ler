@@ -5,6 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Interactive EPL+Shear Lens Configuration</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Source+Serif+4:wght@400;600;700&display=swap"
+    rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -13,713 +16,557 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: "Source Serif 4", "Crimson Pro", "Georgia", "Times New Roman", serif;
       background: #fff;
       color: #333;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 10px;
+      padding: 6px;
     }
 
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 18px;
-      max-width: 900px;
-      width: 100%;
-    }
-
-    .controls {
+    .wrapper {
+      width: 520px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      min-width: 220px;
-      flex: 0 0 220px;
-      padding-top: 10px;
-    }
-
-    .slider-group {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .slider-group label {
-      font-size: 13px;
-      font-weight: 500;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .slider-group label span.val {
-      font-weight: 400;
-      color: #666;
-      font-family: monospace;
-    }
-
-    input[type="range"] {
-      width: 100%;
-      cursor: pointer;
-    }
-
-    .plot-area {
-      flex: 1 1 500px;
-      max-width: 600px;
-      position: relative;
+      align-items: center;
     }
 
     canvas {
-      width: 100%;
-      height: auto;
       display: block;
-      border: 1px solid #ddd;
-      border-radius: 4px;
     }
 
-    .legend-box {
+    /* --- Row 2: legend + sliders --- */
+    .row2 {
+      width: 520px;
+      display: flex;
+      gap: 10px;
+      margin-top: 4px;
+      align-items: flex-start;
+    }
+
+    .legend-panel {
+      flex: 0 0 250px;
+      font-family: "Source Serif 4", "Crimson Pro", "Georgia", serif;
       font-size: 12px;
-      line-height: 1.65;
-      padding: 6px 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.95);
-      margin-top: 8px;
-      max-width: 600px;
-      width: 100%;
-      white-space: pre-line;
+      line-height: 1.5;
+      border: none;
+      border-radius: 5px;
+      padding: 8px 10px;
+      background: #E9EBF2;
+    }
+
+    .legend-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #222;
     }
 
     .legend-item {
       display: flex;
       align-items: flex-start;
-      gap: 6px;
+      gap: 5px;
       margin-bottom: 2px;
+    }
+
+    .legend-img-detail {
+      font-size: 11.5px;
+      line-height: 1.45;
     }
 
     .legend-swatch {
       display: inline-block;
-      width: 22px;
-      min-width: 22px;
-      height: 3px;
-      margin-top: 7px;
-      border-radius: 2px;
+      width: 26px;
+      min-width: 26px;
+      height: 0;
     }
 
-    h3 {
-      font-size: 14px;
-      margin-bottom: 6px;
+    .legend-star {
+      font-size: 15px;
+      min-width: 18px;
       text-align: center;
-      font-weight: 600;
+    }
+
+    .legend-sub {
+      font-size: 9px;
+      vertical-align: sub;
+    }
+
+    .sliders-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 4px 0;
+    }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 26px;
+    }
+
+    .slider-row .lbl {
+      min-width: 24px;
+      text-align: right;
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+      font-family: "Source Serif 4", "Georgia", serif;
+    }
+
+    .slider-row input[type="range"] {
+      flex: 1;
+      cursor: pointer;
+      height: 5px;
+    }
+
+    .slider-row .val {
+      min-width: 44px;
+      font-size: 13px;
+      font-family: monospace;
+      color: #333;
     }
   </style>
 </head>
 
 <body>
-
-  <div class="container">
-    <div class="controls">
-      <h3>Lens Parameters</h3>
-      <div class="slider-group">
-        <label>q (axis ratio): <span class="val" id="v_q">0.60</span></label>
-        <input type="range" id="s_q" min="0.1" max="0.99" step="0.01" value="0.60">
+  <div class="wrapper">
+    <!-- Row 1: Plot -->
+    <canvas id="canvas"></canvas>
+    <!-- Row 2: Legend (left) + Sliders (right) -->
+    <div class="row2">
+      <div class="legend-panel" id="legend"></div>
+      <div class="sliders-panel">
+        <div class="slider-row">
+          <span class="lbl">q:</span>
+          <input type="range" id="s_q" min="0.1" max="0.99" step="0.01" value="0.60">
+          <span class="val" id="v_q">0.60</span>
+        </div>
+        <div class="slider-row">
+          <span class="lbl">φ:</span>
+          <input type="range" id="s_phi" min="0" max="3.14159" step="0.01" value="0.52">
+          <span class="val" id="v_phi">0.52</span>
+        </div>
+        <div class="slider-row">
+          <span class="lbl">γ:</span>
+          <input type="range" id="s_gamma" min="1.5" max="2.5" step="0.01" value="1.84">
+          <span class="val" id="v_gamma">1.84</span>
+        </div>
+        <div class="slider-row">
+          <span class="lbl">γ₁:</span>
+          <input type="range" id="s_g1" min="-0.2" max="0.2" step="0.01" value="-0.05">
+          <span class="val" id="v_g1">-0.05</span>
+        </div>
+        <div class="slider-row">
+          <span class="lbl">γ₂:</span>
+          <input type="range" id="s_g2" min="-0.2" max="0.2" step="0.01" value="-0.05">
+          <span class="val" id="v_g2">-0.05</span>
+        </div>
+        <div class="slider-row">
+          <span class="lbl">βₓ:</span>
+          <input type="range" id="s_bx" min="-1.5" max="1.5" step="0.05" value="-0.25">
+          <span class="val" id="v_bx">-0.25</span>
+        </div>
+        <div class="slider-row">
+          <span class="lbl">βᵧ:</span>
+          <input type="range" id="s_by" min="-1.5" max="1.5" step="0.01" value="0.04">
+          <span class="val" id="v_by">0.04</span>
+        </div>
       </div>
-      <div class="slider-group">
-        <label>φ (orientation): <span class="val" id="v_phi">0.52</span></label>
-        <input type="range" id="s_phi" min="0" max="3.14159" step="0.05" value="0.5236">
-      </div>
-      <div class="slider-group">
-        <label>γ (density slope): <span class="val" id="v_gamma">1.84</span></label>
-        <input type="range" id="s_gamma" min="1.5" max="2.5" step="0.01" value="1.84">
-      </div>
-      <div class="slider-group">
-        <label>γ₁ (shear x): <span class="val" id="v_g1">-0.05</span></label>
-        <input type="range" id="s_g1" min="-0.2" max="0.2" step="0.01" value="-0.05">
-      </div>
-      <div class="slider-group">
-        <label>γ₂ (shear y): <span class="val" id="v_g2">-0.05</span></label>
-        <input type="range" id="s_g2" min="-0.2" max="0.2" step="0.01" value="-0.05">
-      </div>
-      <h3 style="margin-top:10px;">Source Position</h3>
-      <div class="slider-group">
-        <label>βₓ: <span class="val" id="v_bx">-0.25</span></label>
-        <input type="range" id="s_bx" min="-1.5" max="1.5" step="0.05" value="-0.25">
-      </div>
-      <div class="slider-group">
-        <label>βᵧ: <span class="val" id="v_by">0.00</span></label>
-        <input type="range" id="s_by" min="-1.5" max="1.5" step="0.05" value="0.0">
-      </div>
-    </div>
-    <div class="plot-area">
-      <canvas id="canvas" width="800" height="800"></canvas>
-      <div class="legend-box" id="legend"></div>
     </div>
   </div>
 
   <script>
     "use strict";
 
-    // ========== Complex number helpers ==========
-    function cre(z) { return z[0]; }
-    function cim(z) { return z[1]; }
+    // ===== Complex helpers =====
     function cmul(a, b) { return [a[0] * b[0] - a[1] * b[1], a[0] * b[1] + a[1] * b[0]]; }
     function cadd(a, b) { return [a[0] + b[0], a[1] + b[1]]; }
-    function csub(a, b) { return [a[0] - b[0], a[1] - b[1]]; }
     function cabs(z) { return Math.sqrt(z[0] * z[0] + z[1] * z[1]); }
-    function carg(z) { return Math.atan2(z[1], z[0]); }
-    function cexp_i(th) { return [Math.cos(th), Math.sin(th)]; }
+    function cexp_i(t) { return [Math.cos(t), Math.sin(t)]; }
     function cscale(s, z) { return [s * z[0], s * z[1]]; }
     function cdot(a, b) { return a[0] * b[0] + a[1] * b[1]; }
 
-    // ========== Coordinate conversions ==========
-    function phi_q2_ellipticity(phi, q) {
-      const e1 = (1 - q) / (1 + q) * Math.cos(2 * phi);
-      const e2 = (1 - q) / (1 + q) * Math.sin(2 * phi);
-      return [e1, e2];
-    }
-    function ellipticity2phi_q(e1, e2) {
-      const phi = Math.atan2(e2, e1) / 2;
-      let c = Math.sqrt(e1 * e1 + e2 * e2);
-      c = Math.min(c, 0.9999);
-      const q = (1 - c) / (1 + c);
-      return [phi, q];
-    }
-    function shear_cartesian2polar(g1, g2) {
-      const phi = Math.atan2(g2, g1) / 2;
-      const g = Math.sqrt(g1 * g1 + g2 * g2);
-      return [phi, g];
-    }
-    function shear_polar2cartesian(phi, g) {
-      return [g * Math.cos(2 * phi), g * Math.sin(2 * phi)];
-    }
-    function pol_to_ell(r, theta, q) {
-      const phi = Math.atan2(Math.sin(theta), Math.cos(theta) * q);
-      const rell = r * Math.sqrt(q * q * Math.cos(theta) ** 2 + Math.sin(theta) ** 2);
-      return [rell, phi];
-    }
-    function pol_to_cart(r, th) { return [r * Math.cos(th), r * Math.sin(th)]; }
-    function cart_to_pol(x, y) {
-      const r = Math.sqrt(x * x + y * y);
-      let th = Math.atan2(y, x);
-      th = ((th % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
-      return [r, th];
-    }
-    function rotmat(th) {
-      const c = Math.cos(th), s = Math.sin(th);
-      return [[c, s], [-s, c]];
-    }
-    function matmul2(M, v) {
-      return [M[0][0] * v[0] + M[0][1] * v[1], M[1][0] * v[0] + M[1][1] * v[1]];
+    // ===== Coordinates =====
+    function phi_q2_ellipticity(p, q) { return [(1 - q) / (1 + q) * Math.cos(2 * p), (1 - q) / (1 + q) * Math.sin(2 * p)]; }
+    function ellipticity2phi_q(e1, e2) { const p = Math.atan2(e2, e1) / 2; let c = Math.min(Math.sqrt(e1 * e1 + e2 * e2), 0.9999); return [p, (1 - c) / (1 + c)]; }
+    function shear_c2p(g1, g2) { return [Math.atan2(g2, g1) / 2, Math.sqrt(g1 * g1 + g2 * g2)]; }
+    function shear_p2c(p, g) { return [g * Math.cos(2 * p), g * Math.sin(2 * p)]; }
+    function pol2ell(r, th, q) { return [r * Math.sqrt(q * q * Math.cos(th) ** 2 + Math.sin(th) ** 2), Math.atan2(Math.sin(th), Math.cos(th) * q)]; }
+    function pol2cart(r, th) { return [r * Math.cos(th), r * Math.sin(th)]; }
+    function cart2pol(x, y) { let t = Math.atan2(y, x); return [Math.sqrt(x * x + y * y), ((t % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)]; }
+    function rotmat(th) { const c = Math.cos(th), s = Math.sin(th); return [[c, s], [-s, c]]; }
+    function mv(M, v) { return [M[0][0] * v[0] + M[0][1] * v[1], M[1][0] * v[0] + M[1][1] * v[1]]; }
+
+    // ===== Cosmology (flat ΛCDM) =====
+    // Match Python: σ=160 km/s, z_l=0.8, z_s=3.0, H0=70, Ωm=0.3, ΩΛ=0.7
+    const COSMO = { H0: 70, Om: 0.3, OL: 0.7, sigma: 160.0, zl: 0.8, zs: 3.0 };
+    const C_KMS = 299792.458; // speed of light in km/s
+    const MPC_TO_KM = 3.0857e19; // 1 Mpc in km
+
+    function comovingDist(z) {
+      // Numerical integration: χ(z) = c/H0 * ∫₀ᶻ dz'/E(z')
+      const N = 1000;
+      const dz = z / N;
+      let sum = 0;
+      for (let i = 0; i < N; i++) {
+        const z1 = i * dz, z2 = (i + 1) * dz;
+        const E1 = Math.sqrt(COSMO.Om * (1 + z1) ** 3 + COSMO.OL);
+        const E2 = Math.sqrt(COSMO.Om * (1 + z2) ** 3 + COSMO.OL);
+        sum += 0.5 * (1 / E1 + 1 / E2) * dz;
+      }
+      return (C_KMS / COSMO.H0) * sum; // in Mpc
     }
 
-    // ========== Omega (complex series) ==========
-    function omega_scalar(phi, t, q) {
+    // Pre-compute cosmological quantities
+    const chi_l = comovingDist(COSMO.zl);
+    const chi_s = comovingDist(COSMO.zs);
+    const D_l = chi_l / (1 + COSMO.zl); // Mpc
+    const D_s = chi_s / (1 + COSMO.zs); // Mpc
+    const D_ls = (chi_s - chi_l) / (1 + COSMO.zs); // Mpc (flat)
+    const theta_E_phys = 4 * Math.PI * (COSMO.sigma / C_KMS) ** 2 * D_ls / D_s; // radians
+    // Time-delay distance: D_Δt = (1+z_l)*D_l*D_s/D_ls [Mpc]
+    const D_dt = (1 + COSMO.zl) * D_l * D_s / D_ls;
+    // Conversion: Δt_days = D_dt[Mpc] * θ_E² * Δτ / (c[Mpc/day])
+    // c in Mpc/day = C_KMS * 86400 / MPC_TO_KM
+    const c_Mpc_day = C_KMS * 86400 / MPC_TO_KM;
+    const TD_FACTOR = D_dt * theta_E_phys * theta_E_phys / c_Mpc_day; // days per unit Δτ
+
+    // ===== Omega =====
+    function omega(phi, t, q) {
       const f = (1 - q) / (1 + q);
-      const niter = Math.min(200, Math.floor(Math.log(1e-16) / Math.log(Math.abs(f) + 1e-30)) + 2);
-      const ei_phi = cexp_i(phi);
-      const fact = cscale(-f, cexp_i(2 * phi));
-      let Omega = [ei_phi[0], ei_phi[1]];
-      let result = [0, 0];
-      for (let n = 1; n < niter; n++) {
-        result = cadd(result, Omega);
-        const coeff = (2 * n - (2 - t)) / (2 * n + (2 - t));
-        Omega = cscale(coeff, cmul(Omega, fact));
-      }
-      result = cadd(result, Omega);
-      return result;
+      const ni = Math.min(200, Math.floor(Math.log(1e-16) / Math.log(Math.abs(f) + 1e-30)) + 2);
+      let Om = [Math.cos(phi), Math.sin(phi)];
+      const fc = cscale(-f, cexp_i(2 * phi));
+      let res = [0, 0];
+      for (let n = 1; n < ni; n++) { res = cadd(res, Om); Om = cscale((2 * n - (2 - t)) / (2 * n + (2 - t)), cmul(Om, fc)); }
+      return cadd(res, Om);
     }
 
-    // ========== Alpha (deflection) ==========
-    function alpha_epl(x, y, b, q, t, Omega) {
-      const zz = [x * q, y];
-      const R = cabs(zz);
-      const prefac = (2 * b) / (1 + q);
-      let frac = 0;
-      if (R > 1e-15) {
-        frac = Math.pow(b / R, t) * R / b;
-      }
-      if (!isFinite(frac)) frac = 0;
-      return cscale(prefac * frac, Omega);
+    // ===== Alpha =====
+    function alpha_epl(x, y, b, q, t, Om) {
+      const R = cabs([x * q, y]), pf = (2 * b) / (1 + q);
+      let fr = R > 1e-15 ? Math.pow(b / R, t) * R / b : 0; if (!isFinite(fr)) fr = 0;
+      return cscale(pf * fr, Om);
+    }
+    function alpha_es(x, y, b, q, t, g1, g2, Om) {
+      const a = alpha_epl(x, y, b, q, t, Om);
+      return [a[0] + g1 * x + g2 * y, a[1] + g2 * x - g1 * y];
     }
 
-    function alpha_epl_shear(x, y, b, q, t, g1, g2, Omega) {
-      const al = alpha_epl(x, y, b, q, t, Omega);
-      return [al[0] + g1 * x + g2 * y, al[1] + g2 * x - g1 * y];
+    // ===== Quadratic =====
+    function sqeq(a, b, c) {
+      const d = b * b - 4 * a * c; if (d < 0) return [NaN, NaN];
+      const s = Math.sqrt(d), sg = b >= 0 ? 1 : -1, dn = -b - sg * s;
+      if (b !== 0) { if (a !== 0) return [dn / (2 * a), 2 * c / dn]; return [-c / b, -c / b + 1e-8]; }
+      const sq = Math.sqrt(-c / a); return [-sq, sq];
     }
 
-    // ========== Solve quadratic ==========
-    function solvequad(a, b, c) {
-      const disc = b * b - 4 * a * c;
-      if (disc < 0) return [NaN, NaN];
-      const sD = Math.sqrt(disc);
-      const sgn = b >= 0 ? 1 : -1;
-      const denom = -b - sgn * sD;
-      let x1, x2;
-      if (b !== 0) {
-        if (a !== 0) {
-          x1 = denom / (2 * a);
-          x2 = 2 * c / denom;
-        } else {
-          x1 = -c / b;
-          x2 = -c / b + 1e-8;
-        }
-      } else {
-        const sq = Math.sqrt(-c / a);
-        x1 = -sq;
-        x2 = sq;
+    // ===== Caustics =====
+    function computeCaustics(qi, pi, gp, g1u, g2u) {
+      const [e1, e2] = phi_q2_ellipticity(pi, qi);
+      const [te, q] = ellipticity2phi_q(e1, e2);
+      let [tg, gm] = shear_c2p(g1u, g2u);
+      const b = Math.sqrt(q); tg -= te;
+      const [g1, g2] = shear_p2c(tg, gm);
+      const M = rotmat(-te), t = gp - 1, mi = -100, N = 500;
+      const x4 = [], y4 = [], xc = [], yc = [], xd = [], yd = [], xq = [], yq = [];
+      const rC = [], tC = [], r4 = [], t4 = [];
+      for (let i = 0; i < N; i++) {
+        const th = (2 * Math.PI * i) / N;
+        const [R, ph] = pol2ell(1, th, q);
+        const Om = omega(ph, t, q), fr = 1 / R;
+        const et = cexp_i(th), e2t = cexp_i(2 * th);
+        let aa = 1, bb = -(2 - t);
+        let cc = (1 - t) * (2 - t) * cdot(et, Om) / fr * 2 / (1 + q);
+        cc -= (1 - t) ** 2 * (2 / (1 + q)) ** 2 * (Om[0] * Om[0] + Om[1] * Om[1]) / fr ** 2;
+        const gre = -e2t[0] * (2 - t) / 2 + (1 - t) * et[0] * 2 / (1 + q) * Om[0] / fr - (1 - t) * et[1] * 2 / (1 + q) * Om[1] / fr;
+        const gim = -e2t[1] * (2 - t) / 2 + (1 - t) * et[0] * 2 / (1 + q) * Om[1] / fr + (1 - t) * et[1] * 2 / (1 + q) * Om[0] / fr;
+        aa -= g1 * g1 + g2 * g2; bb -= 2 * (g1 * gre + g2 * gim);
+        const [, u2] = sqeq(cc, bb, aa);
+        let xr4 = NaN, yr4 = NaN;
+        if (isFinite(u2) && u2 > 0) { const r = b * Math.pow(u2, -1 / t) * fr;[xr4, yr4] = pol2cart(r, th); }
+        let xrc = NaN, yrc = NaN;
+        if (t > 1) { const [, uc] = sqeq(cc, bb, aa - mi); if (isFinite(uc) && uc > 0) { const r = b * Math.pow(uc, -1 / t) * fr;[xrc, yrc] = pol2cart(r, th); } }
+        else { const [uc] = sqeq(cc, bb, aa + mi); if (isFinite(uc) && uc > 0) { const r = b * Math.pow(uc, -1 / t) * fr;[xrc, yrc] = pol2cart(r, th); } }
+        let xa4 = NaN, ya4 = NaN, xac = NaN, yac = NaN;
+        if (isFinite(xr4)) { const O = omega(Math.atan2(yr4, xr4 * q), t, q); const a = alpha_es(xr4, yr4, b, q, t, g1, g2, O); xa4 = xr4 - a[0]; ya4 = yr4 - a[1]; }
+        if (isFinite(xrc)) { const O = omega(Math.atan2(yrc, xrc * q), t, q); const a = alpha_es(xrc, yrc, b, q, t, g1, g2, O); xac = xrc - a[0]; yac = yrc - a[1]; }
+        let p4_ = mv(M, [xa4, ya4]), pc_ = mv(M, [xac, yac]);
+        x4.push(p4_[0]); y4.push(p4_[1]); xc.push(pc_[0]); yc.push(pc_[1]);
+        const [rr4, tt4] = cart2pol(xa4, ya4), [rrc, ttc] = cart2pol(xac, yac);
+        r4.push(rr4); t4.push(tt4); rC.push(rrc); tC.push(ttc);
       }
-      return [x1, x2];
+      for (let i = 0; i < N; i++) {
+        const th = t4[i], r2 = interp(th, tC, rC, 2 * Math.PI);
+        const rD = Math.max(r4[i], r2), rQ = Math.min(r4[i], r2);
+        const pd = mv(M, pol2cart(rD, th)), pq = mv(M, pol2cart(rQ, th));
+        xd.push(pd[0]); yd.push(pd[1]); xq.push(pq[0]); yq.push(pq[1]);
+      }
+      return { x4, y4, xc, yc, xd, yd, xq, yq };
+    }
+    function interp(x, xp, fp, P) {
+      const n = xp.length, idx = Array.from({ length: n }, (_, i) => i).sort((a, b) => xp[a] - xp[b]);
+      const sx = idx.map(i => xp[i]), sf = idx.map(i => fp[i]);
+      let xn = ((x % P) + P) % P, lo = 0, hi = n - 1;
+      for (let i = 0; i < n - 1; i++) { if (sx[i] <= xn && sx[i + 1] > xn) { lo = i; hi = i + 1; break; } if (i === n - 2) { lo = n - 1; hi = 0; } }
+      const dx = (hi > lo) ? (sx[hi] - sx[lo]) : (sx[hi] + P - sx[lo]);
+      const tt = (dx > 1e-15) ? ((xn - sx[lo] + (xn < sx[lo] ? P : 0)) / dx) : 0;
+      return sf[lo] + tt * (sf[hi] - sf[lo]);
     }
 
-    // ========== Compute caustics ==========
-    function computeCaustics(q_in, phi_in, gamma_power, g1_unr, g2_unr) {
-      const [e1, e2] = phi_q2_ellipticity(phi_in, q_in);
-      const [theta_ell, q] = ellipticity2phi_q(e1, e2);
-      let [theta_gamma, gamma_mag] = shear_cartesian2polar(g1_unr, g2_unr);
-      const b = Math.sqrt(q) * 1.0; // theta_E = 1
-      theta_gamma -= theta_ell;
-      const [g1, g2] = shear_polar2cartesian(theta_gamma, gamma_mag);
-      const M = rotmat(-theta_ell);
-      const t = gamma_power - 1;
-      const maginf = -100;
-      const num_th = 500;
-
-      const xs_4 = [], ys_4 = [], xs_cut = [], ys_cut = [];
-      const xs_double = [], ys_double = [], xs_quad = [], ys_quad = [];
-      const thArr = [], rCut = [], thCut = [], r4Arr = [], th4Arr = [];
-
-      for (let i = 0; i < num_th; i++) {
-        const theta = (2 * Math.PI * i) / num_th;
-        const [R, phi] = pol_to_ell(1, theta, q);
-        const Om = omega_scalar(phi, t, q);
-        const frac_roverR = 1 / R;
-
-        // Quad critical curve
-        const ei_th = cexp_i(theta);
-        const ei_2th = cexp_i(2 * theta);
-        let aa = 1;
-        let bb = -(2 - t);
-        const cdotVal = cdot(ei_th, Om);
-        let cc = (1 - t) * (2 - t) * cdotVal / frac_roverR * 2 / (1 + q);
-        cc -= (1 - t) ** 2 * (2 / (1 + q)) ** 2 * (Om[0] * Om[0] + Om[1] * Om[1]) / frac_roverR ** 2;
-
-        // Shear
-        const gi_fac_re = -ei_2th[0] * (2 - t) / 2 + (1 - t) * ei_th[0] * 2 / (1 + q) * Om[0] / frac_roverR - (1 - t) * ei_th[1] * 2 / (1 + q) * Om[1] / frac_roverR;
-        const gi_fac_im = -ei_2th[1] * (2 - t) / 2 + (1 - t) * ei_th[0] * 2 / (1 + q) * Om[1] / frac_roverR + (1 - t) * ei_th[1] * 2 / (1 + q) * Om[0] / frac_roverR;
-        const gammaMagSq = g1 * g1 + g2 * g2;
-        aa -= gammaMagSq;
-        bb -= 2 * (g1 * gi_fac_re + g2 * gi_fac_im);
-
-        // Diamond critical curve
-        const [u1_4, u2_4] = solvequad(cc, bb, aa);
-        let xcr4, ycr4;
-        if (isFinite(u2_4) && u2_4 > 0) {
-          const r_cr4 = b * Math.pow(u2_4, -1 / t) * frac_roverR;
-          [xcr4, ycr4] = pol_to_cart(r_cr4, theta);
-        } else {
-          xcr4 = NaN; ycr4 = NaN;
-        }
-
-        // Outer (cut) critical curve
-        let xcr_c, ycr_c;
-        if (t > 1) {
-          const [uc1, uc2] = solvequad(cc, bb, aa - maginf);
-          if (isFinite(uc2) && uc2 > 0) {
-            const r_crc = b * Math.pow(uc2, -1 / t) * frac_roverR;
-            [xcr_c, ycr_c] = pol_to_cart(r_crc, theta);
-          } else { xcr_c = NaN; ycr_c = NaN; }
-        } else {
-          const [uc1, uc2] = solvequad(cc, bb, aa + maginf);
-          if (isFinite(uc1) && uc1 > 0) {
-            const r_crc = b * Math.pow(uc1, -1 / t) * frac_roverR;
-            [xcr_c, ycr_c] = pol_to_cart(r_crc, theta);
-          } else { xcr_c = NaN; ycr_c = NaN; }
-        }
-
-        // Ray-shoot to source plane
-        let xca4 = NaN, yca4 = NaN, xca_c = NaN, yca_c = NaN;
-        if (isFinite(xcr4)) {
-          const phi4 = Math.atan2(ycr4 * 1, xcr4 * q);
-          const Om4 = omega_scalar(phi4, t, q);
-          const al4 = alpha_epl_shear(xcr4, ycr4, b, q, t, g1, g2, Om4);
-          xca4 = xcr4 - al4[0];
-          yca4 = ycr4 - al4[1];
-        }
-        if (isFinite(xcr_c)) {
-          const phi_c = Math.atan2(ycr_c * 1, xcr_c * q);
-          const Omc = omega_scalar(phi_c, t, q);
-          const alc = alpha_epl_shear(xcr_c, ycr_c, b, q, t, g1, g2, Omc);
-          xca_c = xcr_c - alc[0];
-          yca_c = ycr_c - alc[1];
-        }
-
-        // Rotate to physical frame
-        let p4 = matmul2(M, [xca4, yca4]);
-        let pc = matmul2(M, [xca_c, yca_c]);
-        xs_4.push(p4[0]); ys_4.push(p4[1]);
-        xs_cut.push(pc[0]); ys_cut.push(pc[1]);
-
-        // For double/quad envelope: convert to polar, interp
-        const [r4, t4] = cart_to_pol(xca4, yca4);
-        const [rc, tc] = cart_to_pol(xca_c, yca_c);
-        r4Arr.push(r4); th4Arr.push(t4);
-        rCut.push(rc); thCut.push(tc);
+    // ===== Image finder =====
+    function findImages(bx, by, qi, pi, gp, g1u, g2u) {
+      const [e1, e2] = phi_q2_ellipticity(pi, qi);
+      const [te, q] = ellipticity2phi_q(e1, e2);
+      let [tg, gm] = shear_c2p(g1u, g2u);
+      const b = Math.sqrt(q); tg -= te;
+      const [g1, g2] = shear_p2c(tg, gm);
+      const M = rotmat(-te), Mi = rotmat(te), t = gp - 1;
+      const bl = mv(Mi, [bx, by]);
+      const gN = 150, rng = 2.5, cands = [];
+      for (let ix = 0; ix < gN; ix++)for (let iy = 0; iy < gN; iy++) {
+        const x = -rng + (2 * rng * ix) / (gN - 1), y = -rng + (2 * rng * iy) / (gN - 1);
+        const a = alpha_es(x, y, b, q, t, g1, g2, omega(Math.atan2(y, x * q), t, q));
+        const dx = x - a[0] - bl[0], dy = y - a[1] - bl[1];
+        if (Math.sqrt(dx * dx + dy * dy) < 2 * rng / gN * 2.5) cands.push([x, y]);
       }
-
-      // Compute double and quad envelopes by interpolation of cut onto 4's theta
-      for (let i = 0; i < num_th; i++) {
-        const th = th4Arr[i];
-        // Linear interpolation of rCut at th (periodic)
-        const r2 = interpPeriodic(th, thCut, rCut, 2 * Math.PI);
-        const rD = Math.max(r4Arr[i], r2);  // double = max
-        const rQ = Math.min(r4Arr[i], r2);  // quad = min
-        const [xd, yd] = pol_to_cart(rD, th);
-        const [xq, yq] = pol_to_cart(rQ, th);
-        const pd = matmul2(M, [xd, yd]);
-        const pq = matmul2(M, [xq, yq]);
-        xs_double.push(pd[0]); ys_double.push(pd[1]);
-        xs_quad.push(pq[0]); ys_quad.push(pq[1]);
-      }
-
-      return { xs_4, ys_4, xs_cut, ys_cut, xs_double, ys_double, xs_quad, ys_quad };
-    }
-
-    function interpPeriodic(x, xp, fp, period) {
-      // Sort xp and fp together by xp
-      const n = xp.length;
-      const idx = Array.from({ length: n }, (_, i) => i).sort((a, b) => xp[a] - xp[b]);
-      const sx = idx.map(i => xp[i]);
-      const sf = idx.map(i => fp[i]);
-      // Normalize x to [0, period)
-      let xn = ((x % period) + period) % period;
-      // Find surrounding indices
-      let lo = 0, hi = n - 1;
-      for (let i = 0; i < n - 1; i++) {
-        if (sx[i] <= xn && sx[i + 1] > xn) { lo = i; hi = i + 1; break; }
-        if (i === n - 2) { lo = n - 1; hi = 0; }
-      }
-      const dx = (hi > lo) ? (sx[hi] - sx[lo]) : (sx[hi] + period - sx[lo]);
-      const t = (dx > 1e-15) ? ((xn - sx[lo] + (xn < sx[lo] ? period : 0)) / dx) : 0;
-      return sf[lo] + t * (sf[hi] - sf[lo]);
-    }
-
-    // ========== Image finder (grid-based) ==========
-    function findImages(beta_x, beta_y, q_in, phi_in, gamma_power, g1_unr, g2_unr) {
-      const [e1, e2] = phi_q2_ellipticity(phi_in, q_in);
-      const [theta_ell, q] = ellipticity2phi_q(e1, e2);
-      let [theta_gamma, gamma_mag] = shear_cartesian2polar(g1_unr, g2_unr);
-      const b = Math.sqrt(q) * 1.0;
-      theta_gamma -= theta_ell;
-      const [g1, g2] = shear_polar2cartesian(theta_gamma, gamma_mag);
-      const M = rotmat(-theta_ell);
-      const Minv = rotmat(theta_ell);
-      const t = gamma_power - 1;
-
-      // Transform source position to lens frame
-      const beta_lens = matmul2(Minv, [beta_x, beta_y]);
-
-      // Grid search + Newton refinement
-      const gridN = 150;
-      const range = 2.5;
-      const candidates = [];
-
-      for (let ix = 0; ix < gridN; ix++) {
-        for (let iy = 0; iy < gridN; iy++) {
-          const x = -range + (2 * range * ix) / (gridN - 1);
-          const y = -range + (2 * range * iy) / (gridN - 1);
-          const phi = Math.atan2(y, x * q);
-          const Om = omega_scalar(phi, t, q);
-          const al = alpha_epl_shear(x, y, b, q, t, g1, g2, Om);
-          const sx = x - al[0];
-          const sy = y - al[1];
-          const dx = sx - beta_lens[0];
-          const dy = sy - beta_lens[1];
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 2 * range / gridN * 2.5) {
-            candidates.push([x, y, dist]);
-          }
-        }
-      }
-
-      // Refine with Newton's method
-      const images = [];
-      const h = 1e-5;
-      for (const [cx, cy] of candidates) {
+      const imgs = [], h = 1e-5;
+      for (const [cx, cy] of cands) {
         let x = cx, y = cy;
-        for (let iter = 0; iter < 30; iter++) {
-          const phi0 = Math.atan2(y, x * q);
-          const Om0 = omega_scalar(phi0, t, q);
-          const al0 = alpha_epl_shear(x, y, b, q, t, g1, g2, Om0);
-          const fx = x - al0[0] - beta_lens[0];
-          const fy = y - al0[1] - beta_lens[1];
+        for (let it = 0; it < 30; it++) {
+          const O = omega(Math.atan2(y, x * q), t, q);
+          const a0 = alpha_es(x, y, b, q, t, g1, g2, O);
+          const fx = x - a0[0] - bl[0], fy = y - a0[1] - bl[1];
           if (Math.sqrt(fx * fx + fy * fy) < 1e-12) break;
-
-          // Numerical Jacobian
-          const phi_xp = Math.atan2(y, (x + h) * q);
-          const Om_xp = omega_scalar(phi_xp, t, q);
-          const al_xp = alpha_epl_shear(x + h, y, b, q, t, g1, g2, Om_xp);
-          const phi_yp = Math.atan2(y + h, x * q);
-          const Om_yp = omega_scalar(phi_yp, t, q);
-          const al_yp = alpha_epl_shear(x, y + h, b, q, t, g1, g2, Om_yp);
-
-          const J00 = 1 - (al_xp[0] - al0[0]) / h;
-          const J01 = -(al_yp[0] - al0[1]) / h;
-          const J10 = -(al_xp[1] - al0[0]) / h;
-          const J11 = 1 - (al_yp[1] - al0[1]) / h;
-
-          // Fix Jacobian computation
-          const j00 = 1 - (al_xp[0] - al0[0]) / h;
-          const j01 = -(al_yp[0] - al0[0]) / h;
-          const j10 = -(al_xp[1] - al0[1]) / h;
-          const j11 = 1 - (al_yp[1] - al0[1]) / h;
-
-          const det = j00 * j11 - j01 * j10;
-          if (Math.abs(det) < 1e-20) break;
-          const dx = (j11 * fx - j01 * fy) / det;
-          const dy = (-j10 * fx + j00 * fy) / det;
-          x -= dx;
-          y -= dy;
+          const ax = alpha_es(x + h, y, b, q, t, g1, g2, omega(Math.atan2(y, (x + h) * q), t, q));
+          const ay = alpha_es(x, y + h, b, q, t, g1, g2, omega(Math.atan2(y + h, x * q), t, q));
+          const j00 = 1 - (ax[0] - a0[0]) / h, j01 = -(ay[0] - a0[0]) / h;
+          const j10 = -(ax[1] - a0[1]) / h, j11 = 1 - (ay[1] - a0[1]) / h;
+          const d = j00 * j11 - j01 * j10; if (Math.abs(d) < 1e-20) break;
+          x -= (j11 * fx - j01 * fy) / d; y -= (-j10 * fx + j00 * fy) / d;
         }
-
-        // Check convergence
-        const phi_f = Math.atan2(y, x * q);
-        const Om_f = omega_scalar(phi_f, t, q);
-        const al_f = alpha_epl_shear(x, y, b, q, t, g1, g2, Om_f);
-        const res = Math.sqrt((x - al_f[0] - beta_lens[0]) ** 2 + (y - al_f[1] - beta_lens[1]) ** 2);
-        if (res < 1e-6) {
-          // Check if duplicate
-          let dup = false;
-          for (const img of images) {
-            if (Math.sqrt((img[0] - x) ** 2 + (img[1] - y) ** 2) < 1e-4) { dup = true; break; }
-          }
-          if (!dup) images.push([x, y]);
+        const Of = omega(Math.atan2(y, x * q), t, q);
+        const af = alpha_es(x, y, b, q, t, g1, g2, Of);
+        if (Math.sqrt((x - af[0] - bl[0]) ** 2 + (y - af[1] - bl[1]) ** 2) < 1e-6) {
+          let dup = false; for (const im of imgs) if (Math.sqrt((im[0] - x) ** 2 + (im[1] - y) ** 2) < 1e-4) { dup = true; break; }
+          if (!dup) imgs.push([x, y]);
         }
       }
-
-      // Compute magnification and type for each image
-      const result = [];
-      for (const [ix, iy] of images) {
-        const phi0 = Math.atan2(iy, ix * q);
-        const Om0 = omega_scalar(phi0, t, q);
-        const al0 = alpha_epl_shear(ix, iy, b, q, t, g1, g2, Om0);
-
-        const phi_xp = Math.atan2(iy, (ix + h) * q);
-        const Om_xp = omega_scalar(phi_xp, t, q);
-        const al_xp = alpha_epl_shear(ix + h, iy, b, q, t, g1, g2, Om_xp);
-        const phi_yp = Math.atan2(iy + h, ix * q);
-        const Om_yp = omega_scalar(phi_yp, t, q);
-        const al_yp = alpha_epl_shear(ix, iy + h, b, q, t, g1, g2, Om_yp);
-
-        const a11 = 1 - (al_xp[0] - al0[0]) / h;
-        const a12 = -(al_yp[0] - al0[0]) / h;
-        const a21 = -(al_xp[1] - al0[1]) / h;
-        const a22 = 1 - (al_yp[1] - al0[1]) / h;
-        const det = a11 * a22 - a12 * a21;
-        const tr = a11 + a22;
-        const mu = 1 / Math.abs(det);
-
-        let type;
-        if (det < 0) type = 'II';
-        else if (tr > 0) type = 'I';
-        else type = 'III';
-
-        // Rotate to physical frame
-        const pos = matmul2(M, [ix, iy]);
-        // Arrival time (Fermat potential) for sorting
-        const dt = 0.5 * ((ix - beta_lens[0]) ** 2 + (iy - beta_lens[1]) ** 2);
-        result.push({ x: pos[0], y: pos[1], mu, type, dt });
+      const res = [];
+      for (const [ix, iy] of imgs) {
+        const O = omega(Math.atan2(iy, ix * q), t, q);
+        const a0 = alpha_es(ix, iy, b, q, t, g1, g2, O);
+        const ax = alpha_es(ix + h, iy, b, q, t, g1, g2, omega(Math.atan2(iy, (ix + h) * q), t, q));
+        const ay = alpha_es(ix, iy + h, b, q, t, g1, g2, omega(Math.atan2(iy + h, ix * q), t, q));
+        const a11 = 1 - (ax[0] - a0[0]) / h, a12 = -(ay[0] - a0[0]) / h;
+        const a21 = -(ax[1] - a0[1]) / h, a22 = 1 - (ay[1] - a0[1]) / h;
+        const det = a11 * a22 - a12 * a21, tr = a11 + a22, mu = 1 / Math.abs(det);
+        let tp; if (det < 0) tp = 'II'; else if (tr > 0) tp = 'I'; else tp = 'III';
+        const pos = mv(M, [ix, iy]);
+        // --- Fermat potential: τ = ½|θ−β|² − ψ(θ) ---
+        // EPL potential via Euler's theorem: ψ_EPL = (x·αx + y·αy) / (3−γ)
+        const a_epl = alpha_epl(ix, iy, b, q, t, O);
+        const psi_epl = (ix * a_epl[0] + iy * a_epl[1]) / (2 - t); // 2-t = 3-γ
+        // Shear potential: ψ_shear = ½(γ₁(x²−y²) + 2γ₂xy)
+        const psi_shear = 0.5 * (g1 * (ix * ix - iy * iy) + 2 * g2 * ix * iy);
+        const psi_total = psi_epl + psi_shear;
+        const geom = 0.5 * ((ix - bl[0]) ** 2 + (iy - bl[1]) ** 2);
+        const tau = geom - psi_total; // Fermat potential (dimensionless, θ_E units)
+        res.push({ x: pos[0], y: pos[1], mu, type: tp, tau });
       }
-
-      // Sort by arrival time
-      result.sort((a, b) => a.dt - b.dt);
-      return result;
+      res.sort((a, b) => a.tau - b.tau); // sort by arrival time
+      return res;
     }
 
-    // ========== Drawing ==========
+    // ===== Drawing =====
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     const DPR = window.devicePixelRatio || 1;
-    const W = 800, H = 800;
-    canvas.width = W * DPR;
-    canvas.height = H * DPR;
-    canvas.style.width = W / 1.5 + 'px';
-    canvas.style.height = H / 1.5 + 'px';
+
+    // Seaborn darkgrid colors
+    const LIGHT_BG = '#F5F6FA';
+    const GRID_COL = '#FFFFFF';
+    const LEG_BG = '#E9EBF2';
+    const SERIF = '"Source Serif 4","Crimson Pro","Georgia","Times New Roman",serif';
+
+    // Canvas layout (user set TW=520)
+    const MARGIN = { top: 38, right: 14, bottom: 54, left: 58 };
+    const PLOT_W = 520 - MARGIN.left - MARGIN.right; // 448
+    const PLOT_H = PLOT_W; // square
+    const TW = 520, TH = MARGIN.top + PLOT_H + MARGIN.bottom;
+    canvas.width = TW * DPR; canvas.height = TH * DPR;
+    canvas.style.width = TW + 'px'; canvas.style.height = TH + 'px';
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 
-    const imgColors = ['#1E88E5', '#7E57C2', '#8D6E63', '#616161'];
+    const iCols = ['#1E88E5', '#7E57C2', '#8D6E63', '#616161'];
+    const dim = 1.3; // matches Python: dim = theta_E * 1.3
+    // Physical scale: θ_E in units of 10⁻⁶ rad
+    const theta_E_1e6 = theta_E_phys * 1e6; // ≈ 2.0094
 
-    function world2canvas(wx, wy, dim) {
-      const cx = W / 2 + (wx / dim) * (W / 2);
-      const cy = H / 2 - (wy / dim) * (H / 2);
-      return [cx, cy];
+    function w2p(wx, wy) {
+      return [MARGIN.left + (wx / dim + 1) / 2 * PLOT_W, MARGIN.top + (1 - (wy / dim + 1) / 2) * PLOT_H];
     }
 
     function drawPlot() {
-      const q = parseFloat(document.getElementById('s_q').value);
-      const phi = parseFloat(document.getElementById('s_phi').value);
-      const gamma = parseFloat(document.getElementById('s_gamma').value);
-      const g1 = parseFloat(document.getElementById('s_g1').value);
-      const g2 = parseFloat(document.getElementById('s_g2').value);
-      const bx = parseFloat(document.getElementById('s_bx').value);
-      const by = parseFloat(document.getElementById('s_by').value);
-
-      // Update labels
+      const q = +document.getElementById('s_q').value;
+      const phi = +document.getElementById('s_phi').value;
+      const gamma = +document.getElementById('s_gamma').value;
+      const g1 = +document.getElementById('s_g1').value;
+      const g2 = +document.getElementById('s_g2').value;
+      const bx = +document.getElementById('s_bx').value;
+      const by = +document.getElementById('s_by').value;
       document.getElementById('v_q').textContent = q.toFixed(2);
       document.getElementById('v_phi').textContent = phi.toFixed(2);
       document.getElementById('v_gamma').textContent = gamma.toFixed(2);
       document.getElementById('v_g1').textContent = g1.toFixed(2);
-      document.getElementById('v_g2').textContent = by.toFixed(2);
+      document.getElementById('v_g2').textContent = g2.toFixed(2);
       document.getElementById('v_bx').textContent = bx.toFixed(2);
       document.getElementById('v_by').textContent = by.toFixed(2);
-      document.getElementById('v_g2').textContent = g2.toFixed(2);
 
-      // Compute caustics
-      const caust = computeCaustics(q, phi, gamma, g1, g2);
-      const images = findImages(bx, by, q, phi, gamma, g1, g2);
+      const cau = computeCaustics(q, phi, gamma, g1, g2);
+      const imgs = findImages(bx, by, q, phi, gamma, g1, g2);
 
-      const dim = 1.6;
+      // Clear entire canvas white
+      ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, TW, TH);
 
-      // Clear
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(0, 0, W, H);
+      // Title — serif, bold (matches axes.titlesize=18 scaled)
+      ctx.fillStyle = '#222';
+      ctx.font = `bold 14px ${SERIF}`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+      ctx.fillText('Interactive Lens Configuration (θ\u0045 \u2248 ' + theta_E_phys.toExponential(1) + ' rad)', TW / 2, MARGIN.top - 6);
 
-      // Grid
-      ctx.strokeStyle = '#e0e0e0';
-      ctx.lineWidth = 0.6;
-      ctx.setLineDash([4, 4]);
-      for (let v = -1.5; v <= 1.5; v += 0.5) {
-        const [x1, y1] = world2canvas(v, -dim, dim);
-        const [x2, y2] = world2canvas(v, dim, dim);
-        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
-        const [x3, y3] = world2canvas(-dim, v, dim);
-        const [x4, y4] = world2canvas(dim, v, dim);
-        ctx.beginPath(); ctx.moveTo(x3, y3); ctx.lineTo(x4, y4); ctx.stroke();
+      // Plot area background — seaborn darkgrid light gray-blue
+      ctx.fillStyle = LIGHT_BG;
+      ctx.fillRect(MARGIN.left, MARGIN.top, PLOT_W, PLOT_H);
+
+      // Grid + tick positions: integer multiples of 10⁻⁶ rad, converted to normalized coords
+      // Physical ticks in 10⁻⁶: [-2, -1, 0, 1, 2]
+      // Normalized: tick_phys_1e6 * 1e-6 / theta_E_phys = tick_phys_1e6 / theta_E_1e6
+      const tickPhys = [-2, -1, 0, 1, 2]; // in units of 10⁻⁶ rad
+      const tvs = tickPhys.map(t => t / theta_E_1e6); // normalized coords
+      ctx.strokeStyle = GRID_COL;
+      ctx.lineWidth = 2.0;
+      ctx.setLineDash([]);
+      // Vertical grid
+      for (const v of tvs) {
+        const [gx] = w2p(v, 0);
+        ctx.beginPath(); ctx.moveTo(gx, MARGIN.top); ctx.lineTo(gx, MARGIN.top + PLOT_H); ctx.stroke();
       }
+      // Horizontal grid
+      for (const v of tvs) {
+        const [, gy] = w2p(0, v);
+        ctx.beginPath(); ctx.moveTo(MARGIN.left, gy); ctx.lineTo(MARGIN.left + PLOT_W, gy); ctx.stroke();
+      }
+
+      // NO spines/frame (seaborn darkgrid removes them)
+
+      // Clip for drawing data
+      ctx.save(); ctx.beginPath(); ctx.rect(MARGIN.left, MARGIN.top, PLOT_W, PLOT_H); ctx.clip();
+
+      // Einstein ring — dotted (thick dots matching reference)
+      ctx.strokeStyle = '#1E88E5'; ctx.lineWidth = 3.0; ctx.setLineDash([4, 5]);
+      const [ex, ey] = w2p(0, 0);
+      ctx.beginPath(); ctx.arc(ex, ey, (1 / dim) * (PLOT_W / 2), 0, 2 * Math.PI); ctx.stroke();
       ctx.setLineDash([]);
 
-      // Einstein ring
-      ctx.strokeStyle = '#1976D2';
-      ctx.lineWidth = 1.5;
-      ctx.setLineDash([4, 4]);
-      const [cx0, cy0] = world2canvas(0, 0, dim);
-      const ringR = (1.0 / dim) * (W / 2);
-      ctx.beginPath(); ctx.arc(cx0, cy0, ringR, 0, 2 * Math.PI); ctx.stroke();
-      ctx.setLineDash([]);
+      // Double caustic — dashed, thick
+      ctx.strokeStyle = '#FB8C00'; ctx.lineWidth = 2.8; ctx.setLineDash([10, 6]);
+      drawCurve(cau.xd, cau.yd, true); ctx.setLineDash([]);
 
-      // Double caustic (outer)
-      ctx.strokeStyle = '#FB8C00';
-      ctx.lineWidth = 1.8;
-      ctx.setLineDash([6, 4]);
-      drawCurve(caust.xs_double, caust.ys_double, dim, true);
-      ctx.setLineDash([]);
+      // Quad caustic — solid, thick
+      ctx.strokeStyle = '#43A047'; ctx.lineWidth = 2.8;
+      drawCurve(cau.xq, cau.yq, true);
 
-      // Quad caustic (inner diamond)
-      ctx.strokeStyle = '#43A047';
-      ctx.lineWidth = 1.8;
-      drawCurve(caust.xs_quad, caust.ys_quad, dim, true);
-
-      // Source position
-      const [sx, sy] = world2canvas(bx, by, dim);
-      ctx.strokeStyle = '#E53935';
-      ctx.lineWidth = 2.5;
-      const cs = 7;
+      // Source — red X
+      const [sx, sy] = w2p(bx, by);
+      ctx.strokeStyle = '#E53935'; ctx.lineWidth = 3.0;
+      const cs = 9;
       ctx.beginPath(); ctx.moveTo(sx - cs, sy - cs); ctx.lineTo(sx + cs, sy + cs); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(sx - cs, sy + cs); ctx.lineTo(sx + cs, sy - cs); ctx.stroke();
 
-      // Images
-      for (let i = 0; i < images.length; i++) {
-        const img = images[i];
-        const [ix, iy] = world2canvas(img.x, img.y, dim);
-        drawStar(ix, iy, 8, imgColors[i % imgColors.length]);
+      // Images — stars
+      for (let i = 0; i < imgs.length; i++) {
+        const [ix, iy] = w2p(imgs[i].x, imgs[i].y);
+        drawStar(ix, iy, 11, iCols[i % iCols.length]);
       }
-
-      // Axis labels
-      ctx.fillStyle = '#333';
-      ctx.font = '13px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('x [θ_E]', W / 2, H - 8);
-      ctx.save();
-      ctx.translate(16, H / 2);
-      ctx.rotate(-Math.PI / 2);
-      ctx.fillText('y [θ_E]', 0, 0);
       ctx.restore();
 
-      // Tick labels
-      ctx.font = '11px sans-serif';
-      ctx.fillStyle = '#666';
-      for (let v = -1.5; v <= 1.5; v += 0.5) {
-        const [tx, ty] = world2canvas(v, 0, dim);
-        ctx.textAlign = 'center';
-        ctx.fillText(v.toFixed(1), tx, H - 22);
-        const [tx2, ty2] = world2canvas(0, v, dim);
-        ctx.textAlign = 'right';
-        ctx.fillText(v.toFixed(1), 30, ty2 + 4);
+      // Tick labels — show physical values in 10⁻⁶ units
+      ctx.fillStyle = '#333';
+      ctx.font = `13px ${SERIF}`;
+      // X-axis labels
+      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      for (let ti = 0; ti < tvs.length; ti++) {
+        const [tx] = w2p(tvs[ti], 0);
+        ctx.fillText(tickPhys[ti].toString(), tx, MARGIN.top + PLOT_H + 5);
+      }
+      // Y-axis labels
+      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      for (let ti = 0; ti < tvs.length; ti++) {
+        const [, ty] = w2p(0, tvs[ti]);
+        ctx.fillText(tickPhys[ti].toString(), MARGIN.left - 7, ty);
       }
 
-      // Title
+      // ×10⁻⁶ annotation (matching matplotlib ScalarFormatter)
+      ctx.font = `12px ${SERIF}`;
+      ctx.fillStyle = '#333';
+      // Top-left for y-axis
+      ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+      ctx.fillText('×10\u207B\u2076', MARGIN.left - 5, MARGIN.top - 2);
+      // Bottom-right for x-axis
+      ctx.textAlign = 'right'; ctx.textBaseline = 'top';
+      ctx.fillText('×10\u207B\u2076', MARGIN.left + PLOT_W + 5, MARGIN.top + PLOT_H + 18);
+
+      // Axis labels — serif, matching reference
       ctx.fillStyle = '#222';
-      ctx.font = 'bold 14px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('Interactive Lens Configuration (θ_E fixed at 1.0)', W / 2, 22);
+      ctx.font = `15px ${SERIF}`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      ctx.fillText('x [rad]', MARGIN.left + PLOT_W / 2, MARGIN.top + PLOT_H + 30);
+      ctx.save(); ctx.translate(14, MARGIN.top + PLOT_H / 2); ctx.rotate(-Math.PI / 2);
+      ctx.textBaseline = 'top'; ctx.fillText('y [rad]', 0, 0); ctx.restore();
 
-      // Legend
-      let legend = '';
-      legend += '<div class="legend-item"><span class="legend-swatch" style="background:#1976D2;border-top:1.5px dashed #1976D2;height:0;"></span><span>Einstein Ring</span></div>';
-      legend += '<div class="legend-item"><span class="legend-swatch" style="background:transparent;border-top:2px dashed #FB8C00;height:0;"></span><span>Double Caustic</span></div>';
-      legend += '<div class="legend-item"><span class="legend-swatch" style="background:#43A047;"></span><span>Quad Caustic</span></div>';
-      legend += '<div class="legend-item"><span class="legend-swatch" style="background:transparent;"><span style="color:#E53935;font-weight:bold;">✕</span></span><span>Source</span></div>';
-      for (let i = 0; i < images.length; i++) {
-        const img = images[i];
-        legend += `<div class="legend-item"><span style="color:${imgColors[i % imgColors.length]};font-size:16px;">★</span><span>Image ${i + 1}: Type ${img.type}, |μ${i > 0 ? '<sub>' + (i + 1) + '</sub>' : '<sub>1</sub>'}| = ${img.mu.toFixed(1)}</span></div>`;
+      // Legend HTML — styled like reference with LEG_BG background
+      let lg = '<div class="legend-title">Lens Configuration</div>';
+      lg += '<div class="legend-item"><span class="legend-swatch" style="border-top:3px dashed #FB8C00"></span> Double Caustic</div>';
+      lg += '<div class="legend-item"><span class="legend-swatch" style="border-top:3px solid #43A047"></span> Quad Caustic</div>';
+      lg += '<div class="legend-item"><span class="legend-swatch" style="border-top:3px dotted #1E88E5"></span> Einstein Ring</div>';
+      lg += '<div class="legend-item"><span style="color:#E53935;font-weight:bold;font-size:15px;min-width:26px;text-align:center;">✕</span> Source</div>';
+      for (let i = 0; i < imgs.length; i++) {
+        const im = imgs[i];
+        const dt_days = (im.tau - imgs[0].tau) * TD_FACTOR;
+        lg += `<div class="legend-item"><span class="legend-star" style="color:${iCols[i % iCols.length]}">★</span><span class="legend-img-detail"><b>Image ${i + 1}:</b> Type ${im.type},<br>Δt<span class="legend-sub">1,${i + 1}</span> ≈ ${dt_days.toFixed(1)} days,<br>| μ<span class="legend-sub">${i + 1}</span> | = ${im.mu.toFixed(1)}</span></div>`;
       }
-      document.getElementById('legend').innerHTML = legend;
+      document.getElementById('legend').innerHTML = lg;
     }
 
-    function drawCurve(xs, ys, dim, close) {
-      ctx.beginPath();
-      let started = false;
+    function drawCurve(xs, ys, close) {
+      ctx.beginPath(); let s = false;
       for (let i = 0; i < xs.length; i++) {
-        if (!isFinite(xs[i]) || !isFinite(ys[i])) { started = false; continue; }
-        const [cx, cy] = world2canvas(xs[i], ys[i], dim);
-        if (!started) { ctx.moveTo(cx, cy); started = true; }
-        else ctx.lineTo(cx, cy);
+        if (!isFinite(xs[i]) || !isFinite(ys[i])) { s = false; continue; }
+        const [cx, cy] = w2p(xs[i], ys[i]);
+        if (!s) { ctx.moveTo(cx, cy); s = true; } else ctx.lineTo(cx, cy);
       }
-      if (close && started) {
-        // Close by connecting back to first valid point
-        for (let i = 0; i < xs.length; i++) {
-          if (isFinite(xs[i]) && isFinite(ys[i])) {
-            const [cx, cy] = world2canvas(xs[i], ys[i], dim);
-            ctx.lineTo(cx, cy);
-            break;
-          }
-        }
-      }
+      if (close && s) { for (let i = 0; i < xs.length; i++) { if (isFinite(xs[i]) && isFinite(ys[i])) { const [cx, cy] = w2p(xs[i], ys[i]); ctx.lineTo(cx, cy); break; } } }
       ctx.stroke();
     }
 
-    function drawStar(cx, cy, r, color) {
-      ctx.fillStyle = color;
-      ctx.beginPath();
+    function drawStar(cx, cy, r, col) {
+      ctx.fillStyle = col; ctx.beginPath();
       for (let i = 0; i < 10; i++) {
-        const ang = Math.PI / 2 + i * Math.PI / 5;
-        const rad = (i % 2 === 0) ? r : r * 0.4;
-        const x = cx + rad * Math.cos(ang);
-        const y = cy - rad * Math.sin(ang);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+        const a = Math.PI / 2 + i * Math.PI / 5, rd = (i % 2 === 0) ? r : r * 0.4;
+        const x = cx + rd * Math.cos(a), y = cy - rd * Math.sin(a);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
       }
-      ctx.closePath();
-      ctx.fill();
+      ctx.closePath(); ctx.fill();
     }
 
-    // ========== Event listeners ==========
-    const sliders = ['s_q', 's_phi', 's_gamma', 's_g1', 's_g2', 's_bx', 's_by'];
-    for (const id of sliders) {
-      document.getElementById(id).addEventListener('input', drawPlot);
-    }
-
-    // Initial draw
+    // Events
+    ['s_q', 's_phi', 's_gamma', 's_g1', 's_g2', 's_bx', 's_by'].forEach(id =>
+      document.getElementById(id).addEventListener('input', drawPlot));
     drawPlot();
   </script>
 </body>
