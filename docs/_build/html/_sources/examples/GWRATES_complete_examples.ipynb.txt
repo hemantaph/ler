@@ -72,7 +72,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 33,
+   "execution_count": null,
    "id": "2c0a5cc2",
    "metadata": {},
    "outputs": [
@@ -80,23 +80,24 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
+      "Extracting interpolator data from package to the current working directory.\n",
       "\n",
       "Initializing GWRATES class...\n",
       "\n",
       "\n",
-      "Initializing CBCSourceRedshiftDistribution...\n",
+      "Initializing CBCSourceRedshiftDistribution class...\n",
       "\n",
       "luminosity_distance interpolator will be loaded from ./interpolator_json/luminosity_distance/luminosity_distance_0.json\n",
       "differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_0.json\n",
-      "using ler available merger rate density model: merger_rate_density_bbh_oguri2018\n",
-      "merger_rate_density_bbh_oguri2018 interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_bbh_oguri2018_0.json\n",
+      "using ler available merger rate density model: merger_rate_density_madau_dickinson_belczynski_ng\n",
+      "merger_rate_density_madau_dickinson_belczynski_ng interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_madau_dickinson_belczynski_ng_0.json\n",
       "merger_rate_density_detector_frame interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_detector_frame_1.json\n",
       "source_redshift interpolator will be loaded from ./interpolator_json/source_redshift/source_redshift_0.json\n",
       "\n",
-      "Initializing CBCSourceParameterDistribution...\n",
+      "Initializing CBCSourceParameterDistribution class...\n",
       "\n",
       "using ler available zs function : source_redshift\n",
-      "using ler available source_frame_masses function : binary_masses_BBH_popI_II_powerlaw_gaussian\n",
+      "using ler available source_frame_masses function : binary_masses_BBH_powerlaw_gaussian\n",
       "using ler available geocent_time function : sampler_uniform\n",
       "using ler available ra function : sampler_uniform\n",
       "using ler available dec function : sampler_cosine\n",
@@ -128,13 +129,13 @@
       "psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,\n",
       "       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,\n",
       "       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],\n",
-      "      shape=(2736,)), <scipy.interpolate._interpolate.interp1d object at 0x3296f6de0>], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,\n",
+      "      shape=(2736,)), <scipy.interpolate._interpolate.interp1d object at 0x17635be20>], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,\n",
       "       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,\n",
       "       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],\n",
-      "      shape=(2736,)), <scipy.interpolate._interpolate.interp1d object at 0x327cfaac0>], [array([   10.      ,    10.02306 ,    10.046173, ...,\n",
+      "      shape=(2736,)), <scipy.interpolate._interpolate.interp1d object at 0x17635b970>], [array([   10.      ,    10.02306 ,    10.046173, ...,\n",
       "        9954.0389  ,  9976.993   , 10000.      ], shape=(3000,)), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,\n",
       "       1.51304203e-43, 1.52010157e-43, 1.52719372e-43],\n",
-      "      shape=(3000,)), <scipy.interpolate._interpolate.interp1d object at 0x32a4863e0>]]\n",
+      "      shape=(3000,)), <scipy.interpolate._interpolate.interp1d object at 0x1762ba520>]]\n",
       "\n",
       "\n",
       "#----------------------------------------\n",
@@ -146,8 +147,8 @@
       "    z_min = 0.0,\n",
       "    z_max = 10.0,\n",
       "    event_type = 'BBH',\n",
-      "    cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=None),\n",
-      "    pdet_finder = <bound method GWSNR.pdet of <gwsnr.core.gwsnr.GWSNR object at 0x327c27e50>>,\n",
+      "    cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=0.0),\n",
+      "    pdet_finder = <bound method GWSNR.pdet of <gwsnr.core.gwsnr.GWSNR object at 0x175f8c130>>,\n",
       "    json_file_names = dict(\n",
       "        gwrates_params = 'gwrates_params.json',\n",
       "        gw_param = 'gw_param.json',\n",
@@ -158,9 +159,9 @@
       "\n",
       "    # GWRATES also takes other CBCSourceParameterDistribution class input arguments as kwargs, as follows:\n",
       "    source_priors = dict(\n",
-      "        merger_rate_density = 'merger_rate_density_bbh_oguri2018',\n",
+      "        merger_rate_density = 'merger_rate_density_madau_dickinson_belczynski_ng',\n",
       "        zs = 'source_redshift',\n",
-      "        source_frame_masses = 'binary_masses_BBH_popI_II_powerlaw_gaussian',\n",
+      "        source_frame_masses = 'binary_masses_BBH_powerlaw_gaussian',\n",
       "        geocent_time = 'sampler_uniform',\n",
       "        ra = 'sampler_uniform',\n",
       "        dec = 'sampler_cosine',\n",
@@ -171,7 +172,7 @@
       "        a_2 = 'sampler_uniform',\n",
       "    ),\n",
       "    source_priors_params = dict(\n",
-      "        merger_rate_density = {'R0': 2.39e-08, 'b2': 1.6, 'b3': 2.1, 'b4': 30},\n",
+      "        merger_rate_density = {'R0': 1.9e-08, 'alpha_F': 2.57, 'beta_F': 5.83, 'c_F': 3.36},\n",
       "        zs = None,\n",
       "        source_frame_masses = {'mminbh': 4.98, 'mmaxbh': 112.5, 'alpha': 3.78, 'mu_g': 32.27, 'sigma_g': 3.88, 'lambda_peak': 0.03, 'delta_m': 4.8, 'beta': 0.81},\n",
       "        geocent_time = {'xmin': 1238166018, 'xmax': 1269702018},\n",
@@ -197,8 +198,8 @@
       "        snr_th_net = 10.0,\n",
       "        pdet_type = 'boolean',\n",
       "        distribution_type = 'noncentral_chi2',\n",
-      "        include_optimal_snr = False,\n",
-      "        include_observed_snr = False,\n",
+      "        include_optimal_snr = True,\n",
+      "        include_observed_snr = True,\n",
       "    ),\n",
       "    mtot_min = 9.96,\n",
       "    mtot_max = 500.0,\n",
@@ -230,13 +231,13 @@
       "    psds_list = [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,\n",
       "       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,\n",
       "       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],\n",
-      "      shape=(2736,)), <scipy.interpolate._interpolate.interp1d object at 0x3296f6de0>], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,\n",
+      "      shape=(2736,)), <scipy.interpolate._interpolate.interp1d object at 0x17635be20>], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,\n",
       "       4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,\n",
       "       6.51153524e-46, 6.43165104e-46, 6.55252996e-46],\n",
-      "      shape=(2736,)), <scipy.interpolate._interpolate.interp1d object at 0x327cfaac0>], [array([   10.      ,    10.02306 ,    10.046173, ...,\n",
+      "      shape=(2736,)), <scipy.interpolate._interpolate.interp1d object at 0x17635b970>], [array([   10.      ,    10.02306 ,    10.046173, ...,\n",
       "        9954.0389  ,  9976.993   , 10000.      ], shape=(3000,)), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,\n",
       "       1.51304203e-43, 1.52010157e-43, 1.52719372e-43],\n",
-      "      shape=(3000,)), <scipy.interpolate._interpolate.interp1d object at 0x32a4863e0>]],\n"
+      "      shape=(3000,)), <scipy.interpolate._interpolate.interp1d object at 0x1762ba520>]],\n"
      ]
     }
    ],
@@ -245,6 +246,8 @@
     "from ler.rates import GWRATES\n",
     "\n",
     "# Initialize GWRATES with default settings\n",
+    "# use this gwsnr's input args if you want SNR values in the output, besides the boolean detection probability values. This will increase the output dictionary size and the runtime of the code.:\n",
+    "# pdet_kwargs=dict(snr_th=10.0, snr_th_net=10.0, pdet_type=\"boolean\", distribution_type=\"noncentral_chi2\", include_optimal_snr=True, include_observed_snr=True)\n",
     "ler = GWRATES(verbose=True)"
    ]
   },
@@ -283,7 +286,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 36,
+   "execution_count": 2,
    "id": "29ac1c3b",
    "metadata": {},
    "outputs": [
@@ -292,6 +295,7 @@
      "output_type": "stream",
      "text": [
       "Simulated GW params will be stored in ./ler_data/gw_param.json\n",
+      "removing ./ler_data/gw_param.json if it exists\n",
       "Batch no. 1\n",
       "sampling gw source params...\n",
       "calculating pdet...\n",
@@ -301,7 +305,7 @@
       "saving all gw parameters in ./ler_data/gw_param.json \n",
       "\n",
       "Total events simulated: 100000\n",
-      "Sampled redshift values: [1.79134769 3.81532071 6.88004063 0.94640131 0.64046894]\n"
+      "Sampled redshift values: [1.30881533 2.73864559 4.21013263 3.65603777 6.77581274]\n"
      ]
     }
    ],
@@ -331,7 +335,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 42,
+   "execution_count": 3,
    "id": "89f98cbb",
    "metadata": {},
    "outputs": [
@@ -340,15 +344,23 @@
      "output_type": "stream",
      "text": [
       "Getting gw parameters from json file ./ler_data/gw_param.json...\n",
-      "total GW event rate (yr^-1): 270.52624492169423\n",
-      "number of simulated GW detectable events: 329\n",
+      "total GW event rate (yr^-1): 275.66724980663105\n",
+      "number of simulated GW detectable events: 301\n",
       "number of simulated all GW events: 100000\n",
-      "storing detectable params in ./ler_data/gw_param_detectable.json\n",
-      "\n",
-      "=== Detection Rate Summary ===\n",
-      "Detectable event rate: 2.71e+02 events per year\n",
-      "Total event rate: 8.22e+04 events per year\n",
-      "Percentage fraction of the detectable events: 3.29e-01%\n"
+      "storing detectable params in ./ler_data/gw_param_detectable.json\n"
+     ]
+    },
+    {
+     "ename": "KeyError",
+     "evalue": "'ler_params'",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mKeyError\u001b[0m                                  Traceback (most recent call last)",
+      "Cell \u001b[0;32mIn[3], line 2\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[38;5;66;03m# Calculate the detection rate and extract detectable events\u001b[39;00m\n\u001b[0;32m----> 2\u001b[0m detectable_rate, gw_param_detectable \u001b[38;5;241m=\u001b[39m \u001b[43mler\u001b[49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43mgw_rate\u001b[49m\u001b[43m(\u001b[49m\u001b[43m)\u001b[49m\n\u001b[1;32m      4\u001b[0m \u001b[38;5;28mprint\u001b[39m(\u001b[38;5;124mf\u001b[39m\u001b[38;5;124m\"\u001b[39m\u001b[38;5;130;01m\\n\u001b[39;00m\u001b[38;5;124m=== Detection Rate Summary ===\u001b[39m\u001b[38;5;124m\"\u001b[39m)\n\u001b[1;32m      5\u001b[0m \u001b[38;5;28mprint\u001b[39m(\u001b[38;5;124mf\u001b[39m\u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mDetectable event rate: \u001b[39m\u001b[38;5;132;01m{\u001b[39;00mdetectable_rate\u001b[38;5;132;01m:\u001b[39;00m\u001b[38;5;124m.2e\u001b[39m\u001b[38;5;132;01m}\u001b[39;00m\u001b[38;5;124m events per year\u001b[39m\u001b[38;5;124m\"\u001b[39m)\n",
+      "File \u001b[0;32m~/phd/mypackages/ler/ler/rates/gwrates.py:844\u001b[0m, in \u001b[0;36mGWRATES.gw_rate\u001b[0;34m(self, gw_param, pdet_threshold, pdet_type, output_jsonfile)\u001b[0m\n\u001b[1;32m    833\u001b[0m \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39m_save_detectable_params(\n\u001b[1;32m    834\u001b[0m     output_jsonfile,\n\u001b[1;32m    835\u001b[0m     gw_param,\n\u001b[0;32m   (...)\u001b[0m\n\u001b[1;32m    840\u001b[0m     replace_jsonfile\u001b[38;5;241m=\u001b[39m\u001b[38;5;28;01mTrue\u001b[39;00m,\n\u001b[1;32m    841\u001b[0m )\n\u001b[1;32m    843\u001b[0m \u001b[38;5;66;03m# append gwrates_param and save it\u001b[39;00m\n\u001b[0;32m--> 844\u001b[0m \u001b[38;5;28;43mself\u001b[39;49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43m_append_gwrates_param\u001b[49m\u001b[43m(\u001b[49m\u001b[43mtotal_rate\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[43mpdet_type\u001b[49m\u001b[38;5;241;43m=\u001b[39;49m\u001b[43mpdet_type\u001b[49m\u001b[43m)\u001b[49m\n\u001b[1;32m    846\u001b[0m \u001b[38;5;28;01mreturn\u001b[39;00m total_rate, gw_param\n",
+      "File \u001b[0;32m~/phd/mypackages/ler/ler/rates/gwrates.py:977\u001b[0m, in \u001b[0;36mGWRATES._append_gwrates_param\u001b[0;34m(self, total_rate, pdet_type)\u001b[0m\n\u001b[1;32m    974\u001b[0m data[\u001b[38;5;124mf\u001b[39m\u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mdetectable_gw_rate_per_year\u001b[39m\u001b[38;5;124m\"\u001b[39m] \u001b[38;5;241m=\u001b[39m total_rate\n\u001b[1;32m    975\u001b[0m data[\u001b[38;5;124mf\u001b[39m\u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mpdet_type\u001b[39m\u001b[38;5;124m\"\u001b[39m] \u001b[38;5;241m=\u001b[39m pdet_type\n\u001b[1;32m    976\u001b[0m append_json(\n\u001b[0;32m--> 977\u001b[0m     \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39mler_directory \u001b[38;5;241m+\u001b[39m \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124m/\u001b[39m\u001b[38;5;124m\"\u001b[39m \u001b[38;5;241m+\u001b[39m \u001b[38;5;28;43mself\u001b[39;49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43mjson_file_names\u001b[49m\u001b[43m[\u001b[49m\u001b[38;5;124;43m\"\u001b[39;49m\u001b[38;5;124;43mler_params\u001b[39;49m\u001b[38;5;124;43m\"\u001b[39;49m\u001b[43m]\u001b[49m,\n\u001b[1;32m    978\u001b[0m     data,\n\u001b[1;32m    979\u001b[0m     replace\u001b[38;5;241m=\u001b[39m\u001b[38;5;28;01mTrue\u001b[39;00m,\n\u001b[1;32m    980\u001b[0m )\n",
+      "\u001b[0;31mKeyError\u001b[0m: 'ler_params'"
      ]
     }
    ],
@@ -374,7 +386,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 43,
+   "execution_count": null,
    "id": "3bf60d3c",
    "metadata": {},
    "outputs": [
@@ -411,7 +423,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 44,
+   "execution_count": null,
    "id": "1ca58c88",
    "metadata": {},
    "outputs": [
@@ -448,7 +460,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 45,
+   "execution_count": null,
    "id": "7dcc7dec",
    "metadata": {},
    "outputs": [
@@ -489,7 +501,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 48,
+   "execution_count": null,
    "id": "d09c110f",
    "metadata": {},
    "outputs": [
@@ -601,7 +613,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 49,
+   "execution_count": null,
    "id": "62543440",
    "metadata": {},
    "outputs": [
@@ -1080,7 +1092,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 23,
+   "execution_count": null,
    "id": "60125d10",
    "metadata": {},
    "outputs": [
@@ -1170,7 +1182,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 28,
+   "execution_count": null,
    "id": "c3557ce5",
    "metadata": {},
    "outputs": [
@@ -1253,7 +1265,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 29,
+   "execution_count": null,
    "id": "2f555946",
    "metadata": {},
    "outputs": [
@@ -1477,7 +1489,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 47,
+   "execution_count": null,
    "id": "0e121be3",
    "metadata": {},
    "outputs": [
@@ -1581,7 +1593,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 49,
+   "execution_count": null,
    "id": "bcd1e271",
    "metadata": {},
    "outputs": [

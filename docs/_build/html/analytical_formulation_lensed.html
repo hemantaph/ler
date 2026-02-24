@@ -6,20 +6,20 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Analytical Formulation for Lensed Gravitational Wave Event Rates &mdash; ler 0.5.3 documentation</title>
+  <title>Analytical Formulation for Lensed Gravitational Wave Event Rates &mdash; ler 0.5.9 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="_static/scalefix.css" />
-      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=d6b2367a" />
+      <link rel="stylesheet" type="text/css" href="_static/scalefix.css?v=242ac6f9" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=30f3526c" />
       <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=2a2fe768"></script>
+      <script src="_static/documentation_options.js?v=9a3cda14"></script>
       <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -152,7 +152,7 @@
 <ul>
 <li><p><a class="reference internal" href="#simulation-settings"><span class="std std-ref">Simulation Settings</span></a></p></li>
 <li><p><a class="reference internal" href="#lens-and-source-parameter-priors"><span class="std std-ref">Lens and source Parameter Priors</span></a></p></li>
-<li><p>Plot Comparison for Lensed+Detectable, Lensed and Intrinsic Populations</p></li>
+<li><p><a class="reference internal" href="#plot-comparison-for-lensed-detectable-lensed-and-intrinsic-populations"><span class="std std-ref">Plot Comparison for Lensed+Detectable, Lensed and Intrinsic Populations</span></a></p></li>
 <li><p><a class="reference internal" href="#biases-in-the-inferred-gw-parameters"><span class="std std-ref">Biases in the inferred GW parameters</span></a></p></li>
 <li><p><a class="reference internal" href="#time-delays-and-magnifications-of-detected-lensed-events"><span class="std std-ref">Time Delays and Magnifications of Detected Lensed Events</span></a></p></li>
 <li><p><a class="reference internal" href="#rate-estimates-and-comparisons"><span class="std std-ref">Rate Estimates and Comparisons</span></a></p></li>
@@ -779,7 +779,7 @@ z_L \sim P(z_L \mid z_s, {\rm SL}) \\
   <img src="_static/mc_vs_zs.png" alt="Corner plot comparing inferred source redshift and chirp mass for lensed and unlensed events" width="450"/>
 </div>
 <blockquote>
-<div><p><strong>Figure 5:</strong> Joint kernel density estimate (KDE) with 10, 40, 68, and 95 percent contour levels and marginal distributions comparing the inferred source redshift <span class="math notranslate nohighlight">\(z^*_s\)</span> and inferred source-frame chirp mass <span class="math notranslate nohighlight">\({\cal M}_c^{* \, {\rm src}}\)</span> for the detectable unlensed (blue) and lensed (orange) populations. While the unlensed parameters reflect the true source properties, the inferred parameters for lensed events are systematically biased by magnification. The inferred redshift <span class="math notranslate nohighlight">\(z^*_s\)</span> is derived from the effective luminosity distance <span class="math notranslate nohighlight">\(d_{L}^{\rm eff} = d_{L} / \sqrt{|\mu|}\)</span>, which subsequently affects the source-frame mass reconstruction via <span class="math notranslate nohighlight">\({\cal M}_c^{* \, {\rm src}} = {\cal M}_c / (1+z^*_s)\)</span>, where <span class="math notranslate nohighlight">\({\cal M}_c\)</span> is the detector-frame chirp mass. Consequently, the lensed population exhibits a distinct shift toward higher inferred redshifts—though these still underestimate the true source redshifts of lensed events—and significantly higher inferred chirp masses relative to the unlensed population. This magnification bias demonstrates that unrecognized lensed events can contaminate the observed catalog by mimicking heavy binary black hole mergers and appearing as high-mass outliers; however, given the low expected rate of lensed events relative to unlensed ones (<span class="math notranslate nohighlight">\(\approx\)</span> 1:3000 at O4 design sensitivity), this contamination is unlikely to significantly skew population studies or cosmological inferences even if unaccounted for.</p>
+<div><p><strong>Figure 5:</strong> Joint kernel density estimate (KDE) with 10, 40, 68, and 95 percent contour levels and marginal distributions comparing the inferred source redshift <span class="math notranslate nohighlight">\(z^*_s\)</span> and inferred source-frame chirp mass <span class="math notranslate nohighlight">\({\cal M}_c^{* \, {\rm src}}\)</span> for the detectable unlensed (blue) and lensed (orange) populations. Number of data points should not be interpreted as relative rates. While the unlensed parameters reflect the true source properties, the inferred parameters for lensed events are systematically biased by magnification. The inferred redshift <span class="math notranslate nohighlight">\(z^*_s\)</span> is derived from the effective luminosity distance <span class="math notranslate nohighlight">\(d_{L}^{\rm eff} = d_{L} / \sqrt{|\mu|}\)</span>, which subsequently affects the source-frame mass reconstruction via <span class="math notranslate nohighlight">\({\cal M}_c^{* \, {\rm src}} = {\cal M}_c / (1+z^*_s)\)</span>, where <span class="math notranslate nohighlight">\({\cal M}_c\)</span> is the detector-frame chirp mass. Consequently, the lensed population exhibits a distinct shift toward higher inferred redshifts—though these still underestimate the true source redshifts of lensed events—and significantly higher inferred chirp masses relative to the unlensed population. This magnification bias demonstrates that unrecognized lensed events can contaminate the observed catalog by mimicking heavy binary black hole mergers and appearing as high-mass outliers; however, given the low expected rate of lensed events relative to unlensed ones (<span class="math notranslate nohighlight">\(\approx\)</span> 1:3000 at O4 design sensitivity), this contamination is unlikely to significantly skew population studies or cosmological inferences even if unaccounted for.</p>
 </div></blockquote>
 </section>
 <section id="time-delays-and-magnifications-of-detected-lensed-events">

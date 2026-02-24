@@ -6,21 +6,21 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LeR with Custom Functions and Parameters &mdash; ler 0.5.3 documentation</title>
+  <title>LeR with Custom Functions and Parameters &mdash; ler 0.5.9 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/scalefix.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=d6b2367a" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+      <link rel="stylesheet" type="text/css" href="../_static/scalefix.css?v=242ac6f9" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=30f3526c" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=2a2fe768"></script>
+      <script src="../_static/documentation_options.js?v=9a3cda14"></script>
       <script src="../_static/doctools.js?v=9a2dae69"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -296,6 +296,8 @@
     <span class="n">n_max_images</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
     <span class="n">time_window</span> <span class="o">=</span> <span class="mi">630720000</span><span class="p">,</span>
     <span class="n">lens_model_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span>
+    <span class="n">include_effective_parameters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">include_redundant_parameters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 
     <span class="c1"># gwsnr package arguments</span>
     <span class="n">snr_method</span> <span class="o">=</span> <span class="s1">&#39;interpolation_aligned_spins&#39;</span><span class="p">,</span>
@@ -372,12 +374,14 @@
 <h3>1.2. Initialize LeR with default settings<a class="headerlink" href="#1.2.-Initialize-LeR-with-default-settings" title="Link to this heading"></a></h3>
 <p>Set <code class="docutils literal notranslate"><span class="pre">verbose=False</span></code> to suppress lengthy output</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+<span class="c1"># use this gwsnr&#39;s input args if you want SNR values in the output, besides the boolean detection probability values. This will increase the output dictionary size and the runtime of the code.:</span>
+<span class="c1"># pdet_kwargs=dict(snr_th=10.0, snr_th_net=10.0, pdet_type=&quot;boolean&quot;, distribution_type=&quot;noncentral_chi2&quot;, include_optimal_snr=True, include_observed_snr=True)</span>
 <span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1665,17 +1669,32 @@ Lens parameters (first 3):
   q: [0.52023232 0.51420932 0.904827  ]
 </pre></div></div>
 </div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># include other useful parameters in the output dictionary.</span>
+<span class="c1"># It is omitted by default to save runtime and memory.</span>
+<span class="c1"># For theta_E, n_images, mass_1, mass_2, luminosity_distance:</span>
+<span class="n">lensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">recover_redundant_parameters</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">)</span>
+<span class="c1"># For effective_luminosity_distance, effective_geocent_time, effective_phase, effective_ra, effective_dec:</span>
+<span class="n">lensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">produce_effective_params</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">)</span>
+
+<span class="c1"># or you can simply set &#39;include_redundant_parameters=True, include_effective_parameters=True&#39; in the input args of LeR initialization to include these parameters in the output dictionary by default.</span>
+</pre></div>
+</div>
+</div>
 </section>
 <section id="3.9.-Calculate-Rates-and-Compare-Results">
 <h3>3.9. Calculate Rates and Compare Results<a class="headerlink" href="#3.9.-Calculate-Rates-and-Compare-Results" title="Link to this heading"></a></h3>
 <p>Calculate unlensed and lensed detection rates using the custom detection criteria.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate detection rates</span>
-<span class="n">rate_unlensed</span><span class="p">,</span> <span class="n">unlensed_param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_rate</span><span class="p">()</span>
-<span class="n">rate_lensed</span><span class="p">,</span> <span class="n">lensed_param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">lensed_rate</span><span class="p">()</span>
+<span class="n">rate_unlensed</span><span class="p">,</span> <span class="n">unlensed_param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_rate</span><span class="p">(</span><span class="n">unlensed_param</span><span class="o">=</span><span class="n">unlensed_params</span><span class="p">)</span>
+<span class="n">rate_lensed</span><span class="p">,</span> <span class="n">lensed_param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">lensed_rate</span><span class="p">(</span><span class="n">lensed_param</span><span class="o">=</span><span class="n">lensed_params</span><span class="p">)</span>
 <span class="n">rate_ratio</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">rate_ratio</span><span class="p">()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Detection Rates (BNS with Custom Configuration) ===&quot;</span><span class="p">)</span>
@@ -1759,7 +1778,7 @@ Rate ratio (lensed/unlensed): 756.6248
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_LeR_custom_functions_43_0.png" src="../_images/examples_LeR_custom_functions_43_0.png" />
+<img alt="../_images/examples_LeR_custom_functions_44_0.png" src="../_images/examples_LeR_custom_functions_44_0.png" />
 </div>
 </div>
 </section>
@@ -1814,7 +1833,7 @@ axis_ratio_rayleigh interpolator will be generated at ./interpolator_json/axis_r
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_LeR_custom_functions_45_1.png" src="../_images/examples_LeR_custom_functions_45_1.png" />
+<img alt="../_images/examples_LeR_custom_functions_46_1.png" src="../_images/examples_LeR_custom_functions_46_1.png" />
 </div>
 </div>
 </section>

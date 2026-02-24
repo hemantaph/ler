@@ -6,20 +6,20 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.rates.ler &mdash; ler 0.5.3 documentation</title>
+  <title>ler.rates.ler &mdash; ler 0.5.9 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=d6b2367a" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=242ac6f9" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=30f3526c" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=2a2fe768"></script>
+      <script src="../../../../_static/documentation_options.js?v=9a3cda14"></script>
       <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -632,7 +632,7 @@ gwsnr = False,</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.ler.LeR.unlensed_cbc_statistics">
 <span class="sig-name descname"><span class="pre">unlensed_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/rates/ler.html#LeR.unlensed_cbc_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.ler.LeR.unlensed_cbc_statistics" title="Link to this definition"></a></dt>
-<dd><p>Generate unlensed GW source parameters.</p>
+<dd><p>Generate unlensed GW source parameters with detection probabilities.</p>
 <p>This function calls the unlensed_sampling_routine function to generate
 the parameters in batches. The generated parameters are stored in a JSON
 file; and if save_batch=True, it keeps updating the file in batches.</p>
@@ -698,11 +698,11 @@ file; and if save_batch=True, it keeps updating the file in batches.</p>
 </tr>
 <tr class="row-odd"><td><p>a_1</p></td>
 <td></td>
-<td><p>spin_1 of the compact binary</p></td>
+<td><p>spin of the primary compact binary</p></td>
 </tr>
 <tr class="row-even"><td><p>a_2</p></td>
 <td></td>
-<td><p>spin_2 of the compact binary</p></td>
+<td><p>spin of the secondary compact binary</p></td>
 </tr>
 <tr class="row-odd"><td><p>luminosity_distance</p></td>
 <td><p>Mpc</p></td>
@@ -820,7 +820,93 @@ the parameters of the detectable events in a JSON file.</p>
 <dd class="field-even"><dl>
 <dt><strong>total_rate</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Total unlensed rate (yr^-1).</p>
 </dd>
-<dt><strong>unlensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of unlensed GW source parameters of the detectable events.</p>
+<dt><strong>unlensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>dictionary of GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Units</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>zs</p></td>
+<td></td>
+<td><p>redshift of the source</p></td>
+</tr>
+<tr class="row-odd"><td><p>geocent_time</p></td>
+<td><p>s</p></td>
+<td><p>GPS time of coalescence</p></td>
+</tr>
+<tr class="row-even"><td><p>ra</p></td>
+<td><p>rad</p></td>
+<td><p>right ascension</p></td>
+</tr>
+<tr class="row-odd"><td><p>dec</p></td>
+<td><p>rad</p></td>
+<td><p>declination</p></td>
+</tr>
+<tr class="row-even"><td><p>phase</p></td>
+<td><p>rad</p></td>
+<td><p>phase of GW at reference frequency</p></td>
+</tr>
+<tr class="row-odd"><td><p>psi</p></td>
+<td><p>rad</p></td>
+<td><p>polarization angle</p></td>
+</tr>
+<tr class="row-even"><td><p>theta_jn</p></td>
+<td><p>rad</p></td>
+<td><p>inclination angle</p></td>
+</tr>
+<tr class="row-odd"><td><p>a_1</p></td>
+<td></td>
+<td><p>spin of the primary compact binary</p></td>
+</tr>
+<tr class="row-even"><td><p>a_2</p></td>
+<td></td>
+<td><p>spin of the secondary compact binary</p></td>
+</tr>
+<tr class="row-odd"><td><p>luminosity_distance</p></td>
+<td><p>Mpc</p></td>
+<td><p>luminosity distance</p></td>
+</tr>
+<tr class="row-even"><td><p>mass_1_source</p></td>
+<td><p>Msun</p></td>
+<td><p>mass_1 of the compact binary
+(source frame)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mass_2_source</p></td>
+<td><p>Msun</p></td>
+<td><p>mass_2 of the compact binary
+(source frame)</p></td>
+</tr>
+<tr class="row-even"><td><p>mass_1</p></td>
+<td><p>Msun</p></td>
+<td><p>mass_1 of the compact binary
+(detector frame)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mass_2</p></td>
+<td><p>Msun</p></td>
+<td><p>mass_2 of the compact binary
+(detector frame)</p></td>
+</tr>
+<tr class="row-even"><td><p>pdet_L1</p></td>
+<td></td>
+<td><p>pdet of L1</p></td>
+</tr>
+<tr class="row-odd"><td><p>pdet_H1</p></td>
+<td></td>
+<td><p>pdet of H1</p></td>
+</tr>
+<tr class="row-even"><td><p>pdet_V1</p></td>
+<td></td>
+<td><p>pdet of V1</p></td>
+</tr>
+<tr class="row-odd"><td><p>pdet_net</p></td>
+<td></td>
+<td><p>pdet of the network</p></td>
+</tr>
+</tbody>
+</table>
 </dd>
 </dl>
 </dd>
@@ -1148,7 +1234,93 @@ number of events and the cumulative rate.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>param_final</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of unlensed GW source parameters of detectable events.</p>
+<dt><strong>param_final</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>dictionary of GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Units</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>zs</p></td>
+<td></td>
+<td><p>redshift of the source</p></td>
+</tr>
+<tr class="row-odd"><td><p>geocent_time</p></td>
+<td><p>s</p></td>
+<td><p>GPS time of coalescence</p></td>
+</tr>
+<tr class="row-even"><td><p>ra</p></td>
+<td><p>rad</p></td>
+<td><p>right ascension</p></td>
+</tr>
+<tr class="row-odd"><td><p>dec</p></td>
+<td><p>rad</p></td>
+<td><p>declination</p></td>
+</tr>
+<tr class="row-even"><td><p>phase</p></td>
+<td><p>rad</p></td>
+<td><p>phase of GW at reference frequency</p></td>
+</tr>
+<tr class="row-odd"><td><p>psi</p></td>
+<td><p>rad</p></td>
+<td><p>polarization angle</p></td>
+</tr>
+<tr class="row-even"><td><p>theta_jn</p></td>
+<td><p>rad</p></td>
+<td><p>inclination angle</p></td>
+</tr>
+<tr class="row-odd"><td><p>a_1</p></td>
+<td></td>
+<td><p>spin of the primary compact binary</p></td>
+</tr>
+<tr class="row-even"><td><p>a_2</p></td>
+<td></td>
+<td><p>spin of the secondary compact binary</p></td>
+</tr>
+<tr class="row-odd"><td><p>luminosity_distance</p></td>
+<td><p>Mpc</p></td>
+<td><p>luminosity distance</p></td>
+</tr>
+<tr class="row-even"><td><p>mass_1_source</p></td>
+<td><p>Msun</p></td>
+<td><p>mass of the primary compact binary
+(source frame)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mass_2_source</p></td>
+<td><p>Msun</p></td>
+<td><p>mass of the secondary compact binary
+(source frame)</p></td>
+</tr>
+<tr class="row-even"><td><p>mass_1</p></td>
+<td><p>Msun</p></td>
+<td><p>mass_1 of the compact binary
+(detector frame)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mass_2</p></td>
+<td><p>Msun</p></td>
+<td><p>mass_2 of the compact binary
+(detector frame)</p></td>
+</tr>
+<tr class="row-even"><td><p>pdet_L1</p></td>
+<td></td>
+<td><p>pdet of L1</p></td>
+</tr>
+<tr class="row-odd"><td><p>pdet_H1</p></td>
+<td></td>
+<td><p>pdet of H1</p></td>
+</tr>
+<tr class="row-even"><td><p>pdet_V1</p></td>
+<td></td>
+<td><p>pdet of V1</p></td>
+</tr>
+<tr class="row-odd"><td><p>pdet_net</p></td>
+<td></td>
+<td><p>pdet of the network</p></td>
+</tr>
+</tbody>
+</table>
 </dd>
 </dl>
 </dd>

@@ -704,7 +704,7 @@ Classes
    .. py:method:: unlensed_cbc_statistics(size=100000, batch_size=50000, resume=True, save_batch=False, output_jsonfile=None)
 
       
-      Generate unlensed GW source parameters.
+      Generate unlensed GW source parameters with detection probabilities.
 
       This function calls the unlensed_sampling_routine function to generate
       the parameters in batches. The generated parameters are stored in a JSON
@@ -761,9 +761,9 @@ Classes
               +--------------------+--------------+--------------------------------------+
               | theta_jn           | rad          | inclination angle                    |
               +--------------------+--------------+--------------------------------------+
-              | a_1                |              | spin_1 of the compact binary         |
+              | a_1                |              | spin of the primary compact binary   |
               +--------------------+--------------+--------------------------------------+
-              | a_2                |              | spin_2 of the compact binary         |
+              | a_2                |              | spin of the secondary compact binary |
               +--------------------+--------------+--------------------------------------+
               | luminosity_distance| Mpc          | luminosity distance                  |
               +--------------------+--------------+--------------------------------------+
@@ -896,7 +896,51 @@ Classes
               Total unlensed rate (yr^-1).
 
           **unlensed_param** : ``dict``
-              Dictionary of unlensed GW source parameters of the detectable events.
+              dictionary of GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):
+
+              +--------------------+--------------+--------------------------------------+
+              | Parameter          | Units        | Description                          |
+              +====================+==============+======================================+
+              | zs                 |              | redshift of the source               |
+              +--------------------+--------------+--------------------------------------+
+              | geocent_time       | s            | GPS time of coalescence              |
+              +--------------------+--------------+--------------------------------------+
+              | ra                 | rad          | right ascension                      |
+              +--------------------+--------------+--------------------------------------+
+              | dec                | rad          | declination                          |
+              +--------------------+--------------+--------------------------------------+
+              | phase              | rad          | phase of GW at reference frequency   |
+              +--------------------+--------------+--------------------------------------+
+              | psi                | rad          | polarization angle                   |
+              +--------------------+--------------+--------------------------------------+
+              | theta_jn           | rad          | inclination angle                    |
+              +--------------------+--------------+--------------------------------------+
+              | a_1                |              | spin of the primary compact binary   |
+              +--------------------+--------------+--------------------------------------+
+              | a_2                |              | spin of the secondary compact binary |
+              +--------------------+--------------+--------------------------------------+
+              | luminosity_distance| Mpc          | luminosity distance                  |
+              +--------------------+--------------+--------------------------------------+
+              | mass_1_source      | Msun         | mass_1 of the compact binary         |
+              |                    |              | (source frame)                       |
+              +--------------------+--------------+--------------------------------------+
+              | mass_2_source      | Msun         | mass_2 of the compact binary         |
+              |                    |              | (source frame)                       |
+              +--------------------+--------------+--------------------------------------+
+              | mass_1             | Msun         | mass_1 of the compact binary         |
+              |                    |              | (detector frame)                     |
+              +--------------------+--------------+--------------------------------------+
+              | mass_2             | Msun         | mass_2 of the compact binary         |
+              |                    |              | (detector frame)                     |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_L1            |              | pdet of L1                           |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_H1            |              | pdet of H1                           |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_V1            |              | pdet of V1                           |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_net           |              | pdet of the network                  |
+              +--------------------+--------------+--------------------------------------+
 
 
 
@@ -1557,7 +1601,51 @@ Classes
       :Returns:
 
           **param_final** : ``dict``
-              Dictionary of unlensed GW source parameters of detectable events.
+              dictionary of GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):
+
+              +--------------------+--------------+--------------------------------------+
+              | Parameter          | Units        | Description                          |
+              +====================+==============+======================================+
+              | zs                 |              | redshift of the source               |
+              +--------------------+--------------+--------------------------------------+
+              | geocent_time       | s            | GPS time of coalescence              |
+              +--------------------+--------------+--------------------------------------+
+              | ra                 | rad          | right ascension                      |
+              +--------------------+--------------+--------------------------------------+
+              | dec                | rad          | declination                          |
+              +--------------------+--------------+--------------------------------------+
+              | phase              | rad          | phase of GW at reference frequency   |
+              +--------------------+--------------+--------------------------------------+
+              | psi                | rad          | polarization angle                   |
+              +--------------------+--------------+--------------------------------------+
+              | theta_jn           | rad          | inclination angle                    |
+              +--------------------+--------------+--------------------------------------+
+              | a_1                |              | spin of the primary compact binary   |
+              +--------------------+--------------+--------------------------------------+
+              | a_2                |              | spin of the secondary compact binary |
+              +--------------------+--------------+--------------------------------------+
+              | luminosity_distance| Mpc          | luminosity distance                  |
+              +--------------------+--------------+--------------------------------------+
+              | mass_1_source      | Msun         | mass of the primary compact binary   |
+              |                    |              | (source frame)                       |
+              +--------------------+--------------+--------------------------------------+
+              | mass_2_source      | Msun         | mass of the secondary compact binary |
+              |                    |              | (source frame)                       |
+              +--------------------+--------------+--------------------------------------+
+              | mass_1             | Msun         | mass_1 of the compact binary         |
+              |                    |              | (detector frame)                     |
+              +--------------------+--------------+--------------------------------------+
+              | mass_2             | Msun         | mass_2 of the compact binary         |
+              |                    |              | (detector frame)                     |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_L1            |              | pdet of L1                           |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_H1            |              | pdet of H1                           |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_V1            |              | pdet of V1                           |
+              +--------------------+--------------+--------------------------------------+
+              | pdet_net           |              | pdet of the network                  |
+              +--------------------+--------------+--------------------------------------+
 
 
 

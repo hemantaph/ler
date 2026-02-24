@@ -6,21 +6,21 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LeR Advanced Sampling — Generating Detectable Events &mdash; ler 0.5.3 documentation</title>
+  <title>LeR Advanced Sampling — Generating Detectable Events &mdash; ler 0.5.9 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/scalefix.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=d6b2367a" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+      <link rel="stylesheet" type="text/css" href="../_static/scalefix.css?v=242ac6f9" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=30f3526c" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=2a2fe768"></script>
+      <script src="../_static/documentation_options.js?v=9a3cda14"></script>
       <script src="../_static/doctools.js?v=9a2dae69"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -178,7 +178,7 @@
 </ul>
 <p>Outputs are saved to <code class="docutils literal notranslate"><span class="pre">./ler_data</span></code> by default.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import LeR</span>
@@ -186,6 +186,8 @@
 
 <span class="c1"># Initialize LeR with default settings</span>
 <span class="c1"># npool: number of parallel processes for sampling</span>
+<span class="c1"># use this gwsnr&#39;s input args if you want SNR values in the output, besides the boolean detection probability values. This will increase the output dictionary size and the runtime of the code.:</span>
+<span class="c1"># pdet_kwargs=dict(snr_th=10.0, snr_th_net=10.0, pdet_type=&quot;boolean&quot;, distribution_type=&quot;noncentral_chi2&quot;, include_optimal_snr=True, include_observed_snr=True)</span>
 <span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span><span class="n">npool</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -654,6 +656,21 @@ Detectable event rate: 9.5750e-02 events per year
 Total detectable events collected: 1014
 </pre></div></div>
 </div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># include other useful parameters in the output dictionary.</span>
+<span class="c1"># It is omitted by default to save runtime and memory.</span>
+<span class="c1"># For theta_E, n_images, mass_1, mass_2, luminosity_distance:</span>
+<span class="n">lensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">recover_redundant_parameters</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">)</span>
+<span class="c1"># For effective_luminosity_distance, effective_geocent_time, effective_phase, effective_ra, effective_dec:</span>
+<span class="n">lensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">produce_effective_params</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">)</span>
+
+<span class="c1"># or you can simply set &#39;include_redundant_parameters=True, include_effective_parameters=True&#39; in the input args of LeR initialization to include these parameters in the output dictionary by default.</span>
+</pre></div>
+</div>
+</div>
 </section>
 <section id="2.5-Rate-Convergence-(Lensed)">
 <h3>2.5 Rate Convergence (Lensed)<a class="headerlink" href="#2.5-Rate-Convergence-(Lensed)" title="Link to this heading"></a></h3>
@@ -695,7 +712,7 @@ Total detectable events collected: 1014
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_LeR_advanced_sampling_13_0.png" src="../_images/examples_LeR_advanced_sampling_13_0.png" />
+<img alt="../_images/examples_LeR_advanced_sampling_14_0.png" src="../_images/examples_LeR_advanced_sampling_14_0.png" />
 </div>
 </div>
 </section>
@@ -875,7 +892,7 @@ WARNING:root:Too few points to create valid contours
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_LeR_advanced_sampling_21_1.png" src="../_images/examples_LeR_advanced_sampling_21_1.png" />
+<img alt="../_images/examples_LeR_advanced_sampling_22_1.png" src="../_images/examples_LeR_advanced_sampling_22_1.png" />
 </div>
 </div>
 </section>
@@ -1030,7 +1047,7 @@ Total lensed events sampled: 50000
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_LeR_advanced_sampling_27_0.png" src="../_images/examples_LeR_advanced_sampling_27_0.png" />
+<img alt="../_images/examples_LeR_advanced_sampling_28_0.png" src="../_images/examples_LeR_advanced_sampling_28_0.png" />
 </div>
 </div>
 </section>
@@ -1166,7 +1183,7 @@ Chosen detected lensed event index: 10
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_LeR_advanced_sampling_29_1.png" src="../_images/examples_LeR_advanced_sampling_29_1.png" />
+<img alt="../_images/examples_LeR_advanced_sampling_30_1.png" src="../_images/examples_LeR_advanced_sampling_30_1.png" />
 </div>
 </div>
 </section>
@@ -1264,7 +1281,7 @@ Chosen detected lensed event index: 10
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_LeR_advanced_sampling_31_0.png" src="../_images/examples_LeR_advanced_sampling_31_0.png" />
+<img alt="../_images/examples_LeR_advanced_sampling_32_0.png" src="../_images/examples_LeR_advanced_sampling_32_0.png" />
 </div>
 </div>
 </section>
@@ -1399,7 +1416,7 @@ Chosen detected lensed event index: 10
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_LeR_advanced_sampling_33_0.png" src="../_images/examples_LeR_advanced_sampling_33_0.png" />
+<img alt="../_images/examples_LeR_advanced_sampling_34_0.png" src="../_images/examples_LeR_advanced_sampling_34_0.png" />
 </div>
 </div>
 </section>

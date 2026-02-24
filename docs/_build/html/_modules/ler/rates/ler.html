@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.rates.ler &mdash; ler 0.5.3 documentation</title>
+  <title>ler.rates.ler &mdash; ler 0.5.9 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
@@ -18,7 +18,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=2a2fe768"></script>
+      <script src="../../../_static/documentation_options.js?v=9a3cda14"></script>
       <script src="../../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -396,18 +396,23 @@
 
     <span class="k">def</span> <span class="nf">_parent_class_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pdet_finder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to initialize the parent classes.</span>
+<span class="sd">        Helper function to initialize the parent classes.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        params : ``dict``</span>
-<span class="sd">            dictionary of parameters to initialize the parent classes</span>
+<span class="sd">        params : ``dict`` or ``None``</span>
+<span class="sd">            Dictionary of parameters to initialize the parent classes.</span>
+<span class="sd">        pdet_finder : ``callable`` or ``None``</span>
+<span class="sd">            Custom detection probability finder function.</span>
+<span class="sd">        verbose : ``bool``</span>
+<span class="sd">            If True, print initialization parameters. \n</span>
+<span class="sd">            default: True</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">initialization</span><span class="p">():</span>
             <span class="c1"># initialization of parent class</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_parent_initialization_helper</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-            <span class="c1"># initialization self.snr and self.pdet_finder from GWSNR class</span>
+            <span class="c1"># initialization of self.pdet_finder from gwsnr or from custom function</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">pdet_finder</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gwsnr_initialization</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -430,8 +435,8 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        params : ``dict``</span>
-<span class="sd">            dictionary of parameters to initialize the parent classes</span>
+<span class="sd">        params : ``dict`` or ``None``</span>
+<span class="sd">            Dictionary of parameters to initialize the parent classes.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># initialization of LensGalaxyParameterDistribution class</span>
@@ -455,7 +460,9 @@
             <span class="n">n_max_images</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
             <span class="n">time_window</span><span class="o">=</span><span class="mi">365</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">3600</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
             <span class="n">lens_model_list</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;EPL_NUMBA&quot;</span><span class="p">,</span> <span class="s2">&quot;SHEAR&quot;</span><span class="p">],</span>
-            <span class="n">effective_params_in_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">include_effective_parameters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">multiprocessing_verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">include_redundant_parameters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="c1"># CBCSourceParameterDistribution class params</span>
             <span class="n">event_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">event_type</span><span class="p">,</span>
             <span class="n">source_priors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -489,8 +496,10 @@
             <span class="n">n_min_images</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;n_min_images&quot;</span><span class="p">],</span>
             <span class="n">n_max_images</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;n_max_images&quot;</span><span class="p">],</span>
             <span class="n">time_window</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;time_window&quot;</span><span class="p">],</span>
-            <span class="n">effective_params_in_output</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;effective_params_in_output&quot;</span><span class="p">],</span>
+            <span class="n">include_effective_parameters</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;include_effective_parameters&quot;</span><span class="p">],</span>
             <span class="n">lens_model_list</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_model_list&quot;</span><span class="p">],</span>
+            <span class="n">multiprocessing_verbose</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;multiprocessing_verbose&quot;</span><span class="p">],</span>
+            <span class="n">include_redundant_parameters</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;include_redundant_parameters&quot;</span><span class="p">],</span>
             <span class="c1"># CBCSourceParameterDistribution class params</span>
             <span class="n">event_type</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;event_type&quot;</span><span class="p">],</span>
             <span class="n">source_priors</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;source_priors&quot;</span><span class="p">],</span>
@@ -546,8 +555,8 @@
                 <span class="n">snr_th_net</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
                 <span class="n">pdet_type</span><span class="o">=</span><span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
                 <span class="n">distribution_type</span><span class="o">=</span><span class="s2">&quot;noncentral_chi2&quot;</span><span class="p">,</span>
-                <span class="n">include_optimal_snr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="n">include_observed_snr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">include_optimal_snr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">include_observed_snr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="c1"># Settings for interpolation grid</span>
             <span class="n">mtot_min</span><span class="o">=</span><span class="n">min_bh_mass</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
@@ -662,7 +671,7 @@
 
     <span class="k">def</span> <span class="nf">_print_all_init_args</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to print all the parameters.</span>
+<span class="sd">        Helper function to print all initialization parameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># print all relevant functions and sampler priors</span>
@@ -760,8 +769,10 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    n_min_images = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;n_min_images&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    n_max_images = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;n_max_images&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    time_window = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;time_window&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    effective_params_in_output = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;effective_params_in_output&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    include_effective_parameters = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;include_effective_parameters&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    lens_model_list = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;lens_model_list&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    multiprocessing_verbose = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;multiprocessing_verbose&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    include_redundant_parameters = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;include_redundant_parameters&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="s2">&quot;pdet_args&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
@@ -816,7 +827,7 @@
         <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Generate unlensed GW source parameters.</span>
+<span class="sd">        Generate unlensed GW source parameters with detection probabilities.</span>
 
 <span class="sd">        This function calls the unlensed_sampling_routine function to generate</span>
 <span class="sd">        the parameters in batches. The generated parameters are stored in a JSON</span>
@@ -862,9 +873,9 @@
 <span class="sd">            +--------------------+--------------+--------------------------------------+</span>
 <span class="sd">            | theta_jn           | rad          | inclination angle                    |</span>
 <span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | a_1                |              | spin_1 of the compact binary         |</span>
+<span class="sd">            | a_1                |              | spin of the primary compact binary   |</span>
 <span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | a_2                |              | spin_2 of the compact binary         |</span>
+<span class="sd">            | a_2                |              | spin of the secondary compact binary |</span>
 <span class="sd">            +--------------------+--------------+--------------------------------------+</span>
 <span class="sd">            | luminosity_distance| Mpc          | luminosity distance                  |</span>
 <span class="sd">            +--------------------+--------------+--------------------------------------+</span>
@@ -996,7 +1007,50 @@
 <span class="sd">        total_rate : ``float``</span>
 <span class="sd">            Total unlensed rate (yr^-1).</span>
 <span class="sd">        unlensed_param : ``dict``</span>
-<span class="sd">            Dictionary of unlensed GW source parameters of the detectable events.</span>
+<span class="sd">            dictionary of GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):\n</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | Parameter          | Units        | Description                          |</span>
+<span class="sd">            +====================+==============+======================================+</span>
+<span class="sd">            | zs                 |              | redshift of the source               |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | geocent_time       | s            | GPS time of coalescence              |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | ra                 | rad          | right ascension                      |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | dec                | rad          | declination                          |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | phase              | rad          | phase of GW at reference frequency   |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | psi                | rad          | polarization angle                   |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | theta_jn           | rad          | inclination angle                    |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | a_1                |              | spin of the primary compact binary   |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | a_2                |              | spin of the secondary compact binary |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | luminosity_distance| Mpc          | luminosity distance                  |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | mass_1_source      | Msun         | mass_1 of the compact binary         |</span>
+<span class="sd">            |                    |              | (source frame)                       |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | mass_2_source      | Msun         | mass_2 of the compact binary         |</span>
+<span class="sd">            |                    |              | (source frame)                       |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | mass_1             | Msun         | mass_1 of the compact binary         |</span>
+<span class="sd">            |                    |              | (detector frame)                     |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | mass_2             | Msun         | mass_2 of the compact binary         |</span>
+<span class="sd">            |                    |              | (detector frame)                     |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | pdet_L1            |              | pdet of L1                           |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | pdet_H1            |              | pdet of H1                           |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | pdet_V1            |              | pdet of V1                           |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | pdet_net           |              | pdet of the network                  |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -1190,6 +1244,9 @@
 <span class="sd">        ----------</span>
 <span class="sd">        total_rate : ``float``</span>
 <span class="sd">            total rate.</span>
+<span class="sd">        pdet_type : ``str``</span>
+<span class="sd">            type of pdet condition used for calculating the rate. This is stored in the json file for record. \n</span>
+<span class="sd">            default pdet_type = &#39;boolean&#39;. Other options is &#39;probability_distribution&#39;.</span>
 <span class="sd">        param_type : ``str``</span>
 <span class="sd">            type of parameters.</span>
 <span class="sd">            default param_type = &#39;unlensed&#39;. Other options is &#39;lensed&#39;.</span>
@@ -1949,7 +2006,50 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        param_final : ``dict``</span>
-<span class="sd">            Dictionary of unlensed GW source parameters of detectable events.</span>
+<span class="sd">            dictionary of GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):\n</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | Parameter          | Units        | Description                          |</span>
+<span class="sd">            +====================+==============+======================================+</span>
+<span class="sd">            | zs                 |              | redshift of the source               |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | geocent_time       | s            | GPS time of coalescence              |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | ra                 | rad          | right ascension                      |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | dec                | rad          | declination                          |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | phase              | rad          | phase of GW at reference frequency   |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | psi                | rad          | polarization angle                   |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | theta_jn           | rad          | inclination angle                    |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | a_1                |              | spin of the primary compact binary   |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | a_2                |              | spin of the secondary compact binary |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | luminosity_distance| Mpc          | luminosity distance                  |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | mass_1_source      | Msun         | mass of the primary compact binary   |</span>
+<span class="sd">            |                    |              | (source frame)                       |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | mass_2_source      | Msun         | mass of the secondary compact binary |</span>
+<span class="sd">            |                    |              | (source frame)                       |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | mass_1             | Msun         | mass_1 of the compact binary         |</span>
+<span class="sd">            |                    |              | (detector frame)                     |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | mass_2             | Msun         | mass_2 of the compact binary         |</span>
+<span class="sd">            |                    |              | (detector frame)                     |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | pdet_L1            |              | pdet of L1                           |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | pdet_H1            |              | pdet of H1                           |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | pdet_V1            |              | pdet of V1                           |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            | pdet_net           |              | pdet of the network                  |</span>
+<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -2369,6 +2469,26 @@
         <span class="n">stopping_criteria</span><span class="p">,</span>
         <span class="n">initial_continue_condition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Helper function to check if sampling should continue.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        size_to_collect : ``int``</span>
+<span class="sd">            Target number of detectable events.</span>
+<span class="sd">        param_dict : ``dict``</span>
+<span class="sd">            Dictionary containing metadata (detectable_events, total_rate).</span>
+<span class="sd">        stopping_criteria : ``dict`` or ``None``</span>
+<span class="sd">            Stopping criteria configuration.</span>
+<span class="sd">        initial_continue_condition : ``bool``</span>
+<span class="sd">            Initial value for continue condition. \n</span>
+<span class="sd">            default: True</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        continue_condition : ``bool``</span>
+<span class="sd">            Whether to continue sampling.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">continue_condition</span> <span class="o">=</span> <span class="n">initial_continue_condition</span>
         <span class="n">already_collected_size</span> <span class="o">=</span> <span class="n">param_dict</span><span class="p">[</span><span class="s2">&quot;detectable_events&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -2433,7 +2553,7 @@
 <span class="sd">            total rate (yr^-1).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> trmming final result to size=</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> trimming final result to size=</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">param_final</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
         <span class="c1"># randomly select size number of samples</span>
         <span class="n">len_</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">param_final</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>

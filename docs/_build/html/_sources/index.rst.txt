@@ -10,6 +10,8 @@ Welcome to :red:`ler`'s documentation!
 :red:`ler` : :red_first:`LVK` (LIGO-Virgo-KAGRA) :red_first:`Event` (compact-binary mergers) :red_first:`Rate` calculator and simulator
 ----------------------------------------------------------------------------------------
 
+**Try ler now at** `Google Colab Notebook <https://colab.research.google.com/drive/14OMlNVn-cbF6Cddu3NaKVPYNj96a13g6?usp=sharing>`_! See the `ler paper <https://arxiv.org/abs/2407.07526>`_ for a detailed technical overview.
+
 ``ler`` (/ˈɛlɚ/) is a statistical-based Python package whose core function is to calculate detectable rates of gravitational wave events (both lensed and unlensed). It provides a comprehensive framework for simulating compact binary coalescence events and their detection by ground-based gravitational wave detectors.
 
 ``ler`` is closely integrated with the ``gwsnr`` package (`see gwsnr documentation <https://gwsnr.hemantaph.com>`_), which provides efficient gravitational-wave Signal-to-Noise Ratio calculation. This allows researchers to perform fast Probability of Detection (:math:`P_{\text{det}}`) calculations for population studies and hierarchical Bayesian inference with selection effects.

@@ -6,20 +6,20 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.image_properties.multiprocessing_routine &mdash; ler 0.5.3 documentation</title>
+  <title>ler.image_properties.multiprocessing_routine &mdash; ler 0.5.9 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=d6b2367a" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=242ac6f9" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=30f3526c" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=2a2fe768"></script>
+      <script src="../../../../_static/documentation_options.js?v=9a3cda14"></script>
       <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -179,17 +179,15 @@ region to ensure multiple imaging.</p>
 <dd class="field-odd"><dl>
 <dt><strong>lens_parameters</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of lens configuration parameters with the following structure:</p>
 <ul class="simple">
-<li><p>[0]: n_min_images - minimum number of images required</p></li>
-<li><p>[1]: e1 - ellipticity component 1</p></li>
-<li><p>[2]: e2 - ellipticity component 2</p></li>
-<li><p>[3]: gamma - power-law slope of mass density</p></li>
-<li><p>[4]: gamma1 - external shear component 1</p></li>
-<li><p>[5]: gamma2 - external shear component 2</p></li>
-<li><p>[6]: zl - lens redshift</p></li>
-<li><p>[7]: zs - source redshift</p></li>
-<li><p>[8]: einstein_radius - Einstein radius (units: radians)</p></li>
-<li><p>[9]: iteration - iteration index for tracking</p></li>
-<li><p>[10:]: lens_model_list - lens model names (e.g., ‘EPL_NUMBA’, ‘SHEAR’)</p></li>
+<li><p>[0]: e1 - ellipticity component 1</p></li>
+<li><p>[1]: e2 - ellipticity component 2</p></li>
+<li><p>[2]: gamma - power-law slope of mass density</p></li>
+<li><p>[3]: gamma1 - external shear component 1</p></li>
+<li><p>[4]: gamma2 - external shear component 2</p></li>
+<li><p>[5]: zl - lens redshift</p></li>
+<li><p>[6]: zs - source redshift</p></li>
+<li><p>[7]: einstein_radius - Einstein radius (units: radians)</p></li>
+<li><p>[8]: iteration - iteration index for tracking</p></li>
 </ul>
 </dd>
 </dl>
@@ -220,15 +218,21 @@ region to ensure multiple imaging.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.image_properties.multiprocessing_routine</span> <span class="kn">import</span> <span class="n">solve_lens_equation</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.image_properties.multiprocessing_routine</span> <span class="kn">import</span> <span class="n">solve_lens_equation</span><span class="p">,</span> <span class="n">_init_worker_multiprocessing</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.024</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.016</span><span class="p">,</span> <span class="mf">1.89</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.09</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.94</span><span class="p">,</span> <span class="mf">2.5e-06</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.040</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.014</span><span class="p">,</span> <span class="mf">2.00</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.09</span><span class="p">,</span> <span class="mf">2.55</span><span class="p">,</span> <span class="mf">1.0e-06</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.024</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.016</span><span class="p">,</span> <span class="mf">1.89</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.09</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.94</span><span class="p">,</span> <span class="mf">2.5e-06</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.040</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.014</span><span class="p">,</span> <span class="mf">2.00</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.09</span><span class="p">,</span> <span class="mf">2.55</span><span class="p">,</span> <span class="mf">1.0e-06</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">input_arguments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">lens_parameters1</span><span class="p">,</span> <span class="n">lens_parameters2</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Pool</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">solve_lens_equation</span><span class="p">,</span> <span class="n">input_arguments</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of images: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Pool</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">processes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="c1"># Number of worker processes</span>
+<span class="gp">... </span>    <span class="n">initializer</span><span class="o">=</span><span class="n">_init_worker_multiprocessing</span><span class="p">,</span> <span class="c1"># common</span>
+<span class="gp">... </span>    <span class="n">initargs</span><span class="o">=</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="mi">2</span><span class="p">,</span> <span class="c1"># n_min_images</span>
+<span class="gp">... </span>        <span class="p">[</span><span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span> <span class="c1"># lensModelList</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">solve_lens_equation</span><span class="p">,</span> <span class="n">input_arguments</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

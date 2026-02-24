@@ -74,27 +74,23 @@ Attributes
        **lens_parameters** : ``numpy.ndarray``
            Array of lens configuration parameters with the following structure:
 
-           - [0]: n_min_images - minimum number of images required
+           - [0]: e1 - ellipticity component 1
 
-           - [1]: e1 - ellipticity component 1
+           - [1]: e2 - ellipticity component 2
 
-           - [2]: e2 - ellipticity component 2
+           - [2]: gamma - power-law slope of mass density
 
-           - [3]: gamma - power-law slope of mass density
+           - [3]: gamma1 - external shear component 1
 
-           - [4]: gamma1 - external shear component 1
+           - [4]: gamma2 - external shear component 2
 
-           - [5]: gamma2 - external shear component 2
+           - [5]: zl - lens redshift
 
-           - [6]: zl - lens redshift
+           - [6]: zs - source redshift
 
-           - [7]: zs - source redshift
+           - [7]: einstein_radius - Einstein radius (units: radians)
 
-           - [8]: einstein_radius - Einstein radius (units: radians)
-
-           - [9]: iteration - iteration index for tracking
-
-           - [10:]: lens_model_list - lens model names (e.g., 'EPL_NUMBA', 'SHEAR')
+           - [8]: iteration - iteration index for tracking
 
    :Returns:
 
@@ -139,15 +135,21 @@ Attributes
 
    .. rubric:: Examples
 
-   >>> from ler.image_properties.multiprocessing_routine import solve_lens_equation
+   >>> from ler.image_properties.multiprocessing_routine import solve_lens_equation, _init_worker_multiprocessing
    >>> import numpy as np
    >>> from multiprocessing import Pool
-   >>> lens_parameters1 = np.array([2, 0.024, -0.016, 1.89, 0.10, 0.09, 0.25, 0.94, 2.5e-06, 0, 'EPL_NUMBA', 'SHEAR'], dtype=object)
-   >>> lens_parameters2 = np.array([2, -0.040, -0.014, 2.00, 0.08, -0.01, 1.09, 2.55, 1.0e-06, 1, 'EPL_NUMBA', 'SHEAR'], dtype=object)
+   >>> lens_parameters1 = np.array([0.024, -0.016, 1.89, 0.10, 0.09, 0.25, 0.94, 2.5e-06, 0])
+   >>> lens_parameters2 = np.array([-0.040, -0.014, 2.00, 0.08, -0.01, 1.09, 2.55, 1.0e-06, 1])
    >>> input_arguments = np.vstack((lens_parameters1, lens_parameters2))
-   >>> with Pool(2) as p:
-   ...     result = p.map(solve_lens_equation, input_arguments)
-   >>> print(f"Number of images: {result[0][6]}")
+   >>> with Pool(
+   ...     processes=2, # Number of worker processes
+   ...     initializer=_init_worker_multiprocessing, # common
+   ...     initargs=(
+   ...         2, # n_min_images
+   ...         ['EPL_NUMBA', 'SHEAR'], # lensModelList
+   ...     ),
+   ... ) as pool:
+   ...     result = pool.map(solve_lens_equation, input_arguments)
 
 
 

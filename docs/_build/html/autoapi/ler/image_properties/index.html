@@ -6,20 +6,20 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.image_properties &mdash; ler 0.5.3 documentation</title>
+  <title>ler.image_properties &mdash; ler 0.5.9 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d6b2367a" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css?v=242ac6f9" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=30f3526c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=2a2fe768"></script>
+      <script src="../../../_static/documentation_options.js?v=9a3cda14"></script>
       <script src="../../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -195,17 +195,15 @@ region to ensure multiple imaging.</p>
 <dd class="field-odd"><dl>
 <dt><strong>lens_parameters</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of lens configuration parameters with the following structure:</p>
 <ul class="simple">
-<li><p>[0]: n_min_images - minimum number of images required</p></li>
-<li><p>[1]: e1 - ellipticity component 1</p></li>
-<li><p>[2]: e2 - ellipticity component 2</p></li>
-<li><p>[3]: gamma - power-law slope of mass density</p></li>
-<li><p>[4]: gamma1 - external shear component 1</p></li>
-<li><p>[5]: gamma2 - external shear component 2</p></li>
-<li><p>[6]: zl - lens redshift</p></li>
-<li><p>[7]: zs - source redshift</p></li>
-<li><p>[8]: einstein_radius - Einstein radius (units: radians)</p></li>
-<li><p>[9]: iteration - iteration index for tracking</p></li>
-<li><p>[10:]: lens_model_list - lens model names (e.g., ‘EPL_NUMBA’, ‘SHEAR’)</p></li>
+<li><p>[0]: e1 - ellipticity component 1</p></li>
+<li><p>[1]: e2 - ellipticity component 2</p></li>
+<li><p>[2]: gamma - power-law slope of mass density</p></li>
+<li><p>[3]: gamma1 - external shear component 1</p></li>
+<li><p>[4]: gamma2 - external shear component 2</p></li>
+<li><p>[5]: zl - lens redshift</p></li>
+<li><p>[6]: zs - source redshift</p></li>
+<li><p>[7]: einstein_radius - Einstein radius (units: radians)</p></li>
+<li><p>[8]: iteration - iteration index for tracking</p></li>
 </ul>
 </dd>
 </dl>
@@ -236,15 +234,21 @@ region to ensure multiple imaging.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.image_properties.multiprocessing_routine</span> <span class="kn">import</span> <span class="n">solve_lens_equation</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.image_properties.multiprocessing_routine</span> <span class="kn">import</span> <span class="n">solve_lens_equation</span><span class="p">,</span> <span class="n">_init_worker_multiprocessing</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.024</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.016</span><span class="p">,</span> <span class="mf">1.89</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.09</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.94</span><span class="p">,</span> <span class="mf">2.5e-06</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.040</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.014</span><span class="p">,</span> <span class="mf">2.00</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.09</span><span class="p">,</span> <span class="mf">2.55</span><span class="p">,</span> <span class="mf">1.0e-06</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.024</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.016</span><span class="p">,</span> <span class="mf">1.89</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.09</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.94</span><span class="p">,</span> <span class="mf">2.5e-06</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.040</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.014</span><span class="p">,</span> <span class="mf">2.00</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.09</span><span class="p">,</span> <span class="mf">2.55</span><span class="p">,</span> <span class="mf">1.0e-06</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">input_arguments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">lens_parameters1</span><span class="p">,</span> <span class="n">lens_parameters2</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Pool</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">solve_lens_equation</span><span class="p">,</span> <span class="n">input_arguments</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of images: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Pool</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">processes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="c1"># Number of worker processes</span>
+<span class="gp">... </span>    <span class="n">initializer</span><span class="o">=</span><span class="n">_init_worker_multiprocessing</span><span class="p">,</span> <span class="c1"># common</span>
+<span class="gp">... </span>    <span class="n">initargs</span><span class="o">=</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="mi">2</span><span class="p">,</span> <span class="c1"># n_min_images</span>
+<span class="gp">... </span>        <span class="p">[</span><span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span> <span class="c1"># lensModelList</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">solve_lens_equation</span><span class="p">,</span> <span class="n">input_arguments</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -275,7 +279,7 @@ region to ensure multiple imaging.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ler.image_properties.ImageProperties">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.image_properties.</span></span><span class="sig-name descname"><span class="pre">ImageProperties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_min_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens_model_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['EPL_NUMBA',</span> <span class="pre">'SHEAR']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">365</span> <span class="pre">*</span> <span class="pre">24</span> <span class="pre">*</span> <span class="pre">3600</span> <span class="pre">*</span> <span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_precession</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_finder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">effective_params_in_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/image_properties/image_properties.html#ImageProperties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.ImageProperties" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.image_properties.</span></span><span class="sig-name descname"><span class="pre">ImageProperties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_min_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens_model_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['EPL_NUMBA',</span> <span class="pre">'SHEAR']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">365</span> <span class="pre">*</span> <span class="pre">24</span> <span class="pre">*</span> <span class="pre">3600</span> <span class="pre">*</span> <span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_precession</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_finder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_effective_parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiprocessing_verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_redundant_parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/image_properties/image_properties.html#ImageProperties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.ImageProperties" title="Link to this definition"></a></dt>
 <dd><p>Class to compute image properties of strongly lensed gravitational wave events.</p>
 <p>This class solves the lens equation to find image positions, magnifications,
 time delays, and image types (morse phase) for strongly lensed sources. It uses
@@ -302,7 +306,7 @@ multiprocessing for efficient computation of large samples.</p>
 <dt><strong>time_window</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Time window for lensed events from min(geocent_time) (units: seconds).</p>
 <p>default: 365*24*3600*2 (2 years)</p>
 </dd>
-<dt><strong>effective_params_in_output</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>Whether to include effective parameters (effective_phase, effective_ra, effective_dec) in the output.</p>
+<dt><strong>include_effective_parameters</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>Whether to include effective parameters (effective_phase, effective_ra, effective_dec) in the output.</p>
 <p>default: True</p>
 </dd>
 <dt><strong>lens_model_list</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">list</span></code></span></dt><dd><p>List of lens models to use.</p>
@@ -318,6 +322,11 @@ multiprocessing for efficient computation of large samples.</p>
 <dt><strong>spin_precession</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True (and spin_zero=False), sample precessing spin parameters.</p>
 <p>If False (and spin_zero=False), sample aligned/anti-aligned spins.</p>
 <p>default: False</p>
+</dd>
+<dt><strong>multiprocessing_verbose</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, shows a progress bar for multiprocessing tasks.</p>
+<p>default: True</p>
+</dd>
+<dt><strong>include_redundant_parameters</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, removes redundant parameters (e.g., theta_E, n_images, mass_1, mass_2, luminosity_distance) from output to save memory.</p>
 </dd>
 </dl>
 </dd>
@@ -362,72 +371,6 @@ multiprocessing for efficient computation of large samples.</p>
 <section id="instance-attributes">
 <h4>Instance Attributes<a class="headerlink" href="#instance-attributes" title="Link to this heading"></a></h4>
 <p>ImageProperties has the following attributes:</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Attribute</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Unit</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.ImageProperties.npool" title="ler.image_properties.ImageProperties.npool"><code class="xref py py-attr docutils literal notranslate"><span class="pre">npool</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
-<td></td>
-<td><p>Number of multiprocessing workers</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.ImageProperties.n_min_images" title="ler.image_properties.ImageProperties.n_min_images"><code class="xref py py-attr docutils literal notranslate"><span class="pre">n_min_images</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
-<td></td>
-<td><p>Minimum number of images required</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.ImageProperties.n_max_images" title="ler.image_properties.ImageProperties.n_max_images"><code class="xref py py-attr docutils literal notranslate"><span class="pre">n_max_images</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
-<td></td>
-<td><p>Maximum number of images per event</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.ImageProperties.time_window" title="ler.image_properties.ImageProperties.time_window"><code class="xref py py-attr docutils literal notranslate"><span class="pre">time_window</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
-<td><p>s</p></td>
-<td><p>Time window for lensed events</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.ImageProperties.effective_params_in_output" title="ler.image_properties.ImageProperties.effective_params_in_output"><code class="xref py py-attr docutils literal notranslate"><span class="pre">effective_params_in_output</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
-<td></td>
-<td><p>To include effective parameters in output</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.ImageProperties.lens_model_list" title="ler.image_properties.ImageProperties.lens_model_list"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lens_model_list</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
-<td></td>
-<td><p>List of lens models</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.cosmo" title="ler.image_properties.cosmo"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cosmo</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">astropy.cosmology</span></code></p></td>
-<td></td>
-<td><p>Cosmology for calculations</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.ImageProperties.spin_zero" title="ler.image_properties.ImageProperties.spin_zero"><code class="xref py py-attr docutils literal notranslate"><span class="pre">spin_zero</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
-<td></td>
-<td><p>Flag for zero spin assumption</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.ImageProperties.spin_precession" title="ler.image_properties.ImageProperties.spin_precession"><code class="xref py py-attr docutils literal notranslate"><span class="pre">spin_precession</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
-<td></td>
-<td><p>Flag for spin precession</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.ImageProperties.pdet_finder" title="ler.image_properties.ImageProperties.pdet_finder"><code class="xref py py-attr docutils literal notranslate"><span class="pre">pdet_finder</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
-<td></td>
-<td><p>Probability of detection calculator</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.ImageProperties.pdet_finder_output_keys" title="ler.image_properties.ImageProperties.pdet_finder_output_keys"><code class="xref py py-attr docutils literal notranslate"><span class="pre">pdet_finder_output_keys</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
-<td></td>
-<td><p>Keys for probability of detection outputs</p></td>
-</tr>
-</tbody>
-</table>
 <dl class="py property">
 <dt class="sig sig-object py" id="ler.image_properties.ImageProperties.npool">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">npool</span></span><a class="headerlink" href="#ler.image_properties.ImageProperties.npool" title="Link to this definition"></a></dt>
@@ -584,19 +527,29 @@ multiprocessing for efficient computation of large samples.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="ler.image_properties.ImageProperties.effective_params_in_output">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">effective_params_in_output</span></span><a class="headerlink" href="#ler.image_properties.ImageProperties.effective_params_in_output" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="ler.image_properties.ImageProperties.include_effective_parameters">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">include_effective_parameters</span></span><a class="headerlink" href="#ler.image_properties.ImageProperties.include_effective_parameters" title="Link to this definition"></a></dt>
 <dd><p>Flag to include effective parameters in output.</p>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>effective_params_in_output</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>Whether to include effective parameters in the output of get_lensed_snrs.</p>
+<dt><strong>include_effective_parameters</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>Whether to include effective parameters in the output of get_lensed_snrs.</p>
 <p>default: False</p>
 </dd>
 </dl>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ler.image_properties.ImageProperties.multiprocessing_verbose">
+<span class="sig-name descname"><span class="pre">multiprocessing_verbose</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'True'</span></em><a class="headerlink" href="#ler.image_properties.ImageProperties.multiprocessing_verbose" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ler.image_properties.ImageProperties.include_redundant_parameters">
+<span class="sig-name descname"><span class="pre">include_redundant_parameters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'False'</span></em><a class="headerlink" href="#ler.image_properties.ImageProperties.include_redundant_parameters" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.image_properties.ImageProperties.image_properties">
@@ -708,7 +661,7 @@ the projected mass distribution.</p></td>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.image_properties.ImageProperties.get_lensed_snrs">
-<span class="sig-name descname"><span class="pre">get_lensed_snrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_finder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">effective_params_in_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/image_properties/image_properties.html#ImageProperties.get_lensed_snrs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.ImageProperties.get_lensed_snrs" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_lensed_snrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_finder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_effective_parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/image_properties/image_properties.html#ImageProperties.get_lensed_snrs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.ImageProperties.get_lensed_snrs" title="Link to this definition"></a></dt>
 <dd><p>Compute detection probability for each lensed image.</p>
 <p>Calculates the effective luminosity distance, geocent time, and phase
 for each image accounting for magnification and morse phase, then
@@ -720,7 +673,7 @@ computes detection probabilities using the provided calculator.</p>
 </dd>
 <dt><strong>pdet_finder</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function that computes detection probability given GW parameters.</p>
 </dd>
-<dt><strong>effective_params_in_output</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, includes effective parameters in output lensed_param.</p>
+<dt><strong>include_effective_parameters</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, includes effective parameters in output lensed_param.</p>
 </dd>
 </dl>
 </dd>
@@ -755,6 +708,12 @@ computes detection probabilities using the provided calculator.</p>
 </dl>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.image_properties.ImageProperties.recover_redundant_parameters">
+<span class="sig-name descname"><span class="pre">recover_redundant_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ler/image_properties/image_properties.html#ImageProperties.recover_redundant_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.ImageProperties.recover_redundant_parameters" title="Link to this definition"></a></dt>
+<dd><p>Recover redundant parameters in lensed_param, i.e. theta_E, n_images, mass_1, mass_2, luminosity_distance.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -823,17 +782,15 @@ region to ensure multiple imaging.</p>
 <dd class="field-odd"><dl>
 <dt><strong>lens_parameters</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of lens configuration parameters with the following structure:</p>
 <ul class="simple">
-<li><p>[0]: n_min_images - minimum number of images required</p></li>
-<li><p>[1]: e1 - ellipticity component 1</p></li>
-<li><p>[2]: e2 - ellipticity component 2</p></li>
-<li><p>[3]: gamma - power-law slope of mass density</p></li>
-<li><p>[4]: gamma1 - external shear component 1</p></li>
-<li><p>[5]: gamma2 - external shear component 2</p></li>
-<li><p>[6]: zl - lens redshift</p></li>
-<li><p>[7]: zs - source redshift</p></li>
-<li><p>[8]: einstein_radius - Einstein radius (units: radians)</p></li>
-<li><p>[9]: iteration - iteration index for tracking</p></li>
-<li><p>[10:]: lens_model_list - lens model names (e.g., ‘EPL_NUMBA’, ‘SHEAR’)</p></li>
+<li><p>[0]: e1 - ellipticity component 1</p></li>
+<li><p>[1]: e2 - ellipticity component 2</p></li>
+<li><p>[2]: gamma - power-law slope of mass density</p></li>
+<li><p>[3]: gamma1 - external shear component 1</p></li>
+<li><p>[4]: gamma2 - external shear component 2</p></li>
+<li><p>[5]: zl - lens redshift</p></li>
+<li><p>[6]: zs - source redshift</p></li>
+<li><p>[7]: einstein_radius - Einstein radius (units: radians)</p></li>
+<li><p>[8]: iteration - iteration index for tracking</p></li>
 </ul>
 </dd>
 </dl>
@@ -864,15 +821,21 @@ region to ensure multiple imaging.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.image_properties.multiprocessing_routine</span> <span class="kn">import</span> <span class="n">solve_lens_equation</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.image_properties.multiprocessing_routine</span> <span class="kn">import</span> <span class="n">solve_lens_equation</span><span class="p">,</span> <span class="n">_init_worker_multiprocessing</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.024</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.016</span><span class="p">,</span> <span class="mf">1.89</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.09</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.94</span><span class="p">,</span> <span class="mf">2.5e-06</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.040</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.014</span><span class="p">,</span> <span class="mf">2.00</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.09</span><span class="p">,</span> <span class="mf">2.55</span><span class="p">,</span> <span class="mf">1.0e-06</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.024</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.016</span><span class="p">,</span> <span class="mf">1.89</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.09</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.94</span><span class="p">,</span> <span class="mf">2.5e-06</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.040</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.014</span><span class="p">,</span> <span class="mf">2.00</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.09</span><span class="p">,</span> <span class="mf">2.55</span><span class="p">,</span> <span class="mf">1.0e-06</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">input_arguments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">lens_parameters1</span><span class="p">,</span> <span class="n">lens_parameters2</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Pool</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">solve_lens_equation</span><span class="p">,</span> <span class="n">input_arguments</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of images: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Pool</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">processes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="c1"># Number of worker processes</span>
+<span class="gp">... </span>    <span class="n">initializer</span><span class="o">=</span><span class="n">_init_worker_multiprocessing</span><span class="p">,</span> <span class="c1"># common</span>
+<span class="gp">... </span>    <span class="n">initargs</span><span class="o">=</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="mi">2</span><span class="p">,</span> <span class="c1"># n_min_images</span>
+<span class="gp">... </span>        <span class="p">[</span><span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span> <span class="c1"># lensModelList</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">solve_lens_equation</span><span class="p">,</span> <span class="n">input_arguments</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

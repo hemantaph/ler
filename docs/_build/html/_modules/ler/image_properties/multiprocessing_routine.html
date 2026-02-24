@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.image_properties.multiprocessing_routine &mdash; ler 0.5.3 documentation</title>
+  <title>ler.image_properties.multiprocessing_routine &mdash; ler 0.5.9 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
@@ -18,7 +18,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=2a2fe768"></script>
+      <script src="../../../_static/documentation_options.js?v=9a3cda14"></script>
       <script src="../../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -139,6 +139,30 @@
 <span class="n">MIN_MAGNIFICATION</span> <span class="o">=</span> <span class="mf">0.01</span></div>
 
 
+<span class="c1"># Global variable to hold shared data in worker processes</span>
+<span class="c1"># This avoids pickling large data for each work item - only once per worker</span>
+<span class="n">_worker_shared_data</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">def</span> <span class="nf">_init_worker_multiprocessing</span><span class="p">(</span>
+    <span class="n">n_min_images</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">lensModelList</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialize worker process with shared data.</span>
+
+<span class="sd">    This function is called once per worker process when the pool is created.</span>
+<span class="sd">    Shared data is stored in a global variable that workers can access.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_min_images : ``int``</span>
+<span class="sd">        Minimum number of images required for a valid lensing event.</span>
+<span class="sd">    lensModelList : ``list``</span>
+<span class="sd">        List of lens models to use. Default is [&#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;].</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_worker_shared_data</span>
+    <span class="n">_worker_shared_data</span><span class="p">[</span><span class="s2">&quot;n_min_images&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_min_images</span>
+    <span class="n">_worker_shared_data</span><span class="p">[</span><span class="s2">&quot;lensModelList&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lensModelList</span>
 
 <span class="k">def</span> <span class="nf">_create_nan_result</span><span class="p">(</span><span class="n">iteration</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -168,7 +192,6 @@
         <span class="n">iteration</span><span class="p">,</span>
     <span class="p">)</span>
 
-
 <div class="viewcode-block" id="solve_lens_equation">
 <a class="viewcode-back" href="../../../autoapi/ler/image_properties/multiprocessing_routine/index.html#ler.image_properties.solve_lens_equation">[docs]</a>
 <span class="k">def</span> <span class="nf">solve_lens_equation</span><span class="p">(</span><span class="n">lens_parameters</span><span class="p">):</span>
@@ -184,17 +207,15 @@
 <span class="sd">    ----------</span>
 <span class="sd">    lens_parameters : ``numpy.ndarray``</span>
 <span class="sd">        Array of lens configuration parameters with the following structure: \n</span>
-<span class="sd">        - [0]: n_min_images - minimum number of images required \n</span>
-<span class="sd">        - [1]: e1 - ellipticity component 1 \n</span>
-<span class="sd">        - [2]: e2 - ellipticity component 2 \n</span>
-<span class="sd">        - [3]: gamma - power-law slope of mass density \n</span>
-<span class="sd">        - [4]: gamma1 - external shear component 1 \n</span>
-<span class="sd">        - [5]: gamma2 - external shear component 2 \n</span>
-<span class="sd">        - [6]: zl - lens redshift \n</span>
-<span class="sd">        - [7]: zs - source redshift \n</span>
-<span class="sd">        - [8]: einstein_radius - Einstein radius (units: radians) \n</span>
-<span class="sd">        - [9]: iteration - iteration index for tracking \n</span>
-<span class="sd">        - [10:]: lens_model_list - lens model names (e.g., &#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;) \n</span>
+<span class="sd">        - [0]: e1 - ellipticity component 1 \n</span>
+<span class="sd">        - [1]: e2 - ellipticity component 2 \n</span>
+<span class="sd">        - [2]: gamma - power-law slope of mass density \n</span>
+<span class="sd">        - [3]: gamma1 - external shear component 1 \n</span>
+<span class="sd">        - [4]: gamma2 - external shear component 2 \n</span>
+<span class="sd">        - [5]: zl - lens redshift \n</span>
+<span class="sd">        - [6]: zs - source redshift \n</span>
+<span class="sd">        - [7]: einstein_radius - Einstein radius (units: radians) \n</span>
+<span class="sd">        - [8]: iteration - iteration index for tracking \n</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -221,25 +242,33 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; from ler.image_properties.multiprocessing_routine import solve_lens_equation</span>
+<span class="sd">    &gt;&gt;&gt; from ler.image_properties.multiprocessing_routine import solve_lens_equation, _init_worker_multiprocessing</span>
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">    &gt;&gt;&gt; from multiprocessing import Pool</span>
-<span class="sd">    &gt;&gt;&gt; lens_parameters1 = np.array([2, 0.024, -0.016, 1.89, 0.10, 0.09, 0.25, 0.94, 2.5e-06, 0, &#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;], dtype=object)</span>
-<span class="sd">    &gt;&gt;&gt; lens_parameters2 = np.array([2, -0.040, -0.014, 2.00, 0.08, -0.01, 1.09, 2.55, 1.0e-06, 1, &#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;], dtype=object)</span>
+<span class="sd">    &gt;&gt;&gt; lens_parameters1 = np.array([0.024, -0.016, 1.89, 0.10, 0.09, 0.25, 0.94, 2.5e-06, 0])</span>
+<span class="sd">    &gt;&gt;&gt; lens_parameters2 = np.array([-0.040, -0.014, 2.00, 0.08, -0.01, 1.09, 2.55, 1.0e-06, 1])</span>
 <span class="sd">    &gt;&gt;&gt; input_arguments = np.vstack((lens_parameters1, lens_parameters2))</span>
-<span class="sd">    &gt;&gt;&gt; with Pool(2) as p:</span>
-<span class="sd">    ...     result = p.map(solve_lens_equation, input_arguments)</span>
-<span class="sd">    &gt;&gt;&gt; print(f&quot;Number of images: {result[0][6]}&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; with Pool(</span>
+<span class="sd">    ...     processes=2, # Number of worker processes</span>
+<span class="sd">    ...     initializer=_init_worker_multiprocessing, # common</span>
+<span class="sd">    ...     initargs=(</span>
+<span class="sd">    ...         2, # n_min_images</span>
+<span class="sd">    ...         [&#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;], # lensModelList</span>
+<span class="sd">    ...     ),</span>
+<span class="sd">    ... ) as pool:</span>
+<span class="sd">    ...     result = pool.map(solve_lens_equation, input_arguments)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">n_min_images</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lens_parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">zl</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
-    <span class="n">zs</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-    <span class="n">einstein_radius</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
-    <span class="n">iteration</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span>
+    <span class="n">n_min_images</span> <span class="o">=</span> <span class="n">_worker_shared_data</span><span class="p">[</span><span class="s2">&quot;n_min_images&quot;</span><span class="p">]</span>
+    <span class="n">lensModelList</span> <span class="o">=</span> <span class="n">_worker_shared_data</span><span class="p">[</span><span class="s2">&quot;lensModelList&quot;</span><span class="p">]</span>
+
+    <span class="n">zl</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">zs</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+    <span class="n">einstein_radius</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+    <span class="n">iteration</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
 
     <span class="c1"># Initialize lens model for image position, magnification, and time-delay calculations</span>
     <span class="n">lensModel</span> <span class="o">=</span> <span class="n">LensModel</span><span class="p">(</span>
-        <span class="n">lens_model_list</span><span class="o">=</span><span class="n">lens_parameters</span><span class="p">[</span><span class="mi">10</span><span class="p">:]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">z_lens</span><span class="o">=</span><span class="n">zl</span><span class="p">,</span> <span class="n">z_source</span><span class="o">=</span><span class="n">zs</span>
+        <span class="n">lens_model_list</span><span class="o">=</span><span class="n">lensModelList</span><span class="p">,</span> <span class="n">z_lens</span><span class="o">=</span><span class="n">zl</span><span class="p">,</span> <span class="n">z_source</span><span class="o">=</span><span class="n">zs</span>
     <span class="p">)</span>
     <span class="n">lens_eq_solver</span> <span class="o">=</span> <span class="n">LensEquationSolver</span><span class="p">(</span><span class="n">lensModel</span><span class="p">)</span>
 
@@ -248,15 +277,15 @@
     <span class="n">kwargs_lens</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">{</span>
             <span class="s2">&quot;theta_E&quot;</span><span class="p">:</span> <span class="n">factor</span><span class="p">,</span>
-            <span class="s2">&quot;e1&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-            <span class="s2">&quot;e2&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
-            <span class="s2">&quot;gamma&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+            <span class="s2">&quot;e1&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="s2">&quot;e2&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="s2">&quot;gamma&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
             <span class="s2">&quot;center_x&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
             <span class="s2">&quot;center_y&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="p">{</span>
-            <span class="s2">&quot;gamma1&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span>
-            <span class="s2">&quot;gamma2&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span>
+            <span class="s2">&quot;gamma1&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+            <span class="s2">&quot;gamma2&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span>
             <span class="s2">&quot;ra_0&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
             <span class="s2">&quot;dec_0&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
         <span class="p">},</span>

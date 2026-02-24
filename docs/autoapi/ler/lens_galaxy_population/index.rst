@@ -2821,7 +2821,7 @@ Attributes
               +--------------------+--------------+--------------------------------------+
               | a_1                |              | spin_1 of the compact binary         |
               +--------------------+--------------+--------------------------------------+
-              | a_2                |              | spin_2 of the compact binary         |
+              | a_2                |              | spin of the secondary compact binary |
               +--------------------+--------------+--------------------------------------+
               | luminosity_distance| Mpc          | luminosity distance                  |
               +--------------------+--------------+--------------------------------------+
@@ -3375,7 +3375,7 @@ Attributes
           !! processed by numpydoc !!
 
 
-.. py:class:: ImageProperties(npool=4, n_min_images=2, n_max_images=4, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, time_window=365 * 24 * 3600 * 2, spin_zero=True, spin_precession=False, pdet_finder=None, effective_params_in_output=True)
+.. py:class:: ImageProperties(npool=4, n_min_images=2, n_max_images=4, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, time_window=365 * 24 * 3600 * 2, spin_zero=True, spin_precession=False, pdet_finder=None, include_effective_parameters=False, multiprocessing_verbose=True, include_redundant_parameters=False)
 
 
    
@@ -3417,7 +3417,7 @@ Attributes
 
            default: 365*24*3600*2 (2 years)
 
-       **effective_params_in_output** : ``bool``
+       **include_effective_parameters** : ``bool``
            Whether to include effective parameters (effective_phase, effective_ra, effective_dec) in the output.
 
            default: True
@@ -3445,6 +3445,14 @@ Attributes
            If False (and spin_zero=False), sample aligned/anti-aligned spins.
 
            default: False
+
+       **multiprocessing_verbose** : ``bool``
+           If True, shows a progress bar for multiprocessing tasks.
+
+           default: True
+
+       **include_redundant_parameters** : ``bool``
+           If True, removes redundant parameters (e.g., theta_E, n_images, mass_1, mass_2, luminosity_distance) from output to save memory.
 
 
 
@@ -3491,31 +3499,35 @@ Attributes
    ----------
    ImageProperties has the following attributes:
 
-   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-   | Attribute                                           | Type                      | Unit     | Description                                    |
-   +=====================================================+===========================+==========+================================================+
-   | :attr:`~npool`                                      | ``int``                   |          | Number of multiprocessing workers              |
-   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-   | :attr:`~n_min_images`                               | ``int``                   |          | Minimum number of images required              |
-   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-   | :attr:`~n_max_images`                               | ``int``                   |          | Maximum number of images per event             |
-   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-   | :attr:`~time_window`                                | ``float``                 | s        | Time window for lensed events                  |
-   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-   | :attr:`~effective_params_in_output`                 | ``bool``                  |          | To include effective parameters in output      |
-   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-   | :attr:`~lens_model_list`                            | ``list``                  |          | List of lens models                            |
-   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-   | :attr:`~cosmo`                                      | ``astropy.cosmology``     |          | Cosmology for calculations                     |
-   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-   | :attr:`~spin_zero`                                  | ``bool``                  |          | Flag for zero spin assumption                  |
-   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-   | :attr:`~spin_precession`                            | ``bool``                  |          | Flag for spin precession                       |
-   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-   | :attr:`~pdet_finder`                                | ``callable``              |          | Probability of detection calculator            |
-   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
-   | :attr:`~pdet_finder_output_keys`                    | ``list``                  |          | Keys for probability of detection outputs      |
-   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------+
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+   | Attribute                                           | Type                      | Unit     | Description                                                      |
+   +=====================================================+===========================+==========+==================================================================+
+   | :attr:`~npool`                                      | ``int``                   |          | Number of multiprocessing workers                                |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+   | :attr:`~multiprocessing_verbose`                    | ``bool``                  |          | If True, shows a progress bar for multiprocessing tasks          |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+   | :attr:`~n_min_images`                               | ``int``                   |          | Minimum number of images required                                |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+   | :attr:`~n_max_images`                               | ``int``                   |          | Maximum number of images per event                               |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+   | :attr:`~time_window`                                | ``float``                 | s        | Time window for lensed events                                    |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+   | :attr:`~include_effective_parameters`               | ``bool``                  |          | To include effective parameters in output                        |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+   | :attr:`~include_redundant_parameters`                | ``bool``                  |          | If True, removes redundant parameters from output to save memory |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+   | :attr:`~lens_model_list`                            | ``list``                  |          | List of lens models                                              |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+   | :attr:`~cosmo`                                      | ``astropy.cosmology``     |          | Cosmology for calculations                                       |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+   | :attr:`~spin_zero`                                  | ``bool``                  |          | Flag for zero spin assumption                                    |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+   | :attr:`~spin_precession`                            | ``bool``                  |          | Flag for spin precession                                         |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+   | :attr:`~pdet_finder`                                | ``callable``              |          | Probability of detection calculator                              |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
+   | :attr:`~pdet_finder_output_keys`                    | ``list``                  |          | Keys for probability of detection outputs                        |
+   +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
 
 
 
@@ -3821,7 +3833,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: effective_params_in_output
+   .. py:property:: include_effective_parameters
 
       
       Flag to include effective parameters in output.
@@ -3830,7 +3842,7 @@ Attributes
 
       :Returns:
 
-          **effective_params_in_output** : ``bool``
+          **include_effective_parameters** : ``bool``
               Whether to include effective parameters in the output of get_lensed_snrs.
 
               default: False
@@ -3849,6 +3861,16 @@ Attributes
 
       ..
           !! processed by numpydoc !!
+
+   .. py:attribute:: multiprocessing_verbose
+      :value: 'True'
+
+      
+
+   .. py:attribute:: include_redundant_parameters
+      :value: 'False'
+
+      
 
    .. py:method:: image_properties(lens_parameters)
 
@@ -3927,7 +3949,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_lensed_snrs(lensed_param, pdet_finder=None, effective_params_in_output=False)
+   .. py:method:: get_lensed_snrs(lensed_param, pdet_finder=None, include_effective_parameters=False)
 
       
       Compute detection probability for each lensed image.
@@ -3980,7 +4002,7 @@ Attributes
           **pdet_finder** : ``callable``
               Function that computes detection probability given GW parameters.
 
-          **effective_params_in_output** : ``bool``
+          **include_effective_parameters** : ``bool``
               If True, includes effective parameters in output lensed_param.
 
       :Returns:
@@ -4013,6 +4035,29 @@ Attributes
               | effective_dec                    | rad       | Dec of the image                               |
               |                                  |           | dec + (x1_image_positions_i - y_source)        |
               +----------------------------------+-----------+------------------------------------------------+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: recover_redundant_parameters(lensed_param)
+
+      
+      Recover redundant parameters in lensed_param, i.e. theta_E, n_images, mass_1, mass_2, luminosity_distance.
+
+
+
 
 
 

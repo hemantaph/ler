@@ -6,21 +6,21 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LeR Short Example &mdash; ler 0.5.3 documentation</title>
+  <title>LeR Short Example &mdash; ler 0.5.9 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/scalefix.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=d6b2367a" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+      <link rel="stylesheet" type="text/css" href="../_static/scalefix.css?v=242ac6f9" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=30f3526c" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=2a2fe768"></script>
+      <script src="../_static/documentation_options.js?v=9a3cda14"></script>
       <script src="../_static/doctools.js?v=9a2dae69"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -185,13 +185,15 @@
 </ul>
 <p>All outputs will be saved in the <code class="docutils literal notranslate"><span class="pre">./ler_data</span></code> directory by default.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import LeR</span>
 <span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
 
 <span class="c1"># Initialize LeR with default settings</span>
+<span class="c1"># use this gwsnr&#39;s input args if you want SNR values in the output, besides the boolean detection probability values. This will increase the output dictionary size and the runtime of the code.:</span>
+<span class="c1"># pdet_kwargs=dict(snr_th=10.0, snr_th_net=10.0, pdet_type=&quot;boolean&quot;, distribution_type=&quot;noncentral_chi2&quot;, include_optimal_snr=True, include_observed_snr=True)</span>
 <span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -649,6 +651,21 @@ Total lensed events simulated: 100000
 Sampled source redshift values (first 5): [2.96150209 3.62643698 2.22925302 6.69295117 3.6017759 ]
 </pre></div></div>
 </div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># include other useful parameters in the output dictionary.</span>
+<span class="c1"># It is omitted by default to save runtime and memory.</span>
+<span class="c1"># For theta_E, n_images, mass_1, mass_2, luminosity_distance:</span>
+<span class="n">lensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">recover_redundant_parameters</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">)</span>
+<span class="c1"># For effective_luminosity_distance, effective_geocent_time, effective_phase, effective_ra, effective_dec:</span>
+<span class="n">lensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">produce_effective_params</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">)</span>
+
+<span class="c1"># or you can simply set &#39;include_redundant_parameters=True, include_effective_parameters=True&#39; in the input args of LeR initialization to include these parameters in the output dictionary by default.</span>
+</pre></div>
+</div>
+</div>
 </section>
 <section id="3.2-Calculate-Lensed-Detection-Rates">
 <h3>3.2 Calculate Lensed Detection Rates<a class="headerlink" href="#3.2-Calculate-Lensed-Detection-Rates" title="Link to this heading"></a></h3>
@@ -688,11 +705,20 @@ Total event rate: 1.13e+02 events per year
 Percentage fraction of the detectable events: 8.90e-02%
 </pre></div></div>
 </div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lensed_param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">recover_redundant_parameters</span><span class="p">(</span><span class="n">lensed_param_detectable</span><span class="p">)</span>
+<span class="n">lensed_param_detectable</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">produce_effective_params</span><span class="p">(</span><span class="n">lensed_param_detectable</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </section>
 <section id="3.3-Inspect-Generated-Lensed-Parameters">
 <h3>3.3 Inspect Generated Lensed Parameters<a class="headerlink" href="#3.3-Inspect-Generated-Lensed-Parameters" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># List all parameters available in the detectable lensed event population</span>
@@ -700,7 +726,7 @@ Percentage fraction of the detectable events: 8.90e-02%
 <span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">lensed_param_detectable</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Lens-specific parameters include:&quot;</span><span class="p">)</span>
-<span class="n">lens_params</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;zl&#39;</span><span class="p">,</span> <span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_E&#39;</span><span class="p">,</span> <span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="s1">&#39;phi&#39;</span><span class="p">,</span> <span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="s1">&#39;gamma1&#39;</span><span class="p">,</span> <span class="s1">&#39;gamma2&#39;</span><span class="p">]</span>
+<span class="n">lens_params</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;zl&#39;</span><span class="p">,</span> <span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="s1">&#39;phi&#39;</span><span class="p">,</span> <span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="s1">&#39;gamma1&#39;</span><span class="p">,</span> <span class="s1">&#39;gamma2&#39;</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">lens_params</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">lensed_param_detectable</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">lensed_param_detectable</span><span class="p">[</span><span class="n">param</span><span class="p">][:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -918,7 +944,7 @@ getting gw_params from json file ler_data/lensed_param.json...
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_LeR_short_examples_26_1.png" src="../_images/examples_LeR_short_examples_26_1.png" />
+<img alt="../_images/examples_LeR_short_examples_28_1.png" src="../_images/examples_LeR_short_examples_28_1.png" />
 </div>
 </div>
 </section>
