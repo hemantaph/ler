@@ -11,8 +11,9 @@
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=11132fbc" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=30f3526c" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=88a06014" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -24,6 +25,7 @@
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
       <script src="../../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
       <script src="../../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
@@ -236,6 +238,48 @@ black hole populations with configurable prior distributions.</p>
 <section id="instance-methods">
 <h4>Instance Methods<a class="headerlink" href="#instance-methods" title="Link to this heading"></a></h4>
 <p>CBCSourceParameterDistribution has the following methods:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sample_gw_parameters" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sample_gw_parameters"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_gw_parameters()</span></code></a></p></td>
+<td><p>Sample all GW parameters for compact binaries</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BBH_powerlaw_gaussian" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BBH_powerlaw_gaussian"><code class="xref py py-meth docutils literal notranslate"><span class="pre">binary_masses_BBH_powerlaw_gaussian()</span></code></a>.</p></td>
+<td><p>Sample BBH masses with PowerLaw+PEAK model</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BBH_popIII_lognormal" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BBH_popIII_lognormal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">binary_masses_BBH_popIII_lognormal()</span></code></a></p></td>
+<td><p>Sample pop III BBH masses from lognormal</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BBH_primordial_lognormal" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BBH_primordial_lognormal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">binary_masses_BBH_primordial_lognormal()</span></code></a></p></td>
+<td><p>Sample primordial BBH masses from lognormal</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_NSBH_broken_powerlaw" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_NSBH_broken_powerlaw"><code class="xref py py-meth docutils literal notranslate"><span class="pre">binary_masses_NSBH_broken_powerlaw()</span></code></a></p></td>
+<td><p>Sample NSBH masses from broken powerlaw</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_uniform" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_uniform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">binary_masses_uniform()</span></code></a></p></td>
+<td><p>Sample masses from uniform distribution</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BNS_bimodal" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BNS_bimodal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">binary_masses_BNS_bimodal()</span></code></a></p></td>
+<td><p>Sample BNS masses from bimodal distribution</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.constant_values_n_size" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.constant_values_n_size"><code class="xref py py-meth docutils literal notranslate"><span class="pre">constant_values_n_size()</span></code></a></p></td>
+<td><p>Return array of constant values</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sampler_uniform" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sampler_uniform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sampler_uniform()</span></code></a></p></td>
+<td><p>Sample from uniform distribution</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sampler_cosine" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sampler_cosine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sampler_cosine()</span></code></a></p></td>
+<td><p>Sample from cosine distribution</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sampler_sine" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sampler_sine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sampler_sine()</span></code></a></p></td>
+<td><p>Sample from sine distribution</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="instance-attributes">
 <h4>Instance Attributes<a class="headerlink" href="#instance-attributes" title="Link to this heading"></a></h4>

@@ -141,7 +141,7 @@ class ImageProperties:
     +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
     | :attr:`~include_effective_parameters`               | ``bool``                  |          | To include effective parameters in output                        |
     +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
-    | :attr:`~include_redundant_parameters`                | ``bool``                  |          | If True, removes redundant parameters from output to save memory |
+    | :attr:`~include_redundant_parameters`               | ``bool``                  |          | If True, removes redundant parameters from output to save memory |
     +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
     | :attr:`~lens_model_list`                            | ``list``                  |          | List of lens models                                              |
     +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
@@ -521,7 +521,7 @@ class ImageProperties:
             +------------------------------+-----------+-------------------------------------------------------+
             | a_2                          |           | spin of the secondary compact binary                  |
             +------------------------------+-----------+-------------------------------------------------------+
-            | luminosity_distance          | Mpc       | luminosity distance of the source                      |
+            | luminosity_distance          | Mpc       | luminosity distance of the source                     |
             +------------------------------+-----------+-------------------------------------------------------+
             | mass_1                       | Msun      | mass of the primary compact binary (detector frame)   |
             +------------------------------+-----------+-------------------------------------------------------+
@@ -551,8 +551,8 @@ class ImageProperties:
             - Individual detector probabilities if pdet_finder outputs them \n
         lensed_param : ``dict``
             Updated dictionary with effective parameters shown below: \n
-            +----------------------------------+-----------+------------------------------------------------|
-            | Parameter                        | Units     | Description
+            +----------------------------------+-----------+------------------------------------------------+
+            | Parameter                        | Units     | Description                                    |   
             +==================================+===========+================================================+
             | effective_luminosity_distance    | Mpc       | magnification-corrected distance               |
             |                                  |           | luminosity_distance / sqrt(|magnifications_i|) |
@@ -772,8 +772,8 @@ class ImageProperties:
         -------
         lensed_param : ``dict``
             Updated dictionary with effective parameters shown below: \n
-            +----------------------------------+-----------+------------------------------------------------|
-            | Parameter                        | Units     | Description
+            +----------------------------------+-----------+------------------------------------------------+
+            | Parameter                        | Units     | Description                                    |
             +==================================+===========+================================================+
             | effective_luminosity_distance    | Mpc       | magnification-corrected distance               |
             |                                  |           | luminosity_distance / sqrt(|magnifications_i|) |

@@ -111,11 +111,11 @@ class CBCSourceRedshiftDistribution(object):
     +=====================================================+====================================================+
     | :meth:`~merger_rate_density_detector_frame`         | Compute merger rate density in detector frame      |
     +-----------------------------------------------------+----------------------------------------------------+
-    | :meth:`~merger_rate_density_bbh_oguri2018`  | PopI/II merger rate density (Oguri 2018)           |
+    | :meth:`~merger_rate_density_bbh_oguri2018`          | PopI/II merger rate density (Oguri 2018)           |
     +-----------------------------------------------------+----------------------------------------------------+
     | :meth:`~sfr_madau_dickinson2014`                    | Star formation rate (Madau & Dickinson 2014)       |
     +-----------------------------------------------------+----------------------------------------------------+
-    | :meth:`~sfr_with_time_delay`                                | SFR with time delay convolution                    |
+    | :meth:`~sfr_with_time_delay`                        | SFR with time delay convolution                    |
     +-----------------------------------------------------+----------------------------------------------------+
     | :meth:`~merger_rate_density_bbh_popIII_ken2022`     | PopIII merger rate density (Ng 2022)               |
     +-----------------------------------------------------+----------------------------------------------------+

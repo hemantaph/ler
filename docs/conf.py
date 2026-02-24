@@ -47,7 +47,7 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.inheritance_diagram",
-    "sphinx_tabs.tabs",
+    "sphinx_design",
     "sphinx.ext.viewcode",
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",

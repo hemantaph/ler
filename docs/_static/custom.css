@@ -3,36 +3,46 @@
 
 /* Fix package name area - set proper RTD theme blue background with white text */
 .wy-nav-side .wy-nav-top {
-    background-color: #2980b9 !important; /* RTD theme blue background */
-    color: white !important; /* White text */
+  background-color: #2980b9 !important;
+  /* RTD theme blue background */
+  color: white !important;
+  /* White text */
 }
 
 .wy-nav-side .wy-nav-top a {
-    color: white !important; /* White text for the link */
-    text-decoration: none !important;
+  color: white !important;
+  /* White text for the link */
+  text-decoration: none !important;
 }
 
 /* Dark mode package name styling */
 [data-theme="dark"] .wy-nav-side .wy-nav-top {
-    background-color: #1a1a1a !important; /* Dark background */
-    color: #5dade2 !important; /* Lighter blue text */
+  background-color: #1a1a1a !important;
+  /* Dark background */
+  color: #5dade2 !important;
+  /* Lighter blue text */
 }
 
 [data-theme="dark"] .wy-nav-side .wy-nav-top a {
-    color: #5dade2 !important; /* Lighter blue for dark mode */
+  color: #5dade2 !important;
+  /* Lighter blue for dark mode */
 }
 
 
 .scrollable-image {
-  overflow-x: auto; /* Enable horizontal scrolling */
-  border: 1px solid #e1e1e1; /* Optional: adds a nice border */
-  padding: 10px; /* Optional: adds some space around the image */
-  background-color: #fcfcfc; /* Optional: slight background color */
+  overflow-x: auto;
+  /* Enable horizontal scrolling */
+  border: 1px solid #e1e1e1;
+  /* Optional: adds a nice border */
+  padding: 10px;
+  /* Optional: adds some space around the image */
+  background-color: #fcfcfc;
+  /* Optional: slight background color */
 }
 
 /* Dark mode enhancements */
 [data-theme="dark"] .scrollable-image {
-  border: 1px solid #444; 
+  border: 1px solid #444;
   background-color: #2b2b2b;
 }
 
@@ -47,12 +57,12 @@
   height: auto;
   border: 1px solid #ddd;
   border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 [data-theme="dark"] .plantuml-diagram img {
   border: 1px solid #555;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 /* Improve code block styling in dark mode */
@@ -98,48 +108,49 @@
 }
 
 .red {
-    color: #d25847;
+  color: #d25847;
 }
 
 .orange {
-    color: #D4710B;
+  color: #D4710B;
 }
 
 .blue {
-    color: #64a3da;
+  color: #64a3da;
 }
 
 .green {
-    color: green;
+  color: green;
 }
 
 .pink {
-    color: pink;
+  color: pink;
 }
 
 .violet {
-    color: violet;
+  color: violet;
 }
 
 .yellow {
-    color: #B8860B;
+  color: #B8860B;
 }
 
 .magenta {
-    color: magenta;
+  color: magenta;
 }
 
 .cyan {
-    color: cyan;
+  color: cyan;
 }
 
 /* custom.css */
 @media (prefers-color-scheme: dark) {
-  .sphinx-tabs .sphinx-tabs-tab-content pre {
+  .sd-tab-content pre {
     background: #222 !important;
     color: #e0e0e0 !important;
   }
-  .sphinx-tabs .sphinx-tabs-tab-content code {
+
+  .sd-tab-content code {
     color: #e0e0e0 !important;
   }
 }

@@ -8,15 +8,19 @@ Installation
     
     For package development and contribution refer here (:ref:`development`).
 
-.. tabs::
+.. tab-set::
 
-   .. code-tab:: bash uv
+   .. tab-item:: uv
 
-        uv add ler
+      .. code-block:: bash
 
-   .. code-tab:: bash pip 
+         uv add ler
 
-        pip install ler
+   .. tab-item:: pip
+
+      .. code-block:: bash
+
+         pip install ler
 
 
 This will also install the dependencies needed by the lastest ``ler`` version.  
@@ -28,22 +32,26 @@ ler for development
 To install ``ler`` for development purposes use `github.ler <https://github.com/hemantaph/ler/>`_. Use conda environment to avoid dependency error. 
 
     
-.. tabs::
+.. tab-set::
 
-     .. code-tab:: bash with new conda env
+   .. tab-item:: with new conda env
 
-        git clone https://github.com/hemantaph/ler.git
-        cd ler
-        conda env create -f ler.yml
-        conda activate ler
-        pip install -e .
-        
-     .. code-tab:: bash with existing conda env
-     
-        git clone https://github.com/hemantaph/ler.git
-        cd ler
-        conda env update --file ler.yml
-        pip install -e .
+      .. code-block:: bash
+
+         git clone https://github.com/hemantaph/ler.git
+         cd ler
+         conda env create -f ler.yml
+         conda activate ler
+         pip install -e .
+         
+   .. tab-item:: with existing conda env
+
+      .. code-block:: bash
+
+         git clone https://github.com/hemantaph/ler.git
+         cd ler
+         conda env update --file ler.yml
+         pip install -e .
     
 .. _dependencies:
 Installation of numba with conda

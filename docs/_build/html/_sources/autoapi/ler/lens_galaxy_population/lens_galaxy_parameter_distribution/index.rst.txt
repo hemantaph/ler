@@ -183,13 +183,13 @@ Classes
    +=====================================================+================================================+
    | :meth:`~sample_lens_parameters`                     | Sample lens and source parameters              |
    +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~sample_all_routine_epl_shear_intrinsic`    | Sample EPL+shear lens parameters from intrinsic |
-   |                                                     | distributions                                  |
+   | :meth:`~sample_all_routine_epl_shear_intrinsic`     | Sample EPL+shear lens parameters from          |
+   |                                                     | intrinsic distributions                        |
    +-----------------------------------------------------+------------------------------------------------+
    | :meth:`~sample_all_routine_epl_shear_sl`            | Sample EPL+shear lens parameters with strong   |
    |                                                     | lensing condition                              |
    +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~strongly_lensed_source_redshift`           | Sample source redshifts with lensing condition |
+   | :meth:`~strongly_lensed_source_redshift`            | Sample source redshifts with lensing condition |
    +-----------------------------------------------------+------------------------------------------------+
 
    Instance Attributes
@@ -475,7 +475,7 @@ Classes
               +------------------------------+-----------+-------------------------------------------------------+
               | a_2                          |           | spin of the secondary compact binary                  |
               +------------------------------+-----------+-------------------------------------------------------+
-              | luminosity_distance          | Mpc       | luminosity distance of the source                      |
+              | luminosity_distance          | Mpc       | luminosity distance of the source                     |
               +------------------------------+-----------+-------------------------------------------------------+
               | mass_1_source                | Msun      | mass of the primary compact binary (source frame)     |
               +------------------------------+-----------+-------------------------------------------------------+

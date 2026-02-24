@@ -234,7 +234,7 @@ Attributes
    +-----------------------------------------------------+----------------------------------------------------------+
    | :meth:`~lens_redshift_strongly_lensed_numerical`    | Sample lens redshift for strong lensing                  |
    +-----------------------------------------------------+----------------------------------------------------------+
-   | :meth:`~lens_redshift_strongly_lensed_sis_haris`                    | Sample SIS lens redshift (Haris et al. 2018)             |
+   | :meth:`~lens_redshift_strongly_lensed_sis_haris`    | Sample SIS lens redshift (Haris et al. 2018)             |
    +-----------------------------------------------------+----------------------------------------------------------+
    | :meth:`~velocity_dispersion_gengamma`               | Sample velocity dispersion from gengamma distribution    |
    +-----------------------------------------------------+----------------------------------------------------------+
@@ -246,7 +246,7 @@ Attributes
    +-----------------------------------------------------+----------------------------------------------------------+
    | :meth:`~density_profile_slope_normal`               | Sample density profile slope from normal distribution    |
    +-----------------------------------------------------+----------------------------------------------------------+
-   | :meth:`~optical_depth_sis_analytic`                    | Compute SIS optical depth (Haris et al. 2018)            |
+   | :meth:`~optical_depth_sis_analytic`                 | Compute SIS optical depth (Haris et al. 2018)            |
    +-----------------------------------------------------+----------------------------------------------------------+
    | :meth:`~cross_section_sis`                          | Compute SIS cross-section                                |
    +-----------------------------------------------------+----------------------------------------------------------+
@@ -1973,7 +1973,7 @@ Attributes
    +=====================================================+================================================+
    | :meth:`~sample_gw_parameters`                       | Sample all GW parameters for compact binaries  |
    +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~binary_masses_BBH_powerlaw_gaussian`| Sample BBH masses with PowerLaw+PEAK model     |
+   | :meth:`~binary_masses_BBH_powerlaw_gaussian`.       | Sample BBH masses with PowerLaw+PEAK model     |
    +-----------------------------------------------------+------------------------------------------------+
    | :meth:`~binary_masses_BBH_popIII_lognormal`         | Sample pop III BBH masses from lognormal       |
    +-----------------------------------------------------+------------------------------------------------+
@@ -3514,7 +3514,7 @@ Attributes
    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
    | :attr:`~include_effective_parameters`               | ``bool``                  |          | To include effective parameters in output                        |
    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
-   | :attr:`~include_redundant_parameters`                | ``bool``                  |          | If True, removes redundant parameters from output to save memory |
+   | :attr:`~include_redundant_parameters`               | ``bool``                  |          | If True, removes redundant parameters from output to save memory |
    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
    | :attr:`~lens_model_list`                            | ``list``                  |          | List of lens models                                              |
    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
@@ -3982,7 +3982,7 @@ Attributes
               +------------------------------+-----------+-------------------------------------------------------+
               | a_2                          |           | spin of the secondary compact binary                  |
               +------------------------------+-----------+-------------------------------------------------------+
-              | luminosity_distance          | Mpc       | luminosity distance of the source                      |
+              | luminosity_distance          | Mpc       | luminosity distance of the source                     |
               +------------------------------+-----------+-------------------------------------------------------+
               | mass_1                       | Msun      | mass of the primary compact binary (detector frame)   |
               +------------------------------+-----------+-------------------------------------------------------+
@@ -4017,8 +4017,8 @@ Attributes
           **lensed_param** : ``dict``
               Updated dictionary with effective parameters shown below:
 
-              +----------------------------------+-----------+------------------------------------------------|
-              | Parameter                        | Units     | Description
+              +----------------------------------+-----------+------------------------------------------------+
+              | Parameter                        | Units     | Description                                    |
               +==================================+===========+================================================+
               | effective_luminosity_distance    | Mpc       | magnification-corrected distance               |
               |                                  |           | luminosity_distance / sqrt(|magnifications_i|) |
@@ -4092,8 +4092,8 @@ Attributes
           **lensed_param** : ``dict``
               Updated dictionary with effective parameters shown below:
 
-              +----------------------------------+-----------+------------------------------------------------|
-              | Parameter                        | Units     | Description
+              +----------------------------------+-----------+------------------------------------------------+
+              | Parameter                        | Units     | Description                                    |
               +==================================+===========+================================================+
               | effective_luminosity_distance    | Mpc       | magnification-corrected distance               |
               |                                  |           | luminosity_distance / sqrt(|magnifications_i|) |
@@ -4302,13 +4302,13 @@ Attributes
    +=====================================================+================================================+
    | :meth:`~sample_lens_parameters`                     | Sample lens and source parameters              |
    +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~sample_all_routine_epl_shear_intrinsic`    | Sample EPL+shear lens parameters from intrinsic |
-   |                                                     | distributions                                  |
+   | :meth:`~sample_all_routine_epl_shear_intrinsic`     | Sample EPL+shear lens parameters from          |
+   |                                                     | intrinsic distributions                        |
    +-----------------------------------------------------+------------------------------------------------+
    | :meth:`~sample_all_routine_epl_shear_sl`            | Sample EPL+shear lens parameters with strong   |
    |                                                     | lensing condition                              |
    +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~strongly_lensed_source_redshift`           | Sample source redshifts with lensing condition |
+   | :meth:`~strongly_lensed_source_redshift`            | Sample source redshifts with lensing condition |
    +-----------------------------------------------------+------------------------------------------------+
 
    Instance Attributes
@@ -4594,7 +4594,7 @@ Attributes
               +------------------------------+-----------+-------------------------------------------------------+
               | a_2                          |           | spin of the secondary compact binary                  |
               +------------------------------+-----------+-------------------------------------------------------+
-              | luminosity_distance          | Mpc       | luminosity distance of the source                      |
+              | luminosity_distance          | Mpc       | luminosity distance of the source                     |
               +------------------------------+-----------+-------------------------------------------------------+
               | mass_1_source                | Msun      | mass of the primary compact binary (source frame)     |
               +------------------------------+-----------+-------------------------------------------------------+
@@ -5526,7 +5526,7 @@ Attributes
    +-----------------------------------------------------+----------------------------------------------------------+
    | :meth:`~lens_redshift_strongly_lensed_numerical`    | Sample lens redshift for strong lensing                  |
    +-----------------------------------------------------+----------------------------------------------------------+
-   | :meth:`~lens_redshift_strongly_lensed_sis_haris`                    | Sample SIS lens redshift (Haris et al. 2018)             |
+   | :meth:`~lens_redshift_strongly_lensed_sis_haris`    | Sample SIS lens redshift (Haris et al. 2018)             |
    +-----------------------------------------------------+----------------------------------------------------------+
    | :meth:`~velocity_dispersion_gengamma`               | Sample velocity dispersion from gengamma distribution    |
    +-----------------------------------------------------+----------------------------------------------------------+
@@ -5538,7 +5538,7 @@ Attributes
    +-----------------------------------------------------+----------------------------------------------------------+
    | :meth:`~density_profile_slope_normal`               | Sample density profile slope from normal distribution    |
    +-----------------------------------------------------+----------------------------------------------------------+
-   | :meth:`~optical_depth_sis_analytic`                    | Compute SIS optical depth (Haris et al. 2018)            |
+   | :meth:`~optical_depth_sis_analytic`                 | Compute SIS optical depth (Haris et al. 2018)            |
    +-----------------------------------------------------+----------------------------------------------------------+
    | :meth:`~cross_section_sis`                          | Compute SIS cross-section                                |
    +-----------------------------------------------------+----------------------------------------------------------+

@@ -11,8 +11,9 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css?v=11132fbc" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=30f3526c" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=88a06014" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -24,6 +25,7 @@
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
       <script src="../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
       <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
@@ -486,6 +488,63 @@ and interpolators for efficient computation.</p>
 <section id="instance-methods">
 <h4>Instance Methods<a class="headerlink" href="#instance-methods" title="Link to this heading"></a></h4>
 <p>OpticalDepth has the following instance methods:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#id49" title="ler.lens_galaxy_population.OpticalDepth.axis_ratio_rayleigh"><code class="xref py py-meth docutils literal notranslate"><span class="pre">axis_ratio_rayleigh()</span></code></a></p></td>
+<td><p>Sample axis ratio from Rayleigh distribution</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id50" title="ler.lens_galaxy_population.OpticalDepth.axis_ratio_padilla_strauss"><code class="xref py py-meth docutils literal notranslate"><span class="pre">axis_ratio_padilla_strauss()</span></code></a></p></td>
+<td><p>Sample axis ratio from Padilla &amp; Strauss 2008</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id52" title="ler.lens_galaxy_population.OpticalDepth.axis_ratio_uniform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">axis_ratio_uniform()</span></code></a></p></td>
+<td><p>Sample axis ratio from uniform distribution</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id51" title="ler.lens_galaxy_population.OpticalDepth.axis_rotation_angle_uniform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">axis_rotation_angle_uniform()</span></code></a></p></td>
+<td><p>Sample axis rotation angle from uniform distribution</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id44" title="ler.lens_galaxy_population.OpticalDepth.lens_redshift_strongly_lensed_numerical"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lens_redshift_strongly_lensed_numerical()</span></code></a></p></td>
+<td><p>Sample lens redshift for strong lensing</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id45" title="ler.lens_galaxy_population.OpticalDepth.lens_redshift_strongly_lensed_sis_haris"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lens_redshift_strongly_lensed_sis_haris()</span></code></a></p></td>
+<td><p>Sample SIS lens redshift (Haris et al. 2018)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id46" title="ler.lens_galaxy_population.OpticalDepth.velocity_dispersion_gengamma"><code class="xref py py-meth docutils literal notranslate"><span class="pre">velocity_dispersion_gengamma()</span></code></a></p></td>
+<td><p>Sample velocity dispersion from gengamma distribution</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id47" title="ler.lens_galaxy_population.OpticalDepth.velocity_dispersion_bernardi"><code class="xref py py-meth docutils literal notranslate"><span class="pre">velocity_dispersion_bernardi()</span></code></a></p></td>
+<td><p>Sample velocity dispersion (Bernardi et al. 2010)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id48" title="ler.lens_galaxy_population.OpticalDepth.velocity_dispersion_ewoud"><code class="xref py py-meth docutils literal notranslate"><span class="pre">velocity_dispersion_ewoud()</span></code></a></p></td>
+<td><p>Sample redshift-dependent velocity dispersion</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id53" title="ler.lens_galaxy_population.OpticalDepth.external_shear_normal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">external_shear_normal()</span></code></a></p></td>
+<td><p>Sample external shear from normal distribution</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id54" title="ler.lens_galaxy_population.OpticalDepth.density_profile_slope_normal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">density_profile_slope_normal()</span></code></a></p></td>
+<td><p>Sample density profile slope from normal distribution</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id57" title="ler.lens_galaxy_population.OpticalDepth.optical_depth_sis_analytic"><code class="xref py py-meth docutils literal notranslate"><span class="pre">optical_depth_sis_analytic()</span></code></a></p></td>
+<td><p>Compute SIS optical depth (Haris et al. 2018)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id58" title="ler.lens_galaxy_population.OpticalDepth.cross_section_sis"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cross_section_sis()</span></code></a></p></td>
+<td><p>Compute SIS cross-section</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id59" title="ler.lens_galaxy_population.OpticalDepth.cross_section_sie_feixu"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cross_section_sie_feixu()</span></code></a></p></td>
+<td><p>Compute SIE cross-section (Fei Xu et al. 2021)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id60" title="ler.lens_galaxy_population.OpticalDepth.cross_section_epl_shear_numerical"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cross_section_epl_shear_numerical()</span></code></a></p></td>
+<td><p>Compute EPL+shear cross-section numerically</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id64" title="ler.lens_galaxy_population.OpticalDepth.cross_section_epl_shear_interpolation"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cross_section_epl_shear_interpolation()</span></code></a></p></td>
+<td><p>Compute EPL+shear cross-section via interpolation</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="instance-attributes">
 <h4>Instance Attributes<a class="headerlink" href="#instance-attributes" title="Link to this heading"></a></h4>
@@ -1765,6 +1824,48 @@ black hole populations with configurable prior distributions.</p>
 <section id="id1">
 <h4>Instance Methods<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
 <p>CBCSourceParameterDistribution has the following methods:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.CBCSourceParameterDistribution.sample_gw_parameters" title="ler.lens_galaxy_population.CBCSourceParameterDistribution.sample_gw_parameters"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_gw_parameters()</span></code></a></p></td>
+<td><p>Sample all GW parameters for compact binaries</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.CBCSourceParameterDistribution.binary_masses_BBH_powerlaw_gaussian" title="ler.lens_galaxy_population.CBCSourceParameterDistribution.binary_masses_BBH_powerlaw_gaussian"><code class="xref py py-meth docutils literal notranslate"><span class="pre">binary_masses_BBH_powerlaw_gaussian()</span></code></a>.</p></td>
+<td><p>Sample BBH masses with PowerLaw+PEAK model</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.CBCSourceParameterDistribution.binary_masses_BBH_popIII_lognormal" title="ler.lens_galaxy_population.CBCSourceParameterDistribution.binary_masses_BBH_popIII_lognormal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">binary_masses_BBH_popIII_lognormal()</span></code></a></p></td>
+<td><p>Sample pop III BBH masses from lognormal</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.CBCSourceParameterDistribution.binary_masses_BBH_primordial_lognormal" title="ler.lens_galaxy_population.CBCSourceParameterDistribution.binary_masses_BBH_primordial_lognormal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">binary_masses_BBH_primordial_lognormal()</span></code></a></p></td>
+<td><p>Sample primordial BBH masses from lognormal</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.CBCSourceParameterDistribution.binary_masses_NSBH_broken_powerlaw" title="ler.lens_galaxy_population.CBCSourceParameterDistribution.binary_masses_NSBH_broken_powerlaw"><code class="xref py py-meth docutils literal notranslate"><span class="pre">binary_masses_NSBH_broken_powerlaw()</span></code></a></p></td>
+<td><p>Sample NSBH masses from broken powerlaw</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.CBCSourceParameterDistribution.binary_masses_uniform" title="ler.lens_galaxy_population.CBCSourceParameterDistribution.binary_masses_uniform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">binary_masses_uniform()</span></code></a></p></td>
+<td><p>Sample masses from uniform distribution</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.CBCSourceParameterDistribution.binary_masses_BNS_bimodal" title="ler.lens_galaxy_population.CBCSourceParameterDistribution.binary_masses_BNS_bimodal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">binary_masses_BNS_bimodal()</span></code></a></p></td>
+<td><p>Sample BNS masses from bimodal distribution</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.CBCSourceParameterDistribution.constant_values_n_size" title="ler.lens_galaxy_population.CBCSourceParameterDistribution.constant_values_n_size"><code class="xref py py-meth docutils literal notranslate"><span class="pre">constant_values_n_size()</span></code></a></p></td>
+<td><p>Return array of constant values</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.CBCSourceParameterDistribution.sampler_uniform" title="ler.lens_galaxy_population.CBCSourceParameterDistribution.sampler_uniform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sampler_uniform()</span></code></a></p></td>
+<td><p>Sample from uniform distribution</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.CBCSourceParameterDistribution.sampler_cosine" title="ler.lens_galaxy_population.CBCSourceParameterDistribution.sampler_cosine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sampler_cosine()</span></code></a></p></td>
+<td><p>Sample from cosine distribution</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.CBCSourceParameterDistribution.sampler_sine" title="ler.lens_galaxy_population.CBCSourceParameterDistribution.sampler_sine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sampler_sine()</span></code></a></p></td>
+<td><p>Sample from sine distribution</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="id2">
 <h4>Instance Attributes<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
@@ -2824,6 +2925,82 @@ multiprocessing for efficient computation of large samples.</p>
 <section id="id4">
 <h4>Instance Attributes<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
 <p>ImageProperties has the following attributes:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Attribute</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Unit</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.ImageProperties.npool" title="ler.lens_galaxy_population.ImageProperties.npool"><code class="xref py py-attr docutils literal notranslate"><span class="pre">npool</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td></td>
+<td><p>Number of multiprocessing workers</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.ImageProperties.multiprocessing_verbose" title="ler.lens_galaxy_population.ImageProperties.multiprocessing_verbose"><code class="xref py py-attr docutils literal notranslate"><span class="pre">multiprocessing_verbose</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td></td>
+<td><p>If True, shows a progress bar for multiprocessing tasks</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.ImageProperties.n_min_images" title="ler.lens_galaxy_population.ImageProperties.n_min_images"><code class="xref py py-attr docutils literal notranslate"><span class="pre">n_min_images</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td></td>
+<td><p>Minimum number of images required</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.ImageProperties.n_max_images" title="ler.lens_galaxy_population.ImageProperties.n_max_images"><code class="xref py py-attr docutils literal notranslate"><span class="pre">n_max_images</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td></td>
+<td><p>Maximum number of images per event</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.ImageProperties.time_window" title="ler.lens_galaxy_population.ImageProperties.time_window"><code class="xref py py-attr docutils literal notranslate"><span class="pre">time_window</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td><p>s</p></td>
+<td><p>Time window for lensed events</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.ImageProperties.include_effective_parameters" title="ler.lens_galaxy_population.ImageProperties.include_effective_parameters"><code class="xref py py-attr docutils literal notranslate"><span class="pre">include_effective_parameters</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td></td>
+<td><p>To include effective parameters in output</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.ImageProperties.include_redundant_parameters" title="ler.lens_galaxy_population.ImageProperties.include_redundant_parameters"><code class="xref py py-attr docutils literal notranslate"><span class="pre">include_redundant_parameters</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td></td>
+<td><p>If True, removes redundant parameters from output to save memory</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.ImageProperties.lens_model_list" title="ler.lens_galaxy_population.ImageProperties.lens_model_list"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lens_model_list</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
+<td></td>
+<td><p>List of lens models</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.ImageProperties.cosmo" title="ler.lens_galaxy_population.ImageProperties.cosmo"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cosmo</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">astropy.cosmology</span></code></p></td>
+<td></td>
+<td><p>Cosmology for calculations</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.ImageProperties.spin_zero" title="ler.lens_galaxy_population.ImageProperties.spin_zero"><code class="xref py py-attr docutils literal notranslate"><span class="pre">spin_zero</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td></td>
+<td><p>Flag for zero spin assumption</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.ImageProperties.spin_precession" title="ler.lens_galaxy_population.ImageProperties.spin_precession"><code class="xref py py-attr docutils literal notranslate"><span class="pre">spin_precession</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td></td>
+<td><p>Flag for spin precession</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.ImageProperties.pdet_finder" title="ler.lens_galaxy_population.ImageProperties.pdet_finder"><code class="xref py py-attr docutils literal notranslate"><span class="pre">pdet_finder</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
+<td></td>
+<td><p>Probability of detection calculator</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.ImageProperties.pdet_finder_output_keys" title="ler.lens_galaxy_population.ImageProperties.pdet_finder_output_keys"><code class="xref py py-attr docutils literal notranslate"><span class="pre">pdet_finder_output_keys</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
+<td></td>
+<td><p>Keys for probability of detection outputs</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py property">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.ImageProperties.npool">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">npool</span></span><a class="headerlink" href="#ler.lens_galaxy_population.ImageProperties.npool" title="Link to this definition"></a></dt>
@@ -3123,6 +3300,80 @@ computes detection probabilities using the provided calculator.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>lensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary containing lensed source and image parameters given below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Units</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>geocent_time</p></td>
+<td><p>s</p></td>
+<td><p>geocent time</p></td>
+</tr>
+<tr class="row-odd"><td><p>ra</p></td>
+<td><p>rad</p></td>
+<td><p>right ascension</p></td>
+</tr>
+<tr class="row-even"><td><p>dec</p></td>
+<td><p>rad</p></td>
+<td><p>declination</p></td>
+</tr>
+<tr class="row-odd"><td><p>phase</p></td>
+<td><p>rad</p></td>
+<td><p>phase of GW at reference freq</p></td>
+</tr>
+<tr class="row-even"><td><p>psi</p></td>
+<td><p>rad</p></td>
+<td><p>polarization angle</p></td>
+</tr>
+<tr class="row-odd"><td><p>theta_jn</p></td>
+<td><p>rad</p></td>
+<td><p>inclination angle</p></td>
+</tr>
+<tr class="row-even"><td><p>a_1</p></td>
+<td></td>
+<td><p>spin of the primary compact binary</p></td>
+</tr>
+<tr class="row-odd"><td><p>a_2</p></td>
+<td></td>
+<td><p>spin of the secondary compact binary</p></td>
+</tr>
+<tr class="row-even"><td><p>luminosity_distance</p></td>
+<td><p>Mpc</p></td>
+<td><p>luminosity distance of the source</p></td>
+</tr>
+<tr class="row-odd"><td><p>mass_1</p></td>
+<td><p>Msun</p></td>
+<td><p>mass of the primary compact binary (detector frame)</p></td>
+</tr>
+<tr class="row-even"><td><p>mass_2</p></td>
+<td><p>Msun</p></td>
+<td><p>mass of the secondary compact binary (detector frame)</p></td>
+</tr>
+<tr class="row-odd"><td><p>x0_image_positions</p></td>
+<td><p>radian</p></td>
+<td><p>x-coordinate (RA-like axis) of the images</p></td>
+</tr>
+<tr class="row-even"><td><p>x1_image_positions</p></td>
+<td><p>radian</p></td>
+<td><p>y-coordinate (Dec-like axis) of the images</p></td>
+</tr>
+<tr class="row-odd"><td><p>magnifications</p></td>
+<td></td>
+<td><p>magnifications</p></td>
+</tr>
+<tr class="row-even"><td><p>time_delays</p></td>
+<td></td>
+<td><p>time delays</p></td>
+</tr>
+<tr class="row-odd"><td><p>image_type</p></td>
+<td></td>
+<td><p>image type</p></td>
+</tr>
+</tbody>
+</table>
 </dd>
 <dt><strong>pdet_finder</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function that computes detection probability given GW parameters.</p>
 </dd>
@@ -3139,24 +3390,48 @@ computes detection probabilities using the provided calculator.</p>
 </ul>
 </dd>
 <dt><strong>lensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Updated dictionary with effective parameters shown below:</p>
-<p>+----------------------------------+-----------+------------------------------------------------|
-| Parameter                        | Units     | Description
-+==================================+===========+================================================+
-| effective_luminosity_distance    | Mpc       | magnification-corrected distance               |
-|                                  |           | luminosity_distance / sqrt(<a href="#id74"><span class="problematic" id="id75">|magnifications_i|</span></a>) |
-+----------------------------------+-----------+------------------------------------------------|
-| effective_geocent_time           | s         | time-delay-corrected GPS time                  |
-|                                  |           | geocent_time + time_delays_i                   |
-+----------------------------------+-----------+------------------------------------------------|
-| effective_phase                  | rad       | morse-phase-corrected phase                    |
-|                                  |           | phi - morse_phase_i                            |
-+----------------------------------+-----------+------------------------------------------------+
-| effective_ra                     | rad       | RA of the image                                |
-|                                  |           | ra + (x0_image_positions_i - x_source)/cos(dec)|
-+----------------------------------+-----------+------------------------------------------------+
-| effective_dec                    | rad       | Dec of the image                               |
-|                                  |           | dec + (x1_image_positions_i - y_source)        |
-+----------------------------------+-----------+------------------------------------------------+</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Units</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>effective_luminosity_distance</p></td>
+<td><p>Mpc</p></td>
+<td rowspan="3"><blockquote>
+<div><p>magnification-corrected distance
+luminosity_distance / sqrt(<a href="#id74"><span class="problematic" id="id75">|magnifications_i|</span></a>)</p>
+</div></blockquote>
+<blockquote>
+<div><p>time-delay-corrected GPS time
+geocent_time + time_delays_i</p>
+</div></blockquote>
+<blockquote>
+<div><p>morse-phase-corrected phase
+phi - morse_phase_i</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="row-odd"><td><p>effective_geocent_time</p></td>
+<td><p>s</p></td>
+</tr>
+<tr class="row-even"><td><p>effective_phase</p></td>
+<td><p>rad</p></td>
+</tr>
+<tr class="row-odd"><td><p>effective_ra</p></td>
+<td><p>rad</p></td>
+<td><p>RA of the image
+ra + (x0_image_positions_i - x_source)/cos(dec)</p></td>
+</tr>
+<tr class="row-even"><td><p>effective_dec</p></td>
+<td><p>rad</p></td>
+<td><p>Dec of the image
+dec + (x1_image_positions_i - y_source)</p></td>
+</tr>
+</tbody>
+</table>
 </dd>
 </dl>
 </dd>
@@ -3185,24 +3460,48 @@ RA, and Dec for each image accounting for magnification and morse phase.</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
 <dt><strong>lensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Updated dictionary with effective parameters shown below:</p>
-<p>+----------------------------------+-----------+------------------------------------------------|
-| Parameter                        | Units     | Description
-+==================================+===========+================================================+
-| effective_luminosity_distance    | Mpc       | magnification-corrected distance               |
-|                                  |           | luminosity_distance / sqrt(<a href="#id76"><span class="problematic" id="id77">|magnifications_i|</span></a>) |
-+----------------------------------+-----------+------------------------------------------------|
-| effective_geocent_time           | s         | time-delay-corrected GPS time                  |
-|                                  |           | geocent_time + time_delays_i                   |
-+----------------------------------+-----------+------------------------------------------------|
-| effective_phase                  | rad       | morse-phase-corrected phase                    |
-|                                  |           | phi - morse_phase_i                            |
-+----------------------------------+-----------+------------------------------------------------+
-| effective_ra                     | rad       | RA of the image                                |
-|                                  |           | ra + (x0_image_positions_i - x_source)/cos(dec)|
-+----------------------------------+-----------+------------------------------------------------+
-| effective_dec                    | rad       | Dec of the image                               |
-|                                  |           | dec + (x1_image_positions_i - y_source)        |
-+----------------------------------+-----------+------------------------------------------------+</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Units</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>effective_luminosity_distance</p></td>
+<td><p>Mpc</p></td>
+<td rowspan="3"><blockquote>
+<div><p>magnification-corrected distance
+luminosity_distance / sqrt(<a href="#id76"><span class="problematic" id="id77">|magnifications_i|</span></a>)</p>
+</div></blockquote>
+<blockquote>
+<div><p>time-delay-corrected GPS time
+geocent_time + time_delays_i</p>
+</div></blockquote>
+<blockquote>
+<div><p>morse-phase-corrected phase
+phi - morse_phase_i</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="row-odd"><td><p>effective_geocent_time</p></td>
+<td><p>s</p></td>
+</tr>
+<tr class="row-even"><td><p>effective_phase</p></td>
+<td><p>rad</p></td>
+</tr>
+<tr class="row-odd"><td><p>effective_ra</p></td>
+<td><p>rad</p></td>
+<td><p>RA of the image
+ra + (x0_image_positions_i - x_source)/cos(dec)</p></td>
+</tr>
+<tr class="row-even"><td><p>effective_dec</p></td>
+<td><p>rad</p></td>
+<td><p>Dec of the image
+dec + (x1_image_positions_i - y_source)</p></td>
+</tr>
+</tbody>
+</table>
 </dd>
 </dl>
 </dd>
@@ -3355,6 +3654,29 @@ using cross-section based rejection or importance sampling.</p>
 <section id="id5">
 <h4>Instance Methods<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
 <p>LensGalaxyParameterDistribution has the following methods:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_lens_parameters" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_lens_parameters"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_lens_parameters()</span></code></a></p></td>
+<td><p>Sample lens and source parameters</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_all_routine_epl_shear_intrinsic" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_all_routine_epl_shear_intrinsic"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_all_routine_epl_shear_intrinsic()</span></code></a></p></td>
+<td><p>Sample EPL+shear lens parameters from
+intrinsic distributions</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_all_routine_epl_shear_sl" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.sample_all_routine_epl_shear_sl"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_all_routine_epl_shear_sl()</span></code></a></p></td>
+<td><p>Sample EPL+shear lens parameters with strong
+lensing condition</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.strongly_lensed_source_redshift" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution.strongly_lensed_source_redshift"><code class="xref py py-meth docutils literal notranslate"><span class="pre">strongly_lensed_source_redshift()</span></code></a></p></td>
+<td><p>Sample source redshifts with lensing condition</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="id6">
 <h4>Instance Attributes<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
@@ -3536,6 +3858,108 @@ source redshift distribution weighted by strong lensing optical depth.</p>
 <dd class="field-even"><dl>
 <dt><strong>lens_parameters</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary containing sampled lens and source parameters.</p>
 <p>The included parameters and their units are as follows (for default settings):</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Units</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>zl</p></td>
+<td></td>
+<td><p>redshift of the lens</p></td>
+</tr>
+<tr class="row-odd"><td><p>zs</p></td>
+<td></td>
+<td><p>redshift of the source</p></td>
+</tr>
+<tr class="row-even"><td><p>sigma</p></td>
+<td><p>km s^-1</p></td>
+<td><p>velocity dispersion</p></td>
+</tr>
+<tr class="row-odd"><td><p>q</p></td>
+<td></td>
+<td><p>axis ratio</p></td>
+</tr>
+<tr class="row-even"><td><p>theta_E</p></td>
+<td><p>radian</p></td>
+<td><p>Einstein radius</p></td>
+</tr>
+<tr class="row-odd"><td><p>phi</p></td>
+<td><p>rad</p></td>
+<td><p>axis rotation angle. counter-clockwise from the
+positive x-axis (RA-like axis) to the major axis of
+the projected mass distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p>gamma</p></td>
+<td></td>
+<td><p>density profile slope of EPL galaxy</p></td>
+</tr>
+<tr class="row-odd"><td><p>gamma1</p></td>
+<td></td>
+<td><p>external shear component in the x-direction
+(RA-like axis)</p></td>
+</tr>
+<tr class="row-even"><td><p>gamma2</p></td>
+<td></td>
+<td><p>external shear component in the y-direction
+(Dec-like axis)</p></td>
+</tr>
+<tr class="row-odd"><td><p>geocent_time</p></td>
+<td><p>s</p></td>
+<td><p>geocent time</p></td>
+</tr>
+<tr class="row-even"><td><p>ra</p></td>
+<td><p>rad</p></td>
+<td><p>right ascension</p></td>
+</tr>
+<tr class="row-odd"><td><p>dec</p></td>
+<td><p>rad</p></td>
+<td><p>declination</p></td>
+</tr>
+<tr class="row-even"><td><p>phase</p></td>
+<td><p>rad</p></td>
+<td><p>phase of GW at reference freq</p></td>
+</tr>
+<tr class="row-odd"><td><p>psi</p></td>
+<td><p>rad</p></td>
+<td><p>polarization angle</p></td>
+</tr>
+<tr class="row-even"><td><p>theta_jn</p></td>
+<td><p>rad</p></td>
+<td><p>inclination angle</p></td>
+</tr>
+<tr class="row-odd"><td><p>a_1</p></td>
+<td></td>
+<td><p>spin of the primary compact binary</p></td>
+</tr>
+<tr class="row-even"><td><p>a_2</p></td>
+<td></td>
+<td><p>spin of the secondary compact binary</p></td>
+</tr>
+<tr class="row-odd"><td><p>luminosity_distance</p></td>
+<td><p>Mpc</p></td>
+<td><p>luminosity distance of the source</p></td>
+</tr>
+<tr class="row-even"><td><p>mass_1_source</p></td>
+<td><p>Msun</p></td>
+<td><p>mass of the primary compact binary (source frame)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mass_2_source</p></td>
+<td><p>Msun</p></td>
+<td><p>mass of the secondary compact binary (source frame)</p></td>
+</tr>
+<tr class="row-even"><td><p>mass_1</p></td>
+<td><p>Msun</p></td>
+<td><p>mass of the primary compact binary (detector frame)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mass_2</p></td>
+<td><p>Msun</p></td>
+<td><p>mass of the secondary compact binary (detector frame)</p></td>
+</tr>
+</tbody>
+</table>
 </dd>
 </dl>
 </dd>
@@ -4238,6 +4662,63 @@ and interpolators for efficient computation.</p>
 <section id="id19">
 <h4>Instance Methods<a class="headerlink" href="#id19" title="Link to this heading"></a></h4>
 <p>OpticalDepth has the following instance methods:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#id49" title="ler.lens_galaxy_population.OpticalDepth.axis_ratio_rayleigh"><code class="xref py py-meth docutils literal notranslate"><span class="pre">axis_ratio_rayleigh()</span></code></a></p></td>
+<td><p>Sample axis ratio from Rayleigh distribution</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id50" title="ler.lens_galaxy_population.OpticalDepth.axis_ratio_padilla_strauss"><code class="xref py py-meth docutils literal notranslate"><span class="pre">axis_ratio_padilla_strauss()</span></code></a></p></td>
+<td><p>Sample axis ratio from Padilla &amp; Strauss 2008</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id52" title="ler.lens_galaxy_population.OpticalDepth.axis_ratio_uniform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">axis_ratio_uniform()</span></code></a></p></td>
+<td><p>Sample axis ratio from uniform distribution</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id51" title="ler.lens_galaxy_population.OpticalDepth.axis_rotation_angle_uniform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">axis_rotation_angle_uniform()</span></code></a></p></td>
+<td><p>Sample axis rotation angle from uniform distribution</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id44" title="ler.lens_galaxy_population.OpticalDepth.lens_redshift_strongly_lensed_numerical"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lens_redshift_strongly_lensed_numerical()</span></code></a></p></td>
+<td><p>Sample lens redshift for strong lensing</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id45" title="ler.lens_galaxy_population.OpticalDepth.lens_redshift_strongly_lensed_sis_haris"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lens_redshift_strongly_lensed_sis_haris()</span></code></a></p></td>
+<td><p>Sample SIS lens redshift (Haris et al. 2018)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id46" title="ler.lens_galaxy_population.OpticalDepth.velocity_dispersion_gengamma"><code class="xref py py-meth docutils literal notranslate"><span class="pre">velocity_dispersion_gengamma()</span></code></a></p></td>
+<td><p>Sample velocity dispersion from gengamma distribution</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id47" title="ler.lens_galaxy_population.OpticalDepth.velocity_dispersion_bernardi"><code class="xref py py-meth docutils literal notranslate"><span class="pre">velocity_dispersion_bernardi()</span></code></a></p></td>
+<td><p>Sample velocity dispersion (Bernardi et al. 2010)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id48" title="ler.lens_galaxy_population.OpticalDepth.velocity_dispersion_ewoud"><code class="xref py py-meth docutils literal notranslate"><span class="pre">velocity_dispersion_ewoud()</span></code></a></p></td>
+<td><p>Sample redshift-dependent velocity dispersion</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id53" title="ler.lens_galaxy_population.OpticalDepth.external_shear_normal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">external_shear_normal()</span></code></a></p></td>
+<td><p>Sample external shear from normal distribution</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id54" title="ler.lens_galaxy_population.OpticalDepth.density_profile_slope_normal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">density_profile_slope_normal()</span></code></a></p></td>
+<td><p>Sample density profile slope from normal distribution</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id57" title="ler.lens_galaxy_population.OpticalDepth.optical_depth_sis_analytic"><code class="xref py py-meth docutils literal notranslate"><span class="pre">optical_depth_sis_analytic()</span></code></a></p></td>
+<td><p>Compute SIS optical depth (Haris et al. 2018)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id58" title="ler.lens_galaxy_population.OpticalDepth.cross_section_sis"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cross_section_sis()</span></code></a></p></td>
+<td><p>Compute SIS cross-section</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id59" title="ler.lens_galaxy_population.OpticalDepth.cross_section_sie_feixu"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cross_section_sie_feixu()</span></code></a></p></td>
+<td><p>Compute SIE cross-section (Fei Xu et al. 2021)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id60" title="ler.lens_galaxy_population.OpticalDepth.cross_section_epl_shear_numerical"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cross_section_epl_shear_numerical()</span></code></a></p></td>
+<td><p>Compute EPL+shear cross-section numerically</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id64" title="ler.lens_galaxy_population.OpticalDepth.cross_section_epl_shear_interpolation"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cross_section_epl_shear_interpolation()</span></code></a></p></td>
+<td><p>Compute EPL+shear cross-section via interpolation</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="id20">
 <h4>Instance Attributes<a class="headerlink" href="#id20" title="Link to this heading"></a></h4>

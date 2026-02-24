@@ -190,7 +190,7 @@ Attributes
    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
    | :attr:`~include_effective_parameters`               | ``bool``                  |          | To include effective parameters in output                        |
    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
-   | :attr:`~include_redundant_parameters`                | ``bool``                  |          | If True, removes redundant parameters from output to save memory |
+   | :attr:`~include_redundant_parameters`               | ``bool``                  |          | If True, removes redundant parameters from output to save memory |
    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
    | :attr:`~lens_model_list`                            | ``list``                  |          | List of lens models                                              |
    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
@@ -658,7 +658,7 @@ Attributes
               +------------------------------+-----------+-------------------------------------------------------+
               | a_2                          |           | spin of the secondary compact binary                  |
               +------------------------------+-----------+-------------------------------------------------------+
-              | luminosity_distance          | Mpc       | luminosity distance of the source                      |
+              | luminosity_distance          | Mpc       | luminosity distance of the source                     |
               +------------------------------+-----------+-------------------------------------------------------+
               | mass_1                       | Msun      | mass of the primary compact binary (detector frame)   |
               +------------------------------+-----------+-------------------------------------------------------+
@@ -693,8 +693,8 @@ Attributes
           **lensed_param** : ``dict``
               Updated dictionary with effective parameters shown below:
 
-              +----------------------------------+-----------+------------------------------------------------|
-              | Parameter                        | Units     | Description
+              +----------------------------------+-----------+------------------------------------------------+
+              | Parameter                        | Units     | Description                                    |
               +==================================+===========+================================================+
               | effective_luminosity_distance    | Mpc       | magnification-corrected distance               |
               |                                  |           | luminosity_distance / sqrt(|magnifications_i|) |
@@ -768,8 +768,8 @@ Attributes
           **lensed_param** : ``dict``
               Updated dictionary with effective parameters shown below:
 
-              +----------------------------------+-----------+------------------------------------------------|
-              | Parameter                        | Units     | Description
+              +----------------------------------+-----------+------------------------------------------------+
+              | Parameter                        | Units     | Description                                    |
               +==================================+===========+================================================+
               | effective_luminosity_distance    | Mpc       | magnification-corrected distance               |
               |                                  |           | luminosity_distance / sqrt(|magnifications_i|) |

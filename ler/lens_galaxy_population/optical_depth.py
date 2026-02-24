@@ -134,7 +134,7 @@ class OpticalDepth:
     +-----------------------------------------------------+----------------------------------------------------------+
     | :meth:`~lens_redshift_strongly_lensed_numerical`    | Sample lens redshift for strong lensing                  |
     +-----------------------------------------------------+----------------------------------------------------------+
-    | :meth:`~lens_redshift_strongly_lensed_sis_haris`                    | Sample SIS lens redshift (Haris et al. 2018)             |
+    | :meth:`~lens_redshift_strongly_lensed_sis_haris`    | Sample SIS lens redshift (Haris et al. 2018)             |
     +-----------------------------------------------------+----------------------------------------------------------+
     | :meth:`~velocity_dispersion_gengamma`               | Sample velocity dispersion from gengamma distribution    |
     +-----------------------------------------------------+----------------------------------------------------------+
@@ -146,7 +146,7 @@ class OpticalDepth:
     +-----------------------------------------------------+----------------------------------------------------------+
     | :meth:`~density_profile_slope_normal`               | Sample density profile slope from normal distribution    |
     +-----------------------------------------------------+----------------------------------------------------------+
-    | :meth:`~optical_depth_sis_analytic`                    | Compute SIS optical depth (Haris et al. 2018)            |
+    | :meth:`~optical_depth_sis_analytic`                 | Compute SIS optical depth (Haris et al. 2018)            |
     +-----------------------------------------------------+----------------------------------------------------------+
     | :meth:`~cross_section_sis`                          | Compute SIS cross-section                                |
     +-----------------------------------------------------+----------------------------------------------------------+
