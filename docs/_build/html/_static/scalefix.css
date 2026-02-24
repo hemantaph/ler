@@ -2,5 +2,10 @@
 html { font-size: 100%; }      /* 16px on most browsers */
 body { font-size: 1rem; }      /* inherit 16px base */
 
+/* 
+    Sets the base font size and line height for elements with the 'rst-content' class.
+    - font-size: 1rem;      // Sets the font size to the root element's font size.
+    - line-height: 1.6;     // Sets the space between lines to 1.6 times the font size for better readability.
+*/
 .rst-content { font-size: 1rem; line-height: 1.6; }
 /*.wy-nav-content { max-width: 1000px; }*/  /* optional, avoids “giant” full-width feel */

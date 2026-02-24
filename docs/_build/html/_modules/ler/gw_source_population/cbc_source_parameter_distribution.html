@@ -8,9 +8,9 @@
   <title>ler.gw_source_population.cbc_source_parameter_distribution &mdash; ler 0.5.9 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css?v=242ac6f9" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css?v=11132fbc" />
       <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=30f3526c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
@@ -19,7 +19,7 @@
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../../../_static/documentation_options.js?v=9a3cda14"></script>
-      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../../_static/copybutton.js?v=f281be69"></script>
@@ -103,9 +103,9 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Module for sampling compact binary coalescence (CBC) source parameters.</span>
 
-<span class="sd">This module provides the ``CBCSourceParameterDistribution`` class for generating </span>
-<span class="sd">complete sets of intrinsic and extrinsic gravitational wave parameters for </span>
-<span class="sd">compact binary sources (BBH, BNS, NSBH). It includes mass distributions, </span>
+<span class="sd">This module provides the ``CBCSourceParameterDistribution`` class for generating</span>
+<span class="sd">complete sets of intrinsic and extrinsic gravitational wave parameters for</span>
+<span class="sd">compact binary sources (BBH, BNS, NSBH). It includes mass distributions,</span>
 <span class="sd">spin parameters, sky positions, and other parameters needed for GW analysis.</span>
 
 <span class="sd">Inheritance hierarchy: \n</span>
@@ -141,7 +141,7 @@
 
 <div class="viewcode-block" id="chunk_size">
 <a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_parameter_distribution.chunk_size">[docs]</a>
-<span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">10000</span> <span class="c1"># chunk size for rejection sampling</span></div>
+<span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">10000</span>  <span class="c1"># chunk size for rejection sampling</span></div>
 
 
 
@@ -151,9 +151,9 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class for sampling compact binary coalescence source parameters.</span>
 
-<span class="sd">    This class generates complete sets of intrinsic and extrinsic gravitational </span>
-<span class="sd">    wave parameters for compact binary sources including masses, spins, sky </span>
-<span class="sd">    positions, and orbital parameters. It supports BBH, BNS, NSBH, and primordial </span>
+<span class="sd">    This class generates complete sets of intrinsic and extrinsic gravitational</span>
+<span class="sd">    wave parameters for compact binary sources including masses, spins, sky</span>
+<span class="sd">    positions, and orbital parameters. It supports BBH, BNS, NSBH, and primordial</span>
 <span class="sd">    black hole populations with configurable prior distributions.</span>
 
 <span class="sd">    Key Features: \n</span>
@@ -339,7 +339,9 @@
 
 <div class="viewcode-block" id="CBCSourceParameterDistribution.cosmo">
 <a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_parameter_distribution/index.html#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.cosmo">[docs]</a>
-    <span class="n">cosmo</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span></div>
+    <span class="n">cosmo</span> <span class="o">=</span> <span class="n">LambdaCDM</span><span class="p">(</span>
+        <span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span>
+    <span class="p">)</span></div>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``astropy.cosmology`` \n</span>
 <span class="sd">    Cosmology to use.</span>
@@ -369,7 +371,13 @@
         <span class="c1"># set attributes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span> <span class="o">=</span> <span class="n">z_min</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span> <span class="o">=</span> <span class="n">z_max</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span> <span class="o">=</span> <span class="n">cosmology</span> <span class="k">if</span> <span class="n">cosmology</span> <span class="k">else</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">cosmology</span>
+            <span class="k">if</span> <span class="n">cosmology</span>
+            <span class="k">else</span> <span class="n">LambdaCDM</span><span class="p">(</span>
+                <span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
         <span class="c1"># note that self.cosmo is initialized in the super class</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spin_zero</span> <span class="o">=</span> <span class="n">spin_zero</span>
 <div class="viewcode-block" id="CBCSourceParameterDistribution.spin_precession">
@@ -382,7 +390,9 @@
 
 
         <span class="c1"># setting up the interpolator creation parameters</span>
-        <span class="n">create_new_interpolator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup_decision_dictionary_gw_params</span><span class="p">(</span><span class="n">create_new_interpolator</span><span class="p">)</span>
+        <span class="n">create_new_interpolator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup_decision_dictionary_gw_params</span><span class="p">(</span>
+            <span class="n">create_new_interpolator</span>
+        <span class="p">)</span>
 
         <span class="c1"># dealing with prior functions and categorization</span>
         <span class="p">(</span>
@@ -431,7 +441,6 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">phi_12</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s2">&quot;phi_12&quot;</span><span class="p">]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">phi_jl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="p">[</span><span class="s2">&quot;phi_jl&quot;</span><span class="p">]</span>
 
-
     <span class="k">def</span> <span class="nf">_setup_decision_dictionary_gw_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">create_new_interpolator</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper function to set up decision dictionary for interpolator creation.</span>
@@ -463,8 +472,8 @@
             <span class="n">phi_12</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
             <span class="n">phi_jl</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
             <span class="n">merger_rate_density</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
-            <span class="n">redshift_distribution</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span> 
-            <span class="n">luminosity_distance</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span> 
+            <span class="n">redshift_distribution</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
+            <span class="n">luminosity_distance</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
             <span class="n">differential_comoving_volume</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">create_new_interpolator</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
@@ -504,9 +513,11 @@
 
         <span class="c1"># for BBH</span>
         <span class="k">if</span> <span class="n">event_type</span> <span class="o">==</span> <span class="s2">&quot;BBH&quot;</span><span class="p">:</span>
-            <span class="n">merger_rate_density_prior</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_madau_dickinson_belczynski_ng&quot;</span>
+            <span class="n">merger_rate_density_prior</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;merger_rate_density_madau_dickinson_belczynski_ng&quot;</span>
+            <span class="p">)</span>
             <span class="n">merger_rate_density_prior_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-                <span class="n">R0</span><span class="o">=</span><span class="mi">19</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">alpha_F</span><span class="o">=</span><span class="mf">2.57</span><span class="p">,</span> <span class="n">beta_F</span><span class="o">=</span><span class="mf">5.83</span><span class="p">,</span> <span class="n">c_F</span><span class="o">=</span><span class="mf">3.36</span>  
+                <span class="n">R0</span><span class="o">=</span><span class="mi">19</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">alpha_F</span><span class="o">=</span><span class="mf">2.57</span><span class="p">,</span> <span class="n">beta_F</span><span class="o">=</span><span class="mf">5.83</span><span class="p">,</span> <span class="n">c_F</span><span class="o">=</span><span class="mf">3.36</span>
             <span class="p">)</span>
             <span class="n">source_frame_masses_prior</span> <span class="o">=</span> <span class="s2">&quot;binary_masses_BBH_powerlaw_gaussian&quot;</span>
             <span class="n">source_frame_masses_prior_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -585,7 +596,7 @@
         <span class="c1"># setting the priors and its parameters</span>
         <span class="n">source_priors_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">merger_rate_density</span><span class="o">=</span><span class="n">merger_rate_density_prior</span><span class="p">,</span>
-            <span class="n">zs</span><span class="o">=</span><span class="s1">&#39;source_redshift&#39;</span><span class="p">,</span>
+            <span class="n">zs</span><span class="o">=</span><span class="s2">&quot;source_redshift&quot;</span><span class="p">,</span>
             <span class="n">source_frame_masses</span><span class="o">=</span><span class="n">source_frame_masses_prior</span><span class="p">,</span>
             <span class="n">geocent_time</span><span class="o">=</span><span class="s2">&quot;sampler_uniform&quot;</span><span class="p">,</span>
             <span class="n">ra</span><span class="o">=</span><span class="s2">&quot;sampler_uniform&quot;</span><span class="p">,</span>
@@ -599,10 +610,10 @@
             <span class="n">zs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">source_frame_masses</span><span class="o">=</span><span class="n">source_frame_masses_prior_params</span><span class="p">,</span>
             <span class="n">geocent_time</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="mi">1238166018</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mi">1269702018</span><span class="p">),</span>
-            <span class="n">ra</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">2.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span>
+            <span class="n">ra</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span>
             <span class="n">dec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># dict(xmin=-np.pi/2, xmax=np.pi/2),</span>
-            <span class="n">phase</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">2.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span>
-            <span class="n">psi</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span>
+            <span class="n">phase</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span>
+            <span class="n">psi</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span>
             <span class="n">theta_jn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># dict(xmin=0., xmax=np.pi),</span>
         <span class="p">)</span>
 
@@ -637,7 +648,9 @@
         <span class="c1"># taking care of source_prior_params from the available_gw_prior</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">source_priors_</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="n">dict_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_gw_prior</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>  <span class="c1"># e.g. all source_frame_masses_prior function names and its parameters</span>
+                <span class="n">dict_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_gw_prior</span><span class="p">[</span>
+                    <span class="n">key</span>
+                <span class="p">]</span>  <span class="c1"># e.g. all source_frame_masses_prior function names and its parameters</span>
                 <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">dict_</span><span class="p">:</span>
                     <span class="n">param_dict</span> <span class="o">=</span> <span class="n">dict_</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
                     <span class="k">if</span> <span class="n">source_prior_params_</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -655,7 +668,7 @@
                 <span class="p">)</span>
 
         <span class="k">return</span> <span class="p">(</span><span class="n">source_priors_</span><span class="p">,</span> <span class="n">source_prior_params_</span><span class="p">)</span>
-    
+
 <div class="viewcode-block" id="CBCSourceParameterDistribution.sample_gw_parameters">
 <a class="viewcode-back" href="../../../autoapi/ler/rates/index.html#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sample_gw_parameters">[docs]</a>
     <span class="k">def</span> <span class="nf">sample_gw_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -663,7 +676,7 @@
 <span class="sd">        Sample all gravitational wave parameters for compact binaries.</span>
 
 <span class="sd">        Generates a complete set of intrinsic and extrinsic parameters including</span>
-<span class="sd">        masses, redshift, luminosity distance, sky position, orientation, and </span>
+<span class="sd">        masses, redshift, luminosity distance, sky position, orientation, and</span>
 <span class="sd">        optionally spin parameters.</span>
 
 <span class="sd">        Parameters</span>
@@ -725,7 +738,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># check for input parameters</span>
-        <span class="c1"># allow some of the parameters to be fixed </span>
+        <span class="c1"># allow some of the parameters to be fixed</span>
         <span class="k">if</span> <span class="n">param</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">param</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># empty</span>
             <span class="n">param_keys</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>  <span class="c1"># empty</span>
@@ -752,7 +765,7 @@
         <span class="c1"># calculate luminosity distance</span>
         <span class="n">zs</span> <span class="o">=</span> <span class="n">gw_parameters</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">]</span>
         <span class="n">gw_parameters</span><span class="p">[</span><span class="s2">&quot;luminosity_distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">luminosity_distance</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span>  <span class="c1"># Mpc</span>
-        
+
         <span class="c1"># mass1 and mass2</span>
         <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span> <span class="o">=</span> <span class="n">gw_parameters</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">]</span>  <span class="c1"># Msun</span>
         <span class="c1"># exchange m1 and m2 if m1 &lt; m2 in the fastest way</span>
@@ -763,6 +776,8 @@
             <span class="mi">1</span> <span class="o">+</span> <span class="n">zs</span>
         <span class="p">)</span>  <span class="c1"># Msun</span>
         <span class="k">del</span> <span class="n">gw_parameters</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">]</span>
+
+        <span class="c1"># sample_gw_parameters</span>
 
         <span class="k">return</span> <span class="n">gw_parameters</span></div>
 
@@ -815,26 +830,27 @@
 
         <span class="kn">from</span> <span class="nn">.prior_functions</span> <span class="kn">import</span> <span class="n">binary_masses_BBH_powerlaw_gaussian_rvs</span>
 
-        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;binary_masses_BBH_powerlaw_gaussian&quot;</span><span class="p">}</span>
-        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_gw_prior</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span><span class="s2">&quot;binary_masses_BBH_powerlaw_gaussian&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;binary_masses_BBH_powerlaw_gaussian&quot;</span><span class="p">}</span>
+        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_gw_prior</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span>
+            <span class="s2">&quot;binary_masses_BBH_powerlaw_gaussian&quot;</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">param_dict</span><span class="p">:</span>
             <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">param_dict</span> <span class="o">=</span> <span class="n">kwargs</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
 
-
         <span class="c1"># mass function</span>
-        <span class="n">rvs_</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">binary_masses_BBH_powerlaw_gaussian_rvs</span><span class="p">(</span>  
+        <span class="n">rvs_</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">binary_masses_BBH_powerlaw_gaussian_rvs</span><span class="p">(</span>
             <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
             <span class="n">mminbh</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;mminbh&quot;</span><span class="p">],</span>
             <span class="n">mmaxbh</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;mmaxbh&quot;</span><span class="p">],</span>
             <span class="n">alpha</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">],</span>
             <span class="n">mu_g</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;mu_g&quot;</span><span class="p">],</span>
-            <span class="n">sigma_g</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;sigma_g&#39;</span><span class="p">],</span>
-            <span class="n">lambda_peak</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;lambda_peak&#39;</span><span class="p">],</span>
-            <span class="n">delta_m</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;delta_m&#39;</span><span class="p">],</span>
-            <span class="n">beta</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">],</span>
+            <span class="n">sigma_g</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;sigma_g&quot;</span><span class="p">],</span>
+            <span class="n">lambda_peak</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;lambda_peak&quot;</span><span class="p">],</span>
+            <span class="n">delta_m</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;delta_m&quot;</span><span class="p">],</span>
+            <span class="n">beta</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;beta&quot;</span><span class="p">],</span>
         <span class="p">)</span>
 
         <span class="n">mass_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
@@ -843,13 +859,15 @@
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
-            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span>
+                <span class="s2">&quot;create_new&quot;</span>
+            <span class="p">],</span>
             <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_function</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_pdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_rvs</span><span class="o">=</span><span class="n">rvs_</span><span class="p">,</span>
-            <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;rvs&#39;</span><span class="p">,</span>
+            <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;rvs&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">mass_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">mass_object</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="p">)</span></div>
@@ -898,15 +916,17 @@
 
         <span class="kn">from</span> <span class="nn">.prior_functions</span> <span class="kn">import</span> <span class="n">binary_masses_BBH_popIII_lognormal_rvs</span>
 
-        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;binary_masses_BBH_popIII_lognormal&quot;</span><span class="p">}</span>
-        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_gw_prior</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span><span class="s2">&quot;binary_masses_BBH_popIII_lognormal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;binary_masses_BBH_popIII_lognormal&quot;</span><span class="p">}</span>
+        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_gw_prior</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span>
+            <span class="s2">&quot;binary_masses_BBH_popIII_lognormal&quot;</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">param_dict</span><span class="p">:</span>
             <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">param_dict</span> <span class="o">=</span> <span class="n">kwargs</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
 
-        <span class="n">rvs_</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">binary_masses_BBH_popIII_lognormal_rvs</span><span class="p">(</span>  
+        <span class="n">rvs_</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">binary_masses_BBH_popIII_lognormal_rvs</span><span class="p">(</span>
             <span class="n">size</span><span class="p">,</span>
             <span class="n">m_min</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;m_min&quot;</span><span class="p">],</span>
             <span class="n">m_max</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;m_max&quot;</span><span class="p">],</span>
@@ -921,13 +941,15 @@
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
-            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span>
+                <span class="s2">&quot;create_new&quot;</span>
+            <span class="p">],</span>
             <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_function</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_pdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_rvs</span><span class="o">=</span><span class="n">rvs_</span><span class="p">,</span>
-            <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;rvs&#39;</span><span class="p">,</span>
+            <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;rvs&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">mass_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">mass_object</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="p">)</span></div>
@@ -970,15 +992,17 @@
 
         <span class="kn">from</span> <span class="nn">.prior_functions</span> <span class="kn">import</span> <span class="n">binary_masses_BBH_primordial_lognormal_rvs</span>
 
-        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;binary_masses_BBH_primordial_lognormal&quot;</span><span class="p">}</span>    
-        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_gw_prior</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span><span class="s2">&quot;binary_masses_BBH_primordial_lognormal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;binary_masses_BBH_primordial_lognormal&quot;</span><span class="p">}</span>
+        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_gw_prior</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span>
+            <span class="s2">&quot;binary_masses_BBH_primordial_lognormal&quot;</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">param_dict</span><span class="p">:</span>
             <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">param_dict</span> <span class="o">=</span> <span class="n">kwargs</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
 
-        <span class="n">rvs_</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">binary_masses_BBH_primordial_lognormal_rvs</span><span class="p">(</span>  
+        <span class="n">rvs_</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">binary_masses_BBH_primordial_lognormal_rvs</span><span class="p">(</span>
             <span class="n">size</span><span class="p">,</span>
             <span class="n">m_min</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;m_min&quot;</span><span class="p">],</span>
             <span class="n">m_max</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;m_max&quot;</span><span class="p">],</span>
@@ -993,18 +1017,20 @@
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
-            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span>
+                <span class="s2">&quot;create_new&quot;</span>
+            <span class="p">],</span>
             <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_function</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_pdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_rvs</span><span class="o">=</span><span class="n">rvs_</span><span class="p">,</span>
-            <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;rvs&#39;</span><span class="p">,</span>
+            <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;rvs&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">mass_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">mass_object</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="p">)</span></div>
 
-        
+
 <div class="viewcode-block" id="CBCSourceParameterDistribution.binary_masses_NSBH_broken_powerlaw">
 <a class="viewcode-back" href="../../../autoapi/ler/rates/index.html#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_NSBH_broken_powerlaw">[docs]</a>
     <span class="k">def</span> <span class="nf">binary_masses_NSBH_broken_powerlaw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -1049,8 +1075,10 @@
 
         <span class="kn">from</span> <span class="nn">.prior_functions</span> <span class="kn">import</span> <span class="n">binary_masses_NSBH_broken_powerlaw_rvs</span>
 
-        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;binary_masses_NSBH_broken_powerlaw&quot;</span><span class="p">}</span>
-        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_gw_prior</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span><span class="s2">&quot;binary_masses_NSBH_broken_powerlaw&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;binary_masses_NSBH_broken_powerlaw&quot;</span><span class="p">}</span>
+        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_gw_prior</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span>
+            <span class="s2">&quot;binary_masses_NSBH_broken_powerlaw&quot;</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">param_dict</span><span class="p">:</span>
             <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1077,13 +1105,15 @@
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
-            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span>
+                <span class="s2">&quot;create_new&quot;</span>
+            <span class="p">],</span>
             <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_function</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_pdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_rvs</span><span class="o">=</span><span class="n">rvs_</span><span class="p">,</span>
-            <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;rvs&#39;</span><span class="p">,</span>
+            <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;rvs&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">mass_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">mass_object</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="p">)</span></div>
@@ -1126,8 +1156,10 @@
 <span class="sd">        &gt;&gt;&gt; m1_src, m2_src = cbc.binary_masses_uniform(size=1000)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;binary_masses_uniform&quot;</span><span class="p">}</span>
-        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_gw_prior</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span><span class="s2">&quot;binary_masses_uniform&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;binary_masses_uniform&quot;</span><span class="p">}</span>
+        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_gw_prior</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span>
+            <span class="s2">&quot;binary_masses_uniform&quot;</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">param_dict</span><span class="p">:</span>
             <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1144,7 +1176,10 @@
             <span class="n">mass_2_source</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">m_min</span><span class="p">,</span> <span class="n">m_max</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
             <span class="c1"># swap if mass_2_source &gt; mass_1_source</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mass_2_source</span> <span class="o">&gt;</span> <span class="n">mass_1_source</span><span class="p">)</span>
-            <span class="n">mass_1_source</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">mass_2_source</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">mass_2_source</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">mass_1_source</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> 
+            <span class="n">mass_1_source</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">mass_2_source</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">mass_2_source</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                <span class="n">mass_1_source</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+            <span class="p">)</span>
             <span class="k">return</span> <span class="n">mass_1_source</span><span class="p">,</span> <span class="n">mass_2_source</span>
 
         <span class="n">mass_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
@@ -1153,13 +1188,15 @@
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
-            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span>
+                <span class="s2">&quot;create_new&quot;</span>
+            <span class="p">],</span>
             <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_function</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_pdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_rvs</span><span class="o">=</span><span class="n">rvs_</span><span class="p">,</span>
-            <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;rvs&#39;</span><span class="p">,</span>
+            <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;rvs&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">mass_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">mass_object</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="p">)</span></div>
@@ -1212,17 +1249,21 @@
 
         <span class="kn">from</span> <span class="nn">.prior_functions</span> <span class="kn">import</span> <span class="n">binary_masses_BNS_bimodal_rvs</span>
 
-        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;binary_masses_BNS_bimodal&quot;</span><span class="p">}</span>
-        <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
-        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_gw_prior</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span><span class="s2">&quot;binary_masses_BNS_bimodal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;binary_masses_BNS_bimodal&quot;</span><span class="p">}</span>
+        <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
+            <span class="s2">&quot;source_frame_masses&quot;</span>
+        <span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
+        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_gw_prior</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span>
+            <span class="s2">&quot;binary_masses_BNS_bimodal&quot;</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">param_dict</span><span class="p">:</span>
             <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">param_dict</span> <span class="o">=</span> <span class="n">kwargs</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
 
-        <span class="c1"># mass function for BNS </span>
-        <span class="n">rvs_</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">binary_masses_BNS_bimodal_rvs</span><span class="p">(</span>  
+        <span class="c1"># mass function for BNS</span>
+        <span class="n">rvs_</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">binary_masses_BNS_bimodal_rvs</span><span class="p">(</span>
             <span class="n">size</span><span class="p">,</span>
             <span class="n">w</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;w&quot;</span><span class="p">],</span>
             <span class="n">muL</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;muL&quot;</span><span class="p">],</span>
@@ -1233,20 +1274,22 @@
             <span class="n">mmax</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;mmax&quot;</span><span class="p">],</span>
             <span class="n">resolution</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">],</span>
         <span class="p">)</span>
-        
+
         <span class="n">mass_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
             <span class="n">function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">x_array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
-            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span>
+                <span class="s2">&quot;create_new&quot;</span>
+            <span class="p">],</span>
             <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_function</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_pdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_rvs</span><span class="o">=</span><span class="n">rvs_</span><span class="p">,</span>
-            <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;rvs&#39;</span><span class="p">,</span>
+            <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;rvs&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">mass_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">mass_object</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="p">)</span></div>
@@ -1254,9 +1297,7 @@
 
 <div class="viewcode-block" id="CBCSourceParameterDistribution.constant_values_n_size">
 <a class="viewcode-back" href="../../../autoapi/ler/rates/index.html#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.constant_values_n_size">[docs]</a>
-    <span class="k">def</span> <span class="nf">constant_values_n_size</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">constant_values_n_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return array of constant values.</span>
 
@@ -1280,7 +1321,7 @@
 
         <span class="c1"># if param:</span>
         <span class="c1">#     value = param[&quot;value&quot;]</span>
-        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;constant_values_n_size&quot;</span><span class="p">}</span>
+        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;constant_values_n_size&quot;</span><span class="p">}</span>
         <span class="n">param_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
         <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
@@ -1295,12 +1336,12 @@
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;custom_functions&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
             <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_function</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_pdf</span><span class="o">=</span><span class="n">pdf_</span><span class="p">,</span>
             <span class="n">create_rvs</span><span class="o">=</span><span class="n">rvs_</span><span class="p">,</span>
-            <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;rvs&#39;</span><span class="p">,</span>
+            <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;rvs&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
@@ -1311,9 +1352,7 @@
 
 <div class="viewcode-block" id="CBCSourceParameterDistribution.sampler_uniform">
 <a class="viewcode-back" href="../../../autoapi/ler/rates/index.html#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sampler_uniform">[docs]</a>
-    <span class="k">def</span> <span class="nf">sampler_uniform</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">sampler_uniform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sample values from uniform distribution.</span>
 
@@ -1334,14 +1373,14 @@
 <span class="sd">        values : ``numpy.ndarray``</span>
 <span class="sd">            Array of uniformly distributed values in range [xmin, xmax].</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        
-        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;sampler_uniform&quot;</span><span class="p">}</span>
+
+        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;sampler_uniform&quot;</span><span class="p">}</span>
         <span class="n">param_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
         <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
 
-        <span class="n">xmin</span> <span class="o">=</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;xmin&#39;</span><span class="p">]</span>
-        <span class="n">xmax</span> <span class="o">=</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;xmax&#39;</span><span class="p">]</span>
+        <span class="n">xmin</span> <span class="o">=</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;xmin&quot;</span><span class="p">]</span>
+        <span class="n">xmax</span> <span class="o">=</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;xmax&quot;</span><span class="p">]</span>
 
         <span class="n">pdf_</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
         <span class="n">rvs_</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">))</span>
@@ -1350,12 +1389,12 @@
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;custom_functions&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
             <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_function</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_pdf</span><span class="o">=</span><span class="n">pdf_</span><span class="p">,</span>
             <span class="n">create_rvs</span><span class="o">=</span><span class="n">rvs_</span><span class="p">,</span>
-            <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;rvs&#39;</span><span class="p">,</span>
+            <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;rvs&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
@@ -1366,9 +1405,7 @@
 
 <div class="viewcode-block" id="CBCSourceParameterDistribution.sampler_cosine">
 <a class="viewcode-back" href="../../../autoapi/ler/rates/index.html#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sampler_cosine">[docs]</a>
-    <span class="k">def</span> <span class="nf">sampler_cosine</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">sampler_cosine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sample from cosine distribution for declination.</span>
 
@@ -1390,22 +1427,24 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;sampler_cosine&quot;</span>
+        <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;sampler_cosine&quot;</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="n">pdf_</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">rvs_</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)))</span>
+        <span class="n">rvs_</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="p">)</span>
 
         <span class="n">object_</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;custom_functions&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
             <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_function</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_pdf</span><span class="o">=</span><span class="n">pdf_</span><span class="p">,</span>
             <span class="n">create_rvs</span><span class="o">=</span><span class="n">rvs_</span><span class="p">,</span>
-            <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;rvs&#39;</span><span class="p">,</span>
+            <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;rvs&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
@@ -1416,9 +1455,7 @@
 
 <div class="viewcode-block" id="CBCSourceParameterDistribution.sampler_sine">
 <a class="viewcode-back" href="../../../autoapi/ler/rates/index.html#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sampler_sine">[docs]</a>
-    <span class="k">def</span> <span class="nf">sampler_sine</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">sampler_sine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sample from sine distribution for inclination angles.</span>
 
@@ -1440,23 +1477,25 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;sampler_sine&quot;</span>
+        <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;sampler_sine&quot;</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="n">pdf_</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">rvs_</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">rvs_</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="p">)</span>
 
         <span class="n">object_</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;custom_functions&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
             <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_function</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_pdf</span><span class="o">=</span><span class="n">pdf_</span><span class="p">,</span>
             <span class="n">create_rvs</span><span class="o">=</span><span class="n">rvs_</span><span class="p">,</span>
-            <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;rvs&#39;</span><span class="p">,</span>
-        <span class="p">)</span>   
+            <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;rvs&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">get_attribute</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">object_</span>
@@ -1497,15 +1536,17 @@
             <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_source_frame_masses</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
-                <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span>
-            <span class="p">)</span>
+                    <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># follwing should return a sampler function with only one argument (size)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_source_frame_masses</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
                     <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span>
                 <span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">FunctionConditioning</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom source_frame_masses class/object of type ler.utils.FunctionConditioning&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;using user defined custom source_frame_masses class/object of type ler.utils.FunctionConditioning&quot;</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_source_frame_masses</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">prior</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom source_frame_masses function&quot;</span><span class="p">)</span>
@@ -1514,7 +1555,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">&quot;source_frame_masses prior not available in available_gw_prior. Must be a string or a callable function.&quot;</span>
             <span class="p">)</span>
-        
+
     <span class="nd">@property</span>
 <div class="viewcode-block" id="CBCSourceParameterDistribution.zs">
 <a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_parameter_distribution/index.html#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.zs">[docs]</a>
@@ -1534,14 +1575,16 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zs</span></div>
 
-    
+
     <span class="nd">@zs</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">zs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">prior</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_gw_prior</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">]:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;using ler available zs function : </span><span class="si">{</span><span class="n">prior</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_zs</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">FunctionConditioning</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom zs class/object of type ler.utils.FunctionConditioning&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;using user defined custom zs class/object of type ler.utils.FunctionConditioning&quot;</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_zs</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">prior</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom zs function&quot;</span><span class="p">)</span>
@@ -1577,16 +1620,16 @@
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;using ler available geocent_time function : </span><span class="si">{</span><span class="n">prior</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;geocent_time&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_geocent_time</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
-                <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span>
-            <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_geocent_time</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span><span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># follwing should return a sampler function with only one argument (size)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_geocent_time</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
                     <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span>
                 <span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">FunctionConditioning</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom geocent_time class/object of type ler.utils.FunctionConditioning&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;using user defined custom geocent_time class/object of type ler.utils.FunctionConditioning&quot;</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_geocent_time</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">prior</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom geocent_time function&quot;</span><span class="p">)</span>
@@ -1611,7 +1654,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        ra : ``numpy.ndarray``</span>
 <span class="sd">            Array of right ascension values.</span>
-<span class="sd">        &quot;&quot;&quot;</span> 
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ra</span></div>
 
@@ -1627,7 +1670,9 @@
                 <span class="c1"># follwing should return a sampler function with only one argument (size)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_ra</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span><span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">FunctionConditioning</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom ra class/object of type ler.utils.FunctionConditioning&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;using user defined custom ra class/object of type ler.utils.FunctionConditioning&quot;</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_ra</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">prior</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom ra function&quot;</span><span class="p">)</span>
@@ -1668,7 +1713,9 @@
                 <span class="c1"># follwing should return a sampler function with only one argument (size)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_dec</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span><span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">FunctionConditioning</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom dec class/object of type ler.utils.FunctionConditioning&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;using user defined custom dec class/object of type ler.utils.FunctionConditioning&quot;</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_dec</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">prior</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom dec function&quot;</span><span class="p">)</span>
@@ -1707,9 +1754,13 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_phase</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span><span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># follwing should return a sampler function with only one argument (size)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_phase</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span><span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_phase</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
+                    <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span>
+                <span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">FunctionConditioning</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom phase class/object of type ler.utils.FunctionConditioning&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;using user defined custom phase class/object of type ler.utils.FunctionConditioning&quot;</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_phase</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">prior</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom phase function&quot;</span><span class="p">)</span>
@@ -1750,7 +1801,9 @@
                 <span class="c1"># follwing should return a sampler function with only one argument (size)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_psi</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span><span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">FunctionConditioning</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom psi class/object of type ler.utils.FunctionConditioning&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;using user defined custom psi class/object of type ler.utils.FunctionConditioning&quot;</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_psi</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">prior</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom psi function&quot;</span><span class="p">)</span>
@@ -1786,22 +1839,24 @@
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;using ler available theta_jn function : </span><span class="si">{</span><span class="n">prior</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;theta_jn&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_theta_jn</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
-                <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span>
-            <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_theta_jn</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span><span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># follwing should return a sampler function with only one argument (size)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_theta_jn</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
                     <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span>
                 <span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">FunctionConditioning</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom theta_jn class/object of type ler.utils.FunctionConditioning&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;using user defined custom theta_jn class/object of type ler.utils.FunctionConditioning&quot;</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_theta_jn</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">prior</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom theta_jn function&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_theta_jn</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;theta_jn prior not available in available_gw_prior. Must be a string or a callable function.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;theta_jn prior not available in available_gw_prior. Must be a string or a callable function.&quot;</span>
+            <span class="p">)</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="CBCSourceParameterDistribution.a_1">
@@ -1829,22 +1884,22 @@
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;using ler available a_1 function : </span><span class="si">{</span><span class="n">prior</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;a_1&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_a_1</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
-                <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span>
-            <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_a_1</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span><span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># follwing should return a sampler function with only one argument (size)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_a_1</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
-                    <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span>
-                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_a_1</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span><span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">FunctionConditioning</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom a_1 class/object of type ler.utils.FunctionConditioning&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;using user defined custom a_1 class/object of type ler.utils.FunctionConditioning&quot;</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_a_1</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">prior</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom a_1 function&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_a_1</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;a_1 prior not available in available_gw_prior. Must be a string or a callable function.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;a_1 prior not available in available_gw_prior. Must be a string or a callable function.&quot;</span>
+            <span class="p">)</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="CBCSourceParameterDistribution.a_2">
@@ -1872,22 +1927,22 @@
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;using ler available a_2 function : </span><span class="si">{</span><span class="n">prior</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;a_2&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_a_2</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
-                <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span>
-            <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_a_2</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span><span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># follwing should return a sampler function with only one argument (size)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_a_2</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
-                    <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span>
-                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_a_2</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span><span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">FunctionConditioning</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom a_2 class/object of type ler.utils.FunctionConditioning&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;using user defined custom a_2 class/object of type ler.utils.FunctionConditioning&quot;</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_a_2</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">prior</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom a_2 function&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_a_2</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;a_2 prior not available in available_gw_prior. Must be a string or a callable function.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;a_2 prior not available in available_gw_prior. Must be a string or a callable function.&quot;</span>
+            <span class="p">)</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="CBCSourceParameterDistribution.tilt_1">
@@ -1915,21 +1970,23 @@
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;using ler available tilt_1 function : </span><span class="si">{</span><span class="n">prior</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;tilt_1&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_tilt_1</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
-                <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span>
-            <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_tilt_1</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span><span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_tilt_1</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
                     <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span>
                 <span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">FunctionConditioning</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom tilt_1 class/object of type ler.utils.FunctionConditioning&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;using user defined custom tilt_1 class/object of type ler.utils.FunctionConditioning&quot;</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tilt_1</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">prior</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom tilt_1 function&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tilt_1</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;tilt_1 prior not available in available_gw_prior. Must be a string or a callable function.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;tilt_1 prior not available in available_gw_prior. Must be a string or a callable function.&quot;</span>
+            <span class="p">)</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="CBCSourceParameterDistribution.tilt_2">
@@ -1957,22 +2014,24 @@
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;using ler available tilt_2 function : </span><span class="si">{</span><span class="n">prior</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;tilt_2&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_tilt_2</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
-                <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span>
-            <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_tilt_2</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span><span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_tilt_2</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
                     <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span>
                 <span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">FunctionConditioning</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom tilt_2 class/object of type ler.utils.FunctionConditioning&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;using user defined custom tilt_2 class/object of type ler.utils.FunctionConditioning&quot;</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tilt_2</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">prior</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom tilt_2 function&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tilt_2</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;tilt_2 prior not available in available_gw_prior. Must be a string or a callable function.&quot;</span><span class="p">)</span>
-        
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;tilt_2 prior not available in available_gw_prior. Must be a string or a callable function.&quot;</span>
+            <span class="p">)</span>
+
     <span class="nd">@property</span>
 <div class="viewcode-block" id="CBCSourceParameterDistribution.phi_12">
 <a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_parameter_distribution/index.html#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.phi_12">[docs]</a>
@@ -1999,21 +2058,23 @@
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;using ler available phi_12 function : </span><span class="si">{</span><span class="n">prior</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;phi_12&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_phi_12</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
-                    <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span>
-                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_phi_12</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span><span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_phi_12</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
                     <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span>
                 <span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">FunctionConditioning</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom phi_12 class/object of type ler.utils.FunctionConditioning&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;using user defined custom phi_12 class/object of type ler.utils.FunctionConditioning&quot;</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_phi_12</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">prior</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom phi_12 function&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_phi_12</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;phi_12 prior not available in available_gw_prior. Must be a string or a callable function.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;phi_12 prior not available in available_gw_prior. Must be a string or a callable function.&quot;</span>
+            <span class="p">)</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="CBCSourceParameterDistribution.phi_jl">
@@ -2040,21 +2101,23 @@
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;using ler available phi_jl function : </span><span class="si">{</span><span class="n">prior</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;phi_jl&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_phi_jl</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
-                <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span>
-            <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_phi_jl</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span><span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_phi_jl</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
                     <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span>
                 <span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">FunctionConditioning</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom phi_jl class/object of type ler.utils.FunctionConditioning&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;using user defined custom phi_jl class/object of type ler.utils.FunctionConditioning&quot;</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_phi_jl</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">prior</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user defined custom phi_jl function&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_phi_jl</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;phi_jl prior not available in available_gw_prior. Must be a string or a callable function.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;phi_jl prior not available in available_gw_prior. Must be a string or a callable function.&quot;</span>
+            <span class="p">)</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="CBCSourceParameterDistribution.available_gw_prior">
@@ -2088,7 +2151,9 @@
                     <span class="n">delta_m</span><span class="o">=</span><span class="mf">4.8</span><span class="p">,</span>
                     <span class="n">beta</span><span class="o">=</span><span class="mf">0.81</span><span class="p">,</span>
                 <span class="p">),</span>
-                <span class="n">binary_masses_BBH_popIII_lognormal</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">m_min</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">m_max</span><span class="o">=</span><span class="mf">150.0</span><span class="p">,</span> <span class="n">Mc</span><span class="o">=</span><span class="mf">30.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.3</span><span class="p">),</span>
+                <span class="n">binary_masses_BBH_popIII_lognormal</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">m_min</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">m_max</span><span class="o">=</span><span class="mf">150.0</span><span class="p">,</span> <span class="n">Mc</span><span class="o">=</span><span class="mf">30.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.3</span>
+                <span class="p">),</span>
                 <span class="n">binary_masses_BBH_primordial_lognormal</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
                     <span class="n">m_min</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">m_max</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">Mc</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.3</span>
                 <span class="p">),</span>
@@ -2114,19 +2179,27 @@
                     <span class="n">mmax</span><span class="o">=</span><span class="mf">2.3</span><span class="p">,</span>
                 <span class="p">),</span>
             <span class="p">),</span>
-            <span class="n">a_1</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-                <span class="n">constant_values_n_size</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
-                <span class="n">sampler_uniform</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=-</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
-            <span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin_precession</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">(</span>
-                <span class="n">constant_values_n_size</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
-                <span class="n">sampler_uniform</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
+            <span class="n">a_1</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">constant_values_n_size</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+                    <span class="n">sampler_uniform</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=-</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin_precession</span>
+                <span class="k">else</span> <span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">constant_values_n_size</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+                    <span class="n">sampler_uniform</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
+                <span class="p">)</span>
             <span class="p">),</span>
-            <span class="n">a_2</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-                <span class="n">constant_values_n_size</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
-                <span class="n">sampler_uniform</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=-</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
-            <span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin_precession</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">(</span>
-                <span class="n">constant_values_n_size</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
-                <span class="n">sampler_uniform</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
+            <span class="n">a_2</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">constant_values_n_size</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+                    <span class="n">sampler_uniform</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=-</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin_precession</span>
+                <span class="k">else</span> <span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">constant_values_n_size</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+                    <span class="n">sampler_uniform</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
+                <span class="p">)</span>
             <span class="p">),</span>
             <span class="n">tilt_1</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
                 <span class="n">constant_values_n_size</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
@@ -2145,9 +2218,7 @@
                 <span class="n">sampler_uniform</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span>
             <span class="p">),</span>
             <span class="n">geocent_time</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-                <span class="n">sampler_uniform</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-                    <span class="n">xmin</span><span class="o">=</span><span class="mi">1238166018</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mi">1238166018</span> <span class="o">+</span> <span class="mf">31557600.0</span>
-                <span class="p">),</span>
+                <span class="n">sampler_uniform</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="mi">1238166018</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mi">1238166018</span> <span class="o">+</span> <span class="mf">31557600.0</span><span class="p">),</span>
                 <span class="n">constant_values_n_size</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">1238166018</span><span class="p">),</span>
             <span class="p">),</span>
             <span class="n">ra</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
