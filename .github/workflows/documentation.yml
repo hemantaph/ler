@@ -36,12 +36,17 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y pandoc
-      - name: Install Python dependencies
+      - name: Install uv
         run: |
-          pip install -r requirements_sphinx.txt  # Or pip install sphinx sphinx-rtd-theme
-      - name: Install project dependencies
+          pip install --upgrade pipx
+          pipx install uv
+      - name: Install Python dependencies with uv
         run: |
-          pip install -e .
+          uv pip install --upgrade sphinx
+          uv pip install -r requirements_sphinx.txt
+      - name: Install project dependencies with uv
+        run: |
+          uv add ler
       - name: Build Sphinx documentation
         run: |
           cd docs

@@ -428,9 +428,13 @@ class LensGalaxyParameterDistribution(
             time_window=input_params_image["time_window"],
             spin_zero=self.spin_zero,
             spin_precession=self.spin_precession,
-            include_effective_parameters=input_params_image["include_effective_parameters"],
+            include_effective_parameters=input_params_image[
+                "include_effective_parameters"
+            ],
             multiprocessing_verbose=input_params_image["multiprocessing_verbose"],
-            include_redundant_parameters=input_params_image["include_redundant_parameters"],
+            include_redundant_parameters=input_params_image[
+                "include_redundant_parameters"
+            ],
         )
 
     def sample_lens_parameters(self, size=1000):

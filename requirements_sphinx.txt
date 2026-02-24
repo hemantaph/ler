@@ -1,5 +1,5 @@
 html5lib==1.0b8
-setuptools
+setuptools==80.9.0
 nbsphinx==0.9.3
 sphinx-autoapi==3.6.1
 autoapi==2.0.1

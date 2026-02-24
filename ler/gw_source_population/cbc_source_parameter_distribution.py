@@ -2,9 +2,9 @@
 """
 Module for sampling compact binary coalescence (CBC) source parameters.
 
-This module provides the ``CBCSourceParameterDistribution`` class for generating 
-complete sets of intrinsic and extrinsic gravitational wave parameters for 
-compact binary sources (BBH, BNS, NSBH). It includes mass distributions, 
+This module provides the ``CBCSourceParameterDistribution`` class for generating
+complete sets of intrinsic and extrinsic gravitational wave parameters for
+compact binary sources (BBH, BNS, NSBH). It includes mass distributions,
 spin parameters, sky positions, and other parameters needed for GW analysis.
 
 Inheritance hierarchy: \n
@@ -38,16 +38,16 @@ from ..utils import FunctionConditioning
 # import redshift distribution sampler
 from .cbc_source_redshift_distribution import CBCSourceRedshiftDistribution
 
-chunk_size = 10000 # chunk size for rejection sampling
+chunk_size = 10000  # chunk size for rejection sampling
 
 
 class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
     """
     Class for sampling compact binary coalescence source parameters.
 
-    This class generates complete sets of intrinsic and extrinsic gravitational 
-    wave parameters for compact binary sources including masses, spins, sky 
-    positions, and orbital parameters. It supports BBH, BNS, NSBH, and primordial 
+    This class generates complete sets of intrinsic and extrinsic gravitational
+    wave parameters for compact binary sources including masses, spins, sky
+    positions, and orbital parameters. It supports BBH, BNS, NSBH, and primordial
     black hole populations with configurable prior distributions.
 
     Key Features: \n
@@ -216,7 +216,9 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
     Dictionary of prior sampler functions' input parameters.
     """
 
-    cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
+    cosmo = LambdaCDM(
+        H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0
+    )
     """``astropy.cosmology`` \n
     Cosmology to use.
     """
@@ -242,14 +244,22 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         # set attributes
         self.z_min = z_min
         self.z_max = z_max
-        self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
+        self.cosmo = (
+            cosmology
+            if cosmology
+            else LambdaCDM(
+                H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0
+            )
+        )
         # note that self.cosmo is initialized in the super class
         self.spin_zero = spin_zero
         self.spin_precession = spin_precession
         self.directory = directory
 
         # setting up the interpolator creation parameters
-        create_new_interpolator = self._setup_decision_dictionary_gw_params(create_new_interpolator)
+        create_new_interpolator = self._setup_decision_dictionary_gw_params(
+            create_new_interpolator
+        )
 
         # dealing with prior functions and categorization
         (
@@ -298,7 +308,6 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 self.phi_12 = self.gw_param_samplers["phi_12"]
                 self.phi_jl = self.gw_param_samplers["phi_jl"]
 
-
     def _setup_decision_dictionary_gw_params(self, create_new_interpolator):
         """
         Helper function to set up decision dictionary for interpolator creation.
@@ -330,8 +339,8 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             phi_12=dict(create_new=False, resolution=500),
             phi_jl=dict(create_new=False, resolution=500),
             merger_rate_density=dict(create_new=False, resolution=500),
-            redshift_distribution=dict(create_new=False, resolution=500), 
-            luminosity_distance=dict(create_new=False, resolution=500), 
+            redshift_distribution=dict(create_new=False, resolution=500),
+            luminosity_distance=dict(create_new=False, resolution=500),
             differential_comoving_volume=dict(create_new=False, resolution=500),
         )
         if isinstance(create_new_interpolator, dict):
@@ -371,9 +380,11 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         # for BBH
         if event_type == "BBH":
-            merger_rate_density_prior = "merger_rate_density_madau_dickinson_belczynski_ng"
+            merger_rate_density_prior = (
+                "merger_rate_density_madau_dickinson_belczynski_ng"
+            )
             merger_rate_density_prior_params = dict(
-                R0=19 * 1e-9, alpha_F=2.57, beta_F=5.83, c_F=3.36  
+                R0=19 * 1e-9, alpha_F=2.57, beta_F=5.83, c_F=3.36
             )
             source_frame_masses_prior = "binary_masses_BBH_powerlaw_gaussian"
             source_frame_masses_prior_params = dict(
@@ -452,7 +463,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         # setting the priors and its parameters
         source_priors_ = dict(
             merger_rate_density=merger_rate_density_prior,
-            zs='source_redshift',
+            zs="source_redshift",
             source_frame_masses=source_frame_masses_prior,
             geocent_time="sampler_uniform",
             ra="sampler_uniform",
@@ -466,10 +477,10 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             zs=None,
             source_frame_masses=source_frame_masses_prior_params,
             geocent_time=dict(xmin=1238166018, xmax=1269702018),
-            ra=dict(xmin=0., xmax=2.*np.pi),
+            ra=dict(xmin=0.0, xmax=2.0 * np.pi),
             dec=None,  # dict(xmin=-np.pi/2, xmax=np.pi/2),
-            phase=dict(xmin=0., xmax=2.*np.pi),
-            psi=dict(xmin=0., xmax=np.pi),
+            phase=dict(xmin=0.0, xmax=2.0 * np.pi),
+            psi=dict(xmin=0.0, xmax=np.pi),
             theta_jn=None,  # dict(xmin=0., xmax=np.pi),
         )
 
@@ -504,7 +515,9 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         # taking care of source_prior_params from the available_gw_prior
         for key, value in source_priors_.items():
             if isinstance(value, str):
-                dict_ = self.available_gw_prior[key]  # e.g. all source_frame_masses_prior function names and its parameters
+                dict_ = self.available_gw_prior[
+                    key
+                ]  # e.g. all source_frame_masses_prior function names and its parameters
                 if value in dict_:
                     param_dict = dict_[value]
                     if source_prior_params_[key] is None:
@@ -522,13 +535,13 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 )
 
         return (source_priors_, source_prior_params_)
-    
+
     def sample_gw_parameters(self, size=1000, param=None):
         """
         Sample all gravitational wave parameters for compact binaries.
 
         Generates a complete set of intrinsic and extrinsic parameters including
-        masses, redshift, luminosity distance, sky position, orientation, and 
+        masses, redshift, luminosity distance, sky position, orientation, and
         optionally spin parameters.
 
         Parameters
@@ -590,7 +603,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         """
 
         # check for input parameters
-        # allow some of the parameters to be fixed 
+        # allow some of the parameters to be fixed
         if param is None:
             param = {}  # empty
             param_keys = param.keys()  # empty
@@ -617,7 +630,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         # calculate luminosity distance
         zs = gw_parameters["zs"]
         gw_parameters["luminosity_distance"] = self.luminosity_distance(zs)  # Mpc
-        
+
         # mass1 and mass2
         m1, m2 = gw_parameters["source_frame_masses"]  # Msun
         # exchange m1 and m2 if m1 < m2 in the fastest way
@@ -628,6 +641,8 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             1 + zs
         )  # Msun
         del gw_parameters["source_frame_masses"]
+
+        # sample_gw_parameters
 
         return gw_parameters
 
@@ -677,26 +692,27 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         from .prior_functions import binary_masses_BBH_powerlaw_gaussian_rvs
 
-        identifier_dict = {'name': "binary_masses_BBH_powerlaw_gaussian"}
-        param_dict = self.available_gw_prior["source_frame_masses"]["binary_masses_BBH_powerlaw_gaussian"].copy()
+        identifier_dict = {"name": "binary_masses_BBH_powerlaw_gaussian"}
+        param_dict = self.available_gw_prior["source_frame_masses"][
+            "binary_masses_BBH_powerlaw_gaussian"
+        ].copy()
         if param_dict:
             param_dict.update(kwargs)
         else:
             param_dict = kwargs
         identifier_dict.update(param_dict)
 
-
         # mass function
-        rvs_ = lambda size: binary_masses_BBH_powerlaw_gaussian_rvs(  
+        rvs_ = lambda size: binary_masses_BBH_powerlaw_gaussian_rvs(
             size=size,
             mminbh=identifier_dict["mminbh"],
             mmaxbh=identifier_dict["mmaxbh"],
             alpha=identifier_dict["alpha"],
             mu_g=identifier_dict["mu_g"],
-            sigma_g=identifier_dict['sigma_g'],
-            lambda_peak=identifier_dict['lambda_peak'],
-            delta_m=identifier_dict['delta_m'],
-            beta=identifier_dict['beta'],
+            sigma_g=identifier_dict["sigma_g"],
+            lambda_peak=identifier_dict["lambda_peak"],
+            delta_m=identifier_dict["delta_m"],
+            beta=identifier_dict["beta"],
         )
 
         mass_object = FunctionConditioning(
@@ -705,13 +721,15 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             identifier_dict=identifier_dict,
             directory=self.directory,
             sub_directory="source_frame_masses",
-            name=identifier_dict['name'],
-            create_new=self.create_new_interpolator["source_frame_masses"]["create_new"],
+            name=identifier_dict["name"],
+            create_new=self.create_new_interpolator["source_frame_masses"][
+                "create_new"
+            ],
             create_function_inverse=False,
             create_function=False,
             create_pdf=False,
             create_rvs=rvs_,
-            callback='rvs',
+            callback="rvs",
         )
 
         return mass_object if get_attribute else mass_object.rvs(size)
@@ -757,15 +775,17 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         from .prior_functions import binary_masses_BBH_popIII_lognormal_rvs
 
-        identifier_dict = {'name': "binary_masses_BBH_popIII_lognormal"}
-        param_dict = self.available_gw_prior["source_frame_masses"]["binary_masses_BBH_popIII_lognormal"].copy()
+        identifier_dict = {"name": "binary_masses_BBH_popIII_lognormal"}
+        param_dict = self.available_gw_prior["source_frame_masses"][
+            "binary_masses_BBH_popIII_lognormal"
+        ].copy()
         if param_dict:
             param_dict.update(kwargs)
         else:
             param_dict = kwargs
         identifier_dict.update(param_dict)
 
-        rvs_ = lambda size: binary_masses_BBH_popIII_lognormal_rvs(  
+        rvs_ = lambda size: binary_masses_BBH_popIII_lognormal_rvs(
             size,
             m_min=identifier_dict["m_min"],
             m_max=identifier_dict["m_max"],
@@ -780,13 +800,15 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             identifier_dict=identifier_dict,
             directory=self.directory,
             sub_directory="source_frame_masses",
-            name=identifier_dict['name'],
-            create_new=self.create_new_interpolator["source_frame_masses"]["create_new"],
+            name=identifier_dict["name"],
+            create_new=self.create_new_interpolator["source_frame_masses"][
+                "create_new"
+            ],
             create_function_inverse=False,
             create_function=False,
             create_pdf=False,
             create_rvs=rvs_,
-            callback='rvs',
+            callback="rvs",
         )
 
         return mass_object if get_attribute else mass_object.rvs(size)
@@ -826,15 +848,17 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         from .prior_functions import binary_masses_BBH_primordial_lognormal_rvs
 
-        identifier_dict = {'name': "binary_masses_BBH_primordial_lognormal"}    
-        param_dict = self.available_gw_prior["source_frame_masses"]["binary_masses_BBH_primordial_lognormal"].copy()
+        identifier_dict = {"name": "binary_masses_BBH_primordial_lognormal"}
+        param_dict = self.available_gw_prior["source_frame_masses"][
+            "binary_masses_BBH_primordial_lognormal"
+        ].copy()
         if param_dict:
             param_dict.update(kwargs)
         else:
             param_dict = kwargs
         identifier_dict.update(param_dict)
 
-        rvs_ = lambda size: binary_masses_BBH_primordial_lognormal_rvs(  
+        rvs_ = lambda size: binary_masses_BBH_primordial_lognormal_rvs(
             size,
             m_min=identifier_dict["m_min"],
             m_max=identifier_dict["m_max"],
@@ -849,17 +873,19 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             identifier_dict=identifier_dict,
             directory=self.directory,
             sub_directory="source_frame_masses",
-            name=identifier_dict['name'],
-            create_new=self.create_new_interpolator["source_frame_masses"]["create_new"],
+            name=identifier_dict["name"],
+            create_new=self.create_new_interpolator["source_frame_masses"][
+                "create_new"
+            ],
             create_function_inverse=False,
             create_function=False,
             create_pdf=False,
             create_rvs=rvs_,
-            callback='rvs',
+            callback="rvs",
         )
 
         return mass_object if get_attribute else mass_object.rvs(size)
-        
+
     def binary_masses_NSBH_broken_powerlaw(self, size, get_attribute=False, **kwargs):
         """
         Sample source masses for NSBH from broken power-law distribution.
@@ -902,8 +928,10 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         from .prior_functions import binary_masses_NSBH_broken_powerlaw_rvs
 
-        identifier_dict = {'name': "binary_masses_NSBH_broken_powerlaw"}
-        param_dict = self.available_gw_prior["source_frame_masses"]["binary_masses_NSBH_broken_powerlaw"].copy()
+        identifier_dict = {"name": "binary_masses_NSBH_broken_powerlaw"}
+        param_dict = self.available_gw_prior["source_frame_masses"][
+            "binary_masses_NSBH_broken_powerlaw"
+        ].copy()
         if param_dict:
             param_dict.update(kwargs)
         else:
@@ -930,13 +958,15 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             identifier_dict=identifier_dict,
             directory=self.directory,
             sub_directory="source_frame_masses",
-            name=identifier_dict['name'],
-            create_new=self.create_new_interpolator["source_frame_masses"]["create_new"],
+            name=identifier_dict["name"],
+            create_new=self.create_new_interpolator["source_frame_masses"][
+                "create_new"
+            ],
             create_function_inverse=False,
             create_function=False,
             create_pdf=False,
             create_rvs=rvs_,
-            callback='rvs',
+            callback="rvs",
         )
 
         return mass_object if get_attribute else mass_object.rvs(size)
@@ -976,8 +1006,10 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         >>> m1_src, m2_src = cbc.binary_masses_uniform(size=1000)
         """
 
-        identifier_dict = {'name': "binary_masses_uniform"}
-        param_dict = self.available_gw_prior["source_frame_masses"]["binary_masses_uniform"].copy()
+        identifier_dict = {"name": "binary_masses_uniform"}
+        param_dict = self.available_gw_prior["source_frame_masses"][
+            "binary_masses_uniform"
+        ].copy()
         if param_dict:
             param_dict.update(kwargs)
         else:
@@ -994,7 +1026,10 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             mass_2_source = np.random.uniform(m_min, m_max, size)
             # swap if mass_2_source > mass_1_source
             idx = np.where(mass_2_source > mass_1_source)
-            mass_1_source[idx], mass_2_source[idx] = mass_2_source[idx], mass_1_source[idx] 
+            mass_1_source[idx], mass_2_source[idx] = (
+                mass_2_source[idx],
+                mass_1_source[idx],
+            )
             return mass_1_source, mass_2_source
 
         mass_object = FunctionConditioning(
@@ -1003,13 +1038,15 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             identifier_dict=identifier_dict,
             directory=self.directory,
             sub_directory="source_frame_masses",
-            name=identifier_dict['name'],
-            create_new=self.create_new_interpolator["source_frame_masses"]["create_new"],
+            name=identifier_dict["name"],
+            create_new=self.create_new_interpolator["source_frame_masses"][
+                "create_new"
+            ],
             create_function_inverse=False,
             create_function=False,
             create_pdf=False,
             create_rvs=rvs_,
-            callback='rvs',
+            callback="rvs",
         )
 
         return mass_object if get_attribute else mass_object.rvs(size)
@@ -1059,17 +1096,21 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         from .prior_functions import binary_masses_BNS_bimodal_rvs
 
-        identifier_dict = {'name': "binary_masses_BNS_bimodal"}
-        identifier_dict['resolution'] = self.create_new_interpolator["source_frame_masses"]["resolution"]
-        param_dict = self.available_gw_prior["source_frame_masses"]["binary_masses_BNS_bimodal"].copy()
+        identifier_dict = {"name": "binary_masses_BNS_bimodal"}
+        identifier_dict["resolution"] = self.create_new_interpolator[
+            "source_frame_masses"
+        ]["resolution"]
+        param_dict = self.available_gw_prior["source_frame_masses"][
+            "binary_masses_BNS_bimodal"
+        ].copy()
         if param_dict:
             param_dict.update(kwargs)
         else:
             param_dict = kwargs
         identifier_dict.update(param_dict)
 
-        # mass function for BNS 
-        rvs_ = lambda size: binary_masses_BNS_bimodal_rvs(  
+        # mass function for BNS
+        rvs_ = lambda size: binary_masses_BNS_bimodal_rvs(
             size,
             w=identifier_dict["w"],
             muL=identifier_dict["muL"],
@@ -1080,27 +1121,27 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             mmax=identifier_dict["mmax"],
             resolution=identifier_dict["resolution"],
         )
-        
+
         mass_object = FunctionConditioning(
             function=None,
             x_array=None,
             identifier_dict=identifier_dict,
             directory=self.directory,
             sub_directory="source_frame_masses",
-            name=identifier_dict['name'],
-            create_new=self.create_new_interpolator["source_frame_masses"]["create_new"],
+            name=identifier_dict["name"],
+            create_new=self.create_new_interpolator["source_frame_masses"][
+                "create_new"
+            ],
             create_function_inverse=False,
             create_function=False,
             create_pdf=False,
             create_rvs=rvs_,
-            callback='rvs',
+            callback="rvs",
         )
 
         return mass_object if get_attribute else mass_object.rvs(size)
 
-    def constant_values_n_size(
-        self, size=100, get_attribute=False, **kwargs
-    ):
+    def constant_values_n_size(self, size=100, get_attribute=False, **kwargs):
         """
         Return array of constant values.
 
@@ -1124,7 +1165,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         # if param:
         #     value = param["value"]
-        identifier_dict = {'name': "constant_values_n_size"}
+        identifier_dict = {"name": "constant_values_n_size"}
         param_dict = dict(value=0.0)
         param_dict.update(kwargs)
         identifier_dict.update(param_dict)
@@ -1139,12 +1180,12 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             identifier_dict=identifier_dict,
             directory=self.directory,
             sub_directory="custom_functions",
-            name=identifier_dict['name'],
+            name=identifier_dict["name"],
             create_function_inverse=False,
             create_function=False,
             create_pdf=pdf_,
             create_rvs=rvs_,
-            callback='rvs',
+            callback="rvs",
         )
 
         if get_attribute:
@@ -1152,9 +1193,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         else:
             return object_(size)
 
-    def sampler_uniform(
-        self, size, get_attribute=False, **kwargs
-    ):
+    def sampler_uniform(self, size, get_attribute=False, **kwargs):
         """
         Sample values from uniform distribution.
 
@@ -1175,14 +1214,14 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         values : ``numpy.ndarray``
             Array of uniformly distributed values in range [xmin, xmax].
         """
-        
-        identifier_dict = {'name': "sampler_uniform"}
+
+        identifier_dict = {"name": "sampler_uniform"}
         param_dict = dict(xmin=0.0, xmax=1.0)
         param_dict.update(kwargs)
         identifier_dict.update(param_dict)
 
-        xmin = identifier_dict['xmin']
-        xmax = identifier_dict['xmax']
+        xmin = identifier_dict["xmin"]
+        xmax = identifier_dict["xmax"]
 
         pdf_ = njit(lambda x: 1.0 / (xmax - xmin) * np.ones(len(x)))
         rvs_ = njit(lambda size: np.random.uniform(xmin, xmax, size=size))
@@ -1191,12 +1230,12 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             identifier_dict=identifier_dict,
             directory=self.directory,
             sub_directory="custom_functions",
-            name=identifier_dict['name'],
+            name=identifier_dict["name"],
             create_function_inverse=False,
             create_function=False,
             create_pdf=pdf_,
             create_rvs=rvs_,
-            callback='rvs',
+            callback="rvs",
         )
 
         if get_attribute:
@@ -1204,9 +1243,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         else:
             return object_(size)
 
-    def sampler_cosine(
-        self, size, get_attribute=False, **kwargs
-    ):
+    def sampler_cosine(self, size, get_attribute=False, **kwargs):
         """
         Sample from cosine distribution for declination.
 
@@ -1228,22 +1265,24 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         """
 
         identifier_dict = {}
-        identifier_dict['name'] = "sampler_cosine"
+        identifier_dict["name"] = "sampler_cosine"
         identifier_dict.update(kwargs)
 
         pdf_ = njit(lambda x: 0.5 * np.cos(x))
-        rvs_ = njit(lambda size: np.arcsin((np.random.uniform(0, 1, size=size) * 2 - 1)))
+        rvs_ = njit(
+            lambda size: np.arcsin((np.random.uniform(0, 1, size=size) * 2 - 1))
+        )
 
         object_ = FunctionConditioning(
             identifier_dict=identifier_dict,
             directory=self.directory,
             sub_directory="custom_functions",
-            name=identifier_dict['name'],
+            name=identifier_dict["name"],
             create_function_inverse=False,
             create_function=False,
             create_pdf=pdf_,
             create_rvs=rvs_,
-            callback='rvs',
+            callback="rvs",
         )
 
         if get_attribute:
@@ -1251,9 +1290,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         else:
             return object_(size)
 
-    def sampler_sine(
-        self, size, get_attribute=False, **kwargs
-    ):
+    def sampler_sine(self, size, get_attribute=False, **kwargs):
         """
         Sample from sine distribution for inclination angles.
 
@@ -1275,23 +1312,25 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         """
 
         identifier_dict = {}
-        identifier_dict['name'] = "sampler_sine"
+        identifier_dict["name"] = "sampler_sine"
         identifier_dict.update(kwargs)
 
         pdf_ = njit(lambda x: 0.5 * np.sin(x))
-        rvs_ = njit(lambda size: np.arccos((np.random.uniform(0, 1, size=size) - 0.5) * 2))
+        rvs_ = njit(
+            lambda size: np.arccos((np.random.uniform(0, 1, size=size) - 0.5) * 2)
+        )
 
         object_ = FunctionConditioning(
             identifier_dict=identifier_dict,
             directory=self.directory,
             sub_directory="custom_functions",
-            name=identifier_dict['name'],
+            name=identifier_dict["name"],
             create_function_inverse=False,
             create_function=False,
             create_pdf=pdf_,
             create_rvs=rvs_,
-            callback='rvs',
-        )   
+            callback="rvs",
+        )
 
         if get_attribute:
             return object_
@@ -1328,15 +1367,17 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             args = self.gw_param_samplers_params["source_frame_masses"]
             if args is None:
                 self._source_frame_masses = getattr(self, prior)(
-                size=None, get_attribute=True
-            )
+                    size=None, get_attribute=True
+                )
             else:
                 # follwing should return a sampler function with only one argument (size)
                 self._source_frame_masses = getattr(self, prior)(
                     size=None, get_attribute=True, **args
                 )
         elif isinstance(prior, FunctionConditioning):
-            print("using user defined custom source_frame_masses class/object of type ler.utils.FunctionConditioning")
+            print(
+                "using user defined custom source_frame_masses class/object of type ler.utils.FunctionConditioning"
+            )
             self._source_frame_masses = prior
         elif callable(prior):
             print("using user defined custom source_frame_masses function")
@@ -1345,7 +1386,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             raise ValueError(
                 "source_frame_masses prior not available in available_gw_prior. Must be a string or a callable function."
             )
-        
+
     @property
     def zs(self):
         """
@@ -1362,14 +1403,16 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         """
 
         return self._zs
-    
+
     @zs.setter
     def zs(self, prior):
         if prior in self.available_gw_prior["zs"]:
             print(f"using ler available zs function : {prior}")
             self._zs = getattr(self, prior)
         elif isinstance(prior, FunctionConditioning):
-            print("using user defined custom zs class/object of type ler.utils.FunctionConditioning")
+            print(
+                "using user defined custom zs class/object of type ler.utils.FunctionConditioning"
+            )
             self._zs = prior
         elif callable(prior):
             print("using user defined custom zs function")
@@ -1402,16 +1445,16 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             print(f"using ler available geocent_time function : {prior}")
             args = self.gw_param_samplers_params["geocent_time"]
             if args is None:
-                self._geocent_time = getattr(self, prior)(
-                size=None, get_attribute=True
-            )
+                self._geocent_time = getattr(self, prior)(size=None, get_attribute=True)
             else:
                 # follwing should return a sampler function with only one argument (size)
                 self._geocent_time = getattr(self, prior)(
                     size=None, get_attribute=True, **args
                 )
         elif isinstance(prior, FunctionConditioning):
-            print("using user defined custom geocent_time class/object of type ler.utils.FunctionConditioning")
+            print(
+                "using user defined custom geocent_time class/object of type ler.utils.FunctionConditioning"
+            )
             self._geocent_time = prior
         elif callable(prior):
             print("using user defined custom geocent_time function")
@@ -1434,7 +1477,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         -------
         ra : ``numpy.ndarray``
             Array of right ascension values.
-        """ 
+        """
 
         return self._ra
 
@@ -1449,7 +1492,9 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 # follwing should return a sampler function with only one argument (size)
                 self._ra = getattr(self, prior)(size=None, get_attribute=True, **args)
         elif isinstance(prior, FunctionConditioning):
-            print("using user defined custom ra class/object of type ler.utils.FunctionConditioning")
+            print(
+                "using user defined custom ra class/object of type ler.utils.FunctionConditioning"
+            )
             self._ra = prior
         elif callable(prior):
             print("using user defined custom ra function")
@@ -1487,7 +1532,9 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 # follwing should return a sampler function with only one argument (size)
                 self._dec = getattr(self, prior)(size=None, get_attribute=True, **args)
         elif isinstance(prior, FunctionConditioning):
-            print("using user defined custom dec class/object of type ler.utils.FunctionConditioning")
+            print(
+                "using user defined custom dec class/object of type ler.utils.FunctionConditioning"
+            )
             self._dec = prior
         elif callable(prior):
             print("using user defined custom dec function")
@@ -1523,9 +1570,13 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 self._phase = getattr(self, prior)(size=None, get_attribute=True)
             else:
                 # follwing should return a sampler function with only one argument (size)
-                self._phase = getattr(self, prior)(size=None, get_attribute=True, **args)
+                self._phase = getattr(self, prior)(
+                    size=None, get_attribute=True, **args
+                )
         elif isinstance(prior, FunctionConditioning):
-            print("using user defined custom phase class/object of type ler.utils.FunctionConditioning")
+            print(
+                "using user defined custom phase class/object of type ler.utils.FunctionConditioning"
+            )
             self._phase = prior
         elif callable(prior):
             print("using user defined custom phase function")
@@ -1563,7 +1614,9 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 # follwing should return a sampler function with only one argument (size)
                 self._psi = getattr(self, prior)(size=None, get_attribute=True, **args)
         elif isinstance(prior, FunctionConditioning):
-            print("using user defined custom psi class/object of type ler.utils.FunctionConditioning")
+            print(
+                "using user defined custom psi class/object of type ler.utils.FunctionConditioning"
+            )
             self._psi = prior
         elif callable(prior):
             print("using user defined custom psi function")
@@ -1596,22 +1649,24 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             print(f"using ler available theta_jn function : {prior}")
             args = self.gw_param_samplers_params["theta_jn"]
             if args is None:
-                self._theta_jn = getattr(self, prior)(
-                size=None, get_attribute=True
-            )
+                self._theta_jn = getattr(self, prior)(size=None, get_attribute=True)
             else:
                 # follwing should return a sampler function with only one argument (size)
                 self._theta_jn = getattr(self, prior)(
                     size=None, get_attribute=True, **args
                 )
         elif isinstance(prior, FunctionConditioning):
-            print("using user defined custom theta_jn class/object of type ler.utils.FunctionConditioning")
+            print(
+                "using user defined custom theta_jn class/object of type ler.utils.FunctionConditioning"
+            )
             self._theta_jn = prior
         elif callable(prior):
             print("using user defined custom theta_jn function")
             self._theta_jn = prior
         else:
-            raise ValueError("theta_jn prior not available in available_gw_prior. Must be a string or a callable function.")
+            raise ValueError(
+                "theta_jn prior not available in available_gw_prior. Must be a string or a callable function."
+            )
 
     @property
     def a_1(self):
@@ -1636,22 +1691,22 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             print(f"using ler available a_1 function : {prior}")
             args = self.gw_param_samplers_params["a_1"]
             if args is None:
-                self._a_1 = getattr(self, prior)(
-                size=None, get_attribute=True
-            )
+                self._a_1 = getattr(self, prior)(size=None, get_attribute=True)
             else:
                 # follwing should return a sampler function with only one argument (size)
-                self._a_1 = getattr(self, prior)(
-                    size=None, get_attribute=True, **args
-                )
+                self._a_1 = getattr(self, prior)(size=None, get_attribute=True, **args)
         elif isinstance(prior, FunctionConditioning):
-            print("using user defined custom a_1 class/object of type ler.utils.FunctionConditioning")
+            print(
+                "using user defined custom a_1 class/object of type ler.utils.FunctionConditioning"
+            )
             self._a_1 = prior
         elif callable(prior):
             print("using user defined custom a_1 function")
             self._a_1 = prior
         else:
-            raise ValueError("a_1 prior not available in available_gw_prior. Must be a string or a callable function.")
+            raise ValueError(
+                "a_1 prior not available in available_gw_prior. Must be a string or a callable function."
+            )
 
     @property
     def a_2(self):
@@ -1676,22 +1731,22 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             print(f"using ler available a_2 function : {prior}")
             args = self.gw_param_samplers_params["a_2"]
             if args is None:
-                self._a_2 = getattr(self, prior)(
-                size=None, get_attribute=True
-            )
+                self._a_2 = getattr(self, prior)(size=None, get_attribute=True)
             else:
                 # follwing should return a sampler function with only one argument (size)
-                self._a_2 = getattr(self, prior)(
-                    size=None, get_attribute=True, **args
-                )
+                self._a_2 = getattr(self, prior)(size=None, get_attribute=True, **args)
         elif isinstance(prior, FunctionConditioning):
-            print("using user defined custom a_2 class/object of type ler.utils.FunctionConditioning")
+            print(
+                "using user defined custom a_2 class/object of type ler.utils.FunctionConditioning"
+            )
             self._a_2 = prior
         elif callable(prior):
             print("using user defined custom a_2 function")
             self._a_2 = prior
         else:
-            raise ValueError("a_2 prior not available in available_gw_prior. Must be a string or a callable function.")
+            raise ValueError(
+                "a_2 prior not available in available_gw_prior. Must be a string or a callable function."
+            )
 
     @property
     def tilt_1(self):
@@ -1716,21 +1771,23 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             print(f"using ler available tilt_1 function : {prior}")
             args = self.gw_param_samplers_params["tilt_1"]
             if args is None:
-                self._tilt_1 = getattr(self, prior)(
-                size=None, get_attribute=True
-            )
+                self._tilt_1 = getattr(self, prior)(size=None, get_attribute=True)
             else:
                 self._tilt_1 = getattr(self, prior)(
                     size=None, get_attribute=True, **args
                 )
         elif isinstance(prior, FunctionConditioning):
-            print("using user defined custom tilt_1 class/object of type ler.utils.FunctionConditioning")
+            print(
+                "using user defined custom tilt_1 class/object of type ler.utils.FunctionConditioning"
+            )
             self._tilt_1 = prior
         elif callable(prior):
             print("using user defined custom tilt_1 function")
             self._tilt_1 = prior
         else:
-            raise ValueError("tilt_1 prior not available in available_gw_prior. Must be a string or a callable function.")
+            raise ValueError(
+                "tilt_1 prior not available in available_gw_prior. Must be a string or a callable function."
+            )
 
     @property
     def tilt_2(self):
@@ -1755,22 +1812,24 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             print(f"using ler available tilt_2 function : {prior}")
             args = self.gw_param_samplers_params["tilt_2"]
             if args is None:
-                self._tilt_2 = getattr(self, prior)(
-                size=None, get_attribute=True
-            )
+                self._tilt_2 = getattr(self, prior)(size=None, get_attribute=True)
             else:
                 self._tilt_2 = getattr(self, prior)(
                     size=None, get_attribute=True, **args
                 )
         elif isinstance(prior, FunctionConditioning):
-            print("using user defined custom tilt_2 class/object of type ler.utils.FunctionConditioning")
+            print(
+                "using user defined custom tilt_2 class/object of type ler.utils.FunctionConditioning"
+            )
             self._tilt_2 = prior
         elif callable(prior):
             print("using user defined custom tilt_2 function")
             self._tilt_2 = prior
         else:
-            raise ValueError("tilt_2 prior not available in available_gw_prior. Must be a string or a callable function.")
-        
+            raise ValueError(
+                "tilt_2 prior not available in available_gw_prior. Must be a string or a callable function."
+            )
+
     @property
     def phi_12(self):
         """
@@ -1794,21 +1853,23 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             print(f"using ler available phi_12 function : {prior}")
             args = self.gw_param_samplers_params["phi_12"]
             if args is None:
-                self._phi_12 = getattr(self, prior)(
-                    size=None, get_attribute=True
-                )
+                self._phi_12 = getattr(self, prior)(size=None, get_attribute=True)
             else:
                 self._phi_12 = getattr(self, prior)(
                     size=None, get_attribute=True, **args
                 )
         elif isinstance(prior, FunctionConditioning):
-            print("using user defined custom phi_12 class/object of type ler.utils.FunctionConditioning")
+            print(
+                "using user defined custom phi_12 class/object of type ler.utils.FunctionConditioning"
+            )
             self._phi_12 = prior
         elif callable(prior):
             print("using user defined custom phi_12 function")
             self._phi_12 = prior
         else:
-            raise ValueError("phi_12 prior not available in available_gw_prior. Must be a string or a callable function.")
+            raise ValueError(
+                "phi_12 prior not available in available_gw_prior. Must be a string or a callable function."
+            )
 
     @property
     def phi_jl(self):
@@ -1832,21 +1893,23 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             print(f"using ler available phi_jl function : {prior}")
             args = self.gw_param_samplers_params["phi_jl"]
             if args is None:
-                self._phi_jl = getattr(self, prior)(
-                size=None, get_attribute=True
-            )
+                self._phi_jl = getattr(self, prior)(size=None, get_attribute=True)
             else:
                 self._phi_jl = getattr(self, prior)(
                     size=None, get_attribute=True, **args
                 )
         elif isinstance(prior, FunctionConditioning):
-            print("using user defined custom phi_jl class/object of type ler.utils.FunctionConditioning")
+            print(
+                "using user defined custom phi_jl class/object of type ler.utils.FunctionConditioning"
+            )
             self._phi_jl = prior
         elif callable(prior):
             print("using user defined custom phi_jl function")
             self._phi_jl = prior
         else:
-            raise ValueError("phi_jl prior not available in available_gw_prior. Must be a string or a callable function.")
+            raise ValueError(
+                "phi_jl prior not available in available_gw_prior. Must be a string or a callable function."
+            )
 
     @property
     def available_gw_prior(self):
@@ -1878,7 +1941,9 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                     delta_m=4.8,
                     beta=0.81,
                 ),
-                binary_masses_BBH_popIII_lognormal=dict(m_min=5.0, m_max=150.0, Mc=30.0, sigma=0.3),
+                binary_masses_BBH_popIII_lognormal=dict(
+                    m_min=5.0, m_max=150.0, Mc=30.0, sigma=0.3
+                ),
                 binary_masses_BBH_primordial_lognormal=dict(
                     m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3
                 ),
@@ -1904,19 +1969,27 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                     mmax=2.3,
                 ),
             ),
-            a_1=dict(
-                constant_values_n_size=dict(value=0.0),
-                sampler_uniform=dict(xmin=-0.8, xmax=0.8),
-            ) if not self.spin_precession else dict(
-                constant_values_n_size=dict(value=0.0),
-                sampler_uniform=dict(xmin=0.0, xmax=0.8),
+            a_1=(
+                dict(
+                    constant_values_n_size=dict(value=0.0),
+                    sampler_uniform=dict(xmin=-0.8, xmax=0.8),
+                )
+                if not self.spin_precession
+                else dict(
+                    constant_values_n_size=dict(value=0.0),
+                    sampler_uniform=dict(xmin=0.0, xmax=0.8),
+                )
             ),
-            a_2=dict(
-                constant_values_n_size=dict(value=0.0),
-                sampler_uniform=dict(xmin=-0.8, xmax=0.8),
-            ) if not self.spin_precession else dict(
-                constant_values_n_size=dict(value=0.0),
-                sampler_uniform=dict(xmin=0.0, xmax=0.8),
+            a_2=(
+                dict(
+                    constant_values_n_size=dict(value=0.0),
+                    sampler_uniform=dict(xmin=-0.8, xmax=0.8),
+                )
+                if not self.spin_precession
+                else dict(
+                    constant_values_n_size=dict(value=0.0),
+                    sampler_uniform=dict(xmin=0.0, xmax=0.8),
+                )
             ),
             tilt_1=dict(
                 constant_values_n_size=dict(value=0.0),
@@ -1935,9 +2008,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 sampler_uniform=dict(xmin=0.0, xmax=2 * np.pi),
             ),
             geocent_time=dict(
-                sampler_uniform=dict(
-                    xmin=1238166018, xmax=1238166018 + 31557600.0
-                ),
+                sampler_uniform=dict(xmin=1238166018, xmax=1238166018 + 31557600.0),
                 constant_values_n_size=dict(value=1238166018),
             ),
             ra=dict(
