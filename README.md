@@ -1,5 +1,5 @@
 # LeR
-[![DOI](https://zenodo.org/badge/626733473.svg)](https://zenodo.org/badge/latestdoi/626733473) [![PyPI version](https://badge.fury.io/py/ler.svg)](https://badge.fury.io/py/ler) [![DOCS](https://img.shields.io/badge/docs-GitHub%20Pages-orange)](ler.hemantaph.com)
+[![DOI](https://zenodo.org/badge/626733473.svg)](https://zenodo.org/badge/latestdoi/626733473) [![PyPI version](https://badge.fury.io/py/ler.svg)](https://badge.fury.io/py/ler) [![DOCS](https://img.shields.io/badge/docs-GitHub%20Pages-orange)](https://ler.hemantaph.com/)
 
 <p align="center">
   <img src="lerlogo.png" alt="Your Logo" width="30%">
@@ -66,7 +66,7 @@ $$ R_L = \int dz_s R_m^L(z_s) \,O_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th
 
 # Documentation
 
-The `ler` package documentation is available at [ReadTheDocs](https://ler.readthedocs.io/en/latest).
+The `ler` package documentation is available at [ler Documentation]([https://ler.readthedocs.io/en/latest](https://ler.hemantaph.com/).
 
 
 
