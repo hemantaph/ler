@@ -66,7 +66,7 @@ $$ R_L = \int dz_s R_m^L(z_s) \,O_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th
 
 # Documentation
 
-The `ler` package documentation is available at [ler Documentation]([https://ler.readthedocs.io/en/latest](https://ler.hemantaph.com/).
+The `ler` package documentation is available at [ler Documentation](https://ler.hemantaph.com/).
 
 
 
