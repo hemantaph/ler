@@ -183,9 +183,7 @@ class CBCSourceRedshiftDistribution(object):
         )
 
         # setting up the interpolator creation parameters
-        self.create_new_interpolator = self._setup_decision_dictionary(
-            create_new_interpolator, merger_rate_density
-        )
+        self._setup_decision_dictionary(create_new_interpolator, merger_rate_density)
 
         # Initialize cosmological functions
         self.luminosity_distance = luminosity_distance(
@@ -283,7 +281,14 @@ class CBCSourceRedshiftDistribution(object):
             if merger_rate_density == "sfr_with_time_delay":
                 create_new_interpolator_["merger_rate_density"]["resolution"] = 48
 
-        return create_new_interpolator_
+        # update the create_new_interpolator
+        try:
+            if self.create_new_interpolator is None:
+                self.create_new_interpolator = create_new_interpolator_
+            else:
+                self.create_new_interpolator.update(create_new_interpolator_)
+        except AttributeError:
+            self.create_new_interpolator = create_new_interpolator_
 
     def _merger_rate_density_priors_categorization(
         self, event_type, merger_rate_density, merger_rate_density_param

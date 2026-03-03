@@ -69,7 +69,7 @@ def available_sampler_list():
 # ---------------------------------
 # Lens redshift sampler functions
 # ---------------------------------
-@njit
+@njit(cache=True)
 def lens_redshift_strongly_lensed_sis_haris_pdf(
     zl,
     zs,
@@ -179,7 +179,7 @@ def lens_redshift_strongly_lensed_sis_haris_rvs(
 # ---------------------------------------
 # Velocity dispersion sampler functions
 # ---------------------------------------
-@njit
+@njit(cache=True)
 def _gamma(x):
     """
     Compute the gamma function using the Lanczos approximation.
@@ -220,7 +220,7 @@ def _gamma(x):
         return np.sqrt(2 * np.pi) * t ** (x + 0.5) * np.exp(-t) * y
 
 
-@njit
+@njit(cache=True)
 def _cvdf_fit(log_vd, redshift):
     """
     Compute the cumulative velocity dispersion function fit.
@@ -256,7 +256,7 @@ def _cvdf_fit(log_vd, redshift):
     return coeffs[0] + coeffs[1] * mstar + coeffs[2] * mstar**2 - np.exp(mstar)
 
 
-@njit
+@njit(cache=True)
 def _cvdf_derivative(log_vd, redshift, dx):
     """
     Compute the numerical derivative of the CVDF fit function.
@@ -280,7 +280,7 @@ def _cvdf_derivative(log_vd, redshift, dx):
     )
 
 
-@njit
+@njit(cache=True)
 def _pdf_phi_z_ratio(sigma, z):
     """
     Compute the PDF ratio of velocity dispersion function at redshift z to z=0.
@@ -307,7 +307,7 @@ def _pdf_phi_z_ratio(sigma, z):
     return phi_sim_z / phi_sim_0
 
 
-@njit
+@njit(cache=True)
 def velocity_dispersion_ewoud_denisty_function(
     sigma, z, alpha=0.94, beta=1.85, phistar=2.099e-2, sigmastar=113.78
 ):
@@ -346,7 +346,7 @@ def velocity_dispersion_ewoud_denisty_function(
     return result
 
 
-@njit
+@njit(cache=True)
 def velocity_dispersion_bernardi_denisty_function(
     sigma, alpha, beta, phistar, sigmastar
 ):
@@ -618,7 +618,7 @@ def velocity_dispersion_gengamma_rvs(
 # ------------------------------
 # Axis ratio sampler functions
 # ------------------------------
-@njit
+@njit(cache=True)
 def axis_ratio_rayleigh_rvs(size, sigma, q_min=0.2, q_max=1.0):
     """
     Sample axis ratios from velocity-dependent Rayleigh distribution.
@@ -677,7 +677,7 @@ def axis_ratio_rayleigh_rvs(size, sigma, q_min=0.2, q_max=1.0):
     return q
 
 
-@njit(parallel=True)
+@njit(parallel=True, cache=True)
 def axis_ratio_rayleigh_pdf(q, sigma, q_min=0.2, q_max=1.0):
     """
     Compute truncated Rayleigh PDF for axis ratio.
@@ -742,7 +742,7 @@ def axis_ratio_rayleigh_pdf(q, sigma, q_min=0.2, q_max=1.0):
     return out
 
 
-@njit
+@njit(cache=True)
 def _axis_ratio_padilla_strauss_data():
     """
     Return axis ratio PDF data points from Padilla & Strauss (2008).
@@ -811,7 +811,7 @@ def _axis_ratio_padilla_strauss_data():
     return q_array, pdf
 
 
-@njit
+@njit(cache=True)
 def axis_ratio_padilla_strauss_rvs(size):
     """
     Sample axis ratios from Padilla & Strauss (2008) distribution.
@@ -844,7 +844,7 @@ def axis_ratio_padilla_strauss_rvs(size):
     return inverse_transform_sampler(size, cdf_values, q_array)
 
 
-@njit
+@njit(cache=True)
 def axis_ratio_padilla_strauss_pdf(q):
     """
     Compute axis ratio PDF from Padilla & Strauss (2008).
@@ -874,7 +874,7 @@ def axis_ratio_padilla_strauss_pdf(q):
     return spline(q)
 
 
-@njit
+@njit(cache=True)
 def bounded_normal_sample(size, mean, std, low, high):
     """
     Sample from truncated normal distribution via rejection.
@@ -1120,7 +1120,7 @@ def create_rejection_sampler(
             "Faster, njitted and rejection sampling based lens parameter sampler will be used."
         )
 
-        @njit
+        @njit(cache=True)
         def rejection_sampler_wrapper(zs, zl):
             return _base_sampler(
                 zs=zs,
@@ -1160,7 +1160,7 @@ def create_rejection_sampler(
 # --------------------------------------------------
 # Importance sampling of strongly lensed parameters
 # --------------------------------------------------
-@njit
+@njit(cache=True)
 def _sigma_proposal_uniform(n, sigma_min, sigma_max):
     """
     Draw uniform samples for velocity dispersion proposal.
@@ -1182,7 +1182,7 @@ def _sigma_proposal_uniform(n, sigma_min, sigma_max):
     return sigma_min + (sigma_max - sigma_min) * np.random.random(n)
 
 
-@njit
+@njit(cache=True)
 def _weighted_choice_1d(weights):
     """
     Draw an index with probability proportional to weights.
@@ -1422,7 +1422,7 @@ def _importance_sampler_worker(params):
         gamma_prop,
         gamma1_prop,
         gamma2_prop,
-    )/ (4.0*np.pi)
+    ) / (4.0 * np.pi)
 
     # Compute importance weights
     sigma_function = number_density(sigma_prop, zl_arr)
@@ -1653,9 +1653,9 @@ def create_importance_sampler(
         print(
             "Faster, njitted and importance sampling based lens parameter sampler will be used."
         )
-        _base_sampler = njit(parallel=True)(importance_sampler)
+        _base_sampler = njit(parallel=True, cache=True)(importance_sampler)
 
-        @njit(parallel=True)
+        @njit(cache=True)
         def importance_sampler_wrapper(zs, zl):
             return _base_sampler(
                 zs=zs,

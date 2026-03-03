@@ -21,7 +21,7 @@
        >>> lens_params = np.array([2, 0.02, -0.01, 1.9, 0.1, 0.09, 0.25, 0.94, 1e-6, 0, 'EPL_NUMBA', 'SHEAR'], dtype=object)
        >>> result = solve_lens_equation(lens_params)
 
-   Copyright (C) 2026 Phurailatpam Hemanta Kumar. Distributed under MIT License.
+   Copyright (C) 2026 Phurailatpam Hemantakumar. Distributed under MIT License.
 
    ..
        !! processed by numpydoc !!

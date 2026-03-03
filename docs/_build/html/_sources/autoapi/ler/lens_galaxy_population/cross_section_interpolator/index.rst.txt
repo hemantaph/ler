@@ -38,7 +38,7 @@
        >>> cs_func = make_cross_section_reinit(e1_grid, e2_grid, gamma_grid, ...)
        >>> cross_sections = cs_func(zs, zl, sigma, q, phi, gamma, gamma1, gamma2)
 
-   Copyright (C) 2024 Hemanta Kumar Phurailatpam. Distributed under MIT License.
+   Copyright (C) 2024 Hemantakumar Phurailatpam. Distributed under MIT License.
 
    ..
        !! processed by numpydoc !!

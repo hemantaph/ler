@@ -191,18 +191,22 @@ class GWRATES(CBCSourceParameterDistribution):
         # first check if the interpolator directory './interpolator_json' exists
         if not pathlib.Path(interpolator_directory).exists():
             # Get the path to the zip resource using importlib_resources
-            zip_resource = resources_files('ler.rates').joinpath('ler_data', 'interpolator_json.zip')
-            with zip_resource.open('rb') as zip_file:
-                print("Extracting interpolator data from package to the current working directory.")
+            zip_resource = resources_files("ler.rates").joinpath(
+                "ler_data", "interpolator_json.zip"
+            )
+            with zip_resource.open("rb") as zip_file:
+                print(
+                    "Extracting interpolator data from package to the current working directory."
+                )
 
                 # Define destination path (current working directory)
                 dest_path = pathlib.Path.cwd()
 
                 # Extract the zip file, skipping __MACOSX metadata
-                with zipfile.ZipFile(zip_file, 'r') as zip_ref:
+                with zipfile.ZipFile(zip_file, "r") as zip_ref:
                     for member in zip_ref.namelist():
                         # Skip __MACOSX directory and its contents
-                        if member.startswith('__MACOSX'):
+                        if member.startswith("__MACOSX"):
                             continue
                         zip_ref.extract(member, dest_path)
 
@@ -212,7 +216,13 @@ class GWRATES(CBCSourceParameterDistribution):
         self.z_min = z_min
         self.z_max = z_max
         self.event_type = event_type
-        self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
+        self.cosmo = (
+            cosmology
+            if cosmology
+            else LambdaCDM(
+                H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0
+            )
+        )
 
         # init json file names where datas will be stored
         self.json_file_names = dict(
@@ -969,7 +979,9 @@ class GWRATES(CBCSourceParameterDistribution):
             default pdet_type = 'boolean'. Other options is 'probability_distribution'.
         """
 
-        data = load_json(self.ler_directory + "/" + self.json_file_names["gwrates_params"])
+        data = load_json(
+            self.ler_directory + "/" + self.json_file_names["gwrates_params"]
+        )
         # write the results
         data[f"detectable_gw_rate_per_year"] = total_rate
         data[f"pdet_type"] = pdet_type
@@ -1459,14 +1471,20 @@ class GWRATES(CBCSourceParameterDistribution):
             try:
                 dict_ = append_json(meta_data_path, meta_data, replace=False)
             except:
-                print("Error in appending meta data. Replacing the existing meta data file.")
+                print(
+                    "Error in appending meta data. Replacing the existing meta data file."
+                )
                 # remove and recreate the meta data file
                 remove_file(meta_data_path)
                 dict_ = append_json(meta_data_path, meta_data, replace=False)
         else:
             dict_ = append_json(meta_data_path, meta_data, replace=True)
 
-        batch_n = (dict_["detectable_events"][-1]-dict_["detectable_events"][-2]) if len(dict_["detectable_events"]) > 1 else n
+        batch_n = (
+            (dict_["detectable_events"][-1] - dict_["detectable_events"][-2])
+            if len(dict_["detectable_events"]) > 1
+            else n
+        )
 
         print("collected number of detectable events (batch) = ", batch_n)
         print("collected number of detectable events (cumulative) = ", n)

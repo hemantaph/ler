@@ -15,28 +15,25 @@ Usage:
     >>> lens_parameters = dict(zs=np.array([2.0]), zl=np.array([0.5]), ...)
     >>> result = ip.image_properties(lens_parameters)
 
-Copyright (C) 2026 Phurailatpam Hemanta Kumar. Distributed under MIT License.
+Copyright (C) 2026 Phurailatpam Hemantakumar. Distributed under MIT License.
 """
 
 import warnings
 
 warnings.filterwarnings("ignore")
 import logging
-
-logging.getLogger("numexpr.utils").setLevel(logging.ERROR)
-# for multiprocessing
 import multiprocessing as mp
 from tqdm import tqdm
-
 import numpy as np
-from numba import njit
-
 from astropy.cosmology import LambdaCDM
 
-cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
+logging.getLogger("numexpr.utils").setLevel(logging.ERROR)
 
 # the following .py file will be called if they are not given in the class initialization
-from .multiprocessing_routine import solve_lens_equation, _init_worker_multiprocessing
+from .multiprocessing_routine_epl_shear import (
+    solve_lens_equation,
+    _init_worker_multiprocessing,
+)
 from ..lens_galaxy_population.lens_functions import phi_q2_ellipticity
 
 
@@ -90,7 +87,7 @@ class ImageProperties:
         default: True
     include_redundant_parameters : ``bool``
         If True, removes redundant parameters (e.g., theta_E, n_images, mass_1, mass_2, luminosity_distance) from output to save memory. \n
-    
+
 
     Examples
     --------
@@ -118,7 +115,7 @@ class ImageProperties:
     +-----------------------------------------------------+------------------------------------------------+
     | Method                                              | Description                                    |
     +=====================================================+================================================+
-    | :meth:`~image_properties`                           | Compute image properties for lensed events     |
+    | :meth:`~image_properties_epl_shear`                 | Compute image properties for lensed events     |
     +-----------------------------------------------------+------------------------------------------------+
     | :meth:`~get_lensed_snrs`                            | Compute detection probability for lensed images|
     +-----------------------------------------------------+------------------------------------------------+
@@ -164,6 +161,7 @@ class ImageProperties:
         n_min_images=2,
         n_max_images=4,
         lens_model_list=["EPL_NUMBA", "SHEAR"],
+        image_properties_function="image_properties_epl_shear",
         cosmology=None,
         time_window=365 * 24 * 3600 * 2,  # 2 years
         spin_zero=True,
@@ -178,19 +176,143 @@ class ImageProperties:
         self.n_min_images = n_min_images
         self.n_max_images = n_max_images
         self.lens_model_list = lens_model_list  # list of lens models
+        self.image_properties_function = getattr(self, image_properties_function)
         self.spin_zero = spin_zero
         self.spin_precession = spin_precession
         self.multiprocessing_verbose = multiprocessing_verbose
         self.time_window = time_window
-        self.cosmo = cosmology if cosmology else cosmo
+        self.cosmo = (
+            cosmology
+            if cosmology
+            else LambdaCDM(
+                H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0
+            )
+        )
         self.pdet_finder = pdet_finder
         self.pdet_finder_output_keys = None
         self.include_effective_parameters = include_effective_parameters
         self.include_redundant_parameters = include_redundant_parameters
 
-    def image_properties(self, lens_parameters):
+        if image_properties_function == "image_properties_epl_shear_njit":
+            from .epl_shear_njit import create_epl_shear_solver
+
+            print("initializing epl shear njit solver")
+
+            self.epl_solver = create_epl_shear_solver(
+                arrival_time_sort=True, ngrid=160, rng=3.5, max_img=self.n_max_images
+            )
+
+    def image_properties_epl_shear_njit(self, lens_parameters):
         """
-        Compute image properties for strongly lensed events.
+        Compute image properties for strongly lensed events. This use functions similar to lenstronomy but rewritten in numba njit for speed.
+
+        Solves the lens equation using multiprocessing to find image positions,
+        magnifications, time delays, and image types for each lensing event.
+
+        Parameters
+        ----------
+        lens_parameters : ``dict``
+            Dictionary containing lens and source parameters shown in the table: \n
+            +------------------------------+-----------+-------------------------------------------------------+
+            | Parameter                    | Units     | Description                                           |
+            +==============================+===========+=======================================================+
+            | zl                           |           | redshift of the lens                                  |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | zs                           |           | redshift of the source                                |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | sigma                        | km s^-1   | velocity dispersion                                   |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | q                            |           | axis ratio                                            |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | theta_E                      | radian    | Einstein radius                                       |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
+            |                              |           | positive x-axis (RA-like axis) to the major axis of   |
+            |                              |           | the projected mass distribution.                      |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | gamma                        |           | density profile slope of EPL galaxy                   |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | gamma1                       |           | external shear component in the x-direction           |
+            |                              |           | (RA-like axis)                                        |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | gamma2                       |           | external shear component in the y-direction           |
+            |                              |           | (Dec-like axis)                                       |
+            +------------------------------+-----------+-------------------------------------------------------+
+
+        Returns
+        -------
+        lens_parameters : ``dict``
+            Updated dictionary with additional image properties with the following description: \n
+            +------------------------------+-----------+-------------------------------------------------------+
+            | x0_image_positions           | radian    | x-coordinate (RA-like axis) of the images             |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | x1_image_positions           | radian    | y-coordinate (Dec-like axis) of the images            |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | magnifications               |           | magnifications                                        |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | time_delays                  |           | time delays                                           |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | image_type                   |           | image type                                            |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | n_images                     |           | number of images                                      |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | x_source                     | radian    | x-coordinate (RA-like axis) of the source             |
+            +------------------------------+-----------+-------------------------------------------------------+
+            | y_source                     | radian    | y-coordinate (Dec-like axis) of the source            |
+            +------------------------------+-----------+-------------------------------------------------------+
+
+        """
+
+        zs = lens_parameters["zs"]
+        size = len(zs)
+        zl = lens_parameters["zl"]
+
+        gamma1, gamma2 = lens_parameters["gamma1"], lens_parameters["gamma2"]
+        phi = lens_parameters["phi"]
+        q = lens_parameters["q"]
+        gamma = lens_parameters["gamma"]
+
+        theta_E = lens_parameters["theta_E"]
+        if not self.include_redundant_parameters:
+            del lens_parameters["theta_E"]
+
+        # time-delay distance
+        Ds = self.angular_diameter_distance.function(zs)
+        Dl = self.angular_diameter_distance.function(zl)
+        Dls = self.angular_diameter_distance_z1z2.function(zl, zs)
+        D_dt = (1.0 + zl) * (Dl * Ds / Dls)  # meters
+
+        # 0.beta_x_arr, 1.beta_y_arr, 2.x_img, 3.y_img, 4.mu_arr, 5.tau_arr, 6.nimg, 7.itype
+        result = self.epl_solver(theta_E, D_dt, q, phi, gamma, gamma1, gamma2)
+
+        # Return a dictionary with all of the lens information but also the BBH parameters from gw_param
+        image_parameters = {
+            "x0_image_positions": result[2],
+            "x1_image_positions": result[3],
+            "magnifications": result[4],
+            "time_delays": result[5],
+            "image_type": result[7],
+        }
+
+        # sorting wrt time delays
+        time_delays = image_parameters["time_delays"]
+        idx_sort = np.argsort(time_delays, axis=1)  # sort each row
+        # idx_sort has the shape (size, n_max_images)
+        for key, value in image_parameters.items():
+            # sort each row
+            image_parameters[key] = np.array(
+                [value[i, idx_sort[i]] for i in range(size)]
+            )
+        lens_parameters.update(image_parameters)
+        lens_parameters["n_images"] = result[6]
+        lens_parameters["x_source"] = result[0]
+        lens_parameters["y_source"] = result[1]
+
+        return lens_parameters
+
+    def image_properties_epl_shear(self, lens_parameters):
+        """
+        Compute image properties for strongly lensed events. This use functions from lenstronomy.
 
         Solves the lens equation using multiprocessing to find image positions,
         magnifications, time delays, and image types for each lensing event.
@@ -264,12 +386,6 @@ class ImageProperties:
         if not self.include_redundant_parameters:
             del lens_parameters["theta_E"]
 
-        # Create the lens model list (note: can be a different lens model for different samples)
-        lensModelList = np.array(self.lens_model_list) * np.ones(
-            (size, len(self.lens_model_list)), dtype=object
-        )
-        min_img_arr = self.n_min_images * np.ones((size), dtype=int)
-
         # get image properties (with Multiprocessing)
         iterations = np.arange(size)
         input_arguments = [
@@ -296,8 +412,6 @@ class ImageProperties:
                 iterations_i,
             ) in zip(e1, e2, gamma, gamma1, gamma2, zl, zs, einstein_radius, iterations)
         ]
-
-        # input_arguments = np.concatenate((input_arguments, lensModelList), axis=1)
 
         # For output
         # Initialize the image positions and lens argument list here.
@@ -327,14 +441,12 @@ class ImageProperties:
             initargs=(
                 self.n_min_images,
                 self.lens_model_list,
+                self.cosmo,
             ),
         ) as pool:
             if self.multiprocessing_verbose:
                 for result in tqdm(
-                    pool.imap_unordered(
-                        solve_lens_equation, 
-                        input_arguments
-                    ),
+                    pool.imap_unordered(solve_lens_equation, input_arguments),
                     total=len(input_arguments),
                     ncols=100,
                 ):
@@ -379,10 +491,7 @@ class ImageProperties:
                     x_source[iter_i] = x_source_i
                     y_source[iter_i] = y_source_i
             else:
-                for result in pool.map(
-                    solve_lens_equation, 
-                    input_arguments
-                ):
+                for result in pool.map(solve_lens_equation, input_arguments):
                     (
                         x_source_i,
                         y_source_i,
@@ -552,7 +661,7 @@ class ImageProperties:
         lensed_param : ``dict``
             Updated dictionary with effective parameters shown below: \n
             +----------------------------------+-----------+------------------------------------------------+
-            | Parameter                        | Units     | Description                                    |   
+            | Parameter                        | Units     | Description                                    |
             +==================================+===========+================================================+
             | effective_luminosity_distance    | Mpc       | magnification-corrected distance               |
             |                                  |           | luminosity_distance / sqrt(|magnifications_i|) |
@@ -577,7 +686,11 @@ class ImageProperties:
 
         if not self.include_redundant_parameters:
             # remove redundant parameters to save memory
-            del lensed_param["n_images"], lensed_param["mass_1_source"], lensed_param["mass_2_source"]
+            del (
+                lensed_param["n_images"],
+                lensed_param["mass_1_source"],
+                lensed_param["mass_2_source"],
+            )
 
         # needed to calculate effective luminosity distance and effective time delay
         magnifications = lensed_param["magnifications"]
@@ -639,7 +752,7 @@ class ImageProperties:
                     lensed_param["phi_12"],
                     lensed_param["phi_jl"],
                 )
-        
+
         # checking pdet_finder output keys
         result_dict = self._check_pdet_finder_output_keys(
             size, lensed_param, pdet_finder
@@ -653,7 +766,9 @@ class ImageProperties:
         geocent_time_min = np.min(geocent_time)
         geocent_time_max = geocent_time_min + self.time_window
 
-        pdet_finder_output_keys = self.pdet_finder_output_keys.copy()  # copy to avoid modifying original
+        pdet_finder_output_keys = (
+            self.pdet_finder_output_keys.copy()
+        )  # copy to avoid modifying original
         for i in range(self.n_max_images):
 
             # get the effective time for each image type
@@ -714,7 +829,6 @@ class ImageProperties:
                 for keys in pdet_finder_output_keys:
                     result_dict[keys][idx, i] = pdet[keys]
 
-
         if include_effective_parameters:
             lensed_param = self.produce_effective_params(lensed_param)
 
@@ -726,12 +840,10 @@ class ImageProperties:
         """
 
         zs = lensed_param["zs"]
-        # find theta_E 
+        # find theta_E
         if "theta_E" not in lensed_param:
             lensed_param["theta_E"] = self.compute_einstein_radii(
-                lensed_param["sigma"], 
-                lensed_param["zl"], 
-                zs
+                lensed_param["sigma"], lensed_param["zl"], zs
             )
         else:
             print("theta_E is already in lensed_param, skipping computation of theta_E")
@@ -741,18 +853,24 @@ class ImageProperties:
             n_images = np.sum(~np.isnan(x0_image_positions), axis=1)
             lensed_param["n_images"] = n_images.astype(int)
         else:
-            print("n_images is already in lensed_param, skipping computation of n_images")
+            print(
+                "n_images is already in lensed_param, skipping computation of n_images"
+            )
 
         if "mass_1_source" not in lensed_param or "mass_2_source" not in lensed_param:
             lensed_param["mass_1_source"] = lensed_param["mass_1"] / (1 + zs)
             lensed_param["mass_2_source"] = lensed_param["mass_2"] / (1 + zs)
         else:
-            print("mass_1_source and mass_2_source are already in lensed_param, skipping computation of source frame masses")
+            print(
+                "mass_1_source and mass_2_source are already in lensed_param, skipping computation of source frame masses"
+            )
 
         if "luminosity_distance" not in lensed_param:
             lensed_param["luminosity_distance"] = self.luminosity_distance(zs)
         else:
-            print("luminosity_distance is already in lensed_param, skipping computation of luminosity_distance")
+            print(
+                "luminosity_distance is already in lensed_param, skipping computation of luminosity_distance"
+            )
 
         return lensed_param
 

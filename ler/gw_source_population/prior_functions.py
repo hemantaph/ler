@@ -24,7 +24,7 @@ from ..utils import inverse_transform_sampler, sample_from_powerlaw_distribution
 # ------------------------------
 # Merger rate density functions
 # ------------------------------
-@njit
+@njit(cache=True)
 def merger_rate_density_bbh_oguri2018_function(zs, R0=19 * 1e-9, b2=1.6, b3=2.1, b4=30):
     """
     Compute the merger rate density for PopI/II BBH.
@@ -61,7 +61,7 @@ def merger_rate_density_bbh_oguri2018_function(zs, R0=19 * 1e-9, b2=1.6, b3=2.1,
     """
     return R0 * (b4 + 1) * np.exp(b2 * zs) / (b4 + np.exp(b3 * zs))
 
-@njit
+@njit(cache=True)
 def merger_rate_density_bbh_popIII_ken2022_function(zs, n0=19.2 * 1e-9, aIII=0.66, bIII=0.3, zIII=11.6):
     """
     Compute the unnormalized merger rate density for PopIII BBH.
@@ -102,7 +102,7 @@ def merger_rate_density_bbh_popIII_ken2022_function(zs, n0=19.2 * 1e-9, aIII=0.6
         / (bIII + aIII * np.exp((aIII + bIII) * (zs - zIII)))
     )
 
-@njit
+@njit(cache=True)
 def merger_rate_density_madau_dickinson2014_function(zs, R0=19 * 1e-9, a=0.015, b=2.7, c=2.9, d=5.6):
     """
     Compute the merger rate density for BBH using Madau & Dickinson (2014) model.
@@ -154,7 +154,7 @@ def merger_rate_density_madau_dickinson2014_function(zs, R0=19 * 1e-9, a=0.015, 
 
     return density_zs
 
-@njit
+@njit(cache=True)
 def merger_rate_density_madau_dickinson_belczynski_ng_function(zs, R0=19 * 1e-9, alpha_F=2.57, beta_F=5.83, c_F=3.36):
     """
     Compute BBH merger rate density following Ng et al. (2021).
@@ -341,7 +341,7 @@ def sfr_madau_dickinson2014_with_bns_td(zs, R0=89 * 1e-9):
 # ------------------------------
 # Star formation rate functions
 # ------------------------------
-@njit
+@njit(cache=True)
 def sfr_madau_fragos2017(zs, a=0.01, b=2.6, c=3.2, d=6.2):
     """
     Compute star formation rate using Madau & Fragos (2017) model.
@@ -372,7 +372,7 @@ def sfr_madau_fragos2017(zs, a=0.01, b=2.6, c=3.2, d=6.2):
     """
     return a * (1+zs)**b / (1 + ((1+zs)/c)**d)
 
-@njit
+@njit(cache=True)
 def sfr_madau_dickinson2014(zs, a=0.015, b=2.7, c=2.9, d=5.6):
     """
     Compute star formation rate using Madau & Dickinson (2014) model.
@@ -411,7 +411,7 @@ def sfr_madau_dickinson2014(zs, a=0.015, b=2.7, c=2.9, d=5.6):
 # ------------------------------
 # Binary mass functions
 # ------------------------------
-@njit
+@njit(cache=True)
 def binary_masses_BBH_popIII_lognormal_rvs(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000):
     """
     Sample from a lognormal distribution in 2D mass space.
@@ -495,7 +495,7 @@ def binary_masses_BBH_popIII_lognormal_rvs(size, m_min=1.0, m_max=100.0, Mc=20.0
     m1_sample[idx], m2_sample[idx] = m2_sample[idx], m1_sample[idx]
     return m1_sample, m2_sample
 
-@njit
+@njit(cache=True)
 def binary_masses_BBH_primordial_lognormal_rvs(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000):
     """
     Sample from a lognormal distribution in 2D mass space.
@@ -578,7 +578,7 @@ def binary_masses_BBH_primordial_lognormal_rvs(size, m_min=1.0, m_max=100.0, Mc=
     m1_sample[idx], m2_sample[idx] = m2_sample[idx], m1_sample[idx]
     return m1_sample, m2_sample
 
-@njit
+@njit(cache=True)
 def _erf(x):
     """
     Compute the error function using Abramowitz & Stegun approximation.
@@ -609,7 +609,7 @@ def _erf(x):
 
     return sign * y
 
-@njit
+@njit(cache=True)
 def _compute_normalization_factor(mu, sigma, mmin, mmax):
     """
     Compute normalization factor for truncated Gaussian.
@@ -635,7 +635,7 @@ def _compute_normalization_factor(mu, sigma, mmin, mmax):
     N = np.sqrt(2 * np.pi) * sigma * (0.5 * (_erf(part1) - _erf(part2)))
     return N
 
-@njit
+@njit(cache=True)
 def _bns_bimodal_pdf(m, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3):
     """
     Compute the bimodal Gaussian PDF for BNS mass distribution.
@@ -682,7 +682,7 @@ def _bns_bimodal_pdf(m, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, m
 
     return pdf
 
-@njit
+@njit(cache=True)
 def binary_masses_BNS_bimodal_rvs(size, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3, resolution=500):
     """
     Sample BNS masses from bimodal Gaussian distribution.
@@ -733,7 +733,7 @@ def binary_masses_BNS_bimodal_rvs(size, w=0.643, muL=1.352, sigmaL=0.08, muR=1.8
     
     return _inverse_transform_sampler_m1m2(size, cdf, mass)
 
-@njit
+@njit(cache=True)
 def _inverse_transform_sampler_m1m2(size, cdf_values, x):
     """
     Sample m1 and m2 using inverse transform sampling for BNS.
@@ -769,7 +769,7 @@ def _inverse_transform_sampler_m1m2(size, cdf_values, x):
 
     return m1, m2
 
-@njit
+@njit(cache=True)
 def _smoothing_S(m, mmin, delta_m, threshold=709.0):
     """
     Compute low-mass smoothing function to avoid sharp cutoffs.
@@ -811,7 +811,7 @@ def _smoothing_S(m, mmin, delta_m, threshold=709.0):
 
     return s
 
-@njit
+@njit(cache=True)
 def _powerlaw_with_smoothing(m, mmin, alpha, delta_m):
     """
     Compute power-law distribution with low-mass smoothing.
@@ -835,7 +835,7 @@ def _powerlaw_with_smoothing(m, mmin, alpha, delta_m):
     s = _smoothing_S(m, mmin, delta_m)
     return m ** (-alpha) * s
 
-@njit
+@njit(cache=True)
 def _broken_powerlaw_cdf(size=1000, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha_2=0.0, b=0.5, delta_m=5.):
     """
     Compute CDF for broken power-law mass distribution.
@@ -877,7 +877,7 @@ def _broken_powerlaw_cdf(size=1000, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha
 
     return cdf_values
 
-@njit
+@njit(cache=True)
 def _sample_broken_powerlaw(size=1000, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha_2=0., b=0.5, delta_m=5., normalization_size=1000):
     """
     Generate samples from the broken power-law mass distribution.
@@ -925,7 +925,7 @@ def _sample_broken_powerlaw(size=1000, mminbh=26., mmaxbh=125., alpha_1=6.75, al
 
     return samples
 
-@njit
+@njit(cache=True)
 def binary_masses_NSBH_broken_powerlaw_rvs(size=1000, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha_2=0., b=0.5, delta_m=5., mminns=1.0, mmaxns=3.0, alphans=0.0, normalization_size=1000):
     """
     Generate NSBH mass samples from broken power-law (BH) and power-law (NS).
@@ -978,7 +978,7 @@ def binary_masses_NSBH_broken_powerlaw_rvs(size=1000, mminbh=26., mmaxbh=125., a
 
     return m1_samples, m2_samples
 
-@njit
+@njit(cache=True)
 def _broken_powerlaw_pdf(m, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha_2=0., b=0.5, delta_m=5., normalization_size=1000):
     """
     Compute the normalized PDF for broken power-law mass distribution.
@@ -1023,7 +1023,7 @@ def _broken_powerlaw_pdf(m, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha_2=0., b
 
     return pdf
 
-@njit
+@njit(cache=True)
 def _broken_powerlaw_unnormalized(m, mminbh=26., mmaxbh=125., alpha_1=6.75, alpha_2=0., b=0.5, delta_m=5.):
     """
     Compute unnormalized PDF for broken power-law distribution.
@@ -1063,7 +1063,7 @@ def _broken_powerlaw_unnormalized(m, mminbh=26., mmaxbh=125., alpha_1=6.75, alph
 
     return pdf_unnormalized
 
-@njit
+@njit(cache=True)
 def _powerlaw_B(m, alpha, mminbh, mmaxbh):
     """
     Compute normalized power-law distribution.
@@ -1088,7 +1088,7 @@ def _powerlaw_B(m, alpha, mminbh, mmaxbh):
     pdf = m ** (-alpha) / normalization
     return pdf
 
-@njit
+@njit(cache=True)
 def _gaussian_G(m, mu_g, sigma_g):
     """
     Compute Gaussian distribution.
@@ -1112,7 +1112,7 @@ def _gaussian_G(m, mu_g, sigma_g):
     pdf = normalization * np.exp(exponent)
     return pdf
 
-@njit
+@njit(cache=True)
 def _powerlaw_gaussian_pdf(m, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, normalization_size=1000):
     """
     Compute the normalized PDF for power-law + Gaussian mass model.
@@ -1157,7 +1157,7 @@ def _powerlaw_gaussian_pdf(m, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak,
 
     return pdf
 
-@njit
+@njit(cache=True)
 def _powerlaw_gaussian_cdf(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m):
     """
     Compute CDF for power-law + Gaussian mass model.
@@ -1196,7 +1196,7 @@ def _powerlaw_gaussian_cdf(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_pe
 
     return cdf_values
 
-@njit
+@njit(cache=True)
 def _sample_powerlaw_gaussian(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, normalization_size=1000):
     """
     Generate samples from the power-law + Gaussian mass model.
@@ -1238,7 +1238,7 @@ def _sample_powerlaw_gaussian(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda
 
     return samples
 
-@njit
+@njit(cache=True)
 def binary_masses_BBH_powerlaw_gaussian_rvs(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, beta, normalization_size=1000):
     """
     Generate BBH mass samples from power-law + Gaussian model with mass ratio.
@@ -1284,7 +1284,7 @@ def binary_masses_BBH_powerlaw_gaussian_rvs(size, mminbh, mmaxbh, alpha, mu_g, s
 
     return m1, m2
 
-@njit
+@njit(cache=True)
 def _sample_mass_ratio(m1, mminbh, beta, delta_m):
     """
     Sample mass ratio using rejection sampling with smoothing.
@@ -1319,7 +1319,7 @@ def _sample_mass_ratio(m1, mminbh, beta, delta_m):
 
     return q
 
-@njit
+@njit(cache=True)
 def _powerlaw_gaussian_unnormalized(m, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m):
     """
     Compute unnormalized PDF for power-law + Gaussian model.
@@ -1378,7 +1378,7 @@ def available_prior_list():
 # ------------------------
 # Other utility functions
 # ------------------------
-@njit
+@njit(cache=True)
 def _cumulative_trapezoid(y, x=None, dx=1.0, initial=0.0):
     """
     Compute the cumulative integral using the trapezoidal rule.

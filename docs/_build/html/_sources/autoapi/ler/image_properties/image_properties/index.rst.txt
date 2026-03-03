@@ -20,7 +20,7 @@
        >>> lens_parameters = dict(zs=np.array([2.0]), zl=np.array([0.5]), ...)
        >>> result = ip.image_properties(lens_parameters)
 
-   Copyright (C) 2026 Phurailatpam Hemanta Kumar. Distributed under MIT License.
+   Copyright (C) 2026 Phurailatpam Hemantakumar. Distributed under MIT License.
 
    ..
        !! processed by numpydoc !!

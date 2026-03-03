@@ -458,7 +458,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             a_max = 0.8
 
         else:
-            raise ValueError("event_type is not recognized")
+            raise ValueError(f"event_type {event_type} is not recognized")
 
         # setting the priors and its parameters
         source_priors_ = dict(
@@ -1019,7 +1019,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         m_min = identifier_dict["m_min"]
         m_max = identifier_dict["m_max"]
 
-        @njit
+        @njit(cache=True)
         def rvs_(size):
             # generate random masses
             mass_1_source = np.random.uniform(m_min, m_max, size)

@@ -156,6 +156,8 @@ class OpticalDepth:
     +-----------------------------------------------------+----------------------------------------------------------+
     | :meth:`~cross_section_epl_shear_interpolation`      | Compute EPL+shear cross-section via interpolation        |
     +-----------------------------------------------------+----------------------------------------------------------+
+    | :meth:`~cross_section_epl_shear_njit`               | Compute EPL+shear cross-section using Numba njit         |
+    +-----------------------------------------------------+----------------------------------------------------------+
 
     Instance Attributes
     ----------
@@ -223,7 +225,13 @@ class OpticalDepth:
         self.npool = npool
         self.z_min = z_min
         self.z_max = z_max
-        self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+        self.cosmo = (
+            cosmology
+            if cosmology
+            else LambdaCDM(
+                H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0
+            )
+        )
         self.directory = directory
 
         # Initialize decision dictionary for creating interpolators
@@ -495,8 +503,8 @@ class OpticalDepth:
             Type of lens galaxy model.
         """
 
-        # initialize the interpolator's parameters
-        self.create_new_interpolator = dict(
+        # initialize the interpolator's
+        create_new_interpolator = dict(
             velocity_dispersion=dict(
                 create_new=False, resolution=500, zl_resolution=48
             ),
@@ -513,24 +521,33 @@ class OpticalDepth:
             source_redshift_sl=dict(create_new=False, resolution=500),
         )
         if lens_type == "sis_galaxy":
-            self.create_new_interpolator.update(
+            create_new_interpolator.update(
                 cross_section=dict(create_new=False, resolution=[5, 5, 5, 5, 5]),
             )
         elif lens_type == "sie_galaxy":
-            self.create_new_interpolator.update(
+            create_new_interpolator.update(
                 cross_section=dict(create_new=False, resolution=[25, 25, 5, 5, 5]),
             )
         elif lens_type == "epl_shear_galaxy":
-            self.create_new_interpolator.update(
+            create_new_interpolator.update(
                 cross_section=dict(create_new=False, resolution=[25, 25, 45, 15, 15]),
             )
 
         if isinstance(create_new_interpolator, dict):
-            self.create_new_interpolator.update(create_new_interpolator)
+            create_new_interpolator.update(create_new_interpolator)
         # if create_new_interpolator is True, create new interpolator for all
         elif create_new_interpolator:
-            for key in self.create_new_interpolator.keys():
-                self.create_new_interpolator[key]["create_new"] = True
+            for key in create_new_interpolator.keys():
+                create_new_interpolator[key]["create_new"] = True
+
+        # update the create_new_interpolator
+        try:
+            if self.create_new_interpolator is None:
+                self.create_new_interpolator = create_new_interpolator
+            else:
+                self.create_new_interpolator.update(create_new_interpolator)
+        except AttributeError:
+            self.create_new_interpolator = create_new_interpolator
 
     def _lens_functions_and_sampler_categorization(
         self,
@@ -703,16 +720,19 @@ class OpticalDepth:
             "axis_rotation_angle",
             "density_profile_slope",
             "external_shear",
-            # "resolution",
         ]
 
+        # cross_section cannot be FunctionConditioning object
         identifier_dict["cross_section"] = {}
         identifier_dict["cross_section"]["name"] = self.lens_functions["cross_section"]
         if self.lens_functions_params["cross_section"] is not None:
             for key, value in self.lens_functions_params["cross_section"].items():
-                if key not in name_list:
-                    identifier_dict["cross_section"][key] = value
+                identifier_dict["cross_section"][key] = value
+        identifier_dict["cross_section"]["resolution"] = self.create_new_interpolator[
+            "cross_section"
+        ]["resolution"]
 
+        # All other parameters can be FunctionConditioning objects
         identifier_dict["velocity_dispersion"] = {}
         if (
             self.velocity_dispersion.info is not None
@@ -1076,8 +1096,14 @@ class OpticalDepth:
         identifier_dict["z_min"] = self.z_min
         identifier_dict["z_max"] = self.z_max
         identifier_dict["cosmology"] = self.cosmo
+        identifier_dict["resolution"] = self.create_new_interpolator[
+            "lens_redshift_intrinsic"
+        ]["resolution"]
+        create_new = self.create_new_interpolator["lens_redshift_intrinsic"][
+            "create_new"
+        ]
 
-        name_list = ["z_min", "z_max", "cosmology", "velocity_dispersion", "resolution"]
+        name_list = ["z_min", "z_max", "cosmology", "velocity_dispersion"]
 
         identifier_dict["velocity_dispersion"] = {}
         if (
@@ -1087,20 +1113,12 @@ class OpticalDepth:
                 if key not in name_list:
                     identifier_dict["velocity_dispersion"][key] = value
 
-        identifier_dict["resolution"] = self.create_new_interpolator[
-            "lens_redshift_intrinsic"
-        ]["resolution"]
-
         _, it_exist = interpolator_json_path(
             identifier_dict=identifier_dict,
             directory=self.directory,
             sub_directory="lens_redshift_intrinsic",
             interpolator_name=identifier_dict["name"],
         )
-
-        create_new = self.create_new_interpolator["lens_redshift_intrinsic"][
-            "create_new"
-        ]
 
         if not it_exist or create_new:
             z_min = 0.0001 if self.z_min == 0 else self.z_min
@@ -1291,14 +1309,14 @@ class OpticalDepth:
         inverse_spline_Dc = self.comoving_distance.function_inverse_spline
         z_array_Dc = self.comoving_distance.z_array
 
-        @njit
+        @njit(cache=True)
         def zl_rvs(size, zs):
             r = inverse_transform_sampler(size, cdf_values_zl, x_array_zl)
             zs_Dc = cubic_spline_interpolator(zs, spline_Dc, x_array_Dc)
             zl_Dc = zs_Dc * r
             return cubic_spline_interpolator(zl_Dc, inverse_spline_Dc, z_array_Dc)
 
-        @njit
+        @njit(cache=True)
         def zl_pdf(zl, zs):
             r = zl / zs
             return (
@@ -2085,41 +2103,18 @@ class OpticalDepth:
         identifier_dict["z_min"] = self.z_min
         identifier_dict["z_max"] = self.z_max
         identifier_dict["cosmology"] = self.cosmo
-        identifier_dict["velocity_dispersion"] = self.lens_param_samplers_params[
-            "velocity_dispersion"
+
+        name_list = [
+            "z_min",
+            "z_max",
+            "cosmology",
         ]
-        if identifier_dict["velocity_dispersion"]:  # if velocity_dispersion is not None
-            identifier_dict["velocity_dispersion"]["name"] = str(
-                self.lens_param_samplers["velocity_dispersion"]
-            )
-        identifier_dict["axis_ratio"] = self.lens_param_samplers_params["axis_ratio"]
-        if identifier_dict["axis_ratio"]:  # if axis_ratio is not None
-            identifier_dict["axis_ratio"]["name"] = str(
-                self.lens_param_samplers["axis_ratio"]
-            )
-        identifier_dict["axis_rotation_angle"] = self.lens_param_samplers_params[
-            "axis_rotation_angle"
-        ]
-        if identifier_dict["axis_rotation_angle"]:  # if axis_rotation_angle is not None
-            identifier_dict["axis_rotation_angle"]["name"] = str(
-                self.lens_param_samplers["axis_rotation_angle"]
-            )
-        identifier_dict["density_profile_slope"] = self.lens_param_samplers_params[
-            "density_profile_slope"
-        ]
-        if identifier_dict[
-            "density_profile_slope"
-        ]:  # if density_profile_slope is not None
-            identifier_dict["density_profile_slope"]["name"] = str(
-                self.lens_param_samplers["density_profile_slope"]
-            )
-        identifier_dict["external_shear"] = self.lens_param_samplers_params[
-            "external_shear"
-        ]
-        if identifier_dict["external_shear"]:  # if external_shear is not None
-            identifier_dict["external_shear"]["name"] = str(
-                self.lens_param_samplers["external_shear"]
-            )
+
+        identifier_dict["lens_redshift"] = {}
+        if self.lens_redshift.info is not None:
+            for key, value in self.lens_redshift.info.items():
+                if key not in name_list:
+                    identifier_dict["lens_redshift"][key] = value
 
         param_dict = self.available_lens_functions["optical_depth"][
             "optical_depth_numerical"
@@ -2194,8 +2189,8 @@ class OpticalDepth:
         """
 
         # Compute the angular diameter distances
-        Ds = self.angular_diameter_distance(zs)
-        Dls = self.angular_diameter_distance_z1z2(zl, zs)
+        Ds = self.angular_diameter_distance.function(zs)
+        Dls = self.angular_diameter_distance_z1z2.function(zl, zs)
         # Compute the Einstein radii
         theta_E = (
             4.0 * np.pi * (sigma / 299792.458) ** 2 * Dls / (Ds)
@@ -2305,7 +2300,7 @@ class OpticalDepth:
         # Compute the Einstein radii
         if get_attribute:
 
-            @njit
+            @njit(cache=True)
             def _cross_section_sis(zs, zl, sigma):
                 Ds = _Da(zs)
                 Dls = _Da_z1z2(zl, zs)
@@ -2351,7 +2346,7 @@ class OpticalDepth:
                 sigma=None, zl=None, zs=None, get_attribute=True
             )
 
-            @njit
+            @njit(cache=True)
             def _cross_section_sie_feixu(zs, zl, sigma, q):
                 return phi_cut_SIE(q) * _cross_section_sis(zs, zl, sigma)
 
@@ -2754,6 +2749,93 @@ class OpticalDepth:
             )
         )
 
+    # ---------------------------------------------------------------------------
+    # EPL + external shear cross section using Numba njit
+    # ---------------------------------------------------------------------------
+    def cross_section_epl_shear_njit(
+        self,
+        zs,
+        zl,
+        sigma,
+        q,
+        phi,
+        gamma,
+        gamma1,
+        gamma2,
+        get_attribute=False,
+        num_th=500,
+        maginf=-100.0,
+        **kwargs,
+    ):
+        """
+        Compute the lensing cross-section for EPL+shear lens model using Numba njit.
+
+        Parameters
+        ----------
+        zs : ``float`` or ``numpy.ndarray``
+            Source redshift(s).
+        zl : ``float`` or ``numpy.ndarray``
+            Lens redshift(s).
+        sigma : ``float`` or ``numpy.ndarray``
+            Velocity dispersion(s) in km/s.
+        q : ``float`` or ``numpy.ndarray``
+            Axis ratio(s) (b/a).
+        phi : ``float`` or ``numpy.ndarray``
+            Axis rotation angle(s) in radians.
+        gamma : ``float`` or ``numpy.ndarray``
+            Density profile slope(s).
+        gamma1 : ``float`` or ``numpy.ndarray``
+            External shear component 1.
+        gamma2 : ``float`` or ``numpy.ndarray``
+            External shear component 2.
+        get_attribute : ``bool``, optional
+            If True, return the interpolator instance instead of the cross-section.
+            Default is False.
+        num_th : ``int``, optional
+            Number of theta values to use for the spline interpolation.
+            Default is 500.
+        maginf : ``float``, optional
+            Magnitude limit for the cross-section calculation.
+            Default is -100.0.
+        **kwargs
+            Additional keyword arguments to pass to the interpolator.
+
+        Returns
+        -------
+        cs_caculator : ``ler.image_properties.cross_section_njit.CrossSectionNjit``
+            The interpolator instance (if get_attribute=True).
+        cross_section : ``float`` or ``numpy.ndarray``
+            Lensing cross-section in arcsec^2.
+        """
+
+        from ..image_properties.cross_section_njit import make_cross_section_reinit
+
+        # Create the interpolator instance
+        Da_instance = self.angular_diameter_distance.function
+        cs_caculator = make_cross_section_reinit(
+            Da_instance=Da_instance,
+            num_th=num_th,
+            maginf=maginf,
+        )
+
+        return (
+            cs_caculator
+            if get_attribute
+            else cs_caculator(
+                zs=zs,
+                zl=zl,
+                sigma=sigma,
+                q=q,
+                phi=phi,
+                gamma=gamma,
+                gamma1=gamma1,
+                gamma2=gamma2,
+            )
+        )
+
+    # -------------------
+    # properties
+    # -------------------
     @property
     def optical_depth(self):
         """
@@ -3301,6 +3383,7 @@ class OpticalDepth:
     @cross_section.setter
     def cross_section(self, cross_section):
         if cross_section == "cross_section_epl_shear_interpolation":
+            print(f"using ler available cross_section function : {cross_section}")
             # this will initialize the cross section interpolator
             size_list = self.create_new_interpolator["cross_section"]["resolution"]
             self._cross_section = self.cross_section_epl_shear_interpolation(
@@ -3315,6 +3398,34 @@ class OpticalDepth:
                 get_attribute=True,
                 size_list=size_list,
             )
+        elif cross_section == "cross_section_epl_shear_njit":
+            print(f"using ler available cross_section function : {cross_section}")
+            args = self.lens_functions_params["cross_section"]
+            if args is None:
+                self._cross_section = self.cross_section_epl_shear_njit(
+                    zs=None,
+                    zl=None,
+                    sigma=None,
+                    q=None,
+                    phi=None,
+                    gamma=None,
+                    gamma1=None,
+                    gamma2=None,
+                    get_attribute=True,
+                )
+            else:
+                self._cross_section = self.cross_section_epl_shear_njit(
+                    zs=None,
+                    zl=None,
+                    sigma=None,
+                    q=None,
+                    phi=None,
+                    gamma=None,
+                    gamma1=None,
+                    gamma2=None,
+                    get_attribute=True,
+                    **args,
+                )
         elif cross_section in ["cross_section_sie_feixu", "cross_section_sis"]:
             self._cross_section = getattr(self, cross_section)(get_attribute=True)
         elif callable(cross_section):
@@ -3452,6 +3563,7 @@ class OpticalDepth:
                 cross_section_sis=None,
                 cross_section_epl_shear_numerical=None,
                 cross_section_epl_shear_interpolation=None,
+                cross_section_epl_shear_njit=dict(num_th=500, maginf=-100.0),
             ),
         )
 

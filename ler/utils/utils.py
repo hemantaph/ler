@@ -1170,7 +1170,7 @@ def monte_carlo_integration(function, uniform_prior, size=10000):
     return integral
 
 
-@njit
+@njit(cache=True)
 def cubic_spline_interpolator(xnew, coefficients, x):
     """
     Function to interpolate using cubic spline.
@@ -1214,7 +1214,7 @@ def cubic_spline_interpolator(xnew, coefficients, x):
     return result
 
 
-@njit
+@njit(cache=True)
 def pdf_cubic_spline_interpolator(xnew, norm_const, coefficients, x):
     """
     Function to interpolate pdf using cubic spline.
@@ -1258,7 +1258,7 @@ def pdf_cubic_spline_interpolator(xnew, norm_const, coefficients, x):
     return result / norm_const
 
 
-@njit
+@njit(cache=True)
 def pdf_cubic_spline_interpolator2d_array(
     xnew_array, ynew_array, norm_array, coefficients, x, y
 ):
@@ -1353,7 +1353,7 @@ def pdf_cubic_spline_interpolator2d_array(
     return result_array
 
 
-@njit
+@njit(cache=True)
 def cubic_spline_interpolator2d_array(xnew_array, ynew_array, coefficients, x, y):
     """
     Function to calculate the interpolated value of snr_partialscaled given the mass ratio (ynew) and total mass (xnew). This is based off 2D bicubic spline interpolation.
@@ -1440,7 +1440,7 @@ def cubic_spline_interpolator2d_array(xnew_array, ynew_array, coefficients, x, y
     return result_array
 
 
-@njit
+@njit(cache=True)
 def coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4):
     """
     Function to generate the coefficients for the cubic spline interpolation of fn(y)=z.
@@ -1475,7 +1475,7 @@ def coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4):
     return np.dot(np.linalg.inv(matrixA), matrixC)
 
 
-@njit
+@njit(cache=True)
 def inverse_transform_sampler2d(size, conditioned_y, cdf2d, x2d, y1d):
     """
     Function to find sampler interpolator coefficients from the conditioned y.
@@ -1525,7 +1525,7 @@ def inverse_transform_sampler2d(size, conditioned_y, cdf2d, x2d, y1d):
     return samples
 
 
-@njit
+@njit(cache=True)
 def inverse_transform_sampler(size, cdf, x):
     """
     Function to sample from the inverse transform method.
@@ -1556,7 +1556,7 @@ def inverse_transform_sampler(size, cdf, x):
     return samples
 
 
-@njit
+@njit(cache=True)
 def normal_pdf(x, mean=0.0, std=0.05):
     """
     Calculate the value of a normal probability density function.
@@ -1579,7 +1579,7 @@ def normal_pdf(x, mean=0.0, std=0.05):
     return (1 / (std * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((x - mean) / std) ** 2)
 
 
-@njit
+@njit(cache=True)
 def normal_pdf_2d(x, y, mean_x=0.0, std_x=0.05, mean_y=0.0, std_y=0.05):
     """
     Calculate the value of a 2D normal probability density function.
@@ -1621,7 +1621,7 @@ def load_txt_from_module(package, directory, filename):
         return np.loadtxt(txt_path)
 
 
-@njit
+@njit(cache=True)
 def cumulative_trapezoid(y, x=None, dx=1.0, initial=0.0):
     """
     Compute the cumulative integral of a function using the trapezoidal rule.
@@ -1638,7 +1638,7 @@ def cumulative_trapezoid(y, x=None, dx=1.0, initial=0.0):
     return cumsum
 
 
-@njit
+@njit(cache=True)
 def sample_from_powerlaw_distribution(size, alphans, mminns, mmaxns):
     """
     Inverse transform sampling for a power-law mass distribution:

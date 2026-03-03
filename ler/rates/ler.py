@@ -242,18 +242,22 @@ class LeR(LensGalaxyParameterDistribution):
         # first check if the interpolator directory './interpolator_json' exists
         if not pathlib.Path(interpolator_directory).exists():
             # Get the path to the zip resource using importlib_resources
-            zip_resource = resources_files('ler.rates').joinpath('ler_data', 'interpolator_json.zip')
-            with zip_resource.open('rb') as zip_file:
-                print("Extracting interpolator data from package to the current working directory.")
+            zip_resource = resources_files("ler.rates").joinpath(
+                "ler_data", "interpolator_json.zip"
+            )
+            with zip_resource.open("rb") as zip_file:
+                print(
+                    "Extracting interpolator data from package to the current working directory."
+                )
 
                 # Define destination path (current working directory)
                 dest_path = pathlib.Path.cwd()
 
                 # Extract the zip file, skipping __MACOSX metadata
-                with zipfile.ZipFile(zip_file, 'r') as zip_ref:
+                with zipfile.ZipFile(zip_file, "r") as zip_ref:
                     for member in zip_ref.namelist():
                         # Skip __MACOSX directory and its contents
-                        if member.startswith('__MACOSX'):
+                        if member.startswith("__MACOSX"):
                             continue
                         zip_ref.extract(member, dest_path)
 
@@ -264,7 +268,13 @@ class LeR(LensGalaxyParameterDistribution):
         self.z_max = z_max
         self.event_type = event_type
         self.lens_type = lens_type
-        self.cosmo = cosmology if cosmology else LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
+        self.cosmo = (
+            cosmology
+            if cosmology
+            else LambdaCDM(
+                H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0
+            )
+        )
 
         # init json file names where datas will be stored
         self.json_file_names = dict(
@@ -357,6 +367,7 @@ class LeR(LensGalaxyParameterDistribution):
             n_max_images=4,
             time_window=365 * 24 * 3600 * 2,
             lens_model_list=["EPL_NUMBA", "SHEAR"],
+            image_properties_function="image_properties_epl_shear",
             include_effective_parameters=False,
             multiprocessing_verbose=True,
             include_redundant_parameters=False,
@@ -395,6 +406,7 @@ class LeR(LensGalaxyParameterDistribution):
             time_window=input_params["time_window"],
             include_effective_parameters=input_params["include_effective_parameters"],
             lens_model_list=input_params["lens_model_list"],
+            image_properties_function=input_params["image_properties_function"],
             multiprocessing_verbose=input_params["multiprocessing_verbose"],
             include_redundant_parameters=input_params["include_redundant_parameters"],
             # CBCSourceParameterDistribution class params
@@ -666,10 +678,19 @@ class LeR(LensGalaxyParameterDistribution):
         print(f"    n_min_images = {self.ler_args['n_min_images']},")
         print(f"    n_max_images = {self.ler_args['n_max_images']},")
         print(f"    time_window = {self.ler_args['time_window']},")
-        print(f"    include_effective_parameters = {self.ler_args['include_effective_parameters']},")
+        print(
+            f"    include_effective_parameters = {self.ler_args['include_effective_parameters']},"
+        )
         print(f"    lens_model_list = {self.ler_args['lens_model_list']},")
-        print(f"    multiprocessing_verbose = {self.ler_args['multiprocessing_verbose']},")
-        print(f"    include_redundant_parameters = {self.ler_args['include_redundant_parameters']},")
+        print(
+            f"    image_properties_function = {self.ler_args['image_properties_function']},"
+        )
+        print(
+            f"    multiprocessing_verbose = {self.ler_args['multiprocessing_verbose']},"
+        )
+        print(
+            f"    include_redundant_parameters = {self.ler_args['include_redundant_parameters']},"
+        )
 
         if "pdet_args" in self.ler_args:
             print(
@@ -1342,7 +1363,7 @@ class LeR(LensGalaxyParameterDistribution):
             # get lensed params
             lensed_param_ = self.sample_lens_parameters(size=size)
             # now get (strongly lensed) image paramters along with lens parameters
-            lensed_param_ = self.image_properties(lensed_param_)
+            lensed_param_ = self.image_properties_function(lensed_param_)
 
             if len(lensed_param) == 0:  # if empty
                 lensed_param = lensed_param_
@@ -1659,7 +1680,6 @@ class LeR(LensGalaxyParameterDistribution):
             pdet_prod = np.prod(pdet, axis=1)
 
             pdet_hit = pdet_prod >= pdet_threshold
-
 
         return pdet_hit, pdet_prod
 
@@ -2030,7 +2050,7 @@ class LeR(LensGalaxyParameterDistribution):
             replace=True,
         )
 
-        return total_rate,param_final
+        return total_rate, param_final
 
     def selecting_n_lensed_detectable_events(
         self,
@@ -2156,9 +2176,7 @@ class LeR(LensGalaxyParameterDistribution):
                 lensed_param, pdet_threshold, num_img, pdet_type
             )
 
-            pdet_processed = (
-                pdet_hit if pdet_type == "boolean" else pdet_prod
-            )
+            pdet_processed = pdet_hit if pdet_type == "boolean" else pdet_prod
 
             # store all params in json file
             self._save_detectable_params(
@@ -2479,14 +2497,20 @@ class LeR(LensGalaxyParameterDistribution):
             try:
                 dict_ = append_json(meta_data_path, meta_data, replace=False)
             except:
-                print("Error in appending meta data. Replacing the existing meta data file.")
+                print(
+                    "Error in appending meta data. Replacing the existing meta data file."
+                )
                 # remove and recreate the meta data file
                 remove_file(meta_data_path)
                 dict_ = append_json(meta_data_path, meta_data, replace=False)
         else:
             dict_ = append_json(meta_data_path, meta_data, replace=True)
 
-        batch_n = (dict_["detectable_events"][-1]-dict_["detectable_events"][-2]) if len(dict_["detectable_events"]) > 1 else n
+        batch_n = (
+            (dict_["detectable_events"][-1] - dict_["detectable_events"][-2])
+            if len(dict_["detectable_events"]) > 1
+            else n
+        )
 
         print("collected number of detectable events (batch) = ", batch_n)
         print("collected number of detectable events (cumulative) = ", n)

@@ -87,3 +87,26 @@ __version_info__ = tuple(map(int, __version__.split(".")))
 
 warnings.filterwarnings("ignore", "Wswiglal-redir-stdio")
 logging.getLogger(__name__).addHandler(logging.NullHandler())
+
+
+"""
+Where multiprocessing is used:
+1. ler.lens_galaxy_population.optical_depth.cross_section_epl_shear_numerical_mp
+  - uses lenstronomy.LensModel.Solver.epl_shear_solver.caustics_epl_shear for generate double caustic boundary
+2. ler.lens_galaxy_population.optical_depth._lens_redshift_multiprocessing
+  - uses njitted sampling functions (see ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_mp)
+
+Where njitted prange is used:
+1. ler.image_properties.cross_section_njit.make_cross_section_reinit
+  - lenstronomy style njitted cross section calculation
+2. ler.image_properties.epl_shear_njit.create_epl_shear_solver
+  - lenstronomy style njitted lens equation solver
+3. ler.image_properties.sample_caustic_points_njit._points_in_poly_precomp
+  - 
+4. ler.lens_galaxy_population.cross_section_interpolator._map_coordinates_5d_cubic_nearest
+  - cross section interpolator 
+5. ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_njit
+  - JIT-compiled parallel computation of differential optical dept (lens redshift)
+6. ler.lens_galaxy_population.sampler_functions.importance_sampler
+  - importance sampling for lens galaxy parameters
+"""

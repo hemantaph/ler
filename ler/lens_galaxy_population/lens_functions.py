@@ -17,7 +17,7 @@ from lenstronomy.LensModel.Solver.epl_shear_solver import caustics_epl_shear
 from shapely.geometry import Polygon
 
 
-@njit
+@njit(cache=True)
 def phi_cut_SIE(q):
     """
     Calculate cross-section scaling factor for SIE lens galaxy from SIS.
@@ -50,7 +50,7 @@ def phi_cut_SIE(q):
     return result/np.pi
 
 
-@njit
+@njit(cache=True)
 def phi_q2_ellipticity(phi, q):
     """
     Convert position angle and axis ratio to ellipticity components.

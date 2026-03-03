@@ -2,9 +2,9 @@
 """
 Multiprocessing helper functions for lens galaxy population calculations.
 
-This module provides parallelized functions for computing optical depth 
-and cross-sections for strong gravitational lensing. These functions are 
-designed to be used with Python's multiprocessing module for efficient 
+This module provides parallelized functions for computing optical depth
+and cross-sections for strong gravitational lensing. These functions are
+designed to be used with Python's multiprocessing module for efficient
 Monte Carlo integration over lens parameters.
 
 Key Features: \n
@@ -27,26 +27,26 @@ CS_UNIT_SLOPE = 0.31830988618379075
 CS_UNIT_INTERCEPT = -3.2311742677852644e-27
 
 
-@njit(parallel=True)
+@njit(parallel=True, cache=True)
 def lens_redshift_strongly_lensed_njit(
-        zs_array,
-        zl_scaled,
-        sigma_min,
-        sigma_max,
-        q_rvs,
-        phi_rvs,
-        gamma_rvs,
-        shear_rvs,
-        number_density,
-        cross_section,
-        dVcdz_function,
-        integration_size,
-    ):
+    zs_array,
+    zl_scaled,
+    sigma_min,
+    sigma_max,
+    q_rvs,
+    phi_rvs,
+    gamma_rvs,
+    shear_rvs,
+    number_density,
+    cross_section,
+    dVcdz_function,
+    integration_size,
+):
     """
-    JIT-compiled parallel computation of lens redshift optical depth.
+    JIT-compiled parallel computation of differential optical dept (lens redshift).
 
-    Computes the differential optical depth for strong lensing as a function 
-    of source and lens redshifts using Monte Carlo integration with parallel 
+    Computes the differential optical depth for strong lensing as a function
+    of source and lens redshifts using Monte Carlo integration with parallel
     execution over source redshifts.
 
     Parameters
@@ -88,7 +88,7 @@ def lens_redshift_strongly_lensed_njit(
     for i in prange(size_zs):
         # Unscale lens redshifts for this source redshift
         zl_array = zl_scaled[i] * zs_array[i]
-        
+
         for j in range(size_zl):
             # Monte Carlo integration setup
             zs_ = zs_array[i] * np.ones(integration_size)
@@ -101,29 +101,31 @@ def lens_redshift_strongly_lensed_njit(
             phi = phi_rvs(integration_size)
             gamma = gamma_rvs(integration_size)
             gamma1, gamma2 = shear_rvs(integration_size)
-            
+
             # Compute cross-sections
-            area_array = cross_section(
-                zs_, zl_, sigma, q, phi, gamma, gamma1, gamma2
-            )
+            area_array = cross_section(zs_, zl_, sigma, q, phi, gamma, gamma1, gamma2)
 
             # Filter out invalid values (inf, non-positive)
             idx = np.logical_not(np.isinf(area_array))
-            idx &= (area_array > 0)
+            idx &= area_array > 0
             if idx.sum() == 0:
-                result_array[i, j] = 0.
+                result_array[i, j] = 0.0
                 continue
 
             # Compute number density weights
             phi_sigma = number_density(sigma, zl_)
-                
+
             # Differential comoving volume
             dVcdz = dVcdz_function(np.array([zl]))[0]
 
             # Compute optical depth contribution
-            result = (sigma_max - sigma_min) * np.average(area_array[idx] * phi_sigma[idx] * dVcdz) / (4 * np.pi)
+            result = (
+                (sigma_max - sigma_min)
+                * np.average(area_array[idx] * phi_sigma[idx] * dVcdz)
+                / (4 * np.pi)
+            )
             result_array[i, j] = result
-        
+
     return result_array
 
 
@@ -131,8 +133,8 @@ def lens_redshift_strongly_lensed_mp(params):
     """
     Multiprocessing worker for lens redshift optical depth calculation.
 
-    Computes the differential optical depth for a single source redshift 
-    across multiple lens redshifts. Designed to be called via multiprocessing 
+    Computes the differential optical depth for a single source redshift
+    across multiple lens redshifts. Designed to be called via multiprocessing
     Pool.map() for parallel computation.
 
     Parameters
@@ -161,7 +163,7 @@ def lens_redshift_strongly_lensed_mp(params):
         shear_rvs,
         gamma_rvs,
         integration_size,
-    ] = load_pickle('input_params_mp.pkl')
+    ] = load_pickle("input_params_mp.pkl")
     sigma_min, sigma_max, sigma_function = sigma_args[0], sigma_args[1], sigma_args[2]
 
     zs = params[0]
@@ -194,21 +196,25 @@ def lens_redshift_strongly_lensed_mp(params):
 
         # Filter out invalid values (inf, non-positive)
         valid_idx = np.logical_not(np.isinf(area_array))
-        valid_idx &= (area_array > 0)
+        valid_idx &= area_array > 0
         if valid_idx.sum() == 0:
-            result_array[i] = 0.
+            result_array[i] = 0.0
             continue
 
         # Compute number density weights (velocity dispersion distribution)
         phi_sigma = sigma_function(sigma, zl_arr)
-            
-        # Differential comoving volume 
+
+        # Differential comoving volume
         dVcdz = dVcdz_function(np.array([zl]))[0]
 
         # Compute optical depth contribution (importance sampling correction)
-        result = (sigma_max - sigma_min) * np.average(area_array[valid_idx] * phi_sigma[valid_idx] * dVcdz) / (4 * np.pi)
+        result = (
+            (sigma_max - sigma_min)
+            * np.average(area_array[valid_idx] * phi_sigma[valid_idx] * dVcdz)
+            / (4 * np.pi)
+        )
         result_array[i] = result
-    
+
     return worker_idx, np.array(result_array)
 
 
@@ -216,7 +222,7 @@ def cross_section_unit_mp(params):
     """
     Multiprocessing worker for unit Einstein radius cross-section.
 
-    Computes the lensing cross-section for a lens with unit Einstein radius 
+    Computes the lensing cross-section for a lens with unit Einstein radius
     (theta_E = 1). Used for building cross-section interpolation grids.
 
     Parameters
@@ -240,7 +246,7 @@ def cross_section_mp(params):
     """
     Multiprocessing worker for cross-section calculation.
 
-    Computes the lensing cross-section for given lens parameters. 
+    Computes the lensing cross-section for given lens parameters.
     Designed to be called via multiprocessing Pool.map().
 
     Parameters

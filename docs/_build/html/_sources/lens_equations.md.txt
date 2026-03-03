@@ -418,6 +418,6 @@ where P_o(\sigma) and P_o(z_l) are the uniform distribution, and $P(q)$, $P(\psi
 8. Sometimes (once in 100-200 thousand), the strong lensing condition cannot be satisfied. For these particular events, resample lens parameters and draw image positions, i.e. repeat steps 2-7.
 9. Calculate the magnification, $\mu_i$, time-delay, $dt_i$ and morse phase, $n_i$ for each of the lensed event.
 10. Modify the luminosity distance, $D_l$ to $D_l^{eff}=D_l/\sqrt{|\mu_i|}$, and geocent_time to $t_{eff}=t_{geocent}+dt_i$. 
-11. Calculate SNR with [gwsnr](https://gwsnr.readthedocs.io/en/latest/)
+11. Calculate SNR with [gwsnr](https://gwsnr.hemantaph.com)
 12. Apply the SNR threshold and check whether the event is detectable or not.
 13. Calculate rate of lensed events, $\mathcal{R}_L$ using equation 13.

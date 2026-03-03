@@ -3,7 +3,7 @@
 Module for gravitational lensing cross section interpolation.
 
 This module provides highly optimized Numba-compiled functions for interpolating
-gravitational lensing cross sections in a 5-dimensional parameter space using 
+gravitational lensing cross sections in a 5-dimensional parameter space using
 cubic B-spline interpolation on prefiltered coefficient grids.
 
 The interpolation is performed based on: \n
@@ -24,7 +24,7 @@ Usage:
     >>> cs_func = make_cross_section_reinit(e1_grid, e2_grid, gamma_grid, ...)
     >>> cross_sections = cs_func(zs, zl, sigma, q, phi, gamma, gamma1, gamma2)
 
-Copyright (C) 2024 Hemanta Kumar Phurailatpam. Distributed under MIT License.
+Copyright (C) 2024 Hemantakumar Phurailatpam. Distributed under MIT License.
 """
 
 import numpy as np
@@ -36,7 +36,7 @@ from .lens_functions import phi_q2_ellipticity
 C_LIGHT = 299792.458  # km/s
 
 
-@njit
+@njit(cache=True)
 def _bspline3(t):
     """
     Evaluate the centered cubic B-spline basis function B3(t).
@@ -65,7 +65,7 @@ def _bspline3(t):
         return 0.0
 
 
-@njit
+@njit(cache=True)
 def _clamp_int(i, n):
     """
     Clamp an index to valid array bounds using 'nearest' boundary mode.
@@ -92,7 +92,7 @@ def _clamp_int(i, n):
     return i
 
 
-@njit
+@njit(cache=True)
 def _physical_to_index(x, x0, x1, n):
     """
     Convert a physical coordinate to a fractional grid index.
@@ -117,8 +117,8 @@ def _physical_to_index(x, x0, x1, n):
     return (x - x0) * (n - 1) / (x1 - x0)
 
 
-# @njit(parallel=True)
-@njit
+# @njit(parallel=True, cache=True)
+@njit(cache=True)
 def _map_coordinates_5d_cubic_nearest(coeff, ie1, ie2, ig, ig1, ig2):
     """
     Perform 5D cubic B-spline interpolation on prefiltered coefficients.
@@ -204,7 +204,7 @@ def _map_coordinates_5d_cubic_nearest(coeff, ie1, ie2, ig, ig1, ig2):
     return out
 
 
-@njit
+@njit(cache=True)
 def _cross_section(
     zs,
     zl,
@@ -312,7 +312,9 @@ def _cross_section(
         ig2[i] = _physical_to_index(gamma2[i], g2_min, g2_max, n_g2)
 
     # Unit cross-section via cubic spline interpolation
-    cs_unit = _map_coordinates_5d_cubic_nearest(cs_spline_coeff_grid, ie1, ie2, ig, ig1, ig2)
+    cs_unit = _map_coordinates_5d_cubic_nearest(
+        cs_spline_coeff_grid, ie1, ie2, ig, ig1, ig2
+    )
 
     # Scale by SIS area and apply affine calibration
     area_sis = np.pi * theta_E**2
@@ -336,8 +338,8 @@ def make_cross_section_reinit(
     """
     Factory function to create a JIT-compiled cross section calculator.
 
-    This function precomputes B-spline coefficients and creates a closure 
-    that captures the grid parameters, returning a fast Numba-compiled 
+    This function precomputes B-spline coefficients and creates a closure
+    that captures the grid parameters, returning a fast Numba-compiled
     function for computing cross sections.
 
     Parameters
@@ -396,7 +398,7 @@ def make_cross_section_reinit(
 
     Da_function = njit(lambda z: Da_instance(z))
 
-    @njit
+    @njit(cache=True)
     def cross_section_reinit(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):
         return _cross_section(
             zs=zs,

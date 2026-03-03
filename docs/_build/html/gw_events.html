@@ -1,469 +1,985 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
+
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gravitational wave event rates &mdash; ler 0.5.9 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
-      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
-      <link rel="stylesheet" type="text/css" href="_static/scalefix.css?v=11132fbc" />
-      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=88a06014" />
-      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
-      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
+  <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+  <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+  <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+  <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+  <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  <link rel="stylesheet" type="text/css" href="_static/scalefix.css?v=11132fbc" />
+  <link rel="stylesheet" type="text/css" href="_static/custom.css?v=88a06014" />
+  <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
+  <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
 
-  
-      <script src="_static/jquery.js?v=5d32c60e"></script>
-      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=9a3cda14"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="_static/copybutton.js?v=f281be69"></script>
-      <script src="_static/design-tabs.js?v=f930bc37"></script>
-      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "processEnvironments": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore", "processHtmlClass": "tex2jax_process"}}</script>
-      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-      <script src="_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
-      <script src="_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
-    <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+
+  <script src="_static/jquery.js?v=5d32c60e"></script>
+  <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+  <script src="_static/documentation_options.js?v=9a3cda14"></script>
+  <script src="_static/doctools.js?v=9bcbadda"></script>
+  <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+  <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+  <script src="_static/copybutton.js?v=f281be69"></script>
+  <script src="_static/design-tabs.js?v=f930bc37"></script>
+  <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA="
+    src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+  <script>window.MathJax = { "tex": { "inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "processEnvironments": true }, "options": { "ignoreHtmlClass": "tex2jax_ignore", "processHtmlClass": "tex2jax_process" } }</script>
+  <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+  <script src="_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+  <script src="_static/js/theme.js"></script>
+  <link rel="index" title="Index" href="genindex.html" />
+  <link rel="search" title="Search" href="search.html" />
 </head>
 
-<body class="wy-body-for-nav"> 
+<body class="wy-body-for-nav">
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #2980b9" >
+        <div class="wy-side-nav-search" style="background: #2980b9">
 
-          
-          
+
+
           <a href="index.html" class="icon icon-home">
             ler
           </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="code_overview.html">Code overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">API:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="examples/LeR_short_examples.html">LeR Short Example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
-</ul>
+          <div role="search">
+            <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+              <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+              <input type="hidden" name="check_keywords" value="yes" />
+              <input type="hidden" name="area" value="default" />
+            </form>
+          </div>
+        </div>
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+          <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+          <ul>
+            <li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="code_overview.html">Code overview</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="analytical_formulation_unlensed.html">Analytical
+                Formulation for Gravitational Wave Event Rates</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="analytical_formulation_lensed.html">Analytical
+                Formulation for Lensed Gravitational Wave Event Rates</a></li>
+          </ul>
+          <p class="caption" role="heading"><span class="caption-text">API:</span></p>
+          <ul>
+            <li class="toctree-l1"><a class="reference internal" href="autoapi/ler/rates/index.html"><code
+                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="autoapi/ler/gw_source_population/index.html"><code
+                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a>
+            </li>
+            <li class="toctree-l1"><a class="reference internal"
+                href="autoapi/ler/lens_galaxy_population/index.html"><code
+                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a>
+            </li>
+            <li class="toctree-l1"><a class="reference internal" href="autoapi/ler/image_properties/index.html"><code
+                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a>
+            </li>
+            <li class="toctree-l1"><a class="reference internal" href="autoapi/ler/utils/index.html"><code
+                  class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+          </ul>
+          <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+          <ul>
+            <li class="toctree-l1"><a class="reference internal" href="examples/LeR_short_examples.html">LeR Short
+                Example</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="examples/GWRATES_complete_examples.html">GWRATES
+                complete example</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="examples/LeR_custom_functions.html">LeR with
+                Custom Functions and Parameters</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="examples/LeR_advanced_sampling.html">LeR Advanced
+                Sampling — Generating Detectable Events</a></li>
+          </ul>
 
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">ler</a>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" aria-label="Mobile navigation menu" style="background: #2980b9">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">ler</a>
       </nav>
 
       <div class="wy-nav-content">
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Gravitational wave event rates</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="_sources/GW_events.ipynb.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
-</div>
+            <ul class="wy-breadcrumbs">
+              <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+              <li class="breadcrumb-item active">Gravitational wave event rates</li>
+              <li class="wy-breadcrumbs-aside">
+                <a href="_sources/GW_events.ipynb.txt" rel="nofollow"> View page source</a>
+              </li>
+            </ul>
+            <hr />
+          </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="Gravitational-wave-event-rates">
-<h1>Gravitational wave event rates<a class="headerlink" href="#Gravitational-wave-event-rates" title="Link to this heading"></a></h1>
-<p>This document outlines the default settings for calculating detectable gravitational wave event rates (per year) in <a class="reference external" href="https://ler.hemantaph.comindex.html">ler</a>.</p>
-<p>Refer to documentation page on <a class="reference external" href="https://ler.hemantaph.comGW_equations.html">Analytical formulation</a> for the detailed derivation of the rate equation.</p>
-<p><strong>Parameters Considered:</strong></p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(z_s\)</span>: Source redshift.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\theta\)</span>: Gravitational wave source properties. <span class="math notranslate nohighlight">\(m_1\)</span> (mass of the heavier one), <span class="math notranslate nohighlight">\(m_2\)</span> (mass of the lighter one), <span class="math notranslate nohighlight">\(D_l\)</span> (luminosity distance), <span class="math notranslate nohighlight">\(\iota\)</span> (inclination-angle), <span class="math notranslate nohighlight">\(\phi\)</span> (phase-of-coalescence), <span class="math notranslate nohighlight">\(\psi\)</span> (polarization-angle), <span class="math notranslate nohighlight">\(ra\)</span> (right-ascension), <span class="math notranslate nohighlight">\(dec\)</span> (declination), <span class="math notranslate nohighlight">\(t\)</span> (time-of-coalescence).</p></li>
-<li><p><span class="math notranslate nohighlight">\(\rho(z_s,\theta)\)</span>: Network optimal SNR.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\rho_{th}\)</span>: SNR threshold.</p></li>
-<li><p><span class="math notranslate nohighlight">\(R(z_s)\)</span>: Intrinsic merger-rate density distribution wrt redshift (source frame).</p></li>
-<li><p><span class="math notranslate nohighlight">\(\mathcal{N}^U\)</span>: Normalizing factor.</p></li>
-<li><p><span class="math notranslate nohighlight">\(P\)</span>: Prior distribution.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\Theta\)</span>: Detectability condition.</p></li>
-</ul>
-<p>Default cosmology: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0). But, it can be changed by the user at ler initialization.</p>
-<section id="Annual-Rate-of-Detectable-Gravitational-Wave-Events">
-<h2>Annual Rate of Detectable Gravitational Wave Events<a class="headerlink" href="#Annual-Rate-of-Detectable-Gravitational-Wave-Events" title="Link to this heading"></a></h2>
-<p>The rate, denoted as <span class="math notranslate nohighlight">\(R_U\)</span>, quantifies the expected number of gravitational wave events that can be observed by detectors within a year. The expression for <span class="math notranslate nohighlight">\(R_U\)</span> is given by:</p>
-<p><span class="math">\begin{equation}
-R_U = \mathcal{N}^U\int P(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\} dz_s \tag{2}
-\end{equation}</span></p>
-<p>Key aspects of this equation include:</p>
-<ul class="simple">
-<li><p><strong>SNR Operator,</strong> <span class="math notranslate nohighlight">\(\mathbf{\Theta[\rho(z_s,\theta)-\rho_{th}]}\)</span><strong>:</strong> This is a step function that determines whether the signal-to-noise ratio (SNR) <span class="math notranslate nohighlight">\(\rho(z_s,\theta)\)</span> of an event exceeds the threshold SNR <span class="math notranslate nohighlight">\(\rho_{th}\)</span>. If <span class="math notranslate nohighlight">\(\rho(z_s,\theta) \geq \rho_{th}\)</span>, the event is considered detectable.</p></li>
-<li><p>The SNR threshold <span class="math notranslate nohighlight">\(\mathbf{\rho_{th}}\)</span> is typically chosen based on the sensitivity and design specifications of the gravitational wave detector. This strategy is valid as a proxy in the Gaussian noise regime.</p></li>
-<li><p><strong>Prior Distribution,</strong> <span class="math notranslate nohighlight">\(\mathbf{P(\theta)}\)</span><strong>:</strong> This normalized distribution represents the prior knowledge or assumptions about the distribution of gravitational wave parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p></li>
-<li><p><strong>Normalized redshift distribution,</strong> <span class="math notranslate nohighlight">\(\mathbf{P(z_s)}\)</span><strong>:</strong> This represents the probability distribution of the source redshift <span class="math notranslate nohighlight">\(z_s\)</span>, as discussed in the previous section.</p></li>
-<li><p><strong>Gravitational Wave Parameters,</strong> <span class="math notranslate nohighlight">\(\mathbf{\theta}\)</span><strong>:</strong> The set of parameters includes the masses of the binary components (<span class="math notranslate nohighlight">\(m_1\)</span> and <span class="math notranslate nohighlight">\(m_2\)</span>), the inclination angle (<span class="math notranslate nohighlight">\(\iota\)</span>), the polarization angle (<span class="math notranslate nohighlight">\(\psi\)</span>), the right ascension (<span class="math notranslate nohighlight">\(ra\)</span>), the declination (<span class="math notranslate nohighlight">\(dec\)</span>), the phase of coalescence (<span class="math notranslate nohighlight">\(\phi_c\)</span>), and the time of coalescence (<span class="math notranslate nohighlight">\(t_c\)</span>).</p></li>
-</ul>
-<p>The integration over <span class="math notranslate nohighlight">\(z_s\)</span> and <span class="math notranslate nohighlight">\(\theta\)</span> in the equation accounts for the contributions from all detectable events across different redshifts and with varying gravitational wave parameters. This comprehensive approach enables the estimation of the annual rate of detectable gravitational wave events, which is crucial for understanding the observational capabilities of gravitational wave detectors and planning future observational strategies.</p>
-<p>Note: Refer to the <a class="reference external" href="https://gwsnr.readthedocs.io/en/latest/">GWSNR</a> package documentation for details on the calculation of the optimal signal-to-noise ratio (SNR).</p>
-<p><strong>Related parameter distributions and their dependencies are described in the following sections</strong></p>
-</section>
-<section id="Compact-Binaries-Merger-Rate-Density">
-<h2>Compact Binaries Merger Rate Density<a class="headerlink" href="#Compact-Binaries-Merger-Rate-Density" title="Link to this heading"></a></h2>
-<p>The merger rate density is a crucial parameter for understanding the population of compact binary mergers, including binary black holes (BBH), binary neutron stars (BNS), and neutron star-black hole (NSBH) systems. It quantifies the number of mergers occurring per unit volume per unit time. The merger rate density is typically expressed in units of <span class="math notranslate nohighlight">\(\text{Gpc}^{-3} \text{yr}^{-1}\)</span> or <span class="math notranslate nohighlight">\(\text{Mpc}^{-3} \text{yr}^{-1}\)</span> and varies with redshift (<span class="math notranslate nohighlight">\(z\)</span>).</p>
-<p>For available models for merger rate density, see the example section.</p>
-<section id="Merger-Rate-Density-Formula">
-<h3>Merger Rate Density Formula<a class="headerlink" href="#Merger-Rate-Density-Formula" title="Link to this heading"></a></h3>
-<p>The default merger rate density in ler follows the model presented in <a class="reference external" href="https://arxiv.org/pdf/2106.06303.pdf">WIERDA et al. 2021</a>. This model is a functional fit to the population I/II star merger-rate density, normalized to the local merger rate density. It extends from the M10 model to the Belczynski et al. (2017) model, which incorporates the metallicity dependence of the star formation rate, influenced by pair-instability supernova (PSN) and pair-instability pulsation supernova (PPSN)
-effects.</p>
-<p>The merger rate density in the source frame is given by:</p>
-<p><span class="math">\begin{equation}
-\mathcal{R}(z_s) = \frac{\mathcal{R}_O(b_4+1)e^{b_2 z_s}}{b_4+e^{b_3 z_s}} \text{Gpc}^{-3}\text{yr}^{-1} \tag{1}
-\end{equation}</span></p>
-<ul class="simple">
-<li><p>Where <span class="math notranslate nohighlight">\(z_s\)</span> is the redshift of the source.</p></li>
-<li><p>The local merger rate <span class="math notranslate nohighlight">\(\mathcal{R}_O\)</span> and fitting parameters <span class="math notranslate nohighlight">\(b_2\)</span>, <span class="math notranslate nohighlight">\(b_3\)</span>, and <span class="math notranslate nohighlight">\(b_4\)</span> are specific to each model.</p></li>
-</ul>
-<p>The following table provides the local merger rate <span class="math notranslate nohighlight">\(\mathcal{R}_O\)</span> for different compact binary models (refer to <a class="reference external" href="https://journals.aps.org/prx/pdf/10.1103/PhysRevX.13.011048">GWTC-3 IV A</a>):</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Model</p></th>
-<th class="head"><p><span class="math notranslate nohighlight">\(\mathcal{R}_O\)</span> (<span class="math notranslate nohighlight">\(\text{Gpc}^{-3} \text{yr}^{-1}\)</span>)</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>BNS</p></td>
-<td><p><span class="math notranslate nohighlight">\(105.5^{+190.2}_{-83.9}\)</span></p></td>
-</tr>
-<tr class="row-odd"><td><p>BBH</p></td>
-<td><p><span class="math notranslate nohighlight">\(23.9^{+14.9}_{-8.6}\)</span></p></td>
-</tr>
-<tr class="row-even"><td><p>NSBH</p></td>
-<td><p><span class="math notranslate nohighlight">\(45^{+75}_{-33}\)</span></p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Note:</strong> The merger rate density models and parameters are subject to updates based on new observational data and theoretical developments.</p>
-</section>
-<section id="Normalized-redshift-distribution">
-<h3>Normalized redshift distribution<a class="headerlink" href="#Normalized-redshift-distribution" title="Link to this heading"></a></h3>
-<p>Let the un-normalized redshift distribution given by,</p>
-<p><span class="math">\begin{equation}
-P_{\text{unorm}}(z_s) = \frac{\mathcal{R}(z_s)}{(1+z_s)} \frac{dV_c}{dz_s} \tag{2}
-\end{equation}</span></p>
-<p>where <span class="math notranslate nohighlight">\(dV_c/dz_s\)</span> is the differential comoving volume element and <span class="math notranslate nohighlight">\(\frac{1}{1+z_s}\)</span> is the time dilation factor.</p>
-<p>The normalizing factor <span class="math notranslate nohighlight">\(\mathcal{N}^U\)</span> can be calculated as,</p>
-<p><span class="math">\begin{equation}
-\mathcal{N}^U = \int_{z_{\text{min}}}^{z_{\text{max}}} P_{\text{unorm}}(z_s) dz_s = \int_{z_{\text{min}}}^{z_{\text{max}}} \frac{\mathcal{R}(z_s)}{(1+z_s)} \frac{dV_c}{dz_s} dz_s \tag{3}
-\end{equation}</span></p>
-<p>where <span class="math notranslate nohighlight">\(z_{\text{min}}\)</span> and <span class="math notranslate nohighlight">\(z_{\text{max}}\)</span> are the minimum and maximum redshifts considered for the calculation. Now we can write the normalized redshift distribution as,</p>
-<p><span class="math">\begin{equation}
-P(z_s) = \frac{P_{\text{unorm}}(z_s)}{\mathcal{N}^U} \tag{4}
-\end{equation}</span></p>
-<p><span class="math notranslate nohighlight">\(P(z_s)\)</span> is the probability distribution of the source redshift <span class="math notranslate nohighlight">\(z_s\)</span>. It is shown below for BBH events along with the merger rate density (source frame).</p>
-<!-- ### Sampling Method
+            <div itemprop="articleBody">
 
-Sampling of the source redshift $z_s$ is based on the inverse transform sampling method. An interpolation of the inverse cumulative distribution function (CDF) is created and stored for future use, making the sampling process faster and more efficient. --><p align="center"><p><img alt="zs" src="_images/BBH_Merger_rate_density_and_PDF_of_redshift.png" /></p>
-</p><p align="center"><p><img alt="zs" src="_images/BNS_Merger_rate_density_and_PDF_of_redshift.png" /></p>
-</p></section>
-</section>
-<section id="Compact-binaries-mass-distribution">
-<h2>Compact binaries mass distribution<a class="headerlink" href="#Compact-binaries-mass-distribution" title="Link to this heading"></a></h2>
-<section id="BBH-Mass-Distribution:-PowerLaw+Peak-Model">
-<h3>BBH Mass Distribution: PowerLaw+Peak Model<a class="headerlink" href="#BBH-Mass-Distribution:-PowerLaw+Peak-Model" title="Link to this heading"></a></h3>
-<p>The PowerLaw+Peak model is a parametric model used to describe the mass distribution of binary black hole (BBH) mergers. It combines a power-law component with a Gaussian peak to capture both the broad distribution and potential local enhancements in the mass spectrum of BBHs. The model is defined by the following parameters:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(m_{\text{minbh}}\)</span>: Minimum black hole mass in the distribution.</p></li>
-<li><p><span class="math notranslate nohighlight">\(m_{\text{maxbh}}\)</span>: Maximum black hole mass in the distribution.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\alpha\)</span>: Slope of the power-law component.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\mu_g\)</span>: Mean of the Gaussian peak.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\sigma_g\)</span>: Standard deviation of the Gaussian peak.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\lambda_{\text{peak}}\)</span>: Fractional contribution of the Gaussian peak to the overall distribution.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\delta_m\)</span>: Smoothing parameter for the transition between the power-law and Gaussian components.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\beta\)</span>: Exponent for the mass ratio distribution.</p></li>
-</ul>
-<p>For analytical expressions and details on the PowerLaw+Peak model, refer to the <a class="reference external" href="https://arxiv.org/pdf/2010.14533.pdf">GWTC-2 2021</a> (Appendix B3). The default values for the parameters are based on <a class="reference external" href="https://arxiv.org/pdf/2111.03604.pdf">GWTC-3 2021</a> (page-23). <a class="reference external" href="https://ler.hemantaph.comindex.html">ler</a> uses this model through <a class="reference external" href="https://lscsoft.docs.ligo.org/gwcosmo/">gwcosmo</a>.</p>
-<p>Here is the default parameters and resultant distribution:</p>
-<table><tr><td><table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Value</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(m_{\text{minbh}}\)</span></p></td>
-<td><p>4.98</p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(m_{\text{maxbh}}\)</span></p></td>
-<td><p>112.5</p></td>
-</tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\alpha\)</span></p></td>
-<td><p>3.78</p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mu_g\)</span></p></td>
-<td><p>32.27</p></td>
-</tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\sigma_g\)</span></p></td>
-<td><p>3.88</p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\lambda_{\text{peak}}\)</span></p></td>
-<td><p>0.03</p></td>
-</tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\delta_m\)</span></p></td>
-<td><p>4.8</p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\beta\)</span></p></td>
-<td><p>0.81</p></td>
-</tr>
-</tbody>
-</table>
-</td><td><p><img alt="mass_bbh" src="_images/bbh_mass.png" /></p>
-</td></tr></table></section>
-<section id="BNS-mass-distribution:-Bimodal-Gaussian-Model">
-<h3>BNS mass distribution: Bimodal Gaussian Model<a class="headerlink" href="#BNS-mass-distribution:-Bimodal-Gaussian-Model" title="Link to this heading"></a></h3>
-<p>The mass distribution of neutron stars in binary neutron star (BNS) systems can be characterized by a bimodal distribution, which can be modeled using a double Gaussian distribution. This bimodal distribution is considered to reflect the different evolutionary paths that neutron stars can take. For more details, refer to <a class="reference external" href="https://arxiv.org/pdf/1805.06442.pdf">Alsing et al. 2018</a> and <a class="reference external" href="https://arxiv.org/pdf/2005.00032.pdf">M. Farr et al. 2020</a>.</p>
-<p>The probability density function for the neutron star mass, <span class="math notranslate nohighlight">\(m\)</span>, is given by:</p>
-<p><span class="math">\begin{equation}
-p(m) = wN (\mu_L, \sigma_L) + (1 − w)N (\mu_R, \sigma_R)
-\end{equation}</span></p>
-<p>where: - <span class="math notranslate nohighlight">\(w\)</span>: Fraction of neutron stars in the low-mass peak. - <span class="math notranslate nohighlight">\(\mu_L\)</span> and <span class="math notranslate nohighlight">\(\mu_R\)</span>: Mean masses of the low-mass and high-mass peaks, respectively. - <span class="math notranslate nohighlight">\(\sigma_L\)</span> and <span class="math notranslate nohighlight">\(\sigma_R\)</span>: Standard deviations of the low-mass and high-mass peaks, respectively.</p>
-<p>Neutron stars that form from the collapse of massive stars in binary systems can either remain isolated or undergo mass transfer from their companion stars. Neutron stars that remain isolated typically have a lower mass distribution, with a peak at around 1.35 <span class="math notranslate nohighlight">\(M_{\odot}\)</span>. On the other hand, neutron stars that undergo mass transfer from their companion stars can have a higher mass distribution, with a peak at around 1.8 <span class="math notranslate nohighlight">\(M_{\odot}\)</span>.</p>
-<p>Here is the default parameters and resultant distribution:</p>
-<table><tr><td><table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Value</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(w\)</span></p></td>
-<td><p>0.643</p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mu_L\)</span></p></td>
-<td><p>1.352 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
-</tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\sigma_L\)</span></p></td>
-<td><p>0.08 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mu_R\)</span></p></td>
-<td><p>1.88 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
-</tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\sigma_R\)</span></p></td>
-<td><p>0.3 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(m_{\text{max}}\)</span></p></td>
-<td><p>2.3 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p></td>
-</tr>
-</tbody>
-</table>
-</td><td><p><img alt="mass_bns" src="_images/bns_mass.png" /></p>
-</td></tr></table><p>Each normal distribution is independently truncated and normalized in the range [1, 2.3] <span class="math notranslate nohighlight">\(M_{\odot}\)</span>, ensuring that the neutron star masses are within the physically plausible range.</p>
-<p>This model has been found to be a good fit for the observed mass distribution of neutron stars in binary systems.</p>
-<p>Note: Both primary and secondary masses are sampled from the same distribution. However, if the secondary mass is greater than the primary mass, their values are exchanged to maintain the convention that the primary mass is the larger of the two.</p>
-</section>
-</section>
-<section id="Sampling-Methods-for-Compact-Binary-Sources">
-<h2>Sampling Methods for Compact Binary Sources<a class="headerlink" href="#Sampling-Methods-for-Compact-Binary-Sources" title="Link to this heading"></a></h2>
-<p>The following table summarizes the sampling methods and ranges for various parameters of gravitational waves from BBHs:</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Unit</p></th>
-<th class="head"><p>Sampling Method</p></th>
-<th class="head"><p>Range</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(z_s\)</span></p></td>
-<td><p>None</p></td>
-<td><p>Merger rate <span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span></p></td>
-<td><p>[0, 10]</p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(m_1, m_2\)</span></p></td>
-<td><p><span class="math notranslate nohighlight">\(\mathcal{M}_{\odot}\)</span></p></td>
-<td><p>PowerLaw+Peak model</p></td>
-<td><p>[<span class="math notranslate nohighlight">\(m_{\text{min}}\)</span>, <span class="math notranslate nohighlight">\(m_{\text{max}}\)</span>]</p></td>
-</tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(ra\)</span></p></td>
-<td><p>Radian</p></td>
-<td><p>Uniform</p></td>
-<td><p>[0, <span class="math notranslate nohighlight">\(2\pi\)</span>]</p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(dec\)</span></p></td>
-<td><p>Radian</p></td>
-<td><p>Cosine</p></td>
-<td><p>[<span class="math notranslate nohighlight">\(-\pi/2\)</span>, <span class="math notranslate nohighlight">\(\pi/2\)</span>]</p></td>
-</tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\iota\)</span></p></td>
-<td><p>Radian</p></td>
-<td><p>Sine</p></td>
-<td><p>[0, <span class="math notranslate nohighlight">\(\pi\)</span>]</p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\psi\)</span></p></td>
-<td><p>Radian</p></td>
-<td><p>Uniform</p></td>
-<td><p>[0, <span class="math notranslate nohighlight">\(\pi\)</span>]</p></td>
-</tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\phi_c\)</span></p></td>
-<td><p>Radian</p></td>
-<td><p>Uniform</p></td>
-<td><p>[0, <span class="math notranslate nohighlight">\(2\pi\)</span>]</p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(t_c\)</span></p></td>
-<td><p>Second</p></td>
-<td><p>Uniform (one year)</p></td>
-<td><p>[<span class="math notranslate nohighlight">\(t_{\text{min}}\)</span>, <span class="math notranslate nohighlight">\(t_{\text{max}}\)</span>]</p></td>
-</tr>
-</tbody>
-</table>
-<p><code class="docutils literal notranslate"><span class="pre">ler</span></code> by default consider non-spinning sources. However, spin parameters can be included in <code class="docutils literal notranslate"><span class="pre">ler</span></code> initialization as given in the <a class="reference external" href="https://ler.hemantaph.comexamples/rates/LeR%20complete%20examples.html#Custom-functions">example</a>. Below is the default sampling method for the related parameters.</p>
-<p><strong>Case I:</strong> Aligned-spins sources (<span class="math notranslate nohighlight">\(a_1,\,a_2\)</span>: Dimensionless spin parameter for the more and less massive object respectively.)</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Unit</p></th>
-<th class="head"><p>Sampling Method</p></th>
-<th class="head"><p>Range</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(a_1, a_2\)</span></p></td>
-<td><p>None</p></td>
-<td><p>Uniform</p></td>
-<td><p>[-0.8, 0.8]</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Case II:</strong> Precessing sources (<span class="math notranslate nohighlight">\(a_1,\,a_2\)</span>: Dimensionless spin parameter for the more and less massive object respectively; <span class="math notranslate nohighlight">\(\theta_1,\,\theta_2\)</span>: Tilt angle of the spin with respect to the orbital angular momentum; <span class="math notranslate nohighlight">\(\phi_{12}\)</span>: Azimuthal angle between the spins; <span class="math notranslate nohighlight">\(\phi_{jl}\)</span>: Azimuthal angle between the total angular momentum and the orbital angular momentum.)</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Unit</p></th>
-<th class="head"><p>Sampling Method</p></th>
-<th class="head"><p>Range</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(a_1, a_2\)</span></p></td>
-<td><p>None</p></td>
-<td><p>Uniform</p></td>
-<td><p>[0.0, 0.8]</p></td>
-</tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\theta_1, \theta_2\)</span></p></td>
-<td><p>Radian</p></td>
-<td><p>Sine</p></td>
-<td><p>[0, <span class="math notranslate nohighlight">\(\pi\)</span>]</p></td>
-</tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\phi_{12}, \phi_{jl}\)</span></p></td>
-<td><p>Radian</p></td>
-<td><p>Uniform</p></td>
-<td><p>[0, <span class="math notranslate nohighlight">\(2\pi\)</span>]</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="Statistical-Form-of-Detectable-Merger-Rate-(Monte-Carlo-Integration)">
-<h2>Statistical Form of Detectable Merger Rate (Monte Carlo Integration)<a class="headerlink" href="#Statistical-Form-of-Detectable-Merger-Rate-(Monte-Carlo-Integration)" title="Link to this heading"></a></h2>
-<p>The detectable merger rate, <span class="math notranslate nohighlight">\(R_U\)</span>, can be statistically estimated using Monte Carlo integration. This can be done using either a step function or the probability of detection (<span class="math notranslate nohighlight">\(P_{\text{det}}\)</span>).</p>
-<ul class="simple">
-<li><p><strong>With Step Function:</strong></p></li>
-</ul>
-<p><span class="math">\begin{equation}
-\begin{split}
-R_U &= \mathcal{N}^U \left< \Theta[\rho(z_s,\theta)-\rho_{th}]\right>_{z_s,\theta \in \text{Sampled}[z_s,\theta]} \\
-&= \frac{\mathcal{N}^U}{N} \sum_i \Theta[\rho(z_s^i,\theta_i)-\rho_{th}]
-\end{split} \tag{6}
-\end{equation}</span></p>
-<ul class="simple">
-<li><p><strong>With :math:`P_{text{det}}`:</strong></p></li>
-</ul>
-<p><span class="math">\begin{equation}
-\begin{split}
-R_U &= \mathcal{N}^U \left<  P_{\text{det}}(z_s,\theta)\right>_{z_s,\theta \in \text{Sampled}[z_s,\theta]} \\
-&= \frac{\mathcal{N}^U}{N} \sum_i P_{\text{det}}(z_s^i,\theta_i)
-\end{split} \tag{7}
-\end{equation}</span></p>
-<p>In both cases, the average is taken over a sample of <span class="math notranslate nohighlight">\((z_s, \theta)\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the total number of samples. The step function <span class="math notranslate nohighlight">\(\Theta[\rho(z_s,\theta)-\rho_{th}]\)</span> evaluates to 1 if the SNR <span class="math notranslate nohighlight">\(\rho(z_s,\theta)\)</span> is above the threshold <span class="math notranslate nohighlight">\(\rho_{th}\)</span>, and 0 otherwise. The probability of detection, <span class="math notranslate nohighlight">\(P_{\text{det}}(z_s,\theta)\)</span>, provides a smoother transition from detectable to non-detectable events at the SNR threshold.</p>
-<p>The table below presents the merger rate values for two different detector configurations, considering spin-less systems for simplicity. The signal-to-noise ratio (SNR) operator is implemented using a step function with a threshold of 8, and the waveform approximant used is IMRPhenomD.</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Detector Configuration</p></th>
-<th class="head"><p>BBH (popI-II) Merger Rate (yr-1)</p></th>
-<th class="head"><p>BNS Merger Rate (yr-1)</p></th>
-<th class="head"><p>Ratio BBH:BNS</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>[L1, H1, V1] (O4)</p></td>
-<td><p>440.9</p></td>
-<td><p>3.2</p></td>
-<td><p>137.8</p></td>
-</tr>
-<tr class="row-odd"><td><p>[CE, ET] (3G)</p></td>
-<td><p>91942.8</p></td>
-<td><p>38810.4</p></td>
-<td><p>2.4</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
+              <section id="Gravitational-wave-event-rates">
+                <h1>Gravitational wave event rates<a class="headerlink" href="#Gravitational-wave-event-rates"
+                    title="Link to this heading"></a></h1>
+                <p>This document outlines the default settings for calculating detectable gravitational wave event rates
+                  (per year) in <a class="reference external" href="https://ler.hemantaph.comindex.html">ler</a>.</p>
+                <p>Refer to documentation page on <a class="reference external"
+                    href="https://ler.hemantaph.comGW_equations.html">Analytical formulation</a> for the detailed
+                  derivation of the rate equation.</p>
+                <p><strong>Parameters Considered:</strong></p>
+                <ul class="simple">
+                  <li>
+                    <p><span class="math notranslate nohighlight">\(z_s\)</span>: Source redshift.</p>
+                  </li>
+                  <li>
+                    <p><span class="math notranslate nohighlight">\(\theta\)</span>: Gravitational wave source
+                      properties. <span class="math notranslate nohighlight">\(m_1\)</span> (mass of the heavier one),
+                      <span class="math notranslate nohighlight">\(m_2\)</span> (mass of the lighter one), <span
+                        class="math notranslate nohighlight">\(D_l\)</span> (luminosity distance), <span
+                        class="math notranslate nohighlight">\(\iota\)</span> (inclination-angle), <span
+                        class="math notranslate nohighlight">\(\phi\)</span> (phase-of-coalescence), <span
+                        class="math notranslate nohighlight">\(\psi\)</span> (polarization-angle), <span
+                        class="math notranslate nohighlight">\(ra\)</span> (right-ascension), <span
+                        class="math notranslate nohighlight">\(dec\)</span> (declination), <span
+                        class="math notranslate nohighlight">\(t\)</span> (time-of-coalescence).</p>
+                  </li>
+                  <li>
+                    <p><span class="math notranslate nohighlight">\(\rho(z_s,\theta)\)</span>: Network optimal SNR.</p>
+                  </li>
+                  <li>
+                    <p><span class="math notranslate nohighlight">\(\rho_{th}\)</span>: SNR threshold.</p>
+                  </li>
+                  <li>
+                    <p><span class="math notranslate nohighlight">\(R(z_s)\)</span>: Intrinsic merger-rate density
+                      distribution wrt redshift (source frame).</p>
+                  </li>
+                  <li>
+                    <p><span class="math notranslate nohighlight">\(\mathcal{N}^U\)</span>: Normalizing factor.</p>
+                  </li>
+                  <li>
+                    <p><span class="math notranslate nohighlight">\(P\)</span>: Prior distribution.</p>
+                  </li>
+                  <li>
+                    <p><span class="math notranslate nohighlight">\(\Theta\)</span>: Detectability condition.</p>
+                  </li>
+                </ul>
+                <p>Default cosmology: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0).
+                  But, it can be changed by the user at ler initialization.</p>
+                <section id="Annual-Rate-of-Detectable-Gravitational-Wave-Events">
+                  <h2>Annual Rate of Detectable Gravitational Wave Events<a class="headerlink"
+                      href="#Annual-Rate-of-Detectable-Gravitational-Wave-Events" title="Link to this heading"></a>
+                  </h2>
+                  <p>The rate, denoted as <span class="math notranslate nohighlight">\(R_U\)</span>, quantifies the
+                    expected number of gravitational wave events that can be observed by detectors within a year. The
+                    expression for <span class="math notranslate nohighlight">\(R_U\)</span> is given by:</p>
+                  <p><span class="math">\begin{equation}
+                      R_U = \mathcal{N}^U\int P(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\}
+                      dz_s \tag{2}
+                      \end{equation}</span></p>
+                  <p>Key aspects of this equation include:</p>
+                  <ul class="simple">
+                    <li>
+                      <p><strong>SNR Operator,</strong> <span
+                          class="math notranslate nohighlight">\(\mathbf{\Theta[\rho(z_s,\theta)-\rho_{th}]}\)</span><strong>:</strong>
+                        This is a step function that determines whether the signal-to-noise ratio (SNR) <span
+                          class="math notranslate nohighlight">\(\rho(z_s,\theta)\)</span> of an event exceeds the
+                        threshold SNR <span class="math notranslate nohighlight">\(\rho_{th}\)</span>. If <span
+                          class="math notranslate nohighlight">\(\rho(z_s,\theta) \geq \rho_{th}\)</span>, the event is
+                        considered detectable.</p>
+                    </li>
+                    <li>
+                      <p>The SNR threshold <span class="math notranslate nohighlight">\(\mathbf{\rho_{th}}\)</span> is
+                        typically chosen based on the sensitivity and design specifications of the gravitational wave
+                        detector. This strategy is valid as a proxy in the Gaussian noise regime.</p>
+                    </li>
+                    <li>
+                      <p><strong>Prior Distribution,</strong> <span
+                          class="math notranslate nohighlight">\(\mathbf{P(\theta)}\)</span><strong>:</strong> This
+                        normalized distribution represents the prior knowledge or assumptions about the distribution of
+                        gravitational wave parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+                    </li>
+                    <li>
+                      <p><strong>Normalized redshift distribution,</strong> <span
+                          class="math notranslate nohighlight">\(\mathbf{P(z_s)}\)</span><strong>:</strong> This
+                        represents the probability distribution of the source redshift <span
+                          class="math notranslate nohighlight">\(z_s\)</span>, as discussed in the previous section.</p>
+                    </li>
+                    <li>
+                      <p><strong>Gravitational Wave Parameters,</strong> <span
+                          class="math notranslate nohighlight">\(\mathbf{\theta}\)</span><strong>:</strong> The set of
+                        parameters includes the masses of the binary components (<span
+                          class="math notranslate nohighlight">\(m_1\)</span> and <span
+                          class="math notranslate nohighlight">\(m_2\)</span>), the inclination angle (<span
+                          class="math notranslate nohighlight">\(\iota\)</span>), the polarization angle (<span
+                          class="math notranslate nohighlight">\(\psi\)</span>), the right ascension (<span
+                          class="math notranslate nohighlight">\(ra\)</span>), the declination (<span
+                          class="math notranslate nohighlight">\(dec\)</span>), the phase of coalescence (<span
+                          class="math notranslate nohighlight">\(\phi_c\)</span>), and the time of coalescence (<span
+                          class="math notranslate nohighlight">\(t_c\)</span>).</p>
+                    </li>
+                  </ul>
+                  <p>The integration over <span class="math notranslate nohighlight">\(z_s\)</span> and <span
+                      class="math notranslate nohighlight">\(\theta\)</span> in the equation accounts for the
+                    contributions from all detectable events across different redshifts and with varying gravitational
+                    wave parameters. This comprehensive approach enables the estimation of the annual rate of detectable
+                    gravitational wave events, which is crucial for understanding the observational capabilities of
+                    gravitational wave detectors and planning future observational strategies.</p>
+                  <p>Note: Refer to the <a class="reference external" href="https://gwsnr.hemantaph.com">GWSNR</a>
+                    package documentation for details on the calculation of the optimal signal-to-noise ratio (SNR).</p>
+                  <p><strong>Related parameter distributions and their dependencies are described in the following
+                      sections</strong></p>
+                </section>
+                <section id="Compact-Binaries-Merger-Rate-Density">
+                  <h2>Compact Binaries Merger Rate Density<a class="headerlink"
+                      href="#Compact-Binaries-Merger-Rate-Density" title="Link to this heading"></a></h2>
+                  <p>The merger rate density is a crucial parameter for understanding the population of compact binary
+                    mergers, including binary black holes (BBH), binary neutron stars (BNS), and neutron star-black hole
+                    (NSBH) systems. It quantifies the number of mergers occurring per unit volume per unit time. The
+                    merger rate density is typically expressed in units of <span
+                      class="math notranslate nohighlight">\(\text{Gpc}^{-3} \text{yr}^{-1}\)</span> or <span
+                      class="math notranslate nohighlight">\(\text{Mpc}^{-3} \text{yr}^{-1}\)</span> and varies with
+                    redshift (<span class="math notranslate nohighlight">\(z\)</span>).</p>
+                  <p>For available models for merger rate density, see the example section.</p>
+                  <section id="Merger-Rate-Density-Formula">
+                    <h3>Merger Rate Density Formula<a class="headerlink" href="#Merger-Rate-Density-Formula"
+                        title="Link to this heading"></a></h3>
+                    <p>The default merger rate density in ler follows the model presented in <a
+                        class="reference external" href="https://arxiv.org/pdf/2106.06303.pdf">WIERDA et al. 2021</a>.
+                      This model is a functional fit to the population I/II star merger-rate density, normalized to the
+                      local merger rate density. It extends from the M10 model to the Belczynski et al. (2017) model,
+                      which incorporates the metallicity dependence of the star formation rate, influenced by
+                      pair-instability supernova (PSN) and pair-instability pulsation supernova (PPSN)
+                      effects.</p>
+                    <p>The merger rate density in the source frame is given by:</p>
+                    <p><span class="math">\begin{equation}
+                        \mathcal{R}(z_s) = \frac{\mathcal{R}_O(b_4+1)e^{b_2 z_s}}{b_4+e^{b_3 z_s}}
+                        \text{Gpc}^{-3}\text{yr}^{-1} \tag{1}
+                        \end{equation}</span></p>
+                    <ul class="simple">
+                      <li>
+                        <p>Where <span class="math notranslate nohighlight">\(z_s\)</span> is the redshift of the
+                          source.</p>
+                      </li>
+                      <li>
+                        <p>The local merger rate <span class="math notranslate nohighlight">\(\mathcal{R}_O\)</span> and
+                          fitting parameters <span class="math notranslate nohighlight">\(b_2\)</span>, <span
+                            class="math notranslate nohighlight">\(b_3\)</span>, and <span
+                            class="math notranslate nohighlight">\(b_4\)</span> are specific to each model.</p>
+                      </li>
+                    </ul>
+                    <p>The following table provides the local merger rate <span
+                        class="math notranslate nohighlight">\(\mathcal{R}_O\)</span> for different compact binary
+                      models (refer to <a class="reference external"
+                        href="https://journals.aps.org/prx/pdf/10.1103/PhysRevX.13.011048">GWTC-3 IV A</a>):</p>
+                    <table class="docutils align-default">
+                      <thead>
+                        <tr class="row-odd">
+                          <th class="head">
+                            <p>Model</p>
+                          </th>
+                          <th class="head">
+                            <p><span class="math notranslate nohighlight">\(\mathcal{R}_O\)</span> (<span
+                                class="math notranslate nohighlight">\(\text{Gpc}^{-3} \text{yr}^{-1}\)</span>)</p>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="row-even">
+                          <td>
+                            <p>BNS</p>
+                          </td>
+                          <td>
+                            <p><span class="math notranslate nohighlight">\(105.5^{+190.2}_{-83.9}\)</span></p>
+                          </td>
+                        </tr>
+                        <tr class="row-odd">
+                          <td>
+                            <p>BBH</p>
+                          </td>
+                          <td>
+                            <p><span class="math notranslate nohighlight">\(23.9^{+14.9}_{-8.6}\)</span></p>
+                          </td>
+                        </tr>
+                        <tr class="row-even">
+                          <td>
+                            <p>NSBH</p>
+                          </td>
+                          <td>
+                            <p><span class="math notranslate nohighlight">\(45^{+75}_{-33}\)</span></p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p><strong>Note:</strong> The merger rate density models and parameters are subject to updates based
+                      on new observational data and theoretical developments.</p>
+                  </section>
+                  <section id="Normalized-redshift-distribution">
+                    <h3>Normalized redshift distribution<a class="headerlink" href="#Normalized-redshift-distribution"
+                        title="Link to this heading"></a></h3>
+                    <p>Let the un-normalized redshift distribution given by,</p>
+                    <p><span class="math">\begin{equation}
+                        P_{\text{unorm}}(z_s) = \frac{\mathcal{R}(z_s)}{(1+z_s)} \frac{dV_c}{dz_s} \tag{2}
+                        \end{equation}</span></p>
+                    <p>where <span class="math notranslate nohighlight">\(dV_c/dz_s\)</span> is the differential
+                      comoving volume element and <span class="math notranslate nohighlight">\(\frac{1}{1+z_s}\)</span>
+                      is the time dilation factor.</p>
+                    <p>The normalizing factor <span class="math notranslate nohighlight">\(\mathcal{N}^U\)</span> can be
+                      calculated as,</p>
+                    <p><span class="math">\begin{equation}
+                        \mathcal{N}^U = \int_{z_{\text{min}}}^{z_{\text{max}}} P_{\text{unorm}}(z_s) dz_s =
+                        \int_{z_{\text{min}}}^{z_{\text{max}}} \frac{\mathcal{R}(z_s)}{(1+z_s)} \frac{dV_c}{dz_s} dz_s
+                        \tag{3}
+                        \end{equation}</span></p>
+                    <p>where <span class="math notranslate nohighlight">\(z_{\text{min}}\)</span> and <span
+                        class="math notranslate nohighlight">\(z_{\text{max}}\)</span> are the minimum and maximum
+                      redshifts considered for the calculation. Now we can write the normalized redshift distribution
+                      as,</p>
+                    <p><span class="math">\begin{equation}
+                        P(z_s) = \frac{P_{\text{unorm}}(z_s)}{\mathcal{N}^U} \tag{4}
+                        \end{equation}</span></p>
+                    <p><span class="math notranslate nohighlight">\(P(z_s)\)</span> is the probability distribution of
+                      the source redshift <span class="math notranslate nohighlight">\(z_s\)</span>. It is shown below
+                      for BBH events along with the merger rate density (source frame).</p>
+                    <!-- ### Sampling Method
+
+Sampling of the source redshift $z_s$ is based on the inverse transform sampling method. An interpolation of the inverse cumulative distribution function (CDF) is created and stored for future use, making the sampling process faster and more efficient. -->
+                    <p align="center">
+                    <p><img alt="zs" src="_images/BBH_Merger_rate_density_and_PDF_of_redshift.png" /></p>
+                    </p>
+                    <p align="center">
+                    <p><img alt="zs" src="_images/BNS_Merger_rate_density_and_PDF_of_redshift.png" /></p>
+                    </p>
+                  </section>
+                </section>
+                <section id="Compact-binaries-mass-distribution">
+                  <h2>Compact binaries mass distribution<a class="headerlink" href="#Compact-binaries-mass-distribution"
+                      title="Link to this heading"></a></h2>
+                  <section id="BBH-Mass-Distribution:-PowerLaw+Peak-Model">
+                    <h3>BBH Mass Distribution: PowerLaw+Peak Model<a class="headerlink"
+                        href="#BBH-Mass-Distribution:-PowerLaw+Peak-Model" title="Link to this heading"></a></h3>
+                    <p>The PowerLaw+Peak model is a parametric model used to describe the mass distribution of binary
+                      black hole (BBH) mergers. It combines a power-law component with a Gaussian peak to capture both
+                      the broad distribution and potential local enhancements in the mass spectrum of BBHs. The model is
+                      defined by the following parameters:</p>
+                    <ul class="simple">
+                      <li>
+                        <p><span class="math notranslate nohighlight">\(m_{\text{minbh}}\)</span>: Minimum black hole
+                          mass in the distribution.</p>
+                      </li>
+                      <li>
+                        <p><span class="math notranslate nohighlight">\(m_{\text{maxbh}}\)</span>: Maximum black hole
+                          mass in the distribution.</p>
+                      </li>
+                      <li>
+                        <p><span class="math notranslate nohighlight">\(\alpha\)</span>: Slope of the power-law
+                          component.</p>
+                      </li>
+                      <li>
+                        <p><span class="math notranslate nohighlight">\(\mu_g\)</span>: Mean of the Gaussian peak.</p>
+                      </li>
+                      <li>
+                        <p><span class="math notranslate nohighlight">\(\sigma_g\)</span>: Standard deviation of the
+                          Gaussian peak.</p>
+                      </li>
+                      <li>
+                        <p><span class="math notranslate nohighlight">\(\lambda_{\text{peak}}\)</span>: Fractional
+                          contribution of the Gaussian peak to the overall distribution.</p>
+                      </li>
+                      <li>
+                        <p><span class="math notranslate nohighlight">\(\delta_m\)</span>: Smoothing parameter for the
+                          transition between the power-law and Gaussian components.</p>
+                      </li>
+                      <li>
+                        <p><span class="math notranslate nohighlight">\(\beta\)</span>: Exponent for the mass ratio
+                          distribution.</p>
+                      </li>
+                    </ul>
+                    <p>For analytical expressions and details on the PowerLaw+Peak model, refer to the <a
+                        class="reference external" href="https://arxiv.org/pdf/2010.14533.pdf">GWTC-2 2021</a> (Appendix
+                      B3). The default values for the parameters are based on <a class="reference external"
+                        href="https://arxiv.org/pdf/2111.03604.pdf">GWTC-3 2021</a> (page-23). <a
+                        class="reference external" href="https://ler.hemantaph.comindex.html">ler</a> uses this model
+                      through <a class="reference external" href="https://lscsoft.docs.ligo.org/gwcosmo/">gwcosmo</a>.
+                    </p>
+                    <p>Here is the default parameters and resultant distribution:</p>
+                    <table>
+                      <tr>
+                        <td>
+                          <table class="docutils align-default">
+                            <thead>
+                              <tr class="row-odd">
+                                <th class="head">
+                                  <p>Parameter</p>
+                                </th>
+                                <th class="head">
+                                  <p>Value</p>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr class="row-even">
+                                <td>
+                                  <p><span class="math notranslate nohighlight">\(m_{\text{minbh}}\)</span></p>
+                                </td>
+                                <td>
+                                  <p>4.98</p>
+                                </td>
+                              </tr>
+                              <tr class="row-odd">
+                                <td>
+                                  <p><span class="math notranslate nohighlight">\(m_{\text{maxbh}}\)</span></p>
+                                </td>
+                                <td>
+                                  <p>112.5</p>
+                                </td>
+                              </tr>
+                              <tr class="row-even">
+                                <td>
+                                  <p><span class="math notranslate nohighlight">\(\alpha\)</span></p>
+                                </td>
+                                <td>
+                                  <p>3.78</p>
+                                </td>
+                              </tr>
+                              <tr class="row-odd">
+                                <td>
+                                  <p><span class="math notranslate nohighlight">\(\mu_g\)</span></p>
+                                </td>
+                                <td>
+                                  <p>32.27</p>
+                                </td>
+                              </tr>
+                              <tr class="row-even">
+                                <td>
+                                  <p><span class="math notranslate nohighlight">\(\sigma_g\)</span></p>
+                                </td>
+                                <td>
+                                  <p>3.88</p>
+                                </td>
+                              </tr>
+                              <tr class="row-odd">
+                                <td>
+                                  <p><span class="math notranslate nohighlight">\(\lambda_{\text{peak}}\)</span></p>
+                                </td>
+                                <td>
+                                  <p>0.03</p>
+                                </td>
+                              </tr>
+                              <tr class="row-even">
+                                <td>
+                                  <p><span class="math notranslate nohighlight">\(\delta_m\)</span></p>
+                                </td>
+                                <td>
+                                  <p>4.8</p>
+                                </td>
+                              </tr>
+                              <tr class="row-odd">
+                                <td>
+                                  <p><span class="math notranslate nohighlight">\(\beta\)</span></p>
+                                </td>
+                                <td>
+                                  <p>0.81</p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                        <td>
+                          <p><img alt="mass_bbh" src="_images/bbh_mass.png" /></p>
+                        </td>
+                      </tr>
+                    </table>
+                  </section>
+                  <section id="BNS-mass-distribution:-Bimodal-Gaussian-Model">
+                    <h3>BNS mass distribution: Bimodal Gaussian Model<a class="headerlink"
+                        href="#BNS-mass-distribution:-Bimodal-Gaussian-Model" title="Link to this heading"></a></h3>
+                    <p>The mass distribution of neutron stars in binary neutron star (BNS) systems can be characterized
+                      by a bimodal distribution, which can be modeled using a double Gaussian distribution. This bimodal
+                      distribution is considered to reflect the different evolutionary paths that neutron stars can
+                      take. For more details, refer to <a class="reference external"
+                        href="https://arxiv.org/pdf/1805.06442.pdf">Alsing et al. 2018</a> and <a
+                        class="reference external" href="https://arxiv.org/pdf/2005.00032.pdf">M. Farr et al. 2020</a>.
+                    </p>
+                    <p>The probability density function for the neutron star mass, <span
+                        class="math notranslate nohighlight">\(m\)</span>, is given by:</p>
+                    <p><span class="math">\begin{equation}
+                        p(m) = wN (\mu_L, \sigma_L) + (1 − w)N (\mu_R, \sigma_R)
+                        \end{equation}</span></p>
+                    <p>where: - <span class="math notranslate nohighlight">\(w\)</span>: Fraction of neutron stars in
+                      the low-mass peak. - <span class="math notranslate nohighlight">\(\mu_L\)</span> and <span
+                        class="math notranslate nohighlight">\(\mu_R\)</span>: Mean masses of the low-mass and high-mass
+                      peaks, respectively. - <span class="math notranslate nohighlight">\(\sigma_L\)</span> and <span
+                        class="math notranslate nohighlight">\(\sigma_R\)</span>: Standard deviations of the low-mass
+                      and high-mass peaks, respectively.</p>
+                    <p>Neutron stars that form from the collapse of massive stars in binary systems can either remain
+                      isolated or undergo mass transfer from their companion stars. Neutron stars that remain isolated
+                      typically have a lower mass distribution, with a peak at around 1.35 <span
+                        class="math notranslate nohighlight">\(M_{\odot}\)</span>. On the other hand, neutron stars that
+                      undergo mass transfer from their companion stars can have a higher mass distribution, with a peak
+                      at around 1.8 <span class="math notranslate nohighlight">\(M_{\odot}\)</span>.</p>
+                    <p>Here is the default parameters and resultant distribution:</p>
+                    <table>
+                      <tr>
+                        <td>
+                          <table class="docutils align-default">
+                            <thead>
+                              <tr class="row-odd">
+                                <th class="head">
+                                  <p>Parameter</p>
+                                </th>
+                                <th class="head">
+                                  <p>Value</p>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr class="row-even">
+                                <td>
+                                  <p><span class="math notranslate nohighlight">\(w\)</span></p>
+                                </td>
+                                <td>
+                                  <p>0.643</p>
+                                </td>
+                              </tr>
+                              <tr class="row-odd">
+                                <td>
+                                  <p><span class="math notranslate nohighlight">\(\mu_L\)</span></p>
+                                </td>
+                                <td>
+                                  <p>1.352 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p>
+                                </td>
+                              </tr>
+                              <tr class="row-even">
+                                <td>
+                                  <p><span class="math notranslate nohighlight">\(\sigma_L\)</span></p>
+                                </td>
+                                <td>
+                                  <p>0.08 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p>
+                                </td>
+                              </tr>
+                              <tr class="row-odd">
+                                <td>
+                                  <p><span class="math notranslate nohighlight">\(\mu_R\)</span></p>
+                                </td>
+                                <td>
+                                  <p>1.88 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p>
+                                </td>
+                              </tr>
+                              <tr class="row-even">
+                                <td>
+                                  <p><span class="math notranslate nohighlight">\(\sigma_R\)</span></p>
+                                </td>
+                                <td>
+                                  <p>0.3 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p>
+                                </td>
+                              </tr>
+                              <tr class="row-odd">
+                                <td>
+                                  <p><span class="math notranslate nohighlight">\(m_{\text{max}}\)</span></p>
+                                </td>
+                                <td>
+                                  <p>2.3 <span class="math notranslate nohighlight">\(M_{\odot}\)</span></p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                        <td>
+                          <p><img alt="mass_bns" src="_images/bns_mass.png" /></p>
+                        </td>
+                      </tr>
+                    </table>
+                    <p>Each normal distribution is independently truncated and normalized in the range [1, 2.3] <span
+                        class="math notranslate nohighlight">\(M_{\odot}\)</span>, ensuring that the neutron star masses
+                      are within the physically plausible range.</p>
+                    <p>This model has been found to be a good fit for the observed mass distribution of neutron stars in
+                      binary systems.</p>
+                    <p>Note: Both primary and secondary masses are sampled from the same distribution. However, if the
+                      secondary mass is greater than the primary mass, their values are exchanged to maintain the
+                      convention that the primary mass is the larger of the two.</p>
+                  </section>
+                </section>
+                <section id="Sampling-Methods-for-Compact-Binary-Sources">
+                  <h2>Sampling Methods for Compact Binary Sources<a class="headerlink"
+                      href="#Sampling-Methods-for-Compact-Binary-Sources" title="Link to this heading"></a></h2>
+                  <p>The following table summarizes the sampling methods and ranges for various parameters of
+                    gravitational waves from BBHs:</p>
+                  <table class="docutils align-default">
+                    <thead>
+                      <tr class="row-odd">
+                        <th class="head">
+                          <p>Parameter</p>
+                        </th>
+                        <th class="head">
+                          <p>Unit</p>
+                        </th>
+                        <th class="head">
+                          <p>Sampling Method</p>
+                        </th>
+                        <th class="head">
+                          <p>Range</p>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="row-even">
+                        <td>
+                          <p><span class="math notranslate nohighlight">\(z_s\)</span></p>
+                        </td>
+                        <td>
+                          <p>None</p>
+                        </td>
+                        <td>
+                          <p>Merger rate <span class="math notranslate nohighlight">\(R_o^U(z_s)\)</span></p>
+                        </td>
+                        <td>
+                          <p>[0, 10]</p>
+                        </td>
+                      </tr>
+                      <tr class="row-odd">
+                        <td>
+                          <p><span class="math notranslate nohighlight">\(m_1, m_2\)</span></p>
+                        </td>
+                        <td>
+                          <p><span class="math notranslate nohighlight">\(\mathcal{M}_{\odot}\)</span></p>
+                        </td>
+                        <td>
+                          <p>PowerLaw+Peak model</p>
+                        </td>
+                        <td>
+                          <p>[<span class="math notranslate nohighlight">\(m_{\text{min}}\)</span>, <span
+                              class="math notranslate nohighlight">\(m_{\text{max}}\)</span>]</p>
+                        </td>
+                      </tr>
+                      <tr class="row-even">
+                        <td>
+                          <p><span class="math notranslate nohighlight">\(ra\)</span></p>
+                        </td>
+                        <td>
+                          <p>Radian</p>
+                        </td>
+                        <td>
+                          <p>Uniform</p>
+                        </td>
+                        <td>
+                          <p>[0, <span class="math notranslate nohighlight">\(2\pi\)</span>]</p>
+                        </td>
+                      </tr>
+                      <tr class="row-odd">
+                        <td>
+                          <p><span class="math notranslate nohighlight">\(dec\)</span></p>
+                        </td>
+                        <td>
+                          <p>Radian</p>
+                        </td>
+                        <td>
+                          <p>Cosine</p>
+                        </td>
+                        <td>
+                          <p>[<span class="math notranslate nohighlight">\(-\pi/2\)</span>, <span
+                              class="math notranslate nohighlight">\(\pi/2\)</span>]</p>
+                        </td>
+                      </tr>
+                      <tr class="row-even">
+                        <td>
+                          <p><span class="math notranslate nohighlight">\(\iota\)</span></p>
+                        </td>
+                        <td>
+                          <p>Radian</p>
+                        </td>
+                        <td>
+                          <p>Sine</p>
+                        </td>
+                        <td>
+                          <p>[0, <span class="math notranslate nohighlight">\(\pi\)</span>]</p>
+                        </td>
+                      </tr>
+                      <tr class="row-odd">
+                        <td>
+                          <p><span class="math notranslate nohighlight">\(\psi\)</span></p>
+                        </td>
+                        <td>
+                          <p>Radian</p>
+                        </td>
+                        <td>
+                          <p>Uniform</p>
+                        </td>
+                        <td>
+                          <p>[0, <span class="math notranslate nohighlight">\(\pi\)</span>]</p>
+                        </td>
+                      </tr>
+                      <tr class="row-even">
+                        <td>
+                          <p><span class="math notranslate nohighlight">\(\phi_c\)</span></p>
+                        </td>
+                        <td>
+                          <p>Radian</p>
+                        </td>
+                        <td>
+                          <p>Uniform</p>
+                        </td>
+                        <td>
+                          <p>[0, <span class="math notranslate nohighlight">\(2\pi\)</span>]</p>
+                        </td>
+                      </tr>
+                      <tr class="row-odd">
+                        <td>
+                          <p><span class="math notranslate nohighlight">\(t_c\)</span></p>
+                        </td>
+                        <td>
+                          <p>Second</p>
+                        </td>
+                        <td>
+                          <p>Uniform (one year)</p>
+                        </td>
+                        <td>
+                          <p>[<span class="math notranslate nohighlight">\(t_{\text{min}}\)</span>, <span
+                              class="math notranslate nohighlight">\(t_{\text{max}}\)</span>]</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><code class="docutils literal notranslate"><span class="pre">ler</span></code> by default consider
+                    non-spinning sources. However, spin parameters can be included in <code
+                      class="docutils literal notranslate"><span class="pre">ler</span></code> initialization as given
+                    in the <a class="reference external"
+                      href="https://ler.hemantaph.comexamples/rates/LeR%20complete%20examples.html#Custom-functions">example</a>.
+                    Below is the default sampling method for the related parameters.</p>
+                  <p><strong>Case I:</strong> Aligned-spins sources (<span
+                      class="math notranslate nohighlight">\(a_1,\,a_2\)</span>: Dimensionless spin parameter for the
+                    more and less massive object respectively.)</p>
+                  <table class="docutils align-default">
+                    <thead>
+                      <tr class="row-odd">
+                        <th class="head">
+                          <p>Parameter</p>
+                        </th>
+                        <th class="head">
+                          <p>Unit</p>
+                        </th>
+                        <th class="head">
+                          <p>Sampling Method</p>
+                        </th>
+                        <th class="head">
+                          <p>Range</p>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="row-even">
+                        <td>
+                          <p><span class="math notranslate nohighlight">\(a_1, a_2\)</span></p>
+                        </td>
+                        <td>
+                          <p>None</p>
+                        </td>
+                        <td>
+                          <p>Uniform</p>
+                        </td>
+                        <td>
+                          <p>[-0.8, 0.8]</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Case II:</strong> Precessing sources (<span
+                      class="math notranslate nohighlight">\(a_1,\,a_2\)</span>: Dimensionless spin parameter for the
+                    more and less massive object respectively; <span
+                      class="math notranslate nohighlight">\(\theta_1,\,\theta_2\)</span>: Tilt angle of the spin with
+                    respect to the orbital angular momentum; <span
+                      class="math notranslate nohighlight">\(\phi_{12}\)</span>: Azimuthal angle between the spins;
+                    <span class="math notranslate nohighlight">\(\phi_{jl}\)</span>: Azimuthal angle between the total
+                    angular momentum and the orbital angular momentum.)</p>
+                  <table class="docutils align-default">
+                    <thead>
+                      <tr class="row-odd">
+                        <th class="head">
+                          <p>Parameter</p>
+                        </th>
+                        <th class="head">
+                          <p>Unit</p>
+                        </th>
+                        <th class="head">
+                          <p>Sampling Method</p>
+                        </th>
+                        <th class="head">
+                          <p>Range</p>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="row-even">
+                        <td>
+                          <p><span class="math notranslate nohighlight">\(a_1, a_2\)</span></p>
+                        </td>
+                        <td>
+                          <p>None</p>
+                        </td>
+                        <td>
+                          <p>Uniform</p>
+                        </td>
+                        <td>
+                          <p>[0.0, 0.8]</p>
+                        </td>
+                      </tr>
+                      <tr class="row-odd">
+                        <td>
+                          <p><span class="math notranslate nohighlight">\(\theta_1, \theta_2\)</span></p>
+                        </td>
+                        <td>
+                          <p>Radian</p>
+                        </td>
+                        <td>
+                          <p>Sine</p>
+                        </td>
+                        <td>
+                          <p>[0, <span class="math notranslate nohighlight">\(\pi\)</span>]</p>
+                        </td>
+                      </tr>
+                      <tr class="row-even">
+                        <td>
+                          <p><span class="math notranslate nohighlight">\(\phi_{12}, \phi_{jl}\)</span></p>
+                        </td>
+                        <td>
+                          <p>Radian</p>
+                        </td>
+                        <td>
+                          <p>Uniform</p>
+                        </td>
+                        <td>
+                          <p>[0, <span class="math notranslate nohighlight">\(2\pi\)</span>]</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section id="Statistical-Form-of-Detectable-Merger-Rate-(Monte-Carlo-Integration)">
+                  <h2>Statistical Form of Detectable Merger Rate (Monte Carlo Integration)<a class="headerlink"
+                      href="#Statistical-Form-of-Detectable-Merger-Rate-(Monte-Carlo-Integration)"
+                      title="Link to this heading"></a></h2>
+                  <p>The detectable merger rate, <span class="math notranslate nohighlight">\(R_U\)</span>, can be
+                    statistically estimated using Monte Carlo integration. This can be done using either a step function
+                    or the probability of detection (<span
+                      class="math notranslate nohighlight">\(P_{\text{det}}\)</span>).</p>
+                  <ul class="simple">
+                    <li>
+                      <p><strong>With Step Function:</strong></p>
+                    </li>
+                  </ul>
+                  <p><span class="math">\begin{equation}
+                      \begin{split}
+                      R_U &= \mathcal{N}^U \left< \Theta[\rho(z_s,\theta)-\rho_{th}]\right>_{z_s,\theta \in
+                        \text{Sampled}[z_s,\theta]} \\
+                        &= \frac{\mathcal{N}^U}{N} \sum_i \Theta[\rho(z_s^i,\theta_i)-\rho_{th}]
+                        \end{split} \tag{6}
+                        \end{equation}</span></p>
+                  <ul class="simple">
+                    <li>
+                      <p><strong>With :math:`P_{text{det}}`:</strong></p>
+                    </li>
+                  </ul>
+                  <p><span class="math">\begin{equation}
+                      \begin{split}
+                      R_U &= \mathcal{N}^U \left< P_{\text{det}}(z_s,\theta)\right>_{z_s,\theta \in
+                        \text{Sampled}[z_s,\theta]} \\
+                        &= \frac{\mathcal{N}^U}{N} \sum_i P_{\text{det}}(z_s^i,\theta_i)
+                        \end{split} \tag{7}
+                        \end{equation}</span></p>
+                  <p>In both cases, the average is taken over a sample of <span
+                      class="math notranslate nohighlight">\((z_s, \theta)\)</span>, where <span
+                      class="math notranslate nohighlight">\(N\)</span> is the total number of samples. The step
+                    function <span class="math notranslate nohighlight">\(\Theta[\rho(z_s,\theta)-\rho_{th}]\)</span>
+                    evaluates to 1 if the SNR <span class="math notranslate nohighlight">\(\rho(z_s,\theta)\)</span> is
+                    above the threshold <span class="math notranslate nohighlight">\(\rho_{th}\)</span>, and 0
+                    otherwise. The probability of detection, <span
+                      class="math notranslate nohighlight">\(P_{\text{det}}(z_s,\theta)\)</span>, provides a smoother
+                    transition from detectable to non-detectable events at the SNR threshold.</p>
+                  <p>The table below presents the merger rate values for two different detector configurations,
+                    considering spin-less systems for simplicity. The signal-to-noise ratio (SNR) operator is
+                    implemented using a step function with a threshold of 8, and the waveform approximant used is
+                    IMRPhenomD.</p>
+                  <table class="docutils align-default">
+                    <thead>
+                      <tr class="row-odd">
+                        <th class="head">
+                          <p>Detector Configuration</p>
+                        </th>
+                        <th class="head">
+                          <p>BBH (popI-II) Merger Rate (yr-1)</p>
+                        </th>
+                        <th class="head">
+                          <p>BNS Merger Rate (yr-1)</p>
+                        </th>
+                        <th class="head">
+                          <p>Ratio BBH:BNS</p>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="row-even">
+                        <td>
+                          <p>[L1, H1, V1] (O4)</p>
+                        </td>
+                        <td>
+                          <p>440.9</p>
+                        </td>
+                        <td>
+                          <p>3.2</p>
+                        </td>
+                        <td>
+                          <p>137.8</p>
+                        </td>
+                      </tr>
+                      <tr class="row-odd">
+                        <td>
+                          <p>[CE, ET] (3G)</p>
+                        </td>
+                        <td>
+                          <p>91942.8</p>
+                        </td>
+                        <td>
+                          <p>38810.4</p>
+                        </td>
+                        <td>
+                          <p>2.4</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+              </section>
 
 
-           </div>
+            </div>
           </div>
           <footer>
 
-  <hr/>
+            <hr />
 
-  <div role="contentinfo">
-    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
-  </div>
+            <div role="contentinfo">
+              <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+            </div>
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+            <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+            provided by <a href="https://readthedocs.org">Read the Docs</a>.
 
-</footer>
+
+          </footer>
         </div>
       </div>
     </section>
   </div>
   <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+    jQuery(function () {
+      SphinxRtdTheme.Navigation.enable(true);
+    });
+  </script>
 
 </body>
+
 </html>

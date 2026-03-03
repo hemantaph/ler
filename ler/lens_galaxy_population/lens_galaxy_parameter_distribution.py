@@ -27,7 +27,7 @@ Copyright (C) 2026 Phurailatpam Hemantakumar. Distributed under MIT License.
 import warnings
 import numpy as np
 from scipy.integrate import quad
-from numba import njit
+from astropy.cosmology import LambdaCDM
 
 from .optical_depth import OpticalDepth
 from .sampler_functions import _njit_checks
@@ -183,7 +183,13 @@ class LensGalaxyParameterDistribution(
         **kwargs,
     ):
         print("\nInitializing LensGalaxyParameterDistribution class...\n")
-        self.event_type = event_type
+        cosmology = (
+            cosmology
+            if cosmology
+            else LambdaCDM(
+                H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0
+            )
+        )
 
         # Initialize parent classes
         self._class_initialization_lens(
@@ -191,6 +197,7 @@ class LensGalaxyParameterDistribution(
             z_min,
             z_max,
             cosmology,
+            event_type,
             lens_type,
             lens_functions,
             lens_functions_params,
@@ -328,6 +335,7 @@ class LensGalaxyParameterDistribution(
         z_min,
         z_max,
         cosmology,
+        event_type,
         lens_type,
         lens_functions,
         lens_functions_params,
@@ -367,6 +375,20 @@ class LensGalaxyParameterDistribution(
         params : ``dict``
             Additional parameters for parent classes.
         """
+
+        # # print input params
+        # print("z_min = ", z_min)
+        # print("z_max = ", z_max)
+        # print("cosmology = ", cosmology)
+        # print("event_type = ", event_type)
+        # print("lens_type = ", lens_type)
+        # print("lens_functions = ", lens_functions)
+        # print("lens_functions_params = ", lens_functions_params)
+        # print("lens_param_samplers = ", lens_param_samplers)
+        # print("lens_param_samplers_params = ", lens_param_samplers_params)
+        # print("directory = ", directory)
+        # print("create_new_interpolator = ", create_new_interpolator)
+
         # Initialize OpticalDepth class
         OpticalDepth.__init__(
             self,
@@ -394,16 +416,16 @@ class LensGalaxyParameterDistribution(
 
         CBCSourceParameterDistribution.__init__(
             self,
-            z_min=self.z_min,
-            z_max=self.z_max,
-            event_type=self.event_type,
+            z_min=z_min,
+            z_max=z_max,
+            event_type=event_type,
             source_priors=input_params["source_priors"],
             source_priors_params=input_params["source_priors_params"],
             spin_zero=input_params["spin_zero"],
-            cosmology=self.cosmo,
+            cosmology=cosmology,
             spin_precession=input_params["spin_precession"],
-            directory=self.directory,
-            create_new_interpolator=self.create_new_interpolator,
+            directory=directory,
+            create_new_interpolator=create_new_interpolator,
         )
 
         # Initialize ImageProperties class
@@ -412,6 +434,7 @@ class LensGalaxyParameterDistribution(
             n_max_images=4,
             time_window=365 * 24 * 3600 * 2,
             lens_model_list=["EPL_NUMBA", "SHEAR"],
+            image_properties_function="image_properties_epl_shear",
             include_effective_parameters=True,
             multiprocessing_verbose=True,
             include_redundant_parameters=False,
@@ -420,14 +443,15 @@ class LensGalaxyParameterDistribution(
 
         ImageProperties.__init__(
             self,
-            npool=self.npool,
+            npool=npool,
             n_min_images=input_params_image["n_min_images"],
             n_max_images=input_params_image["n_max_images"],
             lens_model_list=input_params_image["lens_model_list"],
-            cosmology=self.cosmo,
+            image_properties_function=input_params_image["image_properties_function"],
+            cosmology=cosmology,
             time_window=input_params_image["time_window"],
-            spin_zero=self.spin_zero,
-            spin_precession=self.spin_precession,
+            spin_zero=input_params["spin_zero"],
+            spin_precession=input_params["spin_precession"],
             include_effective_parameters=input_params_image[
                 "include_effective_parameters"
             ],

@@ -16,7 +16,7 @@ Usage:
     >>> lens_params = np.array([2, 0.02, -0.01, 1.9, 0.1, 0.09, 0.25, 0.94, 1e-6, 0, 'EPL_NUMBA', 'SHEAR'], dtype=object)
     >>> result = solve_lens_equation(lens_params)
 
-Copyright (C) 2026 Phurailatpam Hemanta Kumar. Distributed under MIT License.
+Copyright (C) 2026 Phurailatpam Hemantakumar. Distributed under MIT License.
 """
 
 import numpy as np
@@ -36,9 +36,11 @@ MIN_MAGNIFICATION = 0.01
 # This avoids pickling large data for each work item - only once per worker
 _worker_shared_data = {}
 
+
 def _init_worker_multiprocessing(
     n_min_images=2,
-    lensModelList=['EPL_NUMBA', 'SHEAR'],
+    lensModelList=["EPL_NUMBA", "SHEAR"],
+    cosmo=None,
 ):
     """
     Initialize worker process with shared data.
@@ -56,6 +58,8 @@ def _init_worker_multiprocessing(
     global _worker_shared_data
     _worker_shared_data["n_min_images"] = n_min_images
     _worker_shared_data["lensModelList"] = lensModelList
+    _worker_shared_data["cosmo"] = cosmo
+
 
 def _create_nan_result(iteration):
     """
@@ -69,7 +73,17 @@ def _create_nan_result(iteration):
     Returns
     -------
     result : ``tuple``
-        A tuple with NaN values for all output parameters.
+        A tuple with NaN values for all output parameters:
+        x_source,
+        y_source,
+        x0_image_position,
+        x1_image_position,
+        magnifications,
+        time_delays,
+        nImages,
+        determinant,
+        trace,
+        iteration,
     """
     nan_array = np.array([np.nan, np.nan])
     return (
@@ -84,6 +98,7 @@ def _create_nan_result(iteration):
         nan_array,
         iteration,
     )
+
 
 def solve_lens_equation(lens_parameters):
     """
@@ -151,6 +166,7 @@ def solve_lens_equation(lens_parameters):
     """
     n_min_images = _worker_shared_data["n_min_images"]
     lensModelList = _worker_shared_data["lensModelList"]
+    cosmo = _worker_shared_data["cosmo"]
 
     zl = lens_parameters[5]
     zs = lens_parameters[6]
@@ -159,7 +175,7 @@ def solve_lens_equation(lens_parameters):
 
     # Initialize lens model for image position, magnification, and time-delay calculations
     lensModel = LensModel(
-        lens_model_list=lensModelList, z_lens=zl, z_source=zs
+        lens_model_list=lensModelList, z_lens=zl, z_source=zs, cosmo=cosmo
     )
     lens_eq_solver = LensEquationSolver(lensModel)
 
