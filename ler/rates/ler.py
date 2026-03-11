@@ -368,6 +368,7 @@ class LeR(LensGalaxyParameterDistribution):
             time_window=365 * 24 * 3600 * 2,
             lens_model_list=["EPL_NUMBA", "SHEAR"],
             image_properties_function="image_properties_epl_shear",
+            image_properties_function_params=None,
             include_effective_parameters=False,
             multiprocessing_verbose=True,
             include_redundant_parameters=False,
@@ -407,6 +408,7 @@ class LeR(LensGalaxyParameterDistribution):
             include_effective_parameters=input_params["include_effective_parameters"],
             lens_model_list=input_params["lens_model_list"],
             image_properties_function=input_params["image_properties_function"],
+            image_properties_function_params=input_params["image_properties_function_params"],
             multiprocessing_verbose=input_params["multiprocessing_verbose"],
             include_redundant_parameters=input_params["include_redundant_parameters"],
             # CBCSourceParameterDistribution class params
@@ -875,6 +877,8 @@ class LeR(LensGalaxyParameterDistribution):
         unlensed_param = self.sample_gw_parameters(size=size)
 
         # Get pdet
+        from numba import set_num_threads
+        set_num_threads(self.npool)
         print("calculating pdet...")
         pdet = self.pdet_finder(gw_param_dict=unlensed_param)
         unlensed_param.update(pdet)
@@ -1387,6 +1391,9 @@ class LeR(LensGalaxyParameterDistribution):
                 )
                 size = np.sum(idx)
 
+        # Set Numba threads to npool before entering prange
+        from numba import set_num_threads
+        set_num_threads(self.npool)
         print("calculating pdet...")
         pdet, lensed_param = self.get_lensed_snrs(
             lensed_param=lensed_param,

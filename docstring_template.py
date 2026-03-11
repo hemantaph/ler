@@ -18,11 +18,11 @@ Copyright (C) 2026 Author Name. Distributed under MIT License.
 
 AI prompt to use this template:
 1. Check for any inconsistencies and redundancies in the code (don't touch the docstrings).
-2. Rewrite docstrings (including inline docstrings) of *.py using docstring_template.py. Convert some of the Instance Methods to private methods with underscore prefix and remove them from the class docstring. Use '\n' for newline and don't use '\\n'. Dont add unnecessary docstrings like the following:
+2. Rewrite docstrings (including heading and inline docstrings) of *.py using docstring_template.py. Convert some of the Instance Methods to private methods with underscore prefix and remove them from the class docstring. Use '\n' for newline and don't use '\\n'. Dont add unnecessary docstrings like the following:
     # =============================================================================
     # MODULE DOCSTRING TEMPLATE
     # =============================================================================
-2i. Rewrite docstrings (including inline docstrings) of *.py using docstring_template.py. If required, convert some of the functions to private function with underscore prefix. Add exmples to the docstrings (exclude private functions). Use '\n' for newline and don't use '\\n'. Dont add unnecessary docstrings like the following:
+2i. Rewrite docstrings (including heading and inline docstrings) of *.py using docstring_template.py. If required, convert some of the functions to private function with underscore prefix. Add exmples to the docstrings (exclude private functions). Use '\n' for newline and don't use '\\n'. Dont add unnecessary docstrings like the following:
     # =============================================================================
     # MODULE DOCSTRING TEMPLATE
     # =============================================================================

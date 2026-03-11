@@ -1,19 +1,51 @@
-# sample_caustic_points_njit.py
-from .cross_section_njit import caustic_double_points_epl_shear, polygon_area
+"""
+Module for sampling source positions from EPL + shear caustic regions.
+
+Provides numba-accelerated routines for uniform rejection sampling inside
+arbitrary polygons, with convenience wrappers to sample from the double
+caustic of an EPL + external shear lens model.
+
+Usage:
+    Draw a single source from the double-caustic region:
+
+    >>> from ler.image_properties.sample_caustic_points_njit import sample_source_from_double_caustic
+    >>> beta, pts = sample_source_from_double_caustic(
+    ...     q=0.8, phi=0.0, gamma=2.0, gamma1=0.03, gamma2=-0.01
+    ... )
+
+Copyright (C) 2026 Phurailatpam Hemantakumar. Distributed under MIT License.
+"""
+
+from .cross_section_njit import caustics_epl_shear, polygon_area
 import numpy as np
-from numba import njit, prange
+from numba import njit
 
 TWO_PI = 2.0 * np.pi
 
 
-# ---------------------------------------------------------------------------
-# Geometry helpers
-# ---------------------------------------------------------------------------
-
-
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def _poly_bbox(xv, yv):
-    """Compute polygon bounding box (manual reduction; fast in njit)."""
+    """
+    Compute the axis-aligned bounding box of a polygon.
+
+    Parameters
+    ----------
+    xv : ``numpy.ndarray``
+        Polygon vertex x-coordinates.
+    yv : ``numpy.ndarray``
+        Polygon vertex y-coordinates.
+
+    Returns
+    -------
+    xmin : ``float``
+        Minimum x value.
+    xmax : ``float``
+        Maximum x value.
+    ymin : ``float``
+        Minimum y value.
+    ymax : ``float``
+        Maximum y value.
+    """
     n = xv.size
     xmin = xv[0]
     xmax = xv[0]
@@ -33,15 +65,29 @@ def _poly_bbox(xv, yv):
     return xmin, xmax, ymin, ymax
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def _build_edge_coeffs(xv, yv):
     """
-    Precompute edge coefficients for the even–odd (ray crossing) point-in-polygon test.
+    Build precomputed edge coefficients for point-in-polygon tests.
 
-    For each edge (i -> j), store:
-      xi, yi, yj, slope = (xj-xi)/(yj-yi)
+    Parameters
+    ----------
+    xv : ``numpy.ndarray``
+        Polygon vertex x-coordinates.
+    yv : ``numpy.ndarray``
+        Polygon vertex y-coordinates.
 
-    Horizontal edges (yj == yi) are marked with slope=0 and will be skipped by the test.
+    Returns
+    -------
+    xi : ``numpy.ndarray``
+        Edge start x-coordinate for each edge.
+    yi : ``numpy.ndarray``
+        Edge start y-coordinate for each edge.
+    yj : ``numpy.ndarray``
+        Edge end y-coordinate for each edge.
+    slope : ``numpy.ndarray``
+        Precomputed slope ``(xj - xi)/(yj - yi)``. 
+        Horizontal edges are encoded with 0.0 and skipped by the test.
     """
     n = xv.size
     xi = np.empty(n, dtype=np.float64)
@@ -81,12 +127,30 @@ def _build_edge_coeffs(xv, yv):
     return xi, yi, yj, slope
 
 
-@njit(cache=True, inline="always")
+@njit(cache=True)
 def _point_in_poly_precomp(x, y, xi, yi, yj, slope):
     """
-    Even–odd rule with precomputed edge coefficients.
+    Test whether a point is inside a polygon using the even-odd rule.
 
-    Skips horizontal edges via slope==0 sentinel.
+    Parameters
+    ----------
+    x : ``float``
+        Point x-coordinate.
+    y : ``float``
+        Point y-coordinate.
+    xi : ``numpy.ndarray``
+        Edge start x-coordinates.
+    yi : ``numpy.ndarray``
+        Edge start y-coordinates.
+    yj : ``numpy.ndarray``
+        Edge end y-coordinates.
+    slope : ``numpy.ndarray``
+        Precomputed edge slopes.
+
+    Returns
+    -------
+    inside : ``int``
+        1 if the point is inside, otherwise 0.
     """
     inside = False
     n = xi.size
@@ -106,25 +170,68 @@ def _point_in_poly_precomp(x, y, xi, yi, yj, slope):
     return 1 if inside else 0
 
 
-@njit(parallel=True, cache=True)
+@njit(cache=True)
 def _points_in_poly_precomp(xs, ys, xi, yi, yj, slope):
-    """Parallel PIP for many points, using precomputed edge coefficients."""
+    """
+    Evaluate point-in-polygon for multiple query points.
+
+    Parameters
+    ----------
+    xs : ``numpy.ndarray``
+        Query x-coordinates.
+    ys : ``numpy.ndarray``
+        Query y-coordinates.
+    xi : ``numpy.ndarray``
+        Edge start x-coordinates.
+    yi : ``numpy.ndarray``
+        Edge start y-coordinates.
+    yj : ``numpy.ndarray``
+        Edge end y-coordinates.
+    slope : ``numpy.ndarray``
+        Precomputed edge slopes.
+
+    Returns
+    -------
+    out : ``numpy.ndarray``
+        UInt8 mask of inside flags with 1 for inside and 0 for outside.
+    """
     n_points = xs.size
     out = np.empty(n_points, dtype=np.uint8)
-    for j in prange(n_points):
+    for j in range(n_points):
         out[j] = _point_in_poly_precomp(xs[j], ys[j], xi, yi, yj, slope)
     return out
-
-
-# ---------------------------------------------------------------------------
-# Sampling
-# ---------------------------------------------------------------------------
 
 
 @njit(cache=True)
 def sample_uniform_in_polygon(xv, yv, max_tries=100000):
     """
-    Sample one point uniformly inside a simple polygon via bbox rejection.
+    Draw one uniform random point inside a polygon via rejection sampling.
+
+    Parameters
+    ----------
+    xv : ``numpy.ndarray``
+        Polygon vertex x-coordinates.
+    yv : ``numpy.ndarray``
+        Polygon vertex y-coordinates.
+    max_tries : ``int``
+        Maximum number of rejection-sampling attempts. 
+        default: 100000
+
+    Returns
+    -------
+    x : ``float``
+        Sampled x-coordinate.
+    y : ``float``
+        Sampled y-coordinate.
+    ok : ``int``
+        Sampling flag where 1 indicates success and 0 indicates failure.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> xv = np.array([0.0, 1.0, 1.0, 0.0])
+    >>> yv = np.array([0.0, 0.0, 1.0, 1.0])
+    >>> x, y, ok = sample_uniform_in_polygon(xv, yv)
     """
     xmin, xmax, ymin, ymax = _poly_bbox(xv, yv)
     dx = xmax - xmin
@@ -146,8 +253,37 @@ def sample_uniform_in_polygon(xv, yv, max_tries=100000):
 @njit(cache=True)
 def sample_many_uniform_in_polygon(xv, yv, n_samples, max_tries_per=100000):
     """
-    Sample multiple points uniformly inside a polygon via batched rejection.
-    Returns arrays (x_src, y_src, n_ok) where only first n_ok entries are valid.
+    Draw multiple uniform random points inside a polygon.
+
+    Sampling uses batched rejection from the polygon bounding box.
+
+    Parameters
+    ----------
+    xv : ``numpy.ndarray``
+        Polygon vertex x-coordinates.
+    yv : ``numpy.ndarray``
+        Polygon vertex y-coordinates.
+    n_samples : ``int``
+        Number of requested samples.
+    max_tries_per : ``int``
+        Maximum attempts per requested sample. 
+        default: 100000
+
+    Returns
+    -------
+    x_src : ``numpy.ndarray``
+        Sampled x-coordinates with capacity ``n_samples``.
+    y_src : ``numpy.ndarray``
+        Sampled y-coordinates with capacity ``n_samples``.
+    n_ok : ``int``
+        Number of valid samples in the leading entries.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> xv = np.array([0.0, 1.0, 1.0, 0.0])
+    >>> yv = np.array([0.0, 0.0, 1.0, 1.0])
+    >>> x_src, y_src, n_ok = sample_many_uniform_in_polygon(xv, yv, 100)
     """
     xmin, xmax, ymin, ymax = _poly_bbox(xv, yv)
     dx = xmax - xmin
@@ -208,11 +344,6 @@ def sample_many_uniform_in_polygon(xv, yv, n_samples, max_tries_per=100000):
     return x_src, y_src, n_ok
 
 
-# ---------------------------------------------------------------------------
-# Public API — sampling from the double caustic
-# ---------------------------------------------------------------------------
-
-
 @njit(cache=True)
 def sample_source_from_double_caustic(
     q,
@@ -223,13 +354,53 @@ def sample_source_from_double_caustic(
     theta_E=1.0,
     num_th=500,
     maginf=-100.0,
-    max_tries=100000,
+    max_tries=10,
 ):
     """
-    Sample one source position uniformly inside the double caustic polygon.
+    Draw one source position uniformly inside the double caustic.
+
+    Parameters
+    ----------
+    q : ``float``
+        Lens axis ratio.
+    phi : ``float``
+        Lens position angle (rad).
+    gamma : ``float``
+        EPL slope parameter.
+    gamma1 : ``float``
+        External shear component 1.
+    gamma2 : ``float``
+        External shear component 2.
+    theta_E : ``float``
+        Einstein radius used to construct the caustic. 
+        default: 1.0
+    num_th : ``int``
+        Number of angular samples for the boundary curve. 
+        default: 500
+    maginf : ``float``
+        Magnification cutoff used in the caustic construction. 
+        default: -100.0
+    max_tries : ``int``
+        Maximum rejection-sampling attempts. 
+        default: 100000
+
+    Returns
+    -------
+    beta_x : ``float``
+        Sampled source x-coordinate.
+    beta_y : ``float``
+        Sampled source y-coordinate.
+    ok : ``int``
+        Sampling status flag where 1 indicates success.
+
+    Examples
+    --------
+    >>> beta_x, beta_y, ok = sample_source_from_double_caustic(
+    ...     q=0.8, phi=0.0, gamma=2.0, gamma1=0.03, gamma2=-0.01
+    ... )
     """
 
-    pts = caustic_double_points_epl_shear(
+    pts = caustics_epl_shear(
         q,
         phi,
         gamma,
@@ -240,7 +411,7 @@ def sample_source_from_double_caustic(
         maginf=maginf,
         sourceplane=True,
     )
-    return sample_uniform_in_polygon(pts[0], pts[1], max_tries=max_tries)
+    return sample_uniform_in_polygon(pts[0], pts[1], max_tries=max_tries), pts
 
 
 @njit(cache=True)
@@ -254,13 +425,55 @@ def sample_many_sources_from_double_caustic(
     theta_E=1.0,
     num_th=500,
     maginf=-100.0,
-    max_tries_per=100000,
+    max_tries_per=10,
 ):
     """
-    Sample multiple source positions uniformly inside the double caustic polygon.
+    Draw many source positions uniformly inside the double caustic.
+
+    Parameters
+    ----------
+    q : ``float``
+        Lens axis ratio.
+    phi : ``float``
+        Lens position angle (rad).
+    gamma : ``float``
+        EPL slope parameter.
+    gamma1 : ``float``
+        External shear component 1.
+    gamma2 : ``float``
+        External shear component 2.
+    n_samples : ``int``
+        Number of source samples requested.
+    theta_E : ``float``
+        Einstein radius used to construct the caustic. 
+        default: 1.0
+    num_th : ``int``
+        Number of angular samples for the boundary curve. 
+        default: 500
+    maginf : ``float``
+        Magnification cutoff used in the caustic construction. 
+        default: -100.0
+    max_tries_per : ``int``
+        Maximum rejection attempts per requested sample. 
+        default: 100000
+
+    Returns
+    -------
+    beta_x : ``numpy.ndarray``
+        Sampled source x-coordinates.
+    beta_y : ``numpy.ndarray``
+        Sampled source y-coordinates.
+    n_ok : ``int``
+        Number of valid samples in the leading entries.
+
+    Examples
+    --------
+    >>> bx, by, n_ok = sample_many_sources_from_double_caustic(
+    ...     q=0.8, phi=0.0, gamma=2.0, gamma1=0.03, gamma2=-0.01, n_samples=1000
+    ... )
     """
 
-    pts = caustic_double_points_epl_shear(
+    pts = caustics_epl_shear(
         q,
         phi,
         gamma,

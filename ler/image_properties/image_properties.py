@@ -36,6 +36,8 @@ from .multiprocessing_routine_epl_shear import (
 )
 from ..lens_galaxy_population.lens_functions import phi_q2_ellipticity
 
+Mpc_to_m = 3.085677581491367e22
+
 
 class ImageProperties:
     """
@@ -162,6 +164,7 @@ class ImageProperties:
         n_max_images=4,
         lens_model_list=["EPL_NUMBA", "SHEAR"],
         image_properties_function="image_properties_epl_shear",
+        image_properties_function_params=None,
         cosmology=None,
         time_window=365 * 24 * 3600 * 2,  # 2 years
         spin_zero=True,
@@ -193,13 +196,24 @@ class ImageProperties:
         self.include_effective_parameters = include_effective_parameters
         self.include_redundant_parameters = include_redundant_parameters
 
+        self.image_properties_function_params = self.available_image_properties_functions[image_properties_function]
+        if image_properties_function_params is not None:
+            self.image_properties_function_params.update(image_properties_function_params)
+
         if image_properties_function == "image_properties_epl_shear_njit":
             from .epl_shear_njit import create_epl_shear_solver
 
             print("initializing epl shear njit solver")
 
             self.epl_solver = create_epl_shear_solver(
-                arrival_time_sort=True, ngrid=160, rng=3.5, max_img=self.n_max_images
+                max_img=self.n_max_images,
+                num_th=self.image_properties_function_params["num_th"],
+                maginf=self.image_properties_function_params["maginf"],
+                max_tries=self.image_properties_function_params["max_tries"],
+                alpha_scaling=self.image_properties_function_params["alpha_scaling"],
+                magnification_limit=self.image_properties_function_params["magnification_limit"],
+                Nmeas=self.image_properties_function_params["Nmeas"],
+                Nmeas_extra=self.image_properties_function_params["Nmeas_extra"],
             )
 
     def image_properties_epl_shear_njit(self, lens_parameters):
@@ -264,7 +278,6 @@ class ImageProperties:
         """
 
         zs = lens_parameters["zs"]
-        size = len(zs)
         zl = lens_parameters["zl"]
 
         gamma1, gamma2 = lens_parameters["gamma1"], lens_parameters["gamma2"]
@@ -280,29 +293,34 @@ class ImageProperties:
         Ds = self.angular_diameter_distance.function(zs)
         Dl = self.angular_diameter_distance.function(zl)
         Dls = self.angular_diameter_distance_z1z2.function(zl, zs)
-        D_dt = (1.0 + zl) * (Dl * Ds / Dls)  # meters
+        D_dt = (1.0 + zl) * (Dl * Ds / Dls) * Mpc_to_m # in meters
 
         # 0.beta_x_arr, 1.beta_y_arr, 2.x_img, 3.y_img, 4.mu_arr, 5.tau_arr, 6.nimg, 7.itype
+        from numba import set_num_threads
+
+        set_num_threads(self.npool)  # match Numba threads to npool
         result = self.epl_solver(theta_E, D_dt, q, phi, gamma, gamma1, gamma2)
+
+        # time-delays: convert to positive values
+        # time-delays will be relative to the first arrived signal of an lensed event
+        time_delays= result[5]
+        time_delays = (
+            time_delays - np.array([np.sort(time_delays, axis=1)[:, 0]]).T
+        )  # this is alright if time delays are already sorted
 
         # Return a dictionary with all of the lens information but also the BBH parameters from gw_param
         image_parameters = {
             "x0_image_positions": result[2],
             "x1_image_positions": result[3],
             "magnifications": result[4],
-            "time_delays": result[5],
+            "time_delays": time_delays,
             "image_type": result[7],
         }
 
-        # sorting wrt time delays
-        time_delays = image_parameters["time_delays"]
         idx_sort = np.argsort(time_delays, axis=1)  # sort each row
         # idx_sort has the shape (size, n_max_images)
         for key, value in image_parameters.items():
-            # sort each row
-            image_parameters[key] = np.array(
-                [value[i, idx_sort[i]] for i in range(size)]
-            )
+            image_parameters[key] = np.take_along_axis(value, idx_sort, axis=1)
         lens_parameters.update(image_parameters)
         lens_parameters["n_images"] = result[6]
         lens_parameters["x_source"] = result[0]
@@ -566,9 +584,7 @@ class ImageProperties:
         # idx_sort has the shape (size, n_max_images)
         for key, value in image_parameters.items():
             # sort each row
-            image_parameters[key] = np.array(
-                [value[i, idx_sort[i]] for i in range(size)]
-            )
+            image_parameters[key] = np.take_along_axis(value, idx_sort, axis=1)
         lens_parameters.update(image_parameters)
         lens_parameters["n_images"] = n_images
         lens_parameters["x_source"] = x_source
@@ -1206,3 +1222,30 @@ class ImageProperties:
     @pdet_finder_output_keys.setter
     def pdet_finder_output_keys(self, value):
         self._pdet_finder_output_keys = value
+
+    @property
+    def available_image_properties_functions(self):
+        """
+        Dictionary of available functions for computing image properties.
+
+        Returns
+        -------
+        available_image_properties_functions : ``dict``
+            Dictionary with function names and default parameters.
+        """
+
+        self._available_image_properties_functions = dict(
+            image_properties_epl_shear_njit=dict(
+                max_img=self.n_max_images,
+                num_th=500,
+                maginf=-100.0,
+                max_tries=100,
+                alpha_scaling=1.0,
+                magnification_limit=0.01,
+                Nmeas=400,
+                Nmeas_extra=80,
+            ),
+            image_properties_epl_shear=None,
+        )
+
+        return self._available_image_properties_functions

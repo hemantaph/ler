@@ -39,7 +39,7 @@ from ..utils import (
     angular_diameter_distance,
     angular_diameter_distance_z1z2,
     differential_comoving_volume,
-    redshift_optimal_spacing,
+    generate_mixed_grid,
 )
 
 from .lens_functions import (
@@ -503,7 +503,8 @@ class OpticalDepth:
             Type of lens galaxy model.
         """
 
-        # initialize the interpolator's
+        # preserve user input and initialize defaults
+        user_create_new_interpolator = create_new_interpolator
         create_new_interpolator = dict(
             velocity_dispersion=dict(
                 create_new=False, resolution=500, zl_resolution=48
@@ -520,23 +521,33 @@ class OpticalDepth:
             lens_parameters_kde_sl=dict(create_new=False, resolution=5000),
             source_redshift_sl=dict(create_new=False, resolution=500),
         )
+        # the following resolution elements are for the cross section
+        # interpolator, [25, 25, 45, 15, 15] corresponds to the resolution for
+        # e1, e2, gamma, gamma1, gamma2
+        spacing_config = {
+            "e1": {"mode": "geom_mixed_inverse", "geom_fraction": 0.6, "transition_fraction": 0.3},
+            "e2": {"mode": "geom_mixed_inverse", "geom_fraction": 0.6, "transition_fraction": 0.3},
+            "gamma": {"mode": "linear"},
+            "gamma1": {"mode": "linear"},
+            "gamma2": {"mode": "linear"},
+        }
         if lens_type == "sis_galaxy":
             create_new_interpolator.update(
-                cross_section=dict(create_new=False, resolution=[5, 5, 5, 5, 5]),
+                cross_section=dict(create_new=False, resolution=[5, 5, 5, 5, 5], spacing_config=spacing_config),
             )
         elif lens_type == "sie_galaxy":
             create_new_interpolator.update(
-                cross_section=dict(create_new=False, resolution=[25, 25, 5, 5, 5]),
+                cross_section=dict(create_new=False, resolution=[25, 25, 5, 5, 5], spacing_config=spacing_config ),
             )
         elif lens_type == "epl_shear_galaxy":
             create_new_interpolator.update(
-                cross_section=dict(create_new=False, resolution=[25, 25, 45, 15, 15]),
+                cross_section=dict(create_new=False, resolution=[25, 25, 45, 15, 15], spacing_config=spacing_config),
             )
 
-        if isinstance(create_new_interpolator, dict):
-            create_new_interpolator.update(create_new_interpolator)
+        if isinstance(user_create_new_interpolator, dict):
+            create_new_interpolator.update(user_create_new_interpolator)
         # if create_new_interpolator is True, create new interpolator for all
-        elif create_new_interpolator:
+        elif user_create_new_interpolator:
             for key in create_new_interpolator.keys():
                 create_new_interpolator[key]["create_new"] = True
 
@@ -782,7 +793,7 @@ class OpticalDepth:
         zs_resolution = identifier_dict["resolution"]
         zs_min = self.z_min + 0.001 if self.z_min == 0.0 else self.z_min
         zs_max = self.z_max
-        zs_array = redshift_optimal_spacing(zs_min, zs_max, zs_resolution)
+        zs_array = generate_mixed_grid(zs_min, zs_max, zs_resolution)
 
         _, it_exist = interpolator_json_path(
             identifier_dict=identifier_dict,
@@ -845,25 +856,32 @@ class OpticalDepth:
         function_spline = zl_object.function_spline
         pdf_norm_const = zl_object.pdf_norm_const
 
-        zl_object.function = njit(
-            lambda x, y: cubic_spline_interpolator2d_array(
+        @njit(cache=True)
+        def zl_function(x, y):
+            return cubic_spline_interpolator2d_array(
                 x / y, y, function_spline, x_array, y_array
             )
-        )
 
-        zl_object.pdf = njit(
-            lambda x, y: pdf_cubic_spline_interpolator2d_array(
-                x / y, y, pdf_norm_const, function_spline, x_array, y_array
-            )
-            / y
-        )
+        zl_object.function = zl_function
 
-        zl_object.rvs = njit(
-            lambda size, y: inverse_transform_sampler2d(
-                size, y, cdf_values, x_array, y_array
+        @njit(cache=True)
+        def zl_pdf(x, y):
+            return (
+                pdf_cubic_spline_interpolator2d_array(
+                    x / y, y, pdf_norm_const, function_spline, x_array, y_array
+                )
+                / y
             )
-            * y
-        )
+
+        zl_object.pdf = zl_pdf
+
+        @njit(cache=True)
+        def zl_rvs(size, y):
+            return (
+                inverse_transform_sampler2d(size, y, cdf_values, x_array, y_array) * y
+            )
+
+        zl_object.rvs = zl_rvs
 
         return zl_object if get_attribute else zl_object(size, zs)
 
@@ -948,6 +966,10 @@ class OpticalDepth:
         dVcdz_function = self.differential_comoving_volume.function
 
         from .mp import lens_redshift_strongly_lensed_njit
+        from numba import set_num_threads
+
+        # Set Numba threads to npool before entering prange
+        set_num_threads(self.npool)
 
         density_array = lens_redshift_strongly_lensed_njit(
             zs,  # 1D
@@ -993,37 +1015,16 @@ class OpticalDepth:
         shear_rvs = sampler_dict["shear_rvs"]
         cross_section_function = sampler_dict["cross_section_function"]
 
-        sigma_args = [
-            self.velocity_dispersion.info["sigma_min"],
-            self.velocity_dispersion.info["sigma_max"],
-            number_density,
-        ]
+        sigma_min = self.velocity_dispersion.info["sigma_min"]
+        sigma_max = self.velocity_dispersion.info["sigma_max"]
 
-        dVcdz_args = self.differential_comoving_volume.function
+        dVcdz_function = self.differential_comoving_volume.function
 
         integration_size = (
             self.lens_param_samplers_params["lens_redshift"]["integration_size"]
             if "integration_size" in self.lens_param_samplers_params["lens_redshift"]
             else 20000
         )
-
-        # save input params to be passed to multiprocessing
-        from ler.utils import save_pickle
-
-        input_params = np.array(
-            [
-                sigma_args,
-                q_rvs,
-                dVcdz_args,
-                cross_section_function,
-                phi_rvs,
-                shear_rvs,
-                gamma_rvs,
-                integration_size,
-            ],
-            dtype=object,
-        )
-        save_pickle("input_params_mp.pkl", input_params)
 
         # setup input params for multiprocessing (zs, zl_scaled, worker_index)
         input_params = np.array(
@@ -1035,11 +1036,26 @@ class OpticalDepth:
         )
 
         print("Computing lens redshift distribution with multiprocessing...")
-        from .mp import lens_redshift_strongly_lensed_mp
+        from .mp import lens_redshift_strongly_lensed_mp, _init_lens_redshift_worker
 
         density_array = np.zeros_like(zl_scaled)
 
-        with Pool(processes=self.npool) as pool:
+        with Pool(
+            processes=self.npool,
+            initializer=_init_lens_redshift_worker,
+            initargs=(
+                sigma_min,
+                sigma_max,
+                number_density,
+                q_rvs,
+                phi_rvs,
+                gamma_rvs,
+                shear_rvs,
+                dVcdz_function,
+                cross_section_function,
+                integration_size,
+            ),
+        ) as pool:
             for result in tqdm(
                 pool.imap_unordered(lens_redshift_strongly_lensed_mp, input_params),
                 total=len(zs),
@@ -1058,11 +1074,6 @@ class OpticalDepth:
         #     result = lens_redshift_strongly_lensed_mp(input_params[i])
         #     iter_i, density_ = result
         #     density_array[iter_i] = density_
-
-        # delete the pickle file
-        import os
-
-        os.remove("input_params_mp.pkl")
 
         return density_array
 
@@ -1124,23 +1135,27 @@ class OpticalDepth:
             z_min = 0.0001 if self.z_min == 0 else self.z_min
             z_max = self.z_max
             resolution = identifier_dict["resolution"]
-            zl_array = redshift_optimal_spacing(z_min, z_max, resolution)
+            zl_array = generate_mixed_grid(z_min, z_max, resolution)
 
             # create number density
             if self.velocity_dispersion.conditioned_y_array is None:
-                integrand = (
-                    lambda sigma, z: self.velocity_dispersion.function(
-                        np.array([sigma])
-                    )[0]
-                    * self.differential_comoving_volume.function(np.array([z]))[0]
-                )
+
+                def integrand(sigma, z):
+                    return (
+                        self.velocity_dispersion.function(np.array([sigma]))[0]
+                        * self.differential_comoving_volume.function(np.array([z]))[0]
+                    )
+
             else:
-                integrand = (
-                    lambda sigma, z: self.velocity_dispersion.function(
-                        np.array([sigma]), np.array([z])
-                    )[0]
-                    * self.differential_comoving_volume.function(np.array([z]))[0]
-                )
+
+                def integrand(sigma, z):
+                    return (
+                        self.velocity_dispersion.function(
+                            np.array([sigma]), np.array([z])
+                        )[0]
+                        * self.differential_comoving_volume.function(np.array([z]))[0]
+                    )
+
             # fix zl and integrate over sigma
             integral = [
                 quad(
@@ -1195,25 +1210,32 @@ class OpticalDepth:
         function_spline = zl_object.function_spline
         pdf_norm_const = zl_object.pdf_norm_const
 
-        zl_object.function = njit(
-            lambda x, y: cubic_spline_interpolator2d_array(
+        @njit(cache=True)
+        def zl_function(x, y):
+            return cubic_spline_interpolator2d_array(
                 x / y, y, function_spline, x_array, y_array
             )
-        )
 
-        zl_object.pdf = njit(
-            lambda x, y: pdf_cubic_spline_interpolator2d_array(
-                x / y, y, pdf_norm_const, function_spline, x_array, y_array
-            )
-            / y
-        )
+        zl_object.function = zl_function
 
-        zl_object.rvs = njit(
-            lambda size, y: inverse_transform_sampler2d(
-                size, y, cdf_values, x_array, y_array
+        @njit(cache=True)
+        def zl_pdf(x, y):
+            return (
+                pdf_cubic_spline_interpolator2d_array(
+                    x / y, y, pdf_norm_const, function_spline, x_array, y_array
+                )
+                / y
             )
-            * y
-        )
+
+        zl_object.pdf = zl_pdf
+
+        @njit(cache=True)
+        def zl_rvs(size, y):
+            return (
+                inverse_transform_sampler2d(size, y, cdf_values, x_array, y_array) * y
+            )
+
+        zl_object.rvs = zl_rvs
 
         return zl_object if get_attribute else zl_object(size, zs)
 
@@ -1282,7 +1304,9 @@ class OpticalDepth:
 
         zl_resolution = identifier_dict["resolution"]
         x_array = np.linspace(0.0, 1.0, zl_resolution)
-        pdf_ = lambda x: 30 * x**2 * (1 - x) ** 2  # Haris et al. 2018 (A7)
+
+        def pdf_(x):
+            return 30 * x**2 * (1 - x) ** 2  # Haris et al. 2018 (A7)
 
         zl_object = FunctionConditioning(
             function=pdf_,
@@ -1410,15 +1434,16 @@ class OpticalDepth:
 
         from .sampler_functions import velocity_dispersion_gengamma_density_function
 
-        density_func_ = lambda sigma_: velocity_dispersion_gengamma_density_function(
-            sigma=sigma_,
-            sigma_min=identifier_dict["sigma_min"],
-            sigma_max=identifier_dict["sigma_max"],
-            alpha=identifier_dict["alpha"],
-            beta=identifier_dict["beta"],
-            phistar=identifier_dict["phistar"],
-            sigmastar=identifier_dict["sigmastar"],
-        )
+        def density_func_(sigma_):
+            return velocity_dispersion_gengamma_density_function(
+                sigma=sigma_,
+                sigma_min=identifier_dict["sigma_min"],
+                sigma_max=identifier_dict["sigma_max"],
+                alpha=identifier_dict["alpha"],
+                beta=identifier_dict["beta"],
+                phistar=identifier_dict["phistar"],
+                sigmastar=identifier_dict["sigmastar"],
+            )
 
         sigma_object = FunctionConditioning(
             function=density_func_,
@@ -1512,8 +1537,8 @@ class OpticalDepth:
 
         from .sampler_functions import velocity_dispersion_bernardi_denisty_function
 
-        number_density_function = (
-            lambda sigma: velocity_dispersion_bernardi_denisty_function(
+        def number_density_function(sigma):
+            return velocity_dispersion_bernardi_denisty_function(
                 sigma,
                 alpha=self.lens_param_samplers_params["velocity_dispersion"]["alpha"],
                 beta=self.lens_param_samplers_params["velocity_dispersion"]["beta"],
@@ -1524,7 +1549,6 @@ class OpticalDepth:
                     "sigmastar"
                 ],
             )
-        )
 
         sigma_object = FunctionConditioning(
             function=number_density_function,
@@ -1623,8 +1647,8 @@ class OpticalDepth:
         )
         from .sampler_functions import velocity_dispersion_ewoud_denisty_function
 
-        number_density_function = (
-            lambda sigma, zl: velocity_dispersion_ewoud_denisty_function(
+        def number_density_function(sigma, zl):
+            return velocity_dispersion_ewoud_denisty_function(
                 sigma,
                 zl,
                 alpha=self.lens_param_samplers_params["velocity_dispersion"]["alpha"],
@@ -1636,12 +1660,11 @@ class OpticalDepth:
                     "sigmastar"
                 ],
             )
-        )
 
         z_min = self.z_min + 0.001 if self.z_min == 0.0 else self.z_min
         z_max = self.z_max
         z_resolution = identifier_dict["zl_resolution"]
-        zl_array = redshift_optimal_spacing(z_min, z_max, z_resolution)
+        zl_array = generate_mixed_grid(z_min, z_max, z_resolution)
 
         sigma_object = FunctionConditioning(
             function=number_density_function,
@@ -1729,12 +1752,13 @@ class OpticalDepth:
 
         from .sampler_functions import axis_ratio_rayleigh_pdf
 
-        q_pdf = lambda q, sigma: axis_ratio_rayleigh_pdf(
-            q=q,
-            sigma=sigma,
-            q_min=identifier_dict["q_min"],
-            q_max=identifier_dict["q_max"],
-        )
+        def q_pdf(q, sigma):
+            return axis_ratio_rayleigh_pdf(
+                q=q,
+                sigma=sigma,
+                q_min=identifier_dict["q_min"],
+                q_max=identifier_dict["q_max"],
+            )
 
         q_object = FunctionConditioning(
             function=q_pdf,
@@ -1860,17 +1884,24 @@ class OpticalDepth:
 
         low = param_dict["phi_min"]
         high = param_dict["phi_max"]
-        phi_rvs = njit(
-            lambda size: np.random.uniform(
+
+        @njit(cache=True)
+        def phi_rvs(size):
+            return np.random.uniform(
                 low=low,
                 high=high,
                 size=size,
             )
-        )
+
         if param_dict["phi_max"] == param_dict["phi_min"]:
-            phi_pdf = lambda phi: 1.0 if phi == param_dict["phi_min"] else 0.0
+
+            def phi_pdf(phi):
+                return 1.0 if phi == param_dict["phi_min"] else 0.0
+
         else:
-            phi_pdf = lambda phi: 1 / (param_dict["phi_max"] - param_dict["phi_min"])
+
+            def phi_pdf(phi):
+                return 1 / (param_dict["phi_max"] - param_dict["phi_min"])
 
         phi_object = FunctionConditioning(
             function=None,
@@ -1919,17 +1950,24 @@ class OpticalDepth:
 
         low = param_dict["q_min"]
         high = param_dict["q_max"]
-        q_rvs = njit(
-            lambda size: np.random.uniform(
+
+        @njit(cache=True)
+        def q_rvs(size):
+            return np.random.uniform(
                 low=low,
                 high=high,
                 size=size,
             )
-        )
+
         if param_dict["q_max"] == param_dict["q_min"]:
-            q_pdf = lambda q: 1.0 if q == param_dict["q_min"] else 0.0
+
+            def q_pdf(q):
+                return 1.0 if q == param_dict["q_min"] else 0.0
+
         else:
-            q_pdf = lambda q: 1 / (param_dict["q_max"] - param_dict["q_min"])
+
+            def q_pdf(q):
+                return 1 / (param_dict["q_max"] - param_dict["q_min"])
 
         q_object = FunctionConditioning(
             function=None,
@@ -1980,15 +2018,18 @@ class OpticalDepth:
 
         mean = param_dict["mean"]
         std = param_dict["std"]
-        shear_rvs = njit(
-            lambda size: np.random.normal(
+
+        @njit(cache=True)
+        def shear_rvs(size):
+            return np.random.normal(
                 loc=mean,
                 scale=std,
                 size=(2, size),
             )
-        )
-        shear_pdf = njit(
-            lambda shear1, shear2: normal_pdf_2d(
+
+        @njit(cache=True)
+        def shear_pdf(shear1, shear2):
+            return normal_pdf_2d(
                 x=shear1,
                 y=shear2,
                 mean_x=mean,
@@ -1996,7 +2037,6 @@ class OpticalDepth:
                 std_x=std,
                 std_y=std,
             )
-        )
 
         shear_object = FunctionConditioning(
             function=None,
@@ -2048,20 +2088,22 @@ class OpticalDepth:
 
         mean = param_dict["mean"]
         std = param_dict["std"]
-        slope_rvs = njit(
-            lambda size: np.random.normal(
+
+        @njit(cache=True)
+        def slope_rvs(size):
+            return np.random.normal(
                 loc=mean,
                 scale=std,
                 size=size,
             )
-        )
-        slope_pdf = njit(
-            lambda slope: normal_pdf(
+
+        @njit(cache=True)
+        def slope_pdf(slope):
+            return normal_pdf(
                 x=slope,
                 mean=mean,
                 std=std,
             )
-        )
 
         slope_object = FunctionConditioning(
             function=None,
@@ -2132,13 +2174,13 @@ class OpticalDepth:
         # z_min = self.z_min + 0.001 if self.z_min == 0.0 else self.z_min
         # z_max = self.z_max
         # z_resolution = identifier_dict["resolution"]
-        zs_array = redshift_optimal_spacing(z_min, z_max, resolution)
+        zs_array = generate_mixed_grid(z_min, z_max, resolution)
 
         def tau(zs):
             # self.lens_redshift.function gives cross-section
-            integrand = lambda zl_, zs_: self.lens_redshift.function(
-                np.array([zl_]), np.array([zs_])
-            )[0]
+            def integrand(zl_, zs_):
+                return self.lens_redshift.function(np.array([zl_]), np.array([zs_]))[0]
+
             integral = [quad(integrand, 0.0, z, args=(z))[0] for z in zs]
             return integral
 
@@ -2238,7 +2280,7 @@ class OpticalDepth:
         z_min = identifier_dict["z_min"]
         z_max = identifier_dict["z_max"]
         z_resolution = identifier_dict["resolution"]
-        zs_arr = redshift_optimal_spacing(z_min, z_max, z_resolution)
+        zs_arr = generate_mixed_grid(z_min, z_max, z_resolution)
 
         def tau(zs):
             Dc = self.comoving_distance.function(zs)
@@ -2484,7 +2526,83 @@ class OpticalDepth:
 
         return np.array(area_list)
 
-    def create_parameter_grid(self, size_list=[25, 25, 45, 15, 15]):
+    def _two_sided_mixed_grid(
+        self,
+        x_min,
+        x_max,
+        resolution,
+        power_law_part='lower',
+        spacing_trend='increasing',
+        power=2.3,
+        value_transition_fraction=0.3,
+        num_transition_fraction=0.6,
+        auto_match_slope=True,
+    ):
+        # n1 chosen so that n1 + (n1-1) = 2*n1-1 >= resolution.
+        # The -1 is because x2 drops the shared midpoint (0.5) via [1:].
+        n1 = (resolution + 2) // 2
+
+        # generate grid from 0 to 0.5
+        x1 = generate_mixed_grid(
+                x_min=0., 
+                x_max=0.5, 
+                resolution=n1,
+                power_law_part=power_law_part,
+                spacing_trend=spacing_trend,
+                power=power,
+                value_transition_fraction=value_transition_fraction,
+                num_transition_fraction=num_transition_fraction,
+                auto_match_slope=auto_match_slope
+            )
+        # Mirror x1 onto [0.5, 1.0]; [1:] removes the shared endpoint at 0.5.
+        x2 = np.sort(1 - x1)[1:]
+        u_grid = np.concatenate([x1, x2])[:resolution]
+        x = x_min + u_grid * (x_max - x_min)
+        
+        return x
+
+    def _parameter_spacing(self, x_min, x_max, resolution, config=None):
+        """
+        Create 1D grid axis based on spacing config.
+
+        Supported modes:
+        - ``linear`` (default)
+        - ``geom_mixed`` (power-law + linear)
+        - ``gaussian_mixed`` (Gaussian concentration + linear remainder)
+        """
+        if config is None:
+            return np.linspace(x_min, x_max, resolution)
+
+        mode = str(config.get("mode", "linear")).lower()
+
+        if mode == "powerlaw_mixed":
+            return generate_mixed_grid(
+                x_min=x_min, 
+                x_max=x_max, 
+                resolution=resolution,
+                power_law_part=config.get("power_law_part", "lower"),
+                spacing_trend=config.get("spacing_trend", "increasing"),
+                power=config.get("power", 2.5),
+                value_transition_fraction=config.get("value_transition_fraction", 0.6),
+                num_transition_fraction=config.get("num_transition_fraction", 0.3),
+                auto_match_slope=config.get("auto_match_slope", True)
+            )
+        if mode == "two_sided_mixed_grid":
+            return self._two_sided_mixed_grid(
+                x_min=x_min, 
+                x_max=x_max, 
+                resolution=resolution,
+                power_law_part=config.get("power_law_part", "lower"),
+                spacing_trend=config.get("spacing_trend", "increasing"),
+                power=config.get("power", 2.5),
+                value_transition_fraction=config.get("value_transition_fraction", 0.6),
+                num_transition_fraction=config.get("num_transition_fraction", 0.3),
+                auto_match_slope=config.get("auto_match_slope", True)
+            )
+
+        return np.linspace(x_min, x_max, resolution)
+
+    def create_parameter_grid(self, size_list=[25, 25, 45, 15, 15], spacing_config=None):
         """
         Create a parameter grid for lens galaxies.
 
@@ -2492,6 +2610,10 @@ class OpticalDepth:
         ----------
         size_list : list
             List of sizes for each parameter grid.
+        spacing_config : dict or None
+            Optional per-parameter spacing configuration. Keys can include
+            ``q``, ``phi``, ``e1``, ``e2``, ``gamma``, ``gamma1``, ``gamma2`` and values are
+            dictionaries, e.g. ``{"mode": "two_sided_mixed_grid", "power_law_part": "lower", "spacing_trend": "increasing", "power": 2.5, "value_transition_fraction": 0.6, "num_transition_fraction": 0.3, "auto_match_slope": True}``.
 
         Returns
         -------
@@ -2503,7 +2625,7 @@ class OpticalDepth:
             Axis ratios.
         """
 
-        size = 1000000
+        size = 1000000  # use for finding the range of parameters (min and max) for creating the grid
         zl = np.random.uniform(0.1, 10.0, size)
         if self.velocity_dispersion.conditioned_y_array is not None:
             sigma = self.velocity_dispersion.rvs(size, zl)
@@ -2532,6 +2654,20 @@ class OpticalDepth:
             phi_max = min(2.0 * np.pi, phi_max + 0.01)
 
         e1, e2 = phi_q2_ellipticity(phi, q)
+        e1_min, e1_max = e1.min(), e1.max()
+        e2_min, e2_max = e2.min(), e2.max()
+        del_e1 = 2 * (e1_max - e1_min) / size_list[0]
+        del_e2 = 2 * (e2_max - e2_min) / size_list[1]
+        e1_min = max(-0.9999, e1_min - del_e1)
+        e1_max = min(0.9999, e1_max + del_e1)
+        e2_min = max(-0.9999, e2_min - del_e2)
+        e2_max = min(0.9999, e2_max + del_e2)
+        if del_e1 == 0:
+            e1_min = max(-0.9999, e1_min - 0.01)
+            e1_max = min(0.9999, e1_max + 0.01)
+        if del_e2 == 0:
+            e2_min = max(-0.9999, e2_min - 0.01)
+            e2_max = min(0.9999, e2_max + 0.01)
 
         gamma = self.density_profile_slope.rvs(size)
         gamma_min, gamma_max = gamma.min(), gamma.max()
@@ -2558,55 +2694,94 @@ class OpticalDepth:
             gamma2_min = gamma2_min - 0.0001
             gamma2_max = gamma2_max + 0.0001
 
+        if spacing_config is None:
+            spacing_config = {}
+
         ###########################
         # sampling the parameters #
         ###########################
-        q = np.linspace(q_min, q_max, size_list[0])
-        phi = np.linspace(phi_min, phi_max, size_list[1])
-        e1, e2 = phi_q2_ellipticity(phi, q)
+        # q = self._parameter_spacing(
+        #     q_min, q_max, size_list[0], spacing_config.get("q")
+        # )
+        # phi = self._parameter_spacing(
+        #     phi_min, phi_max, size_list[1], spacing_config.get("phi")
+        # )
+        # e1, e2 = phi_q2_ellipticity(phi, q)
+
+        # Build interpolation axes directly in e1/e2 space.
+        # This avoids distortions introduced by elementwise (q, phi) -> (e1, e2)
+        # pairing when nonuniform spacing is used.
+        e1 = self._parameter_spacing(
+            e1_min,
+            e1_max,
+            size_list[0],
+            spacing_config.get("e1", spacing_config.get("e1")),
+        )
+        e2 = self._parameter_spacing(
+            e2_min,
+            e2_max,
+            size_list[1],
+            spacing_config.get("e2", spacing_config.get("e2")),
+        )
+
         e1 = np.sort(e1)
         e2 = np.sort(e2)
+        # print(f"e1 : {e1}")
+        # print(f"e2 : {e2}")
 
-        gamma = np.linspace(gamma_min, gamma_max, size_list[2])
+        gamma = self._parameter_spacing(
+            gamma_min, gamma_max, size_list[2], spacing_config.get("gamma")
+        )
 
-        gamma1 = np.linspace(gamma1_min, gamma1_max, size_list[3])
-        gamma2 = np.linspace(gamma2_min, gamma2_max, size_list[4])
+        gamma1 = self._parameter_spacing(
+            gamma1_min, gamma1_max, size_list[3], spacing_config.get("gamma1")
+        )
+        gamma2 = self._parameter_spacing(
+            gamma2_min, gamma2_max, size_list[4], spacing_config.get("gamma2")
+        )
 
-        return q, phi, e1, e2, gamma, gamma1, gamma2
+        # return q, phi, e1, e2, gamma, gamma1, gamma2
+        return e1, e2, gamma, gamma1, gamma2
 
-    def cross_section_epl_shear_interpolation_init(self, file_path, size_list):
+    def cross_section_epl_shear_interpolation_init(
+        self, file_path, size_list, spacing_config=None
+    ):
         print(f"Cross section interpolation data points will be created at {file_path}")
 
         # ----------------------------------
         # cross section unit to cross section ratio fitting
         # ----------------------------------
-        # if self.lens_type == "epl_shear_galaxy":
-        size = 10000
-        zs = np.random.uniform(self.z_min, self.z_max, size)
-        zl = np.zeros(size)
-        for i in range(size):
-            zl[i] = np.random.uniform(0.001, zs[i] - 0.001)
 
-        sigma = np.random.uniform(
-            self.lens_param_samplers_params["velocity_dispersion"]["sigma_min"],
-            self.lens_param_samplers_params["velocity_dispersion"]["sigma_max"],
-            size,
-        )
+        # # --------------------------
+        # # warm up if cross_section_epl_shear_numerical_mp is used
+        # # --------------------------
+        # size = 2 # small size for warm up
+        # zs = np.random.uniform(self.z_min, self.z_max, size)
+        # zl = np.zeros(size)
+        # for i in range(size):
+        #     zl[i] = np.random.uniform(0.001, zs[i] - 0.001)
 
-        # Sample individual parameter values (not grid)
-        try:
-            q = self.axis_ratio.rvs(size, sigma)
-        except TypeError:
-            q = self.axis_ratio.rvs(size)
-        phi = self.axis_rotation_angle.rvs(size)
-        e1, e2 = phi_q2_ellipticity(phi, q)
-        gamma = self.density_profile_slope.rvs(size)
-        gamma1, gamma2 = self.external_shear.rvs(size)
+        # sigma = np.random.uniform(
+        #     self.lens_param_samplers_params["velocity_dispersion"]["sigma_min"],
+        #     self.lens_param_samplers_params["velocity_dispersion"]["sigma_max"],
+        #     size,
+        # )
+
+        # # Sample individual parameter values (not grid)
+        # try:
+        #     q = self.axis_ratio.rvs(size, sigma)
+        # except TypeError:
+        #     q = self.axis_ratio.rvs(size)
+        # phi = self.axis_rotation_angle.rvs(size)
+        # e1, e2 = phi_q2_ellipticity(phi, q)
+        # gamma = self.density_profile_slope.rvs(size)
+        # gamma1, gamma2 = self.external_shear.rvs(size)
+        # size = np.prod(size_list)
+        # # --------------------------
 
         # cs data points for interpolation
-        size = np.prod(size_list)
-        _, _, e1, e2, gamma, gamma1, gamma2 = self.create_parameter_grid(
-            size_list=size_list
+        e1, e2, gamma, gamma1, gamma2 = self.create_parameter_grid(
+            size_list=size_list, spacing_config=spacing_config
         )
 
         e1_arr, e2_arr, gamma_arr, gamma1_arr, gamma2_arr = np.meshgrid(
@@ -2618,17 +2793,109 @@ class OpticalDepth:
         gamma1_arr = gamma1_arr.flatten()
         gamma2_arr = gamma2_arr.flatten()
 
-        cs = self.cross_section_epl_shear_numerical_mp(
-            theta_E=np.ones(size),
+        # # ---------
+        # cs_unit = self.cross_section_epl_shear_numerical_mp(
+        #     theta_E=np.ones(size),
+        #     gamma=gamma_arr,
+        #     gamma1=gamma1_arr,
+        #     gamma2=gamma2_arr,
+        #     e1=e1_arr,
+        #     e2=e2_arr,
+        #     verbose=True,
+        # )
+        # # ---------
+
+        # --------------------------
+        # cross_section_epl_shear_unit njit
+        # --------------------------
+        from ..image_properties.cross_section_njit import cross_section_epl_shear_unit
+
+        # Set Numba threads to npool before entering prange
+        from numba import set_num_threads
+
+        set_num_threads(self.npool)
+
+        # warm up the Numba function
+        @njit(cache=True)
+        def cross_section_epl_shear_unit_(
+            e1,
+            e2,
+            gamma,
+            gamma1,
+            gamma2,
+            theta_E=None,
+        ):
+            return cross_section_epl_shear_unit(
+                e1,
+                e2,
+                gamma,
+                gamma1,
+                gamma2,
+                theta_E,
+                num_th=500,
+                maginf=-100.0,
+                sourceplane=True,
+                return_which="double",
+            )
+
+        cross_section_epl_shear_unit_(
+            e1=e1_arr[:2],
+            e2=e2_arr[:2],
+            gamma=gamma_arr[:2],
+            gamma1=gamma1_arr[:2],
+            gamma2=gamma2_arr[:2],
+        )
+
+        print(
+            "Computing cross-section data points for interpolation with ler.image_properties.cross_section_njit.cross_section_epl_shear_unit..."
+        )
+        cs_unit = cross_section_epl_shear_unit_(
+            e1=e1_arr,
+            e2=e2_arr,
             gamma=gamma_arr,
             gamma1=gamma1_arr,
             gamma2=gamma2_arr,
-            e1=e1_arr,
-            e2=e2_arr,
-            verbose=True,
         )
+        # --------------------------
 
-        cs = cs.reshape(size_list)
+        # # find slope and intercept for cs_unit to cs conversion
+        # print("Finding the conversion factor from cross-section unit to actual cross-section...")
+        # theta_E = np.random.uniform(1.0e-10, 1.0e-8, 10000)
+        # # choose random gamma, gamma1, gamma2 for testing cs_unit to cs conversion
+        # size = min(10000, len(gamma_arr))
+        # idx = np.random.choice(len(gamma_arr), size, replace=False)
+        # cs = cross_section_epl_shear_unit_(
+        #     e1=e1_arr[idx],
+        #     e2=e2_arr[idx],
+        #     gamma=gamma_arr[idx],
+        #     gamma1=gamma1_arr[idx],
+        #     gamma2=gamma2_arr[idx],
+        #     theta_E=theta_E,
+        # )
+        # # cs = self.cross_section_epl_shear_numerical_mp(
+        # #     theta_E=theta_E,
+        # #     gamma=gamma_arr[idx],
+        # #     gamma1=gamma1_arr[idx],
+        # #     gamma2=gamma2_arr[idx],
+        # #     e1=e1_arr[idx],
+        # #     e2=e2_arr[idx],
+        # #     verbose=False,
+        # # )
+        # y_ = cs / cs_unit[idx]
+        # x_ = np.pi * theta_E * theta_E  # SIS cross-section as reference
+        # valid = np.isfinite(y_) & np.isfinite(x_) & (y_ > 0.0) & (cs_unit[idx] > 0.0)
+
+        # if np.count_nonzero(valid) >= 2:
+        #     cs_csunit_slope, cs_csunit_intercept = np.polyfit(x_[valid], y_[valid], 1)
+        # else:
+        #     cs_csunit_slope = 1.0 / np.pi
+        #     cs_csunit_intercept = 0.0
+        cs_csunit_slope = 0.31830988618379075
+        cs_csunit_intercept = 0.0
+
+
+        # ----------
+        cs_unit_grid = cs_unit.reshape(size_list)
 
         # save cs data
         save_json(
@@ -2639,11 +2906,13 @@ class OpticalDepth:
                 gamma,
                 gamma1,
                 gamma2,
-                cs,
+                cs_unit_grid,
+                cs_csunit_slope,
+                cs_csunit_intercept,
             ],
         )
 
-        return e1, e2, gamma, gamma1, gamma2, cs
+        return e1, e2, gamma, gamma1, gamma2, cs_unit_grid, cs_csunit_slope, cs_csunit_intercept
 
     def cross_section_epl_shear_interpolation(
         self,
@@ -2657,6 +2926,7 @@ class OpticalDepth:
         gamma2,
         get_attribute=False,
         size_list=[25, 25, 45, 15, 15],
+        spacing_config=None,
         **kwargs,
     ):
         """
@@ -2664,6 +2934,11 @@ class OpticalDepth:
         """
 
         from .cross_section_interpolator import make_cross_section_reinit
+
+        # spacing_config = kwargs.get("grid_spacing_config", None)
+        if spacing_config is None:
+            # spacing_config = {'e1': {'mode': 'mixed', 'geom_fraction': 0.6, 'transition_fraction': 0.3}, 'e2': {'mode': 'mixed', 'geom_fraction': 0.6, 'transition_fraction': 0.3}, 'gamma': {'mode': 'linear'}, 'gamma1': {'mode': 'linear'}, 'gamma2': {'mode': 'linear'}}
+            spacing_config = self.create_new_interpolator["cross_section"]["spacing_config"]
 
         param_dict_given = dict(
             z_min=self.z_min,
@@ -2685,6 +2960,7 @@ class OpticalDepth:
                 "density_profile_slope"
             ],
             external_shear=self.lens_param_samplers_params["external_shear"],
+            grid_spacing_config=spacing_config,
         )
 
         file_path, it_exist = interpolator_json_path(
@@ -2703,8 +2979,12 @@ class OpticalDepth:
                 gamma_grid,
                 gamma1_grid,
                 gamma2_grid,
-                cs_spline_coeff_grid,
-            ) = self.cross_section_epl_shear_interpolation_init(file_path, size_list)
+                cs_unit_grid,
+                cs_csunit_slope,
+                cs_csunit_intercept,
+            ) = self.cross_section_epl_shear_interpolation_init(
+                file_path, size_list, spacing_config=spacing_config
+            )
         else:
 
             print(f"Cross section interpolation data points loaded from {file_path}")
@@ -2714,7 +2994,9 @@ class OpticalDepth:
                 gamma_grid,
                 gamma1_grid,
                 gamma2_grid,
-                cs_spline_coeff_grid,
+                cs_unit_grid,
+                cs_csunit_slope,
+                cs_csunit_intercept,
             ) = load_json(file_path)
 
         self.cs_data_points_path = file_path
@@ -2726,10 +3008,10 @@ class OpticalDepth:
             gamma_grid=np.array(gamma_grid),
             gamma1_grid=np.array(gamma1_grid),
             gamma2_grid=np.array(gamma2_grid),
-            cs_spline_coeff_grid=np.array(cs_spline_coeff_grid),
+            cs_unit_grid=np.array(cs_unit_grid),
             Da_instance=self.angular_diameter_distance.function,
-            csunit_to_cs_slope=0.31830988618379075,
-            csunit_to_cs_intercept=-3.2311742677852644e-27,
+            csunit_to_cs_slope=cs_csunit_slope,
+            csunit_to_cs_intercept=cs_csunit_intercept,
         )
         # # define conversion function: cs_unit to cs
         # self.cs_unit_to_cs = lambda area_sis: cs_csunit_slope * area_sis + cs_csunit_intercept
@@ -2765,6 +3047,8 @@ class OpticalDepth:
         get_attribute=False,
         num_th=500,
         maginf=-100.0,
+        sourceplane=True,
+        return_which="double",
         **kwargs,
     ):
         """
@@ -2816,6 +3100,8 @@ class OpticalDepth:
             Da_instance=Da_instance,
             num_th=num_th,
             maginf=maginf,
+            sourceplane=sourceplane,
+            return_which=return_which,
         )
 
         return (
@@ -2966,16 +3252,21 @@ class OpticalDepth:
                 z_min = self.z_min + 0.001 if self.z_min == 0.0 else self.z_min
                 z_max = self.z_max
                 z_resolution = identifier_dict["zl_resolution"]
-                zl_array = redshift_optimal_spacing(z_min, z_max, z_resolution)
+                zl_array = generate_mixed_grid(z_min, z_max, z_resolution)
 
-                number_density_function = lambda sigma, zl: prior(
-                    sigma,
-                    zl,
-                )
+                def number_density_function(sigma, zl):
+                    return prior(
+                        sigma,
+                        zl,
+                    )
+
             else:
-                number_density_function = lambda sigma, zl: prior(
-                    sigma,
-                )
+
+                def number_density_function(sigma, zl):
+                    return prior(
+                        sigma,
+                    )
+
                 zl_array = None
 
             self._velocity_dispersion = FunctionConditioning(
@@ -3563,7 +3854,9 @@ class OpticalDepth:
                 cross_section_sis=None,
                 cross_section_epl_shear_numerical=None,
                 cross_section_epl_shear_interpolation=None,
-                cross_section_epl_shear_njit=dict(num_th=500, maginf=-100.0),
+                cross_section_epl_shear_njit=dict(
+                    num_th=500, maginf=-100.0, sourceplane=True, return_which="double"
+                ),
             ),
         )
 

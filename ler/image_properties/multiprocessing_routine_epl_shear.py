@@ -20,6 +20,7 @@ Copyright (C) 2026 Phurailatpam Hemantakumar. Distributed under MIT License.
 """
 
 import numpy as np
+from numba import set_num_threads
 from lenstronomy.LensModel.lens_model import LensModel
 from lenstronomy.LensModel.Solver.lens_equation_solver import LensEquationSolver
 from lenstronomy.LensModel.Solver.epl_shear_solver import caustics_epl_shear
@@ -59,6 +60,12 @@ def _init_worker_multiprocessing(
     _worker_shared_data["n_min_images"] = n_min_images
     _worker_shared_data["lensModelList"] = lensModelList
     _worker_shared_data["cosmo"] = cosmo
+
+    # Re-seed RNG from OS entropy so worker processes have independent streams
+    np.random.seed()
+
+    # Limit to 1 Numba thread per worker — parallelism comes from the process pool
+    set_num_threads(1)
 
 
 def _create_nan_result(iteration):

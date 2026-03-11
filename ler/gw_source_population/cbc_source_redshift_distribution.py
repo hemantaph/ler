@@ -38,6 +38,14 @@ from ..utils import (
 )
 
 
+def _init_sfr_worker():
+    np.random.seed()
+
+    from numba import set_num_threads
+
+    set_num_threads(1)
+
+
 class CBCSourceRedshiftDistribution(object):
     """
     Class for generating compact binary coalescence source redshift distributions.
@@ -397,11 +405,12 @@ class CBCSourceRedshiftDistribution(object):
             identifier_dict["z_max"],
             identifier_dict["resolution"],
         )
-        Pzs = (
-            lambda z: self.merger_rate_density(z)
-            / (1 + z)
-            * self.differential_comoving_volume(z)
-        )
+        def Pzs(z):
+            return (
+                self.merger_rate_density(z)
+                / (1 + z)
+                * self.differential_comoving_volume(z)
+            )
 
         Pzs_object = FunctionConditioning(
             function=Pzs,
@@ -474,13 +483,14 @@ class CBCSourceRedshiftDistribution(object):
             identifier_dict["z_max"],
             identifier_dict["resolution"],
         )
-        Rzs = lambda zs: merger_rate_density_bbh_oguri2018_function(
-            zs=zs,
-            R0=identifier_dict["R0"],
-            b2=identifier_dict["b2"],
-            b3=identifier_dict["b3"],
-            b4=identifier_dict["b4"],
-        )
+        def Rzs(zs):
+            return merger_rate_density_bbh_oguri2018_function(
+                zs=zs,
+                R0=identifier_dict["R0"],
+                b2=identifier_dict["b2"],
+                b3=identifier_dict["b3"],
+                b4=identifier_dict["b4"],
+            )
 
         Rzs_object = FunctionConditioning(
             function=Rzs,
@@ -623,7 +633,7 @@ class CBCSourceRedshiftDistribution(object):
         )
         # with tqdm
         rate_density_array = np.zeros(size)
-        with Pool(processes=self.npool) as pool:
+        with Pool(processes=self.npool, initializer=_init_sfr_worker) as pool:
             for result in tqdm(
                 pool.imap_unordered(sfr_with_time_delay_function, input_args),
                 total=size,
@@ -698,14 +708,15 @@ class CBCSourceRedshiftDistribution(object):
             identifier_dict["resolution"],
         )
 
-        Rzs = lambda zs: merger_rate_density_madau_dickinson2014_function(
-            zs=zs,
-            R0=identifier_dict["R0"],
-            a=identifier_dict["a"],
-            b=identifier_dict["b"],
-            c=identifier_dict["c"],
-            d=identifier_dict["d"],
-        )
+        def Rzs(zs):
+            return merger_rate_density_madau_dickinson2014_function(
+                zs=zs,
+                R0=identifier_dict["R0"],
+                a=identifier_dict["a"],
+                b=identifier_dict["b"],
+                c=identifier_dict["c"],
+                d=identifier_dict["d"],
+            )
 
         Rzs_object = FunctionConditioning(
             function=Rzs,
@@ -867,13 +878,14 @@ class CBCSourceRedshiftDistribution(object):
             identifier_dict["z_max"],
             identifier_dict["resolution"],
         )
-        Rzs = lambda zs: merger_rate_density_bbh_popIII_ken2022_function(
-            zs=zs,
-            R0=identifier_dict["R0"],
-            aIII=identifier_dict["aIII"],
-            bIII=identifier_dict["bIII"],
-            zIII=identifier_dict["zIII"],
-        )
+        def Rzs(zs):
+            return merger_rate_density_bbh_popIII_ken2022_function(
+                zs=zs,
+                R0=identifier_dict["R0"],
+                aIII=identifier_dict["aIII"],
+                bIII=identifier_dict["bIII"],
+                zIII=identifier_dict["zIII"],
+            )
 
         Rzs_object = FunctionConditioning(
             function=Rzs,
@@ -951,9 +963,10 @@ class CBCSourceRedshiftDistribution(object):
             identifier_dict["z_max"],
             identifier_dict["resolution"],
         )
-        Rzs = lambda zs: merger_rate_density_bbh_primordial_ken2022_function(
-            zs=zs, R0=identifier_dict["R0"], t0=identifier_dict["t0"]
-        )
+        def Rzs(zs):
+            return merger_rate_density_bbh_primordial_ken2022_function(
+                zs=zs, R0=identifier_dict["R0"], t0=identifier_dict["t0"]
+            )
 
         Rzs_object = FunctionConditioning(
             function=Rzs,

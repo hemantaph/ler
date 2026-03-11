@@ -36,7 +36,7 @@ from ..gw_source_population import CBCSourceParameterDistribution
 from ..image_properties import ImageProperties
 from ..utils import (
     FunctionConditioning,
-    redshift_optimal_spacing,
+    generate_mixed_grid,
 )
 
 warnings.filterwarnings("ignore")
@@ -323,6 +323,7 @@ class LensGalaxyParameterDistribution(
                 cross_section=cross_section_function,
                 n_prop=n_prop,
                 use_njit_sampler=use_njit_sampler,
+                npool=self.npool,
             )
         else:
             raise ValueError("Invalid cross_section_based_sampler")
@@ -435,6 +436,7 @@ class LensGalaxyParameterDistribution(
             time_window=365 * 24 * 3600 * 2,
             lens_model_list=["EPL_NUMBA", "SHEAR"],
             image_properties_function="image_properties_epl_shear",
+            image_properties_function_params=None,
             include_effective_parameters=True,
             multiprocessing_verbose=True,
             include_redundant_parameters=False,
@@ -448,6 +450,9 @@ class LensGalaxyParameterDistribution(
             n_max_images=input_params_image["n_max_images"],
             lens_model_list=input_params_image["lens_model_list"],
             image_properties_function=input_params_image["image_properties_function"],
+            image_properties_function_params=input_params_image[
+                "image_properties_function_params"
+            ],
             cosmology=cosmology,
             time_window=input_params_image["time_window"],
             spin_zero=input_params["spin_zero"],
@@ -719,7 +724,7 @@ class LensGalaxyParameterDistribution(
         z_min = self.z_min if self.z_min > 0.0 else 0.0001
         z_max = self.z_max
         resolution = identifier_dict["resolution"]
-        zs_array = redshift_optimal_spacing(z_min, z_max, resolution)
+        zs_array = generate_mixed_grid(z_min, z_max, resolution)
 
         if param_dict["tau_approximation"]:
 

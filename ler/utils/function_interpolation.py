@@ -92,7 +92,8 @@ class FunctionConditioning():
                 if conditioned_y_array is None:
                     # function is 1D
                     # njit(lambda x: cubic_spline_interpolator(x, function_spline, x_array))
-                    function_any = lambda x: cubic_spline_interpolator(x, function_spline, x_array)
+                    def function_any(x):
+                        return cubic_spline_interpolator(x, function_spline, x_array)
 
                     def function_non_zero(x):
                         result = cubic_spline_interpolator(x, function_spline, x_array)
@@ -102,10 +103,11 @@ class FunctionConditioning():
                     
                     function_final = function_any if non_zero_function else function_non_zero
 
-                    self.function = njit(function_final) if create_function else None
+                    self.function = njit(cache=True)(function_final) if create_function else None
 
                     # inverse function is 1D
-                    function_any = lambda x: cubic_spline_interpolator(x, function_inverse_spline, z_array)
+                    def function_any(x):
+                        return cubic_spline_interpolator(x, function_inverse_spline, z_array)
 
                     def function_non_zero(x):
                         result = cubic_spline_interpolator(x, function_inverse_spline, z_array)
@@ -115,16 +117,25 @@ class FunctionConditioning():
 
                     function_final = function_any if non_zero_function else function_non_zero
 
-                    self.function_inverse = njit(function_final) if create_function_inverse else None
+                    self.function_inverse = njit(cache=True)(function_final) if create_function_inverse else None
 
                     # pdf is 1D
-                    self.pdf = njit(lambda x: pdf_cubic_spline_interpolator(x, pdf_norm_const, function_spline, x_array)) if create_pdf else None
+                    @njit(cache=True)
+                    def pdf_wrapper(x):
+                        return pdf_cubic_spline_interpolator(x, pdf_norm_const, function_spline, x_array)
+
+                    self.pdf = pdf_wrapper if create_pdf else None
                     # sampler is 1D
-                    self.rvs = njit(lambda size: inverse_transform_sampler(size, cdf_values, x_array)) if create_rvs else None
+                    @njit(cache=True)
+                    def rvs_wrapper(size):
+                        return inverse_transform_sampler(size, cdf_values, x_array)
+
+                    self.rvs = rvs_wrapper if create_rvs else None
                     
                 else:
                     # function is 2D
-                    function_any = lambda x, y: cubic_spline_interpolator2d_array(x, y, function_spline, x_array, conditioned_y_array)
+                    def function_any(x, y):
+                        return cubic_spline_interpolator2d_array(x, y, function_spline, x_array, conditioned_y_array)
 
                     def function_non_zero(x, y):
                         result = cubic_spline_interpolator2d_array(x, y, function_spline, x_array, conditioned_y_array)
@@ -133,10 +144,11 @@ class FunctionConditioning():
                         return result
                     
                     function_final = function_any if non_zero_function else function_non_zero
-                    self.function = njit(function_final) if create_function else None
+                    self.function = njit(cache=True)(function_final) if create_function else None
 
                     # inverse function is 2D
-                    function_any = lambda x, y: cubic_spline_interpolator2d_array(x, y, function_inverse_spline, z_array, conditioned_y_array)
+                    def function_any(x, y):
+                        return cubic_spline_interpolator2d_array(x, y, function_inverse_spline, z_array, conditioned_y_array)
 
                     def function_non_zero(x, y):
                         result = cubic_spline_interpolator2d_array(x, y, function_inverse_spline, z_array, conditioned_y_array)
@@ -145,11 +157,19 @@ class FunctionConditioning():
                         return result
                     
                     function_final = function_any if non_zero_function else function_non_zero
-                    self.function_inverse = njit(function_final) if create_function_inverse else None
+                    self.function_inverse = njit(cache=True)(function_final) if create_function_inverse else None
 
-                    self.pdf = njit(lambda x, y: pdf_cubic_spline_interpolator2d_array(x, y, pdf_norm_const, function_spline, x_array, conditioned_y_array)) if create_pdf else None
+                    @njit(cache=True)
+                    def pdf_wrapper(x, y):
+                        return pdf_cubic_spline_interpolator2d_array(x, y, pdf_norm_const, function_spline, x_array, conditioned_y_array)
 
-                    self.rvs = njit(lambda size, y: inverse_transform_sampler2d(size, y, cdf_values, x_array, conditioned_y_array)) if create_rvs else None
+                    self.pdf = pdf_wrapper if create_pdf else None
+
+                    @njit(cache=True)
+                    def rvs_wrapper(size, y):
+                        return inverse_transform_sampler2d(size, y, cdf_values, x_array, conditioned_y_array)
+
+                    self.rvs = rvs_wrapper if create_rvs else None
 
                 self.x_array = x_array
                 self.z_array = z_array
@@ -164,11 +184,20 @@ class FunctionConditioning():
                 kde_object = interpolator['kde_object']
 
                 
-                self.pdf = lambda x: kde_object.pdf(x) if create_pdf else None
+                def kde_pdf(x):
+                    return kde_object.pdf(x)
+
+                self.pdf = kde_pdf if create_pdf else None
                 if y_array is None:
-                    self.rvs = lambda size: kde_object.resample(size)[0] if create_rvs else None
+                    def kde_rvs(size):
+                        return kde_object.resample(size)[0]
+
+                    self.rvs = kde_rvs if create_rvs else None
                 else:
-                    self.rvs = lambda size: kde_object.resample(size) if create_rvs else None
+                    def kde_rvs(size):
+                        return kde_object.resample(size)
+
+                    self.rvs = kde_rvs if create_rvs else None
 
                 self.x_array = x_array
                 self.y_array = y_array

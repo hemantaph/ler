@@ -1170,7 +1170,7 @@ def monte_carlo_integration(function, uniform_prior, size=10000):
     return integral
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def cubic_spline_interpolator(xnew, coefficients, x):
     """
     Function to interpolate using cubic spline.
@@ -1214,7 +1214,7 @@ def cubic_spline_interpolator(xnew, coefficients, x):
     return result
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def pdf_cubic_spline_interpolator(xnew, norm_const, coefficients, x):
     """
     Function to interpolate pdf using cubic spline.
@@ -1258,7 +1258,7 @@ def pdf_cubic_spline_interpolator(xnew, norm_const, coefficients, x):
     return result / norm_const
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def pdf_cubic_spline_interpolator2d_array(
     xnew_array, ynew_array, norm_array, coefficients, x, y
 ):
@@ -1322,7 +1322,7 @@ def pdf_cubic_spline_interpolator2d_array(
             y_idx2 = y_idx
             y_idx3 = y_idx + 1
             y_idx4 = y_idx + 2
-            coeff_low, coeff_high = 4, 8
+            
             # print("c")
             y1, y2, y3, y4 = y[y_idx1], y[y_idx2], y[y_idx3], y[y_idx4]
             z1 = pdf_cubic_spline_interpolator(
@@ -1338,10 +1338,34 @@ def pdf_cubic_spline_interpolator2d_array(
                 xnew_single, norm_array[y_idx4], coefficients[y_idx4], x[y_idx4]
             )[0]
 
-            coeff = coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4)
-            matrixD = coeff[coeff_low:coeff_high]
-            matrixB = np.array([ynew**3, ynew**2, ynew, 1.0])
-            result = np.dot(matrixB, matrixD)
+            # # ---------------------------------------------------------
+            # # Lagrange Interpolation (requires 4 coefficients)
+            # # ---------------------------------------------------------
+            # coeff_low, coeff_high = 4, 8
+            # coeff = coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4)
+            # matrixD = coeff[coeff_low:coeff_high]
+            # matrixB = np.array([ynew**3, ynew**2, ynew, 1.0])
+            # result = np.dot(matrixB, matrixD)
+
+            # ---------------------------------------------------------
+            # Cubic Hermite Interpolation (no coefficients needed, but requires tangents)
+            # ---------------------------------------------------------
+            denom = y3 - y2
+            t = (ynew - y2) / denom
+            
+            # Compute tangents (derivatives) at y2 and y3 using finite differences
+            m2 = ((z3 - z2) / (y3 - y2)) * ((y2 - y1) / (y3 - y1)) + ((z2 - z1) / (y2 - y1)) * ((y3 - y2) / (y3 - y1))
+                 
+            m3 = ((z4 - z3) / (y4 - y3)) * ((y3 - y2) / (y4 - y2)) + ((z3 - z2) / (y3 - y2)) * ((y4 - y3) / (y4 - y2))
+            
+            # Hermite basis polynomials
+            h00 = 2.0 * t**3 - 3.0 * t**2 + 1.0
+            h10 = t**3 - 2.0 * t**2 + t
+            h01 = -2.0 * t**3 + 3.0 * t**2
+            h11 = t**3 - t**2
+            
+            # Final interpolated value
+            result_array[i] = h00 * z2 + h10 * m2 * denom + h01 * z3 + h11 * m3 * denom
 
         result_array[i] = result
 
@@ -1353,7 +1377,7 @@ def pdf_cubic_spline_interpolator2d_array(
     return result_array
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def cubic_spline_interpolator2d_array(xnew_array, ynew_array, coefficients, x, y):
     """
     Function to calculate the interpolated value of snr_partialscaled given the mass ratio (ynew) and total mass (xnew). This is based off 2D bicubic spline interpolation.
@@ -1416,7 +1440,6 @@ def cubic_spline_interpolator2d_array(xnew_array, ynew_array, coefficients, x, y
             y_idx2 = y_idx
             y_idx3 = y_idx + 1
             y_idx4 = y_idx + 2
-            coeff_low, coeff_high = 4, 8
             # print(f"d) idx1, idx2, idx3, idx4 = {y_idx1}, {y_idx2}, {y_idx3}, {y_idx4}")
             y1, y2, y3, y4 = y[y_idx1], y[y_idx2], y[y_idx3], y[y_idx4]
             z1 = cubic_spline_interpolator(
@@ -1432,10 +1455,34 @@ def cubic_spline_interpolator2d_array(xnew_array, ynew_array, coefficients, x, y
                 xnew_single, coefficients[y_idx4], x[y_idx4]
             )[0]
 
-            coeff = coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4)
-            matrixD = coeff[coeff_low:coeff_high]
-            matrixB = np.array([ynew**3, ynew**2, ynew, 1.0])
-            result_array[i] = np.dot(matrixB, matrixD)
+            # # ---------------------------------------------------------
+            # # Cubic Spline Interpolation with Coefficients (LER method)
+            # # ---------------------------------------------------------
+            # coeff_low, coeff_high = 4, 8
+            # coeff = coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4)
+            # matrixD = coeff[coeff_low:coeff_high]
+            # matrixB = np.array([ynew**3, ynew**2, ynew, 1.0])
+            # result_array[i] = np.dot(matrixB, matrixD)
+
+            # ---------------------------------------------------------
+            # Cubic Hermite Interpolation (no coefficients needed, but requires tangents)
+            # ---------------------------------------------------------
+            denom = y3 - y2
+            t = (ynew - y2) / denom
+            
+            # Compute tangents (derivatives) at y2 and y3 using finite differences
+            m2 = ((z3 - z2) / (y3 - y2)) * ((y2 - y1) / (y3 - y1)) + ((z2 - z1) / (y2 - y1)) * ((y3 - y2) / (y3 - y1))
+                 
+            m3 = ((z4 - z3) / (y4 - y3)) * ((y3 - y2) / (y4 - y2)) + ((z3 - z2) / (y3 - y2)) * ((y4 - y3) / (y4 - y2))
+            
+            # Hermite basis polynomials
+            h00 = 2.0 * t**3 - 3.0 * t**2 + 1.0
+            h10 = t**3 - 2.0 * t**2 + t
+            h01 = -2.0 * t**3 + 3.0 * t**2
+            h11 = t**3 - t**2
+            
+            # Final interpolated value
+            result_array[i] = h00 * z2 + h10 * m2 * denom + h01 * z3 + h11 * m3 * denom
 
     return result_array
 
@@ -1556,7 +1603,7 @@ def inverse_transform_sampler(size, cdf, x):
     return samples
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def normal_pdf(x, mean=0.0, std=0.05):
     """
     Calculate the value of a normal probability density function.
@@ -1569,7 +1616,7 @@ def normal_pdf(x, mean=0.0, std=0.05):
         The mean of the normal distribution. Default is 0.
     std : `float`, optional
         The standard deviation of the normal distribution. Default is 0.05.
-
+    
     Returns
     -------
     pdf : `float` or `numpy.ndarray`
@@ -1579,7 +1626,7 @@ def normal_pdf(x, mean=0.0, std=0.05):
     return (1 / (std * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((x - mean) / std) ** 2)
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def normal_pdf_2d(x, y, mean_x=0.0, std_x=0.05, mean_y=0.0, std_y=0.05):
     """
     Calculate the value of a 2D normal probability density function.
@@ -1614,14 +1661,14 @@ def normal_pdf_2d(x, y, mean_x=0.0, std_x=0.05, mean_y=0.0, std_y=0.05):
     return factor_x * factor_y
 
 
-def load_txt_from_module(package, directory, filename):
-    """ """
+# def load_txt_from_module(package, directory, filename):
+#     """ """
 
-    with resources.path(package + "." + directory, filename) as txt_path:
-        return np.loadtxt(txt_path)
+#     with resources.path(package + "." + directory, filename) as txt_path:
+#         return np.loadtxt(txt_path)
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def cumulative_trapezoid(y, x=None, dx=1.0, initial=0.0):
     """
     Compute the cumulative integral of a function using the trapezoidal rule.
@@ -1638,7 +1685,7 @@ def cumulative_trapezoid(y, x=None, dx=1.0, initial=0.0):
     return cumsum
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def sample_from_powerlaw_distribution(size, alphans, mminns, mmaxns):
     """
     Inverse transform sampling for a power-law mass distribution:

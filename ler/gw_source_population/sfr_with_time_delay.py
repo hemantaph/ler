@@ -17,6 +17,7 @@ Copyright (C) 2026 Hemanta Ph. Distributed under MIT License.
 """
 
 import numpy as np
+from numba import set_num_threads
 from scipy.integrate import quad
 from scipy.optimize import fsolve
 from astropy.cosmology import LambdaCDM
@@ -61,6 +62,8 @@ def sfr_with_time_delay_function(input_args):
     >>> args = [0.5, 0, 0.02, 13.0, 70.0, 0.3, 0.7, 0.01, 2.6, 3.2, 6.2]
     >>> idx, sfr = sfr_with_time_delay(args)
     """
+    set_num_threads(1)
+
     z = input_args[0]
     idx = input_args[1]
     td_min = input_args[2]

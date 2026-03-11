@@ -17,19 +17,16 @@ Copyright (C) 2026 Hemantakumar Phurailatpam. Distributed under MIT License.
 """
 
 import numpy as np
-from numba import njit, prange
+from numba import njit, prange, set_num_threads
 from scipy.interpolate import CubicSpline
 from astropy.cosmology import LambdaCDM
 from ..utils import is_njitted
 from multiprocessing import Pool
 from tqdm import tqdm
 from ..utils import (
-    save_pickle,
-    load_pickle,
     inverse_transform_sampler,
-    redshift_optimal_spacing,
+    generate_mixed_grid,
 )
-import os
 
 
 def available_sampler_list():
@@ -160,7 +157,7 @@ def lens_redshift_strongly_lensed_sis_haris_rvs(
     >>> print(f"Redshift range: [{zl_samples.min():.3f}, {zl_samples.max():.3f}]")
     """
     # Create comoving distance to redshift mapping
-    zs_array = redshift_optimal_spacing(z_min, z_max, 500)
+    zs_array = generate_mixed_grid(z_min, z_max, 500)
     Dc_array = cosmo.comoving_distance(zs_array).value
     inverse_spline_Dc = CubicSpline(Dc_array, zs_array)
 
@@ -1157,31 +1154,6 @@ def create_rejection_sampler(
     return rejection_sampler_wrapper
 
 
-# --------------------------------------------------
-# Importance sampling of strongly lensed parameters
-# --------------------------------------------------
-@njit(cache=True)
-def _sigma_proposal_uniform(n, sigma_min, sigma_max):
-    """
-    Draw uniform samples for velocity dispersion proposal.
-
-    Parameters
-    ----------
-    n : ``int``
-        Number of samples to draw.
-    sigma_min : ``float``
-        Minimum velocity dispersion (km/s).
-    sigma_max : ``float``
-        Maximum velocity dispersion (km/s).
-
-    Returns
-    -------
-    sigma : ``numpy.ndarray``
-        Uniform samples in [sigma_min, sigma_max].
-    """
-    return sigma_min + (sigma_max - sigma_min) * np.random.random(n)
-
-
 @njit(cache=True)
 def _weighted_choice_1d(weights):
     """
@@ -1214,7 +1186,7 @@ def _weighted_choice_1d(weights):
             return i
     return weights.size - 1
 
-
+@njit(parallel=True, cache=True)
 def importance_sampler(
     zs,
     zl,
@@ -1311,12 +1283,15 @@ def importance_sampler(
     gamma_post = np.zeros(n_samples)
     gamma1_post = np.zeros(n_samples)
     gamma2_post = np.zeros(n_samples)
+    # Compute cross sections
+    zs_arr = np.broadcast_to(zs[:n_samples, None], (n_samples, n_prop))
+    zl_arr = np.broadcast_to(zl[:n_samples, None], (n_samples, n_prop))
 
     p0 = 1.0 / (sigma_max - sigma_min)
 
     for i in prange(n_samples):  # for each (zl, zs) pair
         # Draw proposals from uniform distribution
-        sigma_prop = _sigma_proposal_uniform(n_prop, sigma_min, sigma_max)
+        sigma_prop = sigma_min + (sigma_max - sigma_min) * np.random.random(n_prop)
 
         # Draw other parameters from their priors
         q_prop = q_rvs(n_prop, sigma_prop)
@@ -1324,13 +1299,9 @@ def importance_sampler(
         gamma_prop = gamma_rvs(n_prop)
         gamma1_prop, gamma2_prop = shear_rvs(n_prop)
 
-        # Compute cross sections
-        zs_arr = zs[i] * np.ones(n_prop)
-        zl_arr = zl[i] * np.ones(n_prop)
-
         cs = cross_section(
-            zs_arr,
-            zl_arr,
+            zs_arr[i],
+            zl_arr[i],
             sigma_prop,
             q_prop,
             phi_prop,
@@ -1340,7 +1311,7 @@ def importance_sampler(
         )
 
         # Compute importance weights
-        sigma_function = number_density(sigma_prop, zl_arr)
+        sigma_function = number_density(sigma_prop, zl_arr[i])
 
         w = cs * (sigma_function / p0)
         w = np.where(w > 0.0, w, 0.0)
@@ -1368,6 +1339,59 @@ def importance_sampler(
 # --------------------------------------
 # Importance sampling (multiprocessing)
 # --------------------------------------
+# Global variable to hold shared data in importance sampler worker processes.
+_importance_sampler_shared = {}
+
+
+def _init_importance_sampler_worker(
+    sigma_min,
+    sigma_max,
+    q_rvs,
+    phi_rvs,
+    gamma_rvs,
+    shear_rvs,
+    number_density,
+    cross_section,
+    n_prop,
+):
+    """
+    Initialize worker process with shared data for importance sampling.
+
+    Called once per worker process when the pool is created.
+
+    Parameters
+    ----------
+    sigma_min : ``float``
+        Minimum velocity dispersion (km/s).
+    sigma_max : ``float``
+        Maximum velocity dispersion (km/s).
+    q_rvs : ``callable``
+        Axis ratio sampler.
+    phi_rvs : ``callable``
+        Orientation angle sampler.
+    gamma_rvs : ``callable``
+        power-law index sampler.
+    shear_rvs : ``callable``
+        External shear sampler.
+    number_density : ``callable``
+        Velocity dispersion number density function.
+    cross_section : ``callable``
+        Cross-section function.
+    n_prop : ``int``
+        Number of proposal samples per lens.
+    """
+    global _importance_sampler_shared
+    _importance_sampler_shared["sigma_min"] = sigma_min
+    _importance_sampler_shared["sigma_max"] = sigma_max
+    _importance_sampler_shared["q_rvs"] = q_rvs
+    _importance_sampler_shared["phi_rvs"] = phi_rvs
+    _importance_sampler_shared["gamma_rvs"] = gamma_rvs
+    _importance_sampler_shared["shear_rvs"] = shear_rvs
+    _importance_sampler_shared["number_density"] = number_density
+    _importance_sampler_shared["cross_section"] = cross_section
+    _importance_sampler_shared["n_prop"] = n_prop
+
+
 def _importance_sampler_worker(params):
     """
     Worker function for multiprocessing importance sampling.
@@ -1386,17 +1410,22 @@ def _importance_sampler_worker(params):
     """
     zs_i, zl_i, worker_idx = params
 
-    # Load shared data from pickle file
-    shared_data = load_pickle("importance_sampler_shared.pkl")
-    sigma_min = shared_data["sigma_min"]
-    sigma_max = shared_data["sigma_max"]
-    q_rvs = shared_data["q_rvs"]
-    phi_rvs = shared_data["phi_rvs"]
-    gamma_rvs = shared_data["gamma_rvs"]
-    shear_rvs = shared_data["shear_rvs"]
-    number_density = shared_data["number_density"]
-    cross_section = shared_data["cross_section"]
-    n_prop = shared_data["n_prop"]
+    # Re-seed RNG from OS entropy so forked workers don't share the parent's state
+    np.random.seed()
+
+    # Limit to 1 Numba thread per worker — parallelism comes from the process pool
+    set_num_threads(1)
+
+    # Retrieve shared data set by _init_importance_sampler_worker
+    sigma_min = _importance_sampler_shared["sigma_min"]
+    sigma_max = _importance_sampler_shared["sigma_max"]
+    q_rvs = _importance_sampler_shared["q_rvs"]
+    phi_rvs = _importance_sampler_shared["phi_rvs"]
+    gamma_rvs = _importance_sampler_shared["gamma_rvs"]
+    shear_rvs = _importance_sampler_shared["shear_rvs"]
+    number_density = _importance_sampler_shared["number_density"]
+    cross_section = _importance_sampler_shared["cross_section"]
+    n_prop = _importance_sampler_shared["n_prop"]
 
     p0 = 1.0 / (sigma_max - sigma_min)
 
@@ -1514,20 +1543,6 @@ def importance_sampler_mp(
     """
     n_samples = zl.size
 
-    # Save shared data to pickle file for workers
-    shared_data = {
-        "sigma_min": sigma_min,
-        "sigma_max": sigma_max,
-        "q_rvs": q_rvs,
-        "phi_rvs": phi_rvs,
-        "gamma_rvs": gamma_rvs,
-        "shear_rvs": shear_rvs,
-        "number_density": number_density,
-        "cross_section": cross_section,
-        "n_prop": n_prop,
-    }
-    save_pickle("importance_sampler_shared.pkl", shared_data)
-
     # Prepare input parameters for workers
     input_params = [(zs[i], zl[i], i) for i in range(n_samples)]
 
@@ -1540,7 +1555,21 @@ def importance_sampler_mp(
     gamma2_post = np.zeros(n_samples)
 
     # Run multiprocessing with progress bar
-    with Pool(processes=npool) as pool:
+    with Pool(
+        processes=npool,
+        initializer=_init_importance_sampler_worker,
+        initargs=(
+            sigma_min,
+            sigma_max,
+            q_rvs,
+            phi_rvs,
+            gamma_rvs,
+            shear_rvs,
+            number_density,
+            cross_section,
+            n_prop,
+        ),
+    ) as pool:
         for worker_idx, result in tqdm(
             pool.imap_unordered(_importance_sampler_worker, input_params),
             total=n_samples,
@@ -1553,9 +1582,6 @@ def importance_sampler_mp(
             gamma_post[worker_idx] = result[3]
             gamma1_post[worker_idx] = result[4]
             gamma2_post[worker_idx] = result[5]
-
-    # Cleanup pickle file
-    os.remove("importance_sampler_shared.pkl")
 
     return sigma_post, q_post, phi_post, gamma_post, gamma1_post, gamma2_post
 
@@ -1611,53 +1637,14 @@ def create_importance_sampler(
     -------
     importance_sampler_wrapper : ``callable``
         Function with signature (zs, zl) -> (sigma, q, phi, gamma, gamma1, gamma2).
-
-    Examples
-    --------
-    >>> import numpy as np
-    >>> from numba import njit
-    >>> @njit
-    ... def q_rvs(n, sigma):
-    ...     return 0.5 + 0.5 * np.random.random(n)
-    >>> @njit
-    ... def phi_rvs(n):
-    ...     return np.pi * np.random.random(n)
-    >>> @njit
-    ... def gamma_rvs(n):
-    ...     return 2.0 + 0.2 * np.random.randn(n)
-    >>> @njit
-    ... def shear_rvs(n):
-    ...     return 0.05 * np.random.randn(n), 0.05 * np.random.randn(n)
-    >>> @njit
-    ... def number_density(sigma, zl):
-    ...     return np.ones_like(sigma)
-    >>> @njit
-    ... def cross_section(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):
-    ...     return sigma**4
-    >>> sampler = create_importance_sampler(
-    ...     sigma_min=100.0,
-    ...     sigma_max=400.0,
-    ...     q_rvs=q_rvs,
-    ...     phi_rvs=phi_rvs,
-    ...     gamma_rvs=gamma_rvs,
-    ...     shear_rvs=shear_rvs,
-    ...     number_density=number_density,
-    ...     cross_section=cross_section,
-    ...     n_prop=100,
-    ... )
-    >>> zs = np.array([1.0, 1.5, 2.0])
-    >>> zl = np.array([0.3, 0.5, 0.7])
-    >>> sigma, q, phi, gamma, gamma1, gamma2 = sampler(zs, zl)
     """
     if use_njit_sampler:
         print(
             "Faster, njitted and importance sampling based lens parameter sampler will be used."
         )
-        _base_sampler = njit(parallel=True, cache=True)(importance_sampler)
-
-        @njit(cache=True)
-        def importance_sampler_wrapper(zs, zl):
-            return _base_sampler(
+        @njit(parallel=True, cache=True)
+        def _base_sampler(zs, zl):
+            return importance_sampler(
                 zs=zs,
                 zl=zl,
                 sigma_min=sigma_min,
@@ -1669,6 +1656,14 @@ def create_importance_sampler(
                 number_density=number_density,
                 cross_section=cross_section,
                 n_prop=n_prop,
+            )
+
+        def importance_sampler_wrapper(zs, zl):
+            # Set Numba threads to npool before entering prange
+            set_num_threads(npool)
+            return _base_sampler(
+                zs=zs,
+                zl=zl,
             )
 
     else:
@@ -1736,30 +1731,39 @@ def _njit_checks(
     """
     # Wrap cross_section function based on argument count
     if cross_section_.__code__.co_argcount == 4:
-        cross_section_function = njit(
-            lambda zs, zl, sigma, q, phi, gamma, gamma1, gamma2: cross_section_(
-                zs, zl, sigma, q
-            )
-        )
+        @njit(cache=True)
+        def cross_section_function(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):
+            return cross_section_(zs, zl, sigma, q)
     elif cross_section_.__code__.co_argcount == 3:
-        cross_section_function = njit(
-            lambda zs, zl, sigma, q, phi, gamma, gamma1, gamma2: cross_section_(
-                zs, zl, sigma
-            )
-        )
+        @njit(cache=True)
+        def cross_section_function(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):
+            return cross_section_(zs, zl, sigma)
     else:
         cross_section_function = cross_section_
 
     # Wrap samplers and PDFs based on argument count
     if sigma_rvs_.__code__.co_argcount == 1:
         if is_njitted(sigma_rvs_):
-            sigma_rvs = njit(lambda size, zl: sigma_rvs_(size))
-            sigma_pdf = njit(lambda sigma, zl: sigma_pdf_(sigma))
-            number_density = njit(lambda sigma, zl: number_density_(sigma))
+            @njit(cache=True)
+            def sigma_rvs(size, zl):
+                return sigma_rvs_(size)
+
+            @njit(cache=True)
+            def sigma_pdf(sigma, zl):
+                return sigma_pdf_(sigma)
+
+            @njit(cache=True)
+            def number_density(sigma, zl):
+                return number_density_(sigma)
         else:
-            sigma_rvs = lambda size, zl: sigma_rvs_(size)
-            sigma_pdf = lambda sigma, zl: sigma_pdf_(sigma)
-            number_density = lambda sigma, zl: number_density_(sigma)
+            def sigma_rvs(size, zl):
+                return sigma_rvs_(size)
+
+            def sigma_pdf(sigma, zl):
+                return sigma_pdf_(sigma)
+
+            def number_density(sigma, zl):
+                return number_density_(sigma)
     else:
         sigma_rvs = sigma_rvs_
         sigma_pdf = sigma_pdf_
@@ -1767,9 +1771,12 @@ def _njit_checks(
 
     if q_rvs_.__code__.co_argcount == 1:
         if is_njitted(q_rvs_):
-            q_rvs = njit(lambda size, sigma: q_rvs_(size))
+            @njit(cache=True)
+            def q_rvs(size, sigma):
+                return q_rvs_(size)
         else:
-            q_rvs = lambda size, sigma: q_rvs_(size)
+            def q_rvs(size, sigma):
+                return q_rvs_(size)
     else:
         q_rvs = q_rvs_
 

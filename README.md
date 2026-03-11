@@ -11,6 +11,35 @@
 pip install ler
 ```
 
+## Parallelism best practices (multiprocessing + numba)
+
+LeR uses both process-level parallelism (Python multiprocessing) and thread-level parallelism (Numba `njit(parallel=True)`). To avoid CPU oversubscription and platform-specific runtime issues:
+
+- On macOS, prefer `spawn` start method (default in LeR).
+- On Linux, `fork` is default, but `spawn` can still be used if other native libraries conflict.
+- In multiprocessing workers, keep Numba threads at 1 (LeR workers already do this where needed).
+- For pure Numba multithreading paths, set `npool` to the number of threads you actually want.
+- Run multiprocessing code under `if __name__ == "__main__":` in user scripts.
+
+Recommended environment variables:
+
+```bash
+# Keep BLAS/OpenMP libraries from spawning extra threads per process
+export OMP_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+
+# Optional: explicitly choose multiprocessing start method behavior
+export LER_USE_SPAWN=True   # safest on macOS and when mixing native threaded libs
+# export LER_USE_FORK=True  # Linux-only advanced override if needed
+```
+
+Typical tuning guidance:
+
+- Multiprocessing-heavy runs: choose `npool` close to physical/logical cores; worker-side Numba threads should stay at 1.
+- Numba-parallel-only runs: set `npool` to desired Numba threads and avoid wrapping that same workload in multiprocessing.
+- Avoid running process pools and independent heavy thread pools at full core count at the same time.
+
 ## About
 
 <p align="center">

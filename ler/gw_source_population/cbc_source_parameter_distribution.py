@@ -616,13 +616,9 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
 
         gw_parameters = {}  # initialize dictionary to store parameters
         for sampler_name in param_names:
-            # print(name)
             if sampler_name not in param_keys:
                 # Sample the parameter using the specified sampler function
-                # try:
                 gw_parameters[sampler_name] = getattr(self, str(sampler_name))(size)
-                # except:
-                #     raise Exception(f"Sampler {sampler_name} is not defined.")
             else:
                 # Use the provided value from kwargs
                 gw_parameters[sampler_name] = param[sampler_name]
@@ -640,9 +636,8 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         gw_parameters["mass_1"], gw_parameters["mass_2"] = m1 * (1 + zs), m2 * (
             1 + zs
         )  # Msun
-        del gw_parameters["source_frame_masses"]
 
-        # sample_gw_parameters
+        del gw_parameters["source_frame_masses"]
 
         return gw_parameters
 
@@ -703,17 +698,18 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         identifier_dict.update(param_dict)
 
         # mass function
-        rvs_ = lambda size: binary_masses_BBH_powerlaw_gaussian_rvs(
-            size=size,
-            mminbh=identifier_dict["mminbh"],
-            mmaxbh=identifier_dict["mmaxbh"],
-            alpha=identifier_dict["alpha"],
-            mu_g=identifier_dict["mu_g"],
-            sigma_g=identifier_dict["sigma_g"],
-            lambda_peak=identifier_dict["lambda_peak"],
-            delta_m=identifier_dict["delta_m"],
-            beta=identifier_dict["beta"],
-        )
+        def rvs_(size):
+            return binary_masses_BBH_powerlaw_gaussian_rvs(
+                size=size,
+                mminbh=identifier_dict["mminbh"],
+                mmaxbh=identifier_dict["mmaxbh"],
+                alpha=identifier_dict["alpha"],
+                mu_g=identifier_dict["mu_g"],
+                sigma_g=identifier_dict["sigma_g"],
+                lambda_peak=identifier_dict["lambda_peak"],
+                delta_m=identifier_dict["delta_m"],
+                beta=identifier_dict["beta"],
+            )
 
         mass_object = FunctionConditioning(
             function=None,
@@ -785,14 +781,15 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             param_dict = kwargs
         identifier_dict.update(param_dict)
 
-        rvs_ = lambda size: binary_masses_BBH_popIII_lognormal_rvs(
-            size,
-            m_min=identifier_dict["m_min"],
-            m_max=identifier_dict["m_max"],
-            Mc=identifier_dict["Mc"],
-            sigma=identifier_dict["sigma"],
-            chunk_size=chunk_size,
-        )
+        def rvs_(size):
+            return binary_masses_BBH_popIII_lognormal_rvs(
+                size,
+                m_min=identifier_dict["m_min"],
+                m_max=identifier_dict["m_max"],
+                Mc=identifier_dict["Mc"],
+                sigma=identifier_dict["sigma"],
+                chunk_size=chunk_size,
+            )
 
         mass_object = FunctionConditioning(
             function=None,
@@ -858,14 +855,15 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             param_dict = kwargs
         identifier_dict.update(param_dict)
 
-        rvs_ = lambda size: binary_masses_BBH_primordial_lognormal_rvs(
-            size,
-            m_min=identifier_dict["m_min"],
-            m_max=identifier_dict["m_max"],
-            Mc=identifier_dict["Mc"],
-            sigma=identifier_dict["sigma"],
-            chunk_size=chunk_size,
-        )
+        def rvs_(size):
+            return binary_masses_BBH_primordial_lognormal_rvs(
+                size,
+                m_min=identifier_dict["m_min"],
+                m_max=identifier_dict["m_max"],
+                Mc=identifier_dict["Mc"],
+                sigma=identifier_dict["sigma"],
+                chunk_size=chunk_size,
+            )
 
         mass_object = FunctionConditioning(
             function=None,
@@ -939,18 +937,19 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         identifier_dict.update(param_dict)
 
         # mass function for NSBH
-        rvs_ = lambda size: binary_masses_NSBH_broken_powerlaw_rvs(
-            size,
-            mminbh=identifier_dict["mminbh"],
-            mmaxbh=identifier_dict["mmaxbh"],
-            alpha_1=identifier_dict["alpha_1"],
-            alpha_2=identifier_dict["alpha_2"],
-            b=identifier_dict["b"],
-            delta_m=identifier_dict["delta_m"],
-            mminns=identifier_dict["mminns"],
-            mmaxns=identifier_dict["mmaxns"],
-            alphans=identifier_dict["alphans"],
-        )
+        def rvs_(size):
+            return binary_masses_NSBH_broken_powerlaw_rvs(
+                size,
+                mminbh=identifier_dict["mminbh"],
+                mmaxbh=identifier_dict["mmaxbh"],
+                alpha_1=identifier_dict["alpha_1"],
+                alpha_2=identifier_dict["alpha_2"],
+                b=identifier_dict["b"],
+                delta_m=identifier_dict["delta_m"],
+                mminns=identifier_dict["mminns"],
+                mmaxns=identifier_dict["mmaxns"],
+                alphans=identifier_dict["alphans"],
+            )
 
         mass_object = FunctionConditioning(
             function=None,
@@ -1110,17 +1109,18 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         identifier_dict.update(param_dict)
 
         # mass function for BNS
-        rvs_ = lambda size: binary_masses_BNS_bimodal_rvs(
-            size,
-            w=identifier_dict["w"],
-            muL=identifier_dict["muL"],
-            sigmaL=identifier_dict["sigmaL"],
-            muR=identifier_dict["muR"],
-            sigmaR=identifier_dict["sigmaR"],
-            mmin=identifier_dict["mmin"],
-            mmax=identifier_dict["mmax"],
-            resolution=identifier_dict["resolution"],
-        )
+        def rvs_(size):
+            return binary_masses_BNS_bimodal_rvs(
+                size,
+                w=identifier_dict["w"],
+                muL=identifier_dict["muL"],
+                sigmaL=identifier_dict["sigmaL"],
+                muR=identifier_dict["muR"],
+                sigmaR=identifier_dict["sigmaR"],
+                mmin=identifier_dict["mmin"],
+                mmax=identifier_dict["mmax"],
+                resolution=identifier_dict["resolution"],
+            )
 
         mass_object = FunctionConditioning(
             function=None,
@@ -1171,10 +1171,16 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         identifier_dict.update(param_dict)
 
         value = identifier_dict["value"]
+
         # pdf_, zero everywhere except at value
-        pdf_ = njit(lambda x: np.where(x == value, 1.0, 0.0))
+        @njit(cache=True)
+        def pdf_(x):
+            return np.where(x == value, 1.0, 0.0)
+
         # rvs_, return value
-        rvs_ = njit(lambda size: np.ones(size) * value)
+        @njit(cache=True)
+        def rvs_(size):
+            return np.ones(size) * value
 
         object_ = FunctionConditioning(
             identifier_dict=identifier_dict,
@@ -1223,8 +1229,13 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         xmin = identifier_dict["xmin"]
         xmax = identifier_dict["xmax"]
 
-        pdf_ = njit(lambda x: 1.0 / (xmax - xmin) * np.ones(len(x)))
-        rvs_ = njit(lambda size: np.random.uniform(xmin, xmax, size=size))
+        @njit(cache=True)
+        def pdf_(x):
+            return 1.0 / (xmax - xmin) * np.ones(len(x))
+
+        @njit(cache=True)
+        def rvs_(size):
+            return np.random.uniform(xmin, xmax, size=size)
 
         object_ = FunctionConditioning(
             identifier_dict=identifier_dict,
@@ -1268,10 +1279,13 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         identifier_dict["name"] = "sampler_cosine"
         identifier_dict.update(kwargs)
 
-        pdf_ = njit(lambda x: 0.5 * np.cos(x))
-        rvs_ = njit(
-            lambda size: np.arcsin((np.random.uniform(0, 1, size=size) * 2 - 1))
-        )
+        @njit(cache=True)
+        def pdf_(x):
+            return 0.5 * np.cos(x)
+
+        @njit(cache=True)
+        def rvs_(size):
+            return np.arcsin((np.random.uniform(0, 1, size=size) * 2 - 1))
 
         object_ = FunctionConditioning(
             identifier_dict=identifier_dict,
@@ -1315,10 +1329,13 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
         identifier_dict["name"] = "sampler_sine"
         identifier_dict.update(kwargs)
 
-        pdf_ = njit(lambda x: 0.5 * np.sin(x))
-        rvs_ = njit(
-            lambda size: np.arccos((np.random.uniform(0, 1, size=size) - 0.5) * 2)
-        )
+        @njit(cache=True)
+        def pdf_(x):
+            return 0.5 * np.sin(x)
+
+        @njit(cache=True)
+        def rvs_(size):
+            return np.arccos((np.random.uniform(0, 1, size=size) - 0.5) * 2)
 
         object_ = FunctionConditioning(
             identifier_dict=identifier_dict,

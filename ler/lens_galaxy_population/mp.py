@@ -16,11 +16,13 @@ Copyright (C) 2026 Phurailatpam Hemantakumar. Distributed under MIT License.
 """
 
 import numpy as np
-from numba import njit, prange
+from numba import njit, prange, set_num_threads
 
 from .lens_functions import cross_section
 
-from ..utils import load_pickle
+# Global variable to hold shared data in worker processes.
+# This avoids pickling large data for each work item — only once per worker.
+_worker_shared_data = {}
 
 # Constants for cross-section unit scaling (1/pi and numerical offset)
 CS_UNIT_SLOPE = 0.31830988618379075
@@ -129,9 +131,65 @@ def lens_redshift_strongly_lensed_njit(
     return result_array
 
 
+def _init_lens_redshift_worker(
+    sigma_min,
+    sigma_max,
+    sigma_function,
+    q_rvs,
+    phi_rvs,
+    gamma_rvs,
+    shear_rvs,
+    dVcdz_function,
+    cs_function,
+    integration_size,
+):
+    """
+    Initialize worker process with shared data for lens redshift.
+
+    Called once per worker process when the pool is created.
+    Shared data is stored in the module-level ``_worker_shared_data``
+    global so that ``lens_redshift_strongly_lensed_mp`` can access it
+    without any per-task pickling overhead.
+
+    Parameters
+    ----------
+    sigma_min : ``float``
+        Minimum velocity dispersion (km/s).
+    sigma_max : ``float``
+        Maximum velocity dispersion (km/s).
+    sigma_function : ``callable``
+        Velocity dispersion number density function.
+    q_rvs : ``callable``
+        Axis ratio sampler.
+    phi_rvs : ``callable``
+        Axis rotation angle sampler.
+    gamma_rvs : ``callable``
+        Density slope sampler.
+    shear_rvs : ``callable``
+        External shear sampler.
+    dVcdz_function : ``callable``
+        Differential comoving volume function.
+    cs_function : ``callable``
+        Cross-section function.
+    integration_size : ``int``
+        Number of Monte Carlo samples per (zs, zl) pair.
+    """
+    global _worker_shared_data
+    _worker_shared_data["sigma_min"] = sigma_min
+    _worker_shared_data["sigma_max"] = sigma_max
+    _worker_shared_data["sigma_function"] = sigma_function
+    _worker_shared_data["q_rvs"] = q_rvs
+    _worker_shared_data["phi_rvs"] = phi_rvs
+    _worker_shared_data["gamma_rvs"] = gamma_rvs
+    _worker_shared_data["shear_rvs"] = shear_rvs
+    _worker_shared_data["dVcdz_function"] = dVcdz_function
+    _worker_shared_data["cs_function"] = cs_function
+    _worker_shared_data["integration_size"] = integration_size
+
+
 def lens_redshift_strongly_lensed_mp(params):
     """
-    Multiprocessing worker for lens redshift optical depth calculation.
+    Multiprocessing worker for computation of differential optical dept (lens redshift).
 
     Computes the differential optical depth for a single source redshift
     across multiple lens redshifts. Designed to be called via multiprocessing
@@ -153,18 +211,23 @@ def lens_redshift_strongly_lensed_mp(params):
         1D array of optical depth values for each lens redshift.
     """
 
-    # Load shared data from pickle file (set once per process)
-    [
-        sigma_args,
-        q_rvs,
-        dVcdz_function,
-        cs_function,
-        phi_rvs,
-        shear_rvs,
-        gamma_rvs,
-        integration_size,
-    ] = load_pickle("input_params_mp.pkl")
-    sigma_min, sigma_max, sigma_function = sigma_args[0], sigma_args[1], sigma_args[2]
+    # Re-seed RNG from OS entropy so forked workers don't share the parent's state
+    np.random.seed()
+
+    # Limit to 1 Numba thread per worker — parallelism comes from the process pool
+    set_num_threads(1)
+
+    # Retrieve shared data set by _init_lens_redshift_worker
+    sigma_min = _worker_shared_data["sigma_min"]
+    sigma_max = _worker_shared_data["sigma_max"]
+    sigma_function = _worker_shared_data["sigma_function"]
+    q_rvs = _worker_shared_data["q_rvs"]
+    phi_rvs = _worker_shared_data["phi_rvs"]
+    gamma_rvs = _worker_shared_data["gamma_rvs"]
+    shear_rvs = _worker_shared_data["shear_rvs"]
+    dVcdz_function = _worker_shared_data["dVcdz_function"]
+    cs_function = _worker_shared_data["cs_function"]
+    integration_size = _worker_shared_data["integration_size"]
 
     zs = params[0]
     worker_idx = params[2]
@@ -237,6 +300,8 @@ def cross_section_unit_mp(params):
     area : ``float``
         Cross-section area (dimensionless, for theta_E = 1).
     """
+    set_num_threads(1)
+
     e1, e2, gamma, gamma1, gamma2, idx = params
     area = cross_section(1.0, e1, e2, gamma, gamma1, gamma2)
     return idx, area
@@ -261,6 +326,8 @@ def cross_section_mp(params):
     area : ``float``
         Cross-section area (radian^2).
     """
+    set_num_threads(1)
+
     theta_E, e1, e2, gamma, gamma1, gamma2, idx = params
     area = cross_section(theta_E, e1, e2, gamma, gamma1, gamma2)
     return int(idx), area

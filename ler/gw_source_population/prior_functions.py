@@ -142,13 +142,14 @@ def merger_rate_density_madau_dickinson2014_function(zs, R0=19 * 1e-9, a=0.015, 
     >>> rate_density = merger_rate_density_madau_dickinson2014(zs=np.array([0.1]))
     """
 
-    density_helper = lambda zs: sfr_madau_dickinson2014(  
-        zs=zs, 
-        a=a, 
-        b=b, 
-        c=c,
-        d=d,
-    )
+    def density_helper(zs):
+        return sfr_madau_dickinson2014(
+            zs=zs,
+            a=a,
+            b=b,
+            c=c,
+            d=d,
+        )
 
     density_zs = R0 * density_helper(zs)/ density_helper(np.array([0.]))[0]
 
@@ -193,13 +194,14 @@ def merger_rate_density_madau_dickinson_belczynski_ng_function(zs, R0=19 * 1e-9,
     >>> rate_density = merger_rate_density_madau_dickinson_belczynski_ng(zs=np.array([0.1]))
     """
 
-    density_helper = lambda zs: sfr_madau_dickinson2014(  
-        zs=zs, 
-        a=1.0, 
-        b=alpha_F, 
-        c=c_F,
-        d=beta_F,
-    )
+    def density_helper(zs):
+        return sfr_madau_dickinson2014(
+            zs=zs,
+            a=1.0,
+            b=alpha_F,
+            c=c_F,
+            d=beta_F,
+        )
     density_zs = R0 * density_helper(zs)/ density_helper(np.array([0.]))[0]
 
     return density_zs
@@ -452,16 +454,18 @@ def binary_masses_BBH_popIII_lognormal_rvs(size, m_min=1.0, m_max=100.0, Mc=20.0
     >>> m1, m2 = binary_masses_BBH_popIII_lognormal(size=1000)
     """
     # mass function (Eqn. 1 of Ng et al. 2022)
-    psi = lambda m: np.exp(-np.log(m / Mc) ** 2 / (2 * sigma**2)) / (
-        np.sqrt(2 * np.pi) * sigma * m
-    )
+    def psi(m):
+        return np.exp(-np.log(m / Mc) ** 2 / (2 * sigma**2)) / (
+            np.sqrt(2 * np.pi) * sigma * m
+        )
     # probability density function (Eqn. 4 of Ng et al. 2022)
-    pdf = (
-        lambda m1, m2: (m1 + m2) ** (36 / 37)
-        * (m1 * m2) ** (32 / 37)
-        * psi(m1)
-        * psi(m2)
-    )
+    def pdf(m1, m2):
+        return (
+            (m1 + m2) ** (36 / 37)
+            * (m1 * m2) ** (32 / 37)
+            * psi(m1)
+            * psi(m2)
+        )
 
     # rejection sampling initialization
     m1 = np.random.uniform(m_min, m_max, chunk_size)
@@ -535,16 +539,18 @@ def binary_masses_BBH_primordial_lognormal_rvs(size, m_min=1.0, m_max=100.0, Mc=
     >>> m1, m2 = binary_masses_BBH_primordial_lognormal(size=1000)
     """
     # mass function (Eqn. 1 of Ng et al. 2022)
-    psi = lambda m: np.exp(-np.log(m / Mc) ** 2 / (2 * sigma**2)) / (  
-        np.sqrt(2 * np.pi) * sigma * m
-    )
+    def psi(m):
+        return np.exp(-np.log(m / Mc) ** 2 / (2 * sigma**2)) / (
+            np.sqrt(2 * np.pi) * sigma * m
+        )
     # probability density function (Eqn. 4 of Ng et al. 2022)
-    pdf = (  
-        lambda m1, m2: (m1 + m2) ** (36 / 37)
-        * (m1 * m2) ** (32 / 37)
-        * psi(m1)
-        * psi(m2)
-    )
+    def pdf(m1, m2):
+        return (
+            (m1 + m2) ** (36 / 37)
+            * (m1 * m2) ** (32 / 37)
+            * psi(m1)
+            * psi(m2)
+        )
 
     # rejection sampling initialization
     m1 = np.random.uniform(m_min, m_max, chunk_size)
